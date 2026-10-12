@@ -39,7 +39,7 @@ check('Ground movement, sprint, jump and dodge share streamed collision',()=>{
  const planted=p.position.clone();assert(c.attack(camera));for(let i=0;i<30;i++){c.before(1/60,camera);p.update(1/60,input(),camera);c.after(1/60);}assert(Math.hypot(p.position.x-planted.x,p.position.z-planted.z)<.04,'Planted punch skated across the roof');c.cancel();
  for(let i=0;i<60;i++){c.before(1/60,camera);p.update(1/60,{...input(),forward:true},camera);c.after(1/60);}assert(p.position.z>1&&p.position.y>20);
  c.cancel();c.stamina=100;const beforeDodge=p.position.clone();assert(c.dodge({right:true},camera));for(let i=0;i<35;i++){c.before(1/60,camera);p.update(1/60,input(),camera);c.after(1/60);}
- const dodgeTravel=p.position.x-beforeDodge.x;assert(dodgeTravel>.12&&dodgeTravel<.5,'Short right slip did not stay inside its collision-safe travel range');
+ const screenRight=new THREE.Vector3().setFromMatrixColumn(camera.matrixWorld,0);const dodgeTravel=p.position.clone().sub(beforeDodge).dot(screenRight);assert(dodgeTravel>.12&&dodgeTravel<.5,'Short right slip did not follow screen-right');
  c.cancel();p.update(1/60,{...input(),jump:true},camera);assert.equal(p.state,'JUMPING');const takeoff=p.velocity.y;assert.equal(c.heavy(camera),false);assert.equal(p.velocity.y,takeoff);for(let i=0;i<25;i++){c.before(1/60,camera);p.update(1/60,input(),camera);c.after(1/60);}assert(p.position.y>=20);
 });
 check('A vanished LOD anchor releases without adding launch energy',()=>{

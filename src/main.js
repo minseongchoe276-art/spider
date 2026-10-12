@@ -13,6 +13,7 @@ import { UrbanGroundCity } from './UrbanGroundCity.js';
 import { Preferences } from './Preferences.js';
 import { HongKongMinimap } from './Minimap.js';
 import { Multiplayer } from './Multiplayer.js';
+import { GROUNDED } from './MotionCatalog.js';
 
 export class GameApp {
   constructor() {
@@ -176,8 +177,16 @@ export class GameApp {
     if (!useUrbanGround) {
       const subtitle = document.querySelector('.badge-sub');
       if (subtitle) subtitle.textContent = 'LOCAL CITY WEB RUNNER';
+      const lobbyEdition = document.querySelector('.lobby-edition');
+      if (lobbyEdition) lobbyEdition.textContent = 'LOCAL CITY · OPEN WORLD';
+      const district = document.querySelector('.hud-district');
+      if (district) district.innerHTML = 'LOCAL CITY <i></i> FREE ROAM';
+      const lobbyDescription = document.querySelector('.lobby-hero > p');
+      if (lobbyDescription) lobbyDescription.innerHTML = '건물 사이를 스윙하고, 추격전을 시작하고,<br>나만의 도시를 네 방식대로 누벼봐.';
       const heading = document.querySelector('#overlay-click-to-play h2');
-      if (heading) heading.textContent = 'LOCAL CITY WEB SWING 3D';
+      if (heading) heading.textContent = '로컬 도시가 기다리고 있습니다.';
+      const footer = document.querySelector('.lobby-footer span:first-child');
+      if (footer) footer.innerHTML = 'WEB RUNNER <b>©</b> LOCAL CITY';
       const credit = document.querySelector('.data-credit');
       if (credit) {
         credit.replaceChildren(document.createTextNode('도시 데이터: 절차 생성 로컬 도시'),document.createElement('br'));
@@ -247,8 +256,7 @@ export class GameApp {
     this.physics.renderPosition.copy(spawn);
     this.physics.velocity.set(0, 0, 0);
     this.physics.state = 'IDLE';
-    this.tpsCamera.currentPos.copy(spawn.clone().add(new THREE.Vector3(0, 3, -7)));
-    this.tpsCamera.lookAtTarget.copy(spawn.clone().add(new THREE.Vector3(0, 1.7, 0)));
+    this.tpsCamera.placeBehind(spawn, this.physics.facingAngle);
     this.camera.position.copy(this.tpsCamera.currentPos);
     this.scene.add(this.camera);
     this.camera.lookAt(this.tpsCamera.lookAtTarget);
@@ -275,8 +283,7 @@ export class GameApp {
     this.assetsReady = true;
     if (this.city instanceof UrbanGroundCity) {
       this.physics.resetPosition();
-      this.tpsCamera.currentPos.copy(this.physics.position).add(new THREE.Vector3(0,3,-7));
-      this.tpsCamera.lookAtTarget.copy(this.physics.position).add(new THREE.Vector3(0,1.7,0));
+      this.resetCamera();
     }
     this.updateLoadingProgress(100, this.character.loadWarning || '준비 완료!');
     if (this.character.loadWarning) this.showNotice(this.character.loadWarning);
@@ -299,16 +306,20 @@ export class GameApp {
       const gameplayKey = [
         'KeyW', 'KeyA', 'KeyS', 'KeyD', 'ArrowUp', 'ArrowDown',
         'ArrowLeft', 'ArrowRight', 'ShiftLeft', 'ShiftRight', 'Space',
-        'KeyG', 'KeyE', 'KeyT', 'KeyF', 'KeyC', 'KeyV', 'KeyR', 'KeyQ', 'ControlLeft', 'ControlRight'
+        'KeyG', 'KeyE', 'KeyT', 'KeyF', 'KeyC', 'KeyV', 'KeyR', 'KeyQ', 'KeyB', 'ControlLeft', 'ControlRight'
       ].includes(k);
       if (gameplayKey && document.getElementById?.('controls-guide') && !document.getElementById('controls-guide').classList.contains('hidden')) return;
-      if (gameplayKey && (!this.isPlaying || this.isPaused)) return;
+      if (gameplayKey && (!this.isPlaying || this.isPaused || this.multiplayer?.spectating)) return;
       if (gameplayKey) e.preventDefault();
       if (gameplayKey && e.repeat && ['Space','KeyG','KeyE','KeyT','KeyC','KeyV','KeyQ','ControlLeft','ControlRight'].includes(k)) return;
 
       if (gameplayKey) { this.heldKeys.add(k); this.syncHeldInput(); }
-      if(k==='KeyG'){this.combat.special(this.camera);return;}
-      if(k==='KeyQ'){this.combat.toggle(this.input);return;}
+      if(k==='KeyB'){this.combat.guard(true);return;}
+      if(k==='KeyG'){if(this.combat.special(this.camera))this.multiplayer?.attack('punch');return;}
+      if(k==='KeyQ'){
+        if(this.multiplayer?.locksCombatToggle()){this.showNotice('도망자는 거미줄로만 이동합니다.');return;}
+        this.combat.toggle(this.input);return;
+      }
       if(k==='ControlLeft'||k==='ControlRight'){this.combat.dodge(this.input,this.camera);return;}
       if (k === 'KeyR' && !e.repeat && !this.multiplayer?.room) this.toggleTimeTrial();
       if (!e.repeat && k === 'KeyC') {
@@ -328,24 +339,31 @@ export class GameApp {
           this.tpsCamera.lockBehind = false;
           this.tpsCamera.orbitReturnTime = Infinity;
         } else if (previousMode === 'first') {
-          this.tpsCamera.lockBehind = false;
-          this.tpsCamera.orbitReturnTime = Infinity;
+          this.tpsCamera.recenterBehind(this.physics.facingAngle);
         }
         this.character.setFirstPersonMode(mode === 'first');
         this.showCameraMode(mode);
       }
       if (k === 'Space') {
         this.input.jump = true;
-        if (this.physics.isSwinging || this.physics.lastWebAnchor || this.physics.state === 'WEB_ZIP') {
-          // Detach without manufacturing extra momentum.
+        const swinging = this.physics.isSwinging;
+        const onWeb = swinging || this.physics.state === 'WEB_ZIP' || this.physics.lastWebAnchor;
+        if (onWeb) {
           this.input.webHold = false;
-          this.physics.clearWebAnchor();
+          this.input.webFireHeld = false;
+          this.input.webTap = false;
+          if (swinging) this.physics.releaseSwing(true);
+          else this.physics.clearWebAnchor();
+          this.physics.velocity.y = Math.max(this.physics.velocity.y, this.physics.jumpForce);
+          this.physics.state = 'JUMPING';
         }
       }
       if (k === 'KeyF') this.input.wallRun = true;
       if (k === 'KeyE') {
-        if(!this.combat || this.combat.mode==='web')this.physics.performAirJump(this.camera);
-        else this.combat.heavy(this.camera);
+        const groundedCombat = this.combat?.mode==='combat' && GROUNDED.includes(this.physics.state);
+        if (groundedCombat) {
+          if (this.combat.heavy(this.camera)) this.multiplayer?.attack('punch');
+        } else this.physics.performAirJump(this.camera);
       }
       if (k === 'KeyT') this.physics.performAirTrick();
       if (k === 'KeyM' && !e.repeat) this.toggleMute();
@@ -356,6 +374,7 @@ export class GameApp {
     window.addEventListener('keyup', (e) => {
       const k = e.code;
       this.heldKeys.delete(k);
+      if(k==='KeyB')this.combat?.guard(false);
       this.syncHeldInput();
       // Jump is a one-shot request consumed by physics, not a held button.
       // Clearing it on keyup loses taps completed between two render frames.
@@ -363,18 +382,20 @@ export class GameApp {
 
     // Mouse Buttons
     window.addEventListener('mousedown', (e) => {
-      if (!this.isPlaying || this.isPaused) return;
+      if (!this.isPlaying || this.isPaused || this.multiplayer?.spectating) return;
       if (document.getElementById?.('controls-guide') && !document.getElementById('controls-guide').classList.contains('hidden')) return;
       if (e.target !== this.canvas) return;
       this.audio.ensureContext();
 
-      if(this.combat?.mode==='combat' && (e.button===0 || e.button===2)) {
-        if(e.button===0){this.combat.attack(this.camera);this.multiplayer?.attack('punch');}else this.combat.guard(true);
+      const groundedCombat = this.combat?.mode==='combat' && GROUNDED.includes(this.physics.state);
+      if(groundedCombat && (e.button===0 || e.button===2)) {
+        const started=e.button===0?this.combat.attack(this.camera):this.combat.straight(this.camera);
+        if(started)this.multiplayer?.attack('punch');
         return;
       }
       if (e.button === 0) {
         this.multiplayer?.attack('web');
-        // A tap fires once; holding the left button chains new anchors while airborne.
+        // Holding the left button keeps one rope. Releasing lets it go.
         this.physics.setWebAimPoint(
           e.clientX,
           e.clientY,
@@ -386,8 +407,7 @@ export class GameApp {
         this.input.webFireHeld = true;
         this.input.webHold = true;
       } else if (e.button === 2) {
-        // Right-click reels toward the last attached web. If none exists yet,
-        // the current aim point becomes a new anchor automatically.
+        // Right-click zips to the aimed point. A miss falls back to the current rope.
         this.physics.setWebAimPoint(
           e.clientX,
           e.clientY,
@@ -411,15 +431,17 @@ export class GameApp {
     window.addEventListener('mouseup', (e) => {
       this.cameraDragActive = false;
       this.lastMousePosition = null;
-      if(e.button===2)this.combat?.guard(false);
       if (e.button === 0) {
         this.input.webFireHeld = false;
-        // A left-click latches the web. Space is the explicit swing-release action.
-        // Do not clear a right-click reel's latch while it is travelling to
-        // the anchor: arrival converts WEB_ZIP into SWINGING on a later tick.
-        // A pending tap is also left for physics to resolve (hit or miss).
-        if (!this.physics?.isSwinging && this.physics?.state !== 'WEB_ZIP' && !this.input.webTap) {
+        // A right-click reel keeps its latch until arrival. A tap that has not
+        // reached physics yet must still attach, then release, in that update.
+        if (this.physics?.state === 'WEB_ZIP') {
+          // Leave webHold so the zip can become a swing.
+        } else if (this.input.webTap) {
           this.input.webHold = false;
+        } else {
+          this.input.webHold = false;
+          if (this.physics?.isSwinging) this.physics.releaseSwing(true);
         }
       }
     });
@@ -436,6 +458,7 @@ export class GameApp {
 
     // Mouse Look (Pointer Lock)
     window.addEventListener('mousemove', (e) => {
+      if (this.multiplayer?.spectating) return;
       if (this.isPlaying && !this.isPaused && document.pointerLockElement === this.canvas) {
         this.tpsCamera.handleMouseMove(e.movementX, e.movementY);
         this.physics.setWebAimPoint(0, 0, null, true);
@@ -498,8 +521,8 @@ export class GameApp {
     document.getElementById('btn-retry-load')?.addEventListener('click', () => location.reload());
     document.getElementById('btn-restart')?.addEventListener('click', () => this.restartGame());
     document.getElementById('btn-time-trial')?.addEventListener('click', () => this.toggleTimeTrial());
-    document.getElementById('reduced-motion')?.addEventListener('change', event => {
-      this.preferences.values.reducedMotion = event.target.checked;
+    document.getElementById('reduced-motion')?.addEventListener('click', () => {
+      this.preferences.values.reducedMotion = !this.preferences.values.reducedMotion;
       if (!this.preferences.save()) this.showNotice('설정을 저장할 수 없어 이번 실행에만 적용합니다.');
       this.applyPreferences();
     });
@@ -566,7 +589,7 @@ export class GameApp {
     }
     const resume = this.isPlaying;
     const startLabel = document.querySelector('#btn-start-game span');
-    if (startLabel) startLabel.textContent = resume ? '계속하기 (RESUME)' : '게임 시작 (START SWINGING)';
+    if (startLabel) startLabel.textContent = resume ? '계속 플레이' : '게임 시작';
     const dragButton = document.getElementById('btn-start-drag');
     if (dragButton) dragButton.textContent = resume ? '마우스 잠금 없이 계속하기' : '마우스 잠금 없이 시작 · 휠 버튼 드래그';
     document.getElementById('btn-restart')?.classList.toggle('hidden', !resume || !!this.multiplayer?.room);
@@ -622,7 +645,10 @@ export class GameApp {
   applyPreferences() {
     const { muted, reducedMotion, quality } = this.preferences.values;
     if (this.audio.isMuted !== muted) this.audio.toggleMute();
-    document.getElementById('reduced-motion').checked = reducedMotion;
+    const motionButton = document.getElementById('reduced-motion');
+    motionButton?.setAttribute('aria-pressed', String(reducedMotion));
+    const motionValue = motionButton?.querySelector('.setting-value');
+    if (motionValue) motionValue.textContent = reducedMotion ? '켜짐' : '꺼짐';
     document.getElementById('graphics-quality').value = quality;
     this.tpsCamera.reducedMotion = reducedMotion;
     this.city.reducedMotion = reducedMotion;
@@ -633,11 +659,7 @@ export class GameApp {
   }
 
   resetCamera() {
-    this.tpsCamera.currentPos.copy(this.physics.position).add(new THREE.Vector3(0,3,-7));
-    this.tpsCamera.lookAtTarget.copy(this.physics.position).add(new THREE.Vector3(0,1.7,0));
-    this.tpsCamera.yaw = this.physics.facingAngle;
-    this.tpsCamera.pitch = this.tpsCamera.mode === 'first' ? 0 : 0.16;
-    this.tpsCamera.recenterBehind(this.physics.facingAngle);
+    this.tpsCamera.placeBehind(this.physics.position, this.physics.facingAngle);
     this.camera.position.copy(this.tpsCamera.currentPos);
     this.camera.lookAt(this.tpsCamera.lookAtTarget);
     this.camera.updateMatrixWorld(true);
@@ -766,7 +788,8 @@ export class GameApp {
     if (!this.assetsReady && this.character.isLoaded &&
         (!(this.city instanceof UrbanGroundCity) || this.city.isReady)) this.onAssetsLoaded();
 
-    if (this.isPlaying && !this.isPaused) {
+    const spectating = !!this.multiplayer?.spectating;
+    if (this.isPlaying && !this.isPaused && !spectating) {
       // 1. Update Physics and Character
       const wasSwinging = this.physics.isSwinging;
       this.combat?.before(delta,this.camera);

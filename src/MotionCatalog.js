@@ -27,15 +27,17 @@ COMBAT_MOTIONS.push(...[['dodgeForward','Roll'],['hook','Melee_Hook'],['heavy','
   .map(([key,take])=>({key,take,loop:false,url:'/models/sources/combat-base.glb'})));
 MOTIONS.push(...COMBAT_MOTIONS);
 
-// Mixamo sources are retained for review. The target-rig pass steadies the
-// boxing idle and extends the straight punches after retargeting.
+// Keep the supplied boxing takes as the fighting stance and matching strikes.
 const imported = {
- combatIdle:{file:'Boxing Idle',loop:true},
- jab:{file:'Lead Jab',impactPhase:.3},
+ combatIdle:{file:'Boxing Stance',loop:true},
+ jab:{file:'Boxing Lead Jab',impactPhase:.3},
  cross:{file:'Cross Punch',impactPhase:.6},
- hook:{file:'Mma Kick',impactPhase:.4},
+ // The source has a long idle tail. Use the complete swing and recovery,
+ // then play that section slower so the fist does not snap out and back.
+ hook:{file:'Boxing Hook',trim:[0,1.4],impactPhase:.43},
+ heavy:{file:'Boxing Hook',trim:[0,1.4],impactPhase:.43},
  airTrick:{file:'Front Flip',trim:[.5,1.43]},
- special:{file:'Surprise Uppercut',trim:[.67,1.77],impactPhase:.35},
+ special:{file:'Boxing Lead Jab',impactPhase:.3},
 };
 for(const [key,{file,...settings}] of Object.entries(imported)){
  const motion={key,url:`/models/${file}.fbx`,authoredMixamo:true,loop:false,...settings};

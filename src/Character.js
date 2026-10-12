@@ -402,14 +402,14 @@ export class Character {
       else if (playing('runStop')) name = 'runStop';
       else if (playing('stop')) name = 'stop';
     } else name = state === 'SPRINTING' ? 'run' :
-      horizontalSpeed > 3.3 ? 'regularRun' : horizontalSpeed > 1.9 ? 'jog' : 'walk';
+      horizontalSpeed > 4.1 ? 'regularRun' : horizontalSpeed > 3.1 ? 'jog' : 'walk';
     const combat=this.combatAction;
     if(combat && this.actions[combat.key] && (grounded || combat.key==='slam') && !['ROLLING','TURNING'].includes(state))name=combat.key;
     if(this.isTricking && !grounded && !['WALL_RUNNING','MANTLING','WEB_ZIP'].includes(state) && this.actions.airTrick)name='airTrick';
     this.fadeToAction(name, combat?.key===name ? (combat.duration ? 0.065 : name==='guard' ? 0.18 : 0.12) : ['LANDING','ROLLING'].includes(state) ? 0.06 : grounded ? 0.18 : 0.12);
     if (STRIDES.includes(name)) {
       const measuredSpeed = this.activeAction?.getClip().userData?.nominalSpeed;
-      const strideSpeed = measuredSpeed > 0.1 ? measuredSpeed : ({walk:1.6,jog:2.4,regularRun:4.5,run:6.5}[name]);
+      const strideSpeed = measuredSpeed > 0.1 ? measuredSpeed : ({walk:2.8,jog:3.4,regularRun:4.8,run:6.5}[name]);
       this.activeAction?.setEffectiveTimeScale(THREE.MathUtils.clamp(
         horizontalSpeed / strideSpeed, 0.15, 1.6));
     }
@@ -476,7 +476,11 @@ export class Character {
     }
     if(this.isFirstPerson && this.firstPersonRig)for(const [i,arm] of this.firstPersonRig.children.entries()){
       const t=combat?.duration?combat.time/combat.duration:0,pulse=Math.sin(Math.PI*Math.min(1,t*2));
-      arm.position.set(0,combat?.key==='guard'?0.14:0,combat && ['jab','cross'].includes(combat.key) && i===(combat.key==='jab'?0:1)?-0.38*Math.max(0,pulse):0);
+      const striking=combat && ['jab','cross','hook','heavy','special'].includes(combat.key) && i===(combat.key==='cross'?1:0);
+      const reach=striking?Math.max(0,pulse):0;
+      arm.position.set(['hook','heavy'].includes(combat?.key) && i===0 ? .26*reach : 0,
+        combat?.key==='guard' ? .14 : 0,
+        striking?(['hook','heavy'].includes(combat.key)?-0.25:-0.38)*reach:0);
     }
     this.group.updateMatrixWorld(true);
     adaptPelvisToTerrain(this,delta,grounded && state!=='ROLLING');

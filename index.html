@@ -95,31 +95,32 @@
         <span class="guide-hint">마우스 잠금 또는 휠 버튼 드래그</span>
       </div>
       <div class="guide-list">
-        <div class="guide-row"><span class="key-badge">경찰과 도망자</span><span class="guide-desc">경찰: 주먹 25·거미줄 15 피해. 도망자 전원 체력 0이면 경찰 승리, 5분 생존하면 도망자 승리.</span></div>
-        <div class="guide-row"><span class="key-badge">Q</span><span class="guide-desc">전투 / 거미줄 모드 전환</span></div>
-        <div class="guide-row"><span class="key-badge">G</span><span class="guide-desc">필살 어퍼컷 · 기력 35 · 재사용 4초</span></div>
+        <div class="guide-row"><span class="key-badge">경찰과 도망자</span><span class="guide-desc">2~8명. 6명 이하는 경찰 1명, 7~8명은 경찰 2명. 시작 8초는 공격 없음. 경찰 주먹 25, 거미줄 15. 도망자는 공격할 수 없습니다. 도망자가 모두 쓰러지면 경찰 승리, 5분 생존이거나 경찰이 없으면 도망자 승리. 탈락하면 관전합니다.</span></div>
+        <div class="guide-row"><span class="key-badge">Q</span><span class="guide-desc">전투 / 거미줄 전환. 도망자는 경기 중 거미줄로 고정됩니다.</span></div>
+        <div class="guide-row"><span class="key-badge">G</span><span class="guide-desc">강한 잽 · 기력 35 · 재사용 4초</span></div>
         <div class="guide-row"><span class="key-badge">Ctrl + 방향</span><span class="guide-desc">짧은 회피 · 전방 숙이기</span></div>
 
         <div class="guide-row">
           <span class="key-badge">W A S D</span>
-          <span class="guide-desc">카메라 기준 이동</span>
+          <span class="guide-desc">카메라가 보는 쪽이 앞, 화면 오른쪽이 D</span>
         </div>
         <div class="guide-row"><span class="key-badge">Shift</span><span class="guide-desc">누르는 동안 질주</span></div>
         <div class="guide-row">
           <span class="key-badge">Space</span>
-          <span class="guide-desc">점프 · 벽 점프 · 거미줄 놓기</span>
+          <span class="guide-desc">점프 · 벽 점프 · 줄에서 뛰어내리기</span>
         </div>
         <div class="guide-row">
           <span class="key-badge">좌클릭</span>
-          <span class="guide-desc key-accent">전투: 3타 콤보 / 거미줄: 양손 발사</span>
+          <span class="guide-desc key-accent">누르는 동안 왼손·오른손 두 줄. 떼면 놓고, 공중 전투에서도 발사. 땅의 전투는 잽</span>
         </div>
         <div class="guide-row">
           <span class="key-badge">우클릭</span>
-          <span class="guide-desc key-accent">전투: 방어 / 거미줄: 당기기</span>
+          <span class="guide-desc key-accent">바라보는 곳으로 집. 땅의 전투는 스트레이트, 공중은 집</span>
         </div>
+        <div class="guide-row"><span class="key-badge">B</span><span class="guide-desc">전투: 누르는 동안 방어</span></div>
         <div class="guide-row">
           <span class="key-badge">E</span>
-          <span class="guide-desc">전투: 지상 강공격 / 거미줄: 공중 웹 집</span>
+          <span class="guide-desc">공중에서 한 번의 강한 집. 땅의 전투는 훅</span>
         </div>
         <div class="guide-row">
           <span class="key-badge">T</span>
@@ -145,56 +146,75 @@
     <div id="game-notice" role="status" aria-live="polite"></div>
 
     <div id="match-hud" class="hidden" role="status" aria-live="polite">
+      <span class="hud-district">CENTRAL <i></i> HONG KONG</span>
       <strong id="match-role"></strong><span id="match-health"></span><span id="match-timer"></span><span id="match-count"></span>
-      <button id="match-help" type="button" onclick="document.getElementById('btn-help-toggle').click()">H · 조작</button>
+      <button id="match-help" type="button" aria-label="조작 가이드 열기">? <span>조작</span></button>
+    </div>
+    <div id="gameplay-quickbar" aria-label="기본 조작">
+      <span><kbd>W A S D</kbd> 이동</span><span><kbd>SPACE</kbd> 점프</span><span><kbd>Q</kbd> 모드</span><span><kbd>ESC</kbd> 메뉴</span>
     </div>
 
     <div id="online-overlay" class="overlay" role="dialog" aria-modal="true" aria-labelledby="online-title">
-      <div class="online-card glass-panel">
-        <div class="online-header"><span class="online-mark">🕷</span><div><small>HONG KONG WEB RUNNER</small><h1 id="online-title">함께 도시를 누비세요</h1><p id="online-status">서버 연결 중…</p></div></div>
+      <div class="lobby-shell">
+        <div class="lobby-topline"><span class="lobby-brand"><span class="brand-mark">✳</span> WEB <b>RUNNER</b></span><span class="lobby-edition">HONG KONG · OPEN WORLD</span><span id="online-status">서버 연결 중…</span></div>
+        <div class="lobby-stage">
+          <div class="lobby-hero">
+            <span class="lobby-eyebrow"><i></i> YOUR CITY. YOUR MOVE.</span>
+            <h1 id="online-title">도시를<br><em>가로질러.</em></h1>
+            <p>건물 사이를 스윙하고, 추격전을 시작하고,<br>홍콩의 하늘을 네 방식대로 누벼봐.</p>
+            <div class="lobby-hero-actions"><button id="play-solo" class="hero-play" type="button"><span class="play-triangle">▶</span><span><b>혼자 플레이</b><small>바로 도시로 뛰어들기</small></span><span class="action-arrow">↗</span></button></div>
+            <div class="lobby-statline"><span>01 / EXPLORE</span><span>02 / CHASE</span><span>03 / SWING</span></div>
+          </div>
+          <div class="online-card">
+            <div class="online-header"><span class="menu-index">MULTIPLAYER / 02</span><h2>함께 플레이</h2><p>방을 만들거나 친구의 게임에 합류하세요.</p></div>
         <section id="lobby-panel">
           <label class="online-field">플레이어 이름<input id="player-name" maxlength="16" value="스파이더" autocomplete="nickname"></label>
-          <div class="online-grid"><label class="online-field">방 이름<input id="room-name" maxlength="24" value="새로운 도시 여행"></label><label class="online-field">정원<select id="room-capacity"><option>4</option><option>5</option><option>6</option><option>7</option><option selected>8</option></select></label></div>
-          <label class="online-field">게임 모드<select id="room-mode"><option value="tag">경찰과 도망자 · 5분</option><option value="free">자유 플레이 · 제한 없음</option></select></label>
-          <button id="play-solo" class="online-solo" type="button">혼자 플레이</button>
-          <button id="create-room" class="online-primary" type="button">방 만들기</button>
-          <div class="online-divider">방 코드로 입장</div>
-          <div class="online-inline"><input id="room-code" maxlength="6" placeholder="6자리 코드" aria-label="방 코드"><button id="join-code" type="button">입장</button></div>
-          <h2>열린 방</h2><div id="room-list" class="room-list"></div>
+          <div class="mode-heading">게임 모드 <span>선택</span></div>
+          <div class="mode-picker" role="tablist" aria-label="게임 모드">
+            <button class="mode-option selected" type="button" role="tab" data-mode="tag" aria-selected="true"><span class="mode-icon">⌖</span><b>경찰과 도망자</b><small>5분 추격전</small></button>
+            <button class="mode-option" type="button" role="tab" data-mode="free" aria-selected="false"><span class="mode-icon">↗</span><b>자유 플레이</b><small>함께 도시 탐험</small></button>
+          </div>
+          <select id="room-mode" class="visually-hidden" aria-label="게임 모드"><option value="tag">경찰과 도망자 · 5분</option><option value="free">자유 플레이 · 제한 없음</option></select>
+          <div class="online-grid"><label class="online-field">방 이름<input id="room-name" maxlength="24" value="새로운 도시 여행"></label><label class="online-field">정원<select id="room-capacity"><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option selected>8</option></select></label></div>
+          <button id="create-room" class="online-primary" type="button">새 방 만들기 <span>↗</span></button>
+          <div class="online-divider"><span>또는 바로 합류</span></div>
+          <div class="online-inline"><input id="room-code" maxlength="6" placeholder="초대 코드 6자리" aria-label="방 코드"><button id="join-code" type="button">코드 입장</button></div>
+          <div class="room-list-heading"><h3>열린 방</h3><span>LIVE ROOMS</span></div><div id="room-list" class="room-list"></div>
         </section>
         <section id="room-panel" class="hidden">
+          <span class="room-kicker">YOUR SQUAD / 대기실</span>
           <h2 id="room-title"></h2><p id="room-details"></p>
           <div class="room-code-line">초대 코드 <strong id="room-code-display"></strong><button id="room-copy" type="button">복사</button></div>
           <div id="player-list" class="player-list"></div>
           <p id="room-message"></p>
           <div class="room-actions"><button id="room-ready" class="online-primary" type="button">준비하기</button><button id="room-start" class="online-primary" type="button">시작</button><button id="room-rematch" class="online-primary hidden" type="button">다시 대기실로</button><button id="room-leave" type="button">방 나가기</button></div>
         </section>
+          </div>
+        </div>
+        <div class="lobby-footer"><span>WEB RUNNER <b>©</b> HONG KONG</span><span>WASD 이동 &nbsp;·&nbsp; 마우스 조준 &nbsp;·&nbsp; SPACE 점프</span></div>
       </div>
     </div>
 
     <!-- Start / Click to Play Overlay -->
     <div id="overlay-click-to-play" class="overlay hidden" role="dialog" aria-modal="true" aria-labelledby="game-title">
-      <div class="overlay-card glass-panel">
-        <div class="hero-emblem">🕷️</div>
-        <h1 id="game-title">SPIDER-MAN</h1>
-        <h2>HONG KONG WEB SWING 3D</h2>
-        <p class="overlay-tagline">게임이 일시 정지되었습니다. 준비되면 계속하세요.</p>
+      <div class="overlay-card">
+        <span class="pause-eyebrow">WEB RUNNER / SYSTEM MENU</span>
+        <h1 id="game-title">잠시 <em>멈춤</em></h1>
+        <h2>도시는 기다리고 있습니다.</h2>
+        <p class="overlay-tagline">다시 뛰어들 준비가 되면 계속하세요.</p>
         
         <div class="start-instruction">
           <div class="mouse-icon">🖱️</div>
-          <span>Q 전투/거미줄 전환 · 좌클릭 공격/발사 · 우클릭 방어/당기기 · Ctrl 회피<br>Esc 메뉴 · R 타임트라이얼 · <span id="world-limit">구역 원점 기준 ±2.4km</span></span>
+          <span>Q 전투/거미줄 · 좌클릭은 누르는 동안 양손 줄(땅의 전투는 잽) · 우클릭 집 · E 공중 집 · B 방어 · Ctrl 회피<br>Esc 메뉴 · R 타임트라이얼 · <span id="world-limit">구역 원점 기준 ±2.4km</span></span>
         </div>
 
-        <button id="btn-start-game" class="start-btn">
-          <span>게임 시작 (START)</span>
-        </button>
-        <p><button id="btn-start-drag" type="button">마우스 잠금 없이 시작 · 휠 버튼 드래그</button></p>
-        <button id="btn-restart" class="hidden" type="button">시작점으로 돌아가기</button>
-        <button id="btn-leave-match" type="button">로비로 돌아가기</button>
-        <label class="guide-setting"><input id="reduced-motion" type="checkbox"> 화면 흔들림·속도 효과 줄이기</label>
+        <button id="btn-start-game" class="start-btn"><span>계속 플레이</span><b>↗</b></button>
+        <button id="btn-start-drag" type="button">마우스 잠금 없이 계속</button>
+        <div class="pause-secondary"><button id="btn-restart" class="hidden" type="button">시작점 복귀</button><button id="btn-leave-match" type="button">로비로 돌아가기</button></div>
+        <div class="pause-settings"><span class="settings-title">설정</span><button id="reduced-motion" type="button" aria-pressed="false">화면 효과 줄이기 <span class="setting-value">꺼짐</span></button>
         <label class="guide-setting" for="graphics-quality">그래픽 품질
           <select id="graphics-quality" aria-label="그래픽 품질"><option value="low">낮음</option><option value="balanced" selected>기본</option><option value="high">높음</option></select>
-        </label>
+        </label></div>
         <p class="data-credit">도시 데이터: 홍콩 Lands Department<br><a href="?city=procedural">로컬 도시로 플레이</a></p>
       </div>
     </div>

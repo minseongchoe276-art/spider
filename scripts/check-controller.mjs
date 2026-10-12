@@ -17,7 +17,7 @@ function controller() {
 function advance(p,i,seconds,dt=1/60) { for(let t=0;t<seconds-1e-8;t+=dt)p.update(dt,i,camera); }
 const p=controller(), i=input();
 advance(p,i,3); assert.equal(p.velocity.length(),0); assert.equal(p.state,'IDLE');
-i.forward=true; advance(p,i,2); assert.equal(p.state,'RUNNING'); assert(Math.abs(p.velocity.length()-1.6)<0.01);
+i.forward=true; advance(p,i,2); assert.equal(p.state,'RUNNING'); assert(Math.abs(p.velocity.length()-2.8)<0.01);
 i.sprint=true; advance(p,i,2); assert.equal(p.state,'SPRINTING'); assert(Math.abs(p.velocity.length()-6.5)<0.01);
 i.forward=false; advance(p,i,2); assert.equal(p.state,'IDLE'); assert.equal(p.velocity.length(),0);
 i.jump=true; p.update(1/60,i,camera); assert.equal(p.state,'JUMPING'); assert(p.velocity.y>0); assert.equal(p.velocity.z,0);
@@ -30,8 +30,8 @@ ri.forward=true; advance(roof,ri,1.5); assert.equal(roof.state,'FALLING');
 roof.position.set(0,11,0);roof.velocity.set(0,-100,0);roof.state='FALLING';ri.forward=false;roof.update(0.1,ri,camera);assert.equal(roof.position.y,10.1);
 const release=controller();release.isSwinging=true;release.velocity.set(20,0,0);release.releaseSwing(false);assert.equal(release.velocity.y,0);assert.equal(release.velocity.x,20);
 // Distinct recovery, turning, speed stages and web-zip states.
-const stages=controller(), si=input();si.forward=true;si.jog=true;advance(stages,si,2);assert(Math.abs(stages.velocity.length()-2.4)<0.01);
-si.jog=false;si.run=true;advance(stages,si,2);assert(Math.abs(stages.velocity.length()-4.5)<0.01);
+const stages=controller(), si=input();si.forward=true;si.jog=true;advance(stages,si,2);assert(Math.abs(stages.velocity.length()-3.4)<0.01);
+si.jog=false;si.run=true;advance(stages,si,2);assert(Math.abs(stages.velocity.length()-4.8)<0.01);
 const turn=controller();assert(turn.turnOnSpot('left'));advance(turn,input(),1.1);assert.equal(turn.state,'IDLE');assert(Math.abs(turn.facingAngle+Math.PI/2)<0.01);assert.equal(turn.position.length(),0.1);
 const land=controller();land.position.y=0.3;land.velocity.y=-15;land.state='FALLING';land.update(1/60,input(),camera);assert.equal(land.state,'LANDING');advance(land,input(),1.5);assert.equal(land.state,'IDLE');
 const roll=controller();roll.character.actions={roll:{getClip:()=>({duration:1,userData:{rootMotion:[{time:0,distance:0},{time:1,distance:2}]}})}};
@@ -39,7 +39,12 @@ roll.position.y=0.3;roll.velocity.set(0,-30,4);roll.state='FALLING';roll.update(
 const verticalLand=controller();verticalLand.position.y=0.3;verticalLand.velocity.y=-30;verticalLand.state='FALLING';verticalLand.update(1/60,input(),camera);assert.equal(verticalLand.state,'LANDING','Vertical falls must not launch a forward roll');
 const zip=controller();assert.equal(zip.performAirJump(camera),false);assert.equal(zip.canAirJump,true,'A missed zip target must not consume the air ability');
 const facade=new THREE.Mesh(new THREE.BoxGeometry(10,20,2),new THREE.MeshBasicMaterial());facade.position.set(0,10,20);facade.updateMatrixWorld(true);zip.city.buildingMeshes=[facade];
-assert.equal(zip.performAirJump(camera),true);assert.equal(zip.state,'WEB_ZIP');assert.equal(zip.canAirJump,false);advance(zip,input(),0.2);assert.equal(zip.state,'WEB_ZIP');advance(zip,input(),3);assert.notEqual(zip.state,'WEB_ZIP');assert(zip.position.z<20,'Zip passed through its target wall');
+assert.equal(zip.performAirJump(camera),true);assert.equal(zip.state,'WEB_ZIP');assert.equal(zip.canAirJump,false);advance(zip,input(),0.2);assert.equal(zip.state,'WEB_ZIP');
+for(let t=0;zip.state==='WEB_ZIP'&&t<3;t+=1/60)zip.update(1/60,input(),camera);
+assert.notEqual(zip.state,'WEB_ZIP');assert(zip.position.z<20,'Zip passed through its target wall');
+const zipArrival=zip.position.z;zip.update(1/60,input(),camera);
+assert.equal(zip.isSwinging,false,'An air zip stayed attached after the button was already up');
+assert(zip.position.z<zipArrival+1.5,'Letting go of an air zip launched through the wall on the release frame');
 const aimedZip=controller();const offCenterBuilding=new THREE.Mesh(new THREE.BoxGeometry(4,10,2));
 offCenterBuilding.position.set(-6,5,20);offCenterBuilding.updateMatrixWorld(true);aimedZip.city.buildingMeshes=[offCenterBuilding];
 assert(aimedZip.performAirJump(camera,new THREE.Vector2(0.5,0)),'Screen-point web zip failed to acquire its clicked building');
@@ -112,7 +117,7 @@ for(const dt of [1/30,1/60,1/144]) {
   const before=v.currentPos.clone();v.triggerShake(1);v.update(0,new THREE.Vector3(),new THREE.Vector3(),false,[]);
   assert(v.currentPos.equals(before),'Camera shake leaked into follow state');
 }
-for(const dt of [1/30,1/60,1/144]) { const a=controller();const ai=input();ai.forward=true;advance(a,ai,2,dt);assert(Math.abs(a.velocity.length()-1.6)<0.01); }
+for(const dt of [1/30,1/60,1/144]) { const a=controller();const ai=input();ai.forward=true;advance(a,ai,2,dt);assert(Math.abs(a.velocity.length()-2.8)<0.01); }
 const climber=controller();climber.city.checkCollision=City.prototype.checkCollision;
 climber.city.raycast=City.prototype.raycast;
 climber.city.colliders=[{minX:-4,maxX:4,minY:0,maxY:60,minZ:2,maxZ:8}];
@@ -199,13 +204,13 @@ for(const n of ['idle','walk','jog','regularRun','run','stop','runStop','jump','
   clip.userData={nominalSpeed:0.0000001};
   const action=c.mixer.clipAction(clip);if(['stop','runStop','jump','roll','land','drop','turnLeft','turnRight'].includes(n)){action.setLoop(THREE.LoopOnce);action.clampWhenFinished=true;}c.actions[n]=action;
 }
-c.update(1/60,'RUNNING',new THREE.Vector3(0,0,1.6));assert.equal(c.activeAction,c.actions.walk);
-for(let n=0;n<200;n++)c.update(1/60,'RUNNING',new THREE.Vector3(0,0,1.6));assert(c.actions.walk.isRunning());
+c.update(1/60,'RUNNING',new THREE.Vector3(0,0,2.8));assert.equal(c.activeAction,c.actions.walk);
+for(let n=0;n<200;n++)c.update(1/60,'RUNNING',new THREE.Vector3(0,0,2.8));assert(c.actions.walk.isRunning());
 c.update(1/60,'SPRINTING',new THREE.Vector3(0,0,6.5));assert.equal(c.activeAction,c.actions.run);
 c.update(1/60,'IDLE',new THREE.Vector3());assert.equal(c.activeAction,c.actions.runStop);
 for(let n=0;n<100;n++)c.update(1/60,'IDLE',new THREE.Vector3());assert.equal(c.activeAction,c.actions.idle);
-c.update(1/60,'RUNNING',new THREE.Vector3(0,0,2.4));assert.equal(c.activeAction,c.actions.jog);
-c.update(1/60,'RUNNING',new THREE.Vector3(0,0,4.5));assert.equal(c.activeAction,c.actions.regularRun);assert.equal(c.activeAction.getEffectiveTimeScale(),1);
+c.update(1/60,'RUNNING',new THREE.Vector3(0,0,3.4));assert.equal(c.activeAction,c.actions.jog);
+c.update(1/60,'RUNNING',new THREE.Vector3(0,0,4.8));assert.equal(c.activeAction,c.actions.regularRun);assert.equal(c.activeAction.getEffectiveTimeScale(),1);
 c.update(1/60,'LANDING',new THREE.Vector3());assert.equal(c.activeAction,c.actions.land);
 c.update(1/60,'ROLLING',new THREE.Vector3());assert.equal(c.activeAction,c.actions.roll);
 c.pendingTurn='left';c.update(1/60,'TURNING',new THREE.Vector3());assert.equal(c.activeAction,c.actions.turnLeft);
@@ -270,4 +275,36 @@ follower.handleMouseMove(100,-100);const firstYaw=follower.yaw,firstPitch=follow
 for(let n=0;n<300;n++)follower.update(1/60,playerTarget,new THREE.Vector3(),false,[],null,0);
 assert.equal(follower.yaw,firstYaw,'First-person view auto-snapped behind the player');
 assert.equal(follower.pitch,firstPitch,'First-person pitch changed without input');
+camera.updateMatrixWorld(true);
+const screenRight=new THREE.Vector3().setFromMatrixColumn(camera.matrixWorld,0);screenRight.y=0;screenRight.normalize();
+const lookFlat=new THREE.Vector3();camera.getWorldDirection(lookFlat);lookFlat.y=0;lookFlat.normalize();
+const strafeBody=controller(),strafeInput=input();strafeInput.right=true;const strafeStart=strafeBody.position.clone();
+advance(strafeBody,strafeInput,1);
+const strafeDelta=strafeBody.position.clone().sub(strafeStart);strafeDelta.y=0;
+assert(strafeDelta.length()>1,'D produced almost no movement');
+assert(strafeDelta.normalize().dot(screenRight)>0.9,`D moved ${strafeDelta.toArray()} instead of screen-right ${screenRight.toArray()}`);
+const walkBody=controller(),walkInput=input();walkInput.forward=true;const walkStart=walkBody.position.clone();
+advance(walkBody,walkInput,1);
+const walkDelta=walkBody.position.clone().sub(walkStart);walkDelta.y=0;
+assert(walkDelta.normalize().dot(lookFlat)>0.9,'W did not follow the camera look direction');
+const swingBody=controller();swingBody.position.set(0,10,0);swingBody.velocity.set(0,0,0);
+swingBody.webs=[{hand:'left',anchor:new THREE.Vector3(0,20,0),length:10}];
+swingBody.updateSwingPhysics(1/60,Object.assign(input(),{strafe:1}),camera);
+assert(swingBody.velocity.x<0,'Swing strafe pushed opposite screen-right');
+const wallBody=controller();wallBody.state='WALL_RUNNING';wallBody.wallNormal.set(0,0,-1);wallBody.position.set(0,2,0);
+wallBody.city.raycast=()=>({distance:0.4,normal:new THREE.Vector3(0,0,-1),point:new THREE.Vector3(0,2,0.4)});
+wallBody.updateWallRunPhysics(1/60,Object.assign(input(),{forward:true,wallRun:true,strafe:1}),camera);
+assert.equal(wallBody.state,'WALL_RUNNING','Wall-run probe dropped the runner before the strafe check');
+assert(wallBody.velocity.x<0,'Wall-run D did not follow screen-right');
+const behindFacing=new ThirdPersonCamera(new THREE.PerspectiveCamera(),{});
+behindFacing.placeBehind(new THREE.Vector3(10,5,0),Math.PI/2);
+behindFacing.camera.position.copy(behindFacing.currentPos);behindFacing.camera.lookAt(behindFacing.lookAtTarget);behindFacing.camera.updateMatrixWorld(true);
+const placedLook=new THREE.Vector3();behindFacing.camera.getWorldDirection(placedLook);
+assert(behindFacing.currentPos.x<10 && Math.abs(behindFacing.currentPos.z)<1,'Camera boom is not behind a character facing +X');
+assert(placedLook.x>0.9,'Camera boom does not look along the character facing');
+const blockedEye=new ThirdPersonCamera(new THREE.PerspectiveCamera(),{});
+blockedEye.mode='first';blockedEye.yaw=0;blockedEye.pitch=0;blockedEye.currentPos.set(0,1.58,0);
+const eyeWall=new THREE.Mesh(new THREE.BoxGeometry(4,4,0.2));eyeWall.position.set(0,1.58,0.35);eyeWall.updateMatrixWorld(true);
+for(let n=0;n<20;n++)blockedEye.update(1/60,new THREE.Vector3(),new THREE.Vector3(),false,[eyeWall]);
+assert(blockedEye.camera.position.z<0,'First-person view stayed inside the wall it is looking at');
 console.log('PASS: idle, walking/jogging/running/sprint, stop, jump, chained web retargeting and held fire, pull-to-swing transition, web zip, roof edge, swept roof, release, frame rates, animation transitions, flip recovery, camera zoom');

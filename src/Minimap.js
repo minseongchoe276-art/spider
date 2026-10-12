@@ -72,10 +72,8 @@ export class HongKongMinimap {
     const entries = [...(this.city?.collisionWorld?.meshes?.values?.() || [])]
       .filter(Boolean).map(entry => entry.mesh);
     const source = entries.length ? entries : (this.city?.buildingMeshes || []);
-    const step = Math.max(1, Math.ceil(source.length / MAX_STREAMED_FOOTPRINTS));
     const footprints = [];
-    for (let index = 0; index < source.length; index += step) {
-      const mesh = source[index];
+    for (const mesh of source) {
       if (!mesh?.geometry) continue;
       mesh.updateWorldMatrix(true, false);
       if (!mesh.geometry.boundingBox) mesh.geometry.computeBoundingBox();
@@ -86,9 +84,13 @@ export class HongKongMinimap {
       if (width < 0.7 || depth < 0.7 || height < 0.8 || width > this.range * 2.4 || depth > this.range * 2.4) continue;
       const point = { x: (BOX.min.x + BOX.max.x) / 2, z: (BOX.min.z + BOX.max.z) / 2 };
       if (!isInsideMinimap(point, position, this.range, Math.max(width, depth))) continue;
-      footprints.push({ minX: BOX.min.x, maxX: BOX.max.x, minZ: BOX.min.z, maxZ: BOX.max.z, height });
+      footprints.push({ minX: BOX.min.x, maxX: BOX.max.x, minZ: BOX.min.z, maxZ: BOX.max.z, height,
+        distanceSq: (point.x-position.x)**2+(point.z-position.z)**2 });
     }
-    return footprints;
+    // Select after spatial filtering. Sampling the global mesh list first can
+    // skip the buildings immediately around the player as tiles stream in.
+    footprints.sort((a,b)=>a.distanceSq-b.distanceSq);
+    return footprints.slice(0,MAX_STREAMED_FOOTPRINTS);
   }
 
   draw(position, facingAngle = 0) {

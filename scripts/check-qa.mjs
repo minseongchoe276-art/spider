@@ -303,6 +303,50 @@ await check('A missed quick web tap does not leave the web latch stuck',()=>{
   p.update(1/60,i,camera);
   assert.equal(p.isSwinging,false);assert.equal(i.webHold,false);assert.equal(p.webLatch,false);
 });
+await check('Grounded combat clicks punch, airborne clicks web, and Space jumps off the line',()=>{
+  const previousWindow=globalThis.window,previousDocument=globalThis.document;
+  const fakeWindow=new EventTarget(),fakeDocument=new EventTarget(),canvas=new EventTarget();
+  Object.assign(canvas,{getBoundingClientRect:()=>({left:0,top:0,width:800,height:600})});
+  globalThis.window=fakeWindow;globalThis.document=fakeDocument;
+  try {
+    const punches=[],webs=[],pulls=[],airs=[];
+    let clears=0,boost=null;
+    const physics={state:'IDLE',isSwinging:false,webAimNdc:new THREE.Vector2(),webLatch:false,jumpForce:17,
+      velocity:new THREE.Vector3(),lastWebAnchor:null,
+      setWebAimPoint(){},findBestAnchor(){},
+      performWebPull(){pulls.push(this.state);this.state='WEB_ZIP';this.zipAnchor=new THREE.Vector3();return true;},
+      performAirJump(){airs.push(this.state);return true;},
+      clearWebAnchor(){clears++;this.lastWebAnchor=null;this.isSwinging=false;},
+      releaseSwing(flag){boost=flag;this.isSwinging=false;this.state='FALLING';}};
+    const combat={mode:'combat',attack(){punches.push('left');return true;},straight(){punches.push('right');return true;},heavy(){punches.push('hook');return true;}};
+    const app=Object.create(GameApp.prototype);
+    Object.assign(app,{canvas,isPlaying:true,isPaused:false,input:{webHold:false,webTap:false,webFireHeld:false,jump:false},
+      heldKeys:new Set(),physics,combat,camera:new THREE.PerspectiveCamera(),audio:{ensureContext(){}},
+      multiplayer:{attack(kind){webs.push(kind);}}});
+    app.initInputListeners();
+    const mouse=(type,button)=>{const event=new Event(type,{cancelable:true});
+      Object.defineProperties(event,{button:{value:button},clientX:{value:400},clientY:{value:300},target:{value:canvas}});
+      fakeWindow.dispatchEvent(event);};
+    const key=code=>{const event=new Event('keydown',{cancelable:true});Object.defineProperty(event,'code',{value:code});fakeWindow.dispatchEvent(event);};
+    mouse('mousedown',0);mouse('mousedown',2);
+    assert.deepEqual(punches,['left','right']);assert.equal(app.input.webTap,false);assert.equal(pulls.length,0);
+    physics.state='FALLING';mouse('mousedown',0);
+    assert.equal(app.input.webTap,true);assert.deepEqual(webs,['punch','punch','web']);assert.deepEqual(punches,['left','right']);
+    mouse('mouseup',0);assert.equal(app.input.webHold,false);assert.equal(app.input.webTap,true);
+    mouse('mousedown',2);assert.equal(pulls.length,1);assert.deepEqual(punches,['left','right']);assert.equal(app.input.webHold,true);
+    assert.deepEqual(webs,['punch','punch','web'],'Airborne right click also threw a punch');
+    physics.state='FALLING';key('KeyE');assert.deepEqual(airs,['FALLING']);assert.equal(punches.includes('hook'),false);
+    physics.state='IDLE';key('KeyE');assert.deepEqual(punches,['left','right','hook']);assert.deepEqual(airs,['FALLING']);
+    assert.deepEqual(webs,['punch','punch','web','punch']);
+    physics.state='SWINGING';physics.isSwinging=true;physics.velocity.set(16,1,0);physics.lastWebAnchor=new THREE.Vector3(0,10,0);
+    app.input.webHold=true;app.input.webFireHeld=true;app.input.webTap=true;
+    key('Space');
+    assert.equal(boost,true);assert.equal(clears,0);assert.equal(physics.state,'JUMPING');
+    assert(physics.velocity.y>=17);assert.equal(app.input.webHold,false);assert.equal(app.input.webTap,false);
+    physics.isSwinging=false;physics.state='WEB_ZIP';physics.velocity.set(0,2,0);physics.lastWebAnchor=new THREE.Vector3(0,10,0);
+    key('Space');assert.equal(clears,1);assert.equal(physics.state,'JUMPING');assert(physics.velocity.y>=17);
+  } finally {globalThis.window=previousWindow;globalThis.document=previousDocument;}
+});
 await check('A complete Space down/up between frames still triggers a jump',()=>{
   const previousWindow=globalThis.window,previousDocument=globalThis.document;
   const fakeWindow=new EventTarget(),fakeDocument=new EventTarget(),canvas=new EventTarget();

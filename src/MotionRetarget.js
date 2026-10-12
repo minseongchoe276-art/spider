@@ -67,7 +67,7 @@ export function prepareMotion(clip, key, bones, item={}) {
       position.toArray(positionTrack.values,i);
     }
   }
-  if((!item.authoredMixamo || ['combatIdle','jab','cross','heavy'].includes(key)) && ['combatIdle','jab','cross','hook','heavy','guard','dodgeLeft','dodgeRight','dodgeBack','dodgeForward'].includes(key)) {
+  if((!item.authoredMixamo || key==='cross') && ['combatIdle','jab','cross','hook','heavy','guard','dodgeLeft','dodgeRight','dodgeBack','dodgeForward'].includes(key)) {
     const base=combatBases.get(Object.values(bones).find(b=>boneId(b.name)==='hips'));
     if(base)clip=choreographCombat(base,key,bones,boneId);
   }
@@ -86,10 +86,10 @@ export function prepareMotion(clip, key, bones, item={}) {
       inverse.clone().multiply(twist.invert().multiply(world)).normalize().toArray(track.values,i);
     }
   }
-  if (['idle','walk','jog','regularRun','run','fall','fallVariant','fallIdle','injuredIdle','swing','wall','zip','combatIdle','guard','jab','cross','special'].includes(key)) {
+  if (['idle','walk','jog','regularRun','run','fall','fallVariant','fallIdle','injuredIdle','swing','wall','zip','combatIdle','guard','jab','cross','hook','heavy','special'].includes(key)) {
     // Loops close cleanly; short authored strikes also recover to their
     // initial guard so the next action does not inherit a hanging fist.
-    const seam=key==='jab'||key==='cross'||key==='special'?0.12:0.15;
+    const seam=['jab','cross','hook','heavy','special'].includes(key)?0.12:0.15;
     for (const track of clip.tracks) {
       for (let i = 0; i < track.times.length; i++) {
         const alpha = THREE.MathUtils.clamp((track.times[i] - clip.duration + seam) / seam, 0, 1);
@@ -132,7 +132,7 @@ export function prepareMotion(clip, key, bones, item={}) {
     }
     if(key!=='wall')clip.userData.footContacts=samples.map(p=>({time:p.time,
       left:p.heights[0]<0.17,right:p.heights[1]<0.17}));
-    if(['combatIdle','jab','cross','special'].includes(key))clip.userData.soleRotations=initialSoles;
+    if(['combatIdle','jab','cross','hook','heavy','special'].includes(key))clip.userData.soleRotations=initialSoles;
     mixer.stopAllAction();mixer.uncacheRoot(root);
     saved.forEach(({n,p,q})=>{n.position.copy(p);n.quaternion.copy(q);});root.updateMatrixWorld(true);
     // Wall soles use the neutral standing bind pose, never a bent climb frame.

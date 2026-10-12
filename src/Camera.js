@@ -117,6 +117,27 @@ export class ThirdPersonCamera {
     this.orbitReturnTime = 0;
   }
 
+  // Put the boom where the follow camera will keep it. A fixed world offset
+  // leaves the first frame on -Z even when the character faces another way.
+  placeBehind(playerPos, facing) {
+    this.yaw = facing;
+    this.pitch = this.mode === 'first' ? 0 : 0.16;
+    this.lockBehind = this.mode !== 'first';
+    this.isRecentering = false;
+    this.orbitReturnTime = 0;
+    this.boomSide = 0;
+    const eye = this.mode === 'first' ? 1.58 : 1.7;
+    const center = playerPos.clone().add(new THREE.Vector3(0, eye, 0));
+    const direction = new THREE.Vector3(
+      -Math.sin(facing) * Math.cos(this.pitch),
+      Math.sin(this.pitch),
+      -Math.cos(facing) * Math.cos(this.pitch)
+    );
+    this.currentPos.copy(center).addScaledVector(direction, this.mode === 'first' ? 0 : this.distance);
+    this.lookAtTarget.copy(center);
+    this.collisionDistance = this.distance;
+  }
+
   cycleMode() {
     const index = this.modeOrder.indexOf(this.mode);
     const previous = this.mode;
@@ -176,10 +197,16 @@ export class ThirdPersonCamera {
         Math.cos(this.yaw) * Math.cos(this.pitch)
       ).normalize();
       this.currentPos.lerp(eye, 1 - Math.exp(-24 * delta));
-      this.camera.position.copy(this.currentPos);
+      // The near plane must not enter the wall the player is looking at.
+      let view = this.currentPos.clone();
+      if ((cityMeshes.length || cityRaycast) && forward.lengthSq() > 0) {
+        const clearance = this.safeDistance(view, forward, 0.55, cityMeshes, cityRaycast);
+        if (clearance < 0.5) view.addScaledVector(forward, clearance - 0.5);
+      }
+      this.camera.position.copy(view);
       this.camera.up.set(0, 1, 0);
-      this.camera.lookAt(this.currentPos.clone().add(forward));
-      this.lookAtTarget.copy(this.currentPos).add(forward);
+      this.camera.lookAt(view.clone().add(forward));
+      this.lookAtTarget.copy(view).add(forward);
       this.roll = 0;
       this.camera.updateMatrixWorld(true);
       return;

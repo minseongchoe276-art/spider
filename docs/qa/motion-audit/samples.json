@@ -1,7 +1,7 @@
 {
   "motions": 39,
   "cases": 117,
-  "samples": 15905,
+  "samples": 16183,
   "report": [
     {
       "key": "idle",
@@ -489,65 +489,65 @@
     {
       "key": "combatIdle",
       "fps": 30,
-      "frames": 68,
-      "maxFrame": 38,
-      "maxStep": 0.0385
-    },
-    {
-      "key": "combatIdle",
-      "fps": 60,
       "frames": 134,
-      "maxFrame": 75,
-      "maxStep": 0.0194
+      "maxFrame": 76,
+      "maxStep": 0.0204
+    },
+    {
+      "key": "combatIdle",
+      "fps": 60,
+      "frames": 266,
+      "maxFrame": 151,
+      "maxStep": 0.0102
     },
     {
       "key": "combatIdle",
       "fps": 144,
-      "frames": 318,
-      "maxFrame": 177,
-      "maxStep": 0.0081
+      "frames": 635,
+      "maxFrame": 359,
+      "maxStep": 0.0043
     },
     {
       "key": "jab",
       "fps": 30,
-      "frames": 42,
-      "maxFrame": 9,
-      "maxStep": 0.1
+      "frames": 38,
+      "maxFrame": 8,
+      "maxStep": 0.1099
     },
     {
       "key": "jab",
       "fps": 60,
-      "frames": 82,
-      "maxFrame": 17,
-      "maxStep": 0.0515
+      "frames": 74,
+      "maxFrame": 15,
+      "maxStep": 0.0567
     },
     {
       "key": "jab",
       "fps": 144,
-      "frames": 194,
-      "maxFrame": 39,
-      "maxStep": 0.022
+      "frames": 174,
+      "maxFrame": 34,
+      "maxStep": 0.0245
     },
     {
       "key": "cross",
       "fps": 30,
-      "frames": 61,
-      "maxFrame": 30,
-      "maxStep": 0.225
+      "frames": 21,
+      "maxFrame": 8,
+      "maxStep": 0.2573
     },
     {
       "key": "cross",
       "fps": 60,
-      "frames": 121,
-      "maxFrame": 59,
-      "maxStep": 0.1169
+      "frames": 40,
+      "maxFrame": 15,
+      "maxStep": 0.1674
     },
     {
       "key": "cross",
       "fps": 144,
-      "frames": 289,
-      "maxFrame": 141,
-      "maxStep": 0.0488
+      "frames": 95,
+      "maxFrame": 35,
+      "maxStep": 0.0765
     },
     {
       "key": "guard",
@@ -699,44 +699,44 @@
     {
       "key": "hook",
       "fps": 30,
-      "frames": 50,
-      "maxFrame": 19,
-      "maxStep": 0.3506
+      "frames": 43,
+      "maxFrame": 14,
+      "maxStep": 0.1853
     },
     {
       "key": "hook",
       "fps": 60,
-      "frames": 98,
-      "maxFrame": 36,
-      "maxStep": 0.1852
+      "frames": 85,
+      "maxFrame": 28,
+      "maxStep": 0.0942
     },
     {
       "key": "hook",
       "fps": 144,
-      "frames": 232,
-      "maxFrame": 86,
-      "maxStep": 0.0821
+      "frames": 203,
+      "maxFrame": 67,
+      "maxStep": 0.0394
     },
     {
       "key": "heavy",
       "fps": 30,
-      "frames": 26,
-      "maxFrame": 9,
-      "maxStep": 0.2247
+      "frames": 43,
+      "maxFrame": 14,
+      "maxStep": 0.1853
     },
     {
       "key": "heavy",
       "fps": 60,
-      "frames": 51,
-      "maxFrame": 18,
-      "maxStep": 0.115
+      "frames": 85,
+      "maxFrame": 28,
+      "maxStep": 0.0942
     },
     {
       "key": "heavy",
       "fps": 144,
-      "frames": 120,
-      "maxFrame": 42,
-      "maxStep": 0.0495
+      "frames": 203,
+      "maxFrame": 67,
+      "maxStep": 0.0394
     },
     {
       "key": "hit",
@@ -804,23 +804,23 @@
     {
       "key": "special",
       "fps": 30,
-      "frames": 34,
-      "maxFrame": 14,
-      "maxStep": 0.513
+      "frames": 38,
+      "maxFrame": 8,
+      "maxStep": 0.1099
     },
     {
       "key": "special",
       "fps": 60,
-      "frames": 67,
-      "maxFrame": 28,
-      "maxStep": 0.2621
+      "frames": 74,
+      "maxFrame": 15,
+      "maxStep": 0.0567
     },
     {
       "key": "special",
       "fps": 144,
-      "frames": 160,
-      "maxFrame": 67,
-      "maxStep": 0.1094
+      "frames": 174,
+      "maxFrame": 34,
+      "maxStep": 0.0245
     }
   ]
 }

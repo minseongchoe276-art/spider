@@ -22,7 +22,7 @@ export class SwingPhysics {
 
     // Constants
     this.gravity = 28.0; // Superhero gravity (snappy and punchy)
-    this.walkSpeed = 1.6;
+    this.walkSpeed = 2.8;
     this.sprintSpeed = 6.5;
     this.groundAcceleration = 30.0;
     this.groundDeceleration = 24.0;
@@ -93,72 +93,61 @@ export class SwingPhysics {
   findBestAnchor(camera) {
     camera.updateMatrixWorld(true);
     const eye=this.position.clone().add(new THREE.Vector3(0,1.3,0));
+    const accept = hit => {
+      if (!hit || hit.distance < 1 || hit.distance > 130) return null;
+      this.bestAnchorObject = hit.object;
+      this.bestAnchorNormal = hit.face ? surfaceNormal(hit) : new THREE.Vector3(0, 1, 0);
+      this.bestAnchorCandidate = hit.point.clone();
+      return this.bestAnchorCandidate;
+    };
 
-    // Aim from the actual screen point; pointer lock deliberately maps to center.
+    // A deliberate screen point wins. Pointer lock uses the view center.
+    this.raycaster.far = 130;
     this.raycaster.setFromCamera(this.webAimNdc, camera);
-    const camDir = this.raycaster.ray.direction.clone();
-    const intersects = this.raycaster.intersectObjects(this.city.buildingMeshes, true);
+    const aimed = accept(this.raycaster.intersectObjects(this.city.buildingMeshes, true)[0]);
+    this.raycaster.far = 140;
+    if (aimed) return aimed;
 
-    let bestHit = null;
-    this.bestAnchorObject = null;
+    // The center ray missed. Search ahead and above the travel direction
+    // for a facade about 15–45m over the body.
+    const look = new THREE.Vector3();
+    camera.getWorldDirection(look);
+    const travel = this.velocity.clone();
+    travel.y = 0;
+    const ahead = look.clone();
+    ahead.y = 0;
+    if (ahead.lengthSq() < 1e-6) {
+      if (travel.lengthSq() > 1) ahead.copy(travel);
+      else ahead.set(0, 0, 1);
+    }
+    ahead.normalize();
+    if (travel.lengthSq() > 4) ahead.lerp(travel.clone().normalize(), 0.35).normalize();
+    const yaw0 = Math.atan2(ahead.x, ahead.z);
+    let best = null;
     let bestScore = -Infinity;
-
-    if (intersects.length > 0) {
-      for (const hit of intersects.slice(0, 1)) {
-        if (hit.distance < 1 || hit.distance > 130) continue;
-
-        const hitY = hit.point.y;
-        // Prefer higher anchors for swinging, but permit reachable wall points
-        // at any height so a shot does not silently fail on a facade.
-        const heightDiff = hitY - eye.y;
-
-        // Prefer anchors that are 15m ~ 45m above player
-        let score = 100 - hit.distance * 0.5 + Math.min(heightDiff, 50) * 1.5;
-        if (score > bestScore) {
-          bestScore = score;
-          bestHit = hit.point.clone();
-          this.bestAnchorObject = hit.object;
-          this.bestAnchorNormal = hit.face
-            ? surfaceNormal(hit)
-            : new THREE.Vector3(0, 1, 0);
-        }
+    for (const pitch of [0.22, 0.48, 0.78]) {
+      for (const yaw of [0, 0.2, -0.2]) {
+        const direction = new THREE.Vector3(
+          Math.sin(yaw0 + yaw) * Math.cos(pitch),
+          Math.sin(pitch),
+          Math.cos(yaw0 + yaw) * Math.cos(pitch)
+        );
+        this.raycaster.set(eye, direction);
+        this.raycaster.far = 130;
+        const hit = this.raycaster.intersectObjects(this.city.buildingMeshes, true)[0];
+        this.raycaster.far = 140;
+        if (!hit || hit.distance < 4 || hit.distance > 130) continue;
+        const height = hit.point.y - eye.y;
+        let score = 100 - hit.distance * 0.35 + Math.min(Math.max(height, 0), 50) * 1.5;
+        if (height >= 15 && height <= 45) score += 40;
+        if (score > bestScore) { bestScore = score; best = hit; }
       }
     }
-
-    // Assist fallback: if camera center ray misses, test angled rays (cone assist)
-    if (!bestHit) {
-      const angles = [
-        new THREE.Vector3().setFromMatrixColumn(camera.matrixWorld,0).multiplyScalar(0.25)
-          .addScaledVector(new THREE.Vector3().setFromMatrixColumn(camera.matrixWorld,1),0.25),
-        new THREE.Vector3().setFromMatrixColumn(camera.matrixWorld,0).multiplyScalar(-0.25)
-          .addScaledVector(new THREE.Vector3().setFromMatrixColumn(camera.matrixWorld,1),0.25),
-        new THREE.Vector3().setFromMatrixColumn(camera.matrixWorld,1).multiplyScalar(0.35)
-      ];
-
-      for (const offset of angles) {
-        const testDir = camDir.clone().add(offset).normalize();
-        this.raycaster.set(eye, testDir);
-        const hits = this.raycaster.intersectObjects(this.city.buildingMeshes, true);
-        if (hits.length > 0) {
-          const hit = hits[0];
-          if (hit.distance >= 1 && hit.distance <= 130) {
-            bestHit = hit.point.clone();
-            this.bestAnchorObject = hit.object;
-            this.bestAnchorNormal = hit.face
-              ? surfaceNormal(hit)
-              : new THREE.Vector3(0, 1, 0);
-            break;
-          }
-        }
-      }
-    }
-
-    this.bestAnchorCandidate = bestHit;
-    return bestHit;
+    return accept(best);
   }
 
   startSwing(camera,allowSame=true) {
-    if(this.webEnabled===false)return false;
+    if(this.webEnabled===false && GROUNDED.includes(this.state))return false;
     const anchor = this.findBestAnchor(camera);
     if (!anchor) return false;
     const hand=this.nextWebHand;
@@ -184,13 +173,11 @@ export class SwingPhysics {
     this.anchorObject = this.bestAnchorObject;
     this.lastWebAnchor = anchor.clone();
     this.lastWebNormal = this.bestAnchorNormal?.clone() || new THREE.Vector3(0, 1, 0);
-    this.ropeLength = this.position.distanceTo(this.anchorPoint);
-    // Keep the other hand's real anchor. A third shot only replaces the
-    // oldest hand slot, so indefinite firing stays bounded at two held webs.
+    this.ropeLength = Math.max(1.45, this.position.distanceTo(this.anchorPoint));
+    // Each hand keeps its own anchor. A later shot replaces only that hand.
     this.webs=this.webs.filter(web=>web.hand!==hand);
     this.webs.push({hand,anchor:anchor.clone(),normal:this.lastWebNormal.clone(),
-      object:this.anchorObject,length:Math.max(1.45,this.ropeLength)});
-    this.ropeLength=this.webs.at(-1).length;
+      object:this.anchorObject,length:this.ropeLength});
     this.character.fireWeb?.(this.anchorPoint,hand);
     this.syncWebHands();
     this.nextWebHand=hand==='left'?'right':'left';
@@ -303,27 +290,25 @@ export class SwingPhysics {
   // Reels the player toward the most recently attached web. If no web has
   // been fired yet, the right-click ray creates an anchor and pulls to it.
   performWebPull(camera, aimNdc = this.webAimNdc) {
-    if(this.webEnabled===false)return false;
-    let anchor = this.isSwinging && this.anchorPoint
-      ? this.anchorPoint.clone()
-      : this.lastWebAnchor?.clone();
-    let normal = this.isSwinging && this.anchorPoint
-      ? this.lastWebNormal?.clone()
-      : this.lastWebNormal?.clone();
-
-    if (!anchor) {
-      camera.updateMatrixWorld(true);
-      this.raycaster.setFromCamera(aimNdc, camera);
-      this.raycaster.far = 130;
-      const hit = this.raycaster.intersectObjects(this.city.buildingMeshes, true)[0];
-      this.raycaster.far = 140;
-      if (!hit || hit.distance < 1 || !hit.face) return false;
-      anchor = hit.point.clone();
-      normal = surfaceNormal(hit);
-      this.lastWebAnchor = anchor.clone();
-      this.lastWebNormal = normal.clone();
-      this.bestAnchorObject = hit.object;
+    if(this.webEnabled===false && GROUNDED.includes(this.state))return false;
+    camera.updateMatrixWorld(true);
+    this.raycaster.setFromCamera(aimNdc, camera);
+    this.raycaster.far = 130;
+    const hit = this.raycaster.intersectObjects(this.city.buildingMeshes, true)[0];
+    this.raycaster.far = 140;
+    let anchor = hit && hit.distance >= 1 && hit.face ? hit.point.clone() : null;
+    let normal = anchor ? surfaceNormal(hit) : null;
+    if (anchor) this.bestAnchorObject = hit.object;
+    if (!anchor && this.isSwinging && this.anchorPoint) {
+      anchor = this.anchorPoint.clone();
+      normal = this.lastWebNormal?.clone();
+    } else if (!anchor && this.lastWebAnchor) {
+      anchor = this.lastWebAnchor.clone();
+      normal = this.lastWebNormal?.clone();
     }
+    if (!anchor) return false;
+    this.lastWebAnchor = anchor.clone();
+    this.lastWebNormal = (normal || this.lastWebNormal || new THREE.Vector3(0, 1, 0)).clone();
 
     if(this.webObstructed({anchor,normal})){if(!this.anchorSupported({anchor,normal})){this.lastWebAnchor=null;this.lastWebNormal=null;}return false;}
 
@@ -362,7 +347,7 @@ export class SwingPhysics {
   }
 
   performAirJump(camera, aimNdc = new THREE.Vector2(0, 0)) {
-    if(this.webEnabled===false)return false;
+    if(this.webEnabled===false && GROUNDED.includes(this.state))return false;
     if (!this.canAirJump || this.isSwinging || this.state === 'SWINGING') return false;
 
     // Web Zip: Pulls character forward and upward
@@ -428,17 +413,18 @@ export class SwingPhysics {
     // Landing impact is reported for exactly one character update.
     this.character.landingSpeed = 0;
 
-    if(this.webEnabled===false){input.webTap=input.webFireHeld=input.webHold=false;}
+    const websLocked=this.webEnabled===false && GROUNDED.includes(this.state);
+    if(websLocked){input.webTap=input.webFireHeld=input.webHold=false;}
     // 1. Raycast for candidate anchor point in real-time
     this.findBestAnchor(camera);
 
-    // 2. Handle web swing toggle
+    // 2. Stay on the line only while the button is held.
     const webTap = !!input.webTap;
     input.webTap = false;
     this.webFireCooldown = Math.max(0, this.webFireCooldown - Math.max(0, delta));
     if (webTap) {
       const attached = this.startSwing(camera);
-      if (!attached && !this.isSwinging && this.webEnabled!==false) {
+      if (!attached && !this.isSwinging) {
         this.raycaster.setFromCamera(this.webAimNdc,camera);
         const direction=this.raycaster.ray.direction.clone();
         // A downward camera angle would bury the missed strand in the roof.
@@ -447,21 +433,18 @@ export class SwingPhysics {
         this.character.fireWebMiss?.(target,this.nextWebHand);
         this.audio.playWebShoot?.();
       }
-      if (attached || this.isSwinging) input.webHold = true;
-      else if (!input.webFireHeld && !this.isSwinging && this.state !== 'WEB_ZIP') input.webHold = false;
+      if (!attached && !this.isSwinging && this.state !== 'WEB_ZIP' && !input.webFireHeld) input.webHold = false;
       this.webFireCooldown = this.webFireInterval;
-    } else if (input.webFireHeld && this.webFireCooldown <= 0 &&
-        (this.isSwinging || this.state === 'WEB_ZIP' || !GROUNDED.includes(this.state))) {
+    } else if (input.webFireHeld && this.webFireCooldown <= 0 && this.state !== 'WEB_ZIP' &&
+        (this.isSwinging || !GROUNDED.includes(this.state))) {
       this.startSwing(camera,false);
-      if (this.isSwinging) input.webHold = true;
       this.webFireCooldown = this.webFireInterval;
     } else if (input.webHold && !this.webLatch && !this.isSwinging && this.state !== 'WEB_ZIP') {
-      // Preserve a quick click even when mouseup arrives before this physics tick.
-      if (this.startSwing(camera)) input.webHold = true;
-    } else if (!input.webHold && this.isSwinging) {
-      this.releaseSwing();
+      this.startSwing(camera);
     }
-    this.webLatch = !!input.webHold;
+    const webButton=!!(input.webFireHeld || input.webHold);
+    if (this.isSwinging && !webButton) this.releaseSwing(true);
+    this.webLatch = webButton;
     if (input.jump) this.jumpBuffer = 0.14;
     input.jump = false;
 
@@ -546,13 +529,16 @@ export class SwingPhysics {
     if(taut.length) {
       const tangent=this.velocity.lengthSq()>0.001?this.velocity.clone().normalize():new THREE.Vector3();
       if(input.forward)this.velocity.addScaledVector(tangent,24*delta);
-      const radial=this.position.clone().sub(latest.anchor).normalize();
-      const side=new THREE.Vector3().crossVectors(radial,new THREE.Vector3(0,1,0)).normalize();
-      this.velocity.addScaledVector(side,(input.strafe || 0)*18*delta);
-      // Retract only a single web: independently shortening two fixed strands
-      // can make their spheres disjoint and create an impossible body position.
-      if(this.webs.length===1 && this.position.y<8 && latest.length>15)
-        latest.length=Math.max(12,latest.length-16*delta);
+      if(input.forward && latest.length>8) latest.length=Math.max(8,latest.length-8*delta);
+      const camForward=new THREE.Vector3();
+      camera?.getWorldDirection(camForward);
+      camForward.y=0;
+      const up=new THREE.Vector3(0,1,0);
+      // Same screen-right as grounded movement: forward × up.
+      const side=camForward.lengthSq()>1e-6
+        ? new THREE.Vector3().crossVectors(camForward.normalize(), up)
+        : new THREE.Vector3().crossVectors(this.position.clone().sub(latest.anchor).normalize(), up);
+      if(side.lengthSq()>1e-6) this.velocity.addScaledVector(side.normalize(),(input.strafe || 0)*18*delta);
     }
     this.velocity.clampLength(0,this.maxSpeed);
     this.position.addScaledVector(this.velocity,delta);
@@ -645,7 +631,8 @@ export class SwingPhysics {
 
     // Optional horizontal run along wall face
     if (input.strafe !== 0) {
-      const wallSide = new THREE.Vector3().crossVectors(this.wallNormal, upDir).normalize();
+      // Look into the wall is -normal, so screen-right is up × normal.
+      const wallSide = new THREE.Vector3().crossVectors(upDir, this.wallNormal).normalize();
       this.velocity.add(wallSide.multiplyScalar(input.strafe * 4.5));
     }
 
@@ -760,8 +747,10 @@ export class SwingPhysics {
     const camForward = new THREE.Vector3();
     camera.getWorldDirection(camForward);
     camForward.y = 0;
-    camForward.normalize();
-
+    // Screen-right is the camera's local +X. At yaw 0 the look is (0,0,1)
+    // and forward × up is (-1,0,0), which matches that column.
+    if (camForward.lengthSq() < 1e-6) camForward.set(Math.sin(this.facingAngle), 0, Math.cos(this.facingAngle));
+    else camForward.normalize();
     const camRight = new THREE.Vector3().crossVectors(camForward, new THREE.Vector3(0, 1, 0)).normalize();
 
     const moveDir = new THREE.Vector3();
@@ -786,7 +775,7 @@ export class SwingPhysics {
     }
 
     if (isGrounded) {
-      const moveSpeed = input.sprint ? this.sprintSpeed : input.run ? 4.5 : input.jog ? 2.4 : this.walkSpeed;
+      const moveSpeed = input.sprint ? this.sprintSpeed : input.run ? 4.8 : input.jog ? 3.4 : this.walkSpeed;
       const targetVelocity = combat?.direction?combat.direction.clone().multiplyScalar(combat.speed ?? 7):moveDir.clone().multiplyScalar(moveSpeed*(combat?.key==='guard'?0.35:1));
       if(combat?.direction)moveDir.copy(combat.direction);
       if (moveDir.lengthSq() > 0.001) {
