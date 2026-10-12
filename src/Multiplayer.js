@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { MATCH, resolveMatchSpawn, teamOffset } from './MatchRules.js';
+import { SupabaseRooms } from './SupabaseRooms.js';
 
 const $ = id => document.getElementById(id);
 const label = mode => mode === 'tag' ? '경찰과 도망자' : '자유 플레이';
@@ -12,24 +13,27 @@ export class Multiplayer {
   }
   send(data) {
     if(this.ws?.readyState===WebSocket.OPEN){this.ws.send(JSON.stringify(data));return true;}
-    if(['create','join'].includes(data.type))this.game.showNotice('온라인 서버에 연결되지 않았습니다. npm run dev 또는 npm start로 실행한 뒤 다시 시도하세요.');
+    if(['create','join'].includes(data.type))this.game.showNotice('방 서버에 연결되지 않았습니다. 서버 주소와 실행 상태를 확인하세요.');
     return false;
   }
   connect() {
-    const url=`${location.protocol==='https:'?'wss:':'ws:'}//${location.host}/ws`;
-    try {this.ws=new WebSocket(url);}
+    // A static frontend can use a separately hosted room server. Local dev
+    // keeps using the same-origin /ws endpoint when no URL is configured.
+    const url=import.meta.env.VITE_WS_URL?.trim() || `${location.protocol==='https:'?'wss:':'ws:'}//${location.host}/ws`;
+    const useSupabase=!import.meta.env.VITE_WS_URL && (import.meta.env.PROD || import.meta.env.VITE_SUPABASE_URL);
+    try {this.ws=useSupabase?new SupabaseRooms():new WebSocket(url);}
     catch {
-      $('online-status').textContent='온라인 서버가 필요합니다 · npm run dev / npm start';
+      $('online-status').textContent='방 서버 주소를 확인하세요';
       return;
     }
     $('online-status').textContent='서버 연결 중…';
-    this.ws.onopen=()=>{ $('online-status').textContent='온라인 · 방을 선택하세요';this.send({type:'list'});const pending=new URLSearchParams(location.search).get('join');if(pending){this.send({type:'join',code:pending,playerName:sessionStorage.getItem('online-name')||$('player-name').value,city:this.city});history.replaceState(null,'',location.pathname+location.search.replace(/([?&])join=[^&]*&?/,'$1').replace(/[?&]$/,''));} };
+    this.ws.onopen=()=>{ $('online-status').textContent='온라인 · 방을 선택하세요';this.send({type:'list'});const pending=new URLSearchParams(location.search).get('join');if(pending){if(pending.toUpperCase()!==this.ws.resumedCode)this.send({type:'join',code:pending,playerName:sessionStorage.getItem('online-name')||$('player-name').value,city:this.city});history.replaceState(null,'',location.pathname+location.search.replace(/([?&])join=[^&]*&?/,'$1').replace(/[?&]$/,''));} };
     this.ws.onmessage=event=>{try{this.message(JSON.parse(event.data));}catch(error){console.error(error);}};
     this.ws.onclose=()=>{
-      $('online-status').textContent='연결이 끊겼습니다. 다시 연결 중…';
+      $('online-status').textContent=this.ws?.fatal?'방 연결 설정을 확인하세요':'연결이 끊겼습니다. 다시 연결 중…';
       this.room=null;this.id=null;this.players=[];this.clearAvatars();this.render();
       if(!this.solo){this.game.isPlaying=false;this.game.clearInput();this.game.setPaused(true);}
-      setTimeout(()=>this.connect(),2500);
+      if(!this.ws?.fatal)setTimeout(()=>this.connect(),2500);
     };
   }
   bind() {
