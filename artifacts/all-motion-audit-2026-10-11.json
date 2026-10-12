@@ -1,0 +1,642 @@
+[
+  {
+    "path": "public/models/Falling (2).fbx",
+    "file": "Falling (2).fbx",
+    "loadedAction": "fall",
+    "duplicateOf": null,
+    "takes": [
+      {
+        "name": "mixamo.com",
+        "duration": 4.5,
+        "tracks": 53
+      }
+    ],
+    "matchedBones": 65,
+    "duration": 4.5,
+    "checkedFrames": 271,
+    "nominalSpeed": 0,
+    "torsoUp": [
+      0.141,
+      0.347
+    ],
+    "headAboveFeet": [
+      0.208,
+      0.515
+    ],
+    "footTravel": [
+      0.247,
+      0.412
+    ],
+    "rawLoopSeamDegrees": 0.1
+  },
+  {
+    "path": "public/models/Falling Idle.fbx",
+    "file": "Falling Idle.fbx",
+    "loadedAction": null,
+    "duplicateOf": null,
+    "takes": [
+      {
+        "name": "mixamo.com",
+        "duration": 4.5,
+        "tracks": 53
+      },
+      {
+        "name": "Take 001",
+        "duration": 0,
+        "tracks": 0
+      }
+    ],
+    "matchedBones": 65,
+    "duration": 4.5,
+    "checkedFrames": 271,
+    "nominalSpeed": 0,
+    "torsoUp": [
+      0.141,
+      0.347
+    ],
+    "headAboveFeet": [
+      0.208,
+      0.515
+    ],
+    "footTravel": [
+      0.247,
+      0.412
+    ],
+    "rawLoopSeamDegrees": 0.1
+  },
+  {
+    "path": "public/models/Falling To Roll.fbx",
+    "file": "Falling To Roll.fbx",
+    "loadedAction": "roll",
+    "duplicateOf": null,
+    "takes": [
+      {
+        "name": "mixamo.com",
+        "duration": 2.133,
+        "tracks": 53
+      }
+    ],
+    "matchedBones": 65,
+    "duration": 2.133,
+    "checkedFrames": 130,
+    "nominalSpeed": 2.196,
+    "torsoUp": [
+      -0.576,
+      0.989
+    ],
+    "headAboveFeet": [
+      -0.738,
+      1.593
+    ],
+    "footTravel": [
+      2.457,
+      2.341
+    ],
+    "rawLoopSeamDegrees": 93.9
+  },
+  {
+    "path": "public/models/Falling.fbx",
+    "file": "Falling.fbx",
+    "loadedAction": null,
+    "duplicateOf": null,
+    "takes": [
+      {
+        "name": "mixamo.com",
+        "duration": 4.5,
+        "tracks": 53
+      }
+    ],
+    "matchedBones": 65,
+    "duration": 4.5,
+    "checkedFrames": 271,
+    "nominalSpeed": 0,
+    "torsoUp": [
+      0.141,
+      0.347
+    ],
+    "headAboveFeet": [
+      0.208,
+      0.515
+    ],
+    "footTravel": [
+      0.247,
+      0.412
+    ],
+    "rawLoopSeamDegrees": 0.1
+  },
+  {
+    "path": "public/models/Fast Run.fbx",
+    "file": "Fast Run.fbx",
+    "loadedAction": "run",
+    "duplicateOf": null,
+    "takes": [
+      {
+        "name": "mixamo.com",
+        "duration": 0.533,
+        "tracks": 53
+      }
+    ],
+    "matchedBones": 65,
+    "duration": 0.533,
+    "checkedFrames": 34,
+    "nominalSpeed": 7.002,
+    "torsoUp": [
+      0.9,
+      0.919
+    ],
+    "headAboveFeet": [
+      1.361,
+      1.56
+    ],
+    "footTravel": [
+      0.722,
+      0.804
+    ],
+    "rawLoopSeamDegrees": 0
+  },
+  {
+    "path": "public/models/Female Stop Walking.fbx",
+    "file": "Female Stop Walking.fbx",
+    "loadedAction": "stop",
+    "duplicateOf": null,
+    "takes": [
+      {
+        "name": "mixamo.com",
+        "duration": 1.533,
+        "tracks": 53
+      }
+    ],
+    "matchedBones": 65,
+    "duration": 1.533,
+    "checkedFrames": 93,
+    "nominalSpeed": 1.271,
+    "torsoUp": [
+      0.986,
+      0.999
+    ],
+    "headAboveFeet": [
+      1.59,
+      1.704
+    ],
+    "footTravel": [
+      0.577,
+      0.532
+    ],
+    "rawLoopSeamDegrees": 38.8
+  },
+  {
+    "path": "public/models/Idle.fbx",
+    "file": "Idle.fbx",
+    "loadedAction": "idle",
+    "duplicateOf": null,
+    "takes": [
+      {
+        "name": "mixamo.com",
+        "duration": 4,
+        "tracks": 53
+      },
+      {
+        "name": "Take 001",
+        "duration": 0,
+        "tracks": 0
+      }
+    ],
+    "matchedBones": 65,
+    "duration": 4,
+    "checkedFrames": 241,
+    "nominalSpeed": 0,
+    "torsoUp": [
+      0.973,
+      0.991
+    ],
+    "headAboveFeet": [
+      1.568,
+      1.596
+    ],
+    "footTravel": [
+      0.035,
+      0.117
+    ],
+    "rawLoopSeamDegrees": 0
+  },
+  {
+    "path": "public/models/Injured Idle.fbx",
+    "file": "Injured Idle.fbx",
+    "loadedAction": null,
+    "duplicateOf": null,
+    "takes": [
+      {
+        "name": "mixamo.com",
+        "duration": 9.333,
+        "tracks": 53
+      }
+    ],
+    "matchedBones": 65,
+    "duration": 9.333,
+    "checkedFrames": 561,
+    "nominalSpeed": 0,
+    "torsoUp": [
+      0.845,
+      0.972
+    ],
+    "headAboveFeet": [
+      1.493,
+      1.614
+    ],
+    "footTravel": [
+      0.121,
+      0.107
+    ],
+    "rawLoopSeamDegrees": 0
+  },
+  {
+    "path": "public/models/Jogging.fbx",
+    "file": "Jogging.fbx",
+    "loadedAction": null,
+    "duplicateOf": null,
+    "takes": [
+      {
+        "name": "mixamo.com",
+        "duration": 2.567,
+        "tracks": 53
+      },
+      {
+        "name": "Take 001",
+        "duration": 0,
+        "tracks": 0
+      }
+    ],
+    "matchedBones": 65,
+    "duration": 2.567,
+    "checkedFrames": 155,
+    "nominalSpeed": 2.433,
+    "torsoUp": [
+      0.969,
+      0.996
+    ],
+    "headAboveFeet": [
+      1.514,
+      1.683
+    ],
+    "footTravel": [
+      0.502,
+      0.47
+    ],
+    "rawLoopSeamDegrees": 0
+  },
+  {
+    "path": "public/models/Jumping Down (1).fbx",
+    "file": "Jumping Down (1).fbx",
+    "loadedAction": "jumpDown",
+    "duplicateOf": null,
+    "takes": [
+      {
+        "name": "mixamo.com",
+        "duration": 2.3,
+        "tracks": 53
+      }
+    ],
+    "matchedBones": 65,
+    "duration": 2.3,
+    "checkedFrames": 139,
+    "nominalSpeed": 1.077,
+    "torsoUp": [
+      0.207,
+      0.994
+    ],
+    "headAboveFeet": [
+      0.556,
+      1.658
+    ],
+    "footTravel": [
+      1.207,
+      1.227
+    ],
+    "rawLoopSeamDegrees": 40.7
+  },
+  {
+    "path": "public/models/Jumping Down.fbx",
+    "file": "Jumping Down.fbx",
+    "loadedAction": null,
+    "duplicateOf": null,
+    "takes": [
+      {
+        "name": "mixamo.com",
+        "duration": 2.633,
+        "tracks": 53
+      },
+      {
+        "name": "Take 001",
+        "duration": 0,
+        "tracks": 0
+      }
+    ],
+    "matchedBones": 65,
+    "duration": 2.633,
+    "checkedFrames": 160,
+    "nominalSpeed": 0.887,
+    "torsoUp": [
+      0.169,
+      0.998
+    ],
+    "headAboveFeet": [
+      0.555,
+      1.648
+    ],
+    "footTravel": [
+      1.176,
+      1.153
+    ],
+    "rawLoopSeamDegrees": 86.6
+  },
+  {
+    "path": "public/models/Left Turn.fbx",
+    "file": "Left Turn.fbx",
+    "loadedAction": "turnLeft",
+    "duplicateOf": null,
+    "takes": [
+      {
+        "name": "mixamo.com",
+        "duration": 0.933,
+        "tracks": 53
+      }
+    ],
+    "matchedBones": 65,
+    "duration": 0.933,
+    "checkedFrames": 58,
+    "nominalSpeed": 0.003,
+    "torsoUp": [
+      0.998,
+      1
+    ],
+    "headAboveFeet": [
+      1.641,
+      1.688
+    ],
+    "footTravel": [
+      0.39,
+      0.278
+    ],
+    "rawLoopSeamDegrees": 122.6
+  },
+  {
+    "path": "public/models/Right Turn.fbx",
+    "file": "Right Turn.fbx",
+    "loadedAction": "turnRight",
+    "duplicateOf": null,
+    "takes": [
+      {
+        "name": "mixamo.com",
+        "duration": 0.933,
+        "tracks": 53
+      }
+    ],
+    "matchedBones": 65,
+    "duration": 0.933,
+    "checkedFrames": 58,
+    "nominalSpeed": 0.01,
+    "torsoUp": [
+      0.998,
+      1
+    ],
+    "headAboveFeet": [
+      1.649,
+      1.688
+    ],
+    "footTravel": [
+      0.418,
+      0.181
+    ],
+    "rawLoopSeamDegrees": 122.6
+  },
+  {
+    "path": "public/models/Rope Swinging.fbx",
+    "file": "Rope Swinging.fbx",
+    "loadedAction": "swing",
+    "duplicateOf": null,
+    "takes": [
+      {
+        "name": "Take 001",
+        "duration": 0,
+        "tracks": 0
+      },
+      {
+        "name": "mixamo.com",
+        "duration": 4.433,
+        "tracks": 53
+      }
+    ],
+    "matchedBones": 65,
+    "duration": 4.433,
+    "checkedFrames": 268,
+    "nominalSpeed": 1.281,
+    "torsoUp": [
+      0.485,
+      0.993
+    ],
+    "headAboveFeet": [
+      0.583,
+      1.703
+    ],
+    "footTravel": [
+      0.996,
+      1.17
+    ],
+    "rawLoopSeamDegrees": 119.6
+  },
+  {
+    "path": "public/models/Run To Stop.fbx",
+    "file": "Run To Stop.fbx",
+    "loadedAction": "runStop",
+    "duplicateOf": null,
+    "takes": [
+      {
+        "name": "mixamo.com",
+        "duration": 0.9,
+        "tracks": 53
+      }
+    ],
+    "matchedBones": 65,
+    "duration": 0.9,
+    "checkedFrames": 55,
+    "nominalSpeed": 1.132,
+    "torsoUp": [
+      0.781,
+      0.984
+    ],
+    "headAboveFeet": [
+      1.214,
+      1.598
+    ],
+    "footTravel": [
+      0.973,
+      0.178
+    ],
+    "rawLoopSeamDegrees": 75.4
+  },
+  {
+    "path": "public/models/Running.fbx",
+    "file": "Running.fbx",
+    "loadedAction": null,
+    "duplicateOf": null,
+    "takes": [
+      {
+        "name": "Take 001",
+        "duration": 0,
+        "tracks": 0
+      },
+      {
+        "name": "mixamo.com",
+        "duration": 0.7,
+        "tracks": 53
+      }
+    ],
+    "matchedBones": 65,
+    "duration": 0.7,
+    "checkedFrames": 43,
+    "nominalSpeed": 0,
+    "torsoUp": [
+      0.954,
+      0.985
+    ],
+    "headAboveFeet": [
+      1.485,
+      1.622
+    ],
+    "footTravel": [
+      0.658,
+      0.768
+    ],
+    "rawLoopSeamDegrees": 0
+  },
+  {
+    "path": "public/models/Standing Jump.fbx",
+    "file": "Standing Jump.fbx",
+    "loadedAction": "jump",
+    "duplicateOf": null,
+    "takes": [
+      {
+        "name": "mixamo.com",
+        "duration": 2.367,
+        "tracks": 53
+      },
+      {
+        "name": "Take 001",
+        "duration": 0,
+        "tracks": 0
+      }
+    ],
+    "matchedBones": 65,
+    "duration": 2.367,
+    "checkedFrames": 143,
+    "nominalSpeed": 0,
+    "torsoUp": [
+      0.693,
+      0.995
+    ],
+    "headAboveFeet": [
+      0.953,
+      1.681
+    ],
+    "footTravel": [
+      1.223,
+      1.161
+    ],
+    "rawLoopSeamDegrees": 0
+  },
+  {
+    "path": "public/models/Walking.fbx",
+    "file": "Walking.fbx",
+    "loadedAction": "walk",
+    "duplicateOf": null,
+    "takes": [
+      {
+        "name": "mixamo.com",
+        "duration": 0.967,
+        "tracks": 53
+      }
+    ],
+    "matchedBones": 65,
+    "duration": 0.967,
+    "checkedFrames": 59,
+    "nominalSpeed": 2.074,
+    "torsoUp": [
+      0.999,
+      1
+    ],
+    "headAboveFeet": [
+      1.581,
+      1.666
+    ],
+    "footTravel": [
+      0.665,
+      0.566
+    ],
+    "rawLoopSeamDegrees": 0
+  },
+  {
+    "path": "/Users/choeminseong/Downloads/Walking (1).fbx",
+    "file": "Walking (1).fbx",
+    "loadedAction": null,
+    "duplicateOf": "public/models/Walking.fbx",
+    "takes": [
+      {
+        "name": "mixamo.com",
+        "duration": 0.967,
+        "tracks": 53
+      }
+    ],
+    "matchedBones": 65,
+    "duration": 0.967,
+    "checkedFrames": 59,
+    "nominalSpeed": 2.074,
+    "torsoUp": [
+      0.999,
+      1
+    ],
+    "headAboveFeet": [
+      1.581,
+      1.666
+    ],
+    "footTravel": [
+      0.665,
+      0.566
+    ],
+    "rawLoopSeamDegrees": 0
+  },
+  {
+    "path": "/Users/choeminseong/Downloads/Falling (1).fbx",
+    "file": "Falling (1).fbx",
+    "loadedAction": null,
+    "duplicateOf": "public/models/Falling Idle.fbx",
+    "takes": [
+      {
+        "name": "mixamo.com",
+        "duration": 4.5,
+        "tracks": 53
+      },
+      {
+        "name": "Take 001",
+        "duration": 0,
+        "tracks": 0
+      }
+    ],
+    "matchedBones": 65,
+    "duration": 4.5,
+    "checkedFrames": 271,
+    "nominalSpeed": 0,
+    "torsoUp": [
+      0.141,
+      0.347
+    ],
+    "headAboveFeet": [
+      0.208,
+      0.515
+    ],
+    "footTravel": [
+      0.247,
+      0.412
+    ],
+    "rawLoopSeamDegrees": 0.1
+  }
+]

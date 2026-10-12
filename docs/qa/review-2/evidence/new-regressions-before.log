@@ -1,0 +1,23 @@
+FAIL REVIEW: Pausing a reel preserves its swing after reaching the target: The resumed reel immediately dropped its attached web
+FAIL REVIEW: Race clock measures a delayed active frame, while physics stays bounded: Expected values to be strictly equal:
+
+0.1 !== 0.5
+
+FAIL REVIEW: Facade normal matches the world-space triangle after unequal scaling: Wrong normal 0.9701425001453319,0,0.24253562503633297
+FAIL REVIEW: Best-time quota failure is visible to the player: The input did not match the regular expression /저장/. Input:
+
+'완주 10.00초 · 최고 기록!'
+
+FAIL REVIEW: A single movement segment can cross two gates in course order: The expression evaluated to a falsy value:
+
+  assert(result.completed)
+
+PASS REVIEW: Crossing a later gate before the current gate never completes a race
+FAIL REVIEW: Enabling reduced motion immediately cancels a shake already in progress: Expected values to be strictly equal:
++ actual - expected
+
++ 0.846481724890614
+- 0
+
+PASS REVIEW: Saving, reloading, and limiting layout records preserves the fastest valid time
+Second review: 2 passed, 6 failed.

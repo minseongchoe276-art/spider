@@ -1,0 +1,273 @@
+import assert from 'node:assert/strict';
+import * as THREE from 'three';
+import { SwingPhysics } from '../src/SwingPhysics.js';
+import { Character } from '../src/Character.js';
+import { ThirdPersonCamera } from '../src/Camera.js';
+import { City } from '../src/City.js';
+
+const camera = new THREE.PerspectiveCamera(); camera.rotation.y = Math.PI;
+const silent = new Proxy({}, { get: () => () => {} });
+const input = () => ({forward:false,backward:false,left:false,right:false,sprint:false,jump:false,webHold:false,webTap:false,strafe:0,wallRun:false});
+function controller() {
+  const character = { group:new THREE.Group(), update(){}, requestTurn(){},stopAnimation(){},toggleHand(){},fireWeb(){} };
+  const city = {colliders:[], buildingMeshes:[],checkCollision:()=>({collided:false})};
+  const p = new SwingPhysics(new THREE.Scene(),city,character,silent);
+  p.position.set(0,0.1,0); p.state='IDLE'; return p;
+}
+function advance(p,i,seconds,dt=1/60) { for(let t=0;t<seconds-1e-8;t+=dt)p.update(dt,i,camera); }
+const p=controller(), i=input();
+advance(p,i,3); assert.equal(p.velocity.length(),0); assert.equal(p.state,'IDLE');
+i.forward=true; advance(p,i,2); assert.equal(p.state,'RUNNING'); assert(Math.abs(p.velocity.length()-1.6)<0.01);
+i.sprint=true; advance(p,i,2); assert.equal(p.state,'SPRINTING'); assert(Math.abs(p.velocity.length()-6.5)<0.01);
+i.forward=false; advance(p,i,2); assert.equal(p.state,'IDLE'); assert.equal(p.velocity.length(),0);
+i.jump=true; p.update(1/60,i,camera); assert.equal(p.state,'JUMPING'); assert(p.velocity.y>0); assert.equal(p.velocity.z,0);
+advance(p,i,3); assert.equal(p.state,'IDLE'); assert.equal(p.position.y,0.1); assert.equal(p.velocity.length(),0);
+// Jump from a roof must not immediately be snapped back; walking off it falls.
+const roof=controller(); roof.city.colliders=[{minX:-2,maxX:2,minZ:-2,maxZ:2,minY:0,maxY:10}]; roof.position.set(0,10.1,0);
+const ri=input(); ri.jump=true; roof.update(1/60,ri,camera); assert(roof.position.y>10.2); advance(roof,ri,3); assert.equal(roof.position.y,10.1);
+ri.forward=true; advance(roof,ri,1.5); assert.equal(roof.state,'FALLING');
+// High-speed descent must not tunnel through the rooftop.
+roof.position.set(0,11,0);roof.velocity.set(0,-100,0);roof.state='FALLING';ri.forward=false;roof.update(0.1,ri,camera);assert.equal(roof.position.y,10.1);
+const release=controller();release.isSwinging=true;release.velocity.set(20,0,0);release.releaseSwing(false);assert.equal(release.velocity.y,0);assert.equal(release.velocity.x,20);
+// Distinct recovery, turning, speed stages and web-zip states.
+const stages=controller(), si=input();si.forward=true;si.jog=true;advance(stages,si,2);assert(Math.abs(stages.velocity.length()-2.4)<0.01);
+si.jog=false;si.run=true;advance(stages,si,2);assert(Math.abs(stages.velocity.length()-4.5)<0.01);
+const turn=controller();assert(turn.turnOnSpot('left'));advance(turn,input(),1.1);assert.equal(turn.state,'IDLE');assert(Math.abs(turn.facingAngle+Math.PI/2)<0.01);assert.equal(turn.position.length(),0.1);
+const land=controller();land.position.y=0.3;land.velocity.y=-15;land.state='FALLING';land.update(1/60,input(),camera);assert.equal(land.state,'LANDING');advance(land,input(),1.5);assert.equal(land.state,'IDLE');
+const roll=controller();roll.character.actions={roll:{getClip:()=>({duration:1,userData:{rootMotion:[{time:0,distance:0},{time:1,distance:2}]}})}};
+roll.position.y=0.3;roll.velocity.set(0,-30,4);roll.state='FALLING';roll.update(1/60,input(),camera);assert.equal(roll.state,'ROLLING');advance(roll,input(),1.5);assert.equal(roll.state,'IDLE');assert(Math.abs(roll.position.z-2)<0.1);assert.equal(roll.velocity.length(),0);
+const verticalLand=controller();verticalLand.position.y=0.3;verticalLand.velocity.y=-30;verticalLand.state='FALLING';verticalLand.update(1/60,input(),camera);assert.equal(verticalLand.state,'LANDING','Vertical falls must not launch a forward roll');
+const zip=controller();assert.equal(zip.performAirJump(camera),false);assert.equal(zip.canAirJump,true,'A missed zip target must not consume the air ability');
+const facade=new THREE.Mesh(new THREE.BoxGeometry(10,20,2),new THREE.MeshBasicMaterial());facade.position.set(0,10,20);facade.updateMatrixWorld(true);zip.city.buildingMeshes=[facade];
+assert.equal(zip.performAirJump(camera),true);assert.equal(zip.state,'WEB_ZIP');assert.equal(zip.canAirJump,false);advance(zip,input(),0.2);assert.equal(zip.state,'WEB_ZIP');advance(zip,input(),3);assert.notEqual(zip.state,'WEB_ZIP');assert(zip.position.z<20,'Zip passed through its target wall');
+const aimedZip=controller();const offCenterBuilding=new THREE.Mesh(new THREE.BoxGeometry(4,10,2));
+offCenterBuilding.position.set(-6,5,20);offCenterBuilding.updateMatrixWorld(true);aimedZip.city.buildingMeshes=[offCenterBuilding];
+assert(aimedZip.performAirJump(camera,new THREE.Vector2(0.5,0)),'Screen-point web zip failed to acquire its clicked building');
+assert(aimedZip.zipAnchor.x<-3,'Web zip ignored the right-click screen coordinate');
+const grapple=controller();
+const grappleWall=new THREE.Mesh(new THREE.BoxGeometry(10,20,2),new THREE.MeshBasicMaterial());
+grappleWall.position.set(0,10,20);grappleWall.updateMatrixWorld(true);
+grapple.city.buildingMeshes=[grappleWall];
+grapple.position.set(0,2,0);grapple.state='FALLING';
+const grappleCamera=new THREE.PerspectiveCamera(60,1,0.1,500);grappleCamera.position.set(0,8,0);grappleCamera.lookAt(0,8,20);grappleCamera.updateMatrixWorld(true);
+assert(grapple.performWebPull(grappleCamera,new THREE.Vector2(0,0)),'Right-click grapple failed to acquire a valid wall');
+assert.equal(grapple.state,'WEB_ZIP');assert(grapple.lastWebAnchor,'Grapple did not retain the attached point');
+const holdPull=input();holdPull.webHold=true;
+grapple.update(1/120,holdPull,grappleCamera);
+assert.equal(grapple.state,'WEB_ZIP','A held web silently replaced the pull with a newly aimed swing');
+const persistentAnchor=grapple.lastWebAnchor.clone();
+for(let elapsed=0;grapple.state==='WEB_ZIP'&&elapsed<4;elapsed+=1/120)
+  grapple.update(1/120,input(),grappleCamera);
+assert.equal(grapple.state,'SWINGING','Grapple did not continue into a swing at the attached wall');
+assert(Math.abs(grapple.position.distanceTo(persistentAnchor)-grapple.ropeLength)<0.5,
+  'Grapple arrival did not keep the player connected to the wall anchor');
+assert(grapple.lastWebAnchor.equals(persistentAnchor),'Grapple discarded the attached point on arrival');
+grapple.canAirJump=false;
+assert(grapple.performWebPull(camera),'Repeated web pull incorrectly consumed or required the air-jump ability');
+grapple.clearWebAnchor();assert.equal(grapple.lastWebAnchor,null);assert.equal(grapple.zipTarget,null);
+// Midair re-targeting and held fire must carry momentum rather than dropping
+// the player into FALLING between anchors.
+const chain=controller();chain.position.set(0,1,0);chain.state='FALLING';
+const makeAnchor=(x,z=15)=>{const mesh=new THREE.Mesh(new THREE.BoxGeometry(8,10,2));mesh.position.set(x,5,z);mesh.updateMatrixWorld(true);return mesh;};
+const chainCamera=new THREE.PerspectiveCamera(60,1,0.1,500);
+chainCamera.position.set(0,1.3,0);chainCamera.lookAt(0,1.3,15);chainCamera.updateMatrixWorld(true);
+chain.city.buildingMeshes=[makeAnchor(0)];
+const firstShot=input();firstShot.webTap=true;firstShot.webHold=true;
+chain.update(1/60,firstShot,chainCamera);
+assert(chain.isSwinging,'First chained web did not engage the swing');
+const oldAnchor=chain.anchorPoint.clone();
+chain.city.buildingMeshes=[makeAnchor(-10)];
+chainCamera.lookAt(-10,5,15);chainCamera.updateMatrixWorld(true);
+const speedBeforeTransfer=chain.velocity.length();
+const secondShot=input();secondShot.webTap=true;secondShot.webHold=true;
+chain.update(1/60,secondShot,chainCamera);
+assert(chain.isSwinging&&chain.anchorPoint.x<oldAnchor.x-3,'Second web did not retarget the active swing');
+assert(chain.velocity.length()>Math.max(1,speedBeforeTransfer*0.25),'Swing momentum vanished during web transfer');
+chain.city.buildingMeshes=[makeAnchor(10)];
+chainCamera.lookAt(10,5,15);chainCamera.updateMatrixWorld(true);
+chain.webFireCooldown=0.12;
+const heldShot=input();heldShot.webFireHeld=true;heldShot.webHold=true;
+chain.update(1/60,heldShot,chainCamera);
+assert(chain.anchorPoint.x<oldAnchor.x-3,'Held-fire cooldown expired before its shot interval');
+chain.update(0.25,heldShot,chainCamera);
+assert(chain.isSwinging&&chain.anchorPoint.x>oldAnchor.x+3,'Holding left mouse did not fire a successive aimed web');
+// Exercise real City collision, not a stub: grounded wall contact cannot be
+// hidden by simultaneous ground contact (including roll recovery).
+const wall=controller();wall.city.checkCollision=City.prototype.checkCollision;
+wall.city.colliders=[{minX:-3,maxX:3,minZ:2,maxZ:8,minY:0,maxY:20}];
+const wi=input();wi.forward=true;wi.sprint=true;advance(wall,wi,2);
+assert(wall.position.z<=1.30001,'Ground movement passed through wall');assert.equal(wall.velocity.z,0);
+wall.position.set(0,0.1,1);wall.state='ROLLING';wall.recoveryTime=1;wall.recoveryElapsed=0;
+wall.character.actions=roll.character.actions;advance(wall,input(),1.2);assert(wall.position.z<=1.30001,'Roll passed through wall');
+const wallJump=controller();wallJump.city.checkCollision=City.prototype.checkCollision;
+wallJump.city.colliders=[{minX:-3,maxX:3,minZ:-6,maxZ:0,minY:0,maxY:20}];
+wallJump.position.set(0,3,0.7);wallJump.state='WALL_RUNNING';wallJump.wallNormal.set(0,0,1);
+const wj=input();wj.jump=true;wj.forward=true;wj.wallRun=true;
+wallJump.update(1/60,wj,camera);assert.equal(wallJump.state,'JUMPING','Wall jump immediately reattached');
+assert(wallJump.position.z>0.7);assert(wallJump.velocity.z>0);assert(wallJump.wallAttachCooldown>0);
+for(const dt of [1/30,1/60,1/144]) {
+  const cam=new THREE.PerspectiveCamera(), v=new ThirdPersonCamera(cam,{});
+  for(let t=0;t<1-1e-8;t+=dt)v.update(dt,new THREE.Vector3(),new THREE.Vector3(12,0,0),true,[]);
+  assert.equal(v.roll,0,'Camera horizon tilted during a swing');
+  const before=v.currentPos.clone();v.triggerShake(1);v.update(0,new THREE.Vector3(),new THREE.Vector3(),false,[]);
+  assert(v.currentPos.equals(before),'Camera shake leaked into follow state');
+}
+for(const dt of [1/30,1/60,1/144]) { const a=controller();const ai=input();ai.forward=true;advance(a,ai,2,dt);assert(Math.abs(a.velocity.length()-1.6)<0.01); }
+const climber=controller();climber.city.checkCollision=City.prototype.checkCollision;
+climber.city.raycast=City.prototype.raycast;
+climber.city.colliders=[{minX:-4,maxX:4,minY:0,maxY:60,minZ:2,maxZ:8}];
+const climbInput=input();climbInput.forward=true;climbInput.wallRun=true;
+advance(climber,climbInput,4);
+assert.equal(climber.state,'WALL_RUNNING','F+W could not attach from a grounded run onto a procedural wall');
+assert(climber.position.y>15,'Wall run timed out before climbing a tall building');
+const roofClimb=controller();roofClimb.city.checkCollision=City.prototype.checkCollision;roofClimb.city.raycast=City.prototype.raycast;
+roofClimb.city.colliders=[{minX:-3,maxX:3,minY:0,maxY:10,minZ:-6,maxZ:0}];
+roofClimb.position.set(0,9.4,0.7);roofClimb.state='WALL_RUNNING';roofClimb.wallNormal.set(0,0,1);
+const facadeCamera=new THREE.PerspectiveCamera();
+roofClimb.update(1/60,climbInput,facadeCamera);
+assert.equal(roofClimb.state,'MANTLING','Roof entry must animate rather than teleport');
+assert(roofClimb.position.y<10,'Mantle snapped to the roof in its first frame');
+for(let t=0;t<0.85;t+=1/120)roofClimb.update(1/120,input(),facadeCamera);
+assert.equal(roofClimb.state,'IDLE');assert.equal(roofClimb.position.y,10.1);
+assert(new THREE.Vector3(Math.sin(roofClimb.character.targetFacingAngle),0,Math.cos(roofClimb.character.targetFacingAngle)).dot(new THREE.Vector3(0,0,-1))>0.999,'Roof arrival reversed the wall-facing heading');
+for(const dt of [1/30,1/60,1/144]) {
+  const edge=controller();edge.city.checkCollision=City.prototype.checkCollision;edge.city.raycast=City.prototype.raycast;
+  edge.city.colliders=roofClimb.city.colliders;edge.position.set(0,3,0.7);edge.state='WALL_RUNNING';edge.wallNormal.set(0,0,1);
+  const held=input();held.forward=true;held.wallRun=true;
+  let sawMantle=false,maxFrameTravel=0;
+  for(let t=0;t<2-1e-8;t+=dt) {
+    const before=edge.position.clone();edge.update(dt,held,facadeCamera);
+    sawMantle ||= edge.state==='MANTLING';maxFrameTravel=Math.max(maxFrameTravel,before.distanceTo(edge.position));
+  }
+  assert(sawMantle,'Continuous climb skipped its animated edge traversal');
+  assert(maxFrameTravel<0.3,'Roof transition teleported the capsule');
+  assert(['IDLE','RUNNING'].includes(edge.state),'Continuous climb fell when the chest ray rose above the roof');
+  assert.equal(edge.position.y,10.1);
+}
+// Animation transitions use actual states, stop clips finish, walking repeats.
+const c=Object.create(Character.prototype);Object.assign(c,{model:new THREE.Group(),group:new THREE.Group(),actions:{},mixer:null,activeAction:null,lastState:null,landingSpeed:0,idleTime:0,bodyPitch:0,targetFacingAngle:0,trickRotation:0,updateWeb(){}});
+const bothHands=Object.create(Character.prototype);bothHands.currentHand='right';const reachedHands=[];
+bothHands.reachWebAnchor=()=>reachedHands.push(bothHands.currentHand);
+bothHands.reachBothWebAnchors(new THREE.Vector3(0,10,0));
+assert.deepEqual(reachedHands,['left','right'],'Swing pose did not reach with both hands');
+assert.equal(bothHands.currentHand,'right','Dual-hand pose changed the alternating lead hand');
+const firstPersonArms=Object.create(Character.prototype);firstPersonArms.model=new THREE.Group();
+firstPersonArms.firstPersonHands=[];firstPersonArms.setFirstPersonCamera(new THREE.PerspectiveCamera());
+firstPersonArms.setFirstPersonMode(true);
+assert.equal(firstPersonArms.firstPersonHands.length,2,'First-person web shooters are missing a hand anchor');
+assert(firstPersonArms.firstPersonRig.visible&&!firstPersonArms.model.visible,'First-person arms/body visibility did not switch together');
+firstPersonArms.setFirstPersonMode(false);
+assert(!firstPersonArms.firstPersonRig.visible&&firstPersonArms.model.visible,'Third-person model was not restored');
+const dualWeb=Object.create(Character.prototype);dualWeb.group=new THREE.Group();
+dualWeb.rightHand=new THREE.Group();dualWeb.leftHand=new THREE.Group();
+dualWeb.rightHand.position.set(0.2,1,0);dualWeb.leftHand.position.set(-0.2,1,0);dualWeb.group.add(dualWeb.rightHand,dualWeb.leftHand);dualWeb.group.updateMatrixWorld(true);
+const strand=()=>{const geometry=new THREE.BufferGeometry();geometry.setAttribute('position',new THREE.BufferAttribute(new Float32Array(30),3));return new THREE.Line(geometry,new THREE.LineBasicMaterial());};
+dualWeb.webLine=strand();dualWeb.webLineOffhand=strand();dualWeb.webMesh=new THREE.Mesh(new THREE.CylinderGeometry(),new THREE.MeshBasicMaterial());dualWeb.webMeshOffhand=new THREE.Mesh(new THREE.CylinderGeometry(),new THREE.MeshBasicMaterial());
+dualWeb.updateWeb(true,new THREE.Vector3(0,8,-10));
+assert(dualWeb.webLine.visible&&dualWeb.webLineOffhand.visible,'Web strands were not rendered from both wrists');
+assert.notDeepEqual(dualWeb.webLine.geometry.attributes.position.array,dualWeb.webLineOffhand.geometry.attributes.position.array,'Dual web strands share the same wrist origin');
+dualWeb.webShotTimer=0;dualWeb.webShotAnchor=null;dualWeb.bones={};
+dualWeb.fireWeb(new THREE.Vector3(1,9,-12),'left');
+assert(!dualWeb.webLine.visible&&dualWeb.webLineOffhand.visible,'First shot did not use only the left wrist');
+dualWeb.fireWeb(new THREE.Vector3(-4,10,-9),'right');
+assert(dualWeb.webLine.visible&&dualWeb.webLineOffhand.visible,'Second shot did not retain the first wrist strand');
+assert.notDeepEqual([...dualWeb.webLine.geometry.attributes.position.array].slice(27),[...dualWeb.webLineOffhand.geometry.attributes.position.array].slice(27),'Independent wrist webs ended at the same point');
+dualWeb.update(0.1,'FALLING',new THREE.Vector3(),null);
+assert(dualWeb.webLine.visible&&dualWeb.webLineOffhand.visible,'Dual web shot vanished before its launch animation completed');
+dualWeb.update(0.2,'FALLING',new THREE.Vector3(),null);
+dualWeb.update(0.5,'FALLING',new THREE.Vector3(),null);
+assert.equal(dualWeb.webShotTimer,0);
+assert(dualWeb.webLine.visible&&dualWeb.webLineOffhand.visible,'Attached web disappeared after the firing flash elapsed');
+const leftEndpoint=new THREE.Vector3().fromBufferAttribute(dualWeb.webLineOffhand.geometry.attributes.position,9);
+dualWeb.fireWeb(leftEndpoint,'right');
+const retainedEndpoint=new THREE.Vector3().fromBufferAttribute(dualWeb.webLineOffhand.geometry.attributes.position,9);
+const launchedEndpoint=new THREE.Vector3().fromBufferAttribute(dualWeb.webLine.geometry.attributes.position,9);
+assert(leftEndpoint.distanceTo(retainedEndpoint)<1e-5,'Same-point right shot restarted the left strand launch');
+assert(leftEndpoint.distanceTo(launchedEndpoint)>1,'New right strand skipped its own launch animation');
+dualWeb.update(0.15,'SWINGING',new THREE.Vector3(),leftEndpoint);
+dualWeb.firstPersonHands=[];dualWeb.setFirstPersonCamera(new THREE.PerspectiveCamera());
+dualWeb.setFirstPersonMode(true);dualWeb.updateWeb(true,dualWeb.persistentWebAnchor);
+for(const [line,hand] of [[dualWeb.webLine,dualWeb.firstPersonHands[1]],[dualWeb.webLineOffhand,dualWeb.firstPersonHands[0]]]) {
+  const first=new THREE.Vector3().fromBufferAttribute(line.geometry.attributes.position,0);
+  assert(first.distanceTo(hand.getWorldPosition(new THREE.Vector3()))<1e-6,'First-person wrist sides were reversed');
+}
+dualWeb.persistentWebAnchor=null;dualWeb.updateWeb(false,null);
+assert(!dualWeb.webLine.visible&&!dualWeb.webLineOffhand.visible,'Released web did not clean up');
+c.mixer=new THREE.AnimationMixer(c.model);
+for(const n of ['idle','walk','jog','regularRun','run','stop','runStop','jump','drop','land','turnLeft','turnRight','fall','roll','swing']) {
+  const clip=new THREE.AnimationClip(n,0.5,[new THREE.NumberKeyframeTrack('.position[x]',[0,0.5],[0,0])]);
+  clip.userData={nominalSpeed:0.0000001};
+  const action=c.mixer.clipAction(clip);if(['stop','runStop','jump','roll','land','drop','turnLeft','turnRight'].includes(n)){action.setLoop(THREE.LoopOnce);action.clampWhenFinished=true;}c.actions[n]=action;
+}
+c.update(1/60,'RUNNING',new THREE.Vector3(0,0,1.6));assert.equal(c.activeAction,c.actions.walk);
+for(let n=0;n<200;n++)c.update(1/60,'RUNNING',new THREE.Vector3(0,0,1.6));assert(c.actions.walk.isRunning());
+c.update(1/60,'SPRINTING',new THREE.Vector3(0,0,6.5));assert.equal(c.activeAction,c.actions.run);
+c.update(1/60,'IDLE',new THREE.Vector3());assert.equal(c.activeAction,c.actions.runStop);
+for(let n=0;n<100;n++)c.update(1/60,'IDLE',new THREE.Vector3());assert.equal(c.activeAction,c.actions.idle);
+c.update(1/60,'RUNNING',new THREE.Vector3(0,0,2.4));assert.equal(c.activeAction,c.actions.jog);
+c.update(1/60,'RUNNING',new THREE.Vector3(0,0,4.5));assert.equal(c.activeAction,c.actions.regularRun);assert.equal(c.activeAction.getEffectiveTimeScale(),1);
+c.update(1/60,'LANDING',new THREE.Vector3());assert.equal(c.activeAction,c.actions.land);
+c.update(1/60,'ROLLING',new THREE.Vector3());assert.equal(c.activeAction,c.actions.roll);
+c.pendingTurn='left';c.update(1/60,'TURNING',new THREE.Vector3());assert.equal(c.activeAction,c.actions.turnLeft);
+c.update(1/60,'FALLING',new THREE.Vector3(0,-5,0));assert.equal(c.activeAction,c.actions.drop);
+c.update(1/60,'FALLING',new THREE.Vector3(0,-20,0));assert.equal(c.activeAction,c.actions.fall);
+c.wallNormal=new THREE.Vector3(0,0,1);c.update(1/60,'WALL_RUNNING',new THREE.Vector3(0,6.5,0));
+assert(new THREE.Vector3(0,1,0).applyQuaternion(c.model.quaternion).dot(new THREE.Vector3(0,1,0))>0.99,'Wall-running spine lies across wall');
+c.triggerAirTrick();for(let n=0;n<120;n++)c.update(1/60,'FALLING',new THREE.Vector3(0,-10,0));assert.equal(c.trickRotation,0);assert(Math.abs(c.model.rotation.x)<0.01);
+const view=new ThirdPersonCamera(camera,{});view.handleWheel(1);const distance=view.targetDistance;for(let n=0;n<120;n++)view.update(1/60,new THREE.Vector3(),new THREE.Vector3(),false,[]);assert.equal(view.targetDistance,distance);
+const rolledCamera=new THREE.PerspectiveCamera();const rolledView=new ThirdPersonCamera(rolledCamera,{});
+rolledView.yaw=0.8;rolledView.pitch=0.25;rolledView.roll=0.12;
+rolledView.lookAtTarget.set(0,1,0);rolledView.currentPos.set(5,3,6);
+rolledView.update(1/60,new THREE.Vector3(),new THREE.Vector3(0,0,8),true,[]);
+const cameraForward=new THREE.Vector3();rolledCamera.getWorldDirection(cameraForward);
+const targetDirection=rolledView.lookAtTarget.clone().sub(rolledCamera.position).normalize();
+assert(cameraForward.dot(targetDirection)>0.999,'Camera banking changed its look direction');
+const behindCamera=new THREE.PerspectiveCamera();const behindView=new ThirdPersonCamera(behindCamera,{});
+behindView.update(1/60,new THREE.Vector3(),new THREE.Vector3(),false,[]);
+const behindForward=new THREE.Vector3();behindCamera.getWorldDirection(behindForward);
+assert(behindCamera.position.z<0 && behindForward.z>0,'Default camera is not behind a +Z-facing character');
+const verticalCamera=new THREE.PerspectiveCamera();const verticalView=new ThirdPersonCamera(verticalCamera,{});
+verticalView.lookAtTarget.set(0,1.7,0);verticalView.currentPos.set(0,3,-5);
+verticalView.update(1/60,new THREE.Vector3(),new THREE.Vector3(0,40,0),true,[]);
+assert(Math.abs(verticalView.lookAtTarget.y-1.7)<1e-8,'Vertical swing speed tilted the camera aim');
+assert(verticalView.maxFov<=76,'Speed FOV is too wide and distorts the city');
+const escapeCamera=new ThirdPersonCamera(new THREE.PerspectiveCamera(),{});
+const narrowStreetRay=(origin,direction)=>direction.z < -0.97 ? {distance:0.55} : null;
+const escapeBoom=escapeCamera.findCameraBoom(new THREE.Vector3(),0,0.16,5.8,[],narrowStreetRay);
+assert(escapeBoom.distance>5,'Camera stayed collapsed instead of finding a clear shoulder angle');
+const followerCamera=new THREE.PerspectiveCamera();const follower=new ThirdPersonCamera(followerCamera,{});
+const playerTarget=new THREE.Vector3();
+for(let n=0;n<180;n++)follower.update(1/60,playerTarget,new THREE.Vector3(),false,[],null,Math.PI/2);
+const boom=followerCamera.position.clone().sub(playerTarget).setY(0).normalize();
+assert(boom.x<-.98 && Math.abs(boom.z)<0.1,'Locked camera did not follow behind the character heading');
+follower.handleMouseMove(120,0);const freeYaw=follower.yaw;
+for(let n=0;n<30;n++)follower.update(1/60,playerTarget,new THREE.Vector3(),false,[],null,0);
+assert(Math.abs(follower.yaw-freeYaw)<1e-8,'Mouse orbit snapped back immediately instead of allowing temporary free look');
+for(let n=0;n<240;n++)follower.update(1/60,playerTarget,new THREE.Vector3(),false,[],null,0);
+assert.equal(follower.yaw,freeYaw,'Camera drifted behind the character without user input');
+follower.recenterBehind(0);
+for(let n=0;n<180;n++)follower.update(1/60,playerTarget,new THREE.Vector3(),false,[],null,0);
+assert(Math.abs(follower.yaw)<0.02,'Explicit recenter did not smoothly return behind the character');
+const springCamera=new ThirdPersonCamera(new THREE.PerspectiveCamera(),{});
+let blocked=true;
+const springRay=()=>blocked?{distance:3}:null;
+springCamera.update(1/60,playerTarget,new THREE.Vector3(),false,[],springRay,0);
+const retracted=springCamera.collisionDistance;
+assert(retracted<springCamera.distance,'Camera arm did not retract at an obstruction');
+blocked=false;
+springCamera.update(1/60,playerTarget,new THREE.Vector3(),false,[],springRay,0);
+assert(springCamera.collisionDistance>retracted&&springCamera.collisionDistance<springCamera.distance,
+  'Camera arm did not ease back after the obstruction cleared');
+assert.deepEqual(follower.modeOrder,['close','follow','swing','first'],'Camera mode cycle is missing first person');
+follower.mode='first';follower.yaw=0.7;follower.pitch=0.2;follower.currentPos.set(0,0,0);
+const firstPersonFov=follower.firstPersonFov;follower.handleWheel(-1);
+assert(follower.firstPersonFov<firstPersonFov,'First-person mouse-wheel zoom did not change the view');
+for(let n=0;n<60;n++)follower.update(1/60,playerTarget,new THREE.Vector3(),false,[],null,0);
+assert(Math.abs(follower.currentPos.y-1.58)<0.02,'First-person camera is not at a natural eye height');
+const firstForward=new THREE.Vector3();followerCamera.getWorldDirection(firstForward);
+assert(firstForward.x>0.5&&firstForward.z>0.7,'First-person camera orientation does not follow mouse yaw/pitch');
+follower.handleMouseMove(100,-100);const firstYaw=follower.yaw,firstPitch=follower.pitch;
+for(let n=0;n<300;n++)follower.update(1/60,playerTarget,new THREE.Vector3(),false,[],null,0);
+assert.equal(follower.yaw,firstYaw,'First-person view auto-snapped behind the player');
+assert.equal(follower.pitch,firstPitch,'First-person pitch changed without input');
+console.log('PASS: idle, walking/jogging/running/sprint, stop, jump, chained web retargeting and held fire, pull-to-swing transition, web zip, roof edge, swept roof, release, frame rates, animation transitions, flip recovery, camera zoom');

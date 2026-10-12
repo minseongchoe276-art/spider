@@ -1,0 +1,35 @@
+[
+  {
+    "path": "/",
+    "method": "GET",
+    "status": 200,
+    "contentType": "text/html; charset=utf-8"
+  },
+  {
+    "path": "/motions/idle.json",
+    "method": "GET",
+    "status": 200,
+    "contentType": "application/json"
+  },
+  {
+    "path": "/urban-tiles/api/3d-data/3dtiles/f2/tileset.json",
+    "method": "GET",
+    "status": 200,
+    "contentType": "application/json"
+  },
+  {
+    "path": "/urban-tiles/denied",
+    "method": "GET",
+    "status": 403
+  },
+  {
+    "path": "/",
+    "method": "POST",
+    "status": 405
+  },
+  {
+    "path": "/../package.json",
+    "method": "GET",
+    "status": 404
+  }
+]

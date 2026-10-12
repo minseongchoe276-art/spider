@@ -1,0 +1,32 @@
+import assert from 'node:assert/strict';
+import * as THREE from 'three';
+import {createWebStrand,updateWebStrand} from '../src/WebStrand.js';
+import {Character} from '../src/Character.js';
+import {VFXManager} from '../src/VFX.js';
+const scene=new THREE.Scene(),{line,mesh}=createWebStrand(scene);
+const wrist=new THREE.Vector3(1000,20,1000),anchor=new THREE.Vector3(1000,35,1020);
+for(const launch of [0.04,0.5,1]) {
+  updateWebStrand(line,mesh,wrist,anchor,1,launch);
+  assert(line.visible && mesh.visible);
+  const positions=mesh.geometry.attributes.position;
+  for(const a of [positions,mesh.geometry.attributes.normal,line.geometry.attributes.position])assert([...a.array].every(Number.isFinite));
+  const center=i=>{const p=new THREE.Vector3();for(let j=0;j<6;j++)p.add(new THREE.Vector3().fromBufferAttribute(positions,i*6+j));return p.divideScalar(6);};
+  assert(center(0).distanceTo(wrist)<0.001);
+  assert(center(40).distanceTo(wrist.clone().lerp(anchor,launch))<0.001,'Web tip does not follow launch progress');
+}
+updateWebStrand(line,mesh,wrist,wrist);assert(!line.visible && !mesh.visible);
+const miss=Object.create(Character.prototype);
+miss.group=new THREE.Group();miss.scene=scene;miss.webAttachments=[];miss.webLaunchTimers={};miss.webShotTimer=0;
+miss.currentHand='left';miss.isFirstPerson=false;miss.firstPersonHands=[];
+miss.webLine=line;miss.webMesh=mesh;
+const offhand=createWebStrand(scene);miss.webLineOffhand=offhand.line;miss.webMeshOffhand=offhand.mesh;
+miss.fireWebMiss(new THREE.Vector3(0,2,28),'left');
+assert(miss.webLineOffhand.visible&&miss.webMeshOffhand.visible,'A missed web shot was invisible');
+assert(!miss.webLine.visible&&!miss.webMesh.visible,'Miss used the wrong hand');
+assert.equal(miss.webAttachments.length,0,'A miss attached a physics web');
+assert(miss.webShotTimer>=.5,'Miss vanished before it could be seen');
+const vfx=new VFXManager(scene);vfx.spawnLandingDust(wrist);vfx.spawnWebImpact(anchor);vfx.update(1/60);
+assert(vfx.sizes.some(size=>size>0));assert(vfx.opacities.some(alpha=>alpha>0));
+assert(vfx.kinds.some(kind=>kind===1));assert([...vfx.positions].every(Number.isFinite));
+vfx.update(2);assert(vfx.particles.every(p=>!p.active));assert(vfx.sizes.every(size=>size===0));
+console.log('PASS: web launch, curved tube/fiber buffers, distant coordinates, degenerate rope and textured particle size/fade/lifetime');

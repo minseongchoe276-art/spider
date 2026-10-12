@@ -1,0 +1,88 @@
+{
+ "roots": 3,
+ "meshes": 84,
+ "collisionMeshes": 72,
+ "pending": 0,
+ "ground": 19.521270751953125,
+ "groundHit": {
+  "normal": {
+   "x": 0.003362922929227352,
+   "y": 0.9999711513519287,
+   "z": -0.006821007467806339
+  },
+  "distance": 280.7287292480469,
+  "pointY": 19.521270751953125
+ },
+ "camera": [
+  0,
+  22.245296000858694,
+  -5.725918243578637
+ ],
+ "groups": [
+  [
+   8.149072527885435e-10,
+   -6375067.5388795175,
+   14986.744662821056
+  ],
+  [
+   8.149072527885435e-10,
+   -6375067.5388795175,
+   14986.744662821056
+  ],
+  [
+   8.149072527885435e-10,
+   -6375067.5388795175,
+   14986.744662821056
+  ]
+ ],
+ "stats": [
+  {
+   "inCacheSinceLoad": 0,
+   "inCache": 104,
+   "queued": 0,
+   "downloading": 0,
+   "parsing": 0,
+   "loaded": 104,
+   "failed": 0,
+   "inFrustum": 63,
+   "used": 96,
+   "active": 59,
+   "visible": 33,
+   "refused": 0,
+   "tilesProcessed": 0,
+   "bytes": 302615554
+  },
+  {
+   "inCacheSinceLoad": 0,
+   "inCache": 175,
+   "queued": 0,
+   "downloading": 0,
+   "parsing": 0,
+   "loaded": 175,
+   "failed": 0,
+   "inFrustum": 48,
+   "used": 176,
+   "active": 91,
+   "visible": 14,
+   "refused": 0,
+   "tilesProcessed": 0,
+   "bytes": 302615554
+  },
+  {
+   "inCacheSinceLoad": 0,
+   "inCache": 88,
+   "queued": 0,
+   "downloading": 0,
+   "parsing": 0,
+   "loaded": 88,
+   "failed": 0,
+   "inFrustum": 12,
+   "used": 81,
+   "active": 41,
+   "visible": 3,
+   "refused": 0,
+   "tilesProcessed": 0,
+   "bytes": 302615554
+  }
+ ]
+}

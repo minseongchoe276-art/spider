@@ -1,0 +1,50 @@
+[
+  {
+    "scenario": "movement",
+    "status": "시나리오 2.50초\nIDLE → RUNNING\n모션: idle → walk\nwalk · 0.11초 / 0.97초 · 속도 1.60 m/s"
+  },
+  {
+    "scenario": "walkStop",
+    "status": "시나리오 2.50초\nIDLE → RUNNING\n모션: idle → walk\nwalk · 0.11초 / 0.97초 · 속도 1.60 m/s"
+  },
+  {
+    "scenario": "turn",
+    "status": "시나리오 2.50초\nIDLE → TURNING → IDLE\n모션: idle → turnLeft → idle\nidle · 0.57초 / 4.00초 · 속도 0.00 m/s"
+  },
+  {
+    "scenario": "landing",
+    "status": "시나리오 2.50초\nFALLING → LANDING → IDLE\n모션: drop → fall → drop → land → idle\nidle · 0.88초 / 4.00초 · 속도 0.00 m/s"
+  },
+  {
+    "scenario": "roll",
+    "status": "시나리오 2.50초\nFALLING → ROLLING\n모션: drop → fall → drop → roll\nroll · 0.93초 / 1.54초 · 속도 1.20 m/s"
+  },
+  {
+    "scenario": "zip",
+    "status": "시나리오 2.50초\nIDLE → WEB_ZIP → SWINGING\n모션: idle → zip → swing\nswing · 0.56초 / 1.95초 · 속도 0.04 m/s"
+  },
+  {
+    "scenario": "swing",
+    "status": "시나리오 2.50초\nSWINGING → FALLING\n모션: swing → drop → fall\nfall · 0.12초 / 4.50초 · 속도 15.48 m/s"
+  },
+  {
+    "scenario": "dualWeb",
+    "status": "시나리오 2.50초\nFALLING → SWINGING\n모션: drop → swing\nswing · 0.50초 / 1.95초 · 속도 5.04 m/s\n연결 줄 2개 · 오른손 부착 / 왼손 부착"
+  },
+  {
+    "scenario": "wall",
+    "status": "시나리오 2.50초\nWALL_RUNNING → MANTLING → RUNNING → IDLE\n모션: wall → walk → stop → idle\nidle · 0.12초 / 4.00초 · 속도 0.14 m/s"
+  },
+  {
+    "scenario": "slope",
+    "status": "시나리오 2.50초\nIDLE → RUNNING\n모션: idle → walk\nwalk · 0.50초 / 0.97초 · 속도 1.67 m/s"
+  },
+  {
+    "scenario": "slopeDown",
+    "status": "시나리오 2.50초\nIDLE → RUNNING\n모션: idle → walk\nwalk · 0.50초 / 0.97초 · 속도 1.60 m/s"
+  },
+  {
+    "scenario": "stairs",
+    "status": "시나리오 2.50초\nIDLE → RUNNING\n모션: idle → walk\nwalk · 0.50초 / 0.97초 · 속도 1.60 m/s"
+  }
+]

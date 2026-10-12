@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>스파이더맨: 3D 웹 스윙 (Spider-Man 3D Web Swing)</title>
+  <meta name="description" content="스파이더맨 도시 웹 스윙 3D 웹게임. 자유 이동, 웹 집, 벽 달리기, 타임트라이얼.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800;900&family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/src/style.css">
+</head>
+<body>
+  <div id="game-container">
+    <!-- 3D Three.js WebGL Canvas -->
+    <canvas id="webgl-canvas" tabindex="0" aria-label="게임 화면. W A S D 이동, Space 점프, Escape 일시정지"></canvas>
+
+    <!-- Dynamic Speed Lines Canvas Overlay -->
+    <canvas id="speedlines-canvas"></canvas>
+
+    <!-- Center Aim Reticle / Crosshair -->
+    <div id="crosshair">
+      <div class="crosshair-dot"></div>
+      <div class="crosshair-ring"></div>
+    </div>
+
+    <!-- HUD Top-Left: Badge & Telemetry -->
+    <header id="hud-top-left" class="glass-panel">
+      <div class="spider-badge">
+        <svg viewBox="0 0 100 100" class="spider-icon">
+          <path d="M50 15 C55 25, 55 25, 50 35 C45 25, 45 25, 50 15 Z" fill="#ff2a5f"/>
+          <path d="M50 35 C62 48, 62 65, 50 82 C38 65, 38 48, 50 35 Z" fill="#ff2a5f"/>
+          <path d="M46 38 Q25 25 10 32 M46 44 Q20 38 8 52 M46 50 Q18 56 12 70 M46 56 Q24 72 18 85" stroke="#ff2a5f" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+          <path d="M54 38 Q75 25 90 32 M54 44 Q80 38 92 52 M54 50 Q82 56 88 70 M54 56 Q76 72 82 85" stroke="#ff2a5f" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+        </svg>
+        <div class="badge-text">
+          <span class="badge-title">SPIDER-MAN</span>
+          <span class="badge-sub">HONG KONG WEB RUNNER</span>
+        </div>
+      </div>
+      
+      <div class="telemetry-grid">
+        <div class="telemetry-item">
+          <span class="tele-label">속도 (SPEED)</span>
+          <div class="tele-val-box">
+            <span id="speed-display" class="tele-val">0</span>
+            <span class="tele-unit">KM/H</span>
+          </div>
+          <div class="tele-bar"><div id="speed-bar-fill" class="tele-fill"></div></div>
+        </div>
+
+        <div class="telemetry-item">
+          <span class="tele-label">고도 (ALTITUDE)</span>
+          <div class="tele-val-box">
+            <span id="alt-display" class="tele-val">0</span>
+            <span class="tele-unit">M</span>
+          </div>
+          <div class="tele-bar"><div id="alt-bar-fill" class="tele-fill"></div></div>
+        </div>
+      </div>
+    </header>
+
+    <div id="session-hud" class="glass-panel">
+      <span id="trial-status">R 타임트라이얼</span>
+      <span id="trial-target"></span>
+      <span>묘기 <b id="stunt-score">0</b></span>
+      <button id="btn-time-trial" type="button">레이스 시작</button>
+      <output id="performance-status" aria-label="렌더링 성능"></output>
+    </div>
+
+    <aside id="minimap-panel" class="glass-panel" aria-labelledby="minimap-title">
+      <div class="minimap-header">
+        <div><strong id="minimap-title">HONG KONG</strong><span id="minimap-subtitle">CENTRAL DISTRICT</span></div>
+        <span id="minimap-status" data-ready="false">LOADING</span>
+      </div>
+      <div class="minimap-wrap">
+        <canvas id="minimap-canvas" role="img" aria-label="현재 위치 미니맵"></canvas>
+        <span class="minimap-north" aria-hidden="true">N</span>
+        <span class="minimap-range-label"><b id="minimap-range">600m</b> RANGE</span>
+      </div>
+      <output id="minimap-coordinates" aria-live="off">E +0m&nbsp; N +0m&nbsp; ·&nbsp; ALT 0m</output>
+    </aside>
+
+    <!-- Web Status Pill -->
+    <div id="web-status-pill" class="glass-panel">
+      <div id="web-status-dot" class="status-dot"></div>
+      <span id="web-status-text">WEB READY</span>
+    </div>
+
+    <!-- Instructions / Controls Card (Bottom-Left) -->
+    <div id="combat-status" role="status" style="position:fixed;bottom:20px;left:50%;transform:translateX(-50%);max-width:90vw;text-align:center;padding:10px 16px;border-radius:12px;background:#14202de8;color:white;z-index:8;font:14px system-ui">전투 모드 · Q 거미줄 전환</div>
+    <aside id="controls-guide" class="glass-panel hidden" role="dialog" aria-label="조작 가이드">
+      <div class="guide-header">
+        <h3>🎮 조작 가이드</h3>
+        <span class="guide-hint">마우스 잠금 또는 휠 버튼 드래그</span>
+      </div>
+      <div class="guide-list">
+        <div class="guide-row"><span class="key-badge">경찰과 도망자</span><span class="guide-desc">경찰: 주먹 25·거미줄 15 피해. 도망자 전원 체력 0이면 경찰 승리, 5분 생존하면 도망자 승리.</span></div>
+        <div class="guide-row"><span class="key-badge">Q</span><span class="guide-desc">전투 / 거미줄 모드 전환</span></div>
+        <div class="guide-row"><span class="key-badge">G</span><span class="guide-desc">필살 어퍼컷 · 기력 35 · 재사용 4초</span></div>
+        <div class="guide-row"><span class="key-badge">Ctrl + 방향</span><span class="guide-desc">짧은 회피 · 전방 숙이기</span></div>
+
+        <div class="guide-row">
+          <span class="key-badge">W A S D</span>
+          <span class="guide-desc">카메라 기준 이동</span>
+        </div>
+        <div class="guide-row"><span class="key-badge">Shift</span><span class="guide-desc">누르는 동안 질주</span></div>
+        <div class="guide-row">
+          <span class="key-badge">Space</span>
+          <span class="guide-desc">점프 · 벽 점프 · 거미줄 놓기</span>
+        </div>
+        <div class="guide-row">
+          <span class="key-badge">좌클릭</span>
+          <span class="guide-desc key-accent">전투: 3타 콤보 / 거미줄: 양손 발사</span>
+        </div>
+        <div class="guide-row">
+          <span class="key-badge">우클릭</span>
+          <span class="guide-desc key-accent">전투: 방어 / 거미줄: 당기기</span>
+        </div>
+        <div class="guide-row">
+          <span class="key-badge">E</span>
+          <span class="guide-desc">전투: 지상 강공격 / 거미줄: 공중 웹 집</span>
+        </div>
+        <div class="guide-row">
+          <span class="key-badge">T</span>
+          <span class="guide-desc">공중 묘기 (착지 여유 필요)</span>
+        </div>
+        <div class="guide-row">
+          <span class="key-badge">마우스 이동</span>
+          <span class="guide-desc">카메라 회전</span>
+        </div>
+        <div class="guide-row"><span class="key-badge">F + W</span><span class="guide-desc">벽 기어가기</span></div>
+        <div class="guide-row"><span class="key-badge">C</span><span class="guide-desc">카메라를 등 뒤로 정렬</span></div>
+        <div class="guide-row"><span class="key-badge">V</span><span class="guide-desc">근접 · 기본 · 원거리 · 1인칭 시점 전환</span></div>
+        <div class="guide-row"><span class="key-badge">R</span><span class="guide-desc">타임트라이얼 시작 · 종료</span></div>
+        <div class="guide-row">
+          <span class="key-badge">마우스 휠</span>
+          <span class="guide-desc">카메라 거리 줌 인/아웃</span>
+        </div>
+        <div class="guide-row"><span class="key-badge">Esc · H · M</span><span class="guide-desc">메뉴 · 도움말 · 소리</span></div>
+      </div>
+    </aside>
+
+    <div id="camera-mode-toast" role="status" aria-live="polite"></div>
+    <div id="game-notice" role="status" aria-live="polite"></div>
+
+    <div id="match-hud" class="hidden" role="status" aria-live="polite">
+      <strong id="match-role"></strong><span id="match-health"></span><span id="match-timer"></span><span id="match-count"></span>
+      <button id="match-help" type="button" onclick="document.getElementById('btn-help-toggle').click()">H · 조작</button>
+    </div>
+
+    <div id="online-overlay" class="overlay" role="dialog" aria-modal="true" aria-labelledby="online-title">
+      <div class="online-card glass-panel">
+        <div class="online-header"><span class="online-mark">🕷</span><div><small>HONG KONG WEB RUNNER</small><h1 id="online-title">함께 도시를 누비세요</h1><p id="online-status">서버 연결 중…</p></div></div>
+        <section id="lobby-panel">
+          <label class="online-field">플레이어 이름<input id="player-name" maxlength="16" value="스파이더" autocomplete="nickname"></label>
+          <div class="online-grid"><label class="online-field">방 이름<input id="room-name" maxlength="24" value="새로운 도시 여행"></label><label class="online-field">정원<select id="room-capacity"><option>4</option><option>5</option><option>6</option><option>7</option><option selected>8</option></select></label></div>
+          <label class="online-field">게임 모드<select id="room-mode"><option value="tag">경찰과 도망자 · 5분</option><option value="free">자유 플레이 · 제한 없음</option></select></label>
+          <button id="play-solo" class="online-solo" type="button">혼자 플레이</button>
+          <button id="create-room" class="online-primary" type="button">방 만들기</button>
+          <div class="online-divider">방 코드로 입장</div>
+          <div class="online-inline"><input id="room-code" maxlength="6" placeholder="6자리 코드" aria-label="방 코드"><button id="join-code" type="button">입장</button></div>
+          <h2>열린 방</h2><div id="room-list" class="room-list"></div>
+        </section>
+        <section id="room-panel" class="hidden">
+          <h2 id="room-title"></h2><p id="room-details"></p>
+          <div class="room-code-line">초대 코드 <strong id="room-code-display"></strong><button id="room-copy" type="button">복사</button></div>
+          <div id="player-list" class="player-list"></div>
+          <p id="room-message"></p>
+          <div class="room-actions"><button id="room-ready" class="online-primary" type="button">준비하기</button><button id="room-start" class="online-primary" type="button">시작</button><button id="room-rematch" class="online-primary hidden" type="button">다시 대기실로</button><button id="room-leave" type="button">방 나가기</button></div>
+        </section>
+      </div>
+    </div>
+
+    <!-- Start / Click to Play Overlay -->
+    <div id="overlay-click-to-play" class="overlay hidden" role="dialog" aria-modal="true" aria-labelledby="game-title">
+      <div class="overlay-card glass-panel">
+        <div class="hero-emblem">🕷️</div>
+        <h1 id="game-title">SPIDER-MAN</h1>
+        <h2>HONG KONG WEB SWING 3D</h2>
+        <p class="overlay-tagline">게임이 일시 정지되었습니다. 준비되면 계속하세요.</p>
+        
+        <div class="start-instruction">
+          <div class="mouse-icon">🖱️</div>
+          <span>Q 전투/거미줄 전환 · 좌클릭 공격/발사 · 우클릭 방어/당기기 · Ctrl 회피<br>Esc 메뉴 · R 타임트라이얼 · <span id="world-limit">구역 원점 기준 ±2.4km</span></span>
+        </div>
+
+        <button id="btn-start-game" class="start-btn">
+          <span>게임 시작 (START)</span>
+        </button>
+        <p><button id="btn-start-drag" type="button">마우스 잠금 없이 시작 · 휠 버튼 드래그</button></p>
+        <button id="btn-restart" class="hidden" type="button">시작점으로 돌아가기</button>
+        <button id="btn-leave-match" type="button">로비로 돌아가기</button>
+        <label class="guide-setting"><input id="reduced-motion" type="checkbox"> 화면 흔들림·속도 효과 줄이기</label>
+        <label class="guide-setting" for="graphics-quality">그래픽 품질
+          <select id="graphics-quality" aria-label="그래픽 품질"><option value="low">낮음</option><option value="balanced" selected>기본</option><option value="high">높음</option></select>
+        </label>
+        <p class="data-credit">도시 데이터: 홍콩 Lands Department<br><a href="?city=procedural">로컬 도시로 플레이</a></p>
+      </div>
+    </div>
+
+    <!-- Initial Loading Screen -->
+    <div id="loading-screen" class="overlay">
+      <div class="loading-box glass-panel">
+        <div class="loading-spinner"></div>
+        <h2 id="loading-title">SPIDER-MAN 3D 로딩 중...</h2>
+        <p id="loading-desc">스파이더맨 3D 모델 및 애니메이션 준비 중...</p>
+        <div class="loading-bar-wrap">
+          <div id="loading-bar-fill"></div>
+        </div>
+        <span id="loading-pct">0%</span>
+        <div id="loading-recovery" class="hidden" role="status">
+          <p>연결이 복구되면 준비를 계속합니다.</p>
+          <button id="btn-retry-load" type="button">다시 불러오기</button>
+          <a href="?city=procedural">네트워크 도시 대신 로컬 도시로 시작</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,49 @@
+{
+ "map": "Hong Kong",
+ "ready": true,
+ "position": [
+  0.448,
+  20.986,
+  12.382
+ ],
+ "velocity": [
+  6.91,
+  0.022,
+  1.116
+ ],
+ "state": "RUNNING",
+ "motion": "dodgeBack",
+ "mode": "combat",
+ "webs": [],
+ "support": 20.860773087189294,
+ "collision": 113,
+ "pending": 1,
+ "history": [
+  "IDLE/undefined",
+  "FALLING/undefined",
+  "IDLE/idle",
+  "IDLE/combatIdle",
+  "IDLE/idle",
+  "JUMPING/jump",
+  "SWINGING/swing",
+  "LANDING/land",
+  "IDLE/idle",
+  "JUMPING/jump",
+  "FALLING/drop",
+  "LANDING/land",
+  "IDLE/idle",
+  "IDLE/combatIdle",
+  "IDLE/jab",
+  "IDLE/combatIdle",
+  "IDLE/guard",
+  "IDLE/combatIdle",
+  "RUNNING/combatIdle",
+  "RUNNING/walk",
+  "IDLE/stop",
+  "IDLE/idle",
+  "IDLE/combatIdle",
+  "RUNNING/dodgeBack"
+ ],
+ "decodedRGBTextures": 3,
+ "textureDiagnostics": []
+}

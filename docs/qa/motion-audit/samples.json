@@ -1,0 +1,826 @@
+{
+  "motions": 39,
+  "cases": 117,
+  "samples": 15905,
+  "report": [
+    {
+      "key": "idle",
+      "fps": 30,
+      "frames": 121,
+      "maxFrame": 62,
+      "maxStep": 0.0521
+    },
+    {
+      "key": "idle",
+      "fps": 60,
+      "frames": 241,
+      "maxFrame": 124,
+      "maxStep": 0.0261
+    },
+    {
+      "key": "idle",
+      "fps": 144,
+      "frames": 577,
+      "maxFrame": 297,
+      "maxStep": 0.0109
+    },
+    {
+      "key": "walk",
+      "fps": 30,
+      "frames": 30,
+      "maxFrame": 17,
+      "maxStep": 0.1704
+    },
+    {
+      "key": "walk",
+      "fps": 60,
+      "frames": 59,
+      "maxFrame": 34,
+      "maxStep": 0.086
+    },
+    {
+      "key": "walk",
+      "fps": 144,
+      "frames": 141,
+      "maxFrame": 82,
+      "maxStep": 0.0358
+    },
+    {
+      "key": "jog",
+      "fps": 30,
+      "frames": 78,
+      "maxFrame": 54,
+      "maxStep": 0.1217
+    },
+    {
+      "key": "jog",
+      "fps": 60,
+      "frames": 155,
+      "maxFrame": 108,
+      "maxStep": 0.0612
+    },
+    {
+      "key": "jog",
+      "fps": 144,
+      "frames": 371,
+      "maxFrame": 259,
+      "maxStep": 0.0255
+    },
+    {
+      "key": "regularRun",
+      "fps": 30,
+      "frames": 22,
+      "maxFrame": 18,
+      "maxStep": 0.236
+    },
+    {
+      "key": "regularRun",
+      "fps": 60,
+      "frames": 43,
+      "maxFrame": 35,
+      "maxStep": 0.1205
+    },
+    {
+      "key": "regularRun",
+      "fps": 144,
+      "frames": 102,
+      "maxFrame": 83,
+      "maxStep": 0.0505
+    },
+    {
+      "key": "run",
+      "fps": 30,
+      "frames": 18,
+      "maxFrame": 14,
+      "maxStep": 0.3365
+    },
+    {
+      "key": "run",
+      "fps": 60,
+      "frames": 34,
+      "maxFrame": 27,
+      "maxStep": 0.1782
+    },
+    {
+      "key": "run",
+      "fps": 144,
+      "frames": 78,
+      "maxFrame": 63,
+      "maxStep": 0.0772
+    },
+    {
+      "key": "stop",
+      "fps": 30,
+      "frames": 8,
+      "maxFrame": 7,
+      "maxStep": 0.0442
+    },
+    {
+      "key": "stop",
+      "fps": 60,
+      "frames": 15,
+      "maxFrame": 14,
+      "maxStep": 0.0221
+    },
+    {
+      "key": "stop",
+      "fps": 144,
+      "frames": 35,
+      "maxFrame": 33,
+      "maxStep": 0.0091
+    },
+    {
+      "key": "runStop",
+      "fps": 30,
+      "frames": 28,
+      "maxFrame": 1,
+      "maxStep": 0.3383
+    },
+    {
+      "key": "runStop",
+      "fps": 60,
+      "frames": 55,
+      "maxFrame": 2,
+      "maxStep": 0.1741
+    },
+    {
+      "key": "runStop",
+      "fps": 144,
+      "frames": 131,
+      "maxFrame": 4,
+      "maxStep": 0.0723
+    },
+    {
+      "key": "femaleStop",
+      "fps": 30,
+      "frames": 17,
+      "maxFrame": 7,
+      "maxStep": 0.077
+    },
+    {
+      "key": "femaleStop",
+      "fps": 60,
+      "frames": 33,
+      "maxFrame": 14,
+      "maxStep": 0.0387
+    },
+    {
+      "key": "femaleStop",
+      "fps": 144,
+      "frames": 78,
+      "maxFrame": 33,
+      "maxStep": 0.0161
+    },
+    {
+      "key": "zip",
+      "fps": 30,
+      "frames": 31,
+      "maxFrame": 7,
+      "maxStep": 0
+    },
+    {
+      "key": "zip",
+      "fps": 60,
+      "frames": 61,
+      "maxFrame": 5,
+      "maxStep": 0
+    },
+    {
+      "key": "zip",
+      "fps": 144,
+      "frames": 145,
+      "maxFrame": 3,
+      "maxStep": 0
+    },
+    {
+      "key": "turnLeft",
+      "fps": 30,
+      "frames": 30,
+      "maxFrame": 9,
+      "maxStep": 0.0548
+    },
+    {
+      "key": "turnLeft",
+      "fps": 60,
+      "frames": 58,
+      "maxFrame": 17,
+      "maxStep": 0.0279
+    },
+    {
+      "key": "turnLeft",
+      "fps": 144,
+      "frames": 136,
+      "maxFrame": 39,
+      "maxStep": 0.0118
+    },
+    {
+      "key": "turnRight",
+      "fps": 30,
+      "frames": 30,
+      "maxFrame": 9,
+      "maxStep": 0.0421
+    },
+    {
+      "key": "turnRight",
+      "fps": 60,
+      "frames": 58,
+      "maxFrame": 17,
+      "maxStep": 0.0214
+    },
+    {
+      "key": "turnRight",
+      "fps": 144,
+      "frames": 136,
+      "maxFrame": 41,
+      "maxStep": 0.0091
+    },
+    {
+      "key": "jump",
+      "fps": 30,
+      "frames": 19,
+      "maxFrame": 1,
+      "maxStep": 0.1527
+    },
+    {
+      "key": "jump",
+      "fps": 60,
+      "frames": 37,
+      "maxFrame": 2,
+      "maxStep": 0.0785
+    },
+    {
+      "key": "jump",
+      "fps": 144,
+      "frames": 88,
+      "maxFrame": 4,
+      "maxStep": 0.0324
+    },
+    {
+      "key": "land",
+      "fps": 30,
+      "frames": 28,
+      "maxFrame": 10,
+      "maxStep": 0.0727
+    },
+    {
+      "key": "land",
+      "fps": 60,
+      "frames": 54,
+      "maxFrame": 20,
+      "maxStep": 0.0372
+    },
+    {
+      "key": "land",
+      "fps": 144,
+      "frames": 126,
+      "maxFrame": 48,
+      "maxStep": 0.0158
+    },
+    {
+      "key": "jumpDown",
+      "fps": 30,
+      "frames": 70,
+      "maxFrame": 38,
+      "maxStep": 0.3433
+    },
+    {
+      "key": "jumpDown",
+      "fps": 60,
+      "frames": 139,
+      "maxFrame": 76,
+      "maxStep": 0.1729
+    },
+    {
+      "key": "jumpDown",
+      "fps": 144,
+      "frames": 333,
+      "maxFrame": 182,
+      "maxStep": 0.0719
+    },
+    {
+      "key": "drop",
+      "fps": 30,
+      "frames": 17,
+      "maxFrame": 11,
+      "maxStep": 0.1801
+    },
+    {
+      "key": "drop",
+      "fps": 60,
+      "frames": 33,
+      "maxFrame": 22,
+      "maxStep": 0.0915
+    },
+    {
+      "key": "drop",
+      "fps": 144,
+      "frames": 78,
+      "maxFrame": 53,
+      "maxStep": 0.038
+    },
+    {
+      "key": "jumpDownVariant",
+      "fps": 30,
+      "frames": 81,
+      "maxFrame": 51,
+      "maxStep": 0.3997
+    },
+    {
+      "key": "jumpDownVariant",
+      "fps": 60,
+      "frames": 160,
+      "maxFrame": 102,
+      "maxStep": 0.2045
+    },
+    {
+      "key": "jumpDownVariant",
+      "fps": 144,
+      "frames": 381,
+      "maxFrame": 243,
+      "maxStep": 0.086
+    },
+    {
+      "key": "swing",
+      "fps": 30,
+      "frames": 60,
+      "maxFrame": 56,
+      "maxStep": 0.3198
+    },
+    {
+      "key": "swing",
+      "fps": 60,
+      "frames": 119,
+      "maxFrame": 111,
+      "maxStep": 0.1619
+    },
+    {
+      "key": "swing",
+      "fps": 144,
+      "frames": 283,
+      "maxFrame": 264,
+      "maxStep": 0.0679
+    },
+    {
+      "key": "fall",
+      "fps": 30,
+      "frames": 136,
+      "maxFrame": 132,
+      "maxStep": 0.0711
+    },
+    {
+      "key": "fall",
+      "fps": 60,
+      "frames": 271,
+      "maxFrame": 263,
+      "maxStep": 0.0357
+    },
+    {
+      "key": "fall",
+      "fps": 144,
+      "frames": 649,
+      "maxFrame": 630,
+      "maxStep": 0.0149
+    },
+    {
+      "key": "fallVariant",
+      "fps": 30,
+      "frames": 136,
+      "maxFrame": 132,
+      "maxStep": 0.0711
+    },
+    {
+      "key": "fallVariant",
+      "fps": 60,
+      "frames": 271,
+      "maxFrame": 263,
+      "maxStep": 0.0357
+    },
+    {
+      "key": "fallVariant",
+      "fps": 144,
+      "frames": 649,
+      "maxFrame": 630,
+      "maxStep": 0.0149
+    },
+    {
+      "key": "fallIdle",
+      "fps": 30,
+      "frames": 136,
+      "maxFrame": 132,
+      "maxStep": 0.0711
+    },
+    {
+      "key": "fallIdle",
+      "fps": 60,
+      "frames": 271,
+      "maxFrame": 263,
+      "maxStep": 0.0357
+    },
+    {
+      "key": "fallIdle",
+      "fps": 144,
+      "frames": 649,
+      "maxFrame": 630,
+      "maxStep": 0.0149
+    },
+    {
+      "key": "roll",
+      "fps": 30,
+      "frames": 48,
+      "maxFrame": 9,
+      "maxStep": 0.2959
+    },
+    {
+      "key": "roll",
+      "fps": 60,
+      "frames": 94,
+      "maxFrame": 17,
+      "maxStep": 0.1512
+    },
+    {
+      "key": "roll",
+      "fps": 144,
+      "frames": 224,
+      "maxFrame": 39,
+      "maxStep": 0.0637
+    },
+    {
+      "key": "injuredIdle",
+      "fps": 30,
+      "frames": 281,
+      "maxFrame": 155,
+      "maxStep": 0.0153
+    },
+    {
+      "key": "injuredIdle",
+      "fps": 60,
+      "frames": 561,
+      "maxFrame": 310,
+      "maxStep": 0.0076
+    },
+    {
+      "key": "injuredIdle",
+      "fps": 144,
+      "frames": 1345,
+      "maxFrame": 744,
+      "maxStep": 0.0032
+    },
+    {
+      "key": "wall",
+      "fps": 30,
+      "frames": 61,
+      "maxFrame": 46,
+      "maxStep": 0.1211
+    },
+    {
+      "key": "wall",
+      "fps": 60,
+      "frames": 121,
+      "maxFrame": 91,
+      "maxStep": 0.0612
+    },
+    {
+      "key": "wall",
+      "fps": 144,
+      "frames": 289,
+      "maxFrame": 217,
+      "maxStep": 0.0256
+    },
+    {
+      "key": "combatIdle",
+      "fps": 30,
+      "frames": 68,
+      "maxFrame": 38,
+      "maxStep": 0.0385
+    },
+    {
+      "key": "combatIdle",
+      "fps": 60,
+      "frames": 134,
+      "maxFrame": 75,
+      "maxStep": 0.0194
+    },
+    {
+      "key": "combatIdle",
+      "fps": 144,
+      "frames": 318,
+      "maxFrame": 177,
+      "maxStep": 0.0081
+    },
+    {
+      "key": "jab",
+      "fps": 30,
+      "frames": 42,
+      "maxFrame": 9,
+      "maxStep": 0.1
+    },
+    {
+      "key": "jab",
+      "fps": 60,
+      "frames": 82,
+      "maxFrame": 17,
+      "maxStep": 0.0515
+    },
+    {
+      "key": "jab",
+      "fps": 144,
+      "frames": 194,
+      "maxFrame": 39,
+      "maxStep": 0.022
+    },
+    {
+      "key": "cross",
+      "fps": 30,
+      "frames": 61,
+      "maxFrame": 30,
+      "maxStep": 0.225
+    },
+    {
+      "key": "cross",
+      "fps": 60,
+      "frames": 121,
+      "maxFrame": 59,
+      "maxStep": 0.1169
+    },
+    {
+      "key": "cross",
+      "fps": 144,
+      "frames": 289,
+      "maxFrame": 141,
+      "maxStep": 0.0488
+    },
+    {
+      "key": "guard",
+      "fps": 30,
+      "frames": 61,
+      "maxFrame": 57,
+      "maxStep": 0.0014
+    },
+    {
+      "key": "guard",
+      "fps": 60,
+      "frames": 121,
+      "maxFrame": 112,
+      "maxStep": 0.0008
+    },
+    {
+      "key": "guard",
+      "fps": 144,
+      "frames": 289,
+      "maxFrame": 268,
+      "maxStep": 0.0003
+    },
+    {
+      "key": "dodgeLeft",
+      "fps": 30,
+      "frames": 13,
+      "maxFrame": 2,
+      "maxStep": 0.0305
+    },
+    {
+      "key": "dodgeLeft",
+      "fps": 60,
+      "frames": 24,
+      "maxFrame": 4,
+      "maxStep": 0.0172
+    },
+    {
+      "key": "dodgeLeft",
+      "fps": 144,
+      "frames": 56,
+      "maxFrame": 9,
+      "maxStep": 0.0072
+    },
+    {
+      "key": "dodgeRight",
+      "fps": 30,
+      "frames": 13,
+      "maxFrame": 2,
+      "maxStep": 0.0312
+    },
+    {
+      "key": "dodgeRight",
+      "fps": 60,
+      "frames": 24,
+      "maxFrame": 4,
+      "maxStep": 0.0176
+    },
+    {
+      "key": "dodgeRight",
+      "fps": 144,
+      "frames": 56,
+      "maxFrame": 9,
+      "maxStep": 0.0074
+    },
+    {
+      "key": "dodgeBack",
+      "fps": 30,
+      "frames": 14,
+      "maxFrame": 3,
+      "maxStep": 0.0407
+    },
+    {
+      "key": "dodgeBack",
+      "fps": 60,
+      "frames": 27,
+      "maxFrame": 5,
+      "maxStep": 0.0214
+    },
+    {
+      "key": "dodgeBack",
+      "fps": 144,
+      "frames": 62,
+      "maxFrame": 11,
+      "maxStep": 0.0091
+    },
+    {
+      "key": "slam",
+      "fps": 30,
+      "frames": 83,
+      "maxFrame": 33,
+      "maxStep": 0.1855
+    },
+    {
+      "key": "slam",
+      "fps": 60,
+      "frames": 164,
+      "maxFrame": 65,
+      "maxStep": 0.094
+    },
+    {
+      "key": "slam",
+      "fps": 144,
+      "frames": 391,
+      "maxFrame": 156,
+      "maxStep": 0.0403
+    },
+    {
+      "key": "slamLand",
+      "fps": 30,
+      "frames": 43,
+      "maxFrame": 8,
+      "maxStep": 0.5697
+    },
+    {
+      "key": "slamLand",
+      "fps": 60,
+      "frames": 84,
+      "maxFrame": 15,
+      "maxStep": 0.2885
+    },
+    {
+      "key": "slamLand",
+      "fps": 144,
+      "frames": 199,
+      "maxFrame": 34,
+      "maxStep": 0.121
+    },
+    {
+      "key": "dodgeForward",
+      "fps": 30,
+      "frames": 17,
+      "maxFrame": 3,
+      "maxStep": 0.0658
+    },
+    {
+      "key": "dodgeForward",
+      "fps": 60,
+      "frames": 33,
+      "maxFrame": 6,
+      "maxStep": 0.0332
+    },
+    {
+      "key": "dodgeForward",
+      "fps": 144,
+      "frames": 76,
+      "maxFrame": 14,
+      "maxStep": 0.0142
+    },
+    {
+      "key": "hook",
+      "fps": 30,
+      "frames": 50,
+      "maxFrame": 19,
+      "maxStep": 0.3506
+    },
+    {
+      "key": "hook",
+      "fps": 60,
+      "frames": 98,
+      "maxFrame": 36,
+      "maxStep": 0.1852
+    },
+    {
+      "key": "hook",
+      "fps": 144,
+      "frames": 232,
+      "maxFrame": 86,
+      "maxStep": 0.0821
+    },
+    {
+      "key": "heavy",
+      "fps": 30,
+      "frames": 26,
+      "maxFrame": 9,
+      "maxStep": 0.2247
+    },
+    {
+      "key": "heavy",
+      "fps": 60,
+      "frames": 51,
+      "maxFrame": 18,
+      "maxStep": 0.115
+    },
+    {
+      "key": "heavy",
+      "fps": 144,
+      "frames": 120,
+      "maxFrame": 42,
+      "maxStep": 0.0495
+    },
+    {
+      "key": "hit",
+      "fps": 30,
+      "frames": 14,
+      "maxFrame": 13,
+      "maxStep": 0.1033
+    },
+    {
+      "key": "hit",
+      "fps": 60,
+      "frames": 26,
+      "maxFrame": 25,
+      "maxStep": 0.0538
+    },
+    {
+      "key": "hit",
+      "fps": 144,
+      "frames": 61,
+      "maxFrame": 60,
+      "maxStep": 0.0224
+    },
+    {
+      "key": "hitHead",
+      "fps": 30,
+      "frames": 18,
+      "maxFrame": 8,
+      "maxStep": 0.0168
+    },
+    {
+      "key": "hitHead",
+      "fps": 60,
+      "frames": 34,
+      "maxFrame": 15,
+      "maxStep": 0.0087
+    },
+    {
+      "key": "hitHead",
+      "fps": 144,
+      "frames": 80,
+      "maxFrame": 34,
+      "maxStep": 0.0036
+    },
+    {
+      "key": "airTrick",
+      "fps": 30,
+      "frames": 29,
+      "maxFrame": 21,
+      "maxStep": 0.4008
+    },
+    {
+      "key": "airTrick",
+      "fps": 60,
+      "frames": 57,
+      "maxFrame": 41,
+      "maxStep": 0.2047
+    },
+    {
+      "key": "airTrick",
+      "fps": 144,
+      "frames": 136,
+      "maxFrame": 98,
+      "maxStep": 0.0852
+    },
+    {
+      "key": "special",
+      "fps": 30,
+      "frames": 34,
+      "maxFrame": 14,
+      "maxStep": 0.513
+    },
+    {
+      "key": "special",
+      "fps": 60,
+      "frames": 67,
+      "maxFrame": 28,
+      "maxStep": 0.2621
+    },
+    {
+      "key": "special",
+      "fps": 144,
+      "frames": 160,
+      "maxFrame": 67,
+      "maxStep": 0.1094
+    }
+  ]
+}

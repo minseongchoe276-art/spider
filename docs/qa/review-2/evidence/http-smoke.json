@@ -1,0 +1,76 @@
+{
+  "base": "http://127.0.0.1:5175/",
+  "passed": 10,
+  "results": [
+    {
+      "name": "Production entry",
+      "path": "/",
+      "method": "GET",
+      "status": 200,
+      "bytes": 9363
+    },
+    {
+      "name": "HEAD preserves length without a body",
+      "path": "/",
+      "method": "HEAD",
+      "status": 200,
+      "bytes": 0
+    },
+    {
+      "name": "Hashed JS is immutable",
+      "path": "/assets/index-C2eKohbG.js",
+      "method": "GET",
+      "status": 200,
+      "bytes": 5248679
+    },
+    {
+      "name": "Writes are rejected",
+      "path": "/",
+      "method": "POST",
+      "status": 405,
+      "bytes": 18
+    },
+    {
+      "name": "Hidden path is private",
+      "path": "/.git/config",
+      "method": "GET",
+      "status": 403,
+      "bytes": 11
+    },
+    {
+      "name": "Encoded traversal cannot escape dist",
+      "path": "/..%2fpackage.json",
+      "method": "GET",
+      "status": 403,
+      "bytes": 11
+    },
+    {
+      "name": "Malformed URL is rejected",
+      "path": "/%ZZ",
+      "method": "GET",
+      "status": 400,
+      "bytes": 11
+    },
+    {
+      "name": "Proxy denies non-tile upstream paths",
+      "path": "/urban-tiles/not-allowed",
+      "method": "GET",
+      "status": 403,
+      "bytes": 16
+    },
+    {
+      "name": "Missing assets return 404",
+      "path": "/definitely-missing-qa-file.glb",
+      "method": "GET",
+      "status": 404,
+      "bytes": 9
+    },
+    {
+      "name": "Current Hong Kong root loads through production proxy",
+      "path": "/urban-tiles/api/3d-data/3dtiles/f2/tileset.json",
+      "method": "GET",
+      "status": 200,
+      "bytes": 11244
+    }
+  ]
+}

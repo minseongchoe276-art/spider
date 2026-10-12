@@ -1,0 +1,94 @@
+{
+ "map": "Hong Kong",
+ "ready": true,
+ "position": [
+  0,
+  21.054,
+  14.336
+ ],
+ "velocity": [
+  0,
+  0,
+  0.268
+ ],
+ "state": "IDLE",
+ "motion": "idle",
+ "mode": "web",
+ "webs": [],
+ "support": null,
+ "collision": 60,
+ "pending": 0,
+ "history": [
+  "IDLE/undefined",
+  "FALLING/undefined",
+  "IDLE/idle",
+  "IDLE/combatIdle",
+  "IDLE/idle",
+  "JUMPING/jump",
+  "SWINGING/swing",
+  "LANDING/land",
+  "IDLE/idle"
+ ],
+ "textureDiagnostics": [
+  {
+   "failed": true,
+   "path": "http://127.0.0.1:5175/urban-tiles/api/3d-data/3dsd/WGS84/building/Data/F_Tile_+4_1_0/",
+   "mime": "image/ktx2",
+   "head": [
+    171,
+    75,
+    84,
+    88,
+    32,
+    50,
+    48,
+    187,
+    13,
+    10,
+    26,
+    10
+   ],
+   "bytes": 256
+  },
+  {
+   "failed": true,
+   "path": "http://127.0.0.1:5175/urban-tiles/api/3d-data/3dsd/WGS84/building/Data/F_Tile_+4_1_0/",
+   "mime": "image/ktx2",
+   "head": [
+    171,
+    75,
+    84,
+    88,
+    32,
+    50,
+    48,
+    187,
+    13,
+    10,
+    26,
+    10
+   ],
+   "bytes": 256
+  },
+  {
+   "failed": true,
+   "path": "http://127.0.0.1:5175/urban-tiles/api/3d-data/3dsd/WGS84/building/Data/F_Tile_+4_1_0/",
+   "mime": "image/ktx2",
+   "head": [
+    171,
+    75,
+    84,
+    88,
+    32,
+    50,
+    48,
+    187,
+    13,
+    10,
+    26,
+    10
+   ],
+   "bytes": 256
+  }
+ ]
+}

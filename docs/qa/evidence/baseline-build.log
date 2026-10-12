@@ -1,0 +1,19 @@
+
+> spiderman-web-swing@1.0.0 build
+> vite build
+
+vite v5.4.21 building for production...
+transforming...
+✓ 44 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                           6.82 kB │ gzip:     2.49 kB
+dist/assets/index-B-6pcKo4.css            7.78 kB │ gzip:     2.27 kB
+dist/assets/MotionReview-Dt0viT4N.js      5.71 kB │ gzip:     2.91 kB
+dist/assets/index-uUUSleSL.js         5,228.19 kB │ gzip: 1,896.16 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 3.42s

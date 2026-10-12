@@ -1,0 +1,25 @@
+{
+  "productionUrl": "http://127.0.0.1:5175/",
+  "hongKong": {
+    "started": true,
+    "altitudeAtStart": 20,
+    "altitudeAfterIdle": 20,
+    "raceStartInFinalReload": false,
+    "failureNotice": "지형 준비 또는 링 공간 부족"
+  },
+  "procedural": {
+    "started": true,
+    "quickJump": true,
+    "raceStarted": true
+  },
+  "earlierHongKongRace": {
+    "started": true,
+    "pauseTimerAfter": "링 1/8 · 12.38초",
+    "pauseTimerLater": "링 1/8 · 12.38초"
+  },
+  "settings": {
+    "quality": "low",
+    "reducedMotion": true
+  },
+  "fullRaceCompletedManually": false
+}

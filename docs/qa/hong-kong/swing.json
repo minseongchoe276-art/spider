@@ -1,0 +1,53 @@
+{
+ "map": "Hong Kong",
+ "ready": true,
+ "position": [
+  0,
+  24.865,
+  5.2
+ ],
+ "velocity": [
+  0,
+  -0.733,
+  12
+ ],
+ "state": "SWINGING",
+ "motion": "swing",
+ "mode": "web",
+ "webs": [
+  {
+   "hand": "left",
+   "anchor": [
+    -5.59,
+    30.63,
+    13.36
+   ],
+   "length": 16.56,
+   "supported": true
+  },
+  {
+   "hand": "right",
+   "anchor": [
+    23.29,
+    62.88,
+    104.44
+   ],
+   "length": 112.66,
+   "supported": true
+  }
+ ],
+ "support": null,
+ "collision": 73,
+ "pending": 0,
+ "history": [
+  "IDLE/undefined",
+  "FALLING/undefined",
+  "IDLE/idle",
+  "IDLE/combatIdle",
+  "IDLE/idle",
+  "JUMPING/jump",
+  "SWINGING/swing"
+ ],
+ "decodedRGBTextures": 3,
+ "textureDiagnostics": []
+}

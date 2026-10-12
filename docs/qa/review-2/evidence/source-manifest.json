@@ -1,0 +1,182 @@
+[
+  {
+    "file": "src/AssetLoader.js",
+    "bytes": 486,
+    "sha256": "65a7ec8772acf3b1e70108834da85008d5a4346a85a76d2a9c11aaeb2feeb940"
+  },
+  {
+    "file": "src/Audio.js",
+    "bytes": 7567,
+    "sha256": "90d696e7a905ea4cb8aa2299a980a9767f3b7b2bf21ad7c928d2db9893d422d3"
+  },
+  {
+    "file": "src/Camera.js",
+    "bytes": 11674,
+    "sha256": "7b45a4850c08797e990e0580fb6be4e4ad1669c7407a5320e7048b70d3847209"
+  },
+  {
+    "file": "src/Character.js",
+    "bytes": 23182,
+    "sha256": "f4a942c3b49247c564ce7b4b4ebe780513fe19cd6e2d5980221a8189c1a5101b"
+  },
+  {
+    "file": "src/City.js",
+    "bytes": 18985,
+    "sha256": "f6a64e10e8dab07e99d79fe86abe63aa76b3db52c859ac6804ba9ff24046553f"
+  },
+  {
+    "file": "src/MotionCatalog.js",
+    "bytes": 919,
+    "sha256": "574e7352403fd7e88af552a94b7ab62e514f7ca8ab53bc5a6f55d43851613c6d"
+  },
+  {
+    "file": "src/MotionRetarget.js",
+    "bytes": 8335,
+    "sha256": "a4a99771cd77d61922753f32eb94eba8aa7010a2089c127097b39523d0477e1d"
+  },
+  {
+    "file": "src/MotionReview.js",
+    "bytes": 9544,
+    "sha256": "57c779b30482a77e4252d768a9c85a4e73a8ed3f83bc47a4eb92ce5ac85c91fd"
+  },
+  {
+    "file": "src/MovementCollision.js",
+    "bytes": 2195,
+    "sha256": "6ef229e28dab111ee88cf2d1ce9fbeb0e28744eb10ab18de13652ac794986f51"
+  },
+  {
+    "file": "src/Preferences.js",
+    "bytes": 1719,
+    "sha256": "c737f208f4e5b5b596d733794fe38d5973772beffaf7990a6a113850b467a8a8"
+  },
+  {
+    "file": "src/SpeedLines.js",
+    "bytes": 2342,
+    "sha256": "e9f4e9f454ee0efc52c172c8ef499b4b43b825459db34740f1315dacf397e84a"
+  },
+  {
+    "file": "src/StreamedCollision.js",
+    "bytes": 8808,
+    "sha256": "38d9cfba25075f79e8b3ccdfac12b02473defdf6ac5f36e8932e9aaadec4f4bb"
+  },
+  {
+    "file": "src/SwingPhysics.js",
+    "bytes": 36315,
+    "sha256": "fcc4ff59dff593fc0a34353f5bfbe6f7640fa6a76528c9c9abe7a99b247c7dd0"
+  },
+  {
+    "file": "src/TimeTrial.js",
+    "bytes": 7572,
+    "sha256": "280b123569ea389f373ef40fa24c65ac615e0b914aa1773fd8387838262e43c6"
+  },
+  {
+    "file": "src/UrbanGroundCity.js",
+    "bytes": 11339,
+    "sha256": "a1ba8674180132dfb58384bd9ed83954d1b76aed9f68921777ca1d596ee25540"
+  },
+  {
+    "file": "src/VFX.js",
+    "bytes": 3427,
+    "sha256": "652b7835fb8f7d79a3e9f2a0deec94b9de5e219f9ba12907209bbffac2cd14ff"
+  },
+  {
+    "file": "src/WebSwinger.js",
+    "bytes": 10181,
+    "sha256": "02bce8fb97d79b2ae1103ab20554464292ba300923878dbf1c706c04cc5b83ec"
+  },
+  {
+    "file": "src/main.js",
+    "bytes": 34012,
+    "sha256": "5d53857d89bba6eb4cd097049dd6f15ea67c2b8ec1740818e94d108e53d14499"
+  },
+  {
+    "file": "src/style.css",
+    "bytes": 12966,
+    "sha256": "10a303b6c476436c14fc5c136120ea2630b438eca184b92fde89a4364617bb99"
+  },
+  {
+    "file": "scripts/audit-all-motions.mjs",
+    "bytes": 4152,
+    "sha256": "be71f610210547fb5b32de884d83526663fc5e2c4fc22fe32b574a0764a3e659"
+  },
+  {
+    "file": "scripts/build-motions.mjs",
+    "bytes": 3048,
+    "sha256": "77aac097b04370b73e646415092b15e711cbdb59ce0826a5bc88ed767349cd8e"
+  },
+  {
+    "file": "scripts/check-controller.mjs",
+    "bytes": 21236,
+    "sha256": "f73ed37260bead8b38b16d6d66f10e6bd138976bbf919b3ae9b6930580a64e4b"
+  },
+  {
+    "file": "scripts/check-gameplay.mjs",
+    "bytes": 8559,
+    "sha256": "eb1cfa65083aee5ed63e1382ee442b7ef26f36941cfb2671a25efbec595ef803"
+  },
+  {
+    "file": "scripts/check-motions.mjs",
+    "bytes": 6157,
+    "sha256": "63fac4075667df07c721ea8437ef447498ccec9044c8d1399f28d2070628edf4"
+  },
+  {
+    "file": "scripts/check-qa.mjs",
+    "bytes": 20382,
+    "sha256": "6b879a1f6aa7ce0065c8222b2a007d64fae41833c6abdfbc264de3bf249f1dcb"
+  },
+  {
+    "file": "scripts/check-review-2.mjs",
+    "bytes": 9525,
+    "sha256": "b9e82eade321132ae9407432ee178bc7eace212fb51ee7d11c0877207558798c"
+  },
+  {
+    "file": "scripts/check-server.mjs",
+    "bytes": 2224,
+    "sha256": "80f4cfe350adeea3633505731673d6afb6fdc83525050be69f559834c5146a1c"
+  },
+  {
+    "file": "scripts/fix_spiderman_blend.py",
+    "bytes": 1618,
+    "sha256": "571ad5993e59255c8f6e967c5efc4388f69741e5221412b501de0b93096dbbb1"
+  },
+  {
+    "file": "scripts/inspect-rig.mjs",
+    "bytes": 3213,
+    "sha256": "9157f86fb8f8d1c582feeebf495ee9bd6f2e8a480b358a8f5c3244b3e43baec4"
+  },
+  {
+    "file": "scripts/render_check.py",
+    "bytes": 1006,
+    "sha256": "95a6645ada35182f2d8c08850eab5e35787f0fd1afd6fd468a2f3ee5ce85e864"
+  },
+  {
+    "file": "scripts/serve.mjs",
+    "bytes": 3028,
+    "sha256": "9a0d600bd37c0b8c682dc50b919f05134fd822513efe5cd71607be3756369c19"
+  },
+  {
+    "file": "index.html",
+    "bytes": 9314,
+    "sha256": "67f6957432d389de243484e2dac21279d4b31150d0e946f71da68add9d65fcda"
+  },
+  {
+    "file": "package.json",
+    "bytes": 747,
+    "sha256": "3799d567a4a508355c9a47f361488d3e486ff4d7efc9d90cb4fd8d3d35f109ae"
+  },
+  {
+    "file": "package-lock.json",
+    "bytes": 39562,
+    "sha256": "0314ce549704e338b1079509f638c16fdae33110292024505087d052c54b94e6"
+  },
+  {
+    "file": "vite.config.js",
+    "bytes": 756,
+    "sha256": "f4a93067e3027faffac6f0fd20fe678f86af69498087b638c452b16070e3c57f"
+  },
+  {
+    "file": "README.md",
+    "bytes": 3217,
+    "sha256": "83f16187bdcf32bb2741002754fee71bd9c0a44d8fa48c82af49a61660dece1c"
+  }
+]

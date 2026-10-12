@@ -1,0 +1,47 @@
+Failed loading GLTF/FBX models, keeping high-poly proxy: Error: simulated offline
+    at globalThis.fetch (file:///Users/choeminseong/Desktop/%E1%84%80%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%B7/scripts/check-qa.mjs:28:42)
+    at fetchAsset (file:///Users/choeminseong/Desktop/%E1%84%80%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%B7/src/AssetLoader.js:6:28)
+    at Character.loadCharacter (file:///Users/choeminseong/Desktop/%E1%84%80%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%B7/src/Character.js:152:54)
+    at new Character (file:///Users/choeminseong/Desktop/%E1%84%80%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%B7/src/Character.js:50:10)
+    at file:///Users/choeminseong/Desktop/%E1%84%80%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%B7/scripts/check-qa.mjs:30:21
+    at check (file:///Users/choeminseong/Desktop/%E1%84%80%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%B7/scripts/check-qa.mjs:18:41)
+    at file:///Users/choeminseong/Desktop/%E1%84%80%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%B7/scripts/check-qa.mjs:26:7
+    at ModuleJob.run (node:internal/modules/esm/module_job:345:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:651:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
+PASS QA 1: Failed GLB remains startable, reports degradation, keeps attached web visible
+PASS QA 2: Asset HTTP failures and network timeout settle rather than wait forever
+PASS QA 3: Absent motion selects an available idle instead of keeping a fall pose
+PASS QA 4: Reattachment cannot repeatedly grant launch energy; swing cancels stale zip
+PASS QA 5: Tether obstruction on the same mesh releases the swing
+PASS QA 6: Procedural wall run mounts a supported rooftop
+PASS QA 7: Camera chooses the closest visual surface even with a farther collider
+PASS QA 8: Mouse vertical direction stays consistent between third and first person
+PASS QA 9: Reduced motion disables camera shake and speed FOV
+PASS QA 10: Long-lived large tile rebuilds collision around a moved player
+PASS QA 11: Large triangle conversion is incremental and unload cancels pending work
+PASS QA 12: Disposal before Rapier init settles safely
+PASS QA 13: Time trial rejects an unloaded course without throwing
+PASS QA 14: Time trial rings are placed clear of procedural rooftops
+PASS QA 15: Race uses active simulation time and catches a fast ring crossing
+PASS QA 16: Being beside the ring does not count as passing its aperture
+PASS QA 17: Corrupt, invalid and inaccessible storage cannot break play
+PASS QA 18: Particles remain visible away from the original cached bounds
+PASS QA 19: Speed-effect response is independent of refresh rate
+PASS QA 20: Input aliases and opposing directions reflect all held keys
+PASS QA 21: Mute routes every effect through a master gain and restores wind
+PASS QA 22: Procedural spawns clear equipment, stay supported and keep the camera clear
+PASS QA 23: Initial spawn and recovery use the same preferred roof
+Audio unavailable; continuing silently: Error: device unavailable
+    at audio.init (file:///Users/choeminseong/Desktop/%E1%84%80%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%B7/scripts/check-qa.mjs:194:59)
+    at SoundController.ensureContext (file:///Users/choeminseong/Desktop/%E1%84%80%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%B7/src/Audio.js:29:18)
+    at file:///Users/choeminseong/Desktop/%E1%84%80%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%B7/scripts/check-qa.mjs:195:33
+    at getActual (node:assert:609:5)
+    at Function.doesNotThrow (node:assert:777:32)
+    at file:///Users/choeminseong/Desktop/%E1%84%80%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%B7/scripts/check-qa.mjs:195:10
+    at check (file:///Users/choeminseong/Desktop/%E1%84%80%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%B7/scripts/check-qa.mjs:18:41)
+    at file:///Users/choeminseong/Desktop/%E1%84%80%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%B7/scripts/check-qa.mjs:193:7
+PASS QA 24: Audio device failure cannot prevent starting the game
+PASS QA 25: Pause clears physical buttons while preserving the attached web on resume
+PASS QA 26: A complete Space down/up between frames still triggers a jump
+PASS: 26 QA regression scenarios

@@ -1,0 +1,32 @@
+{
+ "map": "Hong Kong",
+ "ready": true,
+ "position": [
+  0,
+  19.646,
+  0
+ ],
+ "velocity": [
+  0,
+  0,
+  0
+ ],
+ "state": "IDLE",
+ "motion": "hook",
+ "mode": "combat",
+ "webs": [],
+ "support": 19.521251296514627,
+ "collision": 72,
+ "pending": 0,
+ "history": [
+  "IDLE/undefined",
+  "FALLING/undefined",
+  "IDLE/idle",
+  "IDLE/combatIdle",
+  "IDLE/jab",
+  "IDLE/cross",
+  "IDLE/hook"
+ ],
+ "decodedRGBTextures": 3,
+ "textureDiagnostics": []
+}

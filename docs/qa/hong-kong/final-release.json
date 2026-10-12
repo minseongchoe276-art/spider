@@ -1,0 +1,35 @@
+{
+ "map": "Hong Kong",
+ "ready": true,
+ "position": [
+  0,
+  23.829,
+  12.318
+ ],
+ "velocity": [
+  0,
+  11.867,
+  0
+ ],
+ "state": "JUMPING",
+ "motion": "jump",
+ "mode": "web",
+ "webs": [],
+ "support": null,
+ "collision": 61,
+ "pending": 0,
+ "history": [
+  "IDLE/undefined",
+  "FALLING/undefined",
+  "IDLE/idle",
+  "IDLE/combatIdle",
+  "IDLE/idle",
+  "JUMPING/jump",
+  "SWINGING/swing",
+  "LANDING/land",
+  "IDLE/idle",
+  "JUMPING/jump"
+ ],
+ "decodedRGBTextures": 3,
+ "textureDiagnostics": []
+}

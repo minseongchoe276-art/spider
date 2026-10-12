@@ -1,0 +1,12 @@
+PASS REVIEW: Pausing a reel preserves its swing after reaching the target
+PASS REVIEW: Race clock measures a delayed active frame, while physics stays bounded
+PASS REVIEW: Facade normal matches the world-space triangle after unequal scaling
+PASS REVIEW: Best-time quota failure is visible to the player
+PASS REVIEW: A single movement segment can cross two gates in course order
+PASS REVIEW: Crossing a later gate before the current gate never completes a race
+PASS REVIEW: Enabling reduced motion immediately cancels a shake already in progress
+PASS REVIEW: Saving, reloading, and limiting layout records preserves the fastest valid time
+PASS REVIEW: An unavailable fullscreen API gives feedback rather than doing nothing
+PASS REVIEW: A generated local course completes all eight ordered gates and can restart
+PASS REVIEW: Seeded mixed movement stays finite and speed-bounded over twelve simulated minutes
+Second review: 11 passed, 0 failed.

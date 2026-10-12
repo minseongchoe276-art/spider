@@ -1,0 +1,50 @@
+
+> spiderman-web-swing@1.0.0 test
+> node scripts/check-motions.mjs && node scripts/check-controller.mjs && node scripts/check-gameplay.mjs
+
+FBXLoader: TGA loader not found, skipping  ../../../../home/app/mixamo-mini/tmp/skins_e57a88ac-3622-472c-96c7-e4a65b4e1321.fbm/RED CLASSIC.tga
+FBXLoader: TGA loader not found, creating placeholder texture for ../../../../home/app/mixamo-mini/tmp/skins_e57a88ac-3622-472c-96c7-e4a65b4e1321.fbm/RED CLASSIC.tga
+THREE.FBXLoader: Vertex has more than 4 skinning weights assigned to vertex. Deleting additional weights.
+{"file":"Idle","key":"idle","duration":4,"matchedBones":65,"unitScale":0.025399998829791486,"nominalSpeed":7.918739123391324e-9,"checkedFrames":241,"samples":[{"headY":1.698,"footY":0.111},{"headY":1.682,"footY":0.112},{"headY":1.698,"footY":0.111}]}
+{"file":"Walking","key":"walk","duration":0.967,"matchedBones":65,"unitScale":0.02553865444955606,"nominalSpeed":2.0744570316998203,"checkedFrames":59,"samples":[{"headY":1.772,"footY":0.108},{"headY":1.772,"footY":0.11},{"headY":1.772,"footY":0.108}]}
+FBXLoader: TGA loader not found, skipping  ../../../../home/app/mixamo-mini/tmp/skins_34a61806-ed24-4a07-bd84-1318719d713e.fbm/RED CLASSIC.tga
+FBXLoader: TGA loader not found, creating placeholder texture for ../../../../home/app/mixamo-mini/tmp/skins_34a61806-ed24-4a07-bd84-1318719d713e.fbm/RED CLASSIC.tga
+THREE.FBXLoader: Vertex has more than 4 skinning weights assigned to vertex. Deleting additional weights.
+{"file":"Jogging","key":"jog","duration":2.567,"matchedBones":65,"unitScale":0.025399998829791486,"nominalSpeed":2.4330304351312395,"checkedFrames":155,"samples":[{"headY":1.698,"footY":0.16},{"headY":1.692,"footY":0.117},{"headY":1.698,"footY":0.16}]}
+FBXLoader: TGA loader not found, skipping  ../../../../home/app/mixamo-mini/tmp/skins_cc1b17f1-7dd0-4c24-92bf-417033ef4f5d.fbm/RED CLASSIC.tga
+FBXLoader: TGA loader not found, creating placeholder texture for ../../../../home/app/mixamo-mini/tmp/skins_cc1b17f1-7dd0-4c24-92bf-417033ef4f5d.fbm/RED CLASSIC.tga
+THREE.FBXLoader: Vertex has more than 4 skinning weights assigned to vertex. Deleting additional weights.
+{"file":"Running","key":"regularRun","duration":0.7,"matchedBones":65,"unitScale":0.025399998829791486,"nominalSpeed":6.069090994560909e-7,"checkedFrames":43,"samples":[{"headY":1.645,"footY":0.137},{"headY":1.643,"footY":0.106},{"headY":1.645,"footY":0.137}]}
+{"file":"Fast Run","key":"run","duration":0.533,"matchedBones":65,"unitScale":0.02553865444955606,"nominalSpeed":7.001824220704476,"checkedFrames":34,"samples":[{"headY":1.636,"footY":0.129},{"headY":1.637,"footY":0.118},{"headY":1.636,"footY":0.129}]}
+{"file":"Female Stop Walking","key":"stop","duration":0.533,"matchedBones":65,"unitScale":0.013033680828509605,"nominalSpeed":1.27094441022233,"checkedFrames":33,"samples":[{"headY":1.736,"footY":0.104},{"headY":1.794,"footY":0.105},{"headY":1.813,"footY":0.109}]}
+{"file":"Run To Stop","key":"runStop","duration":0.9,"matchedBones":65,"unitScale":0.02553865444955606,"nominalSpeed":1.1319419730059574,"checkedFrames":55,"samples":[{"headY":1.641,"footY":0.133},{"headY":1.475,"footY":0.107},{"headY":1.694,"footY":0.108}]}
+{"file":"Left Turn","key":"turnLeft","duration":0.933,"matchedBones":65,"unitScale":0.02553865444955606,"nominalSpeed":0.003333269488460493,"checkedFrames":58,"samples":[{"headY":1.796,"footY":0.108},{"headY":1.772,"footY":0.13},{"headY":1.796,"footY":0.108}]}
+{"file":"Right Turn","key":"turnRight","duration":0.933,"matchedBones":65,"unitScale":0.02553865444955606,"nominalSpeed":0.009972927860727987,"checkedFrames":58,"samples":[{"headY":1.796,"footY":0.108},{"headY":1.774,"footY":0.123},{"headY":1.795,"footY":0.108}]}
+FBXLoader: TGA loader not found, skipping  ../../../../home/app/mixamo-mini/tmp/skins_32bddd07-d28a-412d-ad28-a157f3dc5106.fbm/RED CLASSIC.tga
+FBXLoader: TGA loader not found, creating placeholder texture for ../../../../home/app/mixamo-mini/tmp/skins_32bddd07-d28a-412d-ad28-a157f3dc5106.fbm/RED CLASSIC.tga
+THREE.FBXLoader: Vertex has more than 4 skinning weights assigned to vertex. Deleting additional weights.
+{"file":"Standing Jump","key":"jump","duration":0.6,"matchedBones":65,"unitScale":0.025399998829791486,"nominalSpeed":1.0834133984389889e-7,"checkedFrames":37,"samples":[{"headY":1.765,"footY":0.352},{"headY":1.787,"footY":0.233},{"headY":1.665,"footY":0.603}]}
+FBXLoader: TGA loader not found, skipping  ../../../../home/app/mixamo-mini/tmp/skins_32bddd07-d28a-412d-ad28-a157f3dc5106.fbm/RED CLASSIC.tga
+FBXLoader: TGA loader not found, creating placeholder texture for ../../../../home/app/mixamo-mini/tmp/skins_32bddd07-d28a-412d-ad28-a157f3dc5106.fbm/RED CLASSIC.tga
+THREE.FBXLoader: Vertex has more than 4 skinning weights assigned to vertex. Deleting additional weights.
+{"file":"Standing Jump","key":"land","duration":0.867,"matchedBones":65,"unitScale":0.025399998829791486,"nominalSpeed":1.0834133984389889e-7,"checkedFrames":54,"samples":[{"headY":1.158,"footY":0.112},{"headY":1.637,"footY":0.112},{"headY":1.642,"footY":0.112}]}
+{"file":"Jumping Down (1)","key":"jumpDown","duration":2.3,"matchedBones":65,"unitScale":0.02553865444955606,"nominalSpeed":1.0773352528162454,"checkedFrames":139,"samples":[{"headY":1.932,"footY":1.294},{"headY":1.897,"footY":0.248},{"headY":0.824,"footY":0.206}]}
+{"file":"Jumping Down (1)","key":"drop","duration":0.533,"matchedBones":65,"unitScale":0.02553865444955606,"nominalSpeed":1.0773352528162454,"checkedFrames":33,"samples":[{"headY":1.565,"footY":0.927},{"headY":1.591,"footY":0.759},{"headY":1.77,"footY":0.459}]}
+FBXLoader: TGA loader not found, skipping  ../../../../home/app/mixamo-mini/tmp/skins_0c50cb7a-75c3-48f2-bd97-2a4fff958284.fbm/RED CLASSIC.tga
+FBXLoader: TGA loader not found, creating placeholder texture for ../../../../home/app/mixamo-mini/tmp/skins_0c50cb7a-75c3-48f2-bd97-2a4fff958284.fbm/RED CLASSIC.tga
+THREE.FBXLoader: Vertex has more than 4 skinning weights assigned to vertex. Deleting additional weights.
+{"file":"Jumping Down","key":"jumpDownVariant","duration":2.633,"matchedBones":65,"unitScale":0.025399998829791486,"nominalSpeed":0.8869551522734507,"checkedFrames":160,"samples":[{"headY":2.769,"footY":1.231},{"headY":2.717,"footY":1.165},{"headY":0.72,"footY":0.115}]}
+FBXLoader: TGA loader not found, skipping  ../../../../home/app/mixamo-mini/tmp/skins_883db11c-af78-4b49-a12b-ee4b2630fae0.fbm/RED CLASSIC.tga
+FBXLoader: TGA loader not found, creating placeholder texture for ../../../../home/app/mixamo-mini/tmp/skins_883db11c-af78-4b49-a12b-ee4b2630fae0.fbm/RED CLASSIC.tga
+THREE.FBXLoader: Vertex has more than 4 skinning weights assigned to vertex. Deleting additional weights.
+{"file":"Rope Swinging","key":"swing","duration":1.952,"matchedBones":65,"unitScale":0.025399998829791486,"nominalSpeed":1.280615809652151,"checkedFrames":119,"samples":[{"headY":1.802,"footY":0.152},{"headY":1.659,"footY":0.651},{"headY":1.802,"footY":0.152}]}
+{"file":"Falling (2)","key":"fall","duration":4.5,"matchedBones":65,"unitScale":0.02553865444955606,"nominalSpeed":0.000014811552876369535,"checkedFrames":271,"samples":[{"headY":1.463,"footY":1.098},{"headY":1.425,"footY":1.171},{"headY":1.463,"footY":1.098}]}
+{"file":"Falling","key":"fallVariant","duration":4.5,"matchedBones":65,"unitScale":0.02553865444955606,"nominalSpeed":0.000014811552876369535,"checkedFrames":271,"samples":[{"headY":1.463,"footY":1.098},{"headY":1.425,"footY":1.171},{"headY":1.463,"footY":1.098}]}
+FBXLoader: TGA loader not found, skipping  ../../../../home/app/mixamo-mini/tmp/skins_5d7a3c57-f50e-41dd-a23f-7d0152a9df5c.fbm/RED CLASSIC.tga
+FBXLoader: TGA loader not found, creating placeholder texture for ../../../../home/app/mixamo-mini/tmp/skins_5d7a3c57-f50e-41dd-a23f-7d0152a9df5c.fbm/RED CLASSIC.tga
+THREE.FBXLoader: Vertex has more than 4 skinning weights assigned to vertex. Deleting additional weights.
+{"file":"Falling Idle","key":"fallIdle","duration":4.5,"matchedBones":65,"unitScale":0.025399998829791486,"nominalSpeed":0.00001473113732245673,"checkedFrames":271,"samples":[{"headY":1.466,"footY":1.101},{"headY":1.428,"footY":1.174},{"headY":1.466,"footY":1.101}]}
+{"file":"Falling To Roll","key":"roll","duration":1.543,"matchedBones":65,"unitScale":0.02553865444955606,"nominalSpeed":2.195741610697056,"checkedFrames":94,"samples":[{"headY":1.185,"footY":0.126},{"headY":0.833,"footY":0.087},{"headY":1.676,"footY":0.107}]}
+{"file":"Injured Idle","key":"injuredIdle","duration":9.333,"matchedBones":65,"unitScale":0.02553865444955606,"nominalSpeed":1.7647393625321465e-7,"checkedFrames":561,"samples":[{"headY":1.675,"footY":0.11},{"headY":1.618,"footY":0.11},{"headY":1.675,"footY":0.11}]}
+PASS: idle, walking/jogging/running/sprint, stop, jump, short/deep fall, landing/roll recovery and travel, stationary turns, web zip, roof edge, swept roof, release, frame rates, animation transitions, flip recovery, camera zoom
+PASS: fixed physics at 30/60/120/144 FPS, streamed wall/roof transitions, camera collision, thin walls, ceiling, input buffer, swing energy, recovery, triangle/capsule collision

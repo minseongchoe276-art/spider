@@ -1,0 +1,48 @@
+{
+ "map": "Hong Kong",
+ "ready": true,
+ "position": [
+  2.499,
+  17.218,
+  18.754
+ ],
+ "velocity": [
+  -9.886,
+  9.159,
+  -3.009
+ ],
+ "state": "WEB_ZIP",
+ "motion": "zip",
+ "mode": "web",
+ "webs": [],
+ "support": null,
+ "collision": 98,
+ "pending": 1,
+ "history": [
+  "IDLE/undefined",
+  "FALLING/undefined",
+  "IDLE/idle",
+  "IDLE/combatIdle",
+  "IDLE/idle",
+  "JUMPING/jump",
+  "SWINGING/swing",
+  "LANDING/land",
+  "IDLE/idle",
+  "RUNNING/walk",
+  "IDLE/stop",
+  "FALLING/drop",
+  "LANDING/land",
+  "IDLE/idle",
+  "RUNNING/walk",
+  "WALL_RUNNING/wall",
+  "FALLING/drop",
+  "LANDING/land",
+  "IDLE/idle",
+  "RUNNING/walk",
+  "IDLE/stop",
+  "IDLE/idle",
+  "WEB_ZIP/zip"
+ ],
+ "decodedRGBTextures": 3,
+ "textureDiagnostics": []
+}
