@@ -81,6 +81,7 @@ const firstShot=input();firstShot.webTap=true;firstShot.webHold=true;
 chain.update(1/60,firstShot,chainCamera);
 assert(chain.isSwinging,'First chained web did not engage the swing');
 const oldAnchor=chain.anchorPoint.clone();
+chain.velocity.set(0,0,12); // Supply travel momentum rather than an automatic attachment boost.
 chain.city.buildingMeshes=[makeAnchor(-10)];
 chainCamera.lookAt(-10,5,15);chainCamera.updateMatrixWorld(true);
 const speedBeforeTransfer=chain.velocity.length();
@@ -95,7 +96,7 @@ const heldShot=input();heldShot.webFireHeld=true;heldShot.webHold=true;
 chain.update(1/60,heldShot,chainCamera);
 assert(chain.anchorPoint.x<oldAnchor.x-3,'Held-fire cooldown expired before its shot interval');
 chain.update(0.25,heldShot,chainCamera);
-assert(chain.isSwinging&&chain.anchorPoint.x>oldAnchor.x+3,'Holding left mouse did not fire a successive aimed web');
+assert(chain.isSwinging&&chain.anchorPoint.x<oldAnchor.x-3,'Holding left mouse replaced the fixed swing anchor');
 // Exercise real City collision, not a stub: grounded wall contact cannot be
 // hidden by simultaneous ground contact (including roll recovery).
 const wall=controller();wall.city.checkCollision=City.prototype.checkCollision;

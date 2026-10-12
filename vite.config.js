@@ -11,7 +11,11 @@ const urbanTilesProxy = {
 };
 
 export default defineConfig({
-  plugins: [{ name: 'game-rooms', configureServer(server) { attachRooms(server.httpServer); } }],
+  plugins: [{
+    name: 'game-rooms',
+    configureServer(server) { attachRooms(server.httpServer); },
+    configurePreviewServer(server) { attachRooms(server.httpServer); },
+  }],
   server: {
     host: '127.0.0.1',
     port: 5173,

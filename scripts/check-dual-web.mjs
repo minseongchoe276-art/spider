@@ -21,34 +21,36 @@ const player=()=>{
 };
 let cases=0;
 const check=(title,fn)=>{fn();cases++;console.log('PASS WEB: '+title);};
-check('The first shot is the left hand and the second shot replaces that one rope',()=>{
+check('The first shot is the left hand and the second keeps both anchors',()=>{
   const p=player(),a=new THREE.Vector3(-5,20,2),b=new THREE.Vector3(5,20,2);
   assert(p.shoot(a));assert.equal(p.webs.length,1);assert.equal(p.shots[0].hand,'left');
   const pos=p.position.clone(),vel=p.velocity.clone();assert(p.shoot(b));
-  assert.equal(p.webs.length,1);assert.equal(p.webs[0].hand,'right');assert(p.webs[0].anchor.equals(b));
-  assert(!p.webs.some(w=>w.anchor.equals(a)),'The first anchor stayed on the body');
+  assert.deepEqual(p.webs.map(w=>w.hand),['left','right']);
+  assert(p.webs[0].anchor.equals(a));assert(p.webs[1].anchor.equals(b));
   assert(p.position.equals(pos),'Shot teleported the body');assert(p.velocity.equals(vel),'Second shot injected launch energy');
-  assert.equal(p.character.webAttachments.length,1);
+  assert.equal(p.character.webAttachments.length,2);
 });
-check('Repeated shots stay at one rope, and the same point does not stack',()=>{
-  const p=player(),a=new THREE.Vector3(0,22,8);
-  assert(p.shoot(a));assert.equal(p.webs.length,1);
-  p.bestAnchorCandidate=a.clone();assert.equal(p.startSwing(camera,false),false);
-  assert.equal(p.webs.length,1);assert(p.webs[0].anchor.equals(a));assert.equal(p.shots.length,1);
-  let hand='right';
+check('A third shot replaces only the firing hand, and the same point does not stack',()=>{
+  const p=player();p.shoot(new THREE.Vector3(-5,20,2));p.shoot(new THREE.Vector3(5,20,2));
+  const right=p.webs[1];assert(p.shoot(new THREE.Vector3(-8,23,4)));assert.equal(p.webs[0],right);
+  assert.equal(p.webs.at(-1).hand,'left');
   for(let n=0;n<1000;n++) {
     assert(p.shoot(new THREE.Vector3((n%2? -1:1)*(6+n*0.001),21+n*0.001,3)));
-    assert.equal(p.webs.length,1);assert.equal(p.webs[0].hand,hand);assert.equal(p.character.webAttachments.length,1);
-    assert.equal(p.velocity.length(),0);
-    hand=hand==='left'?'right':'left';
+    assert.equal(p.webs.length,2);assert.equal(new Set(p.webs.map(w=>w.hand)).size,2);
+    assert.equal(p.character.webAttachments.length,2);assert.equal(p.velocity.length(),0);
   }
+  const same=player(),a=new THREE.Vector3(0,22,8);
+  assert(same.shoot(a));assert(same.shoot(a));assert.equal(same.webs.length,2);
+  same.bestAnchorCandidate=a.clone();assert.equal(same.startSwing(camera,false),false);
+  assert(same.shoot(a));assert.equal(same.webs.length,2);assert.equal(same.shots.at(-1).hand,'left');
 });
-check('A miss while the button is held keeps the one rope',()=>{
-  const p=player();p.shoot(new THREE.Vector3(-5,20,2));
-  const anchor=p.webs[0].anchor.clone();
+check('A miss while the button is held keeps both ropes',()=>{
+  const p=player();p.shoot(new THREE.Vector3(-5,20,2));p.shoot(new THREE.Vector3(5,20,2));
+  const anchors=p.webs.map(web=>web.anchor.clone());
   p.bestAnchorCandidate=null;const i=input();i.webTap=true;i.webFireHeld=true;
   p.update(1/60,i,camera);
-  assert(p.isSwinging);assert.equal(p.webs.length,1);assert(p.webs[0].anchor.equals(anchor));assert.equal(i.webHold,true);
+  assert(p.isSwinging);assert.equal(p.webs.length,2);assert.equal(p.nextWebHand,'left');assert.equal(i.webHold,true);
+  assert(p.webs[0].anchor.equals(anchors[0]));assert(p.webs[1].anchor.equals(anchors[1]));
 });
 check('A missed click emits a visible shot without creating an anchor',()=>{
   const p=player(),misses=[];
@@ -65,19 +67,19 @@ check('A missed click emits a visible shot without creating an anchor',()=>{
   assert.equal(i.webHold,false);
 });
 let reference;
-for(const fps of [30,60,144])check(`One length limit stays taut, finite and bounded at ${fps}fps`,()=>{
+for(const fps of [30,60,144])check(`Two length limits stay taut, finite and bounded at ${fps}fps`,()=>{
   const p=player();p.velocity.set(0,0,12);
-  p.shoot(new THREE.Vector3(0,24,-6));
+  p.shoot(new THREE.Vector3(-5,20,2));p.shoot(new THREE.Vector3(5,20,2));
   let travel=0;const i=input();
   for(let n=0;n<fps*10;n++) {
     const before=p.position.clone();p.update(1/fps,i,camera);travel+=p.position.distanceTo(before);
-    assert.equal(p.webs.length,1);assert(p.isSwinging);
+    assert.equal(p.webs.length,2);assert(p.isSwinging);
     assert([...p.position,...p.velocity].every(Number.isFinite));assert(p.velocity.length()<=p.maxSpeed+1e-6);
-    assert(p.position.distanceTo(p.webs[0].anchor)<=p.webs[0].length+0.002,'The rope stretched');
+    for(const web of p.webs)assert(p.position.distanceTo(web.anchor)<=web.length+0.002,'A retained strand stretched');
     assert(p.position.distanceTo(before)<=p.maxSpeed/fps+0.002,'The rope solve snapped the body');
   }
-  assert(travel>1,'The single web froze all tangent movement');
-  if(reference)assert(p.position.distanceTo(reference)<1e-7,'One-web trajectory depends on render FPS');
+  assert(travel>1,'The two webs froze all tangent movement');
+  if(reference)assert(p.position.distanceTo(reference)<1e-7,'Two-web trajectory depends on render FPS');
   reference=p.position.clone();
 });
 check('Slack webs never push outward and constraint impulses cannot add kinetic energy',()=>{
@@ -89,35 +91,37 @@ check('Slack webs never push outward and constraint impulses cannot add kinetic 
   assert(p.velocity.lengthSq()<=energy+1e-6);
   assert(p.velocity.dot(p.position.clone().sub(p.webs[0].anchor).normalize())<1e-5);
 });
-check('An obstructed rope releases instead of staying attached through a wall',()=>{
-  const p=player();p.shoot(new THREE.Vector3(0,20,2));
-  p.city.raycast=()=>({distance:1});
+check('One obstructed strand releases only that hand',()=>{
+  const p=player();p.shoot(new THREE.Vector3(-5,20,2));p.shoot(new THREE.Vector3(5,20,2));
+  p.city.raycast=(origin,direction)=>direction.x<0?{distance:1}:null;
   p.updateSwingPhysics(1/120,input(),camera);
+  assert(p.isSwinging);assert.equal(p.webs.length,1);assert.equal(p.webs[0].hand,'right');assert.equal(p.character.webAttachments.length,1);
+  p.city.raycast=()=>({distance:1});p.updateSwingPhysics(1/120,input(),camera);
   assert.equal(p.isSwinging,false);assert.equal(p.state,'FALLING');assert.equal(p.webs.length,0);assert.equal(p.character.webAttachments.length,0);
   assert.equal(p.performWebPull(camera),false,'Blocked old anchor allowed a pull through the wall');
 });
-check('Right-click zips to the current anchor and arrives on one tether',()=>{
-  const p=player();p.shoot(new THREE.Vector3(5,20,2));
-  const latest=p.webs[0].anchor.clone();assert(p.performWebPull(camera));
-  assert(p.zipAnchor.equals(latest));assert.equal(p.webs.length,0);assert.equal(p.pullHand,'left');
+check('Right-click zips to the latest anchor and arrives on that tether',()=>{
+  const p=player();p.shoot(new THREE.Vector3(-5,20,2));p.shoot(new THREE.Vector3(5,20,2));
+  const latest=p.webs.at(-1).anchor.clone();assert(p.performWebPull(camera));
+  assert(p.zipAnchor.equals(latest));assert.equal(p.webs.length,0);assert.equal(p.pullHand,'right');
   p.position.copy(p.zipTarget);assert(p.enterSwingFromPull(camera));assert.equal(p.webs.length,1);
-  assert.equal(p.webs[0].hand,'left');assert(p.webs[0].anchor.equals(latest));
+  assert.equal(p.webs[0].hand,'right');assert(p.webs[0].anchor.equals(latest));
 });
-check('Clear and respawn remove the rope and the hand-pose cache',()=>{
-  const p=player();p.shoot(new THREE.Vector3(-5,20,2));
+check('Clear and respawn remove both ropes and the hand-pose cache',()=>{
+  const p=player();p.shoot(new THREE.Vector3(-5,20,2));p.shoot(new THREE.Vector3(5,20,2));
   p.clearWebAnchor();assert(!p.isSwinging);assert.equal(p.webs.length,0);assert.equal(p.character.webAttachments.length,0);
   p.shoot(new THREE.Vector3(-5,20,2));p.resetPosition();assert.equal(p.nextWebHand,'left');assert.equal(p.webs.length,0);assert.equal(p.character.webAttachments.length,0);
 });
-check('A shot during a reel replaces the pull with one new swing',()=>{
-  const p=player();p.shoot(new THREE.Vector3(-5,20,2));
-  const retained=p.webs[0].anchor.clone();assert(p.performWebPull(camera));
+check('A shot during a reel keeps the pulling strand and adds the other hand',()=>{
+  const p=player();p.shoot(new THREE.Vector3(-5,20,2));p.shoot(new THREE.Vector3(5,20,2));
+  const retained=p.webs.at(-1).anchor.clone();assert(p.performWebPull(camera));
   p.velocity.set(0,0,9);const before=p.position.clone();const next=new THREE.Vector3(-8,24,3);
   assert(p.shoot(next));
-  assert.equal(p.webs.length,1);assert(p.webs[0].anchor.equals(next));assert(!p.webs[0].anchor.equals(retained));
-  assert.equal(p.webs[0].hand,'right');assert(p.position.equals(before));
+  assert.equal(p.webs.length,2);assert(p.webs[0].anchor.equals(retained));
+  assert.deepEqual(p.webs.map(w=>w.hand),['right','left']);assert(p.position.equals(before));
   assert.equal(p.velocity.length(),9);assert.equal(p.state,'SWINGING');
 });
-check('Aimed facade shots end on the later point as one web',()=>{
+check('Aimed facade shots keep a left web and a right web',()=>{
   const p=player();p.findBestAnchor=SwingPhysics.prototype.findBestAnchor;
   p.position.set(0,3,0);p.city.checkCollision=City.prototype.checkCollision;p.city.raycast=City.prototype.raycast;
   p.city.buildingMeshes=[-4,4].map(x=>{const m=new THREE.Mesh(new THREE.BoxGeometry(1.5,8,1.5));m.position.set(x,6,4);m.updateMatrixWorld(true);return m;});
@@ -128,9 +132,10 @@ check('Aimed facade shots end on the later point as one web',()=>{
     for(const [time,x,y] of [[0.05,-4,7],[0.3,4,7]])if(old<time && t>=time) {cam.lookAt(x,y,4);cam.updateMatrixWorld(true);i.webTap=true;i.webFireHeld=true;}
     p.update(1/120,i,cam);
   }
-  assert.equal(p.webs.length,1);assert.equal(p.state,'SWINGING');assert(p.webs[0].anchor.x>1,'The later aimed point did not replace the rope');
+  assert.equal(p.webs.length,2);assert.equal(p.state,'SWINGING');
+  assert(p.webs.some(web=>web.anchor.x<-1)&&p.webs.some(web=>web.anchor.x>1),'Both aimed facades were not retained');
 });
-check('Letting go boosts a rising or fast swing, and W shortens only while held forward',()=>{
+check('Explicit jump boosts, mouse release preserves momentum, and W keeps rope length fixed',()=>{
   const rising=player();rising.shoot(new THREE.Vector3(0,30,0));rising.velocity.set(0,5,0);
   rising.releaseSwing(true);assert(rising.velocity.y>5);assert.equal(rising.isSwinging,false);
   const fast=player();fast.isSwinging=true;fast.velocity.set(20,0,0);fast.releaseSwing(true);
@@ -139,11 +144,11 @@ check('Letting go boosts a rising or fast swing, and W shortens only while held 
   assert.equal(slow.velocity.x,10);assert.equal(slow.velocity.y,0);
   const held=player();held.shoot(new THREE.Vector3(0,30,0));held.velocity.set(0,5,0);
   const release=input();release.webHold=false;held.update(1/60,release,camera);
-  assert.equal(held.isSwinging,false);assert(held.velocity.y>5,'Button release skipped the slingshot');
+  assert.equal(held.isSwinging,false);assert(Math.abs(held.velocity.y-(5-held.gravity/60))<1e-6,'Mouse release injected a slingshot impulse');
   const pump=player();pump.position.set(0,10,0);pump.shoot(new THREE.Vector3(0,30,0));
   const pumping=input();pumping.forward=true;pump.updateSwingPhysics(1,pumping,camera);
-  assert.equal(pump.webs[0].length,12);
+  assert.equal(pump.webs[0].length,20);
   const low=player();low.position.set(0,2,0);low.shoot(new THREE.Vector3(0,22,0));
   const parked=low.webs[0].length;low.updateSwingPhysics(1,input(),camera);assert.equal(low.webs[0].length,parked);
 });
-console.log(`PASS: ${cases} one-rope web cases`);
+console.log(`PASS: ${cases} two-hand web cases`);

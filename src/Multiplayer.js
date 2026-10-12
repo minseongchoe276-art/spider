@@ -10,10 +10,18 @@ export class Multiplayer {
     this.game=game;this.ws=null;this.id=null;this.room=null;this.solo=false;this.players=[];this.avatars=new Map();this.lastSend=0;this.lastPhase=null;this.spectating=false;this.clockOffset=0;this.vulnerableAt=0;
     this.connect();this.bind();
   }
-  send(data) { if(this.ws?.readyState===WebSocket.OPEN)this.ws.send(JSON.stringify(data)); }
+  send(data) {
+    if(this.ws?.readyState===WebSocket.OPEN){this.ws.send(JSON.stringify(data));return true;}
+    if(['create','join'].includes(data.type))this.game.showNotice('온라인 서버에 연결되지 않았습니다. npm run dev 또는 npm start로 실행한 뒤 다시 시도하세요.');
+    return false;
+  }
   connect() {
     const url=`${location.protocol==='https:'?'wss:':'ws:'}//${location.host}/ws`;
-    this.ws=new WebSocket(url);
+    try {this.ws=new WebSocket(url);}
+    catch {
+      $('online-status').textContent='온라인 서버가 필요합니다 · npm run dev / npm start';
+      return;
+    }
     $('online-status').textContent='서버 연결 중…';
     this.ws.onopen=()=>{ $('online-status').textContent='온라인 · 방을 선택하세요';this.send({type:'list'});const pending=new URLSearchParams(location.search).get('join');if(pending){this.send({type:'join',code:pending,playerName:sessionStorage.getItem('online-name')||$('player-name').value,city:this.city});history.replaceState(null,'',location.pathname+location.search.replace(/([?&])join=[^&]*&?/,'$1').replace(/[?&]$/,''));} };
     this.ws.onmessage=event=>{try{this.message(JSON.parse(event.data));}catch(error){console.error(error);}};

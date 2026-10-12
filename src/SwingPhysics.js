@@ -182,16 +182,7 @@ export class SwingPhysics {
     this.syncWebHands();
     this.nextWebHand=hand==='left'?'right':'left';
 
-    // Initial forward swing boost if velocity was low
-    const forward = new THREE.Vector3();
-    camera.getWorldDirection(forward);
-    forward.y = 0;
-    forward.normalize();
-
-    if (this.launchAssistAvailable && this.velocity.length() < 14) {
-      this.velocity.add(forward.multiplyScalar(12));
-    }
-    // One launch assist per landing, rather than free energy on every reattach.
+    // Attachment changes the constraint, never the player's momentum.
     this.launchAssistAvailable = false;
 
     this.audio.playWebShoot();
@@ -435,15 +426,11 @@ export class SwingPhysics {
       }
       if (!attached && !this.isSwinging && this.state !== 'WEB_ZIP' && !input.webFireHeld) input.webHold = false;
       this.webFireCooldown = this.webFireInterval;
-    } else if (input.webFireHeld && this.webFireCooldown <= 0 && this.state !== 'WEB_ZIP' &&
-        (this.isSwinging || !GROUNDED.includes(this.state))) {
-      this.startSwing(camera,false);
-      this.webFireCooldown = this.webFireInterval;
     } else if (input.webHold && !this.webLatch && !this.isSwinging && this.state !== 'WEB_ZIP') {
       this.startSwing(camera);
     }
     const webButton=!!(input.webFireHeld || input.webHold);
-    if (this.isSwinging && !webButton) this.releaseSwing(true);
+    if (this.isSwinging && !webButton) this.releaseSwing(false);
     this.webLatch = webButton;
     if (input.jump) this.jumpBuffer = 0.14;
     input.jump = false;
@@ -527,18 +514,21 @@ export class SwingPhysics {
     constrainWebs(this.position,this.velocity,this.webs);
     const taut=this.webs.filter(web=>this.position.distanceTo(web.anchor)>=web.length-1e-4);
     if(taut.length) {
-      const tangent=this.velocity.lengthSq()>0.001?this.velocity.clone().normalize():new THREE.Vector3();
-      if(input.forward)this.velocity.addScaledVector(tangent,24*delta);
-      if(input.forward && latest.length>8) latest.length=Math.max(8,latest.length-8*delta);
+      // Gentle player effort acts across the rope, never reels it inward.
       const camForward=new THREE.Vector3();
       camera?.getWorldDirection(camForward);
       camForward.y=0;
-      const up=new THREE.Vector3(0,1,0);
-      // Same screen-right as grounded movement: forward × up.
-      const side=camForward.lengthSq()>1e-6
-        ? new THREE.Vector3().crossVectors(camForward.normalize(), up)
-        : new THREE.Vector3().crossVectors(this.position.clone().sub(latest.anchor).normalize(), up);
-      if(side.lengthSq()>1e-6) this.velocity.addScaledVector(side.normalize(),(input.strafe || 0)*18*delta);
+      if(camForward.lengthSq()<1e-6)camForward.set(0,0,1);
+      camForward.normalize();
+      const side=new THREE.Vector3().crossVectors(camForward,new THREE.Vector3(0,1,0));
+      const effort=camForward.multiplyScalar((input.forward?1:0)-(input.backward?1:0))
+        .addScaledVector(side,input.strafe || ((input.right?1:0)-(input.left?1:0)));
+      if(effort.lengthSq()>1)effort.normalize();
+      for(const web of taut) {
+        const radial=this.position.clone().sub(web.anchor).normalize();
+        effort.addScaledVector(radial,-effort.dot(radial));
+      }
+      this.velocity.addScaledVector(effort,8*delta);
     }
     this.velocity.clampLength(0,this.maxSpeed);
     this.position.addScaledVector(this.velocity,delta);

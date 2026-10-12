@@ -406,20 +406,6 @@ export class GameApp {
         this.input.webTap = true;
         this.input.webFireHeld = true;
         this.input.webHold = true;
-      } else if (e.button === 2) {
-        // Right-click zips to the aimed point. A miss falls back to the current rope.
-        this.physics.setWebAimPoint(
-          e.clientX,
-          e.clientY,
-          this.canvas.getBoundingClientRect(),
-          document.pointerLockElement === this.canvas
-        );
-        this.input.webHold = false;
-        this.physics.webLatch = false;
-        if (this.physics.performWebPull(this.camera, this.physics.webAimNdc) && this.physics.zipAnchor) {
-          this.input.webHold = true;
-          this.physics.webLatch = true;
-        }
       }
       if (e.button === 1 && document.pointerLockElement !== this.canvas) {
         e.preventDefault();
@@ -433,16 +419,8 @@ export class GameApp {
       this.lastMousePosition = null;
       if (e.button === 0) {
         this.input.webFireHeld = false;
-        // A right-click reel keeps its latch until arrival. A tap that has not
-        // reached physics yet must still attach, then release, in that update.
-        if (this.physics?.state === 'WEB_ZIP') {
-          // Leave webHold so the zip can become a swing.
-        } else if (this.input.webTap) {
-          this.input.webHold = false;
-        } else {
-          this.input.webHold = false;
-          if (this.physics?.isSwinging) this.physics.releaseSwing(true);
-        }
+        this.input.webHold = false;
+        if (this.physics?.isSwinging) this.physics.releaseSwing(false);
       }
     });
 
@@ -575,13 +553,7 @@ export class GameApp {
   }
 
   setPaused(paused) {
-    const wasPaused = this.isPaused;
     this.isPaused = paused;
-    if (!paused && wasPaused && (this.physics?.isSwinging ||
-        (this.physics?.state === 'WEB_ZIP' && this.physics.zipAnchor))) {
-      this.input.webHold = true;
-      this.physics.webLatch = true;
-    }
     if (paused) {
       this.clearInput();
       this.speedLines?.setSpeed(0, 1);

@@ -87,7 +87,7 @@ await check('Absent motion selects an available idle instead of keeping a fall p
 });
 await check('Reattachment cannot repeatedly grant launch energy; swing cancels stale zip',()=>{
   const p=player();p.position.set(0,20,0);p.findBestAnchor=()=>new THREE.Vector3(0,40,20);
-  assert(p.startSwing(camera)); assert.equal(p.velocity.length(),12);
+  assert(p.startSwing(camera)); assert.equal(p.velocity.length(),0);
   p.releaseSwing();p.swingCooldown=0;p.velocity.set(0,0,0);
   p.zipTarget=new THREE.Vector3();p.zipAnchor=new THREE.Vector3();p.zipTime=2;
   assert(p.startSwing(camera));assert.equal(p.velocity.length(),0);
@@ -257,7 +257,7 @@ await check('Audio device failure cannot prevent starting the game',()=>{
   const audio=new SoundController();audio.init=()=>{throw new Error('device unavailable');};
   assert.doesNotThrow(()=>audio.ensureContext());
 });
-await check('Pause clears physical buttons while preserving the attached web on resume',async()=>{
+await check('Pause clears physical buttons and resume does not invent a held mouse button',async()=>{
   const original=globalThis.document,canvas={};let exits=0;
   globalThis.document={pointerLockElement:canvas,exitPointerLock(){exits++;},getElementById:()=>null,querySelector:()=>null};
   try {
@@ -265,11 +265,11 @@ await check('Pause clears physical buttons while preserving the attached web on 
     Object.assign(app,{canvas,isPlaying:true,isPaused:false,input:{webHold:true,webFireHeld:true,webTap:false},heldKeys:new Set(),
       physics:{isSwinging:true,clearPendingInput(){}},audio:{setWindSpeed(){}},clickToPlayOverlay:null});
     app.setPaused(true);assert(!app.input.webFireHeld&&!app.input.webTap&&!app.input.webHold);assert.equal(exits,1);
-    app.setPaused(false);assert(app.input.webHold);assert(app.physics.isSwinging);
+    app.setPaused(false);assert(!app.input.webHold);assert(app.physics.isSwinging);
     await new Promise(resolve=>setTimeout(resolve,1));
   } finally {globalThis.document=original;}
 });
-await check('Left mouse release cannot cancel a right-click reel before it becomes a swing',()=>{
+await check('Right click does not start a reel or keep the left mouse latched',()=>{
   const previousWindow=globalThis.window,previousDocument=globalThis.document;
   const fakeWindow=new EventTarget(),fakeDocument=new EventTarget(),canvas=new EventTarget();
   Object.assign(canvas,{getBoundingClientRect:()=>({left:0,top:0,width:800,height:600})});
@@ -285,8 +285,8 @@ await check('Left mouse release cannot cancel a right-click reel before it becom
       Object.defineProperties(event,{button:{value:button},clientX:{value:400},clientY:{value:300},target:{value:canvas}});
       fakeWindow.dispatchEvent(event);};
     mouse('mousedown',0);mouse('mousedown',2);mouse('mouseup',0);
-    assert.equal(physics.state,'WEB_ZIP');assert.equal(app.input.webFireHeld,false);
-    assert.equal(app.input.webHold,true,'Left mouseup cleared the right-click web latch before arrival');
+    assert.equal(physics.state,'FALLING');assert.equal(app.input.webFireHeld,false);
+    assert.equal(app.input.webHold,false,'Right click left the swing latched after mouse release');
   } finally {globalThis.window=previousWindow;globalThis.document=previousDocument;}
 });
 await check('A web pull arriving at its anchor keeps the swing latched on the following physics tick',()=>{
@@ -333,7 +333,7 @@ await check('Grounded combat clicks punch, airborne clicks web, and Space jumps 
     physics.state='FALLING';mouse('mousedown',0);
     assert.equal(app.input.webTap,true);assert.deepEqual(webs,['punch','punch','web']);assert.deepEqual(punches,['left','right']);
     mouse('mouseup',0);assert.equal(app.input.webHold,false);assert.equal(app.input.webTap,true);
-    mouse('mousedown',2);assert.equal(pulls.length,1);assert.deepEqual(punches,['left','right']);assert.equal(app.input.webHold,true);
+    mouse('mousedown',2);assert.equal(pulls.length,0);assert.deepEqual(punches,['left','right']);assert.equal(app.input.webHold,false);
     assert.deepEqual(webs,['punch','punch','web'],'Airborne right click also threw a punch');
     physics.state='FALLING';key('KeyE');assert.deepEqual(airs,['FALLING']);assert.equal(punches.includes('hook'),false);
     physics.state='IDLE';key('KeyE');assert.deepEqual(punches,['left','right','hook']);assert.deepEqual(airs,['FALLING']);
