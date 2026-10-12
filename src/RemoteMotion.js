@@ -1,0 +1,101 @@
+import * as THREE from 'three';
+import { Character } from './Character.js';
+import { groundSample } from './LedgeTraversal.js';
+
+const STATES = new Set(['IDLE','RUNNING','SPRINTING','JUMPING','FALLING','SWINGING','WEB_ZIP',
+  'WALL_RUNNING','MANTLING','LANDING','ROLLING','TURNING']);
+const COMBAT = new Set(['combatIdle','jab','cross','hook','heavy','guard','dodge','slam','special']);
+const vector = v => v && [v.x,v.y,v.z].every(n => Number.isFinite(n) && Math.abs(n)<=10000)
+  ? {x:v.x,y:v.y,z:v.z} : null;
+
+export function sanitizePose(pose) {
+  if (!pose || !STATES.has(pose.state)) return null;
+  const velocity = vector(pose.velocity);
+  if (!velocity || Math.hypot(velocity.x,velocity.y,velocity.z)>150) return null;
+  const webs = (Array.isArray(pose.webs)?pose.webs:[]).slice(0,2)
+    .map(w => ({hand:w.hand==='right'?'right':'left',anchor:vector(w.anchor)})).filter(w => w.anchor);
+  let combat = null;
+  if (COMBAT.has(pose.combat?.key) && [pose.combat.time ?? 0,pose.combat.duration ?? 0].every(Number.isFinite))
+    combat = {key:pose.combat.key,id:String(pose.combat.id || '').slice(0,40),
+      time:THREE.MathUtils.clamp(pose.combat.time ?? 0,0,10),duration:THREE.MathUtils.clamp(pose.combat.duration ?? 0,0,10)};
+  const m=pose.mantle;
+  const mantle=m && [m.elapsed,m.duration,m.gap,m.height].every(Number.isFinite)
+    && m.duration>0 && vector(m.normal) && vector(m.edge) && vector(m.start) && vector(m.end)
+    ? {...Object.fromEntries(['normal','edge','start','end'].map(k=>[k,vector(m[k])])),
+      elapsed:THREE.MathUtils.clamp(m.elapsed,0,2),duration:THREE.MathUtils.clamp(m.duration,.1,2),
+      gap:THREE.MathUtils.clamp(m.gap,0,2),height:m.height} : null;
+  return {state:pose.state,velocity,webs,anchor:vector(pose.anchor),wallNormal:vector(pose.wallNormal),
+    mantle,wallDistance:Number.isFinite(pose.wallDistance)?THREE.MathUtils.clamp(pose.wallDistance,0,2):.7,
+    landingSpeed:Number.isFinite(pose.landingSpeed)?THREE.MathUtils.clamp(pose.landingSpeed,0,100):0,
+    pendingTurn:pose.pendingTurn==='left'?'left':'right',combat,tricking:!!pose.tricking};
+}
+
+export function capturePose(physics,character) {
+  return sanitizePose({state:physics.state,velocity:physics.velocity,webs:physics.webs,
+    anchor:physics.anchorPoint || physics.zipAnchor,wallNormal:physics.wallNormal,
+    mantle:physics.mantle,wallDistance:character.wallDistance,landingSpeed:character.landingSpeed,
+    pendingTurn:character.pendingTurn,combat:character.combatAction,tricking:character.isTricking});
+}
+
+export class RemoteMotion {
+  constructor(scene, source, player, city) {
+    this.character = new Character(scene,null,null,source);
+    this.mesh = this.character.group;
+    this.mesh.name = `OnlineSpiderMan-${player.id}`;
+    this.target = new THREE.Vector3(player.x,player.y,player.z);
+    this.mesh.position.copy(this.target);
+    this.previous = this.target.clone(); this.velocity = new THREE.Vector3();
+    this.player = player; this.receivedAt = performance.now(); this.poseAt = -Infinity;
+    this.character.surfaceProbe = p => groundSample(city,p,.8);
+    this.marker = new THREE.Mesh(new THREE.ConeGeometry(.18,.38,6),new THREE.MeshBasicMaterial({
+      color:player.team==='police'?0x45cfff:player.team==='runner'?0xff536e:0xf7c84b}));
+    this.marker.position.y=2.7; this.mesh.add(this.marker);
+  }
+  receive(player,pose,now=performance.now()) {
+    const point = new THREE.Vector3(player.x,player.y,player.z);
+    if (!point.equals(this.target)) {
+      const dt = Math.max(.04,(now-this.receivedAt)/1000);
+      this.velocity.copy(point).sub(this.target).divideScalar(dt).clampLength(0,48);
+      this.receivedAt=now; this.target.copy(point);
+    }
+    this.player=player;
+    const clean=sanitizePose(pose);
+    if (clean) {this.pose=clean;this.poseAt=now;this.velocity.copy(clean.velocity);}
+  }
+  update(delta,now=performance.now()) {
+    const c=this.character;
+    this.previous.copy(this.mesh.position);
+    if (this.mesh.position.distanceToSquared(this.target)>1600) this.mesh.position.copy(this.target);
+    else this.mesh.position.lerp(this.target,1-Math.exp(-15*delta));
+    const fresh = this.pose && now-this.poseAt<650;
+    const v = this.velocity.clone();
+    if (now-this.receivedAt>350) v.set(0,0,0);
+    let state;
+    if (fresh) state=this.pose.state;
+    else {
+      const support=c.surfaceProbe(this.mesh.position);
+      const grounded=!!support && Math.abs(this.mesh.position.y-support.height-.1)<.6;
+      state=grounded ? (Math.hypot(v.x,v.z)>.2?'RUNNING':'IDLE') : v.y>1?'JUMPING':'FALLING';
+    }
+    // Ground strides follow the interpolated root, preventing feet sliding
+    // while a 10Hz network update is being smoothed into display frames.
+    if (['IDLE','RUNNING','SPRINTING'].includes(state))
+      v.copy(this.mesh.position).sub(this.previous).divideScalar(Math.max(delta,1e-5));
+    c.targetFacingAngle=this.player.facing || 0;
+    c.webAttachments=fresh ? this.pose.webs.map(w=>({hand:w.hand,anchor:new THREE.Vector3().copy(w.anchor)})) : [];
+    const anchor=fresh && this.pose.anchor ? new THREE.Vector3().copy(this.pose.anchor) : null;
+    c.wallNormal=fresh && this.pose.wallNormal ? new THREE.Vector3().copy(this.pose.wallNormal).normalize() : null;
+    c.wallDistance=fresh?this.pose.wallDistance:.7;
+    c.mantle=fresh && this.pose.mantle ? {...this.pose.mantle,
+      ...Object.fromEntries(['normal','edge','start','end'].map(k=>[k,new THREE.Vector3().copy(this.pose.mantle[k])])),
+      elapsed:Math.min(this.pose.mantle.duration,this.pose.mantle.elapsed+(now-this.poseAt)/1000)} : null;
+    c.landingSpeed=fresh?this.pose.landingSpeed:0;c.pendingTurn=fresh?this.pose.pendingTurn:null;
+    c.combatAction=fresh && this.pose.combat ? {...this.pose.combat,time:this.pose.combat.time+(now-this.poseAt)/1000} : null;
+    if (c.combatAction?.duration && c.combatAction.time>c.combatAction.duration) c.combatAction=null;
+    c.isTricking=!!(fresh && this.pose.tricking);
+    c.update(delta,state,v,anchor);
+  }
+  dispose() {
+    this.marker.geometry.dispose();this.marker.material.dispose();this.character.disposeCopy();
+  }
+}
