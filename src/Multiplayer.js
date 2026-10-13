@@ -4,6 +4,7 @@ import { SupabaseRooms } from './SupabaseRooms.js';
 import { RemoteMotion, capturePose, sanitizePose } from './RemoteMotion.js';
 import { ATTACKS } from './Combat.js';
 import {PURSUIT,arenaContains} from './PursuitRules.js';
+import {PlayerPositionMarkers} from './PlayerPositionMarkers.js';
 
 const $ = id => document.getElementById(id);
 const label = mode => mode === 'tag' ? '경찰과 도망자' : '자유 플레이';
@@ -13,6 +14,7 @@ export class Multiplayer {
   constructor(game) {
     this.game=game;this.ws=null;this.id=null;this.room=null;this.solo=false;this.players=[];this.avatars=new Map();this.lastSend=0;this.lastPhase=null;this.spectating=false;this.clockOffset=0;this.vulnerableAt=0;this.arena=null;this.pulseUntil=0;this.spectateIndex=0;
     this.downedMarkers=new Map();this.connect();this.bind();
+    this.positionMarkers=new PlayerPositionMarkers(game);
   }
   send(data) {
     if(this.ws?.readyState===WebSocket.OPEN){this.ws.send(JSON.stringify(data));return true;}
@@ -325,7 +327,7 @@ export class Multiplayer {
     return avatar ? avatar.mesh.position : new THREE.Vector3(ally.x,ally.y,ally.z);
   }
   update(delta) {
-    if(this.room?.phase!=='playing')return;
+    if(this.room?.phase!=='playing'){this.positionMarkers?.update([],this.game.physics.position,false);return;}
     const now=performance.now();
     if(!(this.ws instanceof SupabaseRooms)&&now-(this.lastPing||0)>5000){this.lastPing=now;this.send({type:'ping',stamp:now});}
     const me=this.players.find(p=>p.id===this.id);
@@ -356,6 +358,8 @@ export class Multiplayer {
     }
     if(now-(this.lastHud||0)>500){this.renderHud();this.lastHud=now;}
     for(const avatar of this.avatars.values())avatar.update(delta,now);
+    this.positionMarkers?.update(this.minimapPlayers(),this.spectating?(this.spectatePoint()||this.game.physics.renderPosition):this.game.physics.renderPosition,
+      this.game.isPlaying&&!this.game.isPaused);
   }
   constrainArena(delta) {
     const p=this.game.physics,a=this.arena,dx=p.position.x-a.x,dz=p.position.z-a.z,d=Math.hypot(dx,dz);
@@ -377,12 +381,21 @@ export class Multiplayer {
       }else this.rescueStarted=null;
       if(!this.goalMarker){this.goalMarker=new THREE.Mesh(new THREE.OctahedronGeometry(1.2),new THREE.MeshBasicMaterial({color:0x90ffdf,wireframe:true}));this.game.scene.add(this.goalMarker);}
       this.goalMarker.visible=true;this.goalMarker.position.set(point.x,point.y+2,point.z);
-    }else{this.goalMarker&&(this.goalMarker.visible=false);output.textContent=me.eliminated?'관전 중 · 팀원이 가까이 오면 구조 가능':this.serverNow()<this.pulseUntil?'위치 단서 공개 중 · 미니맵 확인':'추격 중 · 20초마다 위치 단서';}
+    }else{this.goalMarker&&(this.goalMarker.visible=false);output.textContent=me.eliminated?'관전 중 · 팀원이 가까이 오면 구조 가능':'추격 중 · 상대 방향과 거리를 확인하세요';}
   }
   syncDowned(me){const ids=new Set();for(const p of this.players){if(!p.eliminated||p.team!==me.team||!p.seen)continue;ids.add(p.id);let marker=this.downedMarkers.get(p.id);
     if(!marker){marker=new THREE.Mesh(new THREE.OctahedronGeometry(.7),new THREE.MeshBasicMaterial({color:0xffd57b,wireframe:true}));this.game.scene.add(marker);this.downedMarkers.set(p.id,marker);}marker.position.set(p.x,p.y+1.4,p.z);}
     for(const[id,marker]of this.downedMarkers)if(!ids.has(id)){this.game.scene.remove(marker);marker.geometry.dispose();marker.material.dispose();this.downedMarkers.delete(id);}}
-  minimapPlayers(){const me=this.players.find(p=>p.id===this.id);return this.players.filter(p=>p.id!==this.id&&(!this.arena||p.team===me?.team||this.serverNow()<this.pulseUntil)).map(p=>p.eliminated&&p.team===me?.team?{...p,eliminated:false,rescue:true}:p);}
+  minimapPlayers(){
+    if(this.room?.phase!=='playing')return [];
+    const me=this.players.find(p=>p.id===this.id);
+    return this.players.filter(p=>p.id!==this.id && p.seen && [p.x,p.y,p.z].every(Number.isFinite) &&
+      (!p.eliminated || p.team===me?.team)).map(p=>{
+        const rendered=this.avatars.get(p.id)?.mesh.position;
+        return {...p,x:rendered?.x ?? p.x,y:rendered?.y ?? p.y,z:rendered?.z ?? p.z,
+          eliminated:false,rescue:!!p.eliminated,ally:me?.team!=='free' && p.team===me?.team};
+      });
+  }
   syncAvatars() {
     if(this.room?.phase!=='playing')return this.clearAvatars();
     const source=this.game.character;

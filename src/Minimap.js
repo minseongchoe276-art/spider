@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import {LOCAL_CITY} from './LocalCityLayout.js';
 
 const BOX = new THREE.Box3();
 const MAX_STREAMED_FOOTPRINTS = 420;
@@ -54,6 +55,20 @@ export function isInsideMinimap(point, center, range, padding = 0) {
   return Math.hypot(point.x - center.x, point.z - center.z) <= range + padding;
 }
 
+export function edgeMinimapMarker(point,center,range,radius,canvasCenter=radius){
+  const marker=worldToMinimap(point,center,range,radius,canvasCenter);
+  const dx=marker.x-canvasCenter,dy=marker.y-canvasCenter,distance=Math.hypot(dx,dy);
+  const scale=Math.min(1,radius/Math.max(distance,1e-6));
+  return {x:canvasCenter+dx*scale,y:canvasCenter+dy*scale,offscreen:scale<1};
+}
+
+export function terrainMarkerPoint(point,camera,border=.84){
+  const projected=point.clone().project(camera);
+  const scale=Math.max(1,Math.abs(projected.x)/border,Math.abs(projected.y)/border);
+  projected.x/=scale;projected.y/=scale;projected.z=THREE.MathUtils.clamp(projected.z,-.95,.95);
+  return {point:projected.unproject(camera),offscreen:scale>1};
+}
+
 export function worldToHongKongCoordinates(position) {
   const latitude = HONG_KONG_ORIGIN.latitude + THREE.MathUtils.radToDeg(position.z / EARTH_RADIUS);
   const longitude = HONG_KONG_ORIGIN.longitude - THREE.MathUtils.radToDeg(
@@ -65,7 +80,7 @@ export function worldToHongKongCoordinates(position) {
 export class HongKongMinimap {
   constructor({ canvas, status, coordinates, rangeLabel, title, subtitle, city, combat, players }) {
     Object.assign(this, { canvas, status, coordinates, rangeLabel, title, subtitle, city, combat, players });
-    this.range = city?.isStreamed ? 220 : 240;
+    this.range = city?.isStreamed ? 220 : LOCAL_CITY.minimapRange;
     this.terrainCopies = new Map();
     try { if (canvas) this.initTerrain(); }
     catch (error) { console.warn('3D minimap unavailable; using location map',error); }
@@ -103,7 +118,9 @@ export class HongKongMinimap {
     this.groundMaterial = new THREE.MeshLambertMaterial({color:0x163443,side:THREE.DoubleSide});
     this.clipPlanes = [new THREE.Plane(new THREE.Vector3(1,0,0)),new THREE.Plane(new THREE.Vector3(-1,0,0)),
       new THREE.Plane(new THREE.Vector3(0,0,1)),new THREE.Plane(new THREE.Vector3(0,0,-1))];
-    this.renderer.clippingPlanes = this.clipPlanes;
+    this.renderer.localClippingEnabled=true;
+    this.terrainMaterial.clippingPlanes=this.clipPlanes;
+    this.groundMaterial.clippingPlanes=this.clipPlanes;
     this.markerGeometry = new THREE.ConeGeometry(this.range * 0.025,this.range * 0.075,4);
     this.markers = new Map();
     this.canvas.dataset.mapMode = 'terrain-3d';
@@ -142,7 +159,7 @@ export class HongKongMinimap {
         .map((e,i) => ({id:`enemy-${i}`,position:e.position,color:0xff536e}))];
     const active = new Set();
     for (const actor of actors) {
-      if (!isInsideMinimap(actor.position,position,this.range)) continue;
+      if(![actor.position.x,actor.position.y,actor.position.z].every(Number.isFinite))continue;
       active.add(actor.id);
       let marker = this.markers.get(actor.id);
       if (!marker) {
@@ -150,8 +167,9 @@ export class HongKongMinimap {
         marker.renderOrder = 10; this.markers.set(actor.id,marker); this.mapScene.add(marker);
       }
       marker.material.color.setHex(actor.color);
-      marker.position.set(actor.position.x,actor.position.y+this.range*.04,actor.position.z);
-      marker.rotation.set(Math.PI/2,0,-(actor.facing || 0));
+      const displayed=terrainMarkerPoint(new THREE.Vector3(actor.position.x,actor.position.y+this.range*.04,actor.position.z),this.mapCamera);
+      marker.position.copy(displayed.point);
+      marker.rotation.set(Math.PI/2,0,-(displayed.offscreen?Math.atan2(actor.position.x-position.x,actor.position.z-position.z):(actor.facing || 0)));
     }
     for (const [id,marker] of this.markers) if (!active.has(id)) {
       this.mapScene.remove(marker); marker.material.dispose(); this.markers.delete(id);
@@ -269,8 +287,8 @@ export class HongKongMinimap {
   }
 
   drawActors(ctx, position, radius, center) {
-    for(const player of this.players?.()||[]){if(!player.seen||player.eliminated||!isInsideMinimap(player,position,this.range))continue;
-      const marker=worldToMinimap(player,position,this.range,radius,center);ctx.fillStyle=player.rescue?'#ff6682':player.team==='police'?'#41d9ff':'#ffce67';ctx.beginPath();ctx.arc(marker.x,marker.y,4,0,Math.PI*2);ctx.fill();
+    for(const player of this.players?.()||[]){if(!player.seen||player.eliminated||![player.x,player.y,player.z].every(Number.isFinite))continue;
+      const marker=edgeMinimapMarker(player,position,this.range,radius-5,center);ctx.fillStyle=player.rescue?'#ff6682':player.team==='police'?'#41d9ff':'#ffce67';ctx.beginPath();ctx.arc(marker.x,marker.y,4,0,Math.PI*2);ctx.fill();
       if(player.rescue){ctx.font='bold 10px system-ui';ctx.textAlign='center';ctx.fillText('구조',marker.x,marker.y-7);}
     }
 

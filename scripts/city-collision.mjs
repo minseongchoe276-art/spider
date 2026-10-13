@@ -1,9 +1,8 @@
 import * as THREE from 'three';
 import {City} from '../src/City.js';
-// Use the game generator itself. Window textures consume 384 seeded values;
-// skipping those would produce a different collision map on the server.
+// Use the game generator itself; visual texture draws are isolated from layout.
 class CollisionCity extends City {
-  initTextures(){for(let i=0;i<384;i++)this.random();for(const key of ['windowGlassTex','windowBrickTex','windowDarkTex','roadTex'])this[key]=new THREE.Texture();}
+  initTextures(){for(const key of ['windowGlassTex','windowBrickTex','windowDarkTex','roadTex'])this[key]=new THREE.Texture();}
   createHelipad(){} // Painted plane is excluded from player collision as well.
 }
 let cached;

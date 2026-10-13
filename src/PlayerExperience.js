@@ -36,6 +36,8 @@ export class PlayerExperience {
   }
   get city(){return this.game.city.isStreamed?'hong-kong':'procedural';}
   safe(position) {
+    const limit=this.game.city.playableHalfExtent || 2400;
+    if(![position.x,position.y,position.z].every(Number.isFinite) || Math.abs(position.x)>limit-2 || Math.abs(position.z)>limit-2)return false;
     const g=this.game,support=g.physics.supportHeight(position);
     if(!Number.isFinite(support)||Math.abs(position.y-support-.1)>.7)return false;
     const offsets=[[.35,0],[-.35,0],[0,.35],[0,-.35]];

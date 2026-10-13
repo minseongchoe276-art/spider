@@ -47,9 +47,17 @@ export class TimeTrialSystem {
     this.ringMeshGroup.clear();
     this.checkpoints = [];
     const spawn = this.city.getRooftopSpawn(95);
-    const offsets = [[0,40],[50,100],[120,80],[140,0],[80,-80],[-40,-100],[-100,-20],[0,0]];
+    const scale=Math.min(1,(this.city.playableHalfExtent || 2400)/260);
+    const routeOrigin=spawn.clone();
+    const originLimit=Math.max(0,(this.city.playableHalfExtent || 2400)-36-140*scale);
+    routeOrigin.x=THREE.MathUtils.clamp(routeOrigin.x,-originLimit,originLimit);
+    routeOrigin.z=THREE.MathUtils.clamp(routeOrigin.z,-originLimit,originLimit);
+    const offsets = [[0,40],[50,100],[120,80],[140,0],[80,-80],[-40,-100],[-100,-20],[0,0]].map(([x,z])=>[x*scale,z*scale]);
     for (const [x,z] of offsets) {
-      const intended = spawn.clone().add(new THREE.Vector3(x,0,z));
+      const intended = routeOrigin.clone().add(new THREE.Vector3(x,0,z));
+      const routeLimit=(this.city.playableHalfExtent || 2400)-36;
+      intended.x=THREE.MathUtils.clamp(intended.x,-routeLimit,routeLimit);
+      intended.z=THREE.MathUtils.clamp(intended.z,-routeLimit,routeLimit);
       let pos = null;
       const candidates = [[0,0]];
       for (const distance of [8,16,24]) {
@@ -59,6 +67,7 @@ export class TimeTrialSystem {
       }
       for (const [dx,dz] of candidates) {
         const candidate = intended.clone().add(new THREE.Vector3(dx,0,dz));
+        if(Math.abs(candidate.x)>(this.city.playableHalfExtent||2400)-5 || Math.abs(candidate.z)>(this.city.playableHalfExtent||2400)-5)continue;
         let top = this.city.collisionWorld?.groundAt(new THREE.Vector3(candidate.x,450,candidate.z),600);
         if (!this.city.collisionWorld) {
           top = 0;

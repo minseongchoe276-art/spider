@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import {LOCAL_CITY} from './LocalCityLayout.js';
 
 // Procedural Manhattan-style Open World City Generator
 export class City {
@@ -6,14 +7,17 @@ export class City {
     this.scene = scene;
     // Stable city layout keeps saved personal race times comparable.
     this.randomState = 0x5f3759df;
-    this.playableHalfExtent = 440;
+    this.playableHalfExtent = LOCAL_CITY.playableHalfExtent;
     this.buildings = []; // Array of { mesh, box, height, center, type }
     this.buildingMeshes = []; // Meshes for Three.js raycasting
     this.colliders = []; // AABB boxes for fast collision
     this.rooftopSpawns = []; // Ideal spawn points for player on rooftops
     this.beaconLights = []; // Blinking rooftop antenna beacons
 
+    // Texture noise must never change authoritative building/collision layout.
+    const layoutSeed=this.randomState;
     this.initTextures();
+    this.randomState=layoutSeed;
     this.initMaterials();
     this.generateCity();
     this.createStreetsAndGround();
@@ -164,10 +168,10 @@ export class City {
   }
 
   generateCity() {
-    const gridRows = 8;
-    const gridCols = 8;
-    const blockSize = 48; // Building plot width/depth
-    const streetWidth = 22; // Road width
+    const gridRows = LOCAL_CITY.rows;
+    const gridCols = LOCAL_CITY.columns;
+    const blockSize = LOCAL_CITY.blockSize;
+    const streetWidth = LOCAL_CITY.streetWidth;
     const step = blockSize + streetWidth;
     const halfWidth = (gridCols * step) / 2;
 
@@ -181,9 +185,9 @@ export class City {
 
         // Skyscraper height distribution: taller near center, varied across city
         const distFromCenter = Math.hypot(c - gridCols / 2 + 0.5, r - gridRows / 2 + 0.5);
-        const centerFactor = Math.max(0, 1 - distFromCenter / 4.5);
-        const baseHeight = 55 + centerFactor * 110 + this.random() * 55;
-        const height = Math.min(230, Math.max(45, baseHeight));
+        const centerFactor = Math.max(0, 1 - distFromCenter / 2.8);
+        const baseHeight = 45 + centerFactor * 70 + this.random() * 40;
+        const height = Math.min(160, Math.max(45, baseHeight));
 
         const buildingType = (r * 3 + c) % 4; // 0: Glass, 1: Deco Setback, 2: Dark Cyber, 3: Brick Classic
         this.createBuilding(cityGroup, x, z, blockSize, height, buildingType);
@@ -453,10 +457,10 @@ export class City {
   }
 
   createStreetsAndGround() {
-    const totalSize = 900;
+    const totalSize = LOCAL_CITY.groundSize;
     const groundGeom = new THREE.PlaneGeometry(totalSize, totalSize);
 
-    this.roadTex.repeat.set(32, 32);
+    this.roadTex.repeat.set(12, 12);
     const groundMat = new THREE.MeshStandardMaterial({
       map: this.roadTex,
       roughness: 0.9,

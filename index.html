@@ -19,6 +19,7 @@
     <canvas id="speedlines-canvas"></canvas>
 
     <!-- Center Aim Reticle / Crosshair -->
+    <div id="player-markers" class="hidden" aria-label="플레이어 위치"></div>
     <div id="anchor-preview" aria-hidden="true"></div><div id="hand-status" aria-label="양손 거미줄 상태"></div><div id="combo-hud" role="status"></div><div id="boundary-warning" role="status"></div><div id="pursuit-hud" role="status"></div><button id="spectate-next" class="hidden" type="button">다음 플레이어 관전</button>
     <div id="crosshair">
       <div class="crosshair-dot"></div>
@@ -77,7 +78,7 @@
       <div class="minimap-wrap">
         <canvas id="minimap-canvas" role="img" aria-label="현재 위치 미니맵"></canvas>
         <span class="minimap-north" aria-hidden="true">N ↑</span>
-        <span class="minimap-legend">3D · <b>나</b> <i>친구</i></span>
+        <span class="minimap-legend">3D · <b>나</b> <i>경찰</i> <em>도망자</em></span>
         <span class="minimap-range-label"><b id="minimap-range">600m</b> RANGE</span>
       </div>
       <output id="minimap-coordinates" aria-live="off">E +0m&nbsp; N +0m&nbsp; ·&nbsp; ALT 0m</output>

@@ -18,10 +18,10 @@ const g=[[0,0,10,0,Math.PI-.1],[1,10,10,0,-Math.PI+.1]];const halfway=ghostAt(g,
 const denied=new Progression({getItem:()=>'{broken',setItem:()=>{throw Error('quota');}});denied.bank(100);assert.equal(denied.save(),false);assert.equal(denied.data.score,100);
 const badGhost=new Progression({getItem:()=>JSON.stringify({score:0,ghosts:{'procedural-v4-12345678':{time:1,samples:[[1,0,0,0,0],[0,0,0,0,0]]}}})});assert.equal(Object.keys(badGhost.data.ghosts).length,0);
 const budget=new PerformanceBudget();let change;for(let i=0;i<180;i++)change=budget.update(1/25,true,1.5)??change;assert(change<1.5);assert(budget.p95>25);
-const city=proceduralCollision();assert.equal(city.colliders.length,744);const c=city.colliders[0],y=(c.minY+c.maxY)/2-1;
+const city=proceduralCollision();assert.equal(city.buildings.length,16);assert(city.colliders.length<250);const c=city.colliders[0],y=(c.minY+c.maxY)/2-1;
 assert(blockedSegment({x:c.minX-2,y,z:(c.minZ+c.maxZ)/2},{x:c.maxX+2,y,z:(c.minZ+c.maxZ)/2},[c]));assert(!blockedSegment({x:c.minX-2,y:c.maxY+5,z:c.minZ},{x:c.maxX+2,y:c.maxY+5,z:c.minZ},[c]));
 // The client map's seeded texture draws and server's map must match exactly.
-const client=Object.create(City.prototype);Object.assign(client,{randomState:0x5f3759df});for(let i=0;i<384;i++)client.random();const expected=55+Math.max(0,1-Math.hypot(-3.5,-3.5)/4.5)*110+client.random()*55;assert(Math.abs(city.buildings[0].height-expected)<1e-10);
+const client=Object.create(City.prototype);Object.assign(client,{randomState:0x5f3759df});const expected=45+Math.max(0,1-Math.hypot(-1.5,-1.5)/2.8)*70+client.random()*40;assert(Math.abs(city.buildings[0].height-expected)<1e-10);
 const scene=new THREE.Scene(),character={group:new THREE.Group()},physics={position:new THREE.Vector3(),velocity:new THREE.Vector3(),state:'IDLE',facingAngle:0,city:{raycast:()=>null},clearWebAnchor(){},clearPendingInput(){}};
 const combat=new CombatSystem(scene,physics,character);const enemy={type:'shield',position:new THREE.Vector3(0,0,1),health:140,mesh:new THREE.Group()};combat.enemies=[enemy];combat.strike({key:'jab',hits:new Set()},{damage:12,reach:2});assert.equal(enemy.health,140);combat.strike({key:'hook',hits:new Set()},{damage:32,reach:2});assert.equal(enemy.health,108);
 physics.state='FALLING';assert(combat.airStrike(new THREE.PerspectiveCamera()));assert.equal(combat.action.key,'slam');assert(physics.velocity.y<=-14);
