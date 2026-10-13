@@ -1,6 +1,6 @@
 # 별도 게임 서버 구축·검수
 
-2026-10-13. 사용자의 별도 게임 서버 구축 범위 승인에 따라 Node.js 상주 프로세스를 준비했다. **로컬 구현·검수 완료, 공개 호스팅 생성과 프런트 연결은 계정 연결 대기**다.
+2026-10-13. 사용자의 별도 게임 서버 구축 범위 승인에 따라 Node.js 상주 프로세스를 준비했다. **공개 무료 서버 생성·8인 검수 완료, 운영 프런트 연결 배포 진행**다.
 
 ## 구현
 
@@ -21,13 +21,14 @@
 
 `check-public-room-server.mjs`는 실제 공개 주소에서 8인 경기, 시작 8초 여유, 공식 벽 차단, 피해자의 확인 조작, 관전 상태 재접속, 테스트 방 정리를 검증하도록 준비했다. [localhost 사전 검증](protocol-local-results.json)을 통과했으며, 캐시가 만료된 첫 공격은 약 1.14초, 다음 반복은 약 5.2·11.5ms였다. 이는 공개 호스팅의 검증 결과가 아니다.
 
-## 공개 배포의 남은 단계
+## 공개 배포
 
-1. Render 계정 연결 후 `render-room-server.yaml`로 서비스 생성. 무료 플랜으로 설정되어 있으며 상시 실행 유료 플랜 선택은 비용 승인 후에만 한다.
-2. 배포된 HTTPS `/healthz` 및 WSS `/ws` 확인.
-3. Vercel의 `VITE_WS_URL=wss://실제-서비스-주소/ws`를 설정하고 재배포. 로컬 주소나 가짜 호스트를 운영 설정에 넣지 않는다.
-4. 두 독립 브라우저와 8인 프로토콜 검사로 공개 서버의 실제 왕복·벽 차단·재접속·비활성·종료를 재검증한다.
+사용자가 확인한 Render 워크스페이스에 Free 플랜·Singapore·단일 인스턴스로 생성했다. [공개 서버](https://minogame-room-authority.onrender.com/healthz), [배포 기록](deployment.json). 실제 상태 확인은 HTTP 200, 공식 지형 준비는 CLEAR였다. 생성 API가 HTTP health-check 경로 설정을 제공하지 않아 Render의 관리형 검사 경로는 기본 포트 검사이며, `/healthz`는 직접 검증했다.
 
-현재 Render 연결이 확인되지 않아 공개 서비스 주소, 운영 전용 서버 응답 지연, 프런트 전환 완료를 주장하지 않는다. 기존 Supabase 서버의 공식 지형 피격 판정 수정과 검수는 별도로 완료됐다.
+[공개 8인 검사](public-results.json)는 서버의 실제 8초 시작 여유·공격 cooldown을 사용했다. 열린 경로 공격 왕복은 검증 머신에서 약 130~139ms였다. 실제 벽은 피해를 차단했고, 탈락한 플레이어가 재접속해도 동일 ID·HP 0·관전 상태가 유지됐다. 검사용 방만 정리한 뒤에도 서버가 정상 응답했다. 최근 error 로그 표본은 0개, 메모리 표본은 약 103MiB였다. 장시간·다지역 부하 전체를 보장하는 수치는 아니다.
 
-Render 공식 자료: [요금](https://render.com/pricing), [무료 서비스 제한](https://render.com/docs/free), [WebSocket](https://render.com/docs/websocket). 확인 시점 Starter는 월 $7부터이며, 무료 서비스는 유휴 상태에서 잠들 수 있다. 실제 사용량 및 플랜의 부가 비용은 생성 직전 다시 확인한다.
+프런트는 공개 주소만 담은 `.env.production`의 `VITE_WS_URL`로 연결한다. 다른 채팅의 미커밋 변경을 포함하지 않은 커밋 소스에서 production build를 수행했고, 생성된 JS에서 실제 WSS 주소를 확인했다. [빌드](production-build.log), [번들 지문](production-bundle.json). 운영 사이트의 새 번들과 실제 브라우저 2인 경기 검증은 연결 배포 후 기록한다.
+
+무료 서비스의 유휴 복구와 서버 재시작 시 메모리 방 소멸은 남아 있다. 유료 리소스 생성이나 결제는 수행하지 않았다. 서버 성능과 연결 검증을 전체 게임의 모든 미래 상황에 대한 무결함 판정으로 확대하지 않는다.
+
+Render 공식 자료: [요금](https://render.com/pricing), [무료 서비스 제한](https://render.com/docs/free), [WebSocket](https://render.com/docs/websocket).
