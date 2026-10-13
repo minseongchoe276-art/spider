@@ -1,0 +1,29 @@
+{
+  "status": "PASS",
+  "checked_at": "2026-10-13T10:53:33.682Z",
+  "service": "http://127.0.0.1:4180",
+  "scope": "Real HTTP/WebSocket round trips from the verification machine, official Hong Kong geometry, eight temporary participants, actual server grace and cooldown. No existing room mutated.",
+  "results": [
+    {
+      "name": "Eight real public WebSocket clients, server roles, official-map hits independent of defender claims",
+      "status": "PASS",
+      "attackRoundTripMs": [
+        1140.0483749999985,
+        5.247041000000536,
+        11.526625000000422
+      ]
+    },
+    {
+      "name": "Actual official wall rejects forged client approval without a timeout-default hit",
+      "status": "PASS"
+    },
+    {
+      "name": "Reconnect preserves the same identity and eliminated state",
+      "status": "PASS"
+    },
+    {
+      "name": "Only the temporary test room is removed; service remains healthy",
+      "status": "PASS"
+    }
+  ]
+}
