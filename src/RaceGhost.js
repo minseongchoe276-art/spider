@@ -20,5 +20,14 @@ export class RaceGhost {
     if(p){this.mesh.visible=true;this.mesh.position.set(p[0],p[1]+.9,p[2]);this.mesh.rotation.y=p[3];}
   }
   get splitDelta(){const i=this.splits.length-1,other=this.reference?.splits?.[i];return Number.isFinite(other)?this.splits[i]-other:null;}
+  finish(trial,position,facing){
+    if(!this.course)return;
+    const sample=[trial.elapsedTime,...position.toArray(),facing];
+    if(this.samples.at(-1)?.[0]===trial.elapsedTime)this.samples[this.samples.length-1]=sample;
+    else if(this.samples.length<3000)this.samples.push(sample);
+    else this.samples[this.samples.length-1]=sample;
+    while(this.lastIndex<trial.currentIndex){this.splits.push(trial.splitTimes?.[this.lastIndex]??trial.elapsedTime);this.lastIndex++;}
+    this.mesh.visible=false;
+  }
   stop(){this.mesh.visible=false;this.course=null;}
 }

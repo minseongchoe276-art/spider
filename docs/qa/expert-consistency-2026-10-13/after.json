@@ -1,0 +1,36 @@
+{
+  "results": [
+    {
+      "name": "Null web elements cannot interrupt pose handling",
+      "status": "PASS"
+    },
+    {
+      "name": "Fresh stationary swing poses retain their velocity",
+      "status": "PASS"
+    },
+    {
+      "name": "Eliminated reconnects restore spectator mode",
+      "status": "PASS"
+    },
+    {
+      "name": "Living reconnects preserve server position in ordinary rooms",
+      "status": "PASS"
+    },
+    {
+      "name": "A new match exits solo presentation state",
+      "status": "PASS"
+    },
+    {
+      "name": "Pause cancels queued online punch contact",
+      "status": "PASS"
+    },
+    {
+      "name": "Solo play restores a previously hidden spectator character",
+      "status": "PASS"
+    },
+    {
+      "name": "Race completion records the finish sample and final split",
+      "status": "PASS"
+    }
+  ]
+}

@@ -598,6 +598,10 @@ export class GameApp {
   setPaused(paused) {
     this.isPaused = paused;
     if (paused) {
+      if(this.multiplayer?.room?.phase==='playing'){
+        this.multiplayer.pendingPunch=null;
+        this.combat?.cancel();
+      }
       this.clearInput();
       this.speedLines?.setSpeed(0, 1);
       if (document.pointerLockElement === this.canvas) document.exitPointerLock?.();

@@ -181,13 +181,16 @@ export function attachRooms(server) {
     });
     ws.on('close', () => {
       clients.delete(ws);
-      if(ws.player&&rooms.get(ws.player.room)?.enhanced&&rooms.get(ws.player.room)?.phase==='playing'){ws.player.disconnectedAt=Date.now();publish(rooms.get(ws.player.room));}else leave(ws);
+      if(ws.player&&rooms.get(ws.player.room)?.phase==='playing'){ws.player.disconnectedAt=Date.now();publish(rooms.get(ws.player.room));}else leave(ws);
     });
   });
 
   const ticker = setInterval(() => {
     for (const room of rooms.values()) {
-      if(room.enhanced&&room.phase==='playing'){const now=Date.now();for(const p of [...room.players.values()])if(p.disconnectedAt&&now-p.disconnectedAt>30000)leave(p.ws);if(!rooms.has(room.code))continue;for(const [id,hit] of room.pendingHits)if(now>hit.expires)room.pendingHits.delete(id);if(now-(room.lastPulse||0)>PURSUIT.pulseInterval){room.lastPulse=now;room.pulseUntil=now+PURSUIT.pulseLength;publish(room);}}
+      const now=Date.now();
+      for(const p of [...room.players.values()])if(p.disconnectedAt&&now-p.disconnectedAt>30000)leave(p.ws);
+      if(!rooms.has(room.code))continue;
+      if(room.enhanced&&room.phase==='playing'){for(const [id,hit] of room.pendingHits)if(now>hit.expires)room.pendingHits.delete(id);if(now-(room.lastPulse||0)>PURSUIT.pulseInterval){room.lastPulse=now;room.pulseUntil=now+PURSUIT.pulseLength;publish(room);}}
       if (room.phase === 'playing' && room.mode === 'tag' && Date.now() >= room.endsAt) {
         finish(room, 'runner');
       }

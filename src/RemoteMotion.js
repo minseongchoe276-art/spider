@@ -15,7 +15,7 @@ export function sanitizePose(pose) {
   const velocity = vector(pose.velocity);
   if (!velocity || Math.hypot(velocity.x,velocity.y,velocity.z)>150) return null;
   const webs = (Array.isArray(pose.webs)?pose.webs:[]).slice(0,2)
-    .map(w => ({hand:w.hand==='right'?'right':'left',anchor:vector(w.anchor)})).filter(w => w.anchor);
+    .map(w => ({hand:w?.hand==='right'?'right':'left',anchor:vector(w?.anchor)})).filter(w => w.anchor);
   let combat = null;
   if (COMBAT.has(pose.combat?.key) && [pose.combat.time ?? 0,pose.combat.duration ?? 0].every(Number.isFinite))
     combat = {key:pose.combat.key,id:String(pose.combat.id || '').slice(0,40),
@@ -74,7 +74,7 @@ export class RemoteMotion {
     else this.mesh.position.lerp(this.target,1-Math.exp(-15*delta));
     const fresh = this.pose && now-this.poseAt<650;
     const v = this.velocity.clone();
-    if (now-this.receivedAt>350) v.set(0,0,0);
+    if (!fresh && now-this.receivedAt>350) v.set(0,0,0);
     let state;
     if (fresh) state=this.pose.state;
     else {

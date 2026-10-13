@@ -183,13 +183,22 @@ export class Multiplayer {
       return;
     }
     clearInterval(this.beginTimer);this.beginTimer=null;this.pendingPunch=null;
-    this.spectating=false;game.character.group.visible=true;
+    const me=this.players.find(p=>p.id===this.id);
+    this.solo=false;
+    this.spectating=!!me?.eliminated;game.character.group.visible=!this.spectating;
     game.clickToPlayOverlay?.classList.add('hidden');
     game.isPlaying=true;game.isPaused=false;game.clearInput();game.audio.ensureContext();game.pointerLockWanted=true;
-    game.practice?.stop();game.physics.resetPosition();this.placeMatchSpawn();game.resetCamera();game.timeTrial.stop();game.combat.cancel();game.combat.clearEnemies();
-    const me=this.players.find(p=>p.id===this.id);
+    game.practice?.stop();game.physics.resetPosition();
+    if(me?.seen && [me.x,me.y,me.z,me.facing].every(Number.isFinite)){
+      game.physics.position.set(me.x,me.y,me.z);
+      game.physics.previousFixedPosition.copy(game.physics.position);
+      game.physics.renderPosition.copy(game.physics.position);
+      game.physics.facingAngle=me.facing;
+      game.character.targetFacingAngle=me.facing;
+      game.character.visualYaw=me.facing;
+    }else this.placeMatchSpawn();
+    game.resetCamera();game.timeTrial.stop();game.combat.cancel();game.combat.clearEnemies();
     const desiredMode=me?.team==='police'?'combat':'web';
-    if(this.arena&&me?.seen){game.physics.position.set(me.x,me.y,me.z);game.physics.previousFixedPosition.copy(game.physics.position);game.physics.renderPosition.copy(game.physics.position);game.resetCamera();}
     game.applyPreferences();
     if(game.combat.mode!==desiredMode)game.combat.toggle(game.input);
     this.game.showNotice(this.room.mode==='tag'
@@ -236,6 +245,7 @@ export class Multiplayer {
   beginSoloReady() {
     if(!this.solo)return;
     const game=this.game;
+    this.spectating=false;game.character.group.visible=true;
     game.clickToPlayOverlay?.classList.add('hidden');
     game.isPlaying=true;game.isPaused=false;game.clearInput();game.audio.ensureContext();game.pointerLockWanted=true;
     game.physics.resetPosition();game.resetCamera();game.timeTrial.stop();game.combat.cancel();game.combat.clearEnemies();

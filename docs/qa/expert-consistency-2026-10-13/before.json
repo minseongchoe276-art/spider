@@ -1,0 +1,34 @@
+{
+  "results": [
+    {
+      "name": "Null web elements cannot interrupt pose handling",
+      "status": "FAIL",
+      "error": "Cannot read properties of null (reading 'hand')"
+    },
+    {
+      "name": "Fresh stationary swing poses retain their velocity",
+      "status": "FAIL",
+      "error": "Expected values to be strictly equal:\n\n0 !== 10\n"
+    },
+    {
+      "name": "Eliminated reconnects restore spectator mode",
+      "status": "FAIL",
+      "error": "Expected values to be strictly equal:\n\nfalse !== true\n"
+    },
+    {
+      "name": "Living reconnects preserve server position in ordinary rooms",
+      "status": "FAIL",
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n+   100,\n+   100,\n+   100\n-   17,\n-   25,\n-   30\n  ]\n"
+    },
+    {
+      "name": "A new match exits solo presentation state",
+      "status": "FAIL",
+      "error": "Expected values to be strictly equal:\n\ntrue !== false\n"
+    },
+    {
+      "name": "Pause cancels queued online punch contact",
+      "status": "FAIL",
+      "error": "Expected values to be strictly equal:\n\n4 !== null\n"
+    }
+  ]
+}
