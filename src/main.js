@@ -422,7 +422,7 @@ export class GameApp {
           e.clientX,
           e.clientY,
           this.canvas.getBoundingClientRect(),
-          document.pointerLockElement === this.canvas
+          true // Both hands fire through the fixed screen-center reticle.
         );
         this.physics.findBestAnchor(this.camera);
         this.multiplayer?.attack('web');
@@ -437,7 +437,7 @@ export class GameApp {
           e.clientX,
           e.clientY,
           this.canvas.getBoundingClientRect(),
-          document.pointerLockElement === this.canvas
+          true
         );
         this.physics.findBestAnchor(this.camera);
         this.multiplayer?.attack('web');
@@ -489,7 +489,7 @@ export class GameApp {
         this.lastMousePosition = { x: e.clientX, y: e.clientY };
         this.tpsCamera.handleMouseMove(dx, dy);
       } else if (this.isPlaying && !this.isPaused) {
-        this.physics.setWebAimPoint(e.clientX, e.clientY, this.canvas.getBoundingClientRect(), false);
+        this.physics.setWebAimPoint(0, 0, null, true);
       }
     });
 

@@ -90,10 +90,13 @@ check('Grounded E in web mode cannot silently skip the jump with a zip',()=>{
   const mesh=new THREE.Mesh(new THREE.BoxGeometry(8,20,2));mesh.position.set(0,10,20);mesh.updateMatrixWorld(true);
   p.city.buildingMeshes=[mesh];assert.equal(p.performAirJump(camera),false);assert(p.canAirJump);
 });
-check('E uses the same free-cursor aiming point as left mouse',()=>{
+check('Mouse movement keeps the aim at the fixed center and E uses that aim',()=>{
   const p=player();p.webAimNdc.set(0.6,0.2);let actual;
   p.performAirJump=(_camera,aim)=>{actual=aim?.clone();return false;};
-  withInput(p,(_app,key)=>key('KeyE'));assert(actual?.equals(p.webAimNdc));
+  withInput(p,(_app,key)=>{
+    const e=new Event('mousemove');Object.defineProperties(e,{clientX:{value:750},clientY:{value:80}});
+    window.dispatchEvent(e);key('KeyE');
+  });assert(actual?.equals(new THREE.Vector2()));
 });
 check('Jumping during a grounded attack cancels it before landing',()=>{
   const p=player();p.state='IDLE';const c=new CombatSystem(new THREE.Scene(),p,p.character);

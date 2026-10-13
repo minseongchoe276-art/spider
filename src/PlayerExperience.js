@@ -99,10 +99,8 @@ export class PlayerExperience {
     const inCombat=GROUNDED.includes(p.state)&&g.combat.mode==='combat';
     if(hands)hands.textContent=inCombat?`지상 전투 · ${keyLabel(g.preferences.values.settings.bindings.guard)} 방어`:
       `${p.webs.some(w=>w.button===0)?'좌클릭 연결':'좌클릭 준비'} · ${p.webs.some(w=>w.button===2)?'우클릭 연결':'우클릭 준비'} · ${p.canAirJump?'집 준비':'집 사용함'}`;
-    if(!marker)return;marker.style.display='none';if(inCombat)return;
-    const anchor=p.bestAnchorCandidate;if(!anchor)return;
-    const cameraSpace=anchor.clone().applyMatrix4(g.camera.matrixWorldInverse);if(cameraSpace.z>=0)return;
-    const point=anchor.clone().project(g.camera);if(Math.abs(point.x)>1||Math.abs(point.y)>1)return;
-    marker.style.display='block';marker.style.left=`${(point.x+1)*50}%`;marker.style.top=`${(1-point.y)*50}%`;
+    // Availability belongs on the fixed reticle, not a moving world marker.
+    g.crosshair?.classList.toggle('aiming',!inCombat && !!p.bestAnchorCandidate);
+    if(marker)marker.style.display='none';
   }
 }

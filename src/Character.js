@@ -301,6 +301,13 @@ export class Character {
     }
     const previousAction = this.activeAction;
     const nextAction = this.actions[name];
+    // Timed skills sample their clip at speed zero. Release that override
+    // even when the ordinary state uses the same clip (e.g. slam landing).
+    nextAction.setEffectiveTimeScale(1);
+    if (previousAction === nextAction && nextAction.loop === THREE.LoopRepeat &&
+        (!nextAction.isRunning() || nextAction.paused)) {
+      nextAction.reset().setEffectiveWeight(1).play();
+    }
 
     if (previousAction !== nextAction) {
       if (previousAction) {

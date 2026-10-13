@@ -128,6 +128,42 @@ console.log('PASS: grounded power strike, compact guard, four short evasions and
  c.mixer.stopAllAction();
 }
 console.log('PASS: boxing ready stance stays planted with restrained breathing');
+// A timed skill and the ordinary landing state can share the same action.
+// Its sampling speed must not freeze the subsequent landing animation.
+{
+ const c=actor(),v=new THREE.Vector3();
+ c.combatAction={id:1,key:'slamLand',time:.2,duration:.7};
+ c.update(1/60,'LANDING',v);
+ const sampled=c.activeAction.time;
+ c.combatAction=null;c.landingSpeed=34;
+ c.update(1/60,'LANDING',v);
+ assert.equal(c.activeAction,c.actions.slamLand);
+ assert(c.activeAction.time>sampled,'Landing inherited the skill playback speed of zero');
+ for(let i=0;i<60;i++)c.update(1/60,'IDLE',v);
+ assert.equal(c.activeAction,c.actions.idle);assert(c.activeAction.isRunning());
+ c.activeAction.paused=true;
+ c.update(1/60,'IDLE',v);
+ assert(c.activeAction.isRunning(),'An interrupted idle stayed paused');
+ c.mixer.stopAllAction();
+}
+for(const key of ['jab','cross','hook','special','dodgeForward','airTrick']) {
+ const c=actor(),v=new THREE.Vector3();
+ if(key==='airTrick')c.triggerAirTrick('front');
+ else c.combatAction={id:1,key,time:0,duration:1};
+ for(let i=0;i<70;i++) {
+   if(c.combatAction)c.combatAction.time=Math.min(i/60,.99);
+   c.update(1/60,key==='airTrick'?'FALLING':'IDLE',v);
+ }
+ c.combatAction=null;
+ for(let i=0;i<60;i++)c.update(1/60,'IDLE',v);
+ assert.equal(c.activeAction,c.actions.idle,key+': did not return to idle');
+ assert(c.activeAction.isRunning(),key+': idle did not resume');
+ assert.equal(c.isTricking || false,false);
+ for(let i=0;i<30;i++)c.update(1/60,'RUNNING',new THREE.Vector3(0,0,2.8));
+ assert.equal(c.activeAction,c.actions.walk);assert(c.activeAction.isRunning());finite(c);
+ c.mixer.stopAllAction();
+}
+console.log('PASS: timed landing resumes, paused idle recovers, and six skills return to idle and walking');
 // The rendered sole must retain the flat-foot orientation of the authored
 // stance. Regressing to the foot bone's local Y as a sole normal points toes
 // downward even though the ankle marker remains at the correct height.

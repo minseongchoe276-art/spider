@@ -74,7 +74,7 @@ canvas {
 
 /* Center Crosshair */
 #crosshair {
-  position: absolute;
+  position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -83,6 +83,8 @@ canvas {
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 28px;
+  height: 28px;
 }
 
 .crosshair-dot {
@@ -99,12 +101,12 @@ canvas {
   height: 28px;
   border: 1.5px solid rgba(255, 255, 255, 0.3);
   border-radius: 50%;
-  transition: all 0.2s cubic-bezier(0.1, 0.9, 0.2, 1);
+  transition: border-color 0.2s ease;
 }
 
 #crosshair.aiming .crosshair-ring {
-  width: 38px;
-  height: 38px;
+  width: 28px;
+  height: 28px;
   border-color: var(--spider-cyan);
   box-shadow: 0 0 14px var(--spider-cyan-glow);
   transform: rotate(45deg);
