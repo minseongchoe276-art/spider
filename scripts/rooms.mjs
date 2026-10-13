@@ -1,3 +1,4 @@
+import { sanitizePose } from '../src/RemoteMotion.js';
 import { WebSocketServer } from 'ws';
 import { randomBytes } from 'node:crypto';
 import { MATCH, policeCount } from '../src/MatchRules.js';
@@ -78,7 +79,7 @@ function handle(ws, data) {
     const distance=Math.hypot(data.x-p.x,data.y-p.y,data.z-p.z);
     if(p.lastMove && distance>Math.max(20,(now-p.lastMove)*0.15))return;
     p.x=data.x;p.y=data.y;p.z=data.z;p.facing=data.facing;p.seen=true;p.lastMove=now;
-    broadcast(room,{type:'move',id:p.id,x:p.x,y:p.y,z:p.z,facing:p.facing});return;
+    broadcast(room,{type:'move',id:p.id,x:p.x,y:p.y,z:p.z,facing:p.facing,pose:sanitizePose(data.pose)});return;
   }
   if(data.type==='attack' && room.mode==='tag' && p.team==='police') {
     if(!p.seen || Date.now()<(room.vulnerableAt || 0))return;

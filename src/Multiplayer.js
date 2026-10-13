@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { MATCH, resolveMatchSpawn, teamOffset } from './MatchRules.js';
 import { SupabaseRooms } from './SupabaseRooms.js';
+import { RemoteMotion, capturePose, sanitizePose } from './RemoteMotion.js';
 
 const $ = id => document.getElementById(id);
 const label = mode => mode === 'tag' ? '경찰과 도망자' : '자유 플레이';
@@ -63,6 +64,11 @@ export class Multiplayer {
     if(data.type==='rooms')return this.renderList(data.rooms);
     if(data.type==='joined'){this.id=data.id;return;}
     if(data.type==='left')return this.leaveLocal();
+    if(data.type==='pose') {
+      const avatar=this.avatars.get(data.id),player=this.players.find(p=>p.id===data.id);
+      if(avatar && player)avatar.receive(player,sanitizePose(data.pose));
+      return;
+    }
     if(data.type==='room') {
       const phaseChanged=data.room.phase!==this.lastPhase;
       this.room=data.room;this.players=data.players;this.host=data.host;this.endsAt=data.endsAt;this.winner=data.winner;
@@ -79,6 +85,7 @@ export class Multiplayer {
       const player=this.players.find(p=>p.id===data.id);
       if(player && [data.x,data.y,data.z,data.facing].every(Number.isFinite)){
         player.x=data.x;player.y=data.y;player.z=data.z;player.facing=data.facing;player.seen=true;
+        player.pose=sanitizePose(data.pose);
       }
       this.syncAvatars();
       return;
@@ -233,23 +240,20 @@ export class Multiplayer {
         this.game.tpsCamera.update(delta,point,new THREE.Vector3(),false,this.game.city.buildingMeshes||[],ray,null);
       }
     } else if(now-this.lastSend>100&&this.game.isPlaying&&!this.game.isPaused){
-      const p=this.game.physics.position;this.send({type:'move',x:p.x,y:p.y,z:p.z,facing:this.game.physics.facingAngle});this.lastSend=now;
+      const p=this.game.physics.position;this.send({type:'move',x:p.x,y:p.y,z:p.z,facing:this.game.physics.facingAngle,pose:capturePose(this.game.physics,this.game.character)});this.lastSend=now;
     }
     if(now-(this.lastHud||0)>500){this.renderHud();this.lastHud=now;}
-    for(const avatar of this.avatars.values()){avatar.mesh.position.lerp(avatar.target,Math.min(1,delta*12));avatar.mesh.rotation.y=avatar.player.facing || 0;}
+    for(const avatar of this.avatars.values())avatar.update(delta,now);
   }
   syncAvatars() {
     if(this.room?.phase!=='playing')return this.clearAvatars();
+    const source=this.game.character;
+    if(!source.isLoaded || !source.model || !source.mixer)return;
     const alive=new Set();
     for(const p of this.players){if(p.id===this.id||p.eliminated||!p.seen)continue;alive.add(p.id);let a=this.avatars.get(p.id);if(!a){
-      const color=p.team==='police'?0x45cfff:p.team==='runner'?0xff536e:0xf7c84b;
-      const mesh=new THREE.Group();
-      const body=new THREE.Mesh(new THREE.CapsuleGeometry(.38,1.05,4,8),new THREE.MeshStandardMaterial({color,roughness:.55}));body.position.y=1.05;mesh.add(body);
-      const head=new THREE.Mesh(new THREE.SphereGeometry(.31,12,8),new THREE.MeshStandardMaterial({color:0xffffff}));head.position.y=2.06;mesh.add(head);
-      const marker=new THREE.Mesh(new THREE.ConeGeometry(.18,.38,6),new THREE.MeshBasicMaterial({color}));marker.position.y=2.7;mesh.add(marker);
-      this.game.scene.add(mesh);a={mesh,target:new THREE.Vector3(p.x,p.y,p.z),player:p};this.avatars.set(p.id,a);
-    }a.player=p;a.target.set(p.x,p.y,p.z);if(!a.mesh.position.lengthSq())a.mesh.position.copy(a.target);}
-    for(const [id,a] of this.avatars)if(!alive.has(id)){this.game.scene.remove(a.mesh);a.mesh.traverse(v=>{v.geometry?.dispose();v.material?.dispose();});this.avatars.delete(id);}
+      a=new RemoteMotion(this.game.scene,source,p,this.game.city);this.avatars.set(p.id,a);
+    }a.receive(p,p.pose);p.pose=null;}
+    for(const [id,a] of this.avatars)if(!alive.has(id)){a.dispose();this.avatars.delete(id);}
   }
-  clearAvatars(){for(const a of this.avatars.values()){this.game.scene.remove(a.mesh);a.mesh.traverse(v=>{v.geometry?.dispose();v.material?.dispose();});}this.avatars.clear();}
+  clearAvatars(){for(const a of this.avatars.values())a.dispose();this.avatars.clear();}
 }

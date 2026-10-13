@@ -5,10 +5,11 @@ import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader.js';
 import { retargetMotion, prepareMotion, boneId } from './MotionRetarget.js';
 import { MOTIONS, STRIDES, GROUNDED } from './MotionCatalog.js';
 import { fetchAsset } from './AssetLoader.js';
+import { clone as cloneSkeleton } from 'three/addons/utils/SkeletonUtils.js';
 import { plantMovingFeet, poseWall, poseZipLegs, poseMantle, adaptPelvisToTerrain, footSupport, soleRotation } from './CharacterPose.js';
 
 export class Character {
-  constructor(scene, onProgress, onLoaded) {
+  constructor(scene, onProgress, onLoaded, source = null) {
     this.scene = scene;
     this.onProgress = onProgress;
     this.onLoaded = onLoaded;
@@ -53,7 +54,50 @@ export class Character {
     this.initWebVisual();
 
     // Start loading models and animations
-    this.loadCharacter();
+    if (source) {
+      this.copySource = source;
+      this.copyLoadedCharacter(source);
+    }
+    else this.loadCharacter();
+  }
+
+  copyLoadedCharacter(source) {
+    // A room snapshot can arrive before the skin and all animation clips.
+    // Wait for the actual actor instead of permanently cloning a loading proxy.
+    if (!source.model || !source.mixer || source.isLoaded === false) return false;
+    if (this.model) return true;
+    this.model = cloneSkeleton(source.model);
+    this.model.visible = true;
+    this.model.position.set(0,0,0); this.model.rotation.set(0,0,0);
+    this.group.add(this.model);
+    this.model.traverse(child => {
+      if (!child.isBone) return;
+      this.bones[child.name] = child;
+      if (boneId(child.name)==='lefthand') this.leftHand = child;
+      if (boneId(child.name)==='righthand') this.rightHand = child;
+    });
+    this.mixer = new THREE.AnimationMixer(this.model);
+    for (const [key,original] of Object.entries(source.actions)) {
+      const action = this.mixer.clipAction(original.getClip());
+      action.setLoop(original.loop,original.repetitions);
+      action.clampWhenFinished = original.clampWhenFinished;
+      this.actions[key] = action;
+    }
+    this.isLoaded = true;
+    this.copySource = null;
+    return true;
+  }
+
+  disposeCopy() {
+    this.copySource = null;
+    this.mixer?.stopAllAction(); if (this.model) this.mixer?.uncacheRoot(this.model);
+    this.model?.traverse(mesh => mesh.skeleton?.dispose());
+    this.scene.remove(this.group);
+    if (this.placeholder) {this.placeholder.geometry.dispose();this.placeholder.material.dispose();}
+    for (const object of [this.webLine,this.webMesh,this.webLineOffhand,this.webMeshOffhand]) {
+      this.scene.remove(object);object.geometry.dispose();object.material.dispose();
+    }
+    // Shared skin geometry, textures, and animation clips belong to the local actor.
   }
 
   initWebVisual() {
@@ -369,6 +413,7 @@ export class Character {
   }
 
   update(delta, state, velocity, anchorPos) {
+    if (this.copySource) this.copyLoadedCharacter(this.copySource);
     for(const hand of ['left','right'])if(this.webLaunchTimers?.[hand]>0)
       this.webLaunchTimers[hand]=Math.max(0,this.webLaunchTimers[hand]-delta);
     this.webVisualTime=(this.webVisualTime || 0)+delta;

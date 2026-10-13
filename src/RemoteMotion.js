@@ -50,6 +50,7 @@ export class RemoteMotion {
     this.marker = new THREE.Mesh(new THREE.ConeGeometry(.18,.38,6),new THREE.MeshBasicMaterial({
       color:player.team==='police'?0x45cfff:player.team==='runner'?0xff536e:0xf7c84b}));
     this.marker.position.y=2.7; this.mesh.add(this.marker);
+    this.marker.visible=this.character.isLoaded;
   }
   receive(player,pose,now=performance.now()) {
     const point = new THREE.Vector3(player.x,player.y,player.z);
@@ -94,6 +95,7 @@ export class RemoteMotion {
     if (c.combatAction?.duration && c.combatAction.time>c.combatAction.duration) c.combatAction=null;
     c.isTricking=!!(fresh && this.pose.tricking);
     c.update(delta,state,v,anchor);
+    this.marker.visible=c.isLoaded;
   }
   dispose() {
     this.marker.geometry.dispose();this.marker.material.dispose();this.character.disposeCopy();
