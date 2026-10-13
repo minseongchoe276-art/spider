@@ -7,6 +7,7 @@ function sourceSnapshot(){
   const walk=base=>fs.readdirSync(base,{withFileTypes:true}).flatMap(entry=>entry.isDirectory()?walk(`${base}/${entry.name}`):[`${base}/${entry.name}`]);
   const files=['src','scripts','supabase/migrations','supabase/functions','public/motions','public/models'].filter(base=>fs.existsSync(base)).flatMap(walk);
   files.push('package.json','package-lock.json','index.html','vite.config.js');
+  for(const file of ['.env.production','render.yaml','render-room-server.yaml'])if(fs.existsSync(file))files.push(file);
   return Object.fromEntries(files.sort().map(file=>[file,createHash('sha256').update(fs.readFileSync(file)).digest('hex')]));
 }
 const initialSource=sourceSnapshot();
