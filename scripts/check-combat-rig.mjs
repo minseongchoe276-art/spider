@@ -132,7 +132,7 @@ console.log('PASS: boxing ready stance stays planted with restrained breathing')
 // Its sampling speed must not freeze the subsequent landing animation.
 {
  const c=actor(),v=new THREE.Vector3();
- c.combatAction={id:1,key:'slamLand',time:.2,duration:.7};
+ c.combatAction={id:1,key:'slamLand',time:.2,duration:.7};c.landingSpeed=34;
  c.update(1/60,'LANDING',v);
  const sampled=c.activeAction.time;
  c.combatAction=null;c.landingSpeed=34;
@@ -164,6 +164,28 @@ for(const key of ['jab','cross','hook','special','dodgeForward','airTrick']) {
  c.mixer.stopAllAction();
 }
 console.log('PASS: timed landing resumes, paused idle recovers, and six skills return to idle and walking');
+{
+ const c=actor();
+ c.fadeToAction('airTrick',0);c.mixer.update(.15);
+ c.fadeToAction('idle',.18);c.mixer.update(.03);
+ c.stopAnimation();
+ assert(Object.values(c.actions).every(action=>!action.isScheduled()),
+   'Respawn stopped only the current clip and kept the previous skill blending');
+ c.fadeToAction('idle',0);c.mixer.update(1/60);
+ assert(c.activeAction.isRunning());finite(c);c.mixer.stopAllAction();
+}
+console.log('PASS: resetting mid-transition stops every old skill before idle restarts');
+{
+ const c=actor(),v=new THREE.Vector3();c.landingSpeed=34;
+ c.update(1/60,'LANDING',v);assert.equal(c.activeAction,c.actions.slamLand);
+ for(let i=0;i<30;i++){
+   c.landingSpeed=0;c.update(1/60,'LANDING',v);
+   assert.equal(c.activeAction,c.actions.slamLand,'Heavy landing switched clips after its one-frame impact event');
+ }
+ c.update(1/60,'IDLE',v);assert.equal(c.activeAction,c.actions.idle);
+ c.mixer.stopAllAction();
+}
+console.log('PASS: heavy landing keeps its chosen recovery clip until the landing state ends');
 // The rendered sole must retain the flat-foot orientation of the authored
 // stance. Regressing to the foot bone's local Y as a sole normal points toes
 // downward even though the ankle marker remains at the correct height.

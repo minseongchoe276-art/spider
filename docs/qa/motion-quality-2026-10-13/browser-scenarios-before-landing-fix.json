@@ -1,0 +1,50 @@
+[
+  {
+    "key": "movement",
+    "status": "시나리오 12.50초\nIDLE → RUNNING → SPRINTING → IDLE → JUMPING → FALLING → LANDING\n모션: idle → walk → jog → regularRun → run → runStop → idle → jump → drop → land\nland · 0.29초 / 0.87초 · 속도 0.00 m/s"
+  },
+  {
+    "key": "walkStop",
+    "status": "시나리오 4.50초\nIDLE → RUNNING → IDLE\n모션: idle → walk → stop → idle\nidle · 1.32초 / 4.00초 · 속도 0.00 m/s"
+  },
+  {
+    "key": "turn",
+    "status": "시나리오 4.50초\nIDLE → TURNING → IDLE → TURNING → IDLE\n모션: idle → turnLeft → idle → turnRight → idle\nidle · 0.57초 / 4.00초 · 속도 0.00 m/s"
+  },
+  {
+    "key": "landing",
+    "status": "시나리오 4.50초\nFALLING → LANDING → IDLE\n모션: drop → fall → drop → slamLand → land → idle\nidle · 2.37초 / 4.00초 · 속도 0.00 m/s"
+  },
+  {
+    "key": "roll",
+    "status": "시나리오 4.50초\nFALLING → ROLLING → IDLE\n모션: drop → fall → drop → roll → idle\nidle · 1.38초 / 4.00초 · 속도 0.00 m/s"
+  },
+  {
+    "key": "zip",
+    "status": "시나리오 4.50초\nIDLE → WEB_ZIP → SWINGING\n모션: idle → zip → swing\nswing · 0.61초 / 1.95초 · 속도 0.04 m/s"
+  },
+  {
+    "key": "swing",
+    "status": "시나리오 4.50초\nSWINGING → FALLING → LANDING → IDLE\n모션: swing → drop → fall → drop → slamLand → land → idle\nidle · 0.26초 / 4.00초 · 속도 0.00 m/s"
+  },
+  {
+    "key": "dualWeb",
+    "status": "시나리오 4.50초\nFALLING → SWINGING\n모션: drop → swing\nswing · 0.55초 / 1.95초 · 속도 3.63 m/s\n연결 줄 2개 · 오른손 부착 / 왼손 부착"
+  },
+  {
+    "key": "wall",
+    "status": "시나리오 4.50초\nWALL_RUNNING → MANTLING → RUNNING → IDLE\n모션: wall → walk → stop → idle\nidle · 2.12초 / 4.00초 · 속도 0.00 m/s"
+  },
+  {
+    "key": "slope",
+    "status": "시나리오 4.50초\nIDLE → RUNNING → IDLE\n모션: idle → walk → stop → idle\nidle · 0.82초 / 4.00초 · 속도 0.00 m/s"
+  },
+  {
+    "key": "slopeDown",
+    "status": "시나리오 4.50초\nIDLE → RUNNING → IDLE\n모션: idle → walk → stop → idle\nidle · 0.82초 / 4.00초 · 속도 0.00 m/s"
+  },
+  {
+    "key": "stairs",
+    "status": "시나리오 4.50초\nIDLE → RUNNING → IDLE\n모션: idle → walk → stop → idle\nidle · 0.82초 / 4.00초 · 속도 0.00 m/s"
+  }
+]

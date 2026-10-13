@@ -230,7 +230,7 @@ export class SwingPhysics {
     return true;
   }
 
-  enterSwingFromPull(camera) {
+  enterSwingFromPull(camera, button = 0) {
     const anchor = this.zipAnchor || this.lastWebAnchor;
     if (!anchor || !this.anchorSupported({anchor,normal:this.lastWebNormal})) return false;
     const radial = this.position.clone().sub(anchor).normalize();
@@ -240,7 +240,7 @@ export class SwingPhysics {
     this.anchorObject = this.bestAnchorObject || null;
     this.ropeLength = Math.max(1.45, this.position.distanceTo(anchor));
     const hand=this.pullHand || this.character.currentHand || 'left';
-    this.webs=[{hand,button:0,anchor:anchor.clone(),normal:this.lastWebNormal?.clone(),
+    this.webs=[{hand,button,anchor:anchor.clone(),normal:this.lastWebNormal?.clone(),
       object:this.anchorObject,length:this.ropeLength}];
     this.syncWebHands();
     this.isSwinging = true;
@@ -773,8 +773,11 @@ export class SwingPhysics {
       const distance = toTarget.length();
       if (distance < 0.28) {
         this.jumpBuffer = 0;
-        // Arrival retains a tether only for a physically held left button.
-        if ((input.webHold || input.webFireHeld) && this.enterSwingFromPull(camera)) return;
+        // Either held hand can retain the arriving tether, with its own
+        // button ownership so releasing that button drops the rope.
+        const heldButton=(input.webHold || input.webFireHeld) ? 0
+          : (input.webHoldRight || input.webFireHeldRight) ? 2 : null;
+        if (heldButton !== null && this.enterSwingFromPull(camera,heldButton)) return;
         this.clearWebAnchor();
       } else if (this.zipTime <= 0 || input.jump) {
         this.clearWebAnchor();

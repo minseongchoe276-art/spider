@@ -50,6 +50,7 @@ export class Character {
     this.lastState = null;
     this.pendingTurn = null;
     this.landingSpeed = 0;
+    this.landingAction = null;
 
     // Web rope visual
     this.initWebVisual();
@@ -329,6 +330,13 @@ export class Character {
   }
 
   stopAnimation() {
+    // Reset/respawn can interrupt a crossfade; every outgoing action must
+    // release its pose as well as the action currently selected.
+    if (this.mixer) {
+      this.mixer.stopAllAction();
+      this.activeAction = null;
+      return;
+    }
     if (this.activeAction) {
       this.activeAction.fadeOut(0.12);
       this.activeAction.stop();
@@ -465,7 +473,13 @@ export class Character {
     else if (state === 'WALL_RUNNING' || state === 'MANTLING') name = 'wall';
     else if (state === 'WEB_ZIP') name = 'zip';
     else if (state === 'TURNING') name = this.pendingTurn === 'left' ? 'turnLeft' : 'turnRight';
-    else if (state === 'LANDING') name = (this.landingSpeed > 18 && this.actions.slamLand) ? 'slamLand' : 'land';
+    else if (state === 'LANDING') {
+      // Impact is a one-frame event. Keep the selected recovery take until
+      // physics ends LANDING instead of changing clips on the next frame.
+      if(previous !== 'LANDING' || !this.landingAction)
+        this.landingAction=(this.landingSpeed > 18 && this.actions.slamLand) ? 'slamLand' : 'land';
+      name=this.landingAction;
+    }
     else if (state === 'ROLLING') name = 'roll';
     else if (state === 'JUMPING') name = 'jump';
     else if (state === 'FALLING') name = velocity.y < -12 && !(this.contactTime < 0.3) ? 'fall' : 'drop';
@@ -503,6 +517,7 @@ export class Character {
     this.mixer.update(delta);
     if (state !== 'LANDING') this.landingSpeed = 0;
     this.lastState = state;
+    if(state !== 'LANDING')this.landingAction=null;
     this.idleTime += delta;
     if (grounded || state==='MANTLING') { this.isTricking = false; this.trickRotation = 0; }
     if(this.airTrick){

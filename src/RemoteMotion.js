@@ -5,7 +5,8 @@ import { groundSample } from './LedgeTraversal.js';
 
 const STATES = new Set(['IDLE','RUNNING','SPRINTING','JUMPING','FALLING','SWINGING','WEB_ZIP',
   'WALL_RUNNING','MANTLING','LANDING','ROLLING','TURNING']);
-const COMBAT = new Set(['combatIdle','jab','cross','hook','heavy','guard','dodge','slam','special']);
+const COMBAT = new Set(['combatIdle','jab','cross','hook','heavy','guard','dodge',
+  'dodgeLeft','dodgeRight','dodgeBack','dodgeForward','slam','slamLand','special','hit','hitHead']);
 const vector = v => v && [v.x,v.y,v.z].every(n => Number.isFinite(n) && Math.abs(n)<=10000)
   ? {x:v.x,y:v.y,z:v.z} : null;
 
@@ -95,6 +96,10 @@ export class RemoteMotion {
       elapsed:Math.min(this.pose.mantle.duration,this.pose.mantle.elapsed+(now-this.poseAt)/1000)} : null;
     c.landingSpeed=fresh?this.pose.landingSpeed:0;c.pendingTurn=fresh?this.pose.pendingTurn:null;
     c.combatAction=fresh && this.pose.combat ? {...this.pose.combat,time:this.pose.combat.time+(now-this.poseAt)/1000} : null;
+    // A ground pound waits in flight until an authoritative landing pose
+    // arrives. Network interpolation must not finish it before contact.
+    if(c.combatAction?.key==='slam' && c.combatAction.duration)
+      c.combatAction.time=Math.min(c.combatAction.time,c.combatAction.duration*.62);
     if (c.combatAction?.duration && c.combatAction.time>c.combatAction.duration) c.combatAction=null;
     c.isTricking=!!(fresh && this.pose.tricking);
     c.airTrick=fresh && this.pose.airTrick ? {...this.pose.airTrick,

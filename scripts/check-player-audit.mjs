@@ -100,5 +100,16 @@ for(const fps of [30,60,144])check(`Mixed button presses, releases and misses at
     assert(p.velocity.length()<=p.maxSpeed+1e-6);
   }
 });
+for(const button of [0,2])check(`Zip arrival retains the held button ${button} and releases with that button`,()=>{
+  const p=player(),i=input();p.state='WEB_ZIP';p.zipTime=3;
+  p.zipAnchor=new THREE.Vector3(0,40,0);p.zipTarget=p.position.clone();
+  p.lastWebNormal=new THREE.Vector3(0,1,0);p.pullHand=button===0?'left':'right';
+  if(button===0)i.webHold=i.webFireHeld=true;
+  else i.webHoldRight=i.webFireHeldRight=true;
+  p.updateFreePhysics(1/120,i,camera);
+  assert(p.isSwinging,'Held offhand was dropped on zip arrival');
+  assert.equal(p.webs.length,1);assert.equal(p.webs[0].button,button);
+  p.releaseWebButton(button);assert.equal(p.webs.length,0);assert(!p.isSwinging);
+});
 console.log(`Player audit: ${passed} passed, ${failed} failed.`);
 if(failed)process.exitCode=1;

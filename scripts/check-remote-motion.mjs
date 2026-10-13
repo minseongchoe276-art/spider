@@ -49,6 +49,25 @@ assert.equal(remoteSkin.material,localSkin.material,'Opponent lost the Spider-Ma
 assert.notEqual(remoteSkin.skeleton,localSkin.skeleton,'Opponent reused the local skeleton');
 pending.dispose();assert.equal(loadingScene.children.length,0);
 console.log('PASS remote appearance: no capsule, deferred full rig, shared suit material, independent skeleton');
+for(const key of ['dodgeLeft','dodgeRight','dodgeBack','dodgeForward','slamLand','hit','hitHead']) {
+  const pose=sanitizePose({state:'IDLE',velocity:{x:0,y:0,z:0},combat:{key,id:1,time:.1,duration:.7}});
+  assert.equal(pose.combat?.key,key,`${key}: remote combat pose was discarded`);
+}
+{
+  const remote=new RemoteMotion(new THREE.Scene(),source,
+    {id:'slam-review',x:0,y:20,z:0,facing:0,team:'free'},{colliders:[]});
+  remote.receive(remote.player,{state:'FALLING',velocity:{x:0,y:-20,z:0},
+    combat:{key:'slam',id:1,time:.62,duration:1}},0);
+  remote.update(1/60,500);
+  assert.equal(remote.character.combatAction?.key,'slam','Remote slam disappeared before contact');
+  assert.equal(remote.character.combatAction.time,.62,'Network extrapolation completed a slam in midair');
+  remote.receive({...remote.player,y:.1},{state:'LANDING',velocity:{x:0,y:0,z:0},
+    combat:{key:'slamLand',id:1,time:0,duration:.7}},510);
+  remote.update(1/60,510);
+  assert.equal(remote.character.activeAction.getClip().name,'slamLand');
+  remote.dispose();
+}
+console.log('PASS remote skill coverage: directional dodges, landing, hit reactions and held airborne slam');
 for(const fps of [30,60,144]){
   const scene=new THREE.Scene(),player={id:'friend',x:0,y:.1,z:0,facing:0,team:'free'};
   const remote=new RemoteMotion(scene,source,player,{colliders:[]});
@@ -137,6 +156,11 @@ online.game.combat.action.time=.14;online.update(.016);assert.equal(sent.length,
 online.update(.016);assert.equal(sent.length,1,'Punch repeated the same contact');
 online.game.combat.action={id:5,key:'cross',time:0};online.attack('punch');
 online.game.combat.action=null;online.update(.016);assert.equal(online.pendingPunch,null,'Cancelled punch remained queued');
+online.game.combat.action={id:6,key:'jab',time:0};
+online.update(.016);
+online.game.combat.action.time=.14;online.update(.016);
+assert.equal(sent.length,2,'A queued combo played its animation without sending its contact');
+online.update(.016);assert.equal(sent.length,2,'Queued combo sent duplicate contact');
 console.log('PASS online regressions: stale room, channel replacement, camera web aim, wall obstruction, timed single punch, cancellation');
 const storage=()=>{const values=new Map();return {getItem:k=>values.get(k),setItem:(k,v)=>values.set(k,v)};};
 const tabA=storage(),tabB=storage();

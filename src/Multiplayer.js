@@ -292,6 +292,14 @@ export class Multiplayer {
     if(!(this.ws instanceof SupabaseRooms)&&now-(this.lastPing||0)>5000){this.lastPing=now;this.send({type:'ping',stamp:now});}
     const me=this.players.find(p=>p.id===this.id);
     if(this.arena&&!this.spectating&&this.game.isPlaying&&!this.game.isPaused)this.constrainArena(delta);
+    // Queued combos start inside CombatSystem rather than the click handler.
+    // Observe the actual action once so every played strike gets one contact.
+    const startedAction=this.game.combat?.action;
+    if(this.game.isPlaying && !this.game.isPaused && startedAction &&
+        ATTACKS[startedAction.key] && startedAction.id!==this.observedPunchId){
+      this.observedPunchId=startedAction.id;
+      this.attack('punch');
+    }
     if(this.pendingPunch!=null && this.game.isPlaying && !this.game.isPaused){
       const action=this.game.combat.action,rule=ATTACKS[action?.key];
       if(!action || action.id!==this.pendingPunch || !rule)this.pendingPunch=null;
