@@ -1,0 +1,31 @@
+{
+  "status": "PASS",
+  "checked_at": "2026-10-13T10:27:10.854Z",
+  "project": "spider",
+  "results": [
+    {
+      "name": "Actual official wall blocks damage, even with client clear:true and forged from coordinates",
+      "status": "PASS",
+      "data": {
+        "type": "terrain-result",
+        "status": "BLOCKED"
+      },
+      "ms": 2903.8067499999997
+    },
+    {
+      "name": "Server-only clear-path damage succeeds without any defender acknowledgement",
+      "status": "PASS",
+      "ms": 2429.172166999999,
+      "health": 75
+    },
+    {
+      "name": "Defender false/true claims do not change HP; client access to finalizer is denied",
+      "status": "PASS"
+    },
+    {
+      "name": "Unauthenticated endpoint access is denied before any game operation",
+      "status": "PASS"
+    }
+  ],
+  "scope": "Real Supabase guest JWTs, actual deployed Edge runtime, official map, authenticated RPC and persisted HP. Only fresh test participants were attacked."
+}

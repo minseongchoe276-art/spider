@@ -1,6 +1,6 @@
 
 > spiderman-web-swing@1.0.0 test
-> node scripts/build-motions.mjs && node scripts/check-motions.mjs && node scripts/check-pose.mjs && node scripts/check-controller.mjs && node scripts/check-gameplay.mjs && node scripts/check-air-tricks.mjs && node scripts/check-dual-web.mjs && node scripts/check-pendulum.mjs && node scripts/check-mechanics-audit.mjs && node scripts/check-player-audit.mjs && node scripts/check-traversal.mjs && node scripts/check-qa.mjs && node scripts/check-review-2.mjs && node scripts/check-combat.mjs && node scripts/check-web-vfx.mjs && node scripts/check-superhero-landing-vfx.mjs && node scripts/check-combat-rig.mjs && node scripts/check-motion-timeline.mjs && node scripts/check-motion-transitions.mjs && node scripts/check-hong-kong-streaming.mjs && node scripts/check-minimap.mjs && node scripts/check-remote-motion.mjs && node scripts/check-tile-textures.mjs && node scripts/check-multiplayer.mjs && node scripts/check-upgrade.mjs && node scripts/check-upgrade-online.mjs && node scripts/check-release-audit.mjs && node scripts/check-online-edge-cases.mjs && node scripts/check-room-reconnect.mjs
+> node scripts/build-motions.mjs && node scripts/check-motions.mjs && node scripts/check-pose.mjs && node scripts/check-controller.mjs && node scripts/check-gameplay.mjs && node scripts/check-air-tricks.mjs && node scripts/check-dual-web.mjs && node scripts/check-pendulum.mjs && node scripts/check-mechanics-audit.mjs && node scripts/check-player-audit.mjs && node scripts/check-traversal.mjs && node scripts/check-qa.mjs && node scripts/check-review-2.mjs && node scripts/check-combat.mjs && node scripts/check-web-vfx.mjs && node scripts/check-superhero-landing-vfx.mjs && node scripts/check-combat-rig.mjs && node scripts/check-motion-timeline.mjs && node scripts/check-motion-transitions.mjs && node scripts/check-hong-kong-streaming.mjs && node scripts/check-minimap.mjs && node scripts/check-remote-motion.mjs && node scripts/check-tile-textures.mjs && node scripts/check-multiplayer.mjs && node scripts/check-upgrade.mjs && node scripts/check-upgrade-online.mjs && node scripts/check-release-audit.mjs && node scripts/check-online-edge-cases.mjs && node scripts/check-room-reconnect.mjs && node scripts/check-hong-kong-geometry-codec.mjs
 
 PASS: compiled motions match current model and FBX sources
 FBXLoader: TGA loader not found, skipping  ../../../../home/app/mixamo-mini/tmp/skins_e57a88ac-3622-472c-96c7-e4a65b4e1321.fbm/RED CLASSIC.tga
@@ -227,13 +227,13 @@ PASS QA 1: Hong Kong layers share a city-owned budget without overwriting the li
 PASS QA 2: Streamed spawn is refreshed after a menu-time LOD change
 PASS QA 3: Streamed startup waits for idle queues and a stable support surface
 Failed loading GLTF/FBX models, keeping high-poly proxy: Error: simulated offline
-    at globalThis.fetch (file:///Users/choeminseong/Desktop/%E1%84%80%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%B7/scripts/check-qa.mjs:59:42)
-    at fetchAsset (file:///Users/choeminseong/Desktop/%E1%84%80%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%B7/src/AssetLoader.js:6:28)
-    at Character.loadCharacter (file:///Users/choeminseong/Desktop/%E1%84%80%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%B7/src/Character.js:171:54)
-    at new Character (file:///Users/choeminseong/Desktop/%E1%84%80%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%B7/src/Character.js:63:15)
-    at file:///Users/choeminseong/Desktop/%E1%84%80%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%B7/scripts/check-qa.mjs:61:21
-    at check (file:///Users/choeminseong/Desktop/%E1%84%80%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%B7/scripts/check-qa.mjs:19:41)
-    at file:///Users/choeminseong/Desktop/%E1%84%80%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%B7/scripts/check-qa.mjs:57:7
+    at globalThis.fetch (file:///private/var/folders/2s/myqxyk555vd84268xfsrgl000000gn/T/spider-authority-release-9jd4inw0/scripts/check-qa.mjs:59:42)
+    at fetchAsset (file:///private/var/folders/2s/myqxyk555vd84268xfsrgl000000gn/T/spider-authority-release-9jd4inw0/src/AssetLoader.js:6:28)
+    at Character.loadCharacter (file:///private/var/folders/2s/myqxyk555vd84268xfsrgl000000gn/T/spider-authority-release-9jd4inw0/src/Character.js:171:54)
+    at new Character (file:///private/var/folders/2s/myqxyk555vd84268xfsrgl000000gn/T/spider-authority-release-9jd4inw0/src/Character.js:63:15)
+    at file:///private/var/folders/2s/myqxyk555vd84268xfsrgl000000gn/T/spider-authority-release-9jd4inw0/scripts/check-qa.mjs:61:21
+    at check (file:///private/var/folders/2s/myqxyk555vd84268xfsrgl000000gn/T/spider-authority-release-9jd4inw0/scripts/check-qa.mjs:19:41)
+    at file:///private/var/folders/2s/myqxyk555vd84268xfsrgl000000gn/T/spider-authority-release-9jd4inw0/scripts/check-qa.mjs:57:7
 PASS QA 4: Failed GLB remains startable, reports degradation, keeps attached web visible
 PASS QA 5: Asset HTTP failures and network timeout settle rather than wait forever
 PASS QA 6: Absent motion selects an available idle instead of keeping a fall pose
@@ -261,14 +261,14 @@ PASS QA 27: Mute routes every effect through a master gain and restores wind
 PASS QA 28: Procedural spawns clear equipment, stay supported and keep the camera clear
 PASS QA 29: Initial spawn and recovery use the same preferred roof
 Audio unavailable; continuing silently: Error: device unavailable
-    at audio.init (file:///Users/choeminseong/Desktop/%E1%84%80%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%B7/scripts/check-qa.mjs:257:59)
-    at SoundController.ensureContext (file:///Users/choeminseong/Desktop/%E1%84%80%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%B7/src/Audio.js:33:18)
-    at file:///Users/choeminseong/Desktop/%E1%84%80%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%B7/scripts/check-qa.mjs:258:33
+    at audio.init (file:///private/var/folders/2s/myqxyk555vd84268xfsrgl000000gn/T/spider-authority-release-9jd4inw0/scripts/check-qa.mjs:257:59)
+    at SoundController.ensureContext (file:///private/var/folders/2s/myqxyk555vd84268xfsrgl000000gn/T/spider-authority-release-9jd4inw0/src/Audio.js:33:18)
+    at file:///private/var/folders/2s/myqxyk555vd84268xfsrgl000000gn/T/spider-authority-release-9jd4inw0/scripts/check-qa.mjs:258:33
     at getActual (node:assert:609:5)
     at Function.doesNotThrow (node:assert:777:32)
-    at file:///Users/choeminseong/Desktop/%E1%84%80%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%B7/scripts/check-qa.mjs:258:10
-    at check (file:///Users/choeminseong/Desktop/%E1%84%80%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%B7/scripts/check-qa.mjs:19:41)
-    at file:///Users/choeminseong/Desktop/%E1%84%80%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%B7/scripts/check-qa.mjs:256:7
+    at file:///private/var/folders/2s/myqxyk555vd84268xfsrgl000000gn/T/spider-authority-release-9jd4inw0/scripts/check-qa.mjs:258:10
+    at check (file:///private/var/folders/2s/myqxyk555vd84268xfsrgl000000gn/T/spider-authority-release-9jd4inw0/scripts/check-qa.mjs:19:41)
+    at file:///private/var/folders/2s/myqxyk555vd84268xfsrgl000000gn/T/spider-authority-release-9jd4inw0/scripts/check-qa.mjs:256:7
 PASS QA 30: Audio device failure cannot prevent starting the game
 PASS QA 31: Pause clears physical buttons and resume does not invent a held mouse button
 PASS QA 32: Right click does not start a reel or keep the left mouse latched
@@ -338,7 +338,7 @@ PASS real input: mouse toggle, remapped movement, unbound original key, sprint t
 PASS saved-position race invalidation and mantle landing combo banking
 PASS teammate rescue: verified attacks down a runner, three seconds nearby restore HP 50 while match continues
 PASS movement objectives: ordered positions, cooldown, three objectives end match with runner victory
-PASS enhanced online: terrain readiness, arena/time, defender-authenticated visibility, blocked hit, replay prevention, boundary correction, reconnection identity, role rotation
+PASS enhanced online: terrain readiness, arena/time, server-authoritative visibility, blocked hit, replay prevention, boundary correction, reconnection identity, role rotation
 {
   "passed": 18,
   "total": 18,
@@ -458,3 +458,4 @@ PASS enhanced online: terrain readiness, arena/time, defender-authenticated visi
   ]
 }
 PASS real WebSocket: free-play reconnection preserves identity; finished-match disconnected seats expire
+PASS server geometry codec: binary and JSON RTC centers, exact client up-axis, malformed geometry and bounded response rejection

@@ -7,9 +7,11 @@
     "20261012140000_game_move_pose.sql",
     "20261012234718_gameplay_experience.sql",
     "20261012235525_arena_correction.sql",
-    "20261013052333_verified_movement_and_continuous_rescue.sql"
+    "20261013052333_verified_movement_and_continuous_rescue.sql",
+    "20261013063126_authoritative_hong_kong_hits.sql"
   ],
-  "command_md5": "7462b243748cb2d41bbd7b04c096d1c0",
+  "command_md5": "af4efea58cb4f1a3557b8ef534d641d1",
+  "resolver_md5": "e534dc57b664d62d9544e9135543ba4e",
   "scope": "Real PostgreSQL roles, transactions and multiple connections; Auth identity and Realtime network delivery are local substitutes.",
   "results": [
     {

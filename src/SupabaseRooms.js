@@ -148,6 +148,12 @@ export class SupabaseRooms {
       this.dispatch(data).catch(error=>this.fail(error)).finally(()=>{this.movePending=false;});
       return;
     }
+    if(data.type==='attack' && this.city==='hong-kong'){
+      if((this.attackInFlight||0)>=4){this.fail(new Error('서버 피격 판정이 지연되고 있습니다. 잠시 후 다시 공격하세요.'));return;}
+      this.attackInFlight=(this.attackInFlight||0)+1;
+      this.dispatch(data).catch(error=>this.fail(error)).finally(()=>{this.attackInFlight--;});
+      return;
+    }
     const entry = data.type==='create' || data.type==='join';
     if (entry && this.entryPending) return;
     if (entry) this.entryPending = true;
@@ -198,6 +204,7 @@ export class SupabaseRooms {
   async presentRoom(state) {
     if (!state?.room?.code) throw new Error('방을 열지 못했습니다.');
     this.roomCode = state.room.code;
+    this.city = state.room.city;
     this.emit({ type: 'joined', id: this.userId });
     this.emit(state);
     try {
@@ -279,6 +286,19 @@ export class SupabaseRooms {
       return;
     }
     if (!this.roomCode) return;
+    if(data.type==='hit-confirm')return;
+    if(data.type==='attack' && this.city==='hong-kong'){
+      const code=this.roomCode;
+      const {data:result,error}=await this.client.functions.invoke('hong-kong-attack',{body:{code,kind:data.kind,facing:data.facing}});
+      if(code!==this.roomCode || this.readyState!==WebSocket.OPEN)return;
+      if(error)throw error;
+      if(code===this.roomCode && this.readyState===WebSocket.OPEN){
+        if(result?.error)throw new Error(result.error);
+        if(result?.status==='UNKNOWN')throw new Error('공식 지형 판정을 준비하지 못했습니다. 잠시 후 다시 공격하세요.');
+        this.emit(result);
+      }
+      return;
+    }
     if (['ready', 'start', 'rematch', 'move', 'attack', 'hit-confirm'].includes(data.type)) {
       const code=this.roomCode;
       const pose=data.type==='move' ? sanitizePose(data.pose) : null;

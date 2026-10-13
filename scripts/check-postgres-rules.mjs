@@ -126,5 +126,6 @@ try{
   await fs.writeFile('docs/qa/acceptance-2026-10-13/postgres-results.json',JSON.stringify({
     engine:(await db.admin.query('select version()')).rows[0].version,migrations:db.applied,
     command_md5:(await db.admin.query("select md5(prosrc) as value from pg_proc where oid='public.game_command(text,jsonb)'::regprocedure")).rows[0].value,
+    resolver_md5:(await db.admin.query("select md5(prosrc) as value from pg_proc where oid='public.game_resolve_terrain_hit(uuid,text,text)'::regprocedure")).rows[0].value,
     scope:'Real PostgreSQL roles, transactions and multiple connections; Auth identity and Realtime network delivery are local substitutes.',results},null,2)+'\n');
 }finally{await db.close();}

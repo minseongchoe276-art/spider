@@ -1,6 +1,6 @@
 {
   "prompt": "PROMPT.md",
-  "status": "FAIL",
+  "status": "PASS",
   "scope": "Defined desktop support and complete required gates; not a guarantee of all future situations.",
   "results": [
     {
@@ -22,6 +22,24 @@
       "log": "trusted-terrain.log"
     },
     {
+      "name": "Official Hong Kong geometry: actual wall, clear path and cache",
+      "status": "PASS",
+      "exit_code": 0,
+      "log": "hong-kong-terrain.log"
+    },
+    {
+      "name": "Hong Kong damage authority: PostgreSQL roles, replay and delayed lifecycle",
+      "status": "PASS",
+      "exit_code": 0,
+      "log": "hong-kong-authority.log"
+    },
+    {
+      "name": "Hong Kong transport: slow attack does not block leaving or affect a later session",
+      "status": "PASS",
+      "exit_code": 0,
+      "log": "hong-kong-transport.log"
+    },
+    {
       "name": "Production build",
       "status": "PASS",
       "exit_code": 0,
@@ -29,15 +47,25 @@
     },
     {
       "name": "Independent Hong Kong competitive damage authority",
-      "status": "FAIL",
-      "exit_code": 1,
+      "status": "PASS",
+      "exit_code": 0,
       "log": "security-final.log"
     },
     {
       "name": "Operating Supabase function matches tested movement/rescue rules",
       "status": "PASS",
-      "expected_command_md5": "7462b243748cb2d41bbd7b04c096d1c0",
-      "observed_command_md5": "7462b243748cb2d41bbd7b04c096d1c0"
+      "expected_command_md5": "af4efea58cb4f1a3557b8ef534d641d1",
+      "observed_command_md5": "af4efea58cb4f1a3557b8ef534d641d1"
+    },
+    {
+      "name": "Operating Auth, official map, Edge and persisted HP pass with two real guest sessions",
+      "status": "PASS",
+      "evidence": "../hong-kong-authority-2026-10-13/operating-live.json"
+    },
+    {
+      "name": "All deployed Hong Kong worker files match the tested local source",
+      "status": "PASS",
+      "evidence": "../hong-kong-authority-2026-10-13/deployed-edge.json"
     },
     {
       "name": "Source and motion/model assets stayed unchanged throughout verification",
@@ -47,7 +75,7 @@
   "source": {
     "index.html": "f09b1b71229785ceed3b5e394a756c96408649b68f2d631d2d848a5608f912e9",
     "package-lock.json": "ce9231dc0f026900af2f5497aa09187e896f613f06edcdab8845ba23eb034793",
-    "package.json": "cf6e7dd28dbca3ff0ba33ca93d9b09dcd00c6abe017ea270ed35ccb436316d6a",
+    "package.json": "ec0e646226663f1893b19351824a72e224d7b89d5f6acb3b6f830e804f2c1e18",
     "public/models/Boxing Hook.fbx": "b2895d3389b2b5e03e91748cfbdb92ce4cc28f440c6059716d43c0bc49b3f1db",
     "public/models/Boxing Idle.fbx": "032d1877dc539c9451fdbfd4f572904adc1ea49130a719b1f44f5c75a8a48499",
     "public/models/Boxing Lead Jab.fbx": "82f7cdb5ec78e4eaa252f0632de815dc618317192f3bb9d2bc96156f813ab64f",
@@ -125,14 +153,19 @@
     "public/motions/zip.json": "79a186ad34fe7f3f76bc93379f8c7651e5a379d5a49cb0d18e9c274a01bea42c",
     "scripts/audit-all-motions.mjs": "be71f610210547fb5b32de884d83526663fc5e2c4fc22fe32b574a0764a3e659",
     "scripts/build-motions.mjs": "61f7f3be6f1ff31bbe813d32c36d89f40362b5cda4eafe3e4c3cc11e26f65b39",
-    "scripts/check-acceptance.mjs": "7055b52529b241bb853327603bd44ea0cfd863f6e902b50a3771da9b8e9a2780",
+    "scripts/check-acceptance.mjs": "73609d670c0f88cceae1d3272684680ba2f7cf8f75584b90cd438568d0556f29",
     "scripts/check-air-tricks.mjs": "7993818deceda2f46794a1dbe879b11aaed2d1f6a4af261cfb515d13424c82bf",
     "scripts/check-combat-rig.mjs": "b306be45c9136dd63e120aad562004c70a88536385c99eedefe7ae1ef074173f",
     "scripts/check-combat.mjs": "7da634e9ce0535b2fe544be586f709852846255e1202415767b633c0a8106ec0",
     "scripts/check-controller.mjs": "6cf9a347cd4432d0f7cd3415c92f6248fea6e7b264e501ad9aef78d726bfe868",
     "scripts/check-dual-web.mjs": "800ea4206ff5cd0c313213cfe13d9d28dee5af5361992530585d399304b0508f",
     "scripts/check-gameplay.mjs": "4bf66049f4a8575b67f89cf6184da16c391e680bb4e82b77d156d2505580e3fd",
+    "scripts/check-hong-kong-db-authority.mjs": "f604f34d9b97431466a5efbf109119aeb419e7a762ceec2cd5c13ab75f195579",
+    "scripts/check-hong-kong-geometry-codec.mjs": "0300a4ce40efbf51aaede14f18c7cd6d6df8a9b95204bedceacde5377a95fb37",
+    "scripts/check-hong-kong-operating.mjs": "f6cda62c1447683929662b2e965a708ad19ff746467a0bfb1900b20b5712a811",
     "scripts/check-hong-kong-streaming.mjs": "11367ff608173cb4d99131c50d456a90c490fc28a66da8e676b7ab564feeef10",
+    "scripts/check-hong-kong-terrain.mjs": "aaf996d9c02e1154f0b3d9c34e7720f92a389b3a7ca55769829fd50dd7a07b6a",
+    "scripts/check-hong-kong-transport.mjs": "27e67f2e207736494fc40bb5329dacea9b3620750cc068af3ee17d5b9b056aa2",
     "scripts/check-mechanics-audit.mjs": "9ce54fbad5adf1265ebfe958708ee7ffee3074ded022118767c86ecc6adc1ef0",
     "scripts/check-minimap.mjs": "1b9f54be2a5fa89068657cbe94895284412c28c7e94080157d8dd926a61d8730",
     "scripts/check-motion-timeline.mjs": "e917f8074c96b45500bbff33ce54875a2de99a1d89fcab37008c1696d64feba8",
@@ -143,7 +176,7 @@
     "scripts/check-pendulum.mjs": "169e969aa1bcadf838136a8e8cf440389cc721354bb1acd7350c8f33d7117deb",
     "scripts/check-player-audit.mjs": "d751d96d6a04d6c885d33bb0e35ea1c25a893553a2d4cb1f69f83f2c1f87938a",
     "scripts/check-pose.mjs": "1f735d6bcbe0d05a45f652ae0e5a435deef84d75c2433d8a0065f419cee3e104",
-    "scripts/check-postgres-rules.mjs": "cabcb9cc3f38f380b143e4db2529b0de69bbf72c83fa7780d65778b39e14e05e",
+    "scripts/check-postgres-rules.mjs": "d53e202f227fbd26ae9dcff35f9955e750948180eaefe7fad710e108cb60ff00",
     "scripts/check-qa.mjs": "d98db82d217bed236229807ee0057cf9e22d08dabd74aeba3215d59c29062583",
     "scripts/check-release-audit.mjs": "2df1bd9d2d636704336ccdabc04c8bb19b0ad3982b17f84956193da36a3e2497",
     "scripts/check-remote-appearance.mjs": "0435783fc21b814a01200bf905102ba7fa775f0d8b985453fe666718314ccbb3",
@@ -157,20 +190,20 @@
     "scripts/check-tile-textures.mjs": "5f8e563ee7d152a0de9d4801a49a245796fd50dc6ba09ca2bc672608959761bd",
     "scripts/check-traversal.mjs": "87d9a9b44bef00c4f98866ef23cd75f97099d0e9522875259484b3a891419c5d",
     "scripts/check-trusted-terrain.mjs": "5d29eaa9fe37e04ee5ade22f9237661256934c99c027fc6e89dbe6edcb09940f",
-    "scripts/check-upgrade-online.mjs": "6cf51cf95efca728cd7f202b2a91d2210fa99c2151c0abb8f77bf46212608df7",
+    "scripts/check-upgrade-online.mjs": "308662aebec82e0ef4590d11a774ecc98578cf405176fbba71839cc6207f625d",
     "scripts/check-upgrade-supabase.mjs": "192c0917f3238ebabf7f27168aa84d2e68b7c1ee68bfba68b417655708754c8d",
     "scripts/check-upgrade.mjs": "98e80a071e97f092001d9d00e5589edce218ef69e1833846d9d39109e8c3b4d3",
     "scripts/check-web-vfx.mjs": "c902348a496ba60ed1e2b8abd443d6fc282342873c58afd4b10f531b603f6766",
     "scripts/city-collision.mjs": "369dd250adc7ae0d0fe90ccc2f0a8c31629ab3808f2b9851977c6211cfa3ba7d",
-    "scripts/diagnose-release-security.mjs": "3c290ea023825459f38ad1afd45c9cf2f3c7a90e4254c249a407f374bd4f980c",
+    "scripts/diagnose-release-security.mjs": "1154a809ec54a6f516666f100e0a9e89586284231a0aaf29afa612d406387943",
     "scripts/fix_spiderman_blend.py": "571ad5993e59255c8f6e967c5efc4388f69741e5221412b501de0b93096dbbb1",
     "scripts/inspect-rig.mjs": "9157f86fb8f8d1c582feeebf495ee9bd6f2e8a480b358a8f5c3244b3e43baec4",
-    "scripts/lib/local-game-db.mjs": "253dafc585a74193148fb859ed4072104319a2ba1ddb755a496cc9cb88dd8e39",
+    "scripts/lib/local-game-db.mjs": "e3d0c81c6a036b0f310a0d5c3be35d56155b6da06c2eb92258d15497e5dde130",
     "scripts/lib/trusted-terrain.mjs": "12b37a0d03608ca746341ef5fd729a295a6c8ff3981554987d0e2eac91cd6a46",
     "scripts/pose-contact-sheets.py": "4ab0df5582ec6fd3553165e2527d81f24cb91659a87016dad5d0b8aeab70dca6",
     "scripts/probe-trusted-hong-kong.mjs": "45089b44c0cee14c29bd2bbd17fa7ff1ea7e9a0250b164e201f7abb6b8efea68",
     "scripts/render_check.py": "95a6645ada35182f2d8c08850eab5e35787f0fd1afd6fd468a2f3ee5ce85e864",
-    "scripts/rooms.mjs": "5fe3ceedf45ceb13a642a1d119119bfde045ef717f24f9323045a5d02f73ea96",
+    "scripts/rooms.mjs": "89a8915f8b476a6a6bd48697af7f8990214773453357e409970ad6de5cc98e02",
     "scripts/serve.mjs": "6750c83f374cc3dac1e389e80342f5054e1822734324801b03e5abe917725417",
     "scripts/soak-release-audit.mjs": "3d55eb18e888abc9febaed6ff3f3a923b1e1d0d2da419007a7c8ee3f14aac58f",
     "scripts/traversal-contact-sheet.py": "a7df72ccf50db496c0af7f075ed55be6855fce0e5421892ebf8e620d60f673f2",
@@ -197,7 +230,7 @@
     "src/MotionRetarget.js": "7d6f28383e278020d799acb9181e4a4a4fc34ee752e150b6ea748535f9a1e47b",
     "src/MotionReview.js": "35115c1d1ea2bd3edcd6c339cd30d5fb643c0daaf1a316fe23a235b92782b63f",
     "src/MovementCollision.js": "6ef229e28dab111ee88cf2d1ce9fbeb0e28744eb10ab18de13652ac794986f51",
-    "src/Multiplayer.js": "974417015ad9ff25590302f417db3ed60d2effa8a7bea7f623d4f544b35a970a",
+    "src/Multiplayer.js": "c1cf614e7ff941307686a7dbf132591e7d2552f85cc654d817d43686cd2847fc",
     "src/PerformanceBudget.js": "e50089295531f226b53d36c56a8790ab3d90a7c222efdf97833e7288b651ab28",
     "src/PlayerExperience.js": "b043032c78c2cf4d10bb1cef6f3b8b1039babb4e6796590ad1489844af065632",
     "src/PlayerSettings.js": "bb90860e7c40e8a84224368b7947d7edc5975f8a2285d1c141cb7500ecfef11f",
@@ -210,7 +243,7 @@
     "src/SpeedLines.js": "e9f4e9f454ee0efc52c172c8ef499b4b43b825459db34740f1315dacf397e84a",
     "src/StreamedCollision.js": "00681357a0e3a76574b84cb1b88e89b909f5d1c387ab14c00efd31352e1ed832",
     "src/StuntSystem.js": "53b39a856978cd0e1812a30ffc50f10794a224d2a28173f98d5e9edfaefefaae",
-    "src/SupabaseRooms.js": "e3ae84f3686099c3c3cd42a7eb776b6d79729e01c1ccafc335c21ecbd6d0b954",
+    "src/SupabaseRooms.js": "775d9df9ccf1a790c74475a2f537b4d460e9d5bd202d7efc5687dd8fdf31802d",
     "src/SwingPhysics.js": "5054a0405c5be4b55c741e35a16a91985604d191d3d416b31c6163419971d659",
     "src/TileTextures.js": "4a87d7ed849e1440a163063f3dbc8353696006113fdc2d8f71f2172a9879bc0e",
     "src/TimeTrial.js": "f6f15766c7e501819267275de2ec43c513cc264f51a9b9ef9fac33069dc0dcde",
@@ -221,6 +254,10 @@
     "src/WebSwinger.js": "02bce8fb97d79b2ae1103ab20554464292ba300923878dbf1c706c04cc5b83ec",
     "src/main.js": "9ee56eb85ae7ed6d95318d20ff1ad21c66e074528e628403365ad8c5356d7749",
     "src/style.css": "b19329d16b0e6ebc3c3fea380cf2306bb9e527bb6eca9a0fb6929f677f8eeb0e",
+    "supabase/functions/_shared/hong-kong-terrain.js": "39571efe8afee322b16856ca77e1ac1d4cb3fda8c94d9db9d746fdef657bed46",
+    "supabase/functions/hong-kong-attack/deno.json": "607014bcaa272b26e905d36a317eb852853314cfcf441a1df80ec8798195b27a",
+    "supabase/functions/hong-kong-attack/deno.lock": "9b98ac3e0199ec26d836c1cb9a15476ac81000da34cf2b69d3003f5c77aa609b",
+    "supabase/functions/hong-kong-attack/index.ts": "d636f5b4e22f87f5ac3ad21e0df6ba3ff82949788e3c2fd6af9883da60ee805a",
     "supabase/migrations/20261012112117_game_rooms_realtime.sql": "4f795fe1a17cf61a52bd8b505e5d7d0c6953a9ff6c20cccbddb6d63c682c7f7a",
     "supabase/migrations/20261012113232_resume_game_room.sql": "0be8e32209c4a201d3a9d1aefac7a2187a36a1ca195b0f9bbc41a99b6b9e664f",
     "supabase/migrations/20261012115005_fix_room_cleanup.sql": "109f5cbc558719ddaabfbad9e2a6887b2c910986b6d4057cab789dd174bac9ed",
@@ -228,6 +265,7 @@
     "supabase/migrations/20261012234718_gameplay_experience.sql": "8aa27ed0abc3cc3e86dd4f3b3b3b72cb434f7bf8ff68024937aaabb610bd5155",
     "supabase/migrations/20261012235525_arena_correction.sql": "94a2802345be18c0702d9e66290c23d0018699a397d327b1579b65a9b1db002b",
     "supabase/migrations/20261013052333_verified_movement_and_continuous_rescue.sql": "010674077388a7beade121585b37a52975830a92e153e1899437a1224d46738e",
+    "supabase/migrations/20261013063126_authoritative_hong_kong_hits.sql": "28235ab6749d33e535fa935e62d5bba1fc4738e6499be5728b038f0dc777fcf3",
     "vite.config.js": "5aac5efecaa41913d98e2dc51ad9536c8d46cb6c65db42ebc2fe82a9cbcec4f2"
   }
 }

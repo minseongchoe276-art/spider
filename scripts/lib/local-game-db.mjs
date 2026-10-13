@@ -20,7 +20,7 @@ export async function localGameDb({migrations=true}={}){
     await server.initialise();await server.start();
     const admin=server.getPgClient('postgres','127.0.0.1');await admin.connect();connections.push(admin);
     await admin.query(`
-      create role anon nologin;create role authenticated nologin;
+      create role anon nologin;create role authenticated nologin;create role service_role nologin;
       create schema auth;create table auth.users(id uuid primary key);
       create function auth.uid() returns uuid language sql stable as
         $$select nullif(current_setting('request.jwt.claim.sub',true),'')::uuid$$;
@@ -38,8 +38,8 @@ export async function localGameDb({migrations=true}={}){
       await admin.query(await fs.readFile(path.join('supabase/migrations',name),'utf8'));applied.push(name);
     }
     async function actor(id=randomUUID()){
-      await admin.query('insert into auth.users values($1)',[id]);
       const client=server.getPgClient('postgres','127.0.0.1');await client.connect();connections.push(client);
+      await client.query('insert into auth.users values($1)',[id]);
       await client.query('set role authenticated');
       await client.query("select set_config('request.jwt.claim.sub',$1,false)",[id]);
       return {id,client,async command(action,data={}){
@@ -47,7 +47,11 @@ export async function localGameDb({migrations=true}={}){
         return result.rows[0].result;
       }};
     }
-    return {admin,actor,applied,async close(){
+    async function worker(){
+      const client=server.getPgClient('postgres','127.0.0.1');await client.connect();connections.push(client);
+      await client.query('set role service_role');return client;
+    }
+    return {admin,actor,worker,applied,async close(){
       await Promise.allSettled(connections.map(client=>client.end()));await server.stop();
     }};
   }catch(error){

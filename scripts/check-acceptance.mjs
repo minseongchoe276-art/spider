@@ -16,6 +16,7 @@ const steps=[
   {name:'Trusted terrain contract (isolated fixture only)',command:process.execPath,args:['scripts/check-trusted-terrain.mjs'],log:'trusted-terrain.log'},
   {name:'Official Hong Kong geometry: actual wall, clear path and cache',command:process.execPath,args:['scripts/check-hong-kong-terrain.mjs'],log:'hong-kong-terrain.log'},
   {name:'Hong Kong damage authority: PostgreSQL roles, replay and delayed lifecycle',command:process.execPath,args:['scripts/check-hong-kong-db-authority.mjs'],log:'hong-kong-authority.log'},
+  {name:'Hong Kong transport: slow attack does not block leaving or affect a later session',command:process.execPath,args:['scripts/check-hong-kong-transport.mjs'],log:'hong-kong-transport.log'},
   {name:'Production build',command:'npm',args:['run','build'],log:'build.log'},
   {name:'Independent Hong Kong competitive damage authority',command:process.execPath,args:['scripts/diagnose-release-security.mjs'],log:'security-final.log'},
 ];
@@ -35,11 +36,26 @@ for(const step of steps){
 }
 let operating;
 try{operating=JSON.parse(fs.readFileSync(`${root}/operating-verification.json`));}catch{}
-const expected=JSON.parse(fs.readFileSync(`${root}/postgres-results.json`)).command_md5;
+const postgres=JSON.parse(fs.readFileSync(`${root}/postgres-results.json`));
+const expected=postgres.command_md5;
 const evidenceAge=Date.now()-Date.parse(operating?.checked_at||'');
 results.push({name:'Operating Supabase function matches tested movement/rescue rules',
-  status:operating?.command_md5===expected&&operating?.private_permissions_preserved&&evidenceAge>=0&&evidenceAge<1800000?'PASS':'BLOCKED',
+  status:operating?.command_md5===expected&&operating?.resolver_md5===postgres.resolver_md5&&operating?.defender_clear_flag===false&&operating?.resolver_service_only===true&&operating?.private_permissions_preserved&&evidenceAge>=0&&evidenceAge<1800000?'PASS':'BLOCKED',
   expected_command_md5:expected,observed_command_md5:operating?.command_md5||null});
+const readEvidence=path=>{try{return JSON.parse(fs.readFileSync(path));}catch{return null;}};
+const fresh=e=>{const age=Date.now()-Date.parse(e?.checked_at||'');return age>=0&&age<1800000;};
+const live=readEvidence('docs/qa/hong-kong-authority-2026-10-13/operating-live.json');
+results.push({name:'Operating Auth, official map, Edge and persisted HP pass with two real guest sessions',
+  status:fresh(live)&&live.status==='PASS'&&live.results?.length===4&&live.results.every(r=>r.status==='PASS')&&live.results[0].data?.status==='BLOCKED'&&live.results[1].health===75?'PASS':'BLOCKED',
+  evidence:'../hong-kong-authority-2026-10-13/operating-live.json'});
+const edge=readEvidence('docs/qa/hong-kong-authority-2026-10-13/deployed-edge.json');
+const requiredEdgeFiles=['hong-kong-attack/index.ts','_shared/hong-kong-terrain.js','hong-kong-attack/deno.json'];
+const edgeMatches=fresh(edge)&&edge.status==='PASS'&&requiredEdgeFiles.every(file=>{
+  const proof=edge.files?.find(row=>row.file===file),path=`supabase/functions/${file}`;
+  return proof?.matches===true&&fs.existsSync(path)&&proof.remote_sha256===createHash('sha256').update(fs.readFileSync(path)).digest('hex');
+});
+results.push({name:'All deployed Hong Kong worker files match the tested local source',status:edgeMatches?'PASS':'BLOCKED',
+  evidence:'../hong-kong-authority-2026-10-13/deployed-edge.json'});
 const source=sourceSnapshot();
 results.push({name:'Source and motion/model assets stayed unchanged throughout verification',
   status:JSON.stringify(initialSource)===JSON.stringify(source)?'PASS':'FAIL'});

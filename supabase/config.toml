@@ -1,0 +1,8 @@
+project_id = "spider"
+
+[functions.hong-kong-attack]
+# The function verifies the bearer JWT with Supabase Auth getUser before any RPC.
+# This supports the project's current guest JWTs without the legacy gateway verifier.
+verify_jwt = false
+entrypoint = "./functions/hong-kong-attack/index.ts"
+import_map = "./functions/hong-kong-attack/deno.json"

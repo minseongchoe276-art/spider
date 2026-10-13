@@ -45,7 +45,7 @@ Vercel은 GitHub `main`에 푸시하면 자동 배포됩니다. 배포 후 두 �
 연결된 프로젝트에 적용했습니다. enhanced 추격전의 안전 지형 준비, 인원별 경기 시간,
 이동 목표, 팀원 구조, 위치 단서, 역할 순환과 경계 보정이 game_command에 포함됩니다.
 로컬 도시 충돌체와 임시 피격 확인은 private game 스키마에 보관합니다.
-홍콩 공격은 피격자에게 지형 확인을 요청하며 다른 참가자의 확인으로 피해를 확정할 수 없습니다.
+홍콩 공격은 hong-kong-attack Edge Function이 실제 JWT를 Supabase Auth로 검증한 뒤 DB에서 공격 스냅샷을 발급받습니다. 공식 홍콩 지형의 모든 관련 leaf를 검사하고 CLEAR일 때만 service_role 전용 game_resolve_terrain_hit 함수가 피해를 반영합니다. 클라이언트 clear 값, 누락된 확인, 임의 geometry·좌표로는 피해를 승인하거나 거부할 수 없습니다. UNKNOWN·BLOCKED는 피해를 주지 않으며, 일회성·기한·경기 라운드·구조 후 생명 버전을 검사합니다.
 이는 홍콩 전체 지형을 서버에서 시뮬레이션하는 방식은 아닙니다.
 
 추가 통합 점검은 `npm run test:upgrade:supabase`로 실행합니다. 임시 방을 만들고

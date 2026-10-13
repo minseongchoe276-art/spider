@@ -5,7 +5,7 @@ import {attachRooms} from './rooms.mjs';
 import {MATCH} from '../src/MatchRules.js';
 const server=createServer((q,r)=>r.end('ok'));const api=attachRooms(server);await new Promise(r=>server.listen(0,'127.0.0.1',r));
 const sockets=[];const open=()=>new Promise((resolve,reject)=>{const ws=new WebSocket(`ws://127.0.0.1:${server.address().port}/ws`);ws.events=[];ws.on('message',b=>ws.events.push(JSON.parse(b)));ws.once('error',reject);ws.once('open',()=>{sockets.push(ws);resolve(ws);});});
-const send=(ws,d)=>ws.send(JSON.stringify(d));const sleep=ms=>new Promise(r=>setTimeout(r,ms));const wait=async(ws,p)=>{for(let i=0;i<200;i++){const index=ws.events.findIndex(p);if(index>=0)return ws.events.splice(index,1)[0];await sleep(10);}throw Error('Missing event '+JSON.stringify(ws.events));};
+const send=(ws,d)=>ws.send(JSON.stringify(d));const sleep=ms=>new Promise(r=>setTimeout(r,ms));const wait=async(ws,p)=>{for(let i=0;i<1000;i++){const index=ws.events.findIndex(p);if(index>=0)return ws.events.splice(index,1)[0];await sleep(10);}throw Error('Missing event '+JSON.stringify(ws.events));};
 try {
  MATCH.graceMs=0;const a=await open(),b=await open();send(a,{type:'create',name:'upgrade regression',city:'hong-kong',mode:'tag',capacity:2,enhanced:true});const joinedA=await wait(a,e=>e.type==='joined');const state=await wait(a,e=>e.type==='room');const code=state.room.code;send(b,{type:'join',code,city:'hong-kong'});const joinedB=await wait(b,e=>e.type==='joined');await wait(a,e=>e.type==='room'&&e.room.count===2);
  send(a,{type:'ready',ready:true,terrainReady:false});await wait(a,e=>e.type==='error');
@@ -13,10 +13,9 @@ try {
  const spawn={x:0,y:50,z:0},roofs=[{x:40,y:50,z:0},{x:-40,y:50,z:0}];send(a,{type:'ready',ready:true,terrainReady:true,spawn,roofs});send(b,{type:'ready',ready:true,terrainReady:true,spawn,roofs});await wait(a,e=>e.type==='room'&&e.players.every(p=>p.ready));send(a,{type:'start'});const started=await wait(a,e=>e.type==='room'&&e.room.phase==='playing');assert.equal(started.arena.radius,450);assert(started.endsAt-started.serverNow<=180000);
  const byId=new Map([[joinedA.id,a],[joinedB.id,b]]),police=byId.get(started.players.find(p=>p.team==='police').id),runner=byId.get(started.players.find(p=>p.team==='runner').id);
  send(police,{type:'move',x:0,y:50,z:0,facing:0});send(runner,{type:'move',x:0,y:50,z:2,facing:0});await wait(police,e=>e.type==='move'&&e.z===2);
- send(police,{type:'attack',kind:'punch',facing:0});const check=await wait(runner,e=>e.type==='hit-check');send(police,{type:'hit-confirm',hitId:check.hitId,clear:true});await sleep(40);assert(!runner.events.some(e=>e.type==='hit'));
- send(runner,{type:'hit-confirm',hitId:check.hitId,clear:false});await sleep(40);assert(!runner.events.some(e=>e.type==='hit'));
- await sleep(570);send(police,{type:'move',x:0,y:50,z:0,facing:0});send(runner,{type:'move',x:0,y:50,z:2,facing:0});await sleep(40);send(police,{type:'attack',kind:'punch',facing:0});const clear=await wait(runner,e=>e.type==='hit-check');send(runner,{type:'hit-confirm',hitId:clear.hitId,clear:true});const hit=await wait(runner,e=>e.type==='hit');assert.equal(hit.health,75);
- send(runner,{type:'hit-confirm',hitId:clear.hitId,clear:true});await sleep(40);assert(!runner.events.some(e=>e.type==='hit'));
+ send(police,{type:'attack',kind:'punch',facing:0});send(runner,{type:'hit-confirm',hitId:'forged',clear:false});const hit=await wait(runner,e=>e.type==='hit');assert.equal(hit.health,75);
+ send(runner,{type:'hit-confirm',hitId:'forged',clear:true});await sleep(40);assert(!runner.events.some(e=>e.type==='hit'));
+
  send(runner,{type:'move',x:1000,y:50,z:0,facing:0});await wait(runner,e=>e.type==='correction');
  const closedId=runner===a?joinedA:joinedB;runner.close();await sleep(50);assert.equal(api.rooms.get(code).players.size,2);const resumed=await open();send(resumed,{type:'resume',code,token:closedId.resumeToken});const restored=await wait(resumed,e=>e.type==='joined');assert.equal(restored.id,closedId.id);
  const room=api.rooms.get(code),originalPolice=started.players.find(p=>p.team==='police').id;
@@ -41,11 +40,11 @@ try {
  await wait(trio[0],e=>e.type==='room'&&e.room.count===3);for(const ws of trio)send(ws,{type:'ready',ready:true,terrainReady:true,spawn,roofs});await wait(trio[0],e=>e.type==='room'&&e.room.count===3&&e.players.every(p=>p.ready));send(trio[0],{type:'start'});const rescueRound=await wait(trio[0],e=>e.type==='room'&&e.room.phase==='playing');
  const copId=rescueRound.players.find(p=>p.team==='police').id,runners=rescueRound.players.filter(p=>p.team==='runner'),victimId=runners[0].id,helperId=runners[1].id,cop=ids.get(copId),victim=ids.get(victimId),helper=ids.get(helperId);
  send(helper,{type:'move',x:0,y:50,z:3,facing:0});
- for(let i=0;i<4;i++){send(cop,{type:'move',x:0,y:50,z:0,facing:0});send(victim,{type:'move',x:0,y:50,z:2,facing:0});await sleep(60);send(cop,{type:'attack',kind:'punch',facing:0});const request=await wait(victim,e=>e.type==='hit-check');send(victim,{type:'hit-confirm',hitId:request.hitId,clear:true});const hit=await wait(victim,e=>e.type==='hit');assert.equal(hit.health,75-i*25);await sleep(580);}
+ for(let i=0;i<4;i++){send(cop,{type:'move',x:0,y:50,z:0,facing:0});send(victim,{type:'move',x:0,y:50,z:2,facing:0});await sleep(60);send(cop,{type:'attack',kind:'punch',facing:0});const hit=await wait(victim,e=>e.type==='hit');assert.equal(hit.health,75-i*25);await sleep(580);}
  await wait(helper,e=>e.type==='hit'&&e.target===victimId&&e.eliminated===true);
  for(let i=0;i<23;i++){send(helper,{type:'move',x:0,y:50,z:3,facing:0});await sleep(150);}
  const rescued=await wait(helper,e=>e.type==='room'&&e.players.find(p=>p.id===victimId)?.health===50);assert.equal(rescued.players.find(p=>p.id===victimId).eliminated,false);assert.equal(rescued.room.phase,'playing');
  console.log('PASS teammate rescue: verified attacks down a runner, three seconds nearby restore HP 50 while match continues');
  console.log('PASS movement objectives: ordered positions, cooldown, three objectives end match with runner victory');
- console.log('PASS enhanced online: terrain readiness, arena/time, defender-authenticated visibility, blocked hit, replay prevention, boundary correction, reconnection identity, role rotation');
+ console.log('PASS enhanced online: terrain readiness, arena/time, server-authoritative visibility, blocked hit, replay prevention, boundary correction, reconnection identity, role rotation');
 }finally{for(const s of sockets)s.close();await sleep(30);api.wss.close();await new Promise(r=>server.close(r));}

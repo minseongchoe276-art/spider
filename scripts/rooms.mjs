@@ -1,3 +1,4 @@
+import {HongKongTerrain} from '../supabase/functions/_shared/hong-kong-terrain.js';
 import { WebSocketServer } from 'ws';
 import { randomBytes } from 'node:crypto';
 import { MATCH, policeCount } from '../src/MatchRules.js';
@@ -52,10 +53,10 @@ function start(room) {
   for(let i=shuffled.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[shuffled[i],shuffled[j]]=[shuffled[j],shuffled[i]];}
   if(room.enhanced){shuffled.sort((a,b)=>(a.policeRounds||0)-(b.policeRounds||0));room.arena=arenaFrom(room.anchor,room.city,room.roofs);}
   const cops=room.mode==='tag'?policeCount(players.length):0;
-  shuffled.forEach((p,i)=>{p.team=room.mode==='tag'?(i<cops?'police':'runner'):'free';if(p.team==='police')p.policeRounds=(p.policeRounds||0)+1;p.progress=0;p.goalAt=0;p.rescue=null;p.history=[];p.health=100;p.eliminated=false;p.seen=false;p.x=0;p.y=0;p.z=0;p.lastMove=0;p.cooldowns={punch:0,web:0};});
+  shuffled.forEach((p,i)=>{p.team=room.mode==='tag'?(i<cops?'police':'runner'):'free';if(p.team==='police')p.policeRounds=(p.policeRounds||0)+1;p.progress=0;p.goalAt=0;p.rescue=null;p.history=[];p.lifeEpoch=(p.lifeEpoch||0)+1;p.health=100;p.eliminated=false;p.seen=false;p.x=0;p.y=0;p.z=0;p.lastMove=0;p.cooldowns={punch:0,web:0};});
   publish(room);
 }
-function handle(ws, data) {
+async function handle(ws, data, terrain) {
   if(!data || typeof data!=='object')return;
   if(data.type==='resume'&&ws.player)return error(ws,'먼저 현재 방에서 나가세요.');
   if(data.type==='resume'){const room=rooms.get(String(data.code||''));const player=room&&[...room.players.values()].find(p=>p.resumeToken===data.token&&p.disconnectedAt&&Date.now()-p.disconnectedAt<30000);if(!player)return error(ws,'복귀 시간이 만료되었습니다.');player.ws=ws;player.disconnectedAt=0;ws.player=player;send(ws,{type:'joined',id:player.id,resumeToken:player.resumeToken,code:room.code});publish(room);return;}
@@ -88,10 +89,10 @@ function handle(ws, data) {
     if(room.enhanced&&!arenaFrom(room.anchor,room.city,room.roofs))return error(ws,'방장의 안전 지형 준비가 필요합니다.');
     start(room);return;
   }
-  if(data.type==='rematch' && room.host===p.id && room.phase==='finished') {room.phase='waiting';room.round=(room.round||1)+1;room.winner=null;room.endsAt=0;for(const v of room.players.values()){v.ready=false;v.eliminated=false;v.health=100;v.team=null;}publish(room);return;}
+  if(data.type==='rematch' && room.host===p.id && room.phase==='finished') {room.phase='waiting';room.round=(room.round||1)+1;room.winner=null;room.endsAt=0;for(const v of room.players.values()){v.ready=false;v.lifeEpoch=(v.lifeEpoch||0)+1;v.eliminated=false;v.health=100;v.team=null;}publish(room);return;}
   if(data.type==='ping'){send(ws,{type:'pong',stamp:data.stamp,serverNow:Date.now()});return;}
   if(room.phase!=='playing')return;
-  if(data.type==='hit-confirm'&&room.enhanced){const pending=room.pendingHits.get(data.hitId);if(!pending||pending.target!==p.id||Date.now()>pending.expires)return;room.pendingHits.delete(data.hitId);if(data.clear===true&&!p.eliminated)applyHit(room,room.players.get(pending.attacker),p,pending.kind);return;}
+  if(data.type==='hit-confirm')return;
   if(p.eliminated)return;
   if(data.type==='move') {
     const coords=[data.x,data.y,data.z,data.facing];
@@ -124,7 +125,14 @@ function handle(ws, data) {
       .filter(({v,d,dy})=>d<=rule.reach&&dy<rule.vertical&&(d<=0.35||aimAt(v)>=rule.cone))
       .sort((a,b)=>a.d-b.d)[0]?.v;
     if(!target)return;
-    if(room.enhanced){if(now-p.lastMove>1500)return;if(room.city==='procedural'){if(blockedSegment(p,target,proceduralCollision().colliders))return;}else{const hitId=randomBytes(8).toString('hex');room.pendingHits.set(hitId,{attacker:p.id,target:target.id,kind,expires:now+600});send(target.ws,{type:'hit-check',hitId,from:{x:p.x,y:p.y,z:p.z},to:{x:target.x,y:target.y,z:target.z}});return;}}
+    if(room.city==='hong-kong'){
+      if(now-p.lastMove>1500)return;
+      const round=room.round,life=target.lifeEpoch,from={x:p.x,y:p.y,z:p.z},to={x:target.x,y:target.y,z:target.z};
+      const decision=await terrain.visibility(from,to);
+      if(rooms.get(room.code)!==room||room.phase!=='playing'||room.round!==round||Date.now()-now>10000||room.players.get(p.id)!==p||room.players.get(target.id)!==target||target.lifeEpoch!==life||target.eliminated)return;
+      if(decision.status==='UNKNOWN')return error(ws,'공식 지형 판정을 준비하지 못했습니다. 잠시 후 다시 공격하세요.');
+      if(decision.status!=='CLEAR'||!decision.version)return;
+    }else if(room.enhanced&&(now-p.lastMove>1500||blockedSegment(p,target,proceduralCollision().colliders)))return;
     applyHit(room,p,target,kind);
     return;
 
@@ -139,10 +147,11 @@ function advanceGoal(room,p,now,previousMove){if(room.mode!=='tag'||p.team!=='ru
  if(now-(p.goalAt||0)>=PURSUIT.checkpointCooldown&&Math.hypot(p.x-target.x,p.y-target.y,p.z-target.z)<PURSUIT.checkpointRadius){p.progress=(p.progress||0)+1;p.goalAt=now;publish(room);if(p.progress>=PURSUIT.goal)finish(room,'runner');}
  const ally=[...room.players.values()].find(v=>v.team==='runner'&&v.eliminated&&v.seen&&Math.hypot(v.x-p.x,v.y-p.y,v.z-p.z)<PURSUIT.reviveRadius
    &&(room.city!=='procedural'||!blockedSegment(p,v,proceduralCollision().colliders)));
- if(ally){if(p.rescue?.id!==ally.id||now-previousMove>500)p.rescue={id:ally.id,since:now};if(now-p.rescue.since>=PURSUIT.reviveMs){ally.health=50;ally.eliminated=false;p.rescue=null;publish(room);}}else p.rescue=null;}
+ if(ally){if(p.rescue?.id!==ally.id||now-previousMove>500)p.rescue={id:ally.id,since:now};if(now-p.rescue.since>=PURSUIT.reviveMs){ally.lifeEpoch=(ally.lifeEpoch||0)+1;ally.health=50;ally.eliminated=false;p.rescue=null;publish(room);}}else p.rescue=null;}
 
-export function attachRooms(server) {
+export function attachRooms(server,options={}) {
   if (!server) return;
+  const terrain=options.terrain||new HongKongTerrain();
   const wss = new WebSocketServer({ noServer: true, maxPayload: 4096 });
 
   const onUpgrade = (request, socket, head) => {
@@ -169,14 +178,14 @@ export function attachRooms(server) {
     // ws emits an error before closing an over-limit frame. Keep that error
     // local to the offending connection rather than crashing the process.
     ws.on('error',()=>{});
-    ws.on('message', raw => {
+    ws.on('message', async raw => {
       if (raw.length > 4096) return;
       try {
         const now=Date.now();if(now-windowAt>=1000){windowAt=now;messages=controls=0;}
         if(++messages>120){ws.close(1008,'Message rate exceeded');return;}
         const data=JSON.parse(raw.toString());
         if(['list','create','join','resume','ready','start','rematch'].includes(data?.type)&&++controls>20){ws.close(1008,'Command rate exceeded');return;}
-        handle(ws, data);
+        await handle(ws, data,terrain);
       } catch {
         error(ws, '요청을 처리할 수 없습니다.');
       }
