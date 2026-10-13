@@ -1,0 +1,34 @@
+{
+  "status": "PASS",
+  "realNetwork": {
+    "original": [
+      -170.6,
+      95.81197417482352,
+      -175
+    ],
+    "before": {
+      "server": [
+        -167.4745487628374,
+        95.81197417482352,
+        -175
+      ],
+      "id": "b2d8f8d6a9fb574d"
+    },
+    "resumed": {
+      "position": [
+        -167.4745487628374,
+        95.81197417482352,
+        -175
+      ],
+      "id": "b2d8f8d6a9fb574d",
+      "spectating": false
+    }
+  },
+  "snapshotScenario": {
+    "spectating": true,
+    "visible": false,
+    "hud": "HP 0/100 · 관전 중"
+  },
+  "soloVisible": true,
+  "errors": []
+}

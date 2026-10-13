@@ -6,7 +6,7 @@ try{
  for(let i=0;i<2;i++){
   const page=await (await browser.newContext({viewport:{width:1280,height:900}})).newPage();pages.push(page);page.on('pageerror',e=>errors.push(e.message));
   await page.route('**/src/main.js',async route=>{const response=await route.fetch();await route.fulfill({response,body:(await response.text()).replace('new GameApp();','window.__testGame=new GameApp();')});});
-  await page.goto('http://127.0.0.1:5186/?city=procedural');await page.locator('#loading-screen').waitFor({state:'hidden',timeout:90000});await page.waitForFunction(()=>window.__testGame.multiplayer.ws.readyState===1);
+  await page.goto((process.env.AUDIT_BASE_URL||'http://127.0.0.1:5186')+'/?city=procedural');await page.locator('#loading-screen').waitFor({state:'hidden',timeout:90000});await page.waitForFunction(()=>window.__testGame.multiplayer.ws.readyState===1);
  }
  const [host,peer]=pages;await host.locator('[data-mode="free"]').click();await host.locator('#room-name').fill('경계상황 검수');await host.locator('#create-room').click();await host.waitForFunction(()=>window.__testGame.multiplayer.room);
  await peer.locator('#room-code').fill(await host.locator('#room-code-display').textContent());await peer.locator('#join-code').click();await peer.locator('#room-ready').waitFor({state:'visible'});await peer.locator('#room-ready').click();await host.locator('#room-ready').click();await host.locator('#room-start').click();
