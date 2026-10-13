@@ -1,0 +1,33 @@
+{
+  "status": "PASS",
+  "source": "Official Hong Kong data, geometry-only complete ray traversal",
+  "originMaxError": 2.7939677238464355e-9,
+  "blocked": {
+    "status": "BLOCKED",
+    "version": "0428159686cb5d43842e8ece166da78ab404d14ed512e5b8f032c19a89720844",
+    "files": 16,
+    "visited": 206,
+    "triangles": 10320,
+    "downloaded": 1069127,
+    "ms": 1485.843459
+  },
+  "clear": {
+    "status": "CLEAR",
+    "version": "4be39262a3f3689a3720fa03d6193d43b02e1725d6ce3082c87ecabe48afbe71",
+    "files": 14,
+    "visited": 204,
+    "triangles": 9283,
+    "downloaded": 0,
+    "ms": 10.646457999999939
+  },
+  "warm": {
+    "status": "CLEAR",
+    "version": "4be39262a3f3689a3720fa03d6193d43b02e1725d6ce3082c87ecabe48afbe71",
+    "files": 14,
+    "visited": 204,
+    "triangles": 9283,
+    "downloaded": 0,
+    "ms": 2.496582999999873
+  },
+  "cacheBytes": 1069127
+}

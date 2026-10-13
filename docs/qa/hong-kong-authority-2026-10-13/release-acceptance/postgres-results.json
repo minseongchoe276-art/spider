@@ -1,0 +1,82 @@
+{
+  "engine": "PostgreSQL 17.10 on x86_64-apple-darwin24.6.0, compiled by Apple clang version 17.0.0 (clang-1700.6.3.2), 64-bit",
+  "migrations": [
+    "20261012112117_game_rooms_realtime.sql",
+    "20261012113232_resume_game_room.sql",
+    "20261012115005_fix_room_cleanup.sql",
+    "20261012140000_game_move_pose.sql",
+    "20261012234718_gameplay_experience.sql",
+    "20261012235525_arena_correction.sql",
+    "20261013052333_verified_movement_and_continuous_rescue.sql",
+    "20261013063126_authoritative_hong_kong_hits.sql"
+  ],
+  "command_md5": "af4efea58cb4f1a3557b8ef534d641d1",
+  "resolver_md5": "e534dc57b664d62d9544e9135543ba4e",
+  "scope": "Real PostgreSQL roles, transactions and multiple connections; Auth identity and Realtime network delivery are local substitutes.",
+  "results": [
+    {
+      "name": "8 authenticated players join, prepare, and start with two police",
+      "status": "PASS"
+    },
+    {
+      "name": "One jitter allowance cannot finance repeated 18m teleports",
+      "status": "PASS"
+    },
+    {
+      "name": "Normal 48m/s and a 500ms delayed move remain accepted",
+      "status": "PASS"
+    },
+    {
+      "name": "Private tables/schema and anonymous RPC calls remain inaccessible",
+      "status": "PASS"
+    },
+    {
+      "name": "A failed transaction rolls back its accepted move and budget",
+      "status": "PASS"
+    },
+    {
+      "name": "Parallel moves serialize their shared allowance",
+      "status": "PASS"
+    },
+    {
+      "name": "Continuous rescue restarts after a gap instead of completing from two packets",
+      "status": "PASS"
+    },
+    {
+      "name": "Opposing attack and movement use real connection locks without deadlock",
+      "status": "PASS"
+    },
+    {
+      "name": "Pausing a defender does not grant damage immunity at the last confirmed position",
+      "status": "PASS"
+    },
+    {
+      "name": "SQL and JavaScript arena validation reject duplicate/nearby targets consistently",
+      "status": "PASS"
+    },
+    {
+      "name": "2-player SQL match uses the correct duration and police count",
+      "status": "PASS"
+    },
+    {
+      "name": "3-player SQL match uses the correct duration and police count",
+      "status": "PASS"
+    },
+    {
+      "name": "4-player SQL match uses the correct duration and police count",
+      "status": "PASS"
+    },
+    {
+      "name": "5-player SQL match uses the correct duration and police count",
+      "status": "PASS"
+    },
+    {
+      "name": "6-player SQL match uses the correct duration and police count",
+      "status": "PASS"
+    },
+    {
+      "name": "7-player SQL match uses the correct duration and police count",
+      "status": "PASS"
+    }
+  ]
+}

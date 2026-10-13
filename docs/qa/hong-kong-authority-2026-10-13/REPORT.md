@@ -1,6 +1,6 @@
 # 홍콩 경쟁전 서버 피격 판정 재검수 — 2026-10-13
 
-기존 SEC-01/P1(피해자가 확인을 거부하면 공격이 무효가 되는 문제)을 서버 독립 판정으로 수정했다. 운영 PostgreSQL 마이그레이션과 `hong-kong-attack` Edge Function v3에 적용하고, 실제 게스트 두 명의 별도 테스트 경기에서 확인했다. 웹 클라이언트 배포 결과는 아래 최종 배포 기록으로 보완한다.
+기존 SEC-01/P1(피해자가 확인을 거부하면 공격이 무효가 되는 문제)을 서버 독립 판정으로 수정했다. 운영 PostgreSQL 마이그레이션과 `hong-kong-attack` Edge Function v3에 적용하고, 실제 게스트 두 명의 별도 테스트 경기에서 확인했다. 웹 클라이언트 소스 커밋 `18d8b8f`도 minogame.site에 배포했다.
 
 ## 실제 운영 결과
 
@@ -29,12 +29,12 @@
 - [공식 지형 검사](official-terrain.json): 실제 벽/열린 경로, 캐시 결과 일치, 오프라인·잘못된 좌표에서 UNKNOWN.
 - [25개 지도 표본](map-grid.json): x/z −2200~2200m에서 대표 선분 검사, UNKNOWN 0, 캐시 약 10.25MB. 이 표본이 모든 향후 지도 데이터를 보장하는 것은 아니다.
 - [실제 PostgreSQL 권한 검사](postgres-authority.json): 피해자 조작, BLOCKED/UNKNOWN, 출처 누락, 기한 만료, 구조 후 지연, 다음 라운드 지연, 병렬 요청의 정확히 한 번 반영, 최종 함수 권한 등 9개 검사 통과. Auth 식별과 Realtime 송신만 로컬 대체이며 DB 행·권한·잠금·트랜잭션은 실제 PostgreSQL이다.
-- 전체 기존 PostgreSQL 16개 이동·구조·역할·시간·목표·동시 요청 검사와 게임/모션 회귀 검사 및 production build는 [최종 합격 실행](../acceptance-2026-10-13/execution.json)에 기록한다.
+- 전체 기존 PostgreSQL 16개 이동·구조·역할·시간·목표·동시 요청 검사와 게임/모션 회귀 검사 및 production build는 [최종 합격 실행](release-acceptance/execution.json)에 기록한다.
 - [실제 Chromium SDK 검사](browser-sdk.json): 브라우저가 실제 SupabaseRooms 모듈을 읽고 두 운영 게스트 세션으로 공격을 전송했다. hong-kong-attack 호출 1회, HP 75, page error 0. 시각적 게임플레이 검사와 구분한다.
 - GLB/B3DM binary RTC·CESIUM RTC·축 변환·잘못된 데이터·크기 제한 검사와 느린 공격 중 탈퇴/응답 폐기 검사를 포함한다. Deno 타입 검사는 [로그](deno-check.log)에 기록했다.
 - [운영 Edge 소스 일치](deployed-edge.json): v3의 배포 소스를 다시 읽어 로컬 index.ts, 지형 모듈, import map의 SHA-256 일치를 확인했다.
 
-운영 SQL `prosrc` MD5는 game_command `af4efea58cb4f1a3557b8ef534d641d1`, resolver `e534dc57b664d62d9544e9135543ba4e`이다. 직접 테이블/비공개 스키마 제한과 service_role 전용 피해 확정 권한을 운영에서 재확인했다. [운영 함수 확인](../acceptance-2026-10-13/operating-verification.json).
+운영 SQL `prosrc` MD5는 game_command `af4efea58cb4f1a3557b8ef534d641d1`, resolver `e534dc57b664d62d9544e9135543ba4e`이다. 직접 테이블/비공개 스키마 제한과 service_role 전용 피해 확정 권한을 운영에서 재확인했다. [운영 함수 확인](release-acceptance/operating-verification.json).
 
 Security Advisor는 전후 동일한 4종(총 10개 finding)이었다: RLS 정책 없음 INFO 2, 의도된 authenticated SECURITY DEFINER 호출 WARN 6, 게스트 Realtime 정책 WARN 1, 비밀번호 유출 보호 설정 WARN 1. 기존 알림을 숨기려고 권한을 확대하지 않았다. [전](advisors-before.json), [후](advisors-after.json).
 
@@ -45,3 +45,9 @@ Security Advisor는 전후 동일한 4종(총 10개 finding)이었다: RLS 정�
 재현됐던 피해자 거부 결함은 위의 검증 범위에서 해소됐다. 이는 홍콩 전체 이동을 서버 물리로 시뮬레이션하거나 모든 기기·장시간 성능·향후 지도 변경까지 완벽하다는 판정은 아니다. 지형이 준비되지 않은 경우 공격이 보류될 수 있으며, 실제 운영 응답 지연은 위 수치대로 남아 있다.
 
 적용 마이그레이션: `supabase/migrations/20261013063126_authoritative_hong_kong_hits.sql`. 변경 직전 운영 game_command는 [rollback-command.sql](rollback-command.sql)에 보존했다. 이전 함수로 복구하면 기존 피해자 거부 결함이 다시 생기므로 복구 후 별도 재검증이 필요하다.
+
+## 최종 사이트 배포 확인
+
+2026-10-13 19:37 KST, Vercel 배포 성공 후 실제 minogame.site의 `/assets/index-Z3G2DhBG.js` SHA-256이 격리 검증 빌드와 정확히 일치했다. [빌드 대조](production-build.json). 배포된 실제 JS의 SupabaseRooms 클래스만 검사에 노출하고 기존 공격 전송 흐름을 실행했다. 새 운영 게스트 두 명으로 hong-kong-attack 호출 1회, HP 75, 브라우저 page error 0을 확인했다. [배포 SDK 검사](production-sdk.json). 시각적 게임플레이 전체 검사와 구분한다.
+
+공유 폴더의 다른 진행 중 변경과 분리해 위 소스 커밋의 최종 통과 로그를 `release-acceptance/`에 별도로 보존했다.
