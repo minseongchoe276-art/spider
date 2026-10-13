@@ -4,27 +4,28 @@ import {GROUNDED} from './MotionCatalog.js';
 export const ATTACKS={
   jab:{duration:0.56,from:0.14,to:0.22,damage:12,reach:1.8},
   cross:{duration:0.68,from:0.37,to:0.47,damage:17,reach:1.9},
-  hook:{duration:2.0,from:0.76,to:0.96,damage:32,reach:2.1},
+  hook:{duration:0.9,from:0.342,to:0.432,damage:32,reach:2.1},
   special:{duration:1.2,from:0.30,to:0.46,damage:48,reach:2.0},
-  heavy:{duration:2.0,from:0.76,to:0.96,damage:32,reach:2.1},
+  heavy:{duration:0.9,from:0.342,to:0.432,damage:32,reach:2.1},
 };
 const grounded=p=>GROUNDED.includes(p.state);
 const forward=p=>new THREE.Vector3(Math.sin(p.facingAngle),0,Math.cos(p.facingAngle));
 export class CombatSystem {
-  constructor(scene,physics,character,{vfx=null,audio=null,onNotice=()=>{}}={}) {
-    Object.assign(this,{scene,physics,character,vfx,audio,onNotice});
+  constructor(scene,physics,character,{vfx=null,audio=null,onNotice=()=>{},onHit=()=>{}}={}) {
+    Object.assign(this,{scene,physics,character,vfx,audio,onNotice,onHit});
     this.mode='combat';this.action=null;
     this.blocking=false;this.health=100;this.stamina=100;this.invulnerable=0;
     this.specialCooldown=0;this.enemies=[];this.serial=0;this.hurtCount=0;this.hits=0;this.elapsed=0;this.physics.webEnabled=false;this.physics.onReset=()=>{this.cancel();this.clearEnemies();this.health=this.stamina=100;this.specialCooldown=0;};
   }
-  cancel(){this.action=null;this.blocking=false;this.character.combatAction=null;this.physics.combatMotion=null;}
+  cancel(){this.queued=null;this.action=null;this.blocking=false;this.character.combatAction=null;this.physics.combatMotion=null;}
   clearHeld(){this.blocking=false;}
   toggle(input={}) {
     this.mode=this.mode==='combat'?'web':'combat';this.cancel();
     input.webTap=input.webHold=input.webFireHeld=false;
+    input.webTapRight=input.webHoldRight=input.webFireHeldRight=false;
     this.physics.webEnabled=this.mode==='web';this.physics.clearPendingInput?.();
     if(this.mode==='combat')this.physics.clearWebAnchor?.();
-    this.onNotice(this.mode==='web'?'거미줄 ON · 좌클릭 양손 / 우클릭 집 / E 공중 집':'전투 모드 · 땅에서는 잽·스트레이트 / 공중 좌클릭은 거미줄 / B 방어 / Ctrl 회피');
+    this.onNotice(this.mode==='web'?'거미줄 ON · 좌클릭 꾹: 진자 스윙 / 우클릭: 반대 손 진자 / 떼기: 관성 비행 / E 공중 집':'전투 모드 · 땅에서는 잽·스트레이트 / 공중 좌·우클릭은 거미줄 / B 방어 / Ctrl 회피');
     return this.mode;
   }
   face(camera) {
@@ -39,11 +40,12 @@ export class CombatSystem {
   }
   attack(camera) {
     if(this.mode!=='combat' || !grounded(this.physics) || this.blocking || this.stamina<4)return false;
-    if(this.action)return false;
+    if(this.action){this.queue('attack',camera);return false;}
     this.stamina-=4;this.start('jab',ATTACKS.jab.duration,camera);return true;
   }
   straight(camera) {
-    if(this.mode!=='combat' || !grounded(this.physics) || this.blocking || this.action || this.stamina<7)return false;
+    if(this.action){this.queue('straight',camera);return false;}
+    if(this.mode!=='combat' || !grounded(this.physics) || this.blocking || this.stamina<7)return false;
     this.stamina-=7;this.start('cross',ATTACKS.cross.duration,camera);return true;
   }
   heavy(camera) {
@@ -56,6 +58,12 @@ export class CombatSystem {
     if(this.mode!=='combat' || this.action || !grounded(this.physics) || this.blocking || this.stamina<35 || this.specialCooldown>0)return false;
     this.stamina-=35;this.specialCooldown=4;
     this.start('special',ATTACKS.special.duration,camera);return true;
+  }
+  queue(method,camera) {if(this.action && this.action.time>=this.action.duration*.75)this.queued={method,camera,expires:this.elapsed+.18};}
+  airStrike(camera) {
+    if(this.mode!=='combat'||grounded(this.physics)||this.action||this.stamina<25||!this.enemies.some(e=>e.health>0))return false;
+    this.stamina-=25;this.physics.clearWebAnchor?.();this.physics.velocity.y=Math.min(this.physics.velocity.y,-14);
+    this.start('slam',1,camera);return true;
   }
   dodge(input,camera) {
     if(this.mode!=='combat' || !grounded(this.physics) || this.stamina<18 || this.action?.key.startsWith('dodge'))return false;
@@ -73,6 +81,8 @@ export class CombatSystem {
     this.specialCooldown=Math.max(0,this.specialCooldown-delta);this.invulnerable=Math.max(0,this.invulnerable-delta);
     this.stamina=Math.min(100,this.stamina+delta*(this.blocking?3:this.action?0:18));
     if(this.blocking && (!grounded(this.physics)||this.stamina<=0))this.blocking=false;
+    // Grounded strikes and evasions cannot resume halfway through on landing.
+    if(this.action && !grounded(this.physics) && this.action.key!=='slam')this.cancel();
     const a=this.action;
     if(a) {
       a.previous=a.time;a.time+=delta;
@@ -81,6 +91,7 @@ export class CombatSystem {
         this.action=null;
       }
     }
+    if(this.queued && !this.action){const next=this.queued;this.queued=null;if(next.expires>=this.elapsed)this[next.method](next.camera);}
     const current=this.action;
     const stopping=this.character.activeAction && ['stop','runStop'].some(key=>this.character.activeAction===this.character.actions?.[key] && this.character.activeAction?.time<this.character.activeAction.getClip().duration-.05) || ['RUNNING','SPRINTING'].includes(this.character.lastState);
     // The authored punches plant both feet. Translating the capsule during
@@ -116,7 +127,10 @@ export class CombatSystem {
       if(e.health<=0 || action.hits.has(e))continue;
       const target=e.position.clone().add(new THREE.Vector3(0,1,0)),d=target.clone().sub(origin);
       if(Math.abs(d.y)>1.5 || Math.hypot(d.x,d.z)>hit.reach || (!hit.radial && d.clone().setY(0).normalize().dot(f)<0.45) || this.obstructed(origin,target))continue;
-      action.hits.add(e);e.health=Math.max(0,e.health-hit.damage);e.flash=0.15;e.stagger=0.45;this.hits++;
+      action.hits.add(e);
+      if(e.type==='shield' && !['hook','heavy','special','slamLand'].includes(action.key)){e.flash=.1;e.stagger=.08;this.audio?.playCombatHit?.(false);this.onNotice('방패 방어 · 훅이나 강공격으로 돌파하세요.');continue;}
+      e.health=Math.max(0,e.health-hit.damage);e.flash=0.15;e.stagger=0.45;this.hits++;
+      this.onHit(hit.damage);
       this.vfx?.spawnWebImpact(target);this.audio?.playCombatHit?.(hit.damage>=24);
       if(e.health===0){e.mesh.visible=false;this.onNotice('대상 제압');}
     }

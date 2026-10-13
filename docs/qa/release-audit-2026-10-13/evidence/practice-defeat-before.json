@@ -1,0 +1,51 @@
+{
+  "passed": 10,
+  "total": 11,
+  "results": [
+    {
+      "name": "Null or malformed saved settings preserve usable defaults",
+      "status": "PASS"
+    },
+    {
+      "name": "Practice from a loaded lobby enters solo play before spawning",
+      "status": "PASS"
+    },
+    {
+      "name": "Practice does not start while assets are unavailable or online",
+      "status": "PASS"
+    },
+    {
+      "name": "Opt-in frame metrics measure percentiles and keep a bounded window",
+      "status": "PASS"
+    },
+    {
+      "name": "Being defeated in practice is not reported as successful completion",
+      "status": "FAIL",
+      "error": "Defeat was displayed as success"
+    },
+    {
+      "name": "Enhanced host cannot become ready with an invalid arena",
+      "status": "PASS"
+    },
+    {
+      "name": "Valid enhanced arena supports a two-player start",
+      "status": "PASS"
+    },
+    {
+      "name": "Resuming from an occupied socket cannot strand its previous membership",
+      "status": "PASS"
+    },
+    {
+      "name": "Oversized WebSocket payload is rejected at the transport boundary",
+      "status": "PASS"
+    },
+    {
+      "name": "Control-message floods cannot trigger unlimited room-list broadcasts",
+      "status": "PASS"
+    },
+    {
+      "name": "Malformed messages do not prevent the next valid command",
+      "status": "PASS"
+    }
+  ]
+}

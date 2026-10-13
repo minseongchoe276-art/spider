@@ -1,0 +1,160 @@
+{
+ "map": "Hong Kong",
+ "ready": true,
+ "playing": true,
+ "paused": false,
+ "practice": false,
+ "performance": {
+  "windowFrames": 3600,
+  "totalFrames": 23753,
+  "activeSeconds": 398.09,
+  "averageFps": 59.44,
+  "frameMs": {
+   "p50": 16.7,
+   "p95": 18.6,
+   "p99": 20.6
+  },
+  "longFramesOver50ms": 5
+ },
+ "cpuSections": {
+  "city": {
+   "calls": 23754,
+   "samples": 600,
+   "meanMs": 2.091,
+   "p95Ms": 3
+  },
+  "physics": {
+   "calls": 23754,
+   "samples": 600,
+   "meanMs": 6.401,
+   "p95Ms": 6.7
+  },
+  "character": {
+   "calls": 23754,
+   "samples": 600,
+   "meanMs": 0.262,
+   "p95Ms": 0.4
+  },
+  "camera": {
+   "calls": 23754,
+   "samples": 600,
+   "meanMs": 0.063,
+   "p95Ms": 0.1
+  },
+  "render": {
+   "calls": 23753,
+   "samples": 600,
+   "meanMs": 1.263,
+   "p95Ms": 1.7
+  },
+  "collisionResolve": {
+   "calls": 47721,
+   "samples": 600,
+   "meanMs": 0.093,
+   "p95Ms": 0.2
+  },
+  "minimap": {
+   "calls": 23754,
+   "samples": 600,
+   "meanMs": 0.195,
+   "p95Ms": 0.8
+  },
+  "experience": {
+   "calls": 23754,
+   "samples": 600,
+   "meanMs": 0.017,
+   "p95Ms": 0.1
+  },
+  "rapierStep": {
+   "calls": 47744,
+   "samples": 600,
+   "meanMs": 0.062,
+   "p95Ms": 0.2
+  }
+ },
+ "renderer": {
+  "calls": 81,
+  "triangles": 224722,
+  "geometries": 113,
+  "textures": 101,
+  "pixelRatio": 1
+ },
+ "viewport": {
+  "width": 1280,
+  "height": 720,
+  "dpr": 1
+ },
+ "quality": "balanced",
+ "resources": {
+  "count": 250,
+  "transferBytes": 43475488
+ },
+ "position": [
+  0,
+  24.606,
+  2.022
+ ],
+ "velocity": [
+  0,
+  -4.233,
+  0
+ ],
+ "state": "FALLING",
+ "motion": "drop",
+ "mode": "web",
+ "feet": [
+  {
+   "side": "left",
+   "ankle": [
+    0.209,
+    25.489,
+    2.038
+   ]
+  },
+  {
+   "side": "right",
+   "ankle": [
+    -0.197,
+    25.509,
+    2.027
+   ]
+  }
+ ],
+ "peers": [],
+ "map3D": true,
+ "mapMeshes": 118,
+ "facing": 0,
+ "cameraYaw": 0,
+ "webs": [],
+ "support": null,
+ "collision": 147,
+ "pending": 0,
+ "history": [
+  "IDLE/undefined",
+  "FALLING/undefined",
+  "IDLE/idle",
+  "JUMPING/jump",
+  "FALLING/drop",
+  "LANDING/land",
+  "RUNNING/walk",
+  "IDLE/stop",
+  "IDLE/idle",
+  "RUNNING/walk",
+  "IDLE/stop",
+  "IDLE/idle",
+  "RUNNING/walk",
+  "IDLE/stop",
+  "RUNNING/walk",
+  "IDLE/stop",
+  "RUNNING/walk",
+  "IDLE/stop",
+  "IDLE/idle",
+  "RUNNING/walk",
+  "IDLE/stop",
+  "IDLE/idle",
+  "JUMPING/jump",
+  "FALLING/drop"
+ ],
+ "decodedRGBTextures": 5,
+ "textureDiagnostics": []
+}

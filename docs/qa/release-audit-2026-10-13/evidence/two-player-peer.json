@@ -1,0 +1,91 @@
+{
+ "map": "procedural",
+ "playing": true,
+ "paused": false,
+ "practice": false,
+ "performance": {
+  "windowFrames": 31,
+  "totalFrames": 31,
+  "activeSeconds": 0.8,
+  "averageFps": 38.57,
+  "frameMs": {
+   "p50": 24,
+   "p95": 45.2,
+   "p99": 62
+  },
+  "longFramesOver50ms": 1
+ },
+ "renderer": {
+  "calls": 133,
+  "triangles": 42562,
+  "geometries": 343,
+  "textures": 18,
+  "pixelRatio": 1
+ },
+ "viewport": {
+  "width": 1280,
+  "height": 720,
+  "dpr": 1
+ },
+ "quality": "high",
+ "resources": {
+  "count": 72,
+  "transferBytes": 27070162
+ },
+ "position": [
+  -160.6,
+  95.812,
+  -156.8
+ ],
+ "velocity": [
+  0,
+  0,
+  0
+ ],
+ "state": "IDLE",
+ "motion": "idle",
+ "mode": "web",
+ "feet": [
+  {
+   "side": "left",
+   "ankle": [
+    -160.685,
+    95.822,
+    -157.127
+   ],
+   "surface": 95.71197417482352
+  },
+  {
+   "side": "right",
+   "ankle": [
+    -160.544,
+    95.822,
+    -156.481
+   ],
+   "surface": 95.71197417482352
+  }
+ ],
+ "peers": [
+  {
+   "name": "QA 호스트",
+   "position": [
+    -160.6,
+    95.81,
+    -193.2
+   ],
+   "state": "IDLE",
+   "motion": "combatIdle",
+   "web": false
+  }
+ ],
+ "map3D": true,
+ "mapMeshes": 386,
+ "facing": 3.141592653589793,
+ "cameraYaw": 3.141592653589793,
+ "webs": [],
+ "history": [
+  "IDLE/undefined",
+  "IDLE/idle"
+ ],
+ "decodedRGBTextures": 0
+}

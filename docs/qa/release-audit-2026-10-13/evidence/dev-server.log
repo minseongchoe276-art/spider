@@ -1,0 +1,33 @@
+
+> spiderman-web-swing@1.0.0 predev
+> node scripts/build-motions.mjs
+
+PASS: compiled motions match current model and FBX sources
+
+> spiderman-web-swing@1.0.0 dev
+> vite --host 127.0.0.1
+
+
+  VITE v7.3.7  ready in 315 ms
+
+  ➜  Local:   http://127.0.0.1:5173/
+8:52:09 AM [vite] (client) page reload src/SupabaseRooms.js
+8:52:09 AM [vite] (client) page reload src/Multiplayer.js
+8:53:16 AM [vite] (client) page reload src/PlayerExperience.js
+8:53:16 AM [vite] (client) page reload src/PlayerSettings.js
+8:53:16 AM [vite] (client) page reload src/GamepadInput.js
+8:55:26 AM [vite] scripts/rooms.mjs changed, restarting server...
+8:55:26 AM [vite] (client) page reload src/PlayerSettings.js
+8:55:26 AM [vite] (client) page reload src/CombatPractice.js
+8:55:28 AM [vite] server restarted.
+8:56:03 AM [vite] (client) page reload index.html
+8:56:05 AM [vite] (client) page reload src/HongKongAudit.js
+8:56:45 AM [vite] (client) page reload src/Multiplayer.js
+8:56:45 AM [vite] (client) page reload src/Progression.js
+8:57:49 AM [vite] (client) page reload src/Audio.js
+8:57:49 AM [vite] (client) page reload src/Audio.js
+8:57:49 AM [vite] (client) page reload src/CombatPractice.js
+8:57:49 AM [vite] (client) page reload src/main.js
+8:57:49 AM [vite] (client) page reload src/PlayerExperience.js
+8:57:57 AM [vite] (client) page reload src/Audio.js
+8:58:11 AM [vite] (client) page reload src/PlayerExperience.js

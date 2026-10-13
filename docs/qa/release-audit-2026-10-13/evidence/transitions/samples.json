@@ -1,0 +1,146 @@
+[
+  {
+    "label": "걷기·조깅·달리기·정지·점프",
+    "value": "movement",
+    "time": 2.5,
+    "status": "시나리오 2.50초\nIDLE → RUNNING\n모션: idle → walk\nwalk · 0.91초 / 0.97초 · 속도 2.80 m/s"
+  },
+  {
+    "label": "걷기·조깅·달리기·정지·점프",
+    "value": "movement",
+    "time": 4.5,
+    "status": "시나리오 4.50초\nIDLE → RUNNING\n모션: idle → walk → jog\njog · 1.35초 / 2.57초 · 속도 3.40 m/s"
+  },
+  {
+    "label": "걷기 → 정지 → 대기",
+    "value": "walkStop",
+    "time": 2.5,
+    "status": "시나리오 2.50초\nIDLE → RUNNING\n모션: idle → walk\nwalk · 0.91초 / 0.97초 · 속도 2.80 m/s"
+  },
+  {
+    "label": "걷기 → 정지 → 대기",
+    "value": "walkStop",
+    "time": 4.5,
+    "status": "시나리오 4.50초\nIDLE → RUNNING → IDLE\n모션: idle → walk → stop → idle\nidle · 1.32초 / 4.00초 · 속도 0.00 m/s"
+  },
+  {
+    "label": "좌우 제자리 회전",
+    "value": "turn",
+    "time": 2.5,
+    "status": "시나리오 2.50초\nIDLE → TURNING → IDLE\n모션: idle → turnLeft → idle\nidle · 0.57초 / 4.00초 · 속도 0.00 m/s"
+  },
+  {
+    "label": "좌우 제자리 회전",
+    "value": "turn",
+    "time": 4.5,
+    "status": "시나리오 4.50초\nIDLE → TURNING → IDLE → TURNING → IDLE\n모션: idle → turnLeft → idle → turnRight → idle\nidle · 0.57초 / 4.00초 · 속도 0.00 m/s"
+  },
+  {
+    "label": "낙하 → 착지 회복",
+    "value": "landing",
+    "time": 2.5,
+    "status": "시나리오 2.50초\nFALLING → LANDING → IDLE\n모션: drop → fall → drop → slamLand → land → idle\nidle · 0.38초 / 4.00초 · 속도 0.00 m/s"
+  },
+  {
+    "label": "낙하 → 착지 회복",
+    "value": "landing",
+    "time": 4.5,
+    "status": "시나리오 4.50초\nFALLING → LANDING → IDLE\n모션: drop → fall → drop → slamLand → land → idle\nidle · 2.37초 / 4.00초 · 속도 0.00 m/s"
+  },
+  {
+    "label": "높은 낙하 → 구르기 회복",
+    "value": "roll",
+    "time": 2.5,
+    "status": "시나리오 2.50초\nFALLING → ROLLING\n모션: drop → fall → drop → roll\nroll · 0.93초 / 1.54초 · 속도 1.20 m/s"
+  },
+  {
+    "label": "높은 낙하 → 구르기 회복",
+    "value": "roll",
+    "time": 4.5,
+    "status": "시나리오 4.50초\nFALLING → ROLLING → IDLE\n모션: drop → fall → drop → roll → idle\nidle · 1.38초 / 4.00초 · 속도 0.00 m/s"
+  },
+  {
+    "label": "웹 집 → 연결 유지 → 스윙",
+    "value": "zip",
+    "time": 2.5,
+    "status": "시나리오 2.50초\nIDLE → WEB_ZIP → SWINGING\n모션: idle → zip → swing\nswing · 0.56초 / 1.95초 · 속도 0.04 m/s"
+  },
+  {
+    "label": "웹 집 → 연결 유지 → 스윙",
+    "value": "zip",
+    "time": 4.5,
+    "status": "시나리오 4.50초\nIDLE → WEB_ZIP → SWINGING\n모션: idle → zip → swing\nswing · 0.61초 / 1.95초 · 속도 0.04 m/s"
+  },
+  {
+    "label": "스윙 → 해제 → 낙하",
+    "value": "swing",
+    "time": 2.5,
+    "status": "시나리오 2.50초\nSWINGING → FALLING\n모션: swing → drop → fall\nfall · 0.12초 / 4.50초 · 속도 15.48 m/s"
+  },
+  {
+    "label": "스윙 → 해제 → 낙하",
+    "value": "swing",
+    "time": 4.5,
+    "status": "시나리오 4.50초\nSWINGING → FALLING → LANDING → IDLE\n모션: swing → drop → fall → drop → slamLand → land → idle\nidle · 0.26초 / 4.00초 · 속도 0.00 m/s"
+  },
+  {
+    "label": "왼손 발사 → 오른손 발사 → 양손 매달리기 → 교체",
+    "value": "dualWeb",
+    "time": 2.5,
+    "status": "시나리오 2.50초\nFALLING → LANDING → IDLE\n모션: drop → land → idle\nidle · 1.18초 / 4.00초 · 속도 0.00 m/s\n연결 줄 0개 · "
+  },
+  {
+    "label": "왼손 발사 → 오른손 발사 → 양손 매달리기 → 교체",
+    "value": "dualWeb",
+    "time": 4.5,
+    "status": "시나리오 4.50초\nFALLING → LANDING → IDLE\n모션: drop → land → idle\nidle · 3.18초 / 4.00초 · 속도 0.00 m/s\n연결 줄 0개 · "
+  },
+  {
+    "label": "벽 달리기 → 옥상 진입",
+    "value": "wall",
+    "time": 2.5,
+    "status": "시나리오 2.50초\nWALL_RUNNING → MANTLING → RUNNING → IDLE\n모션: wall → walk → stop → idle\nidle · 0.12초 / 4.00초 · 속도 0.25 m/s"
+  },
+  {
+    "label": "벽 달리기 → 옥상 진입",
+    "value": "wall",
+    "time": 4.5,
+    "status": "시나리오 4.50초\nWALL_RUNNING → MANTLING → RUNNING → IDLE\n모션: wall → walk → stop → idle\nidle · 2.12초 / 4.00초 · 속도 0.00 m/s"
+  },
+  {
+    "label": "경사면 걷기 → 정지",
+    "value": "slope",
+    "time": 2.5,
+    "status": "시나리오 2.50초\nIDLE → RUNNING\n모션: idle → walk\nwalk · 0.63초 / 0.97초 · 속도 2.92 m/s"
+  },
+  {
+    "label": "경사면 걷기 → 정지",
+    "value": "slope",
+    "time": 4.5,
+    "status": "시나리오 4.50초\nIDLE → RUNNING → IDLE\n모션: idle → walk → stop → idle\nidle · 0.82초 / 4.00초 · 속도 0.00 m/s"
+  },
+  {
+    "label": "경사면 내려가기 → 정지",
+    "value": "slopeDown",
+    "time": 2.5,
+    "status": "시나리오 2.50초\nIDLE → RUNNING\n모션: idle → walk\nwalk · 0.63초 / 0.97초 · 속도 2.80 m/s"
+  },
+  {
+    "label": "경사면 내려가기 → 정지",
+    "value": "slopeDown",
+    "time": 4.5,
+    "status": "시나리오 4.50초\nIDLE → RUNNING → IDLE\n모션: idle → walk → stop → idle\nidle · 0.82초 / 4.00초 · 속도 0.00 m/s"
+  },
+  {
+    "label": "계단 걷기 → 정지",
+    "value": "stairs",
+    "time": 2.5,
+    "status": "시나리오 2.50초\nIDLE → RUNNING\n모션: idle → walk\nwalk · 0.29초 / 0.97초 · 속도 2.61 m/s"
+  },
+  {
+    "label": "계단 걷기 → 정지",
+    "value": "stairs",
+    "time": 4.5,
+    "status": "시나리오 4.50초\nIDLE → RUNNING → IDLE\n모션: idle → walk → stop → idle\nidle · 0.82초 / 4.00초 · 속도 0.00 m/s"
+  }
+]

@@ -29,6 +29,7 @@ export class ThirdPersonCamera {
 
     // Camera Shake
     this.shakeIntensity = 0;
+    this.sensitivity=1;this.invertY=false;this.shakeStrength=.5;this.speedFov=1;this.followStrength=1;
 
     // Aim Mode
     this.isAiming = false;
@@ -100,9 +101,9 @@ export class ThirdPersonCamera {
     // Keep the camera where the player aimed it. Auto-centering after a pause
     // makes the view drift unexpectedly; C is the deliberate recenter action.
     this.orbitReturnTime = Infinity;
-    this.yaw -= deltaX * sensitivity;
+    this.yaw -= deltaX * sensitivity * this.sensitivity;
     // Boom height and first-person look pitch use opposite sign conventions.
-    this.pitch += deltaY * sensitivity * (this.mode === 'first' ? -1 : 1);
+    this.pitch += deltaY * sensitivity * this.sensitivity * (this.invertY?-1:1) * (this.mode === 'first' ? -1 : 1);
 
     // Clamp pitch so camera doesn't flip
     this.pitch = this.mode === 'first'
@@ -161,7 +162,7 @@ export class ThirdPersonCamera {
 
   triggerShake(intensity = 0.5) {
     if (this.reducedMotion) return;
-    this.shakeIntensity = Math.max(this.shakeIntensity, intensity);
+    this.shakeIntensity = Math.max(this.shakeIntensity, intensity*this.shakeStrength);
   }
 
   update(delta, playerPos, playerVelocity, isSwinging, cityMeshes = [], cityRaycast = null, facingAngle = null) {
@@ -177,7 +178,7 @@ export class ThirdPersonCamera {
     // third-person follow camera. Mouse input temporarily unlocks this orbit.
     if (this.mode !== 'first' && this.lockBehind && facingAngle !== null) {
       const difference = Math.atan2(Math.sin(facingAngle - this.yaw), Math.cos(facingAngle - this.yaw));
-      this.yaw += difference * (1 - Math.exp(-10 * delta));
+      this.yaw += difference * (1 - Math.exp(-10 * this.followStrength * delta));
     }
     const speed = playerVelocity.length();
     const speedKmh = speed * 3.6;
@@ -185,7 +186,7 @@ export class ThirdPersonCamera {
     // 1. Dynamic FOV based on speed
     const fovRatio = this.reducedMotion ? 0 : Math.min(Math.max((speedKmh - 20) / 70, 0), 1);
     const targetFov = this.isAiming ? 50 : this.mode === 'first'
-      ? this.firstPersonFov : this.baseFov + fovRatio * (this.maxFov - this.baseFov);
+      ? this.firstPersonFov : this.baseFov + fovRatio * (this.maxFov - this.baseFov) * this.speedFov;
     this.camera.fov = THREE.MathUtils.damp(this.camera.fov, targetFov, 6, delta);
     this.camera.updateProjectionMatrix();
 
@@ -196,7 +197,9 @@ export class ThirdPersonCamera {
         Math.sin(this.pitch),
         Math.cos(this.yaw) * Math.cos(this.pitch)
       ).normalize();
-      this.currentPos.lerp(eye, 1 - Math.exp(-24 * delta));
+      // A first-person view is attached to the head; a spring boom here can
+      // trail metres behind a fast character and cross walls on mode changes.
+      this.currentPos.copy(eye);
       // The near plane must not enter the wall the player is looking at.
       let view = this.currentPos.clone();
       if ((cityMeshes.length || cityRaycast) && forward.lengthSq() > 0) {

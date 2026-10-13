@@ -314,6 +314,7 @@ await check('Grounded combat clicks punch, airborne clicks web, and Space jumps 
     const physics={state:'IDLE',isSwinging:false,webAimNdc:new THREE.Vector2(),webLatch:false,jumpForce:17,
       velocity:new THREE.Vector3(),lastWebAnchor:null,
       setWebAimPoint(){},findBestAnchor(){},
+      clearPendingInput(){},
       performWebPull(){pulls.push(this.state);this.state='WEB_ZIP';this.zipAnchor=new THREE.Vector3();return true;},
       performAirJump(){airs.push(this.state);return true;},
       clearWebAnchor(){clears++;this.lastWebAnchor=null;this.isSwinging=false;},
@@ -334,10 +335,11 @@ await check('Grounded combat clicks punch, airborne clicks web, and Space jumps 
     assert.equal(app.input.webTap,true);assert.deepEqual(webs,['punch','punch','web']);assert.deepEqual(punches,['left','right']);
     mouse('mouseup',0);assert.equal(app.input.webHold,false);assert.equal(app.input.webTap,true);
     mouse('mousedown',2);assert.equal(pulls.length,0);assert.deepEqual(punches,['left','right']);assert.equal(app.input.webHold,false);
-    assert.deepEqual(webs,['punch','punch','web'],'Airborne right click also threw a punch');
+    assert.equal(app.input.webTapRight,true);assert.equal(app.input.webHoldRight,true);
+    assert.deepEqual(webs,['punch','punch','web','web'],'Airborne right click did not shoot a web');
     physics.state='FALLING';key('KeyE');assert.deepEqual(airs,['FALLING']);assert.equal(punches.includes('hook'),false);
     physics.state='IDLE';key('KeyE');assert.deepEqual(punches,['left','right','hook']);assert.deepEqual(airs,['FALLING']);
-    assert.deepEqual(webs,['punch','punch','web','punch']);
+    assert.deepEqual(webs,['punch','punch','web','web','punch']);
     physics.state='SWINGING';physics.isSwinging=true;physics.velocity.set(16,1,0);physics.lastWebAnchor=new THREE.Vector3(0,10,0);
     app.input.webHold=true;app.input.webFireHeld=true;app.input.webTap=true;
     key('Space');

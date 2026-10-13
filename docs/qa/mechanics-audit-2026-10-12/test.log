@@ -1,0 +1,300 @@
+
+> spiderman-web-swing@1.0.0 test
+> node scripts/build-motions.mjs && node scripts/check-motions.mjs && node scripts/check-pose.mjs && node scripts/check-controller.mjs && node scripts/check-gameplay.mjs && node scripts/check-dual-web.mjs && node scripts/check-pendulum.mjs && node scripts/check-mechanics-audit.mjs && node scripts/check-traversal.mjs && node scripts/check-qa.mjs && node scripts/check-review-2.mjs && node scripts/check-combat.mjs && node scripts/check-web-vfx.mjs && node scripts/check-superhero-landing-vfx.mjs && node scripts/check-combat-rig.mjs && node scripts/check-motion-timeline.mjs && node scripts/check-hong-kong-streaming.mjs && node scripts/check-minimap.mjs && node scripts/check-tile-textures.mjs && node scripts/check-multiplayer.mjs
+
+PASS: compiled motions match current model and FBX sources
+FBXLoader: TGA loader not found, skipping  ../../../../home/app/mixamo-mini/tmp/skins_e57a88ac-3622-472c-96c7-e4a65b4e1321.fbm/RED CLASSIC.tga
+FBXLoader: TGA loader not found, creating placeholder texture for ../../../../home/app/mixamo-mini/tmp/skins_e57a88ac-3622-472c-96c7-e4a65b4e1321.fbm/RED CLASSIC.tga
+THREE.FBXLoader: Vertex has more than 4 skinning weights assigned to vertex. Deleting additional weights.
+{"file":"Idle","key":"idle","duration":4,"matchedBones":65,"unitScale":0.025399998829791486,"nominalSpeed":7.918739123391324e-9,"climbSpeed":7.225866707563529e-8,"checkedFrames":241,"samples":[{"headY":1.698,"footY":0.111},{"headY":1.682,"footY":0.112},{"headY":1.698,"footY":0.111}]}
+{"file":"Walking","key":"walk","duration":0.967,"matchedBones":65,"unitScale":0.02553865444955606,"nominalSpeed":2.0744570316998203,"climbSpeed":3.4748923358280395e-7,"checkedFrames":59,"samples":[{"headY":1.772,"footY":0.108},{"headY":1.772,"footY":0.11},{"headY":1.772,"footY":0.108}]}
+FBXLoader: TGA loader not found, skipping  ../../../../home/app/mixamo-mini/tmp/skins_34a61806-ed24-4a07-bd84-1318719d713e.fbm/RED CLASSIC.tga
+FBXLoader: TGA loader not found, creating placeholder texture for ../../../../home/app/mixamo-mini/tmp/skins_34a61806-ed24-4a07-bd84-1318719d713e.fbm/RED CLASSIC.tga
+THREE.FBXLoader: Vertex has more than 4 skinning weights assigned to vertex. Deleting additional weights.
+{"file":"Jogging","key":"jog","duration":2.567,"matchedBones":65,"unitScale":0.025399998829791486,"nominalSpeed":2.4330304351312395,"climbSpeed":9.202304257382476e-8,"checkedFrames":155,"samples":[{"headY":1.698,"footY":0.16},{"headY":1.692,"footY":0.117},{"headY":1.698,"footY":0.16}]}
+FBXLoader: TGA loader not found, skipping  ../../../../home/app/mixamo-mini/tmp/skins_cc1b17f1-7dd0-4c24-92bf-417033ef4f5d.fbm/RED CLASSIC.tga
+FBXLoader: TGA loader not found, creating placeholder texture for ../../../../home/app/mixamo-mini/tmp/skins_cc1b17f1-7dd0-4c24-92bf-417033ef4f5d.fbm/RED CLASSIC.tga
+THREE.FBXLoader: Vertex has more than 4 skinning weights assigned to vertex. Deleting additional weights.
+{"file":"Running","key":"regularRun","duration":0.7,"matchedBones":65,"unitScale":0.025399998829791486,"nominalSpeed":6.069090994560909e-7,"climbSpeed":9.666362437661636e-7,"checkedFrames":43,"samples":[{"headY":1.645,"footY":0.137},{"headY":1.643,"footY":0.106},{"headY":1.645,"footY":0.137}]}
+{"file":"Fast Run","key":"run","duration":0.533,"matchedBones":65,"unitScale":0.02553865444955606,"nominalSpeed":7.001824220704476,"climbSpeed":6.461661049903808e-8,"checkedFrames":34,"samples":[{"headY":1.636,"footY":0.129},{"headY":1.637,"footY":0.118},{"headY":1.636,"footY":0.129}]}
+{"file":"Run To Stop","key":"stop","duration":0.233,"matchedBones":65,"unitScale":0.02553865444955606,"nominalSpeed":1.1319419730059574,"climbSpeed":0.05010261720188925,"checkedFrames":15,"samples":[{"headY":1.661,"footY":0.108},{"headY":1.702,"footY":0.108},{"headY":1.699,"footY":0.108}]}
+{"file":"Run To Stop","key":"runStop","duration":0.9,"matchedBones":65,"unitScale":0.02553865444955606,"nominalSpeed":1.1319419730059574,"climbSpeed":0.05010261720188925,"checkedFrames":55,"samples":[{"headY":1.641,"footY":0.133},{"headY":1.475,"footY":0.107},{"headY":1.694,"footY":0.108}]}
+{"file":"Female Stop Walking","key":"femaleStop","duration":0.533,"matchedBones":65,"unitScale":0.013033680828509605,"nominalSpeed":1.27094441022233,"climbSpeed":0.00949917734270144,"checkedFrames":33,"samples":[{"headY":1.736,"footY":0.104},{"headY":1.794,"footY":0.105},{"headY":1.813,"footY":0.109}]}
+FBXLoader: TGA loader not found, skipping  ../../../../home/app/mixamo-mini/tmp/skins_883db11c-af78-4b49-a12b-ee4b2630fae0.fbm/RED CLASSIC.tga
+FBXLoader: TGA loader not found, creating placeholder texture for ../../../../home/app/mixamo-mini/tmp/skins_883db11c-af78-4b49-a12b-ee4b2630fae0.fbm/RED CLASSIC.tga
+THREE.FBXLoader: Vertex has more than 4 skinning weights assigned to vertex. Deleting additional weights.
+{"file":"Rope Swinging","key":"zip","duration":1,"matchedBones":65,"unitScale":0.025399998829791486,"nominalSpeed":1.280615809652151,"climbSpeed":0.21343599077059083,"checkedFrames":61,"samples":[{"headY":1.784,"footY":0.733},{"headY":1.784,"footY":0.733},{"headY":1.784,"footY":0.733}]}
+{"file":"Left Turn","key":"turnLeft","duration":0.933,"matchedBones":65,"unitScale":0.02553865444955606,"nominalSpeed":0.003333269488460493,"climbSpeed":1.1903804193599543e-7,"checkedFrames":58,"samples":[{"headY":1.796,"footY":0.108},{"headY":1.772,"footY":0.13},{"headY":1.796,"footY":0.108}]}
+{"file":"Right Turn","key":"turnRight","duration":0.933,"matchedBones":65,"unitScale":0.02553865444955606,"nominalSpeed":0.009972927860727987,"climbSpeed":0.0003433335379804798,"checkedFrames":58,"samples":[{"headY":1.796,"footY":0.108},{"headY":1.774,"footY":0.123},{"headY":1.795,"footY":0.108}]}
+FBXLoader: TGA loader not found, skipping  ../../../../home/app/mixamo-mini/tmp/skins_32bddd07-d28a-412d-ad28-a157f3dc5106.fbm/RED CLASSIC.tga
+FBXLoader: TGA loader not found, creating placeholder texture for ../../../../home/app/mixamo-mini/tmp/skins_32bddd07-d28a-412d-ad28-a157f3dc5106.fbm/RED CLASSIC.tga
+THREE.FBXLoader: Vertex has more than 4 skinning weights assigned to vertex. Deleting additional weights.
+{"file":"Standing Jump","key":"jump","duration":0.6,"matchedBones":65,"unitScale":0.025399998829791486,"nominalSpeed":1.0834133984389889e-7,"climbSpeed":3.059993093938056e-7,"checkedFrames":37,"samples":[{"headY":1.765,"footY":0.352},{"headY":1.787,"footY":0.233},{"headY":1.665,"footY":0.603}]}
+FBXLoader: TGA loader not found, skipping  ../../../../home/app/mixamo-mini/tmp/skins_32bddd07-d28a-412d-ad28-a157f3dc5106.fbm/RED CLASSIC.tga
+FBXLoader: TGA loader not found, creating placeholder texture for ../../../../home/app/mixamo-mini/tmp/skins_32bddd07-d28a-412d-ad28-a157f3dc5106.fbm/RED CLASSIC.tga
+THREE.FBXLoader: Vertex has more than 4 skinning weights assigned to vertex. Deleting additional weights.
+{"file":"Standing Jump","key":"land","duration":0.867,"matchedBones":65,"unitScale":0.025399998829791486,"nominalSpeed":1.0834133984389889e-7,"climbSpeed":3.059993093938056e-7,"checkedFrames":54,"samples":[{"headY":1.158,"footY":0.112},{"headY":1.637,"footY":0.112},{"headY":1.642,"footY":0.112}]}
+{"file":"Jumping Down (1)","key":"jumpDown","duration":2.3,"matchedBones":65,"unitScale":0.02553865444955606,"nominalSpeed":1.0773352528162454,"climbSpeed":0.3965340619286791,"checkedFrames":139,"samples":[{"headY":1.932,"footY":1.294},{"headY":1.897,"footY":0.248},{"headY":0.824,"footY":0.206}]}
+{"file":"Jumping Down (1)","key":"drop","duration":0.533,"matchedBones":65,"unitScale":0.02553865444955606,"nominalSpeed":1.0773352528162454,"climbSpeed":0.3965340619286791,"checkedFrames":33,"samples":[{"headY":1.565,"footY":0.927},{"headY":1.591,"footY":0.759},{"headY":1.77,"footY":0.459}]}
+FBXLoader: TGA loader not found, skipping  ../../../../home/app/mixamo-mini/tmp/skins_0c50cb7a-75c3-48f2-bd97-2a4fff958284.fbm/RED CLASSIC.tga
+FBXLoader: TGA loader not found, creating placeholder texture for ../../../../home/app/mixamo-mini/tmp/skins_0c50cb7a-75c3-48f2-bd97-2a4fff958284.fbm/RED CLASSIC.tga
+THREE.FBXLoader: Vertex has more than 4 skinning weights assigned to vertex. Deleting additional weights.
+{"file":"Jumping Down","key":"jumpDownVariant","duration":2.633,"matchedBones":65,"unitScale":0.025399998829791486,"nominalSpeed":0.8869551522734507,"climbSpeed":0.6310850851815769,"checkedFrames":160,"samples":[{"headY":2.769,"footY":1.231},{"headY":2.717,"footY":1.165},{"headY":0.72,"footY":0.115}]}
+FBXLoader: TGA loader not found, skipping  ../../../../home/app/mixamo-mini/tmp/skins_883db11c-af78-4b49-a12b-ee4b2630fae0.fbm/RED CLASSIC.tga
+FBXLoader: TGA loader not found, creating placeholder texture for ../../../../home/app/mixamo-mini/tmp/skins_883db11c-af78-4b49-a12b-ee4b2630fae0.fbm/RED CLASSIC.tga
+THREE.FBXLoader: Vertex has more than 4 skinning weights assigned to vertex. Deleting additional weights.
+{"file":"Rope Swinging","key":"swing","duration":1.952,"matchedBones":65,"unitScale":0.025399998829791486,"nominalSpeed":1.280615809652151,"climbSpeed":0.21343599077059083,"checkedFrames":119,"samples":[{"headY":1.802,"footY":0.152},{"headY":1.659,"footY":0.651},{"headY":1.802,"footY":0.152}]}
+{"file":"Falling (2)","key":"fall","duration":4.5,"matchedBones":65,"unitScale":0.02553865444955606,"nominalSpeed":0.000014811552876369535,"climbSpeed":5.392301426619997e-7,"checkedFrames":271,"samples":[{"headY":1.463,"footY":1.098},{"headY":1.425,"footY":1.171},{"headY":1.463,"footY":1.098}]}
+{"file":"Falling","key":"fallVariant","duration":4.5,"matchedBones":65,"unitScale":0.02553865444955606,"nominalSpeed":0.000014811552876369535,"climbSpeed":5.392301426619997e-7,"checkedFrames":271,"samples":[{"headY":1.463,"footY":1.098},{"headY":1.425,"footY":1.171},{"headY":1.463,"footY":1.098}]}
+FBXLoader: TGA loader not found, skipping  ../../../../home/app/mixamo-mini/tmp/skins_5d7a3c57-f50e-41dd-a23f-7d0152a9df5c.fbm/RED CLASSIC.tga
+FBXLoader: TGA loader not found, creating placeholder texture for ../../../../home/app/mixamo-mini/tmp/skins_5d7a3c57-f50e-41dd-a23f-7d0152a9df5c.fbm/RED CLASSIC.tga
+THREE.FBXLoader: Vertex has more than 4 skinning weights assigned to vertex. Deleting additional weights.
+{"file":"Falling Idle","key":"fallIdle","duration":4.5,"matchedBones":65,"unitScale":0.025399998829791486,"nominalSpeed":0.00001473113732245673,"climbSpeed":5.363025299416733e-7,"checkedFrames":271,"samples":[{"headY":1.466,"footY":1.101},{"headY":1.428,"footY":1.174},{"headY":1.466,"footY":1.101}]}
+{"file":"Falling To Roll","key":"roll","duration":1.543,"matchedBones":65,"unitScale":0.02553865444955606,"nominalSpeed":2.195741610697056,"climbSpeed":0.7784239619364487,"checkedFrames":94,"samples":[{"headY":1.185,"footY":0.126},{"headY":0.833,"footY":0.087},{"headY":1.676,"footY":0.107}]}
+{"file":"Injured Idle","key":"injuredIdle","duration":9.333,"matchedBones":65,"unitScale":0.02553865444955606,"nominalSpeed":1.7647393625321465e-7,"climbSpeed":3.1825034871009776e-8,"checkedFrames":561,"samples":[{"headY":1.675,"footY":0.11},{"headY":1.618,"footY":0.11},{"headY":1.675,"footY":0.11}]}
+{"file":"Climbing Up Wall","key":"wall","duration":2,"matchedBones":65,"unitScale":0.013033680828509605,"nominalSpeed":1.2635672333795884e-7,"climbSpeed":0.8145103897218231,"authoredMixamo":true,"source":"/models/Climbing Up Wall.fbx","soleRotations":{"left":[-0.05149135645392884,0.4726849999955605,0.8794850008217394,-0.02058296350821113],"right":[0.05193634770192874,0.47041379298632635,0.8806752554639093,0.020605027109305573]},"checkedFrames":121,"samples":[{"headY":1.751,"footY":0.18},{"headY":1.775,"footY":0.21},{"headY":1.751,"footY":0.18}]}
+{"file":"Boxing Stance","key":"combatIdle","duration":4.4,"matchedBones":65,"unitScale":0.013033680828509605,"nominalSpeed":1.310684643566414e-8,"climbSpeed":6.876891234055845e-8,"authoredMixamo":true,"source":"/models/Boxing Stance.fbx","soleRotations":{"left":[-0.234529685144076,0.4590636639347053,0.8556316234816771,0.046377740472078086],"right":[0.638251291686264,-0.22612468538582578,-0.5995818973592016,-0.426620462021039]},"checkedFrames":266,"samples":[{"headY":1.631,"footY":0.11},{"headY":1.648,"footY":0.117},{"headY":1.631,"footY":0.11}]}
+{"file":"Boxing Lead Jab","key":"jab","duration":1.2,"matchedBones":65,"unitScale":0.013033680828509605,"nominalSpeed":0.0031963400285369126,"climbSpeed":0.004181320014162868,"authoredMixamo":true,"source":"/models/Boxing Lead Jab.fbx","impactPhase":0.3,"soleRotations":{"left":[-0.2345299892290106,0.459063156829801,0.8556318280551883,0.04637745324773097],"right":[0.6382497914381556,-0.22612287004726597,-0.5995823495184848,-0.4266230437011685]},"checkedFrames":74,"samples":[{"headY":1.631,"footY":0.11},{"headY":1.591,"footY":0.138},{"headY":1.631,"footY":0.111}]}
+{"file":"Cross Punch","key":"cross","duration":0.65,"matchedBones":65,"unitScale":0.013033680828509605,"nominalSpeed":3.9858627816612775e-8,"climbSpeed":9.802715163793504e-9,"authoredMixamo":true,"source":"/models/Cross Punch.fbx","impactPhase":0.58,"derivative":"coordinated target-rig fighting stance","soleRotations":{"left":[-0.2262472576387012,0.38700769173858085,0.8937901857385704,0.013274799056242733],"right":[0.634465265133813,-0.2661651440749649,-0.6181324191847251,-0.3801620612281651]},"choreography":"pivot cross","checkedFrames":40,"samples":[{"headY":1.607,"footY":0.11},{"headY":1.613,"footY":0.11},{"headY":1.607,"footY":0.11}]}
+{"file":"combat-addon.glb","key":"guard","duration":2,"matchedBones":52,"unitScale":1.4269104361649871,"nominalSpeed":1.2389456568660973e-8,"climbSpeed":1.2387859644306996e-8,"derivative":"coordinated target-rig fighting stance","impactPhase":0.5,"soleRotations":{"left":[-0.2262475834175784,0.38700776656205066,0.8937901117967835,0.013274859785311429],"right":[0.6344659290352604,-0.26616467439310076,-0.6181318710270037,-0.38016178638789433]},"choreography":"compact boxing guard","checkedFrames":121,"samples":[{"headY":1.607,"footY":0.11},{"headY":1.607,"footY":0.11},{"headY":1.607,"footY":0.11}]}
+{"file":"combat-addon.glb","key":"dodgeLeft","duration":0.38,"matchedBones":52,"unitScale":1.4269104361649871,"nominalSpeed":0.028711003917998898,"climbSpeed":0.08842886459031991,"derivative":"coordinated target-rig fighting stance","impactPhase":0.5,"soleRotations":{"left":[-0.2262475834175784,0.38700776656205066,0.8937901117967835,0.013274859785311429],"right":[0.6344659290352604,-0.26616467439310076,-0.6181318710270037,-0.38016178638789433]},"choreography":"left upper-body slip","checkedFrames":24,"samples":[{"headY":1.607,"footY":0.11},{"headY":1.586,"footY":0.11},{"headY":1.607,"footY":0.11}]}
+{"file":"combat-addon.glb","key":"dodgeRight","duration":0.38,"matchedBones":52,"unitScale":1.4269104361649871,"nominalSpeed":0.028711003917998898,"climbSpeed":0.08842886459031991,"derivative":"coordinated target-rig fighting stance","impactPhase":0.5,"soleRotations":{"left":[-0.2262475834175784,0.38700776656205066,0.8937901117967835,0.013274859785311429],"right":[0.6344659290352604,-0.26616467439310076,-0.6181318710270037,-0.38016178638789433]},"choreography":"right upper-body slip","checkedFrames":24,"samples":[{"headY":1.607,"footY":0.11},{"headY":1.57,"footY":0.11},{"headY":1.607,"footY":0.11}]}
+{"file":"combat-addon.glb","key":"dodgeBack","duration":0.42,"matchedBones":52,"unitScale":1.4269104361649871,"nominalSpeed":0.0019102905286479536,"climbSpeed":0.02053405080362468,"derivative":"coordinated target-rig fighting stance","impactPhase":0.5,"soleRotations":{"left":[-0.2262475834175784,0.38700776656205066,0.8937901117967835,0.013274859785311429],"right":[0.6344659290352604,-0.26616467439310076,-0.6181318710270037,-0.38016178638789433]},"choreography":"short back lean","checkedFrames":27,"samples":[{"headY":1.607,"footY":0.11},{"headY":1.538,"footY":0.11},{"headY":1.607,"footY":0.11}]}
+{"file":"combat-addon.glb","key":"slam","duration":2.708,"matchedBones":52,"unitScale":1.4269104361649871,"nominalSpeed":0.006822958920240448,"climbSpeed":0.04641461112662612,"checkedFrames":164,"samples":[{"headY":1.766,"footY":0.3},{"headY":1.812,"footY":0.299},{"headY":1.683,"footY":0.455}]}
+{"file":"combat-addon.glb","key":"slamLand","duration":1.375,"matchedBones":52,"unitScale":1.4269104361649871,"nominalSpeed":0.691075675610883,"climbSpeed":4.533283719519113,"checkedFrames":84,"samples":[{"headY":7.238,"footY":5.958},{"headY":0.694,"footY":0.105},{"headY":0.813,"footY":0.064}]}
+{"file":"combat-base.glb","key":"dodgeForward","duration":0.52,"matchedBones":52,"unitScale":1.4366435725580335,"nominalSpeed":0.07794648994206471,"climbSpeed":0.2879381798266755,"derivative":"coordinated target-rig fighting stance","impactPhase":0.5,"soleRotations":{"left":[-0.2262475834175784,0.38700776656205066,0.8937901117967835,0.013274859785311429],"right":[0.6344659290352604,-0.26616467439310076,-0.6181318710270037,-0.38016178638789433]},"choreography":"short forward duck","checkedFrames":33,"samples":[{"headY":1.607,"footY":0.11},{"headY":1.409,"footY":0.11},{"headY":1.607,"footY":0.11}]}
+{"file":"Boxing Hook","key":"hook","duration":1.4,"matchedBones":65,"unitScale":0.013033680828509605,"nominalSpeed":8.494991639549135e-7,"climbSpeed":9.959690322657318e-7,"authoredMixamo":true,"source":"/models/Boxing Hook.fbx","impactPhase":0.43,"soleRotations":{"left":[-0.23452976553755087,0.4590634011800766,0.8556317534232752,0.04637756651111982],"right":[0.6382421832708857,-0.22608869575850524,-0.5995739795852162,-0.4266642678101056]},"checkedFrames":85,"samples":[{"headY":1.631,"footY":0.11},{"headY":1.481,"footY":0.125},{"headY":1.632,"footY":0.111}]}
+{"file":"Boxing Hook","key":"heavy","duration":1.4,"matchedBones":65,"unitScale":0.013033680828509605,"nominalSpeed":8.494991639549135e-7,"climbSpeed":9.959690322657318e-7,"authoredMixamo":true,"source":"/models/Boxing Hook.fbx","impactPhase":0.43,"soleRotations":{"left":[-0.23452976553755087,0.4590634011800766,0.8556317534232752,0.04637756651111982],"right":[0.6382421832708857,-0.22608869575850524,-0.5995739795852162,-0.4266642678101056]},"checkedFrames":85,"samples":[{"headY":1.631,"footY":0.11},{"headY":1.481,"footY":0.125},{"headY":1.632,"footY":0.111}]}
+{"file":"combat-base.glb","key":"hit","duration":0.417,"matchedBones":52,"unitScale":1.4366435725580335,"nominalSpeed":0.0000021882621752365665,"climbSpeed":0.0000016605808653847075,"checkedFrames":26,"samples":[{"headY":1.788,"footY":0.191},{"headY":1.809,"footY":0.181},{"headY":1.789,"footY":0.191}]}
+{"file":"combat-base.glb","key":"hitHead","duration":0.542,"matchedBones":52,"unitScale":1.4366435725580335,"nominalSpeed":4.566858608856602e-8,"climbSpeed":4.2569715950924124e-9,"checkedFrames":34,"samples":[{"headY":1.816,"footY":0.171},{"headY":1.809,"footY":0.172},{"headY":1.816,"footY":0.171}]}
+{"file":"Front Flip","key":"airTrick","duration":0.933,"matchedBones":65,"unitScale":0.013033680828509605,"nominalSpeed":5.050918866980276,"climbSpeed":0.16190185890804004,"authoredMixamo":true,"source":"/models/Front Flip.fbx","checkedFrames":57,"samples":[{"headY":1.803,"footY":0.109},{"headY":1.096,"footY":2.084},{"headY":1.78,"footY":0.167}]}
+{"file":"Boxing Lead Jab","key":"special","duration":1.2,"matchedBones":65,"unitScale":0.013033680828509605,"nominalSpeed":0.0031963400285369126,"climbSpeed":0.004181320014162868,"authoredMixamo":true,"source":"/models/Boxing Lead Jab.fbx","impactPhase":0.3,"soleRotations":{"left":[-0.2345299892290106,0.459063156829801,0.8556318280551883,0.04637745324773097],"right":[0.6382497914381556,-0.22612287004726597,-0.5995823495184848,-0.4266230437011685]},"checkedFrames":74,"samples":[{"headY":1.631,"footY":0.11},{"headY":1.591,"footY":0.138},{"headY":1.631,"footY":0.111}]}
+PASS walk 30fps: 74 contact samples, max step slip 0.0mm, overall foot step 433.1mm
+PASS jog 30fps: 63 contact samples, max step slip 0.0mm, overall foot step 367.1mm
+PASS regularRun 30fps: 29 contact samples, max step slip 0.0mm, overall foot step 336.6mm
+PASS run 30fps: 22 contact samples, max step slip 0.0mm, overall foot step 453.1mm
+WALL 30fps normal 0,0,1: 84 facade-contact samples, error 0.034m {
+  lefthand: 0.033865111967049666,
+  righthand: 3.000759840610101e-8,
+  leftfoot: 0.00038661016838992257,
+  rightfoot: 3.0446384996496434e-7
+}
+{}
+WALL 30fps normal 1,0,0: 84 facade-contact samples, error 0.034m {
+  lefthand: 0.033865088367420276,
+  righthand: 3.725821642874827e-8,
+  leftfoot: 0.0003866791269551695,
+  rightfoot: 4.0310216983807656e-7
+}
+{}
+WALL 30fps normal 0.7071067811865475,0,0.7071067811865475: 84 facade-contact samples, error 0.034m {
+  lefthand: 0.033865091676759024,
+  righthand: 8.058101991226252e-8,
+  leftfoot: 0.00038657970725787527,
+  rightfoot: 3.1095939062586453e-7
+}
+{}
+PASS walk 60fps: 147 contact samples, max step slip 0.0mm, overall foot step 220.0mm
+PASS jog 60fps: 129 contact samples, max step slip 0.0mm, overall foot step 246.7mm
+PASS regularRun 60fps: 57 contact samples, max step slip 0.0mm, overall foot step 170.9mm
+PASS run 60fps: 44 contact samples, max step slip 0.0mm, overall foot step 227.2mm
+WALL 60fps normal 0,0,1: 164 facade-contact samples, error 0.050m {
+  lefthand: 0.050391805553717306,
+  righthand: 3.806284903928869e-8,
+  leftfoot: 0.0003866101683899781,
+  rightfoot: 3.400067694614428e-7
+}
+{}
+WALL 60fps normal 1,0,0: 164 facade-contact samples, error 0.050m {
+  lefthand: 0.050391763280296514,
+  righthand: 6.380517386661566e-8,
+  leftfoot: 0.0003866791269554054,
+  rightfoot: 4.031021699213433e-7
+}
+{}
+WALL 60fps normal 0.7071067811865475,0,0.7071067811865475: 164 facade-contact samples, error 0.050m {
+  lefthand: 0.05039175743387792,
+  righthand: 8.058101984287358e-8,
+  leftfoot: 0.00038657970725787527,
+  rightfoot: 3.3744367342047887e-7
+}
+{}
+PASS walk 144fps: 340 contact samples, max step slip 0.0mm, overall foot step 91.7mm
+PASS jog 144fps: 291 contact samples, max step slip 0.0mm, overall foot step 102.8mm
+PASS regularRun 144fps: 113 contact samples, max step slip 0.0mm, overall foot step 72.1mm
+PASS run 144fps: 89 contact samples, max step slip 0.0mm, overall foot step 159.7mm
+WALL 144fps normal 0,0,1: 404 facade-contact samples, error 0.050m {
+  lefthand: 0.0504797803922139,
+  righthand: 3.465731371332659e-8,
+  leftfoot: 0.0009577560023940335,
+  rightfoot: 0.00003388797678399724
+}
+{}
+WALL 144fps normal 1,0,0: 404 facade-contact samples, error 0.050m {
+  lefthand: 0.050479744682172645,
+  righthand: 6.757429038550811e-8,
+  leftfoot: 0.0009578113919469222,
+  rightfoot: 0.00003396508201106152
+}
+{}
+WALL 144fps normal 0.7071067811865475,0,0.7071067811865475: 404 facade-contact samples, error 0.050m {
+  lefthand: 0.05047973782749194,
+  righthand: 8.187597488884535e-8,
+  leftfoot: 0.0009577341989738461,
+  rightfoot: 0.00003385110264506053
+}
+{}
+PASS: 36 actual-rig pose cases, measured stance slip, real-ground sole clearance, ledge release, facade normals, directional web pulls and stop recovery
+PASS: 6 actual-rig independent-hand shot, separate anchor reach, replacement and release cases
+MANTLE 30fps: maximum grip error 0.8mm
+MANTLE 30fps: maximum grip error 0.8mm
+MANTLE 60fps: maximum grip error 0.7mm
+MANTLE 60fps: maximum grip error 0.7mm
+MANTLE 144fps: maximum grip error 0.3mm
+MANTLE 144fps: maximum grip error 0.3mm
+PASS: 18 slope and mantle actual-rig cases, slope normals, pelvis limits, missing-support release and ledge hand grips
+PASS actual capsule + rig slope 30fps: 56 contacts, clearance error 0.0mm
+PASS actual capsule + rig stairs 30fps: 70 contacts, clearance error 0.0mm
+PASS actual capsule + rig slope 60fps: 88 contacts, clearance error 0.0mm
+PASS actual capsule + rig stairs 60fps: 110 contacts, clearance error 0.0mm
+PASS actual capsule + rig slope 144fps: 215 contacts, clearance error 0.0mm
+PASS actual capsule + rig stairs 144fps: 234 contacts, clearance error 0.0mm
+PASS streamed facade + rig mantle 30fps: measured facade gap 0.375m, grip error 0.9mm
+PASS streamed facade + rig mantle 60fps: measured facade gap 0.375m, grip error 0.8mm
+PASS streamed facade + rig mantle 144fps: measured facade gap 0.375m, grip error 0.3mm
+PASS: 63 actual-rig cases total, including 6 real capsule + rig slope/stair scenarios
+PASS: idle, walking/jogging/running/sprint, stop, jump, chained web retargeting and held fire, pull-to-swing transition, web zip, roof edge, swept roof, release, frame rates, animation transitions, flip recovery, camera zoom
+PASS: fixed physics at 30/60/120/144 FPS, streamed wall/roof transitions, camera collision, thin walls, ceiling, input buffer, swing energy, recovery, triangle/capsule collision
+PASS WEB: The first shot is the left hand and the second keeps both anchors
+PASS WEB: A third shot replaces only the firing hand, and the same point does not stack
+PASS WEB: A miss while the button is held keeps both ropes
+PASS WEB: A missed click emits a visible shot without creating an anchor
+PASS WEB: Two length limits stay taut, finite and bounded at 30fps
+PASS WEB: Two length limits stay taut, finite and bounded at 60fps
+PASS WEB: Two length limits stay taut, finite and bounded at 144fps
+PASS WEB: Slack webs never push outward and constraint impulses cannot add kinetic energy
+PASS WEB: One obstructed strand releases only that hand
+PASS WEB: The explicit pull API zips to the latest anchor and arrives on that tether
+PASS WEB: Clear and respawn remove both ropes and the hand-pose cache
+PASS WEB: A shot during a reel keeps the pulling strand and adds the other hand
+PASS WEB: Aimed facade shots keep a left web and a right web
+PASS WEB: Explicit jump boosts, mouse release preserves momentum, and W keeps rope length fixed
+PASS: 14 two-hand web cases
+PASS PENDULUM: fixed pivot, constant length, natural reversal and release at 30fps
+PASS PENDULUM: fixed pivot, constant length, natural reversal and release at 60fps
+PASS PENDULUM: fixed pivot, constant length, natural reversal and release at 144fps
+PASS PENDULUM: W applies tangent steering without shortening the rope
+PASS MECHANICS: A miss clears the old target marker and surface metadata
+PASS MECHANICS: Web reach is measured from the player rather than the camera
+PASS MECHANICS: Historical attachment cannot grant repeated Space jumps in the air
+PASS MECHANICS: Jumping off a live web consumes the jump and the old attachment cannot jump again
+PASS MECHANICS: Zip arrival without left mouse held releases immediately without generated tangent speed
+PASS MECHANICS: Zip arrival with left mouse held keeps exactly one original tether
+PASS MECHANICS: Zip timeout clears its visible strand and cannot grant a later air jump
+PASS MECHANICS: A wall interrupting a zip removes the persistent web in that physics step
+PASS MECHANICS: Grounded E in web mode cannot silently skip the jump with a zip
+PASS MECHANICS: E uses the same free-cursor aiming point as left mouse
+PASS MECHANICS: Jumping during a grounded attack cancels it before landing
+PASS MECHANICS: First-person camera stays at the head during fast travel and view changes
+PASS MECHANICS: High downward speed is capped before movement rather than after crossing a roof
+PASS MECHANICS: A facade visible to the camera behind an obstacle is not offered as a usable web target
+PASS MECHANICS: Swing facing carries through release rather than turning back to the old ground facing
+Mechanics audit: 15 passed, 0 failed.
+PASS: 21 traversal and terrain cases: frame-independent mantle, headroom/footprint, jump/web cancellation, lost support, dynamic obstruction, real slope/stairs and no-input braking
+PASS QA 1: Hong Kong layers share a city-owned budget without overwriting the library cache
+PASS QA 2: Streamed spawn is refreshed after a menu-time LOD change
+PASS QA 3: Streamed startup waits for idle queues and a stable support surface
+Failed loading GLTF/FBX models, keeping high-poly proxy: Error: simulated offline
+    at globalThis.fetch (file:///Users/choeminseong/Desktop/%E1%84%80%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%B7/scripts/check-qa.mjs:59:42)
+    at fetchAsset (file:///Users/choeminseong/Desktop/%E1%84%80%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%B7/src/AssetLoader.js:6:28)
+    at Character.loadCharacter (file:///Users/choeminseong/Desktop/%E1%84%80%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%B7/src/Character.js:125:54)
+    at new Character (file:///Users/choeminseong/Desktop/%E1%84%80%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%B7/src/Character.js:56:10)
+    at file:///Users/choeminseong/Desktop/%E1%84%80%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%B7/scripts/check-qa.mjs:61:21
+    at check (file:///Users/choeminseong/Desktop/%E1%84%80%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%B7/scripts/check-qa.mjs:19:41)
+    at file:///Users/choeminseong/Desktop/%E1%84%80%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%B7/scripts/check-qa.mjs:57:7
+PASS QA 4: Failed GLB remains startable, reports degradation, keeps attached web visible
+PASS QA 5: Asset HTTP failures and network timeout settle rather than wait forever
+PASS QA 6: Absent motion selects an available idle instead of keeping a fall pose
+PASS QA 7: Reattachment cannot repeatedly grant launch energy; swing cancels stale zip
+PASS QA 8: Tether obstruction on the same mesh releases the swing
+PASS QA 9: Procedural wall run mounts a supported rooftop
+PASS QA 10: Camera chooses the closest visual surface even with a farther collider
+PASS QA 11: Blocked camera holds its chosen shoulder through small clearance changes
+PASS QA 12: Mouse vertical direction stays consistent between third and first person
+PASS QA 13: Reduced motion disables camera shake and speed FOV
+PASS QA 14: Long-lived large tile rebuilds collision around a moved player
+PASS QA 15: Large triangle conversion is incremental and unload cancels pending work
+PASS QA 16: Disposal before Rapier init settles safely
+PASS QA 17: Time trial rejects an unloaded course without throwing
+PASS QA 18: Time trial rings are placed clear of procedural rooftops
+PASS QA 19: A loaded but obstructed checkpoint moves to a nearby clear location
+PASS QA 20: Changed checkpoint layouts never share a best-time key
+PASS QA 21: Race uses active simulation time and catches a fast ring crossing
+PASS QA 22: Being beside the ring does not count as passing its aperture
+PASS QA 23: Corrupt, invalid and inaccessible storage cannot break play
+PASS QA 24: Particles remain visible away from the original cached bounds
+PASS QA 25: Speed-effect response is independent of refresh rate
+PASS QA 26: Input aliases and opposing directions reflect all held keys
+PASS QA 27: Mute routes every effect through a master gain and restores wind
+PASS QA 28: Procedural spawns clear equipment, stay supported and keep the camera clear
+PASS QA 29: Initial spawn and recovery use the same preferred roof
+Audio unavailable; continuing silently: Error: device unavailable
+    at audio.init (file:///Users/choeminseong/Desktop/%E1%84%80%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%B7/scripts/check-qa.mjs:257:59)
+    at SoundController.ensureContext (file:///Users/choeminseong/Desktop/%E1%84%80%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%B7/src/Audio.js:29:18)
+    at file:///Users/choeminseong/Desktop/%E1%84%80%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%B7/scripts/check-qa.mjs:258:33
+    at getActual (node:assert:609:5)
+    at Function.doesNotThrow (node:assert:777:32)
+    at file:///Users/choeminseong/Desktop/%E1%84%80%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%B7/scripts/check-qa.mjs:258:10
+    at check (file:///Users/choeminseong/Desktop/%E1%84%80%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%B7/scripts/check-qa.mjs:19:41)
+    at file:///Users/choeminseong/Desktop/%E1%84%80%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%B7/scripts/check-qa.mjs:256:7
+PASS QA 30: Audio device failure cannot prevent starting the game
+PASS QA 31: Pause clears physical buttons and resume does not invent a held mouse button
+PASS QA 32: Right click does not start a reel or keep the left mouse latched
+PASS QA 33: A web pull arriving at its anchor keeps the swing latched on the following physics tick
+PASS QA 34: A missed quick web tap does not leave the web latch stuck
+PASS QA 35: Grounded combat clicks punch, airborne clicks web, and Space jumps off the line
+PASS QA 36: A complete Space down/up between frames still triggers a jump
+PASS: 36 QA regression scenarios
+PASS REVIEW: Resuming does not latch an unheld swing after a reel reaches the target
+PASS REVIEW: Race clock measures a delayed active frame, while physics stays bounded
+PASS REVIEW: Facade normal matches the world-space triangle after unequal scaling
+PASS REVIEW: Best-time quota failure is visible to the player
+PASS REVIEW: A single movement segment can cross two gates in course order
+PASS REVIEW: Crossing a later gate before the current gate never completes a race
+PASS REVIEW: Enabling reduced motion immediately cancels a shake already in progress
+PASS REVIEW: Saving, reloading, and limiting layout records preserves the fastest valid time
+PASS REVIEW: An unavailable fullscreen API gives feedback rather than doing nothing
+PASS REVIEW: A generated local course completes all eight ordered gates and can restart
+PASS REVIEW: Seeded mixed movement stays finite and speed-bounded over twelve simulated minutes
+Second review: 11 passed, 0 failed.
+PASS COMBAT: Combat is default and physics rejects every web entry point
+PASS COMBAT: Toggle clears held fire and guard and releases with velocity preserved
+PASS COMBAT: Left jab and right straight are distinct, grounded, guarded strikes
+PASS COMBAT: Damage has an active window and happens only once per target
+PASS COMBAT: A wall, wrong height or rear position blocks an attack
+PASS COMBAT: Frontal guard spends stamina; rear attacks hurt; dodge grants temporary protection
+PASS COMBAT: Every directional dodge uses its own take and stamina blocks spam
+PASS COMBAT: Strong jab spends stamina, respects cooldown and deals one heavy hit
+PASS COMBAT: E hook is grounded and does not force an airborne dive
+PASS COMBAT: No training drone factory remains; reset clears transient combat state
+PASS COMBAT: Combat stance waits until movement stopping animation completes
+PASS: 11 combat scenarios
+PASS: web launch, curved tube/fiber buffers, distant coordinates, degenerate rope and textured particle size/fade/lifetime
+PASS: Superhero landing VFX (impact scaling, surface normal alignment, shockwave rings, crack decals, dust/sparks, object pooling)
+PASS: 45 real-rig combat cases at 30/60/144 FPS; finite joints, grounded stance and same-clip restart
+PASS: grounded power strike, compact guard, four short evasions and punch recovery
+PASS: boxing ready stance stays planted with restrained breathing
+PASS: 39 complete takes / 117 FPS cases / 16183 frames; finite rig, fixed limb lengths, pose continuity, airborne slam synchronization
+PASS HONG KONG: Streamed adapter gives genuine roof support and wall normals
+PASS HONG KONG: Anchors require baked physical surfaces, not only rendered tiles
+PASS HONG KONG: Attachment effects fire only after a supported web actually attaches
+PASS HONG KONG: Landing from a web pull removes its rope instead of leaving ghost webs
+PASS HONG KONG: Ground movement, sprint, jump and dodge share streamed collision
+PASS HONG KONG: A vanished LOD anchor releases without adding launch energy
+PASS HONG KONG: A vanished zip target clears its persistent web and exits the pull
+PASS HONG KONG: Collision baking keeps the old support while a replacement is pending
+PASS: 8 streamed Hong Kong adapter scenarios
+Minimap projection checks passed.
+PASS: 2 tile texture routing paths, including extension-based loading and mislabeled embedded KTX2
+PASS: actual Hong Kong RGB KTX2 color preserved as RGBA; oversized and truncated payloads rejected
+PASS multiplayer: 4-player room, ready gate, teams, server damage, late join rejection

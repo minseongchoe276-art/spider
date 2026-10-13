@@ -25,13 +25,14 @@ async function withDOM(run) {
   try { await run(); }
   finally { await new Promise(resolve=>setTimeout(resolve,5)); globalThis.document = original; }
 }
-await check('Pausing a reel preserves its swing after reaching the target',()=>withDOM(()=>{
+await check('Resuming does not latch an unheld swing after a reel reaches the target',()=>withDOM(()=>{
   const p=player();p.position.set(0,12,9.9);p.zipTarget=new THREE.Vector3(0,12,10);
   p.zipAnchor=new THREE.Vector3(0,14,10);p.zipTime=8;p.state='WEB_ZIP';
   const app=Object.create(GameApp.prototype);Object.assign(app,{physics:p,input:{webHold:true,strafe:0},heldKeys:new Set(),audio:silent,isPlaying:true});
   app.setPaused(true);app.setPaused(false);
   p.update(1/120,app.input,camera);p.update(1/120,app.input,camera);
-  assert(p.isSwinging,'The resumed reel immediately dropped its attached web');
+  assert(!p.isSwinging,'The resumed reel kept swinging without a held mouse button');
+  assert.equal(app.input.webHold,false);
   p.isSwinging=false;p.position.set(0,12,10);p.state='WEB_ZIP';p.zipTime=8;
   p.zipTarget=new THREE.Vector3(0,12,100);p.zipAnchor=new THREE.Vector3(0,14,100);
   p.findBestAnchor=()=>new THREE.Vector3(0,30,40);

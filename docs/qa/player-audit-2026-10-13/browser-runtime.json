@@ -1,0 +1,121 @@
+{
+  "local": {
+    "map": "procedural",
+    "position": [
+      -160.6,
+      95.812,
+      -175
+    ],
+    "velocity": [
+      0,
+      0,
+      0
+    ],
+    "state": "IDLE",
+    "motion": "idle",
+    "mode": "web",
+    "feet": [
+      {
+        "side": "left",
+        "ankle": [
+          -160.515,
+          95.822,
+          -174.673
+        ],
+        "surface": 95.71197417482352
+      },
+      {
+        "side": "right",
+        "ankle": [
+          -160.656,
+          95.822,
+          -175.319
+        ],
+        "surface": 95.71197417482352
+      }
+    ],
+    "peers": [],
+    "map3D": true,
+    "mapMeshes": 372,
+    "facing": 0,
+    "cameraYaw": 0,
+    "webs": [],
+    "history": [
+      "IDLE/undefined",
+      "IDLE/idle",
+      "JUMPING/jump",
+      "FALLING/drop",
+      "LANDING/land",
+      "IDLE/idle"
+    ],
+    "decodedRGBTextures": 0
+  },
+  "hongKong": {
+    "map": "Hong Kong",
+    "ready": true,
+    "position": [
+      0,
+      19.748,
+      0
+    ],
+    "velocity": [
+      0,
+      0,
+      0
+    ],
+    "state": "IDLE",
+    "motion": "idle",
+    "mode": "web",
+    "feet": [
+      {
+        "side": "left",
+        "ankle": [
+          0.085,
+          19.633,
+          0.327
+        ],
+        "surface": 19.523009004822914
+      },
+      {
+        "side": "right",
+        "ankle": [
+          -0.056,
+          19.629,
+          -0.319
+        ],
+        "surface": 19.519264164200965
+      }
+    ],
+    "peers": [],
+    "map3D": true,
+    "mapMeshes": 125,
+    "facing": 0,
+    "cameraYaw": 0,
+    "webs": [],
+    "support": 19.521251222125237,
+    "collision": 148,
+    "pending": 0,
+    "history": [
+      "IDLE/undefined",
+      "FALLING/undefined",
+      "IDLE/idle",
+      "JUMPING/jump",
+      "FALLING/drop",
+      "SWINGING/swing",
+      "LANDING/land",
+      "IDLE/idle"
+    ],
+    "decodedRGBTextures": 4,
+    "textureDiagnostics": []
+  },
+  "localErrors": [],
+  "hongKongErrors": [],
+  "hongKongWarnings": [
+    {
+      "level": "warn",
+      "message": "TilesRenderer: tiles versions at 1.1 or higher have limited support. Some new extensions and features may not be supported.",
+      "timestamp": "2026-10-12T23:42:19.347Z",
+      "url": "http://127.0.0.1:5174/node_modules/.vite/deps/chunk-IMRO23OF.js?v=7157835c"
+    }
+  ]
+}

@@ -570,7 +570,7 @@ a { color: #7deeff; }
 }
 #session-hud { bottom: 326px; }
 #game-notice { position: absolute; left: 50%; top: 130px; transform: translateX(-50%);
-  z-index: 45; width: max-content; max-width: calc(100% - 24px); padding: 10px 16px;
+  z-index: 80; width: max-content; max-width: calc(100% - 24px); padding: 10px 16px;
   background: #122139; border: 1px solid #64748b; border-radius: 10px;
   text-align: center; opacity: 0; pointer-events: none; font-size: .85rem; }
 #game-notice.visible { opacity: 1; }
@@ -766,8 +766,11 @@ body.room-game #session-hud { display: none !important; }
 #trial-target { color: #a8dfdf; font-size: 11px; }
 #session-hud > span:nth-child(3), #performance-status { color: #8fa5b6; font-size: 10px; }
 #btn-time-trial { align-self: flex-start; border-color: #e14e68; border-radius: 2px; background: rgba(121,25,49,.6); font-size: 11px; }
-#minimap-panel { bottom: 26px; right: 24px; width: 206px; padding: 10px; border-radius: 2px; border: 1px solid rgba(161,202,214,.35); background: rgba(8,21,34,.78); box-shadow: 0 18px 50px #0007; backdrop-filter: blur(12px); }
+#minimap-panel { bottom: 26px; right: 24px; width: 236px; padding: 10px; border-radius: 2px; border: 1px solid rgba(161,202,214,.35); background: rgba(8,21,34,.78); box-shadow: 0 18px 50px #0007; backdrop-filter: blur(12px); }
 #minimap-canvas { border-radius: 2px; }
+.minimap-legend { position: absolute; bottom: 10px; left: 9px; color: #92bbc8; font: 700 9px Outfit,sans-serif; text-shadow: 0 1px 4px #000; }
+.minimap-legend b { color: #fff; padding-left: 4px; }
+.minimap-legend i { color: #ffce67; font-style: normal; padding-left: 4px; }
 #minimap-status { border-radius: 2px; }
 #match-hud { top: 21px; left: 24px; right: 24px; width: auto; transform: none; justify-content: center; gap: 18px; padding: 9px 17px; border-radius: 2px; border: 1px solid rgba(142,185,204,.28); border-top: 2px solid #ec3858; background: rgba(7,17,30,.78); backdrop-filter: blur(13px); }
 .hud-district { margin-right: auto; color: #b5c9d4; font: 800 10px Outfit,sans-serif; letter-spacing: .18em; }
@@ -856,3 +859,20 @@ body.in-game #gameplay-quickbar { display: flex; }
   .lobby-hero-actions { margin-top: 20px; }
   .online-card { max-height: calc(100dvh - 105px); }
 }
+
+/* Player preferences stay in a scrollable, keyboard reachable menu. */
+#overlay-click-to-play .overlay-card { max-height: calc(100dvh - 32px); overflow-y:auto; overscroll-behavior:contain; }
+#extended-settings details, .player-progress { border-bottom:1px solid #304457; padding:10px 0; color:#dceaf2; font-size:12px; }
+#extended-settings summary, .player-progress summary { cursor:pointer; min-height:28px; }
+.setting-row { display:flex; align-items:center; gap:10px; justify-content:space-between; min-height:38px; border-bottom:1px solid #243a4b; }
+.setting-row span { flex:1; }.setting-row input[type=range] { width:105px; accent-color:#8ee8e7; }.setting-row output { min-width:28px; }
+.setting-row button { margin:0; padding:6px 10px; min-width:74px; }.player-progress button { margin:7px 4px 0 0; padding:8px; }.player-progress select { max-width:180px; }
+#anchor-preview { position:fixed; z-index:7; pointer-events:none; width:16px; height:16px; border:2px solid #88f7e0; border-radius:50%; transform:translate(-50%,-50%); display:none; box-shadow:0 0 0 3px #071c29aa; }
+#hand-status { position:fixed; bottom:74px; left:50%; transform:translateX(-50%); z-index:7; pointer-events:none; color:#b9fff0; font:12px system-ui; text-shadow:0 1px 4px #000; }
+#combo-hud { position:fixed; right:26px; top:100px; z-index:7; color:#b9fff0; text-align:right; font:700 15px system-ui; text-shadow:0 2px 5px #000; pointer-events:none; }
+#boundary-warning, #pursuit-hud { position:fixed; top:155px; left:50%; transform:translateX(-50%); z-index:7; max-width:90vw; color:#ffe299; background:#102339e0; padding:6px 12px; font:12px system-ui; pointer-events:none; }
+#pursuit-hud { top:115px; color:#d4f7ff; }#boundary-warning:empty,#pursuit-hud:empty { display:none; }
+#spectate-next { position:fixed; bottom:85px; left:50%; transform:translateX(-50%); z-index:12; }
+body:not(.in-game) #anchor-preview,body:not(.in-game) #hand-status,body:not(.in-game) #combo-hud,body:not(.in-game) #boundary-warning,body:not(.in-game) #pursuit-hud { visibility:hidden; }
+body.hud-quiet #hud-top-left { opacity:.35; }body.hud-combat #session-hud { opacity:.45; }
+#hud-top-left,#minimap-panel,#session-hud { transform-origin:bottom left; }#minimap-panel { transform-origin:bottom right; }

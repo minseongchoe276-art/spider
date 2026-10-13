@@ -1,3 +1,4 @@
+import { AIR_TRICKS, trickRotation } from './AirTricks.js';
 import { createWebStrand, updateWebStrand } from './WebStrand.js';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
@@ -406,10 +407,19 @@ export class Character {
     updateWebStrand(line,mesh,wrist,anchorPos,this.webVisualTime || 0,launch);
   }
 
-  triggerAirTrick() {
+  triggerAirTrick(key = 'front') {
+    if (!Object.hasOwn(AIR_TRICKS, key)) return false;
+    this.airTrick = { key, elapsed: 0 };
     this.isTricking = true;
     this.trickRotation = 0;
     this.actions?.airTrick?.reset();
+    return true;
+  }
+
+  cancelAirTrick() {
+    this.airTrick = null;
+    this.isTricking = false;
+    this.trickRotation = 0;
   }
 
   update(delta, state, velocity, anchorPos) {
@@ -426,6 +436,17 @@ export class Character {
       this.updateWeb(!!visibleAnchor, visibleAnchor);
       if (this.placeholder) this.placeholder.rotation.y = this.targetFacingAngle;
       return;
+    }
+    if (this.airTrick) {
+      if (!['JUMPING', 'FALLING'].includes(state)) this.cancelAirTrick();
+      else {
+        this.airTrick.elapsed += Math.max(0, delta);
+        if (this.airTrick.elapsed >= AIR_TRICKS[this.airTrick.key].duration) {
+          const key = this.airTrick.key;
+          this.cancelAirTrick();
+          this.onAirTrickComplete?.(key);
+        }
+      }
     }
     const horizontalSpeed = Math.hypot(velocity.x, velocity.z);
     const grounded = GROUNDED.includes(state);
@@ -450,7 +471,9 @@ export class Character {
       horizontalSpeed > 4.1 ? 'regularRun' : horizontalSpeed > 3.1 ? 'jog' : 'walk';
     const combat=this.combatAction;
     if(combat && this.actions[combat.key] && (grounded || combat.key==='slam') && !['ROLLING','TURNING'].includes(state))name=combat.key;
-    if(this.isTricking && !grounded && !['WALL_RUNNING','MANTLING','WEB_ZIP'].includes(state) && this.actions.airTrick)name='airTrick';
+    if (this.airTrick) name = this.airTrick.key === 'front' && this.actions.airTrick
+      ? 'airTrick' : this.actions.fallIdle ? 'fallIdle' : 'fall';
+    else if(this.isTricking && !grounded && !['WALL_RUNNING','MANTLING','WEB_ZIP'].includes(state) && this.actions.airTrick)name='airTrick';
     this.fadeToAction(name, combat?.key===name ? (combat.duration ? 0.065 : name==='guard' ? 0.18 : 0.12) : ['LANDING','ROLLING'].includes(state) ? 0.06 : grounded ? 0.18 : 0.12);
     if (STRIDES.includes(name)) {
       const measuredSpeed = this.activeAction?.getClip().userData?.nominalSpeed;
@@ -467,14 +490,17 @@ export class Character {
         this.activeAction.getClip().duration*THREE.MathUtils.clamp(combat.time/combat.duration,0,1));
       this.activeAction.setEffectiveTimeScale(0);
     }
-    if(name==='airTrick')this.activeAction?.setEffectiveTimeScale(1.15);
+    if(name==='airTrick')this.activeAction?.setEffectiveTimeScale(
+      this.activeAction.getClip().duration / AIR_TRICKS.front.duration);
     if(name==='wall')this.activeAction?.setEffectiveTimeScale(state==='MANTLING'?0:THREE.MathUtils.clamp(velocity.length()/(this.activeAction.getClip().userData.climbSpeed || 3),0,6));
     this.mixer.update(delta);
     if (state !== 'LANDING') this.landingSpeed = 0;
     this.lastState = state;
     this.idleTime += delta;
     if (grounded || state==='MANTLING') { this.isTricking = false; this.trickRotation = 0; }
-    if(this.isTricking && this.actions.airTrick){
+    if(this.airTrick){
+      this.trickRotation=0;
+    } else if(this.isTricking && this.actions.airTrick){
       this.trickRotation=0;
       if(this.activeAction===this.actions.airTrick && this.activeAction.time>=this.activeAction.getClip().duration-.02)this.isTricking=false;
     } else if (this.isTricking) {
@@ -509,6 +535,16 @@ export class Character {
     // the support surface, not inherit that collision padding.
     this.model.position.y = grounded && state !== 'ROLLING' ? -0.1 : 0;
     this.model.position.x=0;this.model.position.z=0;
+    if (this.airTrick && (this.airTrick.key !== 'front' || !this.actions.airTrick)) {
+      const angles = trickRotation(this.airTrick.key, this.airTrick.elapsed);
+      const rotation = new THREE.Quaternion().setFromEuler(new THREE.Euler(angles.x, angles.y, angles.z, 'YXZ'));
+      this.model.quaternion.multiply(rotation);
+      // Rotate around the torso, keeping the body centre on its flight path.
+      const pivot = new THREE.Vector3(0, 1, 0);
+      const offset = pivot.clone().sub(pivot.clone().applyQuaternion(rotation));
+      offset.applyAxisAngle(new THREE.Vector3(0, 1, 0), this.visualYaw);
+      this.model.position.add(offset);
+    }
     if(state==='WALL_RUNNING' && this.wallNormal) this.model.position.addScaledVector(this.wallNormal,-Math.max(0,(this.wallDistance ?? 0.7)-0.4));
     if(state==='MANTLING' && this.mantle) {
       const t=this.mantle.elapsed/this.mantle.duration;

@@ -14,6 +14,11 @@ import { Preferences } from './Preferences.js';
 import { HongKongMinimap } from './Minimap.js';
 import { Multiplayer } from './Multiplayer.js';
 import { GROUNDED } from './MotionCatalog.js';
+import {canonicalKey} from './PlayerSettings.js';
+import {SettingsPanel} from './SettingsPanel.js';
+import {GamepadInput} from './GamepadInput.js';
+import {PlayerExperience} from './PlayerExperience.js';
+import {CombatPractice} from './CombatPractice.js';
 
 export class GameApp {
   constructor() {
@@ -31,6 +36,7 @@ export class GameApp {
       document.getElementById('speedlines-canvas') ||
       document.getElementById('speed-lines-canvas');
 
+    this.startupAt=performance.now();
     this.isPlaying = false;
     this.isPaused = false;
     this.cameraDragActive = false;
@@ -47,6 +53,9 @@ export class GameApp {
       webHold: false,
       webTap: false,
       webFireHeld: false,
+      webHoldRight: false,
+      webTapRight: false,
+      webFireHeldRight: false,
       wallRun: false,
       strafe: 0
     };
@@ -79,6 +88,10 @@ export class GameApp {
       document.getElementById('btn-retry-load')?.addEventListener('click', () => location.reload());
       return;
     }
+    this.experience=new PlayerExperience(this,storage);
+    this.practice=new CombatPractice(this);
+    this.settingsPanel=new SettingsPanel(this);
+    this.gamepad=new GamepadInput(this);
     this.initInputListeners();
     this.initUIListeners();
     this.applyPreferences();
@@ -235,6 +248,7 @@ export class GameApp {
       subtitle: document.getElementById('minimap-subtitle'),
       city: this.city,
       combat: this.combat,
+      players: () => this.multiplayer?.minimapPlayers() || [],
     });
 
     this.city.onError = error => this.showLoadingError(error.message || '도시 데이터를 불러오지 못했습니다.');
@@ -242,6 +256,8 @@ export class GameApp {
       this.combat?.cancel();this.combat?.clearEnemies();
       this.input.webHold = false;
       this.input.webFireHeld = false;
+      this.input.webHoldRight = false;
+      this.input.webFireHeldRight = false;
       if (this.timeTrial.isActive) { this.timeTrial.stop(); this.updateTrialHUD(); }
       this.resetCamera();
       this.showNotice(reason === 'boundary' ? `플레이 구역(±${this.city.playableHalfExtent || 2400}m)을 벗어나 시작점으로 돌아왔습니다.` : '안전한 시작점으로 돌아왔습니다.');
@@ -281,6 +297,7 @@ export class GameApp {
     }
     if (this.assetsReady) return;
     this.assetsReady = true;
+    this.readyMilliseconds=performance.now()-this.startupAt;
     if (this.city instanceof UrbanGroundCity) {
       this.physics.resetPosition();
       this.resetCamera();
@@ -300,7 +317,7 @@ export class GameApp {
     window.addEventListener('blur', () => { this.clearInput(); if (this.isPlaying) this.setPaused(true); });
     document.addEventListener('visibilitychange', () => { if (document.hidden) { this.clearInput(); if (this.isPlaying) this.setPaused(true); } });
     window.addEventListener('keydown', (e) => {
-      const k = e.code;
+      const k = canonicalKey(e.code,this.preferences?.values.settings);
       if (e.target?.closest?.('input, select, textarea, button, a') && k !== 'Escape') return;
       if (k === 'Escape' && performance.now() < (this.ignoreEscapeUntil || 0)) return;
       const gameplayKey = [
@@ -313,9 +330,9 @@ export class GameApp {
       if (gameplayKey) e.preventDefault();
       if (gameplayKey && e.repeat && ['Space','KeyG','KeyE','KeyT','KeyC','KeyV','KeyQ','ControlLeft','ControlRight'].includes(k)) return;
 
-      if (gameplayKey) { this.heldKeys.add(k); this.syncHeldInput(); }
+      if (gameplayKey) { this.heldKeys.add(k); if(k==='ShiftLeft' && !e.repeat && this.preferences?.values.settings?.sprintToggle)this.sprintLatched=!this.sprintLatched; this.syncHeldInput(); }
       if(k==='KeyB'){this.combat.guard(true);return;}
-      if(k==='KeyG'){if(this.combat.special(this.camera))this.multiplayer?.attack('punch');return;}
+      if(k==='KeyG'){if(GROUNDED.includes(this.physics.state)){if(this.combat.special(this.camera))this.multiplayer?.attack('punch');}else this.combat.airStrike?.(this.camera);return;}
       if(k==='KeyQ'){
         if(this.multiplayer?.locksCombatToggle()){this.showNotice('도망자는 거미줄로만 이동합니다.');return;}
         this.combat.toggle(this.input);return;
@@ -347,15 +364,20 @@ export class GameApp {
       if (k === 'Space') {
         this.input.jump = true;
         const swinging = this.physics.isSwinging;
-        const onWeb = swinging || this.physics.state === 'WEB_ZIP' || this.physics.lastWebAnchor;
+        const onWeb = swinging || this.physics.state === 'WEB_ZIP';
         if (onWeb) {
           this.input.webHold = false;
           this.input.webFireHeld = false;
           this.input.webTap = false;
+          this.input.webHoldRight = false;
+          this.input.webFireHeldRight = false;
+          this.input.webTapRight = false;
           if (swinging) this.physics.releaseSwing(true);
           else this.physics.clearWebAnchor();
           this.physics.velocity.y = Math.max(this.physics.velocity.y, this.physics.jumpForce);
           this.physics.state = 'JUMPING';
+          this.input.jump = false;
+          this.physics.clearPendingInput();
         }
       }
       if (k === 'KeyF') this.input.wallRun = true;
@@ -363,16 +385,16 @@ export class GameApp {
         const groundedCombat = this.combat?.mode==='combat' && GROUNDED.includes(this.physics.state);
         if (groundedCombat) {
           if (this.combat.heavy(this.camera)) this.multiplayer?.attack('punch');
-        } else this.physics.performAirJump(this.camera);
+        } else this.physics.performAirJump(this.camera, this.physics.webAimNdc);
       }
-      if (k === 'KeyT') this.physics.performAirTrick();
+      if (k === 'KeyT') this.physics.performAirTrick(this.input);
       if (k === 'KeyM' && !e.repeat) this.toggleMute();
       if (k === 'KeyH' && !e.repeat) this.toggleHelp();
       if (k === 'Escape' && !e.repeat) this.togglePause();
     });
 
     window.addEventListener('keyup', (e) => {
-      const k = e.code;
+      const k = canonicalKey(e.code,this.preferences?.values.settings);
       this.heldKeys.delete(k);
       if(k==='KeyB')this.combat?.guard(false);
       this.syncHeldInput();
@@ -394,7 +416,7 @@ export class GameApp {
         return;
       }
       if (e.button === 0) {
-        this.multiplayer?.attack('web');
+        if(this.preferences?.values.settings?.webToggle && this.input.webHold){this.input.webHold=this.input.webFireHeld=false;this.physics.releaseWebButton(0);return;}
         // Holding the left button keeps one rope. Releasing lets it go.
         this.physics.setWebAimPoint(
           e.clientX,
@@ -403,9 +425,25 @@ export class GameApp {
           document.pointerLockElement === this.canvas
         );
         this.physics.findBestAnchor(this.camera);
+        this.multiplayer?.attack('web');
         this.input.webTap = true;
         this.input.webFireHeld = true;
         this.input.webHold = true;
+      }
+      if (e.button === 2) {
+        if(this.preferences?.values.settings?.webToggle && this.input.webHoldRight){this.input.webHoldRight=this.input.webFireHeldRight=false;this.physics.releaseWebButton(2);return;}
+        // The opposite hand uses the same held pendulum as the left button.
+        this.physics.setWebAimPoint(
+          e.clientX,
+          e.clientY,
+          this.canvas.getBoundingClientRect(),
+          document.pointerLockElement === this.canvas
+        );
+        this.physics.findBestAnchor(this.camera);
+        this.multiplayer?.attack('web');
+        this.input.webTapRight = true;
+        this.input.webFireHeldRight = true;
+        this.input.webHoldRight = true;
       }
       if (e.button === 1 && document.pointerLockElement !== this.canvas) {
         e.preventDefault();
@@ -417,10 +455,15 @@ export class GameApp {
     window.addEventListener('mouseup', (e) => {
       this.cameraDragActive = false;
       this.lastMousePosition = null;
-      if (e.button === 0) {
+      if (e.button === 0 && !this.preferences?.values.settings?.webToggle) {
         this.input.webFireHeld = false;
         this.input.webHold = false;
-        if (this.physics?.isSwinging) this.physics.releaseSwing(false);
+        this.physics?.releaseWebButton?.(0);
+      }
+      if (e.button === 2 && !this.preferences?.values.settings?.webToggle) {
+        this.input.webFireHeldRight = false;
+        this.input.webHoldRight = false;
+        this.physics?.releaseWebButton?.(2);
       }
     });
 
@@ -579,6 +622,7 @@ export class GameApp {
   clearInput() {
     this.combat?.clearHeld();
     this.heldKeys.clear();
+    this.sprintLatched=false;this.gamepadDirections={};
     for (const key of Object.keys(this.input)) this.input[key] = key === 'strafe' ? 0 : false;
     this.cameraDragActive = false;
     if (this.physics) this.physics.clearPendingInput();
@@ -586,11 +630,12 @@ export class GameApp {
 
   syncHeldInput() {
     const held = (...keys) => keys.some(key => this.heldKeys.has(key));
-    this.input.forward = held('KeyW','ArrowUp');
-    this.input.backward = held('KeyS','ArrowDown');
-    this.input.left = held('KeyA','ArrowLeft');
-    this.input.right = held('KeyD','ArrowRight');
-    this.input.sprint = held('ShiftLeft','ShiftRight');
+    const pad=this.gamepadDirections||{};
+    this.input.forward = !!pad.forward || held('KeyW','ArrowUp');
+    this.input.backward = !!pad.backward || held('KeyS','ArrowDown');
+    this.input.left = !!pad.left || held('KeyA','ArrowLeft');
+    this.input.right = !!pad.right || held('KeyD','ArrowRight');
+    this.input.sprint = this.preferences?.values.settings.sprintToggle?!!this.sprintLatched:held('ShiftLeft','ShiftRight');
     this.input.wallRun = held('KeyF');
     this.input.strafe = Number(this.input.right) - Number(this.input.left);
   }
@@ -615,7 +660,12 @@ export class GameApp {
   }
 
   applyPreferences() {
-    const { muted, reducedMotion, quality } = this.preferences.values;
+    const { muted, reducedMotion, quality,settings } = this.preferences.values;
+    Object.assign(this.tpsCamera,{sensitivity:settings.sensitivity,invertY:settings.invertY,baseFov:settings.fov,maxFov:settings.fov+12,firstPersonFov:settings.fov,shakeStrength:settings.shake,speedFov:settings.speedFov,followStrength:settings.follow});
+    this.physics.aimAssist=this.multiplayer?.room?true:settings.aimAssist;
+    this.physics.softBoundary=true;
+    this.audio.configure?.(settings);
+    for(const id of ['hud-top-left','minimap-panel','session-hud']){const el=document.getElementById(id);if(el)el.style.scale=String(settings.hudScale);}
     if (this.audio.isMuted !== muted) this.audio.toggleMute();
     const motionButton = document.getElementById('reduced-motion');
     motionButton?.setAttribute('aria-pressed', String(reducedMotion));
@@ -628,6 +678,13 @@ export class GameApp {
     document.body.classList.toggle('reduced-motion', reducedMotion);
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, { low: 1, balanced: 1.5, high: 2 }[quality] || 1.5));
     this.renderer.shadowMap.enabled = quality !== 'low';
+    this.applyWebTheme();
+  }
+
+  applyWebTheme() {
+    const color=this.progression?.color||0xf4f8ff;
+    for(const mesh of [this.character.webMesh,this.character.webMeshOffhand])mesh?.material?.color?.setHex(color);
+    for(const line of [this.character.webLine,this.character.webLineOffhand])line?.material?.color?.setHex(color);
   }
 
   resetCamera() {
@@ -642,6 +699,7 @@ export class GameApp {
     this.clearInput();
     this.physics.resetPosition();
     this.physics.stuntScore = 0;
+    this.experience?.stunts.reset();if(this.experience)this.experience.stunts.total=0;this.experience?.ghost.stop();
     this.timeTrial.stop();
     this.updateTrialHUD();
     this.resetCamera();
@@ -651,13 +709,13 @@ export class GameApp {
   toggleTimeTrial() {
     if (this.multiplayer?.room) return;
     if (!this.isPlaying || this.isPaused) return;
-    if (this.timeTrial.isActive && !this.timeTrial.isCompleted) this.timeTrial.stop();
+    if (this.timeTrial.isActive && !this.timeTrial.isCompleted) {this.timeTrial.stop();this.experience?.ghost.stop();}
     else {
       this.clearInput();
       this.physics.resetPosition();
       this.resetCamera();
       if (!this.timeTrial.start()) this.showNotice('코스 지형이 아직 준비되지 않았거나 링을 놓을 공간이 부족합니다. 로컬 도시를 이용하거나 잠시 후 다시 시도하세요.');
-      else this.showNotice('타임트라이얼 시작! 금색 링을 순서대로 통과하세요. R로 종료합니다.');
+      else {this.experience?.raceStarted();this.showNotice('타임트라이얼 시작! 금색 링을 순서대로 통과하세요. 레이스 키로 종료합니다.');}
     }
     this.updateTrialHUD();
   }
@@ -667,10 +725,11 @@ export class GameApp {
     const course = this.timeTrial.courseId;
     const best = this.preferences.values.bestTimes[course];
     if (result?.completed) {
+      const race=this.experience?.raceFinished(result);
       const newBest = this.preferences.recordTime(course, result.totalTime);
       const saveWarning = newBest && !this.preferences.lastSaveSucceeded
         ? ' · 저장할 수 없어 최고 기록은 이번 실행에만 적용됩니다.' : '';
-      this.showNotice(`완주 ${result.totalTime.toFixed(2)}초${newBest ? ' · 최고 기록!' : ''}${saveWarning}`);
+      this.showNotice(`완주 ${result.totalTime.toFixed(2)}초${newBest ? ' · 최고 기록!' : ''}${race?' · '+race.medal+'메달':''}${saveWarning}`);
     }
     if (status) status.textContent = this.timeTrial.isActive
       ? this.timeTrial.isCompleted ? `완주 ${this.timeTrial.elapsedTime.toFixed(2)}초 · R 재도전`
@@ -689,6 +748,7 @@ export class GameApp {
         const arrows = ['↑','↗','→','↘','↓','↙','←','↖'];
         const arrow = arrows[(Math.round(angle/(Math.PI/4))+8)%8];
         target.textContent = `다음 링 ${Math.round(offset.length())}m ${arrow} · 높이 ${offset.y>=0?'+':''}${Math.round(offset.y)}m`;
+        const split=this.experience?.ghost.splitDelta;if(Number.isFinite(split))target.textContent+=` · 구간 ${split>=0?'+':''}${split.toFixed(2)}초`;
       }
     }
     const button = document.getElementById('btn-time-trial');
@@ -699,7 +759,7 @@ export class GameApp {
     const score = document.getElementById('stunt-score');
     if (score) score.textContent = String(this.physics.stuntScore);
     const combatHud=document.getElementById('combat-status');
-    if(combatHud && this.combat)combatHud.textContent=`${this.combat.mode==='web'?'거미줄 ON':'전투 모드'} · HP ${Math.ceil(this.combat.health)} · 기력 ${Math.ceil(this.combat.stamina)} · Q 모드 전환`;
+    if(combatHud && this.combat){const airborne=!GROUNDED.includes(state);combatHud.textContent=this.multiplayer?.room?'':`${airborne?'공중 · 양손 거미줄':this.combat.mode==='web'?'거미줄 이동':'전투'} · HP ${Math.ceil(this.combat.health)} · 기력 ${Math.ceil(this.combat.stamina)} · ${this.combat.enemies.some(e=>e.windup>0)?'공격 예고! · 방어 / 회피':'모드 '+this.preferences.values.settings.bindings.mode.replace('Key','')}`;combatHud.classList.toggle('hidden',!!this.multiplayer?.room);}
     // 1. Speedometer
     if (this.speedDisplay) {
       this.speedDisplay.textContent = Math.round(speedKmh);
@@ -749,14 +809,13 @@ export class GameApp {
     this.frameCount = (this.frameCount || 0) + 1;
     if (this.frameTime >= 1) {
       const output = document.getElementById('performance-status');
-      if (output) output.textContent = `${Math.round(this.frameCount / this.frameTime)} FPS · ${(this.frameTime * 1000 / this.frameCount).toFixed(1)} ms`;
+      if (output) output.textContent = `${Math.round(this.frameCount / this.frameTime)} FPS · ${(this.frameTime * 1000 / this.frameCount).toFixed(1)} ms · P95 ${(this.experience?.performance.p95||0).toFixed(1)} ms`;
       this.frameTime = 0; this.frameCount = 0;
     }
 
     // Keep streamed city tiles advancing while the start overlay is visible;
     // TilesRenderer performs visibility/LOD work independently of gameplay.
     this.city.update(this.clock.elapsedTime);
-    this.minimap?.update(this.physics.position, this.physics.facingAngle, this.clock.elapsedTime);
     if (!this.assetsReady && this.character.isLoaded &&
         (!(this.city instanceof UrbanGroundCity) || this.city.isReady)) this.onAssetsLoaded();
 
@@ -767,7 +826,15 @@ export class GameApp {
       this.combat?.before(delta,this.camera);
       this.physics.update(delta, this.input, this.camera);
       this.combat?.after(delta);
-      if (wasSwinging && !this.physics.isSwinging) this.input.webHold = false;
+      this.practice?.update(delta);
+      if (wasSwinging && !this.physics.isSwinging) {
+        this.input.webHold = false;
+        this.input.webFireHeld = false;
+        this.input.webTap = false;
+        this.input.webHoldRight = false;
+        this.input.webFireHeldRight = false;
+        this.input.webTapRight = false;
+      }
 
       // 2. Update 3rd Person Follow Camera
       this.tpsCamera.update(
@@ -775,7 +842,7 @@ export class GameApp {
         this.physics.renderPosition,
         this.physics.velocity,
         this.physics.isSwinging,
-        this.city.buildingMeshes,
+        this.city.getCameraCollisionMeshes?.(this.physics.renderPosition) || this.city.buildingMeshes,
         this.city.raycast?.bind(this.city),
         this.physics.facingAngle
       );
@@ -783,7 +850,7 @@ export class GameApp {
       // 3. Update Visuals & FX
       const speedKmh = this.physics.velocity.length() * 3.6;
       if (this.speedLines) {
-        this.speedLines.setSpeed(this.preferences.values.reducedMotion ? 0 : speedKmh, delta);
+        this.speedLines.setSpeed(this.preferences.values.reducedMotion ? 0 : speedKmh*this.preferences.values.settings.speedLines, delta);
       }
       this.vfx.update(delta);
       // Simulation steps stay bounded, but active race time includes frame stalls.
@@ -793,7 +860,11 @@ export class GameApp {
       this.updateHUD(speedKmh, this.physics.position.y, this.physics.state);
     }
 
+    this.experience?.update(delta,elapsed);
+    this.gamepad?.update(delta);
     this.multiplayer?.update(delta);
+    this.minimap?.update((spectating && this.multiplayer.spectatePoint()) || this.physics.renderPosition,
+      this.physics.facingAngle, this.clock.elapsedTime);
 
     this.hongKongAudit?.update(this.clock.elapsedTime);
 

@@ -12,6 +12,7 @@ export class TimeTrialSystem {
     this.currentIndex = 0;
     this.startTime = 0;
     this.elapsedTime = 0;
+    this.splitTimes=[];
     this.isCompleted = false;
 
     this.ringMeshGroup = new THREE.Group();
@@ -105,6 +106,7 @@ export class TimeTrialSystem {
     this.currentIndex = 0;
     this.startTime = 0;
     this.elapsedTime = 0;
+    this.splitTimes=[];
 
     // Show rings
     this.checkpoints.forEach((cp, idx) => {
@@ -169,6 +171,7 @@ export class TimeTrialSystem {
         // Checkpoint passed!
         this.audio.playCheckpointChime();
         currentCp.mesh.visible = false;
+        this.splitTimes.push(this.elapsedTime-delta*(1-fraction));
         this.currentIndex++;
 
         if (this.currentIndex >= this.checkpoints.length) {

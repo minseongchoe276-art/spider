@@ -1,0 +1,92 @@
+{
+ "map": "procedural",
+ "playing": true,
+ "paused": false,
+ "practice": false,
+ "performance": {
+  "windowFrames": 19,
+  "totalFrames": 19,
+  "activeSeconds": 0.52,
+  "averageFps": 36.72,
+  "frameMs": {
+   "p50": 24.1,
+   "p95": 58.6,
+   "p99": 58.6
+  },
+  "longFramesOver50ms": 2
+ },
+ "renderer": {
+  "calls": 736,
+  "triangles": 50320,
+  "geometries": 332,
+  "textures": 17,
+  "pixelRatio": 1
+ },
+ "viewport": {
+  "width": 1280,
+  "height": 720,
+  "dpr": 1
+ },
+ "quality": "high",
+ "resources": {
+  "count": 81,
+  "transferBytes": 21446184
+ },
+ "position": [
+  -160.6,
+  95.812,
+  -193.2
+ ],
+ "velocity": [
+  0,
+  0,
+  0
+ ],
+ "state": "IDLE",
+ "motion": "combatIdle",
+ "mode": "combat",
+ "feet": [
+  {
+   "side": "left",
+   "ankle": [
+    -160.365,
+    95.822,
+    -192.916
+   ],
+   "surface": 95.71197417482352
+  },
+  {
+   "side": "right",
+   "ankle": [
+    -160.716,
+    95.822,
+    -193.579
+   ],
+   "surface": 95.71197417482352
+  }
+ ],
+ "peers": [
+  {
+   "name": "QA 참가자",
+   "position": [
+    -160.6,
+    95.81,
+    -156.8
+   ],
+   "state": "IDLE",
+   "motion": "idle",
+   "web": false
+  }
+ ],
+ "map3D": true,
+ "mapMeshes": 348,
+ "facing": 0,
+ "cameraYaw": 0,
+ "webs": [],
+ "history": [
+  "IDLE/undefined",
+  "IDLE/idle",
+  "IDLE/combatIdle"
+ ],
+ "decodedRGBTextures": 0
+}

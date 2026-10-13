@@ -1,0 +1,83 @@
+{
+ "map": "Hong Kong",
+ "ready": true,
+ "playing": false,
+ "paused": false,
+ "practice": false,
+ "performance": {
+  "windowFrames": 0,
+  "totalFrames": 0,
+  "activeSeconds": 0,
+  "averageFps": null,
+  "frameMs": {
+   "p50": null,
+   "p95": null,
+   "p99": null
+  },
+  "longFramesOver50ms": 0
+ },
+ "renderer": {
+  "calls": 81,
+  "triangles": 207697,
+  "geometries": 94,
+  "textures": 90,
+  "pixelRatio": 1
+ },
+ "viewport": {
+  "width": 1280,
+  "height": 720,
+  "dpr": 1
+ },
+ "quality": "high",
+ "resources": {
+  "count": 250,
+  "transferBytes": 40314434
+ },
+ "position": [
+  0,
+  19.671,
+  0
+ ],
+ "velocity": [
+  0,
+  0,
+  0
+ ],
+ "state": "FALLING",
+ "mode": "combat",
+ "feet": [
+  {
+   "side": "left",
+   "ankle": [
+    0.171,
+    0.109,
+    -0.066
+   ],
+   "surface": 19.52022520303726
+  },
+  {
+   "side": "right",
+   "ankle": [
+    -0.179,
+    0.109,
+    -0.057
+   ],
+   "surface": 19.52141771316528
+  }
+ ],
+ "peers": [],
+ "map3D": true,
+ "mapMeshes": 125,
+ "facing": 0,
+ "cameraYaw": 0,
+ "webs": [],
+ "support": 19.521250867843627,
+ "collision": 148,
+ "pending": 0,
+ "history": [
+  "IDLE/undefined",
+  "FALLING/undefined"
+ ],
+ "decodedRGBTextures": 3,
+ "textureDiagnostics": []
+}

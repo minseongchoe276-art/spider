@@ -1,0 +1,59 @@
+{
+ "map": "procedural",
+ "position": [
+  -154.1,
+  95.812,
+  -175
+ ],
+ "velocity": [
+  0,
+  0,
+  0
+ ],
+ "state": "IDLE",
+ "motion": "idle",
+ "mode": "web",
+ "feet": [
+  {
+   "side": "left",
+   "ankle": [
+    -154.427,
+    95.822,
+    -174.915
+   ],
+   "surface": 95.71197417482352
+  },
+  {
+   "side": "right",
+   "ankle": [
+    -153.781,
+    95.822,
+    -175.056
+   ],
+   "surface": 95.71197417482352
+  }
+ ],
+ "peers": [
+  {
+   "name": "검증 친구",
+   "position": [
+    -170.6,
+    95.81,
+    -175
+   ],
+   "state": "IDLE",
+   "motion": "idle",
+   "web": false
+  }
+ ],
+ "map3D": true,
+ "mapMeshes": 377,
+ "facing": -1.5707963267948966,
+ "cameraYaw": -1.5707963267948966,
+ "webs": [],
+ "history": [
+  "IDLE/undefined",
+  "IDLE/idle"
+ ],
+ "decodedRGBTextures": 0
+}

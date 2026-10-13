@@ -243,6 +243,18 @@ export class UrbanGroundCity {
     return ground !== null && Math.abs(position.y - ground - 0.1) < 0.2 ? ground : null;
   }
 
+  getCameraCollisionMeshes(position) {
+    if(!this.collisionWorld.ready)return this.buildingMeshes;
+    // Rapier already queries baked terrain. Only raycast visual triangles
+    // for unbaked/rebuilding LODs or outside the collider's coverage margin.
+    // This preserves closer new surfaces without scanning every dense tile
+    // for each of the camera's five probes and shoulder alternatives.
+    return this.buildingMeshes.filter(mesh=>{
+      const entry=this.collisionWorld.meshes.get(mesh.uuid);
+      return !entry || entry.queued || !entry.coverageCenter || position.distanceToSquared(entry.coverageCenter)>450*450;
+    });
+  }
+
   resolveMovement(start, end, velocity) {
     this.playerPosition.copy(start);
     return this.collisionWorld.resolve(start, end, velocity);

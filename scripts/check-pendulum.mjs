@@ -49,3 +49,85 @@ const {p}=player();const held=input();held.forward=true;
 for(let n=0;n<240;n++)p.update(1/120,held,camera);
 assert.equal(p.ropeLength,20,'W reeled the rope toward the anchor');
 console.log('PASS PENDULUM: W applies tangent steering without shortening the rope');
+
+function bare() {
+  const shots=[];
+  const character={group:new THREE.Group(),update(){},stopAnimation(){},fireWeb(anchor,hand){this.currentHand=hand;shots.push(hand);}};
+  const city={buildingMeshes:[],colliders:[],checkCollision:()=>({collided:false}),getRooftopSpawn:()=>new THREE.Vector3(0,10,0)};
+  const body=new SwingPhysics(new THREE.Scene(),city,character,silent);
+  body.position.set(-12,44,0);body.velocity.set(0,0,0);
+  body.findBestAnchor=()=>new THREE.Vector3(0,60,0);
+  body.shots=shots;
+  return body;
+}
+const heldInput=side=>{
+  const value={forward:false,backward:false,left:false,right:false,strafe:0,jump:false,
+    webTap:false,webFireHeld:false,webHold:false,webTapRight:false,webFireHeldRight:false,webHoldRight:false};
+  if(side==='left')value.webTap=value.webFireHeld=value.webHold=true;
+  else value.webTapRight=value.webFireHeldRight=value.webHoldRight=true;
+  return value;
+};
+const ride=side=>{
+  const body=bare(),held=heldInput(side);
+  body.update(1/60,held,camera);
+  held.webTap=held.webTapRight=false;
+  for(let n=0;n<240;n++)body.update(1/60,held,camera);
+  return body;
+};
+const leftRide=ride('left'),rightRide=ride('right');
+assert.equal(leftRide.webs.length,1);assert.equal(leftRide.webs[0].hand,'left');assert.equal(leftRide.shots.length,1);
+assert.equal(rightRide.webs.length,1);assert.equal(rightRide.webs[0].hand,'right');assert.equal(rightRide.shots.length,1);
+assert.equal(rightRide.nextWebHand,'left','Right click advanced the left-click hand');
+assert(leftRide.anchorPoint.equals(rightRide.anchorPoint));
+assert.equal(leftRide.ropeLength,rightRide.ropeLength);
+assert(leftRide.position.distanceTo(rightRide.position)<1e-6,'Right-click pendulum diverged from the left-click pendulum');
+assert(leftRide.velocity.distanceTo(rightRide.velocity)<1e-6,'Right-click pendulum velocity diverged');
+console.log('PASS PENDULUM: right click matches the left-click Viking swing from the opposite hand');
+
+const paired=bare();
+paired.findBestAnchor=()=>paired.webs.length?new THREE.Vector3(5,30,2):new THREE.Vector3(-5,30,2);
+paired.position.set(0,10,0);
+const both=heldInput('left');
+paired.update(1/60,both,camera);
+assert.equal(paired.webs[0].hand,'left');assert.equal(paired.nextWebHand,'right');
+both.webTap=false;both.webTapRight=both.webFireHeldRight=both.webHoldRight=true;
+paired.update(1/60,both,camera);
+assert.deepEqual(paired.webs.map(web=>web.hand),['left','right']);
+assert.deepEqual(paired.webs.map(web=>web.button),[0,2]);
+assert.equal(paired.nextWebHand,'right');
+assert(paired.webs[0].anchor.x<0&&paired.webs[1].anchor.x>0);
+const boosts=[];
+const originalRelease=paired.releaseSwing.bind(paired);
+paired.releaseSwing=flag=>{boosts.push(flag);return originalRelease(flag);};
+const kept=paired.webs[1].length;
+both.webHold=both.webFireHeld=false;both.webTapRight=false;
+paired.update(1/60,both,camera);
+assert.equal(paired.webs.length,1);assert.equal(paired.webs[0].hand,'right');assert.equal(paired.webs[0].length,kept);
+assert(paired.isSwinging);assert.equal(boosts.length,0,'Releasing the left hand boosted or dropped the right rope');
+both.webHoldRight=both.webFireHeldRight=false;
+paired.update(1/60,both,camera);
+assert.equal(paired.isSwinging,false);assert.deepEqual(boosts,[false],'Letting go of the last rope added a slingshot');
+console.log('PASS PENDULUM: releasing one hand keeps the opposite rope without a slingshot');
+
+const swapped=bare();
+const first=heldInput('left');
+swapped.update(1/60,first,camera);
+first.webTap=first.webHold=first.webFireHeld=false;
+swapped.update(1/60,first,camera);
+assert.equal(swapped.isSwinging,false);assert.equal(swapped.nextWebHand,'right');
+const other=heldInput('right');
+swapped.update(1/60,other,camera);
+assert.equal(swapped.webs.length,1);assert.equal(swapped.webs[0].hand,'left','Right click repeated the hand left click would use');
+assert.equal(swapped.nextWebHand,'right');
+console.log('PASS PENDULUM: right click follows the opposite of the next left-click hand');
+
+const locked=bare();
+locked.webEnabled=false;locked.state='IDLE';locked.position.set(0,0.1,0);
+const denied=heldInput('right');
+locked.update(1/60,denied,camera);
+assert.equal(locked.isSwinging,false);assert.equal(denied.webTapRight,false);
+locked.state='FALLING';locked.position.set(0,6,0);
+denied.webTapRight=denied.webFireHeldRight=denied.webHoldRight=true;
+locked.update(1/60,denied,camera);
+assert.equal(locked.isSwinging,true);assert.equal(locked.webs[0].hand,'right');
+console.log('PASS PENDULUM: grounded combat blocks a right-click web and airborne combat allows it');

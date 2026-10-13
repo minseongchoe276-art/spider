@@ -1,3 +1,4 @@
+import { AIR_TRICKS, selectAirTrick } from './AirTricks.js';
 import * as THREE from 'three';
 import { GROUNDED } from './MotionCatalog.js';
 import { resolveBody, sweepBody } from './MovementCollision.js';
@@ -57,6 +58,18 @@ export class SwingPhysics {
     this.canAirJump = true;
     this.stuntScore = 0;
     this.onStuntCallback = null;
+    this.airTrickChain = new Set();
+    this.airTrickRepeats = new Map();
+    this.character.onAirTrickComplete = key => {
+      const trick = AIR_TRICKS[key];
+      const repeats = this.airTrickRepeats.get(key) || 0;
+      this.airTrickRepeats.set(key, repeats + 1);
+      this.airTrickChain.add(key);
+      const multiplier = Math.min(2.5, 1 + (this.airTrickChain.size - 1) * .3);
+      const points = Math.round(trick.points * multiplier / (2 ** Math.min(repeats, 3)));
+      this.stuntScore += points;
+      this.onStuntCallback?.(`${trick.label} · ${this.airTrickChain.size}종 연결 ×${multiplier.toFixed(1)}`, points);
+    };
 
     // Character rotation
     this.facingAngle = 0;
@@ -70,6 +83,7 @@ export class SwingPhysics {
     this.jumpBuffer = 0;
     this.coyoteTime = 0;
     this.webLatch = false;
+    this.webLatchRight = false;
     this.swingCooldown = 0;
     this.zipTarget = null;
     this.zipAnchor = null;
@@ -91,12 +105,19 @@ export class SwingPhysics {
   }
 
   findBestAnchor(camera) {
+    this.webFailureReason='대상 없음 · 건물을 향해 조준하세요.';
+    this.bestAnchorCandidate = null;
+    this.bestAnchorNormal = null;
+    this.bestAnchorObject = null;
     camera.updateMatrixWorld(true);
     const eye=this.position.clone().add(new THREE.Vector3(0,1.3,0));
     const accept = hit => {
-      if (!hit || hit.distance < 1 || hit.distance > 130) return null;
+      if(!hit)return null;
+      if(hit.distance<1 || hit.distance>130 || hit.point.distanceTo(eye)>130){this.webFailureReason='거리가 맞지 않습니다 · 부착 범위 1~130m';return null;}
+      const normal=hit.face ? surfaceNormal(hit) : new THREE.Vector3(0,1,0);
+      if(this.webObstructed({anchor:hit.point,normal})){this.webFailureReason='장애물이 거미줄 경로를 가립니다.';return null;}
       this.bestAnchorObject = hit.object;
-      this.bestAnchorNormal = hit.face ? surfaceNormal(hit) : new THREE.Vector3(0, 1, 0);
+      this.bestAnchorNormal = normal;
       this.bestAnchorCandidate = hit.point.clone();
       return this.bestAnchorCandidate;
     };
@@ -107,6 +128,7 @@ export class SwingPhysics {
     const aimed = accept(this.raycaster.intersectObjects(this.city.buildingMeshes, true)[0]);
     this.raycaster.far = 140;
     if (aimed) return aimed;
+    if(this.aimAssist===false)return null;
 
     // The center ray missed. Search ahead and above the travel direction
     // for a facade about 15–45m over the body.
@@ -136,7 +158,11 @@ export class SwingPhysics {
         this.raycaster.far = 130;
         const hit = this.raycaster.intersectObjects(this.city.buildingMeshes, true)[0];
         this.raycaster.far = 140;
-        if (!hit || hit.distance < 4 || hit.distance > 130) continue;
+        if (!hit || hit.distance < 4 || hit.distance > 130 || hit.point.distanceTo(eye)>130) continue;
+        // Rank only reachable surfaces, otherwise a blocked high facade
+        // masks every usable alternative in the search cone.
+        const normal=hit.face ? surfaceNormal(hit) : new THREE.Vector3(0,1,0);
+        if(this.webObstructed({anchor:hit.point,normal}))continue;
         const height = hit.point.y - eye.y;
         let score = 100 - hit.distance * 0.35 + Math.min(Math.max(height, 0), 50) * 1.5;
         if (height >= 15 && height <= 45) score += 40;
@@ -146,18 +172,32 @@ export class SwingPhysics {
     return accept(best);
   }
 
-  startSwing(camera,allowSame=true) {
+  // Right click passes the hand opposite the latest left-button rope.
+  offhand() {
+    return this.handForButton(2);
+  }
+
+  handForButton(button) {
+    const owned=this.webs.findLast(web=>(web.button??0)===button);
+    if(owned)return owned.hand;
+    const other=this.webs.findLast(web=>(web.button??0)!==button);
+    const base=other?.hand || this.nextWebHand;
+    return other || button===2 ? (base==='left'?'right':'left') : base;
+  }
+
+  startSwing(camera,allowSame=true,shot=null) {
     if(this.webEnabled===false && GROUNDED.includes(this.state))return false;
     const anchor = this.findBestAnchor(camera);
-    if (!anchor) return false;
-    const hand=this.nextWebHand;
+    if (!anchor) {this.onWebFailure?.(this.webFailureReason);return false;}
+    const hand=shot?.hand || this.nextWebHand;
+    const button=shot?.button ?? 0;
     const sameHand=this.webs.find(web=>web.hand===hand);
     if (!allowSame && this.isSwinging && sameHand?.anchor.distanceTo(anchor) < 0.8 &&
         sameHand.object === this.bestAnchorObject) return false;
     if(this.webObstructed({anchor,normal:this.bestAnchorNormal}))return false;
 
     if(this.state==='WEB_ZIP' && this.zipAnchor && !this.webs.length)this.webs=[{
-      hand:this.pullHand || this.character.currentHand || 'left',anchor:this.zipAnchor.clone(),
+      hand:this.pullHand || this.character.currentHand || 'left',button:0,anchor:this.zipAnchor.clone(),
       normal:this.lastWebNormal?.clone(),object:this.bestAnchorObject,
       length:Math.max(1.45,this.position.distanceTo(this.zipAnchor))}];
 
@@ -175,12 +215,12 @@ export class SwingPhysics {
     this.lastWebNormal = this.bestAnchorNormal?.clone() || new THREE.Vector3(0, 1, 0);
     this.ropeLength = Math.max(1.45, this.position.distanceTo(this.anchorPoint));
     // Each hand keeps its own anchor. A later shot replaces only that hand.
-    this.webs=this.webs.filter(web=>web.hand!==hand);
-    this.webs.push({hand,anchor:anchor.clone(),normal:this.lastWebNormal.clone(),
+    this.webs=this.webs.filter(web=>web.hand!==hand && (!shot || (web.button??0)!==button));
+    this.webs.push({hand,button,anchor:anchor.clone(),normal:this.lastWebNormal.clone(),
       object:this.anchorObject,length:this.ropeLength});
     this.character.fireWeb?.(this.anchorPoint,hand);
     this.syncWebHands();
-    this.nextWebHand=hand==='left'?'right':'left';
+    if(shot?.advance!==false)this.nextWebHand=hand==='left'?'right':'left';
 
     // Attachment changes the constraint, never the player's momentum.
     this.launchAssistAvailable = false;
@@ -195,23 +235,12 @@ export class SwingPhysics {
     if (!anchor || !this.anchorSupported({anchor,normal:this.lastWebNormal})) return false;
     const radial = this.position.clone().sub(anchor).normalize();
     const radialSpeed = this.velocity.dot(radial);
-    this.velocity.addScaledVector(radial, -radialSpeed);
-    if (this.velocity.length() < 5) {
-      const tangent = new THREE.Vector3();
-      camera.getWorldDirection(tangent);
-      tangent.addScaledVector(radial, -tangent.dot(radial)).normalize();
-      if (tangent.lengthSq() < 1e-5) {
-        tangent.crossVectors(radial, new THREE.Vector3(0, 1, 0));
-        if (tangent.lengthSq() < 1e-5) tangent.crossVectors(radial, new THREE.Vector3(1, 0, 0));
-        tangent.normalize();
-      }
-      this.velocity.addScaledVector(tangent, 6 - this.velocity.length());
-    }
+    if(radialSpeed>0)this.velocity.addScaledVector(radial, -radialSpeed);
     this.anchorPoint = anchor.clone();
     this.anchorObject = this.bestAnchorObject || null;
     this.ropeLength = Math.max(1.45, this.position.distanceTo(anchor));
     const hand=this.pullHand || this.character.currentHand || 'left';
-    this.webs=[{hand,anchor:anchor.clone(),normal:this.lastWebNormal?.clone(),
+    this.webs=[{hand,button:0,anchor:anchor.clone(),normal:this.lastWebNormal?.clone(),
       object:this.anchorObject,length:this.ropeLength}];
     this.syncWebHands();
     this.isSwinging = true;
@@ -246,17 +275,44 @@ export class SwingPhysics {
     this.anchorPoint = null;
     this.anchorObject = null;
     this.webs=[];
-    this.clearWebVisuals();
+    this.clearWebVisuals(true);
     this.swingCooldown = 0;
     this.velocity.clampLength(0, this.maxSpeed);
   }
 
-  clearWebVisuals() {
+  // Drop only the ropes owned by one mouse button. The last rope uses the
+  // same inert release as letting go of a left-click pendulum.
+  releaseWebButton(button) {
+    if (!this.isSwinging) return;
+    const dropped=this.webs.filter(web=>(web.button??0)===button);
+    if (!dropped.length) return;
+    this.webs=this.webs.filter(web=>(web.button??0)!==button);
+    if (!this.webs.length) {
+      this.releaseSwing(false);
+      return;
+    }
+    this.syncWebHands();
+    const latest=this.webs.at(-1);
+    this.anchorPoint=latest.anchor;
+    this.anchorObject=latest.object;
+    this.ropeLength=latest.length;
+    this.lastWebAnchor=latest.anchor.clone();
+    this.lastWebNormal=latest.normal?.clone() || this.lastWebNormal;
+    this.character.persistentWebAnchor=latest.anchor.clone();
+    if (dropped.some(web=>web.hand===this.character.currentHand)) {
+      this.character.webShotTimer=0;
+      this.character.webShotAnchor=null;
+    }
+  }
+
+  clearWebVisuals(preservePose = false) {
     this.character.webAttachments=[];
     this.character.persistentWebAnchor=null;
     this.character.webShotAnchor=null;
     this.character.webShotTimer=0;
-    this.character.webHandWeights={};this.character.webHandTargets={};
+    // Hide the strand immediately, but let Character fade its reaching arm
+    // out after release. Clearing IK here made the wrist snap in one frame.
+    if(!preservePose){this.character.webHandWeights={};this.character.webHandTargets={};}
     this.character.webLaunchTimers={};
     this.character.updateWeb?.(false,null);
   }
@@ -267,6 +323,7 @@ export class SwingPhysics {
     this.lastWebNormal = null;
     this.zipAnchor = null;
     this.zipTarget = null;
+    this.zipTime = 0;
     if (this.state === 'WEB_ZIP') this.state = this.velocity.y > 0 ? 'JUMPING' : 'FALLING';
     this.character.persistentWebAnchor = null;
     this.character.webShotAnchor = null;
@@ -339,7 +396,7 @@ export class SwingPhysics {
 
   performAirJump(camera, aimNdc = new THREE.Vector2(0, 0)) {
     if(this.webEnabled===false && GROUNDED.includes(this.state))return false;
-    if (!this.canAirJump || this.isSwinging || this.state === 'SWINGING') return false;
+    if (!this.canAirJump || this.isSwinging || !['FALLING','JUMPING'].includes(this.state)) return false;
 
     // Web Zip: Pulls character forward and upward
     camera.updateMatrixWorld(true);
@@ -347,7 +404,7 @@ export class SwingPhysics {
     this.raycaster.far = 80;
     const hit = this.raycaster.intersectObjects(this.city.buildingMeshes, true)[0];
     this.raycaster.far = 140;
-    if (!hit || hit.distance < 4 || !hit.face) return false;
+    if (!hit || hit.distance < 4 || !hit.face || hit.point.distanceTo(this.position)>80) return false;
     const normal = surfaceNormal(hit);
     if(!this.anchorSupported({anchor:hit.point,normal}))return false;
     const target = hit.point.clone().addScaledVector(normal, 1.05);
@@ -384,19 +441,22 @@ export class SwingPhysics {
     return true;
   }
 
-  performAirTrick() {
-    if (this.character.isTricking || this.character.contactTime < 0.7 ||
-        this.position.y < 3) return false;
-    if (this.state === 'FALLING' || this.state === 'JUMPING' || this.state === 'SWINGING') {
-      this.character.triggerAirTrick();
-      this.audio.playTrickSound();
-      this.stuntScore += 250;
-      if (this.onStuntCallback) {
-        this.onStuntCallback('SPIDEY FLIP', 250);
-      }
-      return true;
+  performAirTrick(input = {}) {
+    const key = typeof input === 'string' ? input : selectAirTrick(input);
+    const trick = AIR_TRICKS[key];
+    if (!Object.hasOwn(AIR_TRICKS, key) || this.character.isTricking) return false;
+    if (!['FALLING', 'JUMPING'].includes(this.state) || this.isSwinging) {
+      if (this.state === 'SWINGING') this.onStuntCallback?.('줄을 놓고 T로 공중 묘기를 연결하세요', 0);
+      return false;
     }
-    return false;
+    if (this.character.contactTime < trick.duration + .15 || this.position.y < 3) {
+      this.onStuntCallback?.('묘기를 마칠 높이가 부족합니다', 0);
+      return false;
+    }
+    this.character.triggerAirTrick(key);
+    this.audio.playTrickSound();
+    this.onStuntCallback?.(trick.label, 0);
+    return true;
   }
 
   update(delta, input, camera) {
@@ -405,33 +465,53 @@ export class SwingPhysics {
     this.character.landingSpeed = 0;
 
     const websLocked=this.webEnabled===false && GROUNDED.includes(this.state);
-    if(websLocked){input.webTap=input.webFireHeld=input.webHold=false;}
+    if(websLocked){
+      input.webTap=input.webFireHeld=input.webHold=false;
+      input.webTapRight=input.webFireHeldRight=input.webHoldRight=false;
+    }
     // 1. Raycast for candidate anchor point in real-time
     this.findBestAnchor(camera);
 
-    // 2. Stay on the line only while the button is held.
+    // 2. Each held mouse button keeps its own pendulum rope.
     const webTap = !!input.webTap;
+    const webTapRight = !!input.webTapRight;
     input.webTap = false;
+    input.webTapRight = false;
     this.webFireCooldown = Math.max(0, this.webFireCooldown - Math.max(0, delta));
+    const showMiss=(hand)=>{
+      this.raycaster.setFromCamera(this.webAimNdc,camera);
+      const direction=this.raycaster.ray.direction.clone();
+      // A downward camera angle would bury the missed strand in the roof.
+      direction.y=Math.max(direction.y,0.1);direction.normalize();
+      const target=this.position.clone().add(new THREE.Vector3(0,1.3,0)).addScaledVector(direction,28);
+      this.character.fireWebMiss?.(target,hand);
+      this.audio.playWebShoot?.();
+    };
     if (webTap) {
-      const attached = this.startSwing(camera);
-      if (!attached && !this.isSwinging) {
-        this.raycaster.setFromCamera(this.webAimNdc,camera);
-        const direction=this.raycaster.ray.direction.clone();
-        // A downward camera angle would bury the missed strand in the roof.
-        direction.y=Math.max(direction.y,0.1);direction.normalize();
-        const target=this.position.clone().add(new THREE.Vector3(0,1.3,0)).addScaledVector(direction,28);
-        this.character.fireWebMiss?.(target,this.nextWebHand);
-        this.audio.playWebShoot?.();
-      }
-      if (!attached && !this.isSwinging && this.state !== 'WEB_ZIP' && !input.webFireHeld) input.webHold = false;
+      const hand=this.handForButton(0);
+      const attached = this.startSwing(camera,true,{hand,button:0});
+      if (!attached && !this.webs.some(web=>(web.button??0)===0)) showMiss(hand);
+      if (!attached && !this.webs.some(web=>(web.button??0)===0) && this.state !== 'WEB_ZIP' && !input.webFireHeld) input.webHold = false;
       this.webFireCooldown = this.webFireInterval;
-    } else if (input.webHold && !this.webLatch && !this.isSwinging && this.state !== 'WEB_ZIP') {
-      this.startSwing(camera);
+    } else if (input.webHold && !this.webLatch && !this.webs.some(web=>(web.button??0)===0) && this.state !== 'WEB_ZIP') {
+      this.startSwing(camera,true,{hand:this.handForButton(0),button:0});
     }
-    const webButton=!!(input.webFireHeld || input.webHold);
-    if (this.isSwinging && !webButton) this.releaseSwing(false);
-    this.webLatch = webButton;
+    if (webTapRight) {
+      const hand=this.offhand();
+      const attached=this.startSwing(camera,true,{hand,button:2,advance:false});
+      if (!attached && !this.webs.some(web=>(web.button??0)===2)) showMiss(hand);
+      if (!attached && !this.webs.some(web=>(web.button??0)===2) && this.state!=='WEB_ZIP' && !input.webFireHeldRight) input.webHoldRight=false;
+      this.webFireCooldown = this.webFireInterval;
+    } else if (input.webHoldRight && !this.webLatchRight && !this.webs.some(web=>(web.button??0)===2) && this.state!=='WEB_ZIP') {
+      const hand=this.offhand();
+      this.startSwing(camera,true,{hand,button:2,advance:false});
+    }
+    const leftButton=!!(input.webFireHeld || input.webHold);
+    const rightButton=!!(input.webFireHeldRight || input.webHoldRight);
+    if (this.isSwinging && !leftButton) this.releaseWebButton(0);
+    if (this.isSwinging && !rightButton) this.releaseWebButton(2);
+    this.webLatch = leftButton;
+    this.webLatchRight = rightButton;
     if (input.jump) this.jumpBuffer = 0.14;
     input.jump = false;
 
@@ -458,8 +538,20 @@ export class SwingPhysics {
       this.updateFreePhysics(step, input, camera);
     }
 
+    // Keep ordinary play inside the city instead of teleporting at its edge.
+    // Unexpected far-away coordinates still use the recovery guard below.
+    if(this.softBoundary){const limit=this.city.playableHalfExtent||2400;
+      for(const axis of ['x','z']){const distance=Math.abs(this.position[axis]);if(distance>limit-12&&distance<limit+5){
+        const sign=Math.sign(this.position[axis]);if(this.velocity[axis]*sign>0)this.velocity[axis]*=Math.exp(-8*step);
+        if(distance>limit-1){this.position[axis]=sign*(limit-1);if(this.velocity[axis]*sign>0)this.velocity[axis]=0;}
+      }}
+    }
     // 4. City Collisions
     this.handleCollisions(step, input);
+    if (['SWINGING','WEB_ZIP'].includes(this.state) && Math.hypot(this.velocity.x,this.velocity.z)>0.5) {
+      this.facingAngle=Math.atan2(this.velocity.x,this.velocity.z);
+      this.character.targetFacingAngle=this.facingAngle;
+    }
     this.jumpBuffer = Math.max(0, this.jumpBuffer - step);
     input.jump = false;
     this.velocity.clampLength(0, this.maxSpeed);
@@ -518,7 +610,7 @@ export class SwingPhysics {
       const camForward=new THREE.Vector3();
       camera?.getWorldDirection(camForward);
       camForward.y=0;
-      if(camForward.lengthSq()<1e-6)camForward.set(0,0,1);
+      if(camForward.lengthSq()<1e-6)camForward.set(Math.sin(this.facingAngle),0,Math.cos(this.facingAngle));
       camForward.normalize();
       const side=new THREE.Vector3().crossVectors(camForward,new THREE.Vector3(0,1,0));
       const effort=camForward.multiplyScalar((input.forward?1:0)-(input.backward?1:0))
@@ -538,6 +630,17 @@ export class SwingPhysics {
 
   syncWebHands() {
     this.character.webAttachments=this.webs.map(web=>({hand:web.hand,anchor:web.anchor}));
+    const latest=this.webs.at(-1);
+    this.character.persistentWebAnchor=latest?.anchor.clone() || null;
+    // Shot visuals outlive their launch animation. When collision severs a
+    // hand, its transient shot must not redraw a rope physics already removed.
+    if(!this.webs.some(web=>web.hand===this.character.currentHand)) {
+      this.character.webShotTimer=0;
+      this.character.webShotAnchor=null;
+    }
+    for(const hand of Object.keys(this.character.webLaunchTimers || {})) {
+      if(!this.webs.some(web=>web.hand===hand))delete this.character.webLaunchTimers[hand];
+    }
   }
 
   anchorSupported(web) {
@@ -663,22 +766,19 @@ export class SwingPhysics {
   }
 
   updateFreePhysics(delta, input, camera) {
-    if (this.state === 'WEB_ZIP' && this.zipTarget && !this.anchorSupported({anchor:this.zipAnchor,normal:this.lastWebNormal}))this.clearWebAnchor();
+    if (this.state === 'WEB_ZIP' && this.zipTarget && this.webObstructed({anchor:this.zipAnchor,normal:this.lastWebNormal}))this.clearWebAnchor();
     if (this.state === 'WEB_ZIP' && this.zipTarget) {
       this.zipTime -= delta;
       const toTarget = this.zipTarget.clone().sub(this.position);
       const distance = toTarget.length();
       if (distance < 0.28) {
         this.jumpBuffer = 0;
-        if (this.enterSwingFromPull(camera)) return;
-        this.zipTarget = null;
-        this.zipAnchor = this.lastWebAnchor?.clone() || null;
-        this.state = 'FALLING';
-        return;
+        // Arrival retains a tether only for a physically held left button.
+        if ((input.webHold || input.webFireHeld) && this.enterSwingFromPull(camera)) return;
+        this.clearWebAnchor();
       } else if (this.zipTime <= 0 || input.jump) {
-        this.zipTarget = null; this.zipAnchor = this.lastWebAnchor?.clone() || null;
+        this.clearWebAnchor();
         this.jumpBuffer = 0;
-        this.state = 'FALLING';
       } else {
         const desiredSpeed = Math.min(22, Math.sqrt(2 * 35 * distance));
         this.velocity.lerp(toTarget.normalize().multiplyScalar(desiredSpeed), 1 - Math.exp(-12 * delta));
@@ -707,7 +807,8 @@ export class SwingPhysics {
     if (isGrounded && ['LANDING','ROLLING'].includes(this.state)) {
       if (this.recoveryElapsed > this.recoveryTime * 0.45 &&
           (input.jump || input.forward || input.backward || input.left || input.right)) {
-        this.state = 'IDLE'; this.recoveryTime = 0;
+        if(this.landingCarry && (input.forward||input.backward||input.left||input.right)){const carry=this.landingCarry.clone().clampLength(0,input.sprint?this.sprintSpeed:this.walkSpeed);this.velocity.x=carry.x;this.velocity.z=carry.z;}
+        this.state = 'IDLE'; this.recoveryTime = 0;this.landingCarry=null;
       }
     }
     if (isGrounded && ['LANDING','ROLLING'].includes(this.state)) {
@@ -815,6 +916,8 @@ export class SwingPhysics {
       }
     }
 
+    // Bound displacement as well as the velocity displayed after the step.
+    this.velocity.clampLength(0, this.maxSpeed);
     // Integrate position
     this.position.addScaledVector(this.velocity, delta);
   }
@@ -823,14 +926,14 @@ export class SwingPhysics {
     if(this.state==='MANTLING')return; // Traversal already resolves its swept capsule.
     const previous = this.previousPosition || this.position;
     const fallingSpeed = this.velocity.y;
+    const collisionSpeed=this.velocity.length();
     const resolved = this.city.resolveMovement
       ? this.city.resolveMovement(previous, this.position, this.velocity)
       : resolveBody(previous, this.position, this.velocity, this.city.colliders);
     this.position.copy(resolved.position);
     const sweptWall = resolved.contacts.find(hit => Math.abs(hit.normal.y) < 0.5 && hit.blocked!==false);
-    if (resolved.contacts.length && this.state === 'WEB_ZIP') {
-      this.zipTarget = null; this.zipAnchor = this.lastWebAnchor?.clone() || null; this.state = 'FALLING';
-    }
+    if(sweptWall && collisionSpeed>8 && !input.wallRun)this.onCollision?.();
+    if (resolved.contacts.some(contact=>contact.blocked!==false) && this.state === 'WEB_ZIP') this.clearWebAnchor();
     let floor = this.city.resolveMovement ? null : this.position.y <= 0.1 ? 0 : null;
     if (resolved.grounded && fallingSpeed <= 0) floor = this.city.supportHeight(this.position);
     for (const c of this.city.colliders || []) {
@@ -868,7 +971,12 @@ export class SwingPhysics {
         const floorContact = resolved.contacts.find(c => c.normal && c.normal.y > 0.5);
         if (floorContact) groundNormal.copy(floorContact.normal);
       }
-      if (airborne) this.onLanding?.(this.position.clone(), impact, groundNormal);
+      if (airborne) {
+        this.character.cancelAirTrick?.();
+        this.airTrickChain.clear();
+        this.airTrickRepeats.clear();
+      }
+      if (airborne){this.landingCarry=this.velocity.clone().setY(0);this.onLanding?.(this.position.clone(), impact, groundNormal);}
       const moving = input.forward || input.backward || input.left || input.right;
       if (airborne && impact > 7) {
         const horizontal = Math.hypot(this.velocity.x, this.velocity.z);
@@ -925,6 +1033,10 @@ export class SwingPhysics {
 
   resetPosition(reason = null) {
     this.onReset?.();
+    this.landingCarry=null;
+    this.character.cancelAirTrick?.();
+    this.airTrickChain.clear();
+    this.airTrickRepeats.clear();
     // Spawn on a nice rooftop
     const spawn = this.city.getRooftopSpawn(95);
     this.position.copy(spawn);
@@ -943,6 +1055,7 @@ export class SwingPhysics {
     this.lastWebAnchor = null;
     this.lastWebNormal = null;
     this.webLatch = false;
+    this.webLatchRight = false;
     this.character.isTricking = false;
     this.character.trickRotation = 0;
     this.character.lastState = null;
@@ -967,7 +1080,7 @@ export class SwingPhysics {
     if (reason) this.onRecovery?.(reason);
   }
 
-  clearPendingInput() { this.jumpBuffer = 0; this.coyoteTime = 0; this.webLatch = false; }
+  clearPendingInput() { this.jumpBuffer = 0; this.coyoteTime = 0; this.webLatch = false; this.webLatchRight = false; }
 
   supportHeight(pos) {
     if (this.city.supportHeight) {

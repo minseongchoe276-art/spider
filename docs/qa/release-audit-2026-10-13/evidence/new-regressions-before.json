@@ -1,0 +1,39 @@
+{
+  "passed": 2,
+  "total": 7,
+  "results": [
+    {
+      "name": "Null or malformed saved settings preserve usable defaults",
+      "status": "FAIL",
+      "error": "Cannot read properties of null (reading 'sensitivity')"
+    },
+    {
+      "name": "Enhanced host cannot become ready with an invalid arena",
+      "status": "FAIL",
+      "error": "Invalid start point was accepted\n\ntrue !== false\n"
+    },
+    {
+      "name": "Valid enhanced arena supports a two-player start",
+      "status": "PASS"
+    },
+    {
+      "name": "Resuming from an occupied socket cannot strand its previous membership",
+      "status": "FAIL",
+      "error": "One socket occupies two rooms\n\n2 !== 1\n"
+    },
+    {
+      "name": "Oversized WebSocket payload is rejected at the transport boundary",
+      "status": "FAIL",
+      "error": "Oversized connection remained open"
+    },
+    {
+      "name": "Control-message floods cannot trigger unlimited room-list broadcasts",
+      "status": "FAIL",
+      "error": "Flooding connection remained open"
+    },
+    {
+      "name": "Malformed messages do not prevent the next valid command",
+      "status": "PASS"
+    }
+  ]
+}

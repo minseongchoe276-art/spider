@@ -1,16 +1,18 @@
-import { sanitizePose } from '../src/RemoteMotion.js';
 import { WebSocketServer } from 'ws';
 import { randomBytes } from 'node:crypto';
 import { MATCH, policeCount } from '../src/MatchRules.js';
+import { sanitizePose } from '../src/RemoteMotion.js';
+import {PURSUIT,matchDuration,arenaFrom,arenaContains} from '../src/PursuitRules.js';
+import {proceduralCollision,blockedSegment} from './city-collision.mjs';
 
 const rooms = new Map();
 const clients = new Set();
 const validName = value => String(value || '').trim().slice(0, 16) || '플레이어';
 const send = (ws, data) => { if (ws.readyState === 1) ws.send(JSON.stringify(data)); };
-const publicRoom = room => ({ code: room.code, name: room.name, mode: room.mode, city:room.city, count: room.players.size, capacity: room.capacity, phase: room.phase });
-const playerView = p => ({ id:p.id, name:p.name, ready:p.ready, team:p.team, health:p.health, eliminated:p.eliminated, seen:!!p.seen, x:p.x, y:p.y, z:p.z, facing:p.facing });
+const publicRoom = room => ({ code: room.code, name: room.name, mode: room.mode, city:room.city, count: room.players.size, capacity: room.capacity, phase: room.phase, enhanced:!!room.enhanced });
+const playerView = p => ({ id:p.id, name:p.name, ready:p.ready, team:p.team, health:p.health, eliminated:p.eliminated, seen:!!p.seen, x:p.x, y:p.y, z:p.z, facing:p.facing, progress:p.progress||0, connected:p.ws?.readyState===1 });
 const broadcast = (room, data) => { for (const p of room.players.values()) send(p.ws, data); };
-const roomState = room => ({ type:'room', room:publicRoom(room), players:[...room.players.values()].map(playerView), host:room.host, endsAt:room.endsAt || null, vulnerableAt:room.vulnerableAt || null, serverNow:Date.now(), winner:room.winner || null });
+const roomState = room => ({ type:'room', room:publicRoom(room), players:[...room.players.values()].map(playerView), host:room.host, endsAt:room.endsAt || null, vulnerableAt:room.vulnerableAt || null, serverNow:Date.now(), winner:room.winner || null, arena:room.arena||null, round:room.round||1, pulseUntil:room.pulseUntil||0 });
 const publish = room => { broadcast(room, roomState(room)); publishList(); };
 const publishList = () => { const data={type:'rooms', rooms:[...rooms.values()].filter(r=>r.phase==='waiting').map(publicRoom)}; for (const ws of clients) send(ws,data); };
 const error = (ws, message) => send(ws,{type:'error',message});
@@ -36,49 +38,76 @@ function join(ws, room, name, city) {
   if(room.city!==city)return send(ws,{type:'switch-city',city:room.city,code:room.code});
   if(ws.player) leave(ws);
   const id=randomBytes(8).toString('hex');
-  const p={ws,id,room:room.code,name:validName(name),ready:false,team:null,health:100,eliminated:false,seen:false,x:0,y:0,z:0,facing:0,lastMove:0,cooldowns:{punch:0,web:0}};
+  const p={ws,id,resumeToken:randomBytes(24).toString('hex'),room:room.code,name:validName(name),ready:false,team:null,health:100,eliminated:false,seen:false,x:0,y:0,z:0,facing:0,lastMove:0,cooldowns:{punch:0,web:0}};
   room.players.set(id,p);ws.player=p;
-  send(ws,{type:'joined',id});publish(room);
+  send(ws,{type:'joined',id,resumeToken:p.resumeToken,code:room.code});publish(room);
 }
 function start(room) {
   const players=[...room.players.values()];
   if(players.length<MATCH.minPlayers || players.some(p=>!p.ready)) return;
   room.phase='playing';room.winner=null;
-  room.endsAt=room.mode==='tag'?Date.now()+MATCH.durationMs:0;
+  room.endsAt=room.mode==='tag'?Date.now()+(room.enhanced?matchDuration(players.length):MATCH.durationMs):0;
   room.vulnerableAt=room.mode==='tag'?Date.now()+MATCH.graceMs:0;
   const shuffled=[...players];
   for(let i=shuffled.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[shuffled[i],shuffled[j]]=[shuffled[j],shuffled[i]];}
+  if(room.enhanced){shuffled.sort((a,b)=>(a.policeRounds||0)-(b.policeRounds||0));room.arena=arenaFrom(room.anchor,room.city,room.roofs);}
   const cops=room.mode==='tag'?policeCount(players.length):0;
-  shuffled.forEach((p,i)=>{p.team=room.mode==='tag'?(i<cops?'police':'runner'):'free';p.health=100;p.eliminated=false;p.seen=false;p.x=0;p.y=0;p.z=0;p.lastMove=0;p.cooldowns={punch:0,web:0};});
+  shuffled.forEach((p,i)=>{p.team=room.mode==='tag'?(i<cops?'police':'runner'):'free';if(p.team==='police')p.policeRounds=(p.policeRounds||0)+1;p.progress=0;p.goalAt=0;p.rescue=null;p.history=[];p.health=100;p.eliminated=false;p.seen=false;p.x=0;p.y=0;p.z=0;p.lastMove=0;p.cooldowns={punch:0,web:0};});
   publish(room);
 }
 function handle(ws, data) {
   if(!data || typeof data!=='object')return;
+  if(data.type==='resume'&&ws.player)return error(ws,'먼저 현재 방에서 나가세요.');
+  if(data.type==='resume'){const room=rooms.get(String(data.code||''));const player=room&&[...room.players.values()].find(p=>p.resumeToken===data.token&&p.disconnectedAt&&Date.now()-p.disconnectedAt<30000);if(!player)return error(ws,'복귀 시간이 만료되었습니다.');player.ws=ws;player.disconnectedAt=0;ws.player=player;send(ws,{type:'joined',id:player.id,resumeToken:player.resumeToken,code:room.code});publish(room);return;}
   if(data.type==='list') return publishList();
   if(data.type==='create') {
     const capacity=Number(data.capacity);
     if(!Number.isInteger(capacity)||capacity<MATCH.minPlayers||capacity>MATCH.maxPlayers) return error(ws,`정원은 ${MATCH.minPlayers}~${MATCH.maxPlayers}명입니다.`);
-    const room={code:code(),name:String(data.name||'새 방').trim().slice(0,24)||'새 방',mode:data.mode==='tag'?'tag':'free',city:data.city==='hong-kong'?'hong-kong':'procedural',capacity,phase:'waiting',players:new Map(),host:null,endsAt:0,winner:null};
+    const room={code:code(),name:String(data.name||'새 방').trim().slice(0,24)||'새 방',mode:data.mode==='tag'?'tag':'free',city:data.city==='hong-kong'?'hong-kong':'procedural',capacity,phase:'waiting',players:new Map(),host:null,endsAt:0,winner:null,enhanced:data.enhanced===true,round:1,pendingHits:new Map()};
     rooms.set(room.code,room);join(ws,room,data.playerName,room.city);room.host=ws.player?.id;publish(room);return;
   }
   if(data.type==='join') return join(ws,rooms.get(String(data.code||'').trim().toUpperCase()),data.playerName,data.city);
   const p=ws.player, room=p&&rooms.get(p.room);if(!room)return;
   if(data.type==='leave') {leave(ws);send(ws,{type:'left'});return;}
-  if(data.type==='ready' && room.phase==='waiting') {p.ready=!!data.ready;publish(room);return;}
+  if(data.type==='ready' && room.phase==='waiting') {
+    if(room.enhanced&&data.ready){
+      if(!data.terrainReady)return error(ws,'지형 로딩이 완료된 뒤 준비하세요.');
+      if(p.id===room.host){
+        const arena=arenaFrom(data.spawn,room.city,Array.isArray(data.roofs)?data.roofs:[]);
+        if(!arena)return error(ws,'안전한 시작점과 이동할 지형 두 곳 이상이 필요합니다.');
+        // Own the validated values instead of retaining the request object.
+        room.anchor={x:arena.x,y:arena.y,z:arena.z};
+        room.roofs=arena.points.map(point=>({x:point.x,y:point.y,z:point.z}));
+      }
+    }
+    p.ready=!!data.ready;publish(room);return;
+  }
   if(data.type==='start' && room.host===p.id && room.phase==='waiting') {
     if(room.players.size<MATCH.minPlayers)return error(ws,`최소 ${MATCH.minPlayers}명이 모여야 시작할 수 있습니다.`);
     if([...room.players.values()].some(v=>!v.ready))return error(ws,'모든 플레이어가 준비해야 합니다.');
+    if(room.enhanced&&!arenaFrom(room.anchor,room.city,room.roofs))return error(ws,'방장의 안전 지형 준비가 필요합니다.');
     start(room);return;
   }
-  if(data.type==='rematch' && room.host===p.id && room.phase==='finished') {room.phase='waiting';room.winner=null;room.endsAt=0;for(const v of room.players.values()){v.ready=false;v.eliminated=false;v.health=100;v.team=null;}publish(room);return;}
-  if(room.phase!=='playing'||p.eliminated)return;
+  if(data.type==='rematch' && room.host===p.id && room.phase==='finished') {room.phase='waiting';room.round=(room.round||1)+1;room.winner=null;room.endsAt=0;for(const v of room.players.values()){v.ready=false;v.eliminated=false;v.health=100;v.team=null;}publish(room);return;}
+  if(data.type==='ping'){send(ws,{type:'pong',stamp:data.stamp,serverNow:Date.now()});return;}
+  if(room.phase!=='playing')return;
+  if(data.type==='hit-confirm'&&room.enhanced){const pending=room.pendingHits.get(data.hitId);if(!pending||pending.target!==p.id||Date.now()>pending.expires)return;room.pendingHits.delete(data.hitId);if(data.clear===true&&!p.eliminated)applyHit(room,room.players.get(pending.attacker),p,pending.kind);return;}
+  if(p.eliminated)return;
   if(data.type==='move') {
     const coords=[data.x,data.y,data.z,data.facing];
     if(coords.some(n=>!Number.isFinite(n))||Math.abs(data.x)>2500||Math.abs(data.z)>2500||data.y < -100 || data.y>1000)return;
     const now=Date.now();if(now-p.lastMove<40)return;
+    if(room.enhanced&&!arenaContains(room.arena,data,3)){send(ws,{type:'correction',x:p.x,y:p.y,z:p.z});return;}
     const distance=Math.hypot(data.x-p.x,data.y-p.y,data.z-p.z);
-    if(p.lastMove && distance>Math.max(20,(now-p.lastMove)*0.15))return;
+    // A 20m burst absorbs jitter once; it must not be granted again for
+    // every packet (which allowed 18m teleports at 20Hz). Normal movement
+    // is capped at 48m/s; 72m/s refill leaves network/simulation headroom.
+    const budget=p.lastMove?(p.moveBudget??20)+(now-p.lastMove)*0.072:20;
+    if(p.lastMove&&distance>budget){send(ws,{type:'correction',x:p.x,y:p.y,z:p.z});return;}
+    if(room.enhanced&&p.lastMove&&room.city==='procedural'&&blockedSegment(p,data,proceduralCollision().colliders)){send(ws,{type:'correction',x:p.x,y:p.y,z:p.z});return;}
+    p.moveBudget=p.lastMove?Math.min(20,budget-distance):20;
     p.x=data.x;p.y=data.y;p.z=data.z;p.facing=data.facing;p.seen=true;p.lastMove=now;
+    if(room.enhanced){p.history||=[];p.history.push({x:p.x,y:p.y,z:p.z,time:now});p.history=p.history.filter(h=>now-h.time<600);advanceGoal(room,p,now);}
     broadcast(room,{type:'move',id:p.id,x:p.x,y:p.y,z:p.z,facing:p.facing,pose:sanitizePose(data.pose)});return;
   }
   if(data.type==='attack' && room.mode==='tag' && p.team==='police') {
@@ -94,15 +123,25 @@ function handle(ws, data) {
       .filter(({v,d,dy})=>d<=rule.reach&&dy<rule.vertical&&(d<=0.35||aimAt(v)>=rule.cone))
       .sort((a,b)=>a.d-b.d)[0]?.v;
     if(!target)return;
-    target.health=Math.max(0,target.health-rule.damage);
-    if(target.health===0)target.eliminated=true;
-    broadcast(room,{type:'hit',attacker:p.id,target:target.id,kind,health:target.health,eliminated:target.eliminated});
-    if([...room.players.values()].filter(v=>v.team==='runner').every(v=>v.eliminated))finish(room,'police');
+    if(room.enhanced){if(now-target.lastMove>1500||now-p.lastMove>1500)return;if(room.city==='procedural'){if(blockedSegment(p,target,proceduralCollision().colliders))return;}else{const hitId=randomBytes(8).toString('hex');room.pendingHits.set(hitId,{attacker:p.id,target:target.id,kind,expires:now+600});send(target.ws,{type:'hit-check',hitId,from:{x:p.x,y:p.y,z:p.z},to:{x:target.x,y:target.y,z:target.z}});return;}}
+    applyHit(room,p,target,kind);
+    return;
+
   }
 }
+
+function applyHit(room,attacker,target,kind){if(!attacker||!target)return;target.health=Math.max(0,target.health-MATCH[kind].damage);target.eliminated=target.health===0;
+ broadcast(room,{type:'hit',attacker:attacker.id,target:target.id,kind,health:target.health,eliminated:target.eliminated});
+ if([...room.players.values()].filter(v=>v.team==='runner').every(v=>v.eliminated))finish(room,'police');}
+function advanceGoal(room,p,now){if(room.mode!=='tag'||p.team!=='runner'||!room.arena?.points?.length)return;
+ const target=room.arena.points[(p.progress||0)%room.arena.points.length];
+ if(now-(p.goalAt||0)>=PURSUIT.checkpointCooldown&&Math.hypot(p.x-target.x,p.y-target.y,p.z-target.z)<PURSUIT.checkpointRadius){p.progress=(p.progress||0)+1;p.goalAt=now;publish(room);if(p.progress>=PURSUIT.goal)finish(room,'runner');}
+ const ally=[...room.players.values()].find(v=>v.team==='runner'&&v.eliminated&&v.seen&&Math.hypot(v.x-p.x,v.y-p.y,v.z-p.z)<PURSUIT.reviveRadius);
+ if(ally){if(p.rescue?.id!==ally.id)p.rescue={id:ally.id,since:now};if(now-p.rescue.since>=PURSUIT.reviveMs){ally.health=50;ally.eliminated=false;p.rescue=null;publish(room);}}else p.rescue=null;}
+
 export function attachRooms(server) {
   if (!server) return;
-  const wss = new WebSocketServer({ noServer: true });
+  const wss = new WebSocketServer({ noServer: true, maxPayload: 4096 });
 
   const onUpgrade = (request, socket, head) => {
     let pathname = '';
@@ -124,22 +163,31 @@ export function attachRooms(server) {
   wss.on('connection', ws => {
     clients.add(ws);
     publishList();
+    let windowAt=Date.now(),messages=0,controls=0;
+    // ws emits an error before closing an over-limit frame. Keep that error
+    // local to the offending connection rather than crashing the process.
+    ws.on('error',()=>{});
     ws.on('message', raw => {
-      if (raw.length > 2048) return;
+      if (raw.length > 4096) return;
       try {
-        handle(ws, JSON.parse(raw.toString()));
+        const now=Date.now();if(now-windowAt>=1000){windowAt=now;messages=controls=0;}
+        if(++messages>120){ws.close(1008,'Message rate exceeded');return;}
+        const data=JSON.parse(raw.toString());
+        if(['list','create','join','resume','ready','start','rematch'].includes(data?.type)&&++controls>20){ws.close(1008,'Command rate exceeded');return;}
+        handle(ws, data);
       } catch {
         error(ws, '요청을 처리할 수 없습니다.');
       }
     });
     ws.on('close', () => {
       clients.delete(ws);
-      leave(ws);
+      if(ws.player&&rooms.get(ws.player.room)?.enhanced&&rooms.get(ws.player.room)?.phase==='playing'){ws.player.disconnectedAt=Date.now();publish(rooms.get(ws.player.room));}else leave(ws);
     });
   });
 
   const ticker = setInterval(() => {
     for (const room of rooms.values()) {
+      if(room.enhanced&&room.phase==='playing'){const now=Date.now();for(const p of [...room.players.values()])if(p.disconnectedAt&&now-p.disconnectedAt>30000)leave(p.ws);if(!rooms.has(room.code))continue;for(const [id,hit] of room.pendingHits)if(now>hit.expires)room.pendingHits.delete(id);if(now-(room.lastPulse||0)>PURSUIT.pulseInterval){room.lastPulse=now;room.pulseUntil=now+PURSUIT.pulseLength;publish(room);}}
       if (room.phase === 'playing' && room.mode === 'tag' && Date.now() >= room.endsAt) {
         finish(room, 'runner');
       }

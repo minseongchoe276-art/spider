@@ -1,0 +1,56 @@
+- generic "게임 화면. W A S D 이동, Space 점프, Escape 일시정지"
+- complementary "LOCAL CITY":
+  - strong: LOCAL CITY
+  - generic: PROCEDURAL DISTRICT
+  - generic: LOCAL
+  - img "현재 위치 동쪽 161미터, 북쪽 -193미터, 고도 96미터"
+  - generic: N ↑
+  - generic: 3D · 나 친구
+  - generic: 240m
+  - text: RANGE
+  - status: E +161m N -193m · ALT 96m
+- status
+- status: 경찰은 추격, 도망자는 이동 목표 3개를 완료하거나 제한 시간 생존. 쓰러진 팀원 곁에서 3초 유지하면 구조합니다. 시작 8초는 공격이 없습니다.
+- dialog "도시를 가로질러.":
+  - generic: ✳
+  - text: WEB RUNNER
+  - generic: LOCAL CITY · OPEN WORLD
+  - generic: 온라인 · 방을 선택하세요
+  - text: "01"
+  - generic: YOUR CITY. YOUR MOVE.
+  - heading "도시를 가로질러." [level=1]:
+    - text: 도시를
+    - emphasis: 가로질러.
+  - paragraph:
+    - text: 건물 사이를 스윙하고, 추격전을 시작하고,
+    - text: 나만의 도시를 네 방식대로 누벼봐.
+  - button "▶ 혼자 플레이 바로 도시로 뛰어들기 ↗":
+    - generic: ▶
+    - generic: 혼자 플레이
+    - generic: 바로 도시로 뛰어들기
+    - generic: ↗
+  - generic: 01 / EXPLORE
+  - generic: 02 / CHASE
+  - generic: 03 / SWING
+  - text: MULTIPLAYER / 02
+  - heading "함께 플레이" [level=2]
+  - paragraph: 방을 만들거나 친구의 게임에 합류하세요.
+  - text: YOUR SQUAD / 대기실
+  - heading "출시 검증 2인" [level=2]
+  - paragraph: 경찰과 도망자 · 2/2명 · 정원 2명
+  - text: 초대 코드
+  - strong: DCB464
+  - button "복사"
+  - generic: QA 참가자
+  - strong
+  - generic: ★ QA 호스트 (나)
+  - strong
+  - paragraph: 최소 2명 · 모두 지형 로딩 후 준비. 6명 이하는 경찰 1명, 7명 이상은 경찰 2명. 인원별 3~5분 · 목표 3개로 탈출 · 다음 경기 역할 순환. 시작 8초는 공격 불가.
+  - button "준비하기"
+  - button "시작" [disabled]
+  - button "방 나가기"
+  - generic: WEB RUNNER © LOCAL CITY
+  - generic: WASD 이동 · 마우스 조준 · SPACE 점프
+- complementary:
+  - strong: 실제 지형 · 모션 · 온라인 검사
+  - generic: "{ \"map\": \"procedural\", \"playing\": false, \"paused\": true, \"practice\": false, \"performance\": { \"windowFrames\": 3600, \"totalFrames\": 7032, \"activeSeconds\": 180.32, \"averageFps\": 35.1, \"frameMs\": { \"p50\": 28.1, \"p95\": 39.8, \"p99\": 46.7 }, \"longFramesOver50ms\": 30 }, \"renderer\": { \"calls\": 733, \"triangles\": 29888, \"geometries\": 331, \"textures\": 16, \"pixelRatio\": 1 }, \"viewport\": { \"width\": 1280, \"height\": 720, \"dpr\": 1 }, \"quality\": \"high\", \"resources\": { \"count\": 250, \"transferBytes\": 21446184 }, \"position\": [ -160.6, 95.812, -193.2 ], \"velocity\": [ 0, 0, 0 ], \"state\": \"IDLE\", \"motion\": \"combatIdle\", \"mode\": \"combat\", \"feet\": [ { \"side\": \"left\", \"ankle\": [ -160.365, 95.822, -192.916 ], \"surface\": 95.71197417482352 }, { \"side\": \"right\", \"ankle\": [ -160.716, 95.822, -193.579 ], \"surface\": 95.71197417482352 } ], \"peers\": [], \"map3D\": true, \"mapMeshes\": 348, \"facing\": 0, \"cameraYaw\": 0, \"webs\": [], \"history\": [ \"IDLE/undefined\", \"IDLE/idle\", \"IDLE/combatIdle\" ], \"decodedRGBTextures\": 0 }"

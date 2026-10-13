@@ -1,3 +1,4 @@
+import {cleanSettings} from './PlayerSettings.js';
 const KEY = 'spiderman-preferences-v1';
 const validCourse = course => /^(procedural|hong-kong)-(v2|v[34]-[0-9a-f]{8})$/.test(course);
 
@@ -5,10 +6,11 @@ export class Preferences {
   constructor(storage = null, reducedMotion = false) {
     this.storage = storage;
     this.lastSaveSucceeded = false;
-    this.values = { muted: false, reducedMotion, quality: 'balanced', bestTimes: {} };
+    this.values = { muted: false, reducedMotion, quality: 'balanced', bestTimes: {}, settings:cleanSettings() };
     try {
       const saved = JSON.parse(storage?.getItem(KEY) || 'null');
       if (saved && typeof saved === 'object') {
+        this.values.settings=cleanSettings(saved.settings);
         for (const key of ['muted', 'reducedMotion']) {
           if (typeof saved[key] === 'boolean') this.values[key] = saved[key];
         }

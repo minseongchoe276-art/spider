@@ -1,0 +1,24 @@
+{
+  "decision": "RELEASE_HOLD",
+  "source_fingerprint": "f857ad0149712b57b600770a9a6fd175e9aab18d9f44296b2573f5ffc302370a",
+  "fixed_game_defects": 10,
+  "open_P1": [
+    "SEC-01",
+    "SEC-02"
+  ],
+  "new_regressions": 17,
+  "test_execution_stages": 26,
+  "http_checks": 10,
+  "operating_supabase_mutated": false,
+  "matrix_rows": 59,
+  "notable_limits": [
+    "30min Node/WS snapshot predates final movement budget and camera query changes",
+    "No real 8-human session",
+    "No Safari/Firefox or physical gamepad",
+    "No operating Supabase write integration",
+    "46min optimized browser runtime includes extensive idle; predates verification-helper and CSS-only fixes",
+    "Supabase proposal not applied or staging validated"
+  ],
+  "fixed_verification_tool_defects": 1,
+  "browser_active_seconds": 2771.65
+}

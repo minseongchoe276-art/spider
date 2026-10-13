@@ -140,7 +140,14 @@ for(const dt of [1/30,1/60,1/144]) {
   assert(c.webHandTargets.left.distanceTo(new THREE.Vector3(-12,20,-3))>0.1,'Re-fired arm target snapped instantly');
   for(let t=0;t<0.6;t+=dt)c.update(dt,'SWINGING',new THREE.Vector3(0,0,5),left);
   finite(c);
-  c.webAttachments=[];
+  const releasePhysics=new SwingPhysics(new THREE.Scene(),{buildingMeshes:[],colliders:[]},c,{});
+  releasePhysics.isSwinging=true;releasePhysics.state='SWINGING';
+  const reachWeight=c.webHandWeights.left;
+  releasePhysics.releaseSwing(false);
+  assert.equal(c.webAttachments.length,0);
+  assert.equal(c.webHandWeights.left,reachWeight,'Physics release snapped the IK pose before its fade');
+  c.update(dt,'FALLING',new THREE.Vector3(0,-5,0),null);
+  assert(c.webHandWeights.left>0 && c.webHandWeights.left<reachWeight,'Released reaching arm did not blend out');
   for(let t=0;t<0.8;t+=dt)c.update(dt,'FALLING',new THREE.Vector3(0,-5,0),null);
   assert(c.webHandWeights.left<0.001 && c.webHandWeights.right<0.001,'Released hand pose stayed locked');
   finite(c);dualHandChecks++;c.mixer.stopAllAction();

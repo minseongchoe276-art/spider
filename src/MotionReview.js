@@ -4,6 +4,16 @@ import { SwingPhysics } from './SwingPhysics.js';
 import { City } from './City.js';
 import { StreamedCollision } from './StreamedCollision.js';
 
+export function updateDualWebReview(physics,input,camera,old,elapsed) {
+  for(const [time,x,y,button]of [[0.05,-4,7,0],[0.3,4,7,2],[2.4,-4,9,0]]){
+    if(!(old<time&&elapsed>=time))continue;
+    if(time===2.4)physics.releaseWebButton(0);
+    camera.lookAt(x,y,4);camera.updateMatrixWorld(true);
+    if(button===0)input.webTap=input.webHold=input.webFireHeld=true;
+    else input.webTapRight=input.webHoldRight=input.webFireHeldRight=true;
+  }
+}
+
 export function startMotionReview() {
   document.body.replaceChildren();
   document.body.style.cssText = 'margin:0;background:#dbe7ef;color:#16283b;font:15px system-ui;overflow:hidden';
@@ -192,10 +202,7 @@ export function startMotionReview() {
       if(physics.performWebPull(controllerCamera))input.webHold=true;
     }
     if(scenario==='dualWeb') {
-      for(const [time,x,y] of [[0.05,-4,7],[0.3,4,7],[2.4,-4,9]])if(old<time && elapsed>=time) {
-        controllerCamera.lookAt(x,y,4);controllerCamera.updateMatrixWorld(true);
-        input.webTap=true;
-      }
+      updateDualWebReview(physics,input,controllerCamera,old,elapsed);
     }
     if(scenario==='turn' && old<1 && elapsed>=1)physics.turnOnSpot('left');
     if(scenario==='turn' && old<3 && elapsed>=3)physics.turnOnSpot('right');

@@ -1,0 +1,54 @@
+PASS QA 1: Hong Kong layers share a city-owned budget without overwriting the library cache
+PASS QA 2: Streamed spawn is refreshed after a menu-time LOD change
+PASS QA 3: Streamed startup waits for idle queues and a stable support surface
+Failed loading GLTF/FBX models, keeping high-poly proxy: Error: simulated offline
+    at globalThis.fetch (file:///Users/choeminseong/Desktop/%E1%84%80%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%B7/scripts/check-qa.mjs:59:42)
+    at fetchAsset (file:///Users/choeminseong/Desktop/%E1%84%80%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%B7/src/AssetLoader.js:6:28)
+    at Character.loadCharacter (file:///Users/choeminseong/Desktop/%E1%84%80%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%B7/src/Character.js:166:54)
+    at new Character (file:///Users/choeminseong/Desktop/%E1%84%80%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%B7/src/Character.js:59:15)
+    at file:///Users/choeminseong/Desktop/%E1%84%80%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%B7/scripts/check-qa.mjs:61:21
+    at check (file:///Users/choeminseong/Desktop/%E1%84%80%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%B7/scripts/check-qa.mjs:19:41)
+    at file:///Users/choeminseong/Desktop/%E1%84%80%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%B7/scripts/check-qa.mjs:57:7
+PASS QA 4: Failed GLB remains startable, reports degradation, keeps attached web visible
+PASS QA 5: Asset HTTP failures and network timeout settle rather than wait forever
+PASS QA 6: Absent motion selects an available idle instead of keeping a fall pose
+PASS QA 7: Reattachment cannot repeatedly grant launch energy; swing cancels stale zip
+PASS QA 8: Tether obstruction on the same mesh releases the swing
+PASS QA 9: Procedural wall run mounts a supported rooftop
+PASS QA 10: Camera chooses the closest visual surface even with a farther collider
+PASS QA 11: Blocked camera holds its chosen shoulder through small clearance changes
+PASS QA 12: Mouse vertical direction stays consistent between third and first person
+PASS QA 13: Reduced motion disables camera shake and speed FOV
+PASS QA 14: Long-lived large tile rebuilds collision around a moved player
+PASS QA 15: Large triangle conversion is incremental and unload cancels pending work
+PASS QA 16: Disposal before Rapier init settles safely
+PASS QA 17: Time trial rejects an unloaded course without throwing
+PASS QA 18: Time trial rings are placed clear of procedural rooftops
+PASS QA 19: A loaded but obstructed checkpoint moves to a nearby clear location
+PASS QA 20: Changed checkpoint layouts never share a best-time key
+PASS QA 21: Race uses active simulation time and catches a fast ring crossing
+PASS QA 22: Being beside the ring does not count as passing its aperture
+PASS QA 23: Corrupt, invalid and inaccessible storage cannot break play
+PASS QA 24: Particles remain visible away from the original cached bounds
+PASS QA 25: Speed-effect response is independent of refresh rate
+PASS QA 26: Input aliases and opposing directions reflect all held keys
+PASS QA 27: Mute routes every effect through a master gain and restores wind
+PASS QA 28: Procedural spawns clear equipment, stay supported and keep the camera clear
+PASS QA 29: Initial spawn and recovery use the same preferred roof
+Audio unavailable; continuing silently: Error: device unavailable
+    at audio.init (file:///Users/choeminseong/Desktop/%E1%84%80%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%B7/scripts/check-qa.mjs:257:59)
+    at SoundController.ensureContext (file:///Users/choeminseong/Desktop/%E1%84%80%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%B7/src/Audio.js:33:18)
+    at file:///Users/choeminseong/Desktop/%E1%84%80%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%B7/scripts/check-qa.mjs:258:33
+    at getActual (node:assert:609:5)
+    at Function.doesNotThrow (node:assert:777:32)
+    at file:///Users/choeminseong/Desktop/%E1%84%80%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%B7/scripts/check-qa.mjs:258:10
+    at check (file:///Users/choeminseong/Desktop/%E1%84%80%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%B7/scripts/check-qa.mjs:19:41)
+    at file:///Users/choeminseong/Desktop/%E1%84%80%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%B7/scripts/check-qa.mjs:256:7
+PASS QA 30: Audio device failure cannot prevent starting the game
+PASS QA 31: Pause clears physical buttons and resume does not invent a held mouse button
+PASS QA 32: Right click does not start a reel or keep the left mouse latched
+PASS QA 33: A web pull arriving at its anchor keeps the swing latched on the following physics tick
+PASS QA 34: A missed quick web tap does not leave the web latch stuck
+PASS QA 35: Grounded combat clicks punch, airborne clicks web, and Space jumps off the line
+PASS QA 36: A complete Space down/up between frames still triggers a jump
+PASS: 36 QA regression scenarios

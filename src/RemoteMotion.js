@@ -1,3 +1,4 @@
+import { AIR_TRICKS } from './AirTricks.js';
 import * as THREE from 'three';
 import { Character } from './Character.js';
 import { groundSample } from './LedgeTraversal.js';
@@ -27,6 +28,8 @@ export function sanitizePose(pose) {
   return {state:pose.state,velocity,webs,anchor:vector(pose.anchor),wallNormal:vector(pose.wallNormal),
     mantle,wallDistance:Number.isFinite(pose.wallDistance)?THREE.MathUtils.clamp(pose.wallDistance,0,2):.7,
     landingSpeed:Number.isFinite(pose.landingSpeed)?THREE.MathUtils.clamp(pose.landingSpeed,0,100):0,
+    airTrick: pose.tricking && Object.hasOwn(AIR_TRICKS, pose.airTrick?.key) && Number.isFinite(pose.airTrick.elapsed)
+      ? { key: pose.airTrick.key, elapsed: THREE.MathUtils.clamp(pose.airTrick.elapsed, 0, AIR_TRICKS[pose.airTrick.key].duration) } : null,
     pendingTurn:pose.pendingTurn==='left'?'left':'right',combat,tricking:!!pose.tricking};
 }
 
@@ -34,7 +37,7 @@ export function capturePose(physics,character) {
   return sanitizePose({state:physics.state,velocity:physics.velocity,webs:physics.webs,
     anchor:physics.anchorPoint || physics.zipAnchor,wallNormal:physics.wallNormal,
     mantle:physics.mantle,wallDistance:character.wallDistance,landingSpeed:character.landingSpeed,
-    pendingTurn:character.pendingTurn,combat:character.combatAction,tricking:character.isTricking});
+    pendingTurn:character.pendingTurn,combat:character.combatAction,tricking:character.isTricking,airTrick:character.airTrick});
 }
 
 export class RemoteMotion {
@@ -94,6 +97,8 @@ export class RemoteMotion {
     c.combatAction=fresh && this.pose.combat ? {...this.pose.combat,time:this.pose.combat.time+(now-this.poseAt)/1000} : null;
     if (c.combatAction?.duration && c.combatAction.time>c.combatAction.duration) c.combatAction=null;
     c.isTricking=!!(fresh && this.pose.tricking);
+    c.airTrick=fresh && this.pose.airTrick ? {...this.pose.airTrick,
+      elapsed:this.pose.airTrick.elapsed+Math.max(0,(now-this.poseAt)/1000)-delta} : null;
     c.update(delta,state,v,anchor);
     this.marker.visible=c.isLoaded;
   }

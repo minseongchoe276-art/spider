@@ -1,0 +1,91 @@
+{
+ "map": "Hong Kong",
+ "ready": true,
+ "playing": true,
+ "paused": false,
+ "practice": false,
+ "performance": {
+  "windowFrames": 2127,
+  "totalFrames": 2127,
+  "activeSeconds": 97.07,
+  "averageFps": 21.91,
+  "frameMs": {
+   "p50": 45.2,
+   "p95": 49,
+   "p99": 57.6
+  },
+  "longFramesOver50ms": 81
+ },
+ "renderer": {
+  "calls": 83,
+  "triangles": 228117,
+  "geometries": 104,
+  "textures": 98,
+  "pixelRatio": 1
+ },
+ "viewport": {
+  "width": 1280,
+  "height": 720,
+  "dpr": 1
+ },
+ "quality": "high",
+ "resources": {
+  "count": 250,
+  "transferBytes": 44071538
+ },
+ "position": [
+  0,
+  19.748,
+  0
+ ],
+ "velocity": [
+  0,
+  0,
+  0
+ ],
+ "state": "IDLE",
+ "motion": "idle",
+ "mode": "web",
+ "feet": [
+  {
+   "side": "left",
+   "ankle": [
+    0.085,
+    19.633,
+    0.327
+   ],
+   "surface": 19.52300906442756
+  },
+  {
+   "side": "right",
+   "ankle": [
+    -0.056,
+    19.629,
+    -0.319
+   ],
+   "surface": 19.519264164200965
+  }
+ ],
+ "peers": [],
+ "map3D": true,
+ "mapMeshes": 125,
+ "facing": 0,
+ "cameraYaw": 0,
+ "webs": [],
+ "support": 19.521251222125237,
+ "collision": 148,
+ "pending": 0,
+ "history": [
+  "IDLE/undefined",
+  "FALLING/undefined",
+  "IDLE/idle",
+  "JUMPING/jump",
+  "FALLING/drop",
+  "SWINGING/swing",
+  "FALLING/drop",
+  "LANDING/land",
+  "IDLE/idle"
+ ],
+ "decodedRGBTextures": 4,
+ "textureDiagnostics": []
+}

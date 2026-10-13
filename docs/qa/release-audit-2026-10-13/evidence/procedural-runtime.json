@@ -1,0 +1,83 @@
+{
+ "map": "procedural",
+ "playing": true,
+ "paused": false,
+ "practice": false,
+ "performance": {
+  "windowFrames": 523,
+  "totalFrames": 523,
+  "activeSeconds": 8.84,
+  "averageFps": 59.18,
+  "frameMs": {
+   "p50": 16.7,
+   "p95": 19.1,
+   "p99": 28.7
+  },
+  "longFramesOver50ms": 0
+ },
+ "renderer": {
+  "calls": 673,
+  "triangles": 29488,
+  "geometries": 330,
+  "textures": 18,
+  "pixelRatio": 1
+ },
+ "viewport": {
+  "width": 1280,
+  "height": 720,
+  "dpr": 1
+ },
+ "quality": "high",
+ "resources": {
+  "count": 66,
+  "transferBytes": 27102466
+ },
+ "position": [
+  -160.6,
+  95.812,
+  -173.001
+ ],
+ "velocity": [
+  0,
+  0,
+  0
+ ],
+ "state": "IDLE",
+ "motion": "idle",
+ "mode": "web",
+ "feet": [
+  {
+   "side": "left",
+   "ankle": [
+    -160.515,
+    95.822,
+    -172.674
+   ],
+   "surface": 95.71197417482352
+  },
+  {
+   "side": "right",
+   "ankle": [
+    -160.656,
+    95.822,
+    -173.32
+   ],
+   "surface": 95.71197417482352
+  }
+ ],
+ "peers": [],
+ "map3D": true,
+ "mapMeshes": 373,
+ "facing": 0,
+ "cameraYaw": 0,
+ "webs": [],
+ "history": [
+  "IDLE/undefined",
+  "IDLE/idle",
+  "JUMPING/jump",
+  "SWINGING/swing",
+  "LANDING/land",
+  "IDLE/idle"
+ ],
+ "decodedRGBTextures": 0
+}

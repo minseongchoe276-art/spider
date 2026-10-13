@@ -1,0 +1,77 @@
+- generic "게임 화면. W A S D 이동, Space 점프, Escape 일시정지"
+- complementary "LOCAL CITY":
+  - strong: LOCAL CITY
+  - generic: PROCEDURAL DISTRICT
+  - generic: LOCAL
+  - img "현재 위치 동쪽 161미터, 북쪽 -175미터, 고도 96미터"
+  - generic: N ↑
+  - generic: 3D · 나 친구
+  - generic: 240m
+  - text: RANGE
+  - status: E +161m N -175m · ALT 96m
+- status
+- status: 참가 가능한 방이 없습니다.
+- dialog "도시를 가로질러.":
+  - generic: ✳
+  - text: WEB RUNNER
+  - generic: LOCAL CITY · OPEN WORLD
+  - generic: 온라인 · 방을 선택하세요
+  - text: "01"
+  - generic: YOUR CITY. YOUR MOVE.
+  - heading "도시를 가로질러." [level=1]:
+    - text: 도시를
+    - emphasis: 가로질러.
+  - paragraph:
+    - text: 건물 사이를 스윙하고, 추격전을 시작하고,
+    - text: 나만의 도시를 네 방식대로 누벼봐.
+  - button "▶ 혼자 플레이 바로 도시로 뛰어들기 ↗":
+    - generic: ▶
+    - generic: 혼자 플레이
+    - generic: 바로 도시로 뛰어들기
+    - generic: ↗
+  - generic: 01 / EXPLORE
+  - generic: 02 / CHASE
+  - generic: 03 / SWING
+  - text: MULTIPLAYER / 02
+  - heading "함께 플레이" [level=2]
+  - paragraph: 방을 만들거나 친구의 게임에 합류하세요.
+  - text: 플레이어 이름
+  - textbox "플레이어 이름": 스파이더
+  - text: 게임 모드
+  - generic: 선택
+  - tablist "게임 모드":
+    - tab "⌖ 경찰과 도망자 인원별 3~5분 추격전" [selected]:
+      - generic: ⌖
+      - generic: 경찰과 도망자
+      - generic: 인원별 3~5분 추격전
+    - tab "↗ 자유 플레이 함께 도시 탐험":
+      - generic: ↗
+      - generic: 자유 플레이
+      - generic: 함께 도시 탐험
+  - combobox "게임 모드":
+    - option "경찰과 도망자 · 목표 탈출 / 생존" [selected]
+    - option "자유 플레이 · 제한 없음"
+  - text: 방 이름
+  - textbox "방 이름": 새로운 도시 여행
+  - text: 정원
+  - combobox "정원":
+    - option "2"
+    - option "3"
+    - option "4"
+    - option "5"
+    - option "6"
+    - option "7"
+    - option "8" [selected]
+  - button "새 방 만들기 ↗":
+    - text: 새 방 만들기
+    - generic: ↗
+  - generic: 또는 바로 합류
+  - textbox "방 코드":
+    - /placeholder: 초대 코드 6자리
+    - text: BAD000
+  - button "코드 입장" [active]
+  - heading "열린 방" [level=3]
+  - generic: LIVE ROOMS
+  - paragraph: 열린 방이 없습니다. 새 방을 만들어 보세요.
+  - generic: WEB RUNNER © LOCAL CITY
+  - generic: WASD 이동 · 마우스 조준 · SPACE 점프

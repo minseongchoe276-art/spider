@@ -1,0 +1,129 @@
+{
+  "map": "Hong Kong",
+  "ready": true,
+  "playing": true,
+  "paused": false,
+  "practice": false,
+  "performance": {
+    "windowFrames": 2454,
+    "totalFrames": 2454,
+    "activeSeconds": 116.94,
+    "averageFps": 20.99,
+    "frameMs": {
+      "p50": 46.4,
+      "p95": 57,
+      "p99": 69.1
+    },
+    "longFramesOver50ms": 485
+  },
+  "cpuSections": {
+    "city": {
+      "calls": 2455,
+      "samples": 600,
+      "meanMs": 2.154,
+      "p95Ms": 3.6
+    },
+    "physics": {
+      "calls": 2455,
+      "samples": 600,
+      "meanMs": 5.23,
+      "p95Ms": 7.3
+    },
+    "character": {
+      "calls": 2455,
+      "samples": 600,
+      "meanMs": 0.336,
+      "p95Ms": 0.6
+    },
+    "camera": {
+      "calls": 2455,
+      "samples": 600,
+      "meanMs": 34.14,
+      "p95Ms": 39.7
+    },
+    "render": {
+      "calls": 2454,
+      "samples": 600,
+      "meanMs": 1.527,
+      "p95Ms": 2.6
+    },
+    "collisionResolve": {
+      "calls": 14019,
+      "samples": 600,
+      "meanMs": 0.065,
+      "p95Ms": 0.2
+    },
+    "rapierStep": {
+      "calls": 14019,
+      "samples": 600,
+      "meanMs": 0.046,
+      "p95Ms": 0.2
+    }
+  },
+  "renderer": {
+    "calls": 83,
+    "triangles": 228117,
+    "geometries": 94,
+    "textures": 90,
+    "pixelRatio": 1
+  },
+  "viewport": {
+    "width": 1280,
+    "height": 720,
+    "dpr": 1
+  },
+  "quality": "balanced",
+  "resources": {
+    "count": 250,
+    "transferBytes": 27659486
+  },
+  "position": [
+    0,
+    19.748,
+    0
+  ],
+  "velocity": [
+    0,
+    0,
+    0
+  ],
+  "state": "IDLE",
+  "motion": "idle",
+  "mode": "web",
+  "feet": [
+    {
+      "side": "left",
+      "ankle": [
+        0.085,
+        19.633,
+        0.327
+      ],
+      "surface": 19.52300894521827
+    },
+    {
+      "side": "right",
+      "ankle": [
+        -0.056,
+        19.629,
+        -0.319
+      ],
+      "surface": 19.519264164200965
+    }
+  ],
+  "peers": [],
+  "map3D": true,
+  "mapMeshes": 125,
+  "facing": 0,
+  "cameraYaw": 0,
+  "webs": [],
+  "support": 19.521251222125237,
+  "collision": 148,
+  "pending": 0,
+  "history": [
+    "IDLE/undefined",
+    "FALLING/undefined",
+    "IDLE/idle"
+  ],
+  "decodedRGBTextures": 3,
+  "textureDiagnostics": []
+}

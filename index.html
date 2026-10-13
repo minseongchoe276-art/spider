@@ -19,6 +19,7 @@
     <canvas id="speedlines-canvas"></canvas>
 
     <!-- Center Aim Reticle / Crosshair -->
+    <div id="anchor-preview" aria-hidden="true"></div><div id="hand-status" aria-label="양손 거미줄 상태"></div><div id="combo-hud" role="status"></div><div id="boundary-warning" role="status"></div><div id="pursuit-hud" role="status"></div><button id="spectate-next" class="hidden" type="button">다음 플레이어 관전</button>
     <div id="crosshair">
       <div class="crosshair-dot"></div>
       <div class="crosshair-ring"></div>
@@ -75,7 +76,8 @@
       </div>
       <div class="minimap-wrap">
         <canvas id="minimap-canvas" role="img" aria-label="현재 위치 미니맵"></canvas>
-        <span class="minimap-north" aria-hidden="true">N</span>
+        <span class="minimap-north" aria-hidden="true">N ↑</span>
+        <span class="minimap-legend">3D · <b>나</b> <i>친구</i></span>
         <span class="minimap-range-label"><b id="minimap-range">600m</b> RANGE</span>
       </div>
       <output id="minimap-coordinates" aria-live="off">E +0m&nbsp; N +0m&nbsp; ·&nbsp; ALT 0m</output>
@@ -95,7 +97,7 @@
         <span class="guide-hint">마우스 잠금 또는 휠 버튼 드래그</span>
       </div>
       <div class="guide-list">
-        <div class="guide-row"><span class="key-badge">경찰과 도망자</span><span class="guide-desc">2~8명. 6명 이하는 경찰 1명, 7~8명은 경찰 2명. 시작 8초는 공격 없음. 경찰 주먹 25, 거미줄 15. 도망자는 공격할 수 없습니다. 도망자가 모두 쓰러지면 경찰 승리, 5분 생존이거나 경찰이 없으면 도망자 승리. 탈락하면 관전합니다.</span></div>
+        <div class="guide-row"><span class="key-badge">경찰과 도망자</span><span class="guide-desc">2~8명. 6명 이하는 경찰 1명, 7~8명은 경찰 2명. 시작 8초는 공격 없음. 경찰 주먹 25, 거미줄 15. 도망자는 공격할 수 없습니다. 도망자가 모두 쓰러지면 경찰 승리. 이동 목표 3개를 완료하거나 3~5분 생존하면 도망자 승리. 쓰러진 팀원 곁에 3초 유지하면 구조합니다. 탈락하면 관전합니다.</span></div>
         <div class="guide-row"><span class="key-badge">Q</span><span class="guide-desc">전투 / 거미줄 전환. 도망자는 경기 중 거미줄로 고정됩니다.</span></div>
         <div class="guide-row"><span class="key-badge">G</span><span class="guide-desc">강한 잽 · 기력 35 · 재사용 4초</span></div>
         <div class="guide-row"><span class="key-badge">Ctrl + 방향</span><span class="guide-desc">짧은 회피 · 전방 숙이기</span></div>
@@ -111,20 +113,20 @@
         </div>
         <div class="guide-row">
           <span class="key-badge">좌클릭</span>
-          <span class="guide-desc key-accent">꾹 누르면 한 줄에 매달려 진자 스윙 · 떼면 관성 비행 · 땅의 전투는 잽</span>
+          <span class="guide-desc key-accent">점프 후 꾹 누르면 한 줄에 매달려 진자 스윙 · 떼면 관성 비행 · 땅의 전투는 잽</span>
         </div>
         <div class="guide-row">
           <span class="key-badge">우클릭</span>
-          <span class="guide-desc key-accent">땅의 전투: 스트레이트</span>
+          <span class="guide-desc key-accent">반대 손에서 같은 진자 스윙. 꾹 누르면 매달리고, 떼면 그 손만 놓습니다. 땅의 전투는 스트레이트</span>
         </div>
         <div class="guide-row"><span class="key-badge">B</span><span class="guide-desc">전투: 누르는 동안 방어</span></div>
         <div class="guide-row">
           <span class="key-badge">E</span>
-          <span class="guide-desc">공중에서 한 번의 강한 집. 땅의 전투는 훅</span>
+          <span class="guide-desc">공중에서 착지당 한 번 집 · 도착 때 좌클릭 꾹이면 매달리기 · 땅의 전투는 훅</span>
         </div>
         <div class="guide-row">
           <span class="key-badge">T</span>
-          <span class="guide-desc">공중 묘기 (착지 여유 필요)</span>
+          <span class="guide-desc">높은 곳에서 줄을 놓고 T: 앞구르기 · W+T: 360도 · S+T: 뒤구르기 · A/D+T: 옆회전 · Shift+T: 코르크스크루. 한 동작을 마친 뒤 다음 묘기를 연결하세요.</span>
         </div>
         <div class="guide-row">
           <span class="key-badge">마우스 이동</span>
@@ -151,7 +153,7 @@
       <button id="match-help" type="button" aria-label="조작 가이드 열기">? <span>조작</span></button>
     </div>
     <div id="gameplay-quickbar" aria-label="기본 조작">
-      <span><kbd>W A S D</kbd> 이동</span><span><kbd>SPACE</kbd> 점프</span><span><kbd>Q</kbd> 모드</span><span><kbd>ESC</kbd> 메뉴</span>
+      <span><kbd>W A S D</kbd> 이동</span><span><kbd>SPACE</kbd> 점프</span><span><kbd>T</kbd> 공중 묘기</span><span><kbd>Q</kbd> 모드</span><span><kbd>H</kbd> 조작키</span><span><kbd>ESC</kbd> 메뉴</span>
     </div>
 
     <div id="online-overlay" class="overlay" role="dialog" aria-modal="true" aria-labelledby="online-title">
@@ -171,11 +173,12 @@
           <label class="online-field">플레이어 이름<input id="player-name" maxlength="16" value="스파이더" autocomplete="nickname"></label>
           <div class="mode-heading">게임 모드 <span>선택</span></div>
           <div class="mode-picker" role="tablist" aria-label="게임 모드">
-            <button class="mode-option selected" type="button" role="tab" data-mode="tag" aria-selected="true"><span class="mode-icon">⌖</span><b>경찰과 도망자</b><small>5분 추격전</small></button>
+            <button class="mode-option selected" type="button" role="tab" data-mode="tag" aria-selected="true"><span class="mode-icon">⌖</span><b>경찰과 도망자</b><small>인원별 3~5분 추격전</small></button>
             <button class="mode-option" type="button" role="tab" data-mode="free" aria-selected="false"><span class="mode-icon">↗</span><b>자유 플레이</b><small>함께 도시 탐험</small></button>
           </div>
-          <select id="room-mode" class="visually-hidden" aria-label="게임 모드"><option value="tag">경찰과 도망자 · 5분</option><option value="free">자유 플레이 · 제한 없음</option></select>
+          <select id="room-mode" class="visually-hidden" aria-label="게임 모드"><option value="tag">경찰과 도망자 · 목표 탈출 / 생존</option><option value="free">자유 플레이 · 제한 없음</option></select>
           <div class="online-grid"><label class="online-field">방 이름<input id="room-name" maxlength="24" value="새로운 도시 여행"></label><label class="online-field">정원<select id="room-capacity"><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option selected>8</option></select></label></div>
+
           <button id="create-room" class="online-primary" type="button">새 방 만들기 <span>↗</span></button>
           <div class="online-divider"><span>또는 바로 합류</span></div>
           <div class="online-inline"><input id="room-code" maxlength="6" placeholder="초대 코드 6자리" aria-label="방 코드"><button id="join-code" type="button">코드 입장</button></div>
@@ -205,7 +208,7 @@
         
         <div class="start-instruction">
           <div class="mouse-icon">🖱️</div>
-          <span>Q 전투/거미줄 · 좌클릭 꾹: 진자 스윙 · 떼기: 관성 비행 · 우클릭: 땅에서 스트레이트 · E 공중 집 · B 방어 · Ctrl 회피<br>Esc 메뉴 · R 타임트라이얼 · <span id="world-limit">구역 원점 기준 ±2.4km</span></span>
+          <span>Q 전투/거미줄 · 좌클릭 꾹: 진자 스윙 · 우클릭 꾹: 반대 손 진자 · 떼기: 관성 비행 · E 공중 집 · B 방어 · Ctrl 회피<br>Esc 메뉴 · R 타임트라이얼 · <span id="world-limit">구역 원점 기준 ±2.4km</span></span>
         </div>
 
         <button id="btn-start-game" class="start-btn"><span>계속 플레이</span><b>↗</b></button>
@@ -215,6 +218,9 @@
         <label class="guide-setting" for="graphics-quality">그래픽 품질
           <select id="graphics-quality" aria-label="그래픽 품질"><option value="low">낮음</option><option value="balanced" selected>기본</option><option value="high">높음</option></select>
         </label></div>
+        <div id="extended-settings" class="pause-settings"></div>
+        <details class="player-progress"><summary>탐험 기록 · 보상</summary><p id="progress-summary"></p><label for="web-theme">거미줄 색상</label><select id="web-theme"><option value="white">기본 흰색</option></select><button id="btn-save-position" type="button">안전 위치 저장</button><button id="btn-restore-position" type="button">저장 위치로 복귀</button></details>
+        <details class="player-progress"><summary>전투 연습</summary><p>현재 위치의 안전한 바닥에서 시작합니다. 온라인 경기에서는 사용할 수 없습니다.</p><select id="practice-type" aria-label="전투 연습 종류"><option value="dummy">훈련 표적</option><option value="melee">근접 상대</option><option value="ranged">원거리 상대</option><option value="shield">방패 상대</option><option value="mixed">혼합 상대</option></select><button id="btn-practice" type="button">연습 시작</button><button id="btn-practice-stop" type="button">연습 종료</button></details>
         <p class="data-credit">도시 데이터: 홍콩 Lands Department<br><a href="?city=procedural">로컬 도시로 플레이</a></p>
       </div>
     </div>

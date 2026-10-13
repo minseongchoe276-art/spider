@@ -1,0 +1,6 @@
+PASS remote real rig 30fps: strides, independent bones, swing/release, stale pose, leave cleanup
+PASS remote real rig 60fps: strides, independent bones, swing/release, stale pose, leave cleanup
+PASS remote real rig 144fps: strides, independent bones, swing/release, stale pose, leave cleanup
+PASS transport: ordered ready/start, idempotent connection cleanup, bounded pose payloads
+PASS online regressions: stale room, channel replacement, camera web aim, wall obstruction, timed single punch, cancellation
+PASS browser auth: isolated tab broadcasts, stable refresh identity, blocked-storage fallback

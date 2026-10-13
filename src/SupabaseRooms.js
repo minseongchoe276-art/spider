@@ -59,7 +59,9 @@ export class SupabaseRooms {
   }
 
   async rpc(name, args = {}) {
+    const started=performance.now();
     const { data, error } = await this.client.rpc(name, args);
+    this.lastRpcMs=performance.now()-started;
     if (error) throw error;
     return data;
   }
@@ -214,6 +216,7 @@ export class SupabaseRooms {
       .on('broadcast', { event: 'state' }, ({ payload }) => this.emit(payload))
       .on('broadcast', { event: 'move' }, ({ payload }) => this.emit(payload))
       .on('broadcast', { event: 'hit' }, ({ payload }) => this.emit(payload))
+      .on('broadcast', { event: 'hit-check' }, ({payload})=>{if(payload?.target===this.userId)this.emit(payload);})
       .on('broadcast', { event: 'pose' }, ({ payload }) => {
         const pose=sanitizePose(payload?.pose);
         if (pose) this.emit({type:'pose',id:payload.id,pose});
@@ -276,7 +279,7 @@ export class SupabaseRooms {
       return;
     }
     if (!this.roomCode) return;
-    if (['ready', 'start', 'rematch', 'move', 'attack'].includes(data.type)) {
+    if (['ready', 'start', 'rematch', 'move', 'attack', 'hit-confirm'].includes(data.type)) {
       const code=this.roomCode;
       const pose=data.type==='move' ? sanitizePose(data.pose) : null;
       let result;

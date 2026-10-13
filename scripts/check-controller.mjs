@@ -37,7 +37,8 @@ const land=controller();land.position.y=0.3;land.velocity.y=-15;land.state='FALL
 const roll=controller();roll.character.actions={roll:{getClip:()=>({duration:1,userData:{rootMotion:[{time:0,distance:0},{time:1,distance:2}]}})}};
 roll.position.y=0.3;roll.velocity.set(0,-30,4);roll.state='FALLING';roll.update(1/60,input(),camera);assert.equal(roll.state,'ROLLING');advance(roll,input(),1.5);assert.equal(roll.state,'IDLE');assert(Math.abs(roll.position.z-2)<0.1);assert.equal(roll.velocity.length(),0);
 const verticalLand=controller();verticalLand.position.y=0.3;verticalLand.velocity.y=-30;verticalLand.state='FALLING';verticalLand.update(1/60,input(),camera);assert.equal(verticalLand.state,'LANDING','Vertical falls must not launch a forward roll');
-const zip=controller();assert.equal(zip.performAirJump(camera),false);assert.equal(zip.canAirJump,true,'A missed zip target must not consume the air ability');
+const zip=controller();zip.state='FALLING';zip.position.y=2;
+assert.equal(zip.performAirJump(camera),false);assert.equal(zip.canAirJump,true,'A missed zip target must not consume the air ability');
 const facade=new THREE.Mesh(new THREE.BoxGeometry(10,20,2),new THREE.MeshBasicMaterial());facade.position.set(0,10,20);facade.updateMatrixWorld(true);zip.city.buildingMeshes=[facade];
 assert.equal(zip.performAirJump(camera),true);assert.equal(zip.state,'WEB_ZIP');assert.equal(zip.canAirJump,false);advance(zip,input(),0.2);assert.equal(zip.state,'WEB_ZIP');
 for(let t=0;zip.state==='WEB_ZIP'&&t<3;t+=1/60)zip.update(1/60,input(),camera);
@@ -45,7 +46,8 @@ assert.notEqual(zip.state,'WEB_ZIP');assert(zip.position.z<20,'Zip passed throug
 const zipArrival=zip.position.z;zip.update(1/60,input(),camera);
 assert.equal(zip.isSwinging,false,'An air zip stayed attached after the button was already up');
 assert(zip.position.z<zipArrival+1.5,'Letting go of an air zip launched through the wall on the release frame');
-const aimedZip=controller();const offCenterBuilding=new THREE.Mesh(new THREE.BoxGeometry(4,10,2));
+const aimedZip=controller();aimedZip.state='FALLING';aimedZip.position.y=2;
+const offCenterBuilding=new THREE.Mesh(new THREE.BoxGeometry(4,10,2));
 offCenterBuilding.position.set(-6,5,20);offCenterBuilding.updateMatrixWorld(true);aimedZip.city.buildingMeshes=[offCenterBuilding];
 assert(aimedZip.performAirJump(camera,new THREE.Vector2(0.5,0)),'Screen-point web zip failed to acquire its clicked building');
 assert(aimedZip.zipAnchor.x<-3,'Web zip ignored the right-click screen coordinate');
@@ -62,7 +64,7 @@ grapple.update(1/120,holdPull,grappleCamera);
 assert.equal(grapple.state,'WEB_ZIP','A held web silently replaced the pull with a newly aimed swing');
 const persistentAnchor=grapple.lastWebAnchor.clone();
 for(let elapsed=0;grapple.state==='WEB_ZIP'&&elapsed<4;elapsed+=1/120)
-  grapple.update(1/120,input(),grappleCamera);
+  grapple.update(1/120,holdPull,grappleCamera);
 assert.equal(grapple.state,'SWINGING','Grapple did not continue into a swing at the attached wall');
 assert(Math.abs(grapple.position.distanceTo(persistentAnchor)-grapple.ropeLength)<0.5,
   'Grapple arrival did not keep the player connected to the wall anchor');

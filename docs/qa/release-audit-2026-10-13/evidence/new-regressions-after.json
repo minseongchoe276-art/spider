@@ -1,0 +1,74 @@
+{
+  "passed": 17,
+  "total": 17,
+  "results": [
+    {
+      "name": "Null or malformed saved settings preserve usable defaults",
+      "status": "PASS"
+    },
+    {
+      "name": "Practice from a loaded lobby enters solo play before spawning",
+      "status": "PASS"
+    },
+    {
+      "name": "Practice does not start while assets are unavailable or online",
+      "status": "PASS"
+    },
+    {
+      "name": "Opt-in frame metrics measure percentiles and keep a bounded window",
+      "status": "PASS"
+    },
+    {
+      "name": "Camera keeps nearer pending LOD walls and queries baked terrain without duplicate triangles",
+      "status": "PASS"
+    },
+    {
+      "name": "Profiling preserves method receiver, arguments, return values and errors",
+      "status": "PASS"
+    },
+    {
+      "name": "The dual-web review actually holds two independent ropes before and after replacement",
+      "status": "PASS"
+    },
+    {
+      "name": "Being defeated in practice is not reported as successful completion",
+      "status": "PASS"
+    },
+    {
+      "name": "Enhanced host cannot become ready with an invalid arena",
+      "status": "PASS"
+    },
+    {
+      "name": "Valid enhanced arena supports a two-player start",
+      "status": "PASS"
+    },
+    {
+      "name": "Repeated short teleports cannot reuse the movement jitter allowance",
+      "status": "PASS"
+    },
+    {
+      "name": "Normal maximum-speed movement survives delayed updates",
+      "status": "PASS"
+    },
+    {
+      "name": "The final runner elimination finishes one match with police victory",
+      "status": "PASS"
+    },
+    {
+      "name": "Resuming from an occupied socket cannot strand its previous membership",
+      "status": "PASS"
+    },
+    {
+      "name": "Oversized WebSocket payload is rejected at the transport boundary",
+      "status": "PASS"
+    },
+    {
+      "name": "Control-message floods cannot trigger unlimited room-list broadcasts",
+      "status": "PASS"
+    },
+    {
+      "name": "Malformed messages do not prevent the next valid command",
+      "status": "PASS"
+    }
+  ]
+}

@@ -1,0 +1,53 @@
+{
+ "map": "Hong Kong",
+ "ready": true,
+ "position": [
+  0,
+  19.646,
+  0
+ ],
+ "velocity": [
+  0,
+  0,
+  0
+ ],
+ "state": "IDLE",
+ "motion": "idle",
+ "mode": "web",
+ "feet": [
+  {
+   "side": "left",
+   "ankle": [
+    0.085,
+    19.633,
+    0.327
+   ],
+   "surface": 19.523008989805337
+  },
+  {
+   "side": "right",
+   "ankle": [
+    -0.056,
+    19.629,
+    -0.319
+   ],
+   "surface": 19.51926414918339
+  }
+ ],
+ "peers": [],
+ "map3D": true,
+ "mapMeshes": 127,
+ "facing": 0,
+ "cameraYaw": 0,
+ "webs": [],
+ "support": 19.521251296514627,
+ "collision": 147,
+ "pending": 0,
+ "history": [
+  "IDLE/undefined",
+  "FALLING/undefined",
+  "IDLE/idle"
+ ],
+ "decodedRGBTextures": 3,
+ "textureDiagnostics": []
+}

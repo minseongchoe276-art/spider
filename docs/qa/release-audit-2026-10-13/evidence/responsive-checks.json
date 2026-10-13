@@ -1,0 +1,16 @@
+{
+  "sizes": [
+    {
+      "width": 800,
+      "height": 600,
+      "screenshot": "hud-800x600.png"
+    },
+    {
+      "width": 1024,
+      "height": 768,
+      "screenshot": "hud-1024x768.png"
+    }
+  ],
+  "lobbyError": "lobby-error-after.json",
+  "visualResult": "PASS: essential controls visible; lobby scrolls vertically at 800x600; toast visible above lobby; not mobile/touch certification"
+}

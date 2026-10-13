@@ -21,6 +21,42 @@ const player=()=>{
 };
 let cases=0;
 const check=(title,fn)=>{fn();cases++;console.log('PASS WEB: '+title);};
+for(const first of [0,2])check(`Mouse buttons retain two ropes and release independently (${first} first)`,()=>{
+  const p=player(),i=input();i.webHold=false;
+  for(const button of [first,first===0?2:0]) {
+    p.bestAnchorCandidate=new THREE.Vector3(button===0?-5:5,25,2);
+    if(button===0)i.webTap=i.webHold=i.webFireHeld=true;
+    else i.webTapRight=i.webHoldRight=i.webFireHeldRight=true;
+    p.update(1/120,i,camera);
+  }
+  assert.equal(p.webs.length,2);assert.equal(p.character.webAttachments.length,2);
+  assert.equal(new Set(p.webs.map(web=>web.hand)).size,2);
+  const remaining=first===0?2:0;
+  if(first===0)i.webHold=i.webFireHeld=false;
+  else i.webHoldRight=i.webFireHeldRight=false;
+  p.releaseWebButton(first);p.update(1/120,i,camera);
+  assert.equal(p.webs.length,1);assert.equal(p.webs[0].button,remaining);assert(p.isSwinging);
+  i.webHold=i.webFireHeld=i.webHoldRight=i.webFireHeldRight=false;
+  p.releaseWebButton(remaining);
+  assert.equal(p.webs.length,0);assert.equal(p.isSwinging,false);
+});
+check('A held left button attaches while a right-button rope is already active',()=>{
+  const p=player(),i=input();i.webHold=false;
+  p.bestAnchorCandidate=new THREE.Vector3(5,25,2);
+  i.webTapRight=i.webHoldRight=i.webFireHeldRight=true;p.update(1/120,i,camera);
+  p.bestAnchorCandidate=new THREE.Vector3(-5,25,2);
+  i.webHold=i.webFireHeld=true;p.update(1/120,i,camera);
+  assert.equal(p.webs.length,2);assert(p.webs.some(web=>web.button===0));
+});
+check('A missed offhand shot stays visible while the first rope remains attached',()=>{
+  const p=player(),i=input(),misses=[];
+  p.character.fireWebMiss=(target,hand)=>misses.push(hand);
+  p.bestAnchorCandidate=new THREE.Vector3(-5,25,2);
+  i.webTap=i.webFireHeld=true;p.update(1/120,i,camera);
+  p.bestAnchorCandidate=null;
+  i.webTapRight=i.webHoldRight=i.webFireHeldRight=true;p.update(1/120,i,camera);
+  assert.deepEqual(misses,['right']);assert.equal(p.webs.length,1);assert(p.isSwinging);
+});
 check('The first shot is the left hand and the second keeps both anchors',()=>{
   const p=player(),a=new THREE.Vector3(-5,20,2),b=new THREE.Vector3(5,20,2);
   assert(p.shoot(a));assert.equal(p.webs.length,1);assert.equal(p.shots[0].hand,'left');
@@ -100,7 +136,7 @@ check('One obstructed strand releases only that hand',()=>{
   assert.equal(p.isSwinging,false);assert.equal(p.state,'FALLING');assert.equal(p.webs.length,0);assert.equal(p.character.webAttachments.length,0);
   assert.equal(p.performWebPull(camera),false,'Blocked old anchor allowed a pull through the wall');
 });
-check('Right-click zips to the latest anchor and arrives on that tether',()=>{
+check('The explicit pull API zips to the latest anchor and arrives on that tether',()=>{
   const p=player();p.shoot(new THREE.Vector3(-5,20,2));p.shoot(new THREE.Vector3(5,20,2));
   const latest=p.webs.at(-1).anchor.clone();assert(p.performWebPull(camera));
   assert(p.zipAnchor.equals(latest));assert.equal(p.webs.length,0);assert.equal(p.pullHand,'right');
@@ -128,8 +164,12 @@ check('Aimed facade shots keep a left web and a right web',()=>{
   const i=input();const cam=new THREE.PerspectiveCamera();
   for(let n=0;n<50;n++) {
     const old=n/120,t=(n+1)/120;cam.position.copy(p.position).add(new THREE.Vector3(0,1.3,0));cam.rotation.y=Math.PI;
-    i.webTap=false;i.webFireHeld=false;
-    for(const [time,x,y] of [[0.05,-4,7],[0.3,4,7]])if(old<time && t>=time) {cam.lookAt(x,y,4);cam.updateMatrixWorld(true);i.webTap=true;i.webFireHeld=true;}
+    i.webTap=i.webTapRight=false;
+    for(const [time,x,y,button] of [[0.05,-4,7,0],[0.3,4,7,2]])if(old<time && t>=time) {
+      cam.lookAt(x,y,4);cam.updateMatrixWorld(true);
+      if(button===0)i.webTap=i.webFireHeld=true;
+      else i.webTapRight=i.webFireHeldRight=i.webHoldRight=true;
+    }
     p.update(1/120,i,cam);
   }
   assert.equal(p.webs.length,2);assert.equal(p.state,'SWINGING');

@@ -1,0 +1,61 @@
+[
+  {
+    "name": "Queued punch has no multiplayer attack registration",
+    "evidence": {
+      "newAction": "jab",
+      "actionId": 2,
+      "packetsSent": 1,
+      "pendingPunch": null
+    }
+  },
+  {
+    "name": "Actual stunt multiplier differs from README",
+    "evidence": {
+      "multiplier": 4,
+      "documented": 2.5
+    }
+  },
+  {
+    "name": "Finish time ignores final plane crossing fraction",
+    "evidence": {
+      "finish": 10.1,
+      "split": 10.025
+    }
+  },
+  {
+    "name": "Duplicate escape destinations accepted",
+    "evidence": {
+      "x": 0,
+      "y": 200,
+      "z": 0,
+      "radius": 300,
+      "points": [
+        {
+          "x": 70,
+          "y": 200,
+          "z": 0
+        },
+        {
+          "x": 70,
+          "y": 200,
+          "z": 0
+        }
+      ]
+    }
+  },
+  {
+    "name": "Paused target becomes immune after stale movement",
+    "evidence": {
+      "health": 100,
+      "lastMoveAge": 1643
+    }
+  },
+  {
+    "name": "Rescue completes despite a 3s gap with no movement heartbeat",
+    "evidence": {
+      "began": true,
+      "health": 50,
+      "eliminated": false
+    }
+  }
+]

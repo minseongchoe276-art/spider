@@ -1,0 +1,12 @@
+{
+  "name": "race timer stops while paused",
+  "status": "PASS",
+  "before": {
+    "capturedAt": "2026-10-13T00:01:09.393Z",
+    "text": "링 1/8 · 22.86초"
+  },
+  "after": {
+    "capturedAt": "2026-10-13T00:02:01.889Z",
+    "text": "링 1/8 · 22.86초"
+  }
+}
