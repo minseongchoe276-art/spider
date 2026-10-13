@@ -1,0 +1,43 @@
+{
+  "checked_at": "2026-10-13T11:41:17.477Z",
+  "url": "https://minogame.site/?city=procedural",
+  "room": "885F2C",
+  "mode": "free",
+  "reticle": {
+    "center": [
+      640,
+      360
+    ],
+    "hud": "\n      LOCAL CITY  FREE ROAM\n      자유 플레이피해 없음자유 플레이2명 · 119ms\n      ? 조작\n    ",
+    "positionLabel": "\n      \n        LOCAL CITYPROCEDURAL DISTRICT\n        LOCAL\n      \n      \n        \n        N ↑\n        3D · 나 친구\n        240m RANGE\n      \n      E +157m  N -175m  ·  ALT 96m\n    ",
+    "size": [
+      28,
+      28
+    ],
+    "viewport": [
+      1280,
+      720
+    ]
+  },
+  "errors": [],
+  "actions": [
+    "two independent clients",
+    "create/join/ready/start",
+    "Q enters combat mode",
+    "left/right ground attack inputs",
+    "walking after attack"
+  ],
+  "observedMovement": {
+    "before": {
+      "east": 154,
+      "north": -175,
+      "altitude": 96
+    },
+    "after": {
+      "east": 157,
+      "north": -175,
+      "altitude": 96
+    }
+  },
+  "scope": "Latest public frontend, timed attack animations and resumed walking in a free room; competitive HP and wall authority are covered separately by the public eight-player test."
+}
