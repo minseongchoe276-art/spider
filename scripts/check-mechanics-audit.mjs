@@ -59,7 +59,7 @@ check('Historical attachment cannot grant repeated Space jumps in the air',()=>{
 });
 check('Jumping off a live web consumes the jump and the old attachment cannot jump again',()=>{
   const p=player();p.findBestAnchor=()=>new THREE.Vector3(0,32,0);p.startSwing(camera);
-  withInput(p,(app,key)=>{key('Space');assert(!p.isSwinging);assert(p.velocity.y>=p.jumpForce);
+  withInput(p,(app,key)=>{const velocity=p.velocity.clone();key('Space');assert(!p.isSwinging);assert(p.velocity.equals(velocity));
     p.velocity.y=-2;key('Space');assert.equal(p.velocity.y,-2);});
 });
 check('Zip arrival without left mouse held releases immediately without generated tangent speed',()=>{
@@ -85,10 +85,11 @@ check('A wall interrupting a zip removes the persistent web in that physics step
   assert.equal(p.state,'FALLING');assert(p.position.z<2.31);
   assert.equal(p.zipAnchor,null);assert.equal(p.character.persistentWebAnchor,null);
 });
-check('Grounded E in web mode cannot silently skip the jump with a zip',()=>{
+check('Grounded E does not replace a jump with a zip',()=>{
   const p=player();p.state='IDLE';p.position.y=0.1;
   const mesh=new THREE.Mesh(new THREE.BoxGeometry(8,20,2));mesh.position.set(0,10,20);mesh.updateMatrixWorld(true);
   p.city.buildingMeshes=[mesh];assert.equal(p.performAirJump(camera),false);assert(p.canAirJump);
+  assert.equal(p.state,'IDLE');assert.equal(p.velocity.length(),0);
 });
 check('Mouse movement keeps the aim at the fixed center and E uses that aim',()=>{
   const p=player();p.webAimNdc.set(0.6,0.2);let actual;

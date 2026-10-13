@@ -23,9 +23,10 @@ export class CombatSystem {
     this.mode=this.mode==='combat'?'web':'combat';this.cancel();
     input.webTap=input.webHold=input.webFireHeld=false;
     input.webTapRight=input.webHoldRight=input.webFireHeldRight=false;
+    input.webZipHeld=false;
     this.physics.webEnabled=this.mode==='web';this.physics.clearPendingInput?.();
     if(this.mode==='combat')this.physics.clearWebAnchor?.();
-    this.onNotice(this.mode==='web'?'거미줄 ON · 좌클릭 꾹: 진자 스윙 / 우클릭: 반대 손 진자 / 떼기: 관성 비행 / E 공중 집':'전투 모드 · 땅에서는 잽·스트레이트 / 공중 좌·우클릭은 거미줄 / B 방어 / Ctrl 회피');
+    this.onNotice(this.mode==='web'?'거미줄 ON · 좌클릭 꾹: 점프 후 스윙 / 우클릭: 반대 손 스윙 / 떼기: 관성 비행 / E 꾹: 연속 집 (12m)':'전투 모드 · 땅에서는 잽·스트레이트 / 공중 좌·우클릭은 거미줄 / B 방어 / Ctrl 회피');
     return this.mode;
   }
   face(camera) {

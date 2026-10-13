@@ -219,14 +219,19 @@ export class SupabaseRooms {
     const old=this.channel;this.channel=null;
     if (old) await this.client.removeChannel(old);
     this.roomCode = code;
+    // Queued broadcasts from an old subscription must not restore a room
+    // after leaving it or overwrite a newly joined room's state.
+    const emitCurrent=payload=>{
+      if(this.channel===channel && this.roomCode===code && this.readyState===WebSocket.OPEN)this.emit(payload);
+    };
     const channel = this.client.channel(`game:${code}`, { config: { private: true } })
-      .on('broadcast', { event: 'state' }, ({ payload }) => this.emit(payload))
-      .on('broadcast', { event: 'move' }, ({ payload }) => this.emit(payload))
-      .on('broadcast', { event: 'hit' }, ({ payload }) => this.emit(payload))
-      .on('broadcast', { event: 'hit-check' }, ({payload})=>{if(payload?.target===this.userId)this.emit(payload);})
+      .on('broadcast', { event: 'state' }, ({ payload }) => emitCurrent(payload))
+      .on('broadcast', { event: 'move' }, ({ payload }) => emitCurrent(payload))
+      .on('broadcast', { event: 'hit' }, ({ payload }) => emitCurrent(payload))
+      .on('broadcast', { event: 'hit-check' }, ({payload})=>{if(payload?.target===this.userId)emitCurrent(payload);})
       .on('broadcast', { event: 'pose' }, ({ payload }) => {
         const pose=sanitizePose(payload?.pose);
-        if (pose) this.emit({type:'pose',id:payload.id,pose});
+        if (pose) emitCurrent({type:'pose',id:payload.id,pose});
       });
     this.channel=channel;
     await new Promise((resolve,reject)=>{

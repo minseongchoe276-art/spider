@@ -61,7 +61,7 @@ export class PlayerExperience {
   }
   raceStarted(){const g=this.game;this.stunts.fail();this.ghost.start(g.timeTrial.courseId,g.progression,g.physics.position,g.physics.facingAngle);}
   raceFinished(result){const g=this.game,trial=g.timeTrial;
-    this.ghost.finish(trial,g.physics.position,g.physics.facingAngle);
+    this.ghost.finish(trial,result.finishPosition || g.physics.position,g.physics.facingAngle);
     let distance=0;let previous=g.city.getRooftopSpawn(95);for(const cp of trial.checkpoints){distance+=previous.distanceTo(cp.position);previous=cp.position;}
     const benchmark=Math.max(12,distance/9);const medal=result.totalTime<=benchmark?'gold':result.totalTime<=benchmark*1.35?'silver':'bronze';
     g.progression.recordGhost(trial.courseId,result.totalTime,this.ghost.samples,this.ghost.splits,medal);this.refreshProgress();this.ghost.stop();
@@ -97,8 +97,9 @@ export class PlayerExperience {
   }
   previewAnchor(){const g=this.game,p=g.physics,marker=document.getElementById('anchor-preview'),hands=document.getElementById('hand-status');
     const inCombat=GROUNDED.includes(p.state)&&g.combat.mode==='combat';
+    const zipStatus=p.state==='WEB_ZIP'?'집 이동 중':p.zipCooldown>0?'집 대기':'집 준비';
     if(hands)hands.textContent=inCombat?`지상 전투 · ${keyLabel(g.preferences.values.settings.bindings.guard)} 방어`:
-      `${p.webs.some(w=>w.button===0)?'좌클릭 연결':'좌클릭 준비'} · ${p.webs.some(w=>w.button===2)?'우클릭 연결':'우클릭 준비'} · ${p.canAirJump?'집 준비':'집 사용함'}`;
+      `${p.webs.some(w=>w.button===0)?'좌클릭 연결':'좌클릭 준비'} · ${p.webs.some(w=>w.button===2)?'우클릭 연결':'우클릭 준비'} · ${zipStatus}`;
     // Availability belongs on the fixed reticle, not a moving world marker.
     g.crosshair?.classList.toggle('aiming',!inCombat && !!p.bestAnchorCandidate);
     if(marker)marker.style.display='none';

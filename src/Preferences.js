@@ -1,6 +1,6 @@
 import {cleanSettings} from './PlayerSettings.js';
 const KEY = 'spiderman-preferences-v1';
-const validCourse = course => /^(procedural|hong-kong)-(v2|v[34]-[0-9a-f]{8})$/.test(course);
+const validCourse = course => /^(procedural|hong-kong)-(v2|v[345]-[0-9a-f]{8})$/.test(course);
 
 export class Preferences {
   constructor(storage = null, reducedMotion = false) {

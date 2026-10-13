@@ -103,8 +103,8 @@ await check('A generated local course completes all eight ordered gates and can 
   const city=new City(new THREE.Scene());const trial=new TimeTrialSystem(new THREE.Scene(),city,silent);
   assert(trial.start());assert.equal(trial.checkpoints.length,8);const id=trial.courseId;
   trial.checkpoints.forEach((cp,index)=>assert.equal(cp.mesh.visible,index<=1));
-  assert.match(id,/^procedural-v4-/);
-  const prefs=new Preferences();prefs.recordTime(id.replace('-v4-','-v3-'),1);
+  assert.match(id,/^procedural-v5-/);
+  const prefs=new Preferences();prefs.recordTime(id.replace('-v5-','-v4-'),1);
   assert.equal(prefs.values.bestTimes[id],undefined);assert(prefs.recordTime(id,4));
   for(let i=0;i<8;i++){
     const cp=trial.checkpoints[i];trial.previousPosition=cp.position.clone().addScaledVector(cp.normal,-1);
@@ -112,7 +112,7 @@ await check('A generated local course completes all eight ordered gates and can 
     assert.equal(trial.currentIndex,i+1);assert.equal(result.completed,i===7);
     trial.checkpoints.forEach((gate,index)=>assert.equal(gate.mesh.visible,index===i+1||index===i+2));
   }
-  assert.equal(trial.elapsedTime,4);trial.stop();assert(trial.start());assert.equal(trial.courseId,id);
+  assert.equal(trial.elapsedTime,3.75);trial.stop();assert(trial.start());assert.equal(trial.courseId,id);
   assert.equal(trial.currentIndex,0);assert.equal(trial.elapsedTime,0);trial.dispose();
 }));
 await check('Seeded mixed movement stays finite and speed-bounded over twelve simulated minutes',()=>{

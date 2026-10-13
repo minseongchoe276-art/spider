@@ -17,7 +17,7 @@ const runnerSpawn=resolveMatchSpawn(anchor,teamOffset(0,'runner',1),supported,[]
 assert.equal(policeSpawn.z,-28);
 assert.equal(runnerSpawn.z,28);
 assert(Math.hypot(policeSpawn.x-runnerSpawn.x,policeSpawn.z-runnerSpawn.z)>MATCH.web.reach,'Team spawns sit inside one web shot');
-const sameSide=resolveMatchSpawn(anchor,{x:0,z:-28},()=>NaN,[{x:0,y:40,z:-30},{x:0,y:40,z:30}]);
+const sameSide=resolveMatchSpawn(anchor,{x:0,z:-28},p=>Math.abs(p.z)===30?39.9:NaN,[{x:0,y:40,z:-30},{x:0,y:40,z:30}]);
 assert(sameSide.z<0,'Spawn fallback crossed to the other team side');
 
 const server=createServer((req,res)=>res.end('ok'));

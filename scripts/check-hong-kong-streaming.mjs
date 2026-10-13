@@ -42,9 +42,12 @@ check('Ground movement, sprint, jump and dodge share streamed collision',()=>{
  const screenRight=new THREE.Vector3().setFromMatrixColumn(camera.matrixWorld,0);const dodgeTravel=p.position.clone().sub(beforeDodge).dot(screenRight);assert(dodgeTravel>.12&&dodgeTravel<.5,'Short right slip did not follow screen-right');
  c.cancel();p.update(1/60,{...input(),jump:true},camera);assert.equal(p.state,'JUMPING');const takeoff=p.velocity.y;assert.equal(c.heavy(camera),false);assert.equal(p.velocity.y,takeoff);for(let i=0;i<25;i++){c.before(1/60,camera);p.update(1/60,input(),camera);c.after(1/60);}assert(p.position.y>=20);
 });
-check('A vanished LOD anchor releases without adding launch energy',()=>{
+check('A vanished LOD anchor gets a bounded grace and releases without launch energy',()=>{
  p.webEnabled=true;p.position.set(0,22,0);p.velocity.set(3,0,0);p.state='SWINGING';p.isSwinging=true;p.webs=[{...anchor,hand:'left',length:12}];p.anchorPoint=anchor.anchor;
- world.world.removeCollider(world.meshes.get(wall.uuid).collider,true);world.meshes.delete(wall.uuid);p.updateSwingPhysics(1/60,input(),camera);assert.equal(p.isSwinging,false);assert.equal(p.webs.length,0);assert(p.velocity.length()<=3.01);
+ world.world.removeCollider(world.meshes.get(wall.uuid).collider,true);world.meshes.delete(wall.uuid);
+ p.updateSwingPhysics(1/60,input(),camera);assert(p.isSwinging,'A single missing triangle cut the rope');
+ for(let n=0;n<24 && p.isSwinging;n++)p.updateSwingPhysics(1/60,input(),camera);
+ assert.equal(p.isSwinging,false);assert.equal(p.webs.length,0);assert(p.velocity.length()<=Math.hypot(3,p.gravity*.4)+.01);
 });
 check('A vanished zip target clears its persistent web and exits the pull',()=>{p.zipAnchor=anchor.anchor;p.lastWebNormal=anchor.normal;p.zipTarget=anchor.anchor;p.state='WEB_ZIP';p.updateFreePhysics(1/60,input(),camera);assert.notEqual(p.state,'WEB_ZIP');assert.equal(p.zipTarget,null);assert.equal(character.persistentWebAnchor,null);});
 check('Collision baking keeps the old support while a replacement is pending',()=>{

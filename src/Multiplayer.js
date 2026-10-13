@@ -79,7 +79,10 @@ export class Multiplayer {
     if(data.type==='rooms')return this.renderList(data.rooms);
     if(data.type==='joined'){this.id=data.id;if(data.resumeToken)try{sessionStorage.setItem('web-runner-room-resume',JSON.stringify({code:data.code,token:data.resumeToken}));}catch{}return;}
     if(data.type==='pong'){this.latency=Math.max(0,performance.now()-data.stamp);return;}
-    if(data.type==='correction'){const p=this.game.physics;if([data.x,data.y,data.z].every(Number.isFinite)){p.clearPendingInput();p.clearWebAnchor();p.position.set(data.x,data.y,data.z);p.previousFixedPosition.copy(p.position);p.renderPosition.copy(p.position);p.velocity.set(0,0,0);p.state='FALLING';p.accumulator=0;}return;}
+    if(data.type==='correction'){
+      if(this.room?.phase==='playing' && !this.solo && !this.spectating)this.applyServerPosition(data);
+      return;
+    }
     if(data.type==='hit-check')return; // Legacy defender claims never authorize damage.
 
     // Explicit leave already resets the local room. Its asynchronous reply
@@ -96,7 +99,18 @@ export class Multiplayer {
       this.vulnerableAt=data.vulnerableAt || 0;this.arena=data.arena||null;this.pulseUntil=data.pulseUntil||0;
       if(Number.isFinite(data.serverNow))this.clockOffset=data.serverNow-Date.now();
       this.lastPhase=data.room.phase;
-      if(data.room.phase!=='playing')this.spectating=false;else {const me=this.players.find(p=>p.id===this.id);if(this.spectating&&me&&!me.eliminated){this.spectating=false;this.game.character.group.visible=true;this.game.clearInput();this.game.physics.clearWebAnchor();this.game.physics.position.set(me.x,me.y,me.z);this.game.physics.previousFixedPosition.copy(this.game.physics.position);this.game.physics.renderPosition.copy(this.game.physics.position);this.game.physics.velocity.set(0,0,0);this.game.resetCamera();this.game.showNotice('팀원이 구조했습니다. HP 50으로 복귀합니다.');}}
+      if(data.room.phase!=='playing')this.spectating=false;
+      else {
+        const me=this.players.find(p=>p.id===this.id);
+        if(me?.eliminated && !this.spectating){
+          this.spectating=true;this.game.character.group.visible=false;
+          this.game.physics.clearWebAnchor();this.game.clearInput();this.game.combat?.cancel();this.pendingPunch=null;
+        } else if(this.spectating && me && !me.eliminated){
+          this.spectating=false;this.game.character.group.visible=true;this.game.clearInput();
+          this.applyServerPosition(me);this.game.resetCamera();
+          this.game.showNotice('팀원이 구조했습니다. HP 50으로 복귀합니다.');
+        }
+      }
       if(phaseChanged&&data.room.phase==='playing')this.begin();
       if(phaseChanged&&data.room.phase==='finished')this.finish();
       if(phaseChanged&&data.room.phase==='waiting'&&this.game.isPlaying){this.game.isPlaying=false;this.game.setPaused(true);}
@@ -115,11 +129,22 @@ export class Multiplayer {
       const player=this.players.find(p=>p.id===data.target);if(player){player.health=data.health;player.eliminated=data.eliminated;}
       if(data.target===this.id){
         this.game.showNotice(data.eliminated?'체력이 0입니다. 살아있는 플레이어를 관전합니다.':`${data.kind==='web'?'거미줄':'주먹'} 공격! 체력 ${data.health}`);
-        if(data.eliminated){this.spectating=true;this.game.character.group.visible=false;this.game.physics.clearWebAnchor();this.game.clearInput();}
+        if(data.eliminated){this.spectating=true;this.game.character.group.visible=false;this.game.physics.clearWebAnchor();this.game.clearInput();this.game.combat?.cancel();this.pendingPunch=null;}
       }
       else if(data.attacker===this.id)this.game.showNotice(`명중! 상대 체력 ${data.health}`);
       this.renderHud();this.syncAvatars();
     }
+  }
+  applyServerPosition(data) {
+    if(![data.x,data.y,data.z].every(Number.isFinite))return false;
+    const p=this.game.physics;
+    p.clearPendingInput();p.clearWebAnchor();this.game.combat?.cancel();this.pendingPunch=null;
+    p.character.cancelAirTrick?.();p.mantle=null;p.character.mantle=null;
+    p.recoveryTime=0;p.recoveryElapsed=0;p.wallBuilding=null;p.wallRunTimer=0;
+    p.position.set(data.x,data.y,data.z);p.previousFixedPosition.copy(p.position);p.renderPosition.copy(p.position);
+    p.velocity.set(0,0,0);p.state='FALLING';p.accumulator=0;p.launchAssistAvailable=true;
+    if(Number.isFinite(data.facing)){p.facingAngle=data.facing;p.character.targetFacingAngle=data.facing;}
+    return true;
   }
   renderList(rooms) {
     const list=$('room-list');list.replaceChildren();

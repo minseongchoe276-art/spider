@@ -191,8 +191,8 @@ await check('Race uses active simulation time and catches a fast ring crossing',
   trial.checkpoints=[{position:new THREE.Vector3(0,5,10),normal:new THREE.Vector3(0,0,1),radius:3.2,mesh:new THREE.Mesh()}];
   trial.previousPosition=new THREE.Vector3(0,5,0);
   const result=trial.update(new THREE.Vector3(0,5,20),.1);
-  assert(result.completed);assert.equal(result.totalTime,.1);
-  assert.equal(trial.update(new THREE.Vector3(),5),null);assert.equal(trial.elapsedTime,.1);trial.dispose();
+  assert(result.completed);assert.equal(result.totalTime,.05);
+  assert.equal(trial.update(new THREE.Vector3(),5),null);assert.equal(trial.elapsedTime,.05);trial.dispose();
 });
 await check('Being beside the ring does not count as passing its aperture',()=>{
   const trial=new TimeTrialSystem(new THREE.Scene(),{},silent);trial.isActive=true;
@@ -343,10 +343,10 @@ await check('Grounded combat clicks punch, airborne clicks web, and Space jumps 
     physics.state='SWINGING';physics.isSwinging=true;physics.velocity.set(16,1,0);physics.lastWebAnchor=new THREE.Vector3(0,10,0);
     app.input.webHold=true;app.input.webFireHeld=true;app.input.webTap=true;
     key('Space');
-    assert.equal(boost,true);assert.equal(clears,0);assert.equal(physics.state,'JUMPING');
-    assert(physics.velocity.y>=17);assert.equal(app.input.webHold,false);assert.equal(app.input.webTap,false);
+    assert.equal(boost,false);assert.equal(clears,0);assert.equal(physics.state,'JUMPING');
+    assert.equal(physics.velocity.y,1);assert.equal(app.input.webHold,false);assert.equal(app.input.webTap,false);
     physics.isSwinging=false;physics.state='WEB_ZIP';physics.velocity.set(0,2,0);physics.lastWebAnchor=new THREE.Vector3(0,10,0);
-    key('Space');assert.equal(clears,1);assert.equal(physics.state,'JUMPING');assert(physics.velocity.y>=17);
+    key('Space');assert.equal(clears,1);assert.equal(physics.state,'JUMPING');assert.equal(physics.velocity.y,2);
   } finally {globalThis.window=previousWindow;globalThis.document=previousDocument;}
 });
 await check('A complete Space down/up between frames still triggers a jump',()=>{

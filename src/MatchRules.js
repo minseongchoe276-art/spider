@@ -37,12 +37,15 @@ export function resolveMatchSpawn(anchor, offset, supportHeight, roofs = []) {
   let best = null;
   let bestScore = Infinity;
   for (const roof of roofs) {
+    if(!roof || ![roof.x,roof.y,roof.z].every(Number.isFinite))continue;
+    const height=supportHeight(roof);
+    if(!Number.isFinite(height) || Math.abs(height+.1-roof.y)>=.75)continue;
     const dx = roof.x - anchor.x;
     const dz = roof.z - anchor.z;
     const distance = Math.hypot(dx, dz);
     if (distance < 8) continue;
     const score = Math.abs(distance - 28) + (Math.sign(dz || dx) === side ? 0 : 40);
-    if (score < bestScore) { bestScore = score; best = roof; }
+    if (score < bestScore) { bestScore = score; best = {x:roof.x,y:height+.1,z:roof.z}; }
   }
   if (best) return { x: best.x, y: best.y, z: best.z };
   return { x: anchor.x, y: anchor.y, z: anchor.z };

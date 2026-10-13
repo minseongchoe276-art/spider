@@ -30,7 +30,15 @@ export class SoundController {
 
   ensureContext() {
     if (!this.initialized) {
-      try { this.init(); } catch (error) { console.warn('Audio unavailable; continuing silently:', error); return; }
+      try { this.init(); } catch (error) {
+        // A partially created context is not usable by the later sound calls.
+        // Release it so retrying does not leak devices or route into null buses.
+        try { Promise.resolve(this.ctx?.close?.()).catch(()=>{}); } catch {}
+        this.ctx=null;this.initialized=false;this.masterGain=null;
+        this.effectsGain=this.environmentGain=this.musicGain=null;
+        this.windGain=this.windFilter=this.windNode=null;
+        console.warn('Audio unavailable; continuing silently:', error);return;
+      }
     }
     if (this.ctx && this.ctx.state === 'suspended') {
       this.ctx.resume().catch(() => {});

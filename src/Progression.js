@@ -14,12 +14,12 @@ export class Progression {
         this.data.discoveries=Array.isArray(saved.discoveries)?saved.discoveries.filter(x=>typeof x==='string'&&/^(procedural|hong-kong):-?\d+:-?\d+$/.test(x)).slice(-2048):[];
         for(const city of ['procedural','hong-kong'])if(finitePosition(saved.safe?.[city]))this.data.safe[city]=saved.safe[city];
         for(const [course,g] of Object.entries(saved.ghosts||{}).slice(-6)) {
-          if(!/^(procedural|hong-kong)-v[34]-[0-9a-f]{8}$/.test(course)||!Number.isFinite(g?.time)||g.time<=0)continue;
+          if(!/^(procedural|hong-kong)-v[345]-[0-9a-f]{8}$/.test(course)||!Number.isFinite(g?.time)||g.time<=0)continue;
           if(!Array.isArray(g.samples)||g.samples.length<2||g.samples.length>3000)continue;
           if(!g.samples.every((s,i)=>Array.isArray(s)&&s.length===5&&s.every(Number.isFinite)&&s[0]>=0&&s[0]<=g.time+.2&&(!i||s[0]>g.samples[i-1][0])&&finitePosition(s.slice(1,4))))continue;
           this.data.ghosts[course]={time:g.time,samples:g.samples,splits:Array.isArray(g.splits)?g.splits.filter(t=>Number.isFinite(t)&&t>=0&&t<=g.time).slice(0,32):[]};
         }
-        for(const [course,medal] of Object.entries(saved.medals||{}).slice(-64))if(/^(procedural|hong-kong)-v[34]-[0-9a-f]{8}$/.test(course)&&['bronze','silver','gold'].includes(medal))this.data.medals[course]=medal;
+        for(const [course,medal] of Object.entries(saved.medals||{}).slice(-64))if(/^(procedural|hong-kong)-v[345]-[0-9a-f]{8}$/.test(course)&&['bronze','silver','gold'].includes(medal))this.data.medals[course]=medal;
         if(['white',...rewards.filter(r=>this.data.score>=r.score).map(r=>r.id)].includes(saved.theme))this.data.theme=saved.theme;
       }
     }catch{/* Local storage may be unavailable. */}
@@ -27,7 +27,7 @@ export class Progression {
   }
   get unlocked(){return rewards.filter(r=>this.data.score>=r.score);}
   get color(){return rewards.find(r=>r.id===this.data.theme&&this.data.score>=r.score)?.color||0xf4f8ff;}
-  bank(points){const before=this.unlocked.length;this.data.score+=points;this.data.bestCombo=Math.max(this.data.bestCombo,points);this.dirty=true;return this.unlocked.slice(before);}
+  bank(points){if(!Number.isFinite(points)||points<=0)return [];const before=this.unlocked.length;this.data.score+=points;this.data.bestCombo=Math.max(this.data.bestCombo,points);this.dirty=true;return this.unlocked.slice(before);}
   visit(position,city,grounded=false) {
     const p=position.toArray();if(!finitePosition(p))return false;
     if(this.previous&&this.previous.city===city){const distance=position.distanceTo(this.previous.position);if(distance<100)this.data.distance+=distance;}

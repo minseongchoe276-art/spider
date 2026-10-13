@@ -93,8 +93,8 @@ export class TimeTrialSystem {
     const layout = this.checkpoints.map(cp=>cp.position.toArray().map(n=>Math.round(n*10)).join(',')).join(';');
     let hash = 2166136261;
     for (let i=0;i<layout.length;i++) hash=Math.imul(hash^layout.charCodeAt(i),16777619);
-    // v4 uses real active time; older clamped-frame records are not comparable.
-    this.courseId = `${this.city.isStreamed ? 'hong-kong' : 'procedural'}-v4-${(hash>>>0).toString(16).padStart(8,'0')}`;
+    // v5 stops timing at the actual finish crossing, not the frame endpoint.
+    this.courseId = `${this.city.isStreamed ? 'hong-kong' : 'procedural'}-v5-${(hash>>>0).toString(16).padStart(8,'0')}`;
     return true;
   }
 
@@ -146,7 +146,8 @@ export class TimeTrialSystem {
   update(playerPos, delta = 0) {
     if (!this.isActive || this.isCompleted) return null;
 
-    this.elapsedTime += Math.max(0, Number.isFinite(delta) ? delta : 0);
+    delta=Math.max(0, Number.isFinite(delta) ? delta : 0);
+    this.elapsedTime += delta;
 
     let lastCrossing = -1;
     // A long frame can pass several nearby rings. Consume them in the order
@@ -177,10 +178,12 @@ export class TimeTrialSystem {
         if (this.currentIndex >= this.checkpoints.length) {
           // Completed Course!
           this.isCompleted = true;
+          this.elapsedTime=this.splitTimes.at(-1);
           this.previousPosition = playerPos.clone();
           return {
             completed: true,
             totalTime: this.elapsedTime,
+            finishPosition: crossing.clone(),
             checkpoints: this.checkpoints.length
           };
         } else {

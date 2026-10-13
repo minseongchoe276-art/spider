@@ -175,11 +175,11 @@ check('Aimed facade shots keep a left web and a right web',()=>{
   assert.equal(p.webs.length,2);assert.equal(p.state,'SWINGING');
   assert(p.webs.some(web=>web.anchor.x<-1)&&p.webs.some(web=>web.anchor.x>1),'Both aimed facades were not retained');
 });
-check('Explicit jump boosts, mouse release preserves momentum, and W keeps rope length fixed',()=>{
+check('Space and mouse release preserve momentum, and W keeps rope length fixed',()=>{
   const rising=player();rising.shoot(new THREE.Vector3(0,30,0));rising.velocity.set(0,5,0);
-  rising.releaseSwing(true);assert(rising.velocity.y>5);assert.equal(rising.isSwinging,false);
+  rising.releaseSwing(true);assert.equal(rising.velocity.y,5);assert.equal(rising.isSwinging,false);
   const fast=player();fast.isSwinging=true;fast.velocity.set(20,0,0);fast.releaseSwing(true);
-  assert.equal(fast.velocity.x,20*1.18);assert.equal(fast.velocity.y,Math.min(14,4+20*0.3));
+  assert.equal(fast.velocity.x,20);assert.equal(fast.velocity.y,0);
   const slow=player();slow.isSwinging=true;slow.velocity.set(10,0,0);slow.releaseSwing(true);
   assert.equal(slow.velocity.x,10);assert.equal(slow.velocity.y,0);
   const held=player();held.shoot(new THREE.Vector3(0,30,0));held.velocity.set(0,5,0);

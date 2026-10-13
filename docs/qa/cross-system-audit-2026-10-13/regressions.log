@@ -1,0 +1,69 @@
+Audio unavailable; continuing silently: Error: device lost
+    at window.AudioContext.createGain (file:///Users/choeminseong/Desktop/%E1%84%80%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%B7/scripts/check-cross-system-regressions.mjs:33:62)
+    at SoundController.init (file:///Users/choeminseong/Desktop/%E1%84%80%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%B7/src/Audio.js:21:32)
+    at SoundController.ensureContext (file:///Users/choeminseong/Desktop/%E1%84%80%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%B7/src/Audio.js:33:18)
+    at file:///Users/choeminseong/Desktop/%E1%84%80%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%B7/scripts/check-cross-system-regressions.mjs:34:43
+    at withDOM (file:///Users/choeminseong/Desktop/%E1%84%80%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%B7/scripts/check-cross-system-regressions.mjs:25:14)
+    at file:///Users/choeminseong/Desktop/%E1%84%80%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%B7/scripts/check-cross-system-regressions.mjs:32:96
+    at check (file:///Users/choeminseong/Desktop/%E1%84%80%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%B7/scripts/check-cross-system-regressions.mjs:19:42)
+    at file:///Users/choeminseong/Desktop/%E1%84%80%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%B7/scripts/check-cross-system-regressions.mjs:32:7
+{
+  "results": [
+    {
+      "name": "Spawns skip unloaded or malformed fallback roofs",
+      "status": "PASS"
+    },
+    {
+      "name": "Partial audio initialization closes its context and later sounds remain safe",
+      "status": "PASS"
+    },
+    {
+      "name": "Keyboard and gamepad releases do not cancel each other",
+      "status": "PASS"
+    },
+    {
+      "name": "Switching pads releases old buttons before pressing the new pad",
+      "status": "PASS"
+    },
+    {
+      "name": "Invalid or out-of-range stick samples cannot poison movement",
+      "status": "PASS"
+    },
+    {
+      "name": "Combat toggle clears held zip without inventing a new air action",
+      "status": "PASS"
+    },
+    {
+      "name": "Room snapshots enter spectator mode and rescue clears old traversal",
+      "status": "PASS"
+    },
+    {
+      "name": "Late server corrections cannot move a solo player",
+      "status": "PASS"
+    },
+    {
+      "name": "Old Supabase broadcasts cannot restore a departed or replaced room",
+      "status": "PASS"
+    },
+    {
+      "name": "Finish timing and final ghost position use the actual gate crossing at every FPS",
+      "status": "PASS"
+    },
+    {
+      "name": "Malformed frame duration never corrupts checkpoint times",
+      "status": "PASS"
+    },
+    {
+      "name": "New timing records persist without comparing against older timing rules",
+      "status": "PASS"
+    },
+    {
+      "name": "Audio changes preserve first-person zoom and adaptive resolution; FOV stays bounded",
+      "status": "PASS"
+    },
+    {
+      "name": "Zip HUD reports movement and cooldown rather than false readiness",
+      "status": "PASS"
+    }
+  ]
+}

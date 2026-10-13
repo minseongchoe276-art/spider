@@ -40,7 +40,7 @@ const verticalLand=controller();verticalLand.position.y=0.3;verticalLand.velocit
 const zip=controller();zip.state='FALLING';zip.position.y=2;
 assert.equal(zip.performAirJump(camera),false);assert.equal(zip.canAirJump,true,'A missed zip target must not consume the air ability');
 const facade=new THREE.Mesh(new THREE.BoxGeometry(10,20,2),new THREE.MeshBasicMaterial());facade.position.set(0,10,20);facade.updateMatrixWorld(true);zip.city.buildingMeshes=[facade];
-assert.equal(zip.performAirJump(camera),true);assert.equal(zip.state,'WEB_ZIP');assert.equal(zip.canAirJump,false);advance(zip,input(),0.2);assert.equal(zip.state,'WEB_ZIP');
+assert.equal(zip.performAirJump(camera),true);assert.equal(zip.state,'WEB_ZIP');assert.equal(zip.canAirJump,true);assert(zip.zipTarget.distanceTo(zip.position)<=12);advance(zip,input(),0.2);assert.equal(zip.state,'WEB_ZIP');
 for(let t=0;zip.state==='WEB_ZIP'&&t<3;t+=1/60)zip.update(1/60,input(),camera);
 assert.notEqual(zip.state,'WEB_ZIP');assert(zip.position.z<20,'Zip passed through its target wall');
 const zipArrival=zip.position.z;zip.update(1/60,input(),camera);

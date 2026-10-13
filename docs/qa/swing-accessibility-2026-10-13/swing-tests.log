@@ -1,0 +1,12 @@
+
+> spiderman-web-swing@1.0.0 test:swing
+> node scripts/check-swing-accessibility.mjs
+
+PASS downward view selects a higher real surface; manual aim remains exact
+PASS grounded launch, clear arc, smooth reel and momentum release at 30fps
+PASS grounded launch, clear arc, smooth reel and momentum release at 60fps
+PASS grounded launch, clear arc, smooth reel and momentum release at 144fps
+PASS held E chains without landing; each target stays within 18m
+PASS short zip respects intervening collision and failed shots remain retryable
+PASS actual streamed triangles and Rapier capsule launch upward and chain into E
+PASS online button focus and corrections preserve movement; text inputs stay isolated

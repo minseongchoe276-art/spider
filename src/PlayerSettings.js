@@ -37,4 +37,9 @@ export function rebind(settings,action,code) {
   settings.bindings[action]=code;return true;
 }
 export const keyLabel = code => code?.replace(/^Key|^Digit/,'').replace('Left','').replace('Control','Ctrl') || '';
-export function deadzone(value,zone=0.18){return Math.abs(value)<=zone?0:Math.sign(value)*(Math.abs(value)-zone)/(1-zone);}
+export function deadzone(value,zone=0.18){
+  if(!Number.isFinite(value))return 0;
+  value=Math.max(-1,Math.min(1,value));
+  zone=Number.isFinite(zone)?Math.max(0,Math.min(.99,zone)):.18;
+  return Math.abs(value)<=zone?0:Math.sign(value)*(Math.abs(value)-zone)/(1-zone);
+}

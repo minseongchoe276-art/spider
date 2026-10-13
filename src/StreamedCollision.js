@@ -30,6 +30,7 @@ export class StreamedCollision {
   }
 
   setActiveMeshes(meshes) { this.activeMeshes = new Set(meshes.map(mesh=>mesh.uuid)); }
+  setTetherColliders(handles) { this.tetherColliders=new Set(handles); }
 
   dispose() {
     this.disposed = true;
@@ -88,7 +89,7 @@ export class StreamedCollision {
           const support=bakingReplacement?this.world.castRay(new RAPIER.Ray(
             {x:center.x,y:center.y+1,z:center.z},{x:0,y:-1,z:0}),2,false,undefined,undefined,this.body):null;
           const holdsPlayer=support?.collider.handle===entry.collider.handle;
-          if (now-entry.inactiveSince>2000 && !(bakingReplacement && holdsPlayer)) {
+          if (now-entry.inactiveSince>2000 && !this.tetherColliders?.has(entry.collider.handle) && !(bakingReplacement && holdsPlayer)) {
             this.world.removeCollider(entry.collider,true); this.meshes.delete(id);
           }
         }
@@ -167,7 +168,7 @@ export class StreamedCollision {
     // memory; dispose distant geometry before evicting local support surfaces.
     if (this.meshes.size > 350) {
       for (const [id, entry] of this.meshes) {
-        if (entry && entry.coverageCenter.distanceTo(center) > 900) {
+        if (entry && entry.coverageCenter.distanceTo(center) > 900 && !this.tetherColliders?.has(entry.collider.handle)) {
           this.world.removeCollider(entry.collider, true); this.meshes.delete(id);
         }
       }

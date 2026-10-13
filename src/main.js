@@ -318,7 +318,8 @@ export class GameApp {
     document.addEventListener('visibilitychange', () => { if (document.hidden) { this.clearInput(); if (this.isPlaying) this.setPaused(true); } });
     window.addEventListener('keydown', (e) => {
       const k = canonicalKey(e.code,this.preferences?.values.settings);
-      if (e.target?.closest?.('input, select, textarea, button, a') && k !== 'Escape') return;
+      if (e.target?.closest?.('input, select, textarea, [contenteditable="true"]') && k !== 'Escape') return;
+      if (!this.isPlaying && e.target?.closest?.('button, a') && k !== 'Escape') return;
       if (k === 'Escape' && performance.now() < (this.ignoreEscapeUntil || 0)) return;
       const gameplayKey = [
         'KeyW', 'KeyA', 'KeyS', 'KeyD', 'ArrowUp', 'ArrowDown',
@@ -330,7 +331,12 @@ export class GameApp {
       if (gameplayKey) e.preventDefault();
       if (gameplayKey && e.repeat && ['Space','KeyG','KeyE','KeyT','KeyC','KeyV','KeyQ','ControlLeft','ControlRight'].includes(k)) return;
 
-      if (gameplayKey) { this.heldKeys.add(k); if(k==='ShiftLeft' && !e.repeat && this.preferences?.values.settings?.sprintToggle)this.sprintLatched=!this.sprintLatched; this.syncHeldInput(); }
+      if (gameplayKey) {
+        const keys=e.gamepadInput?(this.gamepadHeldKeys??=new Set()):this.heldKeys;
+        keys.add(k);
+        if(k==='ShiftLeft' && !e.repeat && this.preferences?.values.settings?.sprintToggle)this.sprintLatched=!this.sprintLatched;
+        this.syncHeldInput();
+      }
       if(k==='KeyB'){this.combat.guard(true);return;}
       if(k==='KeyG'){if(GROUNDED.includes(this.physics.state)){if(this.combat.special(this.camera))this.multiplayer?.attack('punch');}else this.combat.airStrike?.(this.camera);return;}
       if(k==='KeyQ'){
@@ -372,10 +378,9 @@ export class GameApp {
           this.input.webHoldRight = false;
           this.input.webFireHeldRight = false;
           this.input.webTapRight = false;
-          if (swinging) this.physics.releaseSwing(true);
+          if (swinging) this.physics.releaseSwing(false);
           else this.physics.clearWebAnchor();
-          this.physics.velocity.y = Math.max(this.physics.velocity.y, this.physics.jumpForce);
-          this.physics.state = 'JUMPING';
+          this.physics.state = this.physics.velocity.y > 0 ? 'JUMPING' : 'FALLING';
           this.input.jump = false;
           this.physics.clearPendingInput();
         }
@@ -395,8 +400,8 @@ export class GameApp {
 
     window.addEventListener('keyup', (e) => {
       const k = canonicalKey(e.code,this.preferences?.values.settings);
-      this.heldKeys.delete(k);
-      if(k==='KeyB')this.combat?.guard(false);
+      (e.gamepadInput?this.gamepadHeldKeys:this.heldKeys)?.delete(k);
+      if(k==='KeyB' && !this.heldKeys.has(k) && !this.gamepadHeldKeys?.has(k))this.combat?.guard(false);
       this.syncHeldInput();
       // Jump is a one-shot request consumed by physics, not a held button.
       // Clearing it on keyup loses taps completed between two render frames.
@@ -626,6 +631,7 @@ export class GameApp {
   clearInput() {
     this.combat?.clearHeld();
     this.heldKeys.clear();
+    this.gamepadHeldKeys?.clear();
     this.sprintLatched=false;this.gamepadDirections={};
     for (const key of Object.keys(this.input)) this.input[key] = key === 'strafe' ? 0 : false;
     this.cameraDragActive = false;
@@ -633,7 +639,7 @@ export class GameApp {
   }
 
   syncHeldInput() {
-    const held = (...keys) => keys.some(key => this.heldKeys.has(key));
+    const held = (...keys) => keys.some(key => this.heldKeys.has(key) || this.gamepadHeldKeys?.has(key));
     const pad=this.gamepadDirections||{};
     this.input.forward = !!pad.forward || held('KeyW','ArrowUp');
     this.input.backward = !!pad.backward || held('KeyS','ArrowDown');
@@ -641,6 +647,7 @@ export class GameApp {
     this.input.right = !!pad.right || held('KeyD','ArrowRight');
     this.input.sprint = this.preferences?.values.settings.sprintToggle?!!this.sprintLatched:held('ShiftLeft','ShiftRight');
     this.input.wallRun = held('KeyF');
+    this.input.webZipHeld = held('KeyE') && this.combat?.mode !== 'combat';
     this.input.strafe = Number(this.input.right) - Number(this.input.left);
   }
 
@@ -665,7 +672,8 @@ export class GameApp {
 
   applyPreferences() {
     const { muted, reducedMotion, quality,settings } = this.preferences.values;
-    Object.assign(this.tpsCamera,{sensitivity:settings.sensitivity,invertY:settings.invertY,baseFov:settings.fov,maxFov:settings.fov+12,firstPersonFov:settings.fov,shakeStrength:settings.shake,speedFov:settings.speedFov,followStrength:settings.follow});
+    if(this.appliedFov!==settings.fov){this.tpsCamera.firstPersonFov=settings.fov;this.appliedFov=settings.fov;}
+    Object.assign(this.tpsCamera,{sensitivity:settings.sensitivity,invertY:settings.invertY,baseFov:settings.fov,maxFov:Math.min(95,settings.fov+12),shakeStrength:settings.shake,speedFov:settings.speedFov,followStrength:settings.follow});
     this.physics.aimAssist=this.multiplayer?.room?true:settings.aimAssist;
     this.physics.softBoundary=true;
     this.audio.configure?.(settings);
@@ -680,7 +688,10 @@ export class GameApp {
     this.city.reducedMotion = reducedMotion;
     this.timeTrial.reducedMotion = reducedMotion;
     document.body.classList.toggle('reduced-motion', reducedMotion);
-    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, { low: 1, balanced: 1.5, high: 2 }[quality] || 1.5));
+    if(this.appliedQuality!==quality){
+      this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, { low: 1, balanced: 1.5, high: 2 }[quality] || 1.5));
+      this.appliedQuality=quality;
+    }
     this.renderer.shadowMap.enabled = quality !== 'low';
     this.applyWebTheme();
   }
@@ -826,19 +837,11 @@ export class GameApp {
     const spectating = !!this.multiplayer?.spectating;
     if (this.isPlaying && !this.isPaused && !spectating) {
       // 1. Update Physics and Character
-      const wasSwinging = this.physics.isSwinging;
       this.combat?.before(delta,this.camera);
       this.physics.update(delta, this.input, this.camera);
       this.combat?.after(delta);
       this.practice?.update(delta);
-      if (wasSwinging && !this.physics.isSwinging) {
-        this.input.webHold = false;
-        this.input.webFireHeld = false;
-        this.input.webTap = false;
-        this.input.webHoldRight = false;
-        this.input.webFireHeldRight = false;
-        this.input.webTapRight = false;
-      }
+      // Mouse release owns held input; a temporarily lost anchor can reconnect.
 
       // 2. Update 3rd Person Follow Camera
       this.tpsCamera.update(
