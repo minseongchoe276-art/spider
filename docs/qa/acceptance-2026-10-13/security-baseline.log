@@ -1,0 +1,17 @@
+{
+  "status": "FAIL",
+  "severity": "P1",
+  "id": "SEC-01",
+  "finding": "Hong Kong competitive damage is controlled by the defender client",
+  "evidence": {
+    "ignoredHitHealth": 100,
+    "refusedHitHealth": 100,
+    "acceptedHitHealth": 75,
+    "transport": "local WebSocket",
+    "mode": "enhanced tag",
+    "graceMs": 0
+  },
+  "impact": "A modified defender can ignore or reject every hit-check and avoid damage. The server does not independently verify Hong Kong visibility.",
+  "remediation": "Use authoritative server-side Hong Kong collision/visibility and authenticated damage resolution; a timeout default alone would create through-wall hits.",
+  "scope": "Local reproduction only. Supabase branch reviewed separately; no production attack or mutation performed."
+}

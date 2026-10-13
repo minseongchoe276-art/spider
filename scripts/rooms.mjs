@@ -106,8 +106,9 @@ function handle(ws, data) {
     if(p.lastMove&&distance>budget){send(ws,{type:'correction',x:p.x,y:p.y,z:p.z});return;}
     if(room.enhanced&&p.lastMove&&room.city==='procedural'&&blockedSegment(p,data,proceduralCollision().colliders)){send(ws,{type:'correction',x:p.x,y:p.y,z:p.z});return;}
     p.moveBudget=p.lastMove?Math.min(20,budget-distance):20;
+    const previousMove=p.lastMove;
     p.x=data.x;p.y=data.y;p.z=data.z;p.facing=data.facing;p.seen=true;p.lastMove=now;
-    if(room.enhanced){p.history||=[];p.history.push({x:p.x,y:p.y,z:p.z,time:now});p.history=p.history.filter(h=>now-h.time<600);advanceGoal(room,p,now);}
+    if(room.enhanced){p.history||=[];p.history.push({x:p.x,y:p.y,z:p.z,time:now});p.history=p.history.filter(h=>now-h.time<600);advanceGoal(room,p,now,previousMove);}
     broadcast(room,{type:'move',id:p.id,x:p.x,y:p.y,z:p.z,facing:p.facing,pose:sanitizePose(data.pose)});return;
   }
   if(data.type==='attack' && room.mode==='tag' && p.team==='police') {
@@ -123,7 +124,7 @@ function handle(ws, data) {
       .filter(({v,d,dy})=>d<=rule.reach&&dy<rule.vertical&&(d<=0.35||aimAt(v)>=rule.cone))
       .sort((a,b)=>a.d-b.d)[0]?.v;
     if(!target)return;
-    if(room.enhanced){if(now-target.lastMove>1500||now-p.lastMove>1500)return;if(room.city==='procedural'){if(blockedSegment(p,target,proceduralCollision().colliders))return;}else{const hitId=randomBytes(8).toString('hex');room.pendingHits.set(hitId,{attacker:p.id,target:target.id,kind,expires:now+600});send(target.ws,{type:'hit-check',hitId,from:{x:p.x,y:p.y,z:p.z},to:{x:target.x,y:target.y,z:target.z}});return;}}
+    if(room.enhanced){if(now-p.lastMove>1500)return;if(room.city==='procedural'){if(blockedSegment(p,target,proceduralCollision().colliders))return;}else{const hitId=randomBytes(8).toString('hex');room.pendingHits.set(hitId,{attacker:p.id,target:target.id,kind,expires:now+600});send(target.ws,{type:'hit-check',hitId,from:{x:p.x,y:p.y,z:p.z},to:{x:target.x,y:target.y,z:target.z}});return;}}
     applyHit(room,p,target,kind);
     return;
 
@@ -133,11 +134,12 @@ function handle(ws, data) {
 function applyHit(room,attacker,target,kind){if(!attacker||!target)return;target.health=Math.max(0,target.health-MATCH[kind].damage);target.eliminated=target.health===0;
  broadcast(room,{type:'hit',attacker:attacker.id,target:target.id,kind,health:target.health,eliminated:target.eliminated});
  if([...room.players.values()].filter(v=>v.team==='runner').every(v=>v.eliminated))finish(room,'police');}
-function advanceGoal(room,p,now){if(room.mode!=='tag'||p.team!=='runner'||!room.arena?.points?.length)return;
+function advanceGoal(room,p,now,previousMove){if(room.mode!=='tag'||p.team!=='runner'||!room.arena?.points?.length)return;
  const target=room.arena.points[(p.progress||0)%room.arena.points.length];
  if(now-(p.goalAt||0)>=PURSUIT.checkpointCooldown&&Math.hypot(p.x-target.x,p.y-target.y,p.z-target.z)<PURSUIT.checkpointRadius){p.progress=(p.progress||0)+1;p.goalAt=now;publish(room);if(p.progress>=PURSUIT.goal)finish(room,'runner');}
- const ally=[...room.players.values()].find(v=>v.team==='runner'&&v.eliminated&&v.seen&&Math.hypot(v.x-p.x,v.y-p.y,v.z-p.z)<PURSUIT.reviveRadius);
- if(ally){if(p.rescue?.id!==ally.id)p.rescue={id:ally.id,since:now};if(now-p.rescue.since>=PURSUIT.reviveMs){ally.health=50;ally.eliminated=false;p.rescue=null;publish(room);}}else p.rescue=null;}
+ const ally=[...room.players.values()].find(v=>v.team==='runner'&&v.eliminated&&v.seen&&Math.hypot(v.x-p.x,v.y-p.y,v.z-p.z)<PURSUIT.reviveRadius
+   &&(room.city!=='procedural'||!blockedSegment(p,v,proceduralCollision().colliders)));
+ if(ally){if(p.rescue?.id!==ally.id||now-previousMove>500)p.rescue={id:ally.id,since:now};if(now-p.rescue.since>=PURSUIT.reviveMs){ally.health=50;ally.eliminated=false;p.rescue=null;publish(room);}}else p.rescue=null;}
 
 export function attachRooms(server) {
   if (!server) return;

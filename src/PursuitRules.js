@@ -4,7 +4,12 @@ export function validArenaPoint(p){return p&&[p.x,p.y,p.z].every(Number.isFinite
 export function arenaFrom(point,city,roofs=[]) {
   if(!validArenaPoint(point))return null;
   const radius=city==='procedural'?300:450;
-  const points=roofs.filter(validArenaPoint).filter(p=>Math.hypot(p.x-point.x,p.z-point.z)<radius-25&&Math.hypot(p.x-point.x,p.z-point.z)>25).slice(0,12);
+  const points=[];
+  for(const p of roofs.slice(0,128).filter(validArenaPoint)) {
+    const distance=Math.hypot(p.x-point.x,p.z-point.z);
+    if(distance<=25 || distance>=radius-25 || points.some(other=>Math.hypot(other.x-p.x,other.z-p.z)<25))continue;
+    points.push({x:p.x,y:p.y,z:p.z});if(points.length===12)break;
+  }
   if(points.length<2)return null;
   return {x:point.x,y:point.y,z:point.z,radius,points};
 }

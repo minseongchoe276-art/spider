@@ -1,0 +1,63 @@
+TilesRenderer: tiles versions at 1.1 or higher have limited support. Some new extensions and features may not be supported.
+{
+  "scope": "Geometry streaming probe, not authoritative coverage certification",
+  "output": [
+    {
+      "meshes": 286,
+      "triangles": 643821,
+      "stats": {
+        "inCacheSinceLoad": 0,
+        "inCache": 193,
+        "queued": 0,
+        "downloading": 0,
+        "parsing": 0,
+        "loaded": 193,
+        "failed": 0,
+        "inFrustum": 146,
+        "used": 195,
+        "active": 91,
+        "visible": 56,
+        "refused": 0,
+        "tilesProcessed": 0
+      }
+    },
+    {
+      "meshes": 91,
+      "triangles": 40798,
+      "stats": {
+        "inCacheSinceLoad": 0,
+        "inCache": 203,
+        "queued": 0,
+        "downloading": 0,
+        "parsing": 0,
+        "loaded": 203,
+        "failed": 0,
+        "inFrustum": 66,
+        "used": 204,
+        "active": 112,
+        "visible": 27,
+        "refused": 0,
+        "tilesProcessed": 0
+      }
+    },
+    {
+      "meshes": 12,
+      "triangles": 13931,
+      "stats": {
+        "inCacheSinceLoad": 0,
+        "inCache": 99,
+        "queued": 0,
+        "downloading": 0,
+        "parsing": 0,
+        "loaded": 99,
+        "failed": 0,
+        "inFrustum": 26,
+        "used": 100,
+        "active": 52,
+        "visible": 9,
+        "refused": 0,
+        "tilesProcessed": 0
+      }
+    }
+  ]
+}

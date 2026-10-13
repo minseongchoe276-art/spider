@@ -26,6 +26,16 @@ async function roomTest(run){
   try{await run({connect,send,wait,create,api,sleep});}finally{for(const ws of sockets)ws.terminate();await new Promise(r=>server.close(r));}
 }
 
+await check('Paused defenders remain damageable at their accepted server position',()=>roomTest(async({connect,create,send,wait})=>{
+  const cop=await connect(),runner=await connect();const {joined,room}=await create(cop,true,'tag');
+  send(runner,{type:'join',code:joined.code,city:'procedural'});const runnerJoined=await wait(runner,e=>e.type==='joined');
+  room.phase='playing';room.vulnerableAt=0;room.endsAt=Date.now()+30000;
+  const now=Date.now();Object.assign(room.players.get(joined.id),{team:'police',seen:true,x:0,y:50,z:0,facing:0,lastMove:now});
+  Object.assign(room.players.get(runnerJoined.id),{team:'runner',seen:true,x:0,y:50,z:2,lastMove:now-5000});
+  send(cop,{type:'attack',kind:'punch',facing:0});
+  const hit=await wait(runner,e=>e.type==='hit');assert.equal(hit.health,75);
+}));
+
 await check('Null or malformed saved settings preserve usable defaults',()=>{
   for(const saved of [null,{},[],42,'broken'])assert.deepEqual(cleanSettings(saved),cleanSettings());
 });

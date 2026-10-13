@@ -11,7 +11,9 @@
     "predev": "node scripts/build-motions.mjs",
     "prebuild": "node scripts/build-motions.mjs",
     "start": "node scripts/serve.mjs",
-    "test:upgrade:supabase": "node scripts/check-upgrade-supabase.mjs"
+    "test:upgrade:supabase": "node scripts/check-upgrade-supabase.mjs",
+    "test:postgres": "node scripts/check-postgres-rules.mjs",
+    "verify:acceptance": "node scripts/check-acceptance.mjs"
   },
   "dependencies": {
     "@dimforge/rapier3d-compat": "^0.21.0",
@@ -22,6 +24,7 @@
     "ws": "^8.22.0"
   },
   "devDependencies": {
+    "embedded-postgres": "17.10.0-beta.17",
     "vite": "^7.3.7"
   }
 }
