@@ -1,3 +1,4 @@
+{"stage":"reconnect","before":{"server":[-157.36494593496616,95.81197417482352,-175],"id":"5aa1a1ee67a705fc"},"resumed":{"position":[-157.36494593496616,95.81197417482352,-175],"id":"5aa1a1ee67a705fc","spectating":false}}
 {
   "status": "PASS",
   "realNetwork": {
@@ -8,26 +9,26 @@
     ],
     "before": {
       "server": [
-        -157.20161304357248,
+        -157.36494593496616,
         95.81197417482352,
         -175
       ],
-      "id": "0bf05a4e43e937b2"
+      "id": "5aa1a1ee67a705fc"
     },
     "resumed": {
       "position": [
-        -157.20161304357248,
+        -157.36494593496616,
         95.81197417482352,
         -175
       ],
-      "id": "0bf05a4e43e937b2",
+      "id": "5aa1a1ee67a705fc",
       "spectating": false
     }
   },
   "snapshotScenario": {
     "spectating": true,
     "visible": false,
-    "hud": "피해 없음"
+    "hud": "HP 0/100 · 관전 중"
   },
   "soloVisible": true,
   "errors": []

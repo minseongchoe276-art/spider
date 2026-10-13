@@ -64,4 +64,8 @@ check('Race completion records the finish sample and final split',()=>{
  experience.raceFinished({totalTime:1});
  assert.equal(saved.samples.at(-1)[0],1);assert.deepEqual(saved.splits,[.5,1]);
 });
+check('A late leave acknowledgement does not stop subsequent solo play',()=>{
+ const mp=Object.create(Multiplayer.prototype);Object.assign(mp,{room:null,id:null,solo:true,leaveLocal(){this.solo=false;}});
+ mp.message({type:'left'});assert.equal(mp.solo,true);
+});
 console.log(JSON.stringify({results},null,2));if(results.some(r=>r.status==='FAIL'))process.exitCode=1;

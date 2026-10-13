@@ -81,7 +81,9 @@ export class Multiplayer {
     if(data.type==='pong'){this.latency=Math.max(0,performance.now()-data.stamp);return;}
     if(data.type==='correction'){const p=this.game.physics;if([data.x,data.y,data.z].every(Number.isFinite)){this.game.clearInput();p.clearWebAnchor();p.position.set(data.x,data.y,data.z);p.previousFixedPosition.copy(p.position);p.renderPosition.copy(p.position);p.velocity.set(0,0,0);}return;}
     if(data.type==='hit-check'){if(data.target&&data.target!==this.id)return;if(data.to&&data.from){const from=new THREE.Vector3(data.from.x,data.from.y+1,data.from.z),to=new THREE.Vector3(data.to.x,data.to.y+1,data.to.z),dir=to.clone().sub(from),length=dir.length();const clear=this.game.assetsReady&&!this.game.city.raycast?.(from,dir.normalize(),Math.max(0,length-.3));this.send({type:'hit-confirm',hitId:data.hitId,clear});}return;}
-    if(data.type==='left')return this.leaveLocal();
+    // Explicit leave already resets the local room. Its asynchronous reply
+    // must not tear down a solo session started while that reply was in flight.
+    if(data.type==='left')return this.room||this.id ? this.leaveLocal() : undefined;
     if(data.type==='pose') {
       const avatar=this.avatars.get(data.id),player=this.players.find(p=>p.id===data.id);
       if(avatar && player)avatar.receive(player,sanitizePose(data.pose));
