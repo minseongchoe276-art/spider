@@ -1,0 +1,19 @@
+{
+  "status": "PASS",
+  "checked_at": "2026-10-13T17:50:21.519Z",
+  "source_snapshot_commit": "0385cef",
+  "frontend_asset": "/assets/index-2_FATR0N.js",
+  "sha256": "663d7c47b15def6acf55c7a35569e632882fe2953b24347ea469927f1ffe5608",
+  "matches_previously_verified_compact_city_build": true,
+  "render_code_commit": "eec22d6afc604b77828821dc33acff0250762307",
+  "render_deploy": "dep-db75e0bncjis73fitoug",
+  "health": {
+    "status": "ready",
+    "transport": "websocket",
+    "authority": "server-owned-rooms",
+    "uptimeSeconds": 498,
+    "terrainSeedWarm": true,
+    "terrainSeedStatus": "CLEAR"
+  },
+  "matches_this_isolated_build": true
+}

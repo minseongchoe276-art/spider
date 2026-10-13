@@ -1,0 +1,29 @@
+{
+  "status": "PASS",
+  "checked_at": "2026-10-13T11:31:30.498Z",
+  "service": "https://minogame-room-authority.onrender.com",
+  "scope": "Real HTTP/WebSocket round trips from the verification machine, official Hong Kong geometry, eight temporary participants, actual server grace and cooldown. No existing room mutated.",
+  "results": [
+    {
+      "name": "Eight real public WebSocket clients, server roles, official-map hits independent of defender claims",
+      "status": "PASS",
+      "attackRoundTripMs": [
+        123.08162500000071,
+        124.07833299999947,
+        130.83929199999875
+      ]
+    },
+    {
+      "name": "Actual official wall rejects forged client approval without a timeout-default hit",
+      "status": "PASS"
+    },
+    {
+      "name": "Reconnect preserves the same identity and eliminated state",
+      "status": "PASS"
+    },
+    {
+      "name": "Only the temporary test room is removed; service remains healthy",
+      "status": "PASS"
+    }
+  ]
+}

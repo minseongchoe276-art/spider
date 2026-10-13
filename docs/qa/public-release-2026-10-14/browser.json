@@ -1,0 +1,37 @@
+{
+  "checked_at": "2026-10-13T17:49:32.298Z",
+  "scope": "Actual deployed procedural solo game: jump, T trick, landing and subsequent W movement; Q, left/right ground attack input and subsequent W movement. No hidden game state modified.",
+  "before": {
+    "coordinates": "LOCAL CITY\nPROCEDURAL DISTRICT\nLOCAL\nN ↑\n3D · 나 경찰 도망자\n180m\nRANGE\nE -85m N +95m · ALT 95m",
+    "crosshair": {
+      "bottom": 374,
+      "height": 28,
+      "left": 626,
+      "right": 654,
+      "top": 346,
+      "width": 28,
+      "x": 626,
+      "y": 346
+    },
+    "range": "180m"
+  },
+  "after": {
+    "coordinates": "LOCAL CITY\nPROCEDURAL DISTRICT\nLOCAL\nN ↑\n3D · 나 경찰 도망자\n180m\nRANGE\nE -83m N +95m · ALT 95m",
+    "crosshair": {
+      "bottom": 374,
+      "height": 28,
+      "left": 626,
+      "right": 654,
+      "top": 346,
+      "width": 28,
+      "x": 626,
+      "y": 346
+    },
+    "range": "180m",
+    "scripts": [
+      "/assets/index-2_FATR0N.js"
+    ]
+  },
+  "observedTrickScore": 250,
+  "errors": []
+}
