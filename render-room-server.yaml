@@ -1,0 +1,21 @@
+# Deploy this blueprint only for the separate game service.
+# Free is selected deliberately. A paid, always-on instance requires approval.
+services:
+  - type: web
+    name: minogame-room-authority
+    runtime: node
+    region: singapore
+    plan: free
+    numInstances: 1
+    buildCommand: npm ci --omit=dev
+    startCommand: node scripts/room-server.mjs
+    healthCheckPath: /healthz
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: NODE_ENV
+        value: production
+      - key: HOST
+        value: 0.0.0.0
+      - key: GAME_ALLOWED_ORIGINS
+        value: https://minogame.site

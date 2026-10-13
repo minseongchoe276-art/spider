@@ -5,7 +5,7 @@ Three.js + Rapier 기반 데스크톱 키보드/마우스 이동·웹 스윙 게
 
 ## 실행
 
-Node.js 20.x는 20.19 이상, 22 이상 버전은 22.12 이상을 사용하세요. 검증 환경은 Node 22.19.0입니다.
+Node.js 22.12 이상을 사용하세요. Supabase SDK는 Node 22 이상을 요구하며, 검증 환경은 Node 22.19.0입니다.
 
 ```sh
 npm install
@@ -34,6 +34,12 @@ WebSocket 방식의 인터넷 접속에는 이 서버를 공개 호스트에 배
 Vercel의 정적 배포에서는 기본 Supabase 방 연결을 사용합니다. `/ws` 방식으로 운영하려면 이 저장소의 Node 서버를 WebSocket을 지원하는 별도 웹 서비스에서 실행하세요. Render를 쓴다면 같은 Git 저장소를 연결해 저장소 루트의 `render.yaml` Blueprint로 Web Service를 만드세요. 설정에는 `npm ci && npm run build`, `npm start`, `HOST=0.0.0.0`이 포함되어 있습니다. 호스팅 서비스가 제공하는 `PORT`를 서버가 사용합니다. 무료 플랜은 유휴 시 잠들었다가 다음 연결 때 다시 시작하므로 첫 연결이 늦어질 수 있습니다.
 
 방 서버의 HTTPS 주소가 `https://YOUR-ROOM-SERVER`라면, Vercel 프로젝트의 **Environment Variables**에 `VITE_WS_URL=wss://YOUR-ROOM-SERVER/ws`를 설정하고 **재배포**하세요. 이 값은 브라우저에 포함되는 공개 주소이므로 비밀번호를 넣지 마세요. 로컬 `npm run dev`에서는 이 변수를 설정하지 않으면 기존처럼 같은 주소의 `/ws`에 연결합니다. 로비에 `온라인 · 방을 선택하세요`가 표시되고 실제 방을 만들고 다른 브라우저에서 코드로 입장되는지 확인하세요. 별도 서버를 여러 인스턴스로 늘리면 현재 메모리 기반 방 상태를 공유 저장소로 옮겨야 합니다.
+
+### 독립 게임 서버
+
+`node scripts/room-server.mjs`는 프런트 빌드 없이 `/ws` 게임 서비스와 `/healthz` 상태 확인을 실행합니다. 기본 포트는 4180입니다. `HOST`, `PORT`, 쉼표로 구분한 `GAME_ALLOWED_ORIGINS`로 배포 환경을 지정하세요. 공식 홍콩 지형 캐시를 유지하며, 서버가 역할·수용 위치·피해를 결정합니다. Supabase 비밀 키는 필요하지 않습니다.
+
+공개 호스팅용 무료 설정은 `render-room-server.yaml`에 있습니다. 배포 후 프런트의 `VITE_WS_URL`을 실제 WSS 주소로 설정하고 재배포합니다. 별도 서버의 방은 Supabase 방과 분리되며, 서버 재시작 시 메모리의 방 상태는 사라집니다. [구축·검수 기록](docs/qa/dedicated-room-server-2026-10-13/REPORT.md)을 참고하세요. 공개 호스팅 생성과 실제 인터넷 성능 검수는 Render 계정 연결 후 진행해야 합니다.
 
 ## 온라인 플레이
 

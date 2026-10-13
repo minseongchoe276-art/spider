@@ -1,0 +1,25 @@
+{
+  "checked_at": "2026-10-13T10:34:00.108708+00:00",
+  "version": 3,
+  "status": "PASS",
+  "files": [
+    {
+      "file": "hong-kong-attack/index.ts",
+      "remote_sha256": "d636f5b4e22f87f5ac3ad21e0df6ba3ff82949788e3c2fd6af9883da60ee805a",
+      "local_sha256": "d636f5b4e22f87f5ac3ad21e0df6ba3ff82949788e3c2fd6af9883da60ee805a",
+      "matches": true
+    },
+    {
+      "file": "_shared/hong-kong-terrain.js",
+      "remote_sha256": "39571efe8afee322b16856ca77e1ac1d4cb3fda8c94d9db9d746fdef657bed46",
+      "local_sha256": "39571efe8afee322b16856ca77e1ac1d4cb3fda8c94d9db9d746fdef657bed46",
+      "matches": true
+    },
+    {
+      "file": "hong-kong-attack/deno.json",
+      "remote_sha256": "607014bcaa272b26e905d36a317eb852853314cfcf441a1df80ec8798195b27a",
+      "local_sha256": "607014bcaa272b26e905d36a317eb852853314cfcf441a1df80ec8798195b27a",
+      "matches": true
+    }
+  ]
+}
