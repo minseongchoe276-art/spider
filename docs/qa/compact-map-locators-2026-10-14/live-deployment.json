@@ -1,0 +1,28 @@
+{
+  "status": "PASS",
+  "commit": "eec22d6afc604b77828821dc33acff0250762307",
+  "renderDeploy": "dep-db75e0bncjis73fitoug",
+  "health": {
+    "status": "ready",
+    "transport": "websocket",
+    "authority": "server-owned-rooms",
+    "uptimeSeconds": 94,
+    "terrainSeedWarm": true,
+    "terrainSeedStatus": "CLEAR"
+  },
+  "spawn": {
+    "x": 99.6,
+    "y": 95.47369633906011,
+    "z": 90
+  },
+  "accepted": {
+    "type": "move",
+    "id": "6692a2580c2688b4",
+    "x": 100.6,
+    "y": 95.47369633906011,
+    "z": 90,
+    "facing": 0,
+    "pose": null
+  },
+  "scope": "Two real public WebSocket clients on compact procedural roof; movement accepted without authoritative correction; frontend matches exact local bundle."
+}
