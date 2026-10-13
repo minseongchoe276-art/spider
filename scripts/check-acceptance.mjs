@@ -5,7 +5,7 @@ import {createHash} from 'node:crypto';
 const root='docs/qa/acceptance-2026-10-13';fs.mkdirSync(root,{recursive:true});
 function sourceSnapshot(){
   const walk=base=>fs.readdirSync(base,{withFileTypes:true}).flatMap(entry=>entry.isDirectory()?walk(`${base}/${entry.name}`):[`${base}/${entry.name}`]);
-  const files=['src','scripts','supabase/migrations','public/motions','public/models'].flatMap(walk);
+  const files=['src','scripts','supabase/migrations','supabase/functions','public/motions','public/models'].filter(base=>fs.existsSync(base)).flatMap(walk);
   files.push('package.json','package-lock.json','index.html','vite.config.js');
   return Object.fromEntries(files.sort().map(file=>[file,createHash('sha256').update(fs.readFileSync(file)).digest('hex')]));
 }
@@ -14,6 +14,8 @@ const steps=[
   {name:'Complete gameplay and motion suite',command:'npm',args:['test'],log:'tests.log'},
   {name:'Actual PostgreSQL roles, transactions and multiple connections',command:process.execPath,args:['scripts/check-postgres-rules.mjs'],log:'postgres.log'},
   {name:'Trusted terrain contract (isolated fixture only)',command:process.execPath,args:['scripts/check-trusted-terrain.mjs'],log:'trusted-terrain.log'},
+  {name:'Official Hong Kong geometry: actual wall, clear path and cache',command:process.execPath,args:['scripts/check-hong-kong-terrain.mjs'],log:'hong-kong-terrain.log'},
+  {name:'Hong Kong damage authority: PostgreSQL roles, replay and delayed lifecycle',command:process.execPath,args:['scripts/check-hong-kong-db-authority.mjs'],log:'hong-kong-authority.log'},
   {name:'Production build',command:'npm',args:['run','build'],log:'build.log'},
   {name:'Independent Hong Kong competitive damage authority',command:process.execPath,args:['scripts/diagnose-release-security.mjs'],log:'security-final.log'},
 ];
