@@ -884,3 +884,16 @@ body.in-game #gameplay-quickbar { display: flex; }
 body:not(.in-game) #anchor-preview,body:not(.in-game) #hand-status,body:not(.in-game) #combo-hud,body:not(.in-game) #boundary-warning,body:not(.in-game) #pursuit-hud { visibility:hidden; }
 body.hud-quiet #hud-top-left { opacity:.35; }body.hud-combat #session-hud { opacity:.45; }
 #hud-top-left,#minimap-panel,#session-hud { transform-origin:bottom left; }#minimap-panel { transform-origin:bottom right; }
+
+/* Visible map navigation in the lobby and during terrain loading. */
+.city-picker { margin-top: 24px; width: min(365px,100%); }
+.city-picker > span { display: block; margin-bottom: 9px; color: #c3d0dc; font-size: 12px; }
+.city-options { display: flex; gap: 10px; }
+.city-options a { flex: 1; min-width: 0; padding: 12px 14px; border: 1px solid #6c8298; border-radius: 4px; background: #101e30; color: #f4f7fb; text-decoration: none; }
+.city-options a:hover { background: #22334a; border-color: #fff; }
+.city-options a:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+.city-options a[aria-current="page"] { border-color: #ff7890; background: #4b1e31; box-shadow: inset 0 0 0 1px #ff7890; }
+.city-options b, .city-options small { display: block; }
+.city-options b { font-size: 15px; }
+.city-options small { margin-top: 5px; color: #c3d0dc; font-size: 11px; }
+.loading-city-picker { margin: 20px auto 0; }

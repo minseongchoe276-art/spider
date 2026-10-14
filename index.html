@@ -165,7 +165,14 @@
             <span class="lobby-eyebrow"><i></i> YOUR CITY. YOUR MOVE.</span>
             <h1 id="online-title">도시를<br><em>가로질러.</em></h1>
             <p>건물 사이를 스윙하고, 추격전을 시작하고,<br>홍콩의 하늘을 네 방식대로 누벼봐.</p>
-            <div class="lobby-hero-actions"><button id="play-solo" class="hero-play" type="button"><span class="play-triangle">▶</span><span><b>혼자 플레이</b><small>바로 도시로 뛰어들기</small></span><span class="action-arrow">↗</span></button></div>
+            <nav class="city-picker" aria-label="플레이 지도 선택">
+              <span>플레이 지도</span>
+              <div class="city-options">
+                <a href="?city=hong-kong" data-city="hong-kong"><b>홍콩</b><small>실제 3D 도시 탐험</small></a>
+                <a href="?city=procedural" data-city="procedural"><b>로컬 도시</b><small>빠르게 시작</small></a>
+              </div>
+            </nav>
+            <div class="lobby-hero-actions"><button id="play-solo" class="hero-play" type="button"><span class="play-triangle">▶</span><span><b>혼자 플레이</b><small><span data-current-city>홍콩</span>에서 시작</small></span><span class="action-arrow">↗</span></button></div>
             <div class="lobby-statline"><span>01 / EXPLORE</span><span>02 / CHASE</span><span>03 / SWING</span></div>
           </div>
           <div class="online-card">
@@ -236,6 +243,12 @@
           <div id="loading-bar-fill"></div>
         </div>
         <span id="loading-pct">0%</span>
+        <nav class="city-picker loading-city-picker" aria-label="로딩 중 지도 선택">
+          <div class="city-options">
+            <a href="?city=hong-kong" data-city="hong-kong"><b>홍콩</b><small>실제 3D 도시 탐험</small></a>
+            <a href="?city=procedural" data-city="procedural"><b>로컬 도시</b><small>빠르게 시작</small></a>
+          </div>
+        </nav>
         <div id="loading-recovery" class="hidden" role="status">
           <p>연결이 복구되면 준비를 계속합니다.</p>
           <button id="btn-retry-load" type="button">다시 불러오기</button>

@@ -1,3 +1,4 @@
+import { initCitySelection, selectedCity } from './CitySelection.js';
 import { createHongKongAudit } from './HongKongAudit.js';
 import { CombatSystem } from './Combat.js';
 import * as THREE from 'three';
@@ -22,6 +23,7 @@ import {CombatPractice} from './CombatPractice.js';
 
 export class GameApp {
   constructor() {
+    initCitySelection();
     // 1. Locate or create Canvas elements
     const container = document.getElementById('game-container') || document.body;
     let canvas = document.getElementById('webgl-canvas');
@@ -180,7 +182,7 @@ export class GameApp {
       this.speedLines = new SpeedLinesEffect(this.speedLinesCanvas);
     }
 
-    const useUrbanGround = new URLSearchParams(location.search).get('city') !== 'procedural';
+    const useUrbanGround = selectedCity(location.search) === 'hong-kong';
     this.city = useUrbanGround
       ? new UrbanGroundCity(this.scene, this.camera, this.renderer, (pct, desc) => {
         this.updateLoadingProgress(pct, desc);
