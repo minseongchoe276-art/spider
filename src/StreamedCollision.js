@@ -65,7 +65,7 @@ export class StreamedCollision {
     };
   }
 
-  update(center) {
+  update(center, { budgetMs = 3, maxIndices = 6000 } = {}) {
     this.center.copy(center);
     if (!this.ready) return;
     // Long-lived meshes can extend beyond the neighbourhood initially baked.
@@ -130,8 +130,8 @@ export class StreamedCollision {
       } else {
         const { mesh, attribute, index, matrix, mapped, vertices, indices, triangle } = job;
         const count = index ? index.count : attribute.count;
-        const deadline = performance.now() + 3;
-        const limit = Math.min(count, job.cursor + 6000);
+        const deadline = performance.now() + budgetMs;
+        const limit = Math.min(count, job.cursor + maxIndices);
         const minX=job.center.x-650,maxX=job.center.x+650,minZ=job.center.z-650,maxZ=job.center.z+650;
         while (job.cursor + 2 < limit) {
           const i = job.cursor; job.cursor += 3;

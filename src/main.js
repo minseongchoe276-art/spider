@@ -299,6 +299,9 @@ export class GameApp {
     }
     if (this.assetsReady) return;
     this.assetsReady = true;
+    this.loadingScreen?.setAttribute('data-ready-ms', String(Math.round(performance.now())));
+    this.loadingScreen?.setAttribute('data-character-ready-ms', String(Math.round(this.character.readyMilliseconds || 0)));
+    this.loadingScreen?.setAttribute('data-city-ready-ms', String(Math.round(this.city.readyAt || 0)));
     this.readyMilliseconds=performance.now()-this.startupAt;
     if (this.city instanceof UrbanGroundCity) {
       this.physics.resetPosition();
@@ -872,13 +875,13 @@ export class GameApp {
     this.experience?.update(delta,elapsed);
     this.gamepad?.update(delta);
     this.multiplayer?.update(delta);
-    this.minimap?.update((spectating && this.multiplayer.spectatePoint()) || this.physics.renderPosition,
+    if (this.assetsReady) this.minimap?.update((spectating && this.multiplayer.spectatePoint()) || this.physics.renderPosition,
       this.physics.facingAngle, this.clock.elapsedTime);
 
     this.hongKongAudit?.update(this.clock.elapsedTime);
 
     // Render 3D Scene
-    if (!this.contextLost) this.renderer.render(this.scene, this.camera);
+    if (this.assetsReady && !this.contextLost) this.renderer.render(this.scene, this.camera);
 
     // Render 2D Speed lines overlay
     if (this.speedLines) {

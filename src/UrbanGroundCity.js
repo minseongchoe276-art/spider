@@ -41,6 +41,11 @@ export class UrbanGroundCity {
     this.playableHalfExtent = 2400;
     this.scene = scene;
     this.camera = camera;
+    // Start with the same local surface detail, inside a smaller streaming frustum.
+    // Distant neighbourhoods expand in after the spawn has fully settled.
+    this.streamCamera = camera.clone();
+    this.streamCamera.far = Math.min(camera.far, 220);
+    this.streamCamera.updateProjectionMatrix();
     this.renderer = renderer;
     this.onProgress = onProgress;
     this.tilesets = [];
@@ -88,8 +93,8 @@ export class UrbanGroundCity {
     tiles.registerPlugin(new GLTFExtensionsPlugin({ktxLoader,autoDispose:false,plugins:[parser=>createTileTexturePlugin(parser,ktxLoader,this)]}));
     // All three roots carry ECEF transforms; use one shared local origin.
     tiles.registerPlugin(new ReorientationPlugin(reorientation));
-    tiles.setCamera(this.camera);
-    tiles.setResolutionFromRenderer(this.camera, this.renderer);
+    tiles.setCamera(this.streamCamera);
+    tiles.setResolutionFromRenderer(this.streamCamera, this.renderer);
     tiles.addEventListener('load-root-tileset', () => {
       this.loadedRoots += 1;
       this.onProgress?.(this.loadedRoots === TILESETS.length ? 70 : 45,
@@ -136,6 +141,14 @@ export class UrbanGroundCity {
     this.lastMeshCount = meshes.length;
   }
 
+  updateStreamingCamera(now = performance.now()) {
+    this.streamCamera.copy(this.camera, false);
+    const expansion = this.isReady ? Math.min(1, Math.max(0, (now - this.readyAt) / 12000)) : 0;
+    this.streamCamera.far = Math.min(this.camera.far, 220 + 780 * expansion);
+    this.streamCamera.updateProjectionMatrix();
+    this.streamCamera.updateMatrixWorld(true);
+  }
+
   update() {
     if (this.disposed) return;
     if (!this.isReady && !this.timeoutReported && performance.now() - this.startedAt > 30000) {
@@ -144,9 +157,10 @@ export class UrbanGroundCity {
     }
     this.root.updateMatrixWorld(true);
     this.camera.updateMatrixWorld(true);
+    this.updateStreamingCamera();
     for (const tiles of this.tilesets) {
-      tiles.setCamera(this.camera);
-      tiles.setResolutionFromRenderer(this.camera, this.renderer);
+      tiles.setCamera(this.streamCamera);
+      tiles.setResolutionFromRenderer(this.streamCamera, this.renderer);
       tiles.update();
     }
     if (performance.now() - (this.lastBudgetCheck || 0) > 2000) {
@@ -160,7 +174,8 @@ export class UrbanGroundCity {
     this.root.updateMatrixWorld(true);
     this.refreshBuildingMeshes();
     this.collisionWorld.setActiveMeshes(this.buildingMeshes);
-    this.collisionWorld.update(this.playerPosition);
+    this.collisionWorld.update(this.playerPosition, this.isReady
+      ? undefined : { budgetMs: 8, maxIndices: 24000 });
     if (!this.isReady && this.buildingMeshes.length > 0 && this.collisionWorld.ready) {
       const spawn = this.findWalkableSpawn();
       if (spawn) {
@@ -172,6 +187,7 @@ export class UrbanGroundCity {
         this.camera.updateMatrixWorld(true);
         this.rooftopSpawns[0].copy(spawn);
         if (this.startupSurfaceSettled(spawn)) {
+          this.readyAt = performance.now();
           this.isReady = true;
           this.onProgress?.(100, '홍콩 도시와 충돌 지형 준비 완료');
         }

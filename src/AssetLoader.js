@@ -10,3 +10,14 @@ export async function fetchAsset(url, timeoutMs = 20000) {
     clearTimeout(timer);
   }
 }
+
+// Bound parallel requests so animation RTTs overlap without flooding tile downloads.
+export async function forEachConcurrent(items, concurrency, visit) {
+  let next = 0;
+  await Promise.all(Array.from({length: Math.min(concurrency, items.length)}, async () => {
+    while (next < items.length) {
+      const index = next++;
+      await visit(items[index], index);
+    }
+  }));
+}

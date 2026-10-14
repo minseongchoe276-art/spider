@@ -5,7 +5,7 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader.js';
 import { retargetMotion, prepareMotion, boneId } from './MotionRetarget.js';
 import { MOTIONS, STRIDES, GROUNDED } from './MotionCatalog.js';
-import { fetchAsset } from './AssetLoader.js';
+import { fetchAsset, forEachConcurrent } from './AssetLoader.js';
 import { clone as cloneSkeleton } from 'three/addons/utils/SkeletonUtils.js';
 import { plantMovingFeet, poseWall, poseZipLegs, poseMantle, adaptPelvisToTerrain, footSupport, soleRotation } from './CharacterPose.js';
 
@@ -222,6 +222,7 @@ export class Character {
       // downloaded Mixamo clip after the character enters the game.
       this.stopAnimation();
 
+      this.readyMilliseconds = performance.now();
       this.isLoaded = true;
       this.onProgress?.(100, '준비 완료!');
       this.onLoaded?.();
@@ -229,6 +230,7 @@ export class Character {
     } catch (err) {
       console.warn('Failed loading GLTF/FBX models, keeping high-poly proxy:', err);
       this.loadWarning = '캐릭터 리소스를 불러오지 못해 대체 캐릭터로 실행합니다.';
+      this.readyMilliseconds = performance.now();
       this.isLoaded = true;
       this.onProgress?.(100, this.loadWarning);
       this.onLoaded?.();
@@ -239,7 +241,7 @@ export class Character {
     const animFiles = MOTIONS;
     const sources = new Map();
 
-    for (const item of animFiles) {
+    await forEachConcurrent(animFiles, 4, async item => {
       try {
         let clip;
         try {
@@ -247,7 +249,7 @@ export class Character {
           clip = THREE.AnimationClip.parse(data);
           clip.userData = data.userData || {};
           if (!Number.isFinite(clip.duration) || clip.duration <= 0 || !(clip.userData.matchedBones >= 20) || !clip.tracks.length ||
-              !clip.tracks.every(track => [...track.values].every(Number.isFinite))) throw new Error('Invalid compiled motion');
+              !clip.tracks.every(track => track.values.every(Number.isFinite))) throw new Error('Invalid compiled motion');
         } catch {
           // Existing asset folders remain usable without precompiled tracks.
         if (!sources.has(item.url)) {
@@ -283,7 +285,7 @@ export class Character {
         this.loadWarning = '일부 모션을 불러오지 못했습니다. 가능한 대체 모션을 사용합니다.';
         console.warn(`Could not load animation ${item.key}:`, e);
       }
-    }
+    });
   }
 
 

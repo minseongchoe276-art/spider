@@ -15,7 +15,9 @@ export function decodeRGBKTX2(buffer) {
     const w=Math.max(1,width>>level),h=Math.max(1,height>>level),size=w*h;
     if(!Number.isSafeInteger(offset) || length!==size*3 || offset<80+levels*24 || offset+length>buffer.byteLength)return null;
     const source=new Uint8Array(buffer,offset,length),data=new Uint8Array(size*4);
-    for(let i=0;i<size;i++){data.set(source.subarray(i*3,i*3+3),i*4);data[i*4+3]=255;}
+    for(let i=0,s=0,d=0;i<size;i++,s+=3,d+=4){
+      data[d]=source[s];data[d+1]=source[s+1];data[d+2]=source[s+2];data[d+3]=255;
+    }
     mipmaps.push({data,width:w,height:h});
   }
   const texture=new THREE.DataTexture(mipmaps[0].data,width,height,THREE.RGBAFormat,THREE.UnsignedByteType);
