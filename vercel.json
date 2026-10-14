@@ -1,0 +1,19 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "rewrites": [
+    {
+      "source": "/urban-tiles/api/3d-data/:path*",
+      "destination": "https://data.map.gov.hk/api/3d-data/:path*"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/urban-tiles/api/3d-data/:path*",
+      "headers": [
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "x-vercel-enable-rewrite-caching", "value": "1" },
+        { "key": "CDN-Cache-Control", "value": "public, max-age=300" }
+      ]
+    }
+  ]
+}
