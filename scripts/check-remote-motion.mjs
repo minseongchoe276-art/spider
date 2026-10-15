@@ -143,7 +143,7 @@ const online=Object.create(Multiplayer.prototype),sent=[];
 const camera=new THREE.PerspectiveCamera(65,1,.1,1000);camera.rotation.y=-Math.PI/2;camera.updateMatrixWorld();
 Object.assign(online,{id:'police',room:{phase:'playing',mode:'tag'},players:[
   {id:'police',team:'police'}, {id:'runner',team:'runner',seen:true,x:10,y:.1,z:0}],
-  spectating:false,lastSend:Infinity,lastHud:Infinity,avatars:new Map(),send:data=>sent.push(data),
+  spectating:false,lastSend:Infinity,lastHud:Infinity,lastPing:Infinity,avatars:new Map(),send:data=>sent.push(data),
   game:{isPlaying:true,isPaused:false,physics:{position:new THREE.Vector3(0,.1,0),facingAngle:0,webAimNdc:new THREE.Vector2()},
     camera,city:{raycast:()=>null},combat:{action:{id:4,key:'jab',time:0}},character:{}},
 });

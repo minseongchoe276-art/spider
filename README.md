@@ -132,3 +132,5 @@ Escape 메뉴에서 카메라 감도·세로 반전·시야각·자동 추적·�
 거미줄 실크 표현·발목 연속성·실제 부츠 밑창 접지 개선: [2026-10-15 전수 검증](docs/qa/silk-gait-2026-10-15/REPORT.md). 재현 검사: `npm run test:silk-gait`.
 
 - [1·3인칭 벽 기어가기 및 전체 모션 최종 검증](docs/qa/wall-crawl-views-2026-10-15/REPORT.md)
+
+실제 게임 루프에서 시점을 교대하며 벽·난간·양손 거미줄을 다시 검증하고, 난간 경계에서 매달리기가 고착되는 문제와 V 전환의 조준 초기화를 수정했습니다. [2026-10-15 실제 플레이 재검증](docs/qa/live-traversal-2026-10-15/REPORT.md). 개발 서버의 `?city=procedural&traversalPlaytest`에서 Ready 후 Run all로 재현할 수 있습니다.

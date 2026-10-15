@@ -78,3 +78,22 @@ await check('Real Rapier terrain supports crossing the lip onto its lower roof a
   }}finally{world.dispose();}
 });
 console.log(`Wall ledge review: ${passed} passed, ${failed} failed.`);if(failed)process.exitCode=1;
+
+// The actual generator has micrometre offsets between the body and parapet.
+// Starting five metres below this roof used to hang forever at roofY - .8.
+for(const fps of [24,30,60,144]) {
+  const city=proceduralCollision(),box=city.colliders.find(c=>c.minY<1&&c.maxY>25&&c.maxX-c.minX>10&&c.maxZ-c.minZ>10);
+  const p=actor(city);p.position.set((box.minX+box.maxX)/2,box.maxY-5,box.maxZ+.7);
+  p.previousFixedPosition.copy(p.position);p.renderPosition.copy(p.position);
+  p.wallNormal.set(0,0,1);p.state='WALL_RUNNING';p.wallBuilding=box;
+  const seam=p.position.clone();seam.y=box.maxY;
+  assert(city.raycast(seam,new THREE.Vector3(0,0,-1),1.1).normal.z>.99,'Horizontal facade ray selected a roof normal at the seam');
+  let mantle=false,landed=false;
+  for(let n=0;n<fps*6;n++) {
+    p.update(1/fps,{...held},new THREE.PerspectiveCamera());mantle ||= p.state==='MANTLING';
+    if(mantle&&['IDLE','RUNNING'].includes(p.state)){landed=true;break;}
+  }
+  assert(landed,`${fps}fps actual parapet seam trapped the climb`);
+  assert(Math.abs(p.position.y-box.maxY-.1)<.01);
+}
+console.log('PASS 24/30/60/144fps real floating-point parapet seam completes a roof arrival');

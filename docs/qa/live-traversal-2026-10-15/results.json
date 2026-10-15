@@ -1,0 +1,158 @@
+[
+  {
+    "name": "climb/third",
+    "pass": true,
+    "frames": 269,
+    "states": [
+      "WALL_RUNNING",
+      "MANTLING",
+      "RUNNING",
+      "IDLE"
+    ],
+    "switches": 0,
+    "maxAimError": 0,
+    "maxStep": 0.2160958032967244,
+    "maxWristError": 0,
+    "seenWeb": false,
+    "peakWebs": 0,
+    "independentRelease": false,
+    "reachedRoof": true,
+    "finalState": "IDLE",
+    "roof": 93.99197994705712,
+    "position": [
+      -90,
+      94.09197994705711,
+      -75.87360708373727
+    ],
+    "released": true
+  },
+  {
+    "name": "climb/first",
+    "pass": true,
+    "frames": 271,
+    "states": [
+      "WALL_RUNNING",
+      "MANTLING",
+      "RUNNING",
+      "IDLE"
+    ],
+    "switches": 0,
+    "maxAimError": 0,
+    "maxStep": 0.17647642505356487,
+    "maxWristError": 0,
+    "seenWeb": false,
+    "peakWebs": 0,
+    "independentRelease": false,
+    "reachedRoof": true,
+    "finalState": "IDLE",
+    "roof": 93.99197994705712,
+    "position": [
+      -90,
+      94.09197994705711,
+      -75.85
+    ],
+    "released": true
+  },
+  {
+    "name": "climb/third/switch",
+    "pass": true,
+    "frames": 270,
+    "states": [
+      "WALL_RUNNING",
+      "MANTLING",
+      "RUNNING",
+      "IDLE"
+    ],
+    "switches": 6,
+    "maxAimError": 0,
+    "maxStep": 0.2199176714102009,
+    "maxWristError": 0,
+    "seenWeb": false,
+    "peakWebs": 0,
+    "independentRelease": false,
+    "reachedRoof": true,
+    "finalState": "IDLE",
+    "roof": 93.99197994705712,
+    "position": [
+      -90,
+      94.09197994705711,
+      -75.85
+    ],
+    "released": true
+  },
+  {
+    "name": "web/third",
+    "pass": true,
+    "frames": 181,
+    "states": [
+      "SWINGING",
+      "FALLING"
+    ],
+    "switches": 0,
+    "maxAimError": 0,
+    "maxStep": 0.6507786723362308,
+    "maxWristError": 0,
+    "seenWeb": true,
+    "peakWebs": 2,
+    "independentRelease": true,
+    "reachedRoof": false,
+    "finalState": "FALLING",
+    "roof": 93.99197994705712,
+    "position": [
+      -102.75109909120596,
+      61.18301255044874,
+      -73.3
+    ],
+    "released": true
+  },
+  {
+    "name": "web/first",
+    "pass": true,
+    "frames": 175,
+    "states": [
+      "SWINGING",
+      "FALLING"
+    ],
+    "switches": 0,
+    "maxAimError": 0,
+    "maxStep": 0.4549657988943282,
+    "maxWristError": 0.0000031542989330036573,
+    "seenWeb": true,
+    "peakWebs": 2,
+    "independentRelease": true,
+    "reachedRoof": false,
+    "finalState": "FALLING",
+    "roof": 93.99197994705712,
+    "position": [
+      -102.72205955459627,
+      61.41153923751034,
+      -73.3
+    ],
+    "released": true
+  },
+  {
+    "name": "web/third/switch",
+    "pass": true,
+    "frames": 181,
+    "states": [
+      "SWINGING",
+      "FALLING"
+    ],
+    "switches": 4,
+    "maxAimError": 0,
+    "maxStep": 0.6679223935346822,
+    "maxWristError": 0.000003317723581471883,
+    "seenWeb": true,
+    "peakWebs": 2,
+    "independentRelease": true,
+    "reachedRoof": false,
+    "finalState": "FALLING",
+    "roof": 93.99197994705712,
+    "position": [
+      -102.69287763165123,
+      61.645532103185786,
+      -73.3
+    ],
+    "released": true
+  }
+]

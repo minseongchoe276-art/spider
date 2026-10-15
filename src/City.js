@@ -518,12 +518,16 @@ export class City {
       if (distance > maxDistance || (nearest && distance >= nearest.distance)) continue;
       const normal = new THREE.Vector3();
       const epsilon = 1e-4;
-      if (Math.abs(point.x - box.min.x) < epsilon) normal.x = -1;
-      else if (Math.abs(point.x - box.max.x) < epsilon) normal.x = 1;
-      else if (Math.abs(point.y - box.min.y) < epsilon) normal.y = -1;
-      else if (Math.abs(point.y - box.max.y) < epsilon) normal.y = 1;
-      else if (Math.abs(point.z - box.min.z) < epsilon) normal.z = -1;
-      else normal.z = 1;
+      // At a roof/parapet seam several faces share the hit point. A
+      // horizontal ray cannot enter through the horizontal roof face.
+      // Prefer the crossed face with the strongest ray component rather
+      // than allowing coordinate order and float rounding to pick a floor.
+      const axes = ['x','y','z'].sort((a,b) => Math.abs(ray.direction[b])-Math.abs(ray.direction[a]));
+      for (const axis of axes) {
+        if (Math.abs(ray.direction[axis]) < 1e-10) continue;
+        if (Math.abs(point[axis]-box.min[axis]) < epsilon) { normal[axis]=-1; break; }
+        if (Math.abs(point[axis]-box.max[axis]) < epsilon) { normal[axis]=1; break; }
+      }
       nearest = { point, distance, normal, collider, building: collider };
     }
     return nearest;

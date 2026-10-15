@@ -150,7 +150,15 @@ export class ThirdPersonCamera {
   setMode(mode) {
     const previous = this.mode;
     this.mode = mode;
-    if ((previous === 'first') !== (this.mode === 'first')) this.pitch = -this.pitch;
+    if ((previous === 'first') !== (this.mode === 'first')) {
+      this.pitch = -this.pitch;
+      // V changes the viewing distance, while C explicitly recenters. Keep
+      // the aimed facade/anchor even when the body faces somewhere else.
+      this.lockBehind = false;
+      this.isRecentering = false;
+      this.orbitReturnTime = Infinity;
+      this.modeChanged = true;
+    }
     this.pitch = this.mode === 'first' ? THREE.MathUtils.clamp(this.pitch,-1.25,1.25) : THREE.MathUtils.clamp(this.pitch,-0.52,0.58);
     return this.mode;
   }
@@ -253,7 +261,8 @@ export class ThirdPersonCamera {
     // Smooth follow interpolation
     const followSharpness = isSwinging ? 16 : 18;
     const followAlpha = 1 - Math.exp(-followSharpness * delta);
-    this.currentPos.lerp(desiredCamPos, followAlpha);
+    if (this.modeChanged) this.currentPos.copy(desiredCamPos);
+    else this.currentPos.lerp(desiredCamPos, followAlpha);
     // Smoothing can move the camera through a wall even if the destination
     // was safe. Check the final camera segment as well.
     const finalDir = this.currentPos.clone().sub(center);
@@ -299,7 +308,9 @@ export class ThirdPersonCamera {
     const targetLead = new THREE.Vector3(playerVelocity.x, 0, playerVelocity.z)
       .multiplyScalar(0.035).clampLength(0, 0.8);
     const targetLookAt = center.clone().add(targetLead);
-    this.lookAtTarget.lerp(targetLookAt, 1 - Math.exp(-18 * delta));
+    if (this.modeChanged) this.lookAtTarget.copy(targetLookAt);
+    else this.lookAtTarget.lerp(targetLookAt, 1 - Math.exp(-18 * delta));
+    this.modeChanged = false;
     this.camera.lookAt(this.lookAtTarget);
 
   }

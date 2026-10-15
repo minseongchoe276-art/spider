@@ -98,3 +98,21 @@ try {
   app.animate();
 } finally {globalThis.document=oldDocument;globalThis.requestAnimationFrame=oldRAF;}
 console.log('PASS actual render loop updates first-person web endpoints after camera movement');
+
+for(const fps of [24,60,144])for(const yaw of [0,1.4,-2.3]) {
+  const camera=new THREE.PerspectiveCamera(),view=new ThirdPersonCamera(camera,{});
+  const pos=new THREE.Vector3(20,30,40),velocity=new THREE.Vector3();
+  view.yaw=yaw;view.pitch=-.3;view.lockBehind=false;
+  for(let n=0;n<fps;n++)view.update(1/fps,pos,velocity,false,[],null,yaw+1);
+  const before=camera.getWorldDirection(new THREE.Vector3());
+  view.setMode('first');view.update(1/fps,pos,velocity,false,[],null,yaw+1);
+  assert(before.angleTo(camera.getWorldDirection(new THREE.Vector3()))<1e-6,'Entering first person lost the aimed facade');
+  view.setMode('close');view.update(1/fps,pos,velocity,false,[],null,yaw+1);
+  assert(before.angleTo(camera.getWorldDirection(new THREE.Vector3()))<1e-6,'Returning to third person swung the aim at the body');
+  for(let n=0;n<fps;n++)view.update(1/fps,pos,velocity,false,[],null,yaw+1);
+  assert.equal(view.yaw,yaw,'A mode change silently recentered behind a differently facing body');
+  view.recenterBehind(yaw+1);
+  for(let n=0;n<fps;n++)view.update(1/fps,pos,velocity,false,[],null,yaw+1);
+  assert(Math.abs(view.yaw-yaw-1)<.01,'Explicit C recenter stopped working');
+}
+console.log('PASS 24/60/144fps view round trips preserve facade aim and C still recenters');

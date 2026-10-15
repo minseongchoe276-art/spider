@@ -375,16 +375,7 @@ export class GameApp {
         this.tpsCamera.recenterBehind(this.physics.facingAngle);
       }
       if (!e.repeat && k === 'KeyV') {
-        const previousMode = this.tpsCamera.mode;
         const mode = this.tpsCamera.cycleMode();
-        if (mode === 'first') {
-          this.tpsCamera.yaw = this.physics.facingAngle;
-          this.tpsCamera.pitch = 0;
-          this.tpsCamera.lockBehind = false;
-          this.tpsCamera.orbitReturnTime = Infinity;
-        } else if (previousMode === 'first') {
-          this.tpsCamera.recenterBehind(this.physics.facingAngle);
-        }
         this.character.setFirstPersonMode(mode === 'first');
         this.showCameraMode(mode);
       }
@@ -979,7 +970,9 @@ export class GameApp {
 
 // Bootstrap application on DOM ready or immediately if document is already ready
 function bootstrap() {
-  if (new URLSearchParams(location.search).has('webHandReview')) {
+  if (import.meta.env?.DEV && new URLSearchParams(location.search).has('traversalPlaytest')) {
+    import('./TraversalPlaytest.js').then(m => m.startTraversalPlaytest(GameApp));
+  } else if (new URLSearchParams(location.search).has('webHandReview')) {
     import('./WebHandReview.js').then(m => m.startWebHandReview());
   } else if (new URLSearchParams(location.search).has('combatReview')) {
     import('./CombatReview.js').then(m => m.startCombatReview());
