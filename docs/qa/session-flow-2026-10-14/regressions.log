@@ -1,0 +1,13 @@
+PASS Help cannot remain hidden beneath the lobby or pause menu
+PASS Background pause closes solo help so resume really restores gameplay
+PASS Solo and online session entry retire a help dialog from the previous activity
+PASS Opening help unlocks the cursor without pausing; closing restores game focus
+PASS Repeated Escape closes help only once before opening the pause menu
+PASS Starting a race retires practice enemies, projectiles and the current strike
+PASS A menu race start resumes play with fresh time and focus; menu stop stays paused
+PASS Unavailable race terrain preserves position, pause and practice
+PASS A failed keyboard race start also preserves the current solo activity
+PASS Menu race controls respect online and lost graphics restrictions
+PASS Pad Start does not reintroduce stick movement or camera look in the pause frame
+PASS Pad resume defers sticks until the next frame and does not use paused look time
+Session flow review: 12 passed, 0 failed.

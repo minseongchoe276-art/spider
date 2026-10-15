@@ -125,9 +125,10 @@ const climber=controller();climber.city.checkCollision=City.prototype.checkColli
 climber.city.raycast=City.prototype.raycast;
 climber.city.colliders=[{minX:-4,maxX:4,minY:0,maxY:60,minZ:2,maxZ:8}];
 const climbInput=input();climbInput.forward=true;climbInput.wallRun=true;
-advance(climber,climbInput,4);
+advance(climber,climbInput,8);
 assert.equal(climber.state,'WALL_RUNNING','F+W could not attach from a grounded run onto a procedural wall');
-assert(climber.position.y>15,'Wall run timed out before climbing a tall building');
+assert(climber.position.y>15,'Wall crawl stopped before climbing a tall building');
+assert.equal(climber.velocity.y,2.8,'Normal climb did not use its authored crawl cadence');
 const roofClimb=controller();roofClimb.city.checkCollision=City.prototype.checkCollision;roofClimb.city.raycast=City.prototype.raycast;
 roofClimb.city.colliders=[{minX:-3,maxX:3,minY:0,maxY:10,minZ:-6,maxZ:0}];
 roofClimb.position.set(0,9.4,0.7);roofClimb.state='WALL_RUNNING';roofClimb.wallNormal.set(0,0,1);
@@ -143,7 +144,7 @@ for(const dt of [1/30,1/60,1/144]) {
   edge.city.colliders=roofClimb.city.colliders;edge.position.set(0,3,0.7);edge.state='WALL_RUNNING';edge.wallNormal.set(0,0,1);
   const held=input();held.forward=true;held.wallRun=true;
   let sawMantle=false,maxFrameTravel=0;
-  for(let t=0;t<2-1e-8;t+=dt) {
+  for(let t=0;t<4-1e-8;t+=dt) {
     const before=edge.position.clone();edge.update(dt,held,facadeCamera);
     sawMantle ||= edge.state==='MANTLING';maxFrameTravel=Math.max(maxFrameTravel,before.distanceTo(edge.position));
   }
@@ -212,7 +213,7 @@ for(let n=0;n<200;n++)c.update(1/60,'RUNNING',new THREE.Vector3(0,0,2.8));assert
 c.update(1/60,'SPRINTING',new THREE.Vector3(0,0,6.5));assert.equal(c.activeAction,c.actions.run);
 c.update(1/60,'IDLE',new THREE.Vector3());assert.equal(c.activeAction,c.actions.runStop);
 for(let n=0;n<100;n++)c.update(1/60,'IDLE',new THREE.Vector3());assert.equal(c.activeAction,c.actions.idle);
-c.update(1/60,'RUNNING',new THREE.Vector3(0,0,3.4));assert.equal(c.activeAction,c.actions.jog);
+c.update(1/60,'RUNNING',new THREE.Vector3(0,0,3.4));assert.equal(c.activeAction,c.actions.regularRun);
 c.update(1/60,'RUNNING',new THREE.Vector3(0,0,4.8));assert.equal(c.activeAction,c.actions.regularRun);assert.equal(c.activeAction.getEffectiveTimeScale(),1);
 c.update(1/60,'LANDING',new THREE.Vector3());assert.equal(c.activeAction,c.actions.land);
 c.update(1/60,'ROLLING',new THREE.Vector3());assert.equal(c.activeAction,c.actions.roll);

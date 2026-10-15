@@ -29,7 +29,9 @@ export class SettingsPanel {
     window.addEventListener('keydown',event=>{
       if(!this.pending)return;event.preventDefault();event.stopImmediatePropagation();
       if(event.code==='Escape')return this.cancel();
-      if(!rebind(game.preferences.values.settings,this.pending,event.code))return;
+      if(!rebind(game.preferences.values.settings,this.pending,event.code)){
+        this.buttons[this.pending].textContent='사용할 수 없는 키 · H 도움말 / M 음소거';return;
+      }
       game.clearInput();this.cancel();this.save();
     },true);
     const theme=document.getElementById('web-theme');theme?.addEventListener('change',()=>{game.progression.data.theme=theme.value;game.progression.dirty=true;game.progression.save();game.applyWebTheme();});
@@ -38,6 +40,10 @@ export class SettingsPanel {
   save(){if(!this.game.preferences.save())this.game.showNotice('설정을 저장할 수 없어 이번 실행에만 적용합니다.');this.refresh();}
   cancel(){this.pending=null;this.refresh();}
   refresh(){for(const [action,button]of Object.entries(this.buttons||{}))button.textContent=keyLabel(this.game.preferences.values.settings.bindings[action]);
+    document.querySelectorAll('[data-action-key]').forEach(el=>{
+      el.textContent=keyLabel(this.game.preferences.values.settings.bindings[el.dataset.actionKey]);
+    });
+    if(this.game.isPlaying){this.game.updateTrialHUD?.();this.game.multiplayer?.renderHud?.();}
     document.querySelectorAll('#controls-guide .key-badge, #gameplay-quickbar kbd').forEach(el=>{
       el.dataset.originalKey??=el.textContent;
       const original=el.dataset.originalKey;

@@ -17,7 +17,8 @@ export class Progression {
           if(!/^(procedural|hong-kong)-v[345]-[0-9a-f]{8}$/.test(course)||!Number.isFinite(g?.time)||g.time<=0)continue;
           if(!Array.isArray(g.samples)||g.samples.length<2||g.samples.length>3000)continue;
           if(!g.samples.every((s,i)=>Array.isArray(s)&&s.length===5&&s.every(Number.isFinite)&&s[0]>=0&&s[0]<=g.time+.2&&(!i||s[0]>g.samples[i-1][0])&&finitePosition(s.slice(1,4))))continue;
-          this.data.ghosts[course]={time:g.time,samples:g.samples,splits:Array.isArray(g.splits)?g.splits.filter(t=>Number.isFinite(t)&&t>=0&&t<=g.time).slice(0,32):[]};
+          const splits=Array.isArray(g.splits)?g.splits.slice(0,32):[];
+          this.data.ghosts[course]={time:g.time,samples:g.samples,splits:splits.every((t,i)=>Number.isFinite(t)&&t>=0&&t<=g.time&&(!i||t>splits[i-1]))?splits:[]};
         }
         for(const [course,medal] of Object.entries(saved.medals||{}).slice(-64))if(/^(procedural|hong-kong)-v[345]-[0-9a-f]{8}$/.test(course)&&['bronze','silver','gold'].includes(medal))this.data.medals[course]=medal;
         if(['white',...rewards.filter(r=>this.data.score>=r.score).map(r=>r.id)].includes(saved.theme))this.data.theme=saved.theme;
@@ -27,6 +28,7 @@ export class Progression {
   }
   get unlocked(){return rewards.filter(r=>this.data.score>=r.score);}
   get color(){return rewards.find(r=>r.id===this.data.theme&&this.data.score>=r.score)?.color||0xf4f8ff;}
+  resetTravel(){this.previous=null;}
   bank(points){if(!Number.isFinite(points)||points<=0)return [];const before=this.unlocked.length;this.data.score+=points;this.data.bestCombo=Math.max(this.data.bestCombo,points);this.dirty=true;return this.unlocked.slice(before);}
   visit(position,city,grounded=false) {
     const p=position.toArray();if(!finitePosition(p))return false;
@@ -40,6 +42,7 @@ export class Progression {
   }
   recordGhost(course,time,samples,splits,medal) {
     this.data.medals[course]=['bronze','silver','gold'].indexOf(medal)>['bronze','silver','gold'].indexOf(this.data.medals[course])?medal:(this.data.medals[course]||medal);
+    while(Object.keys(this.data.medals).length>64)delete this.data.medals[Object.keys(this.data.medals)[0]];
     const old=this.data.ghosts[course];
     if(!old||time<old.time){this.data.ghosts[course]={time,samples:samples.slice(0,3000),splits};while(Object.keys(this.data.ghosts).length>6)delete this.data.ghosts[Object.keys(this.data.ghosts)[0]];}
     this.dirty=true;this.save();

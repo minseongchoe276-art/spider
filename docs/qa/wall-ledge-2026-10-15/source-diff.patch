@@ -1,0 +1,719 @@
+--- before/src/LedgeTraversal.js
++++ current/src/LedgeTraversal.js
+@@ -18,6 +18,17 @@
+ }
+ 
+ export function mantlePosition(plan,progress) {
++  if(plan.end.y<plan.height){
++    const p=plan.start.clone();
++    // Clear the parapet with the full capsule before moving across; lower
++    // onto the real roof only after the body is safely behind the lip.
++    p.y=THREE.MathUtils.lerp(plan.start.y,plan.height+.16,smooth(progress/.42));
++    const across=smooth((progress-.42)/.36);
++    p.x=THREE.MathUtils.lerp(plan.start.x,plan.end.x,across);
++    p.z=THREE.MathUtils.lerp(plan.start.z,plan.end.z,across);
++    if(progress>.78)p.y=THREE.MathUtils.lerp(plan.height+.16,plan.end.y,smooth((progress-.78)/.22));
++    return p;
++  }
+   // Keep the full capsule outside the facade until its feet clear the edge.
+   const p=plan.start.clone();
+   p.y=THREE.MathUtils.lerp(plan.start.y,plan.height+0.16,smooth(progress/0.55));
+@@ -44,22 +55,29 @@
+ export function planMantle(city,start,normal,height) {
+   if(!Number.isFinite(height) || ![...start,...normal].every(Number.isFinite) || normal.lengthSq()<0.9)return null;
+   if(Math.abs(normal.y)>0.2 || height-start.y>0.95 || height-start.y< -0.2)return null;
+-  const end=start.clone().addScaledVector(normal,-1.65);end.y=height+0.1;
+-  if(!hasMantleSupport(city,end,height))return null;
+-  const plan={start:start.clone(),end,normal:normal.clone(),height,duration:0.72,elapsed:0};
++  for(const depth of [1.65,2.1,2.55,3,3.45]){
++  const end=start.clone().addScaledVector(normal,-depth);end.y=height+.3;
++  const support=groundSample(city,end,1.9);
++  if(!support || support.normal.y<.85 || support.height>height+.16 || support.height<height-1.4)continue;
++  end.y=support.height+.1;
++  if(!hasMantleSupport(city,end,support.height))continue;
++  const plan={start:start.clone(),end,normal:normal.clone(),height,duration:end.y<height?1.2:.72,elapsed:0};
+   const origin=start.clone();origin.y=height-0.15;
+   const hit=city.raycast?.(origin,normal.clone().negate(),1.2)
+     || city.collisionWorld?.raycast?.(origin,normal.clone().negate(),1.2);
+   plan.gap=hit?.distance ?? 0.7;
+   plan.edge=start.clone().addScaledVector(normal,-plan.gap);plan.edge.y=height+0.06;
+   let previous=start.clone();
+-  for(let i=1;i<=18;i++) {
+-    const target=mantlePosition(plan,i/18);
++  let clear=true;
++  for(let i=1;i<=36;i++) {
++    const target=mantlePosition(plan,i/36);
+     const resolved=resolveTraversal(city,previous,target);
+-    if(resolved.position.distanceTo(target)>0.075 || resolved.contacts.some(c=>c.normal.y< -0.5))return null;
++    if(resolved.position.distanceTo(target)>0.075 || resolved.contacts.some(c=>c.normal.y< -0.5)){clear=false;break;}
+     previous=resolved.position;
+   }
+-  return plan;
++  if(clear)return plan;
++  }
++  return null;
+ }
+ 
+ export function hasMantleSupport(city,end,height) {
+--- before/src/SwingPhysics.js
++++ current/src/SwingPhysics.js
+@@ -762,8 +762,10 @@
+     this.wallRunTimer += delta;
+     this.facingAngle=Math.atan2(-this.wallNormal.x,-this.wallNormal.z);
+     this.character.targetFacingAngle=this.facingAngle;
+-    const wallProbe=this.position.clone().add(new THREE.Vector3(0,0.8,0));
+-    const wallHit=this.city.raycast?.(wallProbe,this.wallNormal.clone().negate(),1.1);
++    const inward=this.wallNormal.clone().negate();
++    const chestHit=this.city.raycast?.(this.position.clone().add(new THREE.Vector3(0,.8,0)),inward,1.1);
++    const lowerHit=this.city.raycast?.(this.position.clone().add(new THREE.Vector3(0,.2,0)),inward,1.1);
++    const wallHit=[chestHit,lowerHit].find(hit=>hit?.normal.dot(this.wallNormal)>.35);
+     if(wallHit)this.character.wallDistance=wallHit.distance;
+ 
+     // A jump pressed at the wall edge should still detach cleanly; on the
+@@ -778,6 +780,10 @@
+       this.position.addScaledVector(this.velocity,delta);
+       return;
+     }
++    if(!input.forward || !input.wallRun){
++      this.state='FALLING';this.wallBuilding=null;this.velocity.copy(this.wallNormal).multiplyScalar(3);
++      return;
++    }
+ 
+     // At the top edge, enter the roof only when the capsule footprint has a
+     // real walkable surface. Otherwise release into a fall.
+@@ -790,15 +796,21 @@
+           c.maxY >= roofProbe.y - 1.4).sort((a,b) => b.maxY-a.maxY)[0]?.maxY;
+     if (roof!==null && roof!==undefined && roof-this.position.y>=-0.2 && roof-this.position.y<0.9) {
+       const plan=planMantle(this.city,this.position,this.wallNormal,roof);
+-      if(!plan) {
+-        this.state='FALLING';this.wallBuilding=null;this.wallAttachCooldown=0.35;
+-        this.velocity.copy(this.wallNormal).multiplyScalar(3);
++      if(plan){
++        this.character.cancelAirTrick?.();
++        this.mantle=plan;this.velocity.set(0,0,0);this.state='MANTLING';return;
++      }
++      // A parapet or blocked landing is not a request to let go. Keep the
++      // facade grip; continue to its higher lip, or hang if only the lower
++      // probe still has support. Never climb through missing headroom.
++      if(wallHit && (!chestHit || chestHit.normal.dot(this.wallNormal)<.35)){
++        this.velocity.set(0,0,0);
++        if(input.strafe){
++          this.velocity.crossVectors(new THREE.Vector3(0,1,0),this.wallNormal).multiplyScalar(input.strafe*2.8);
++          this.position.addScaledVector(this.velocity,delta);
++        }
+         return;
+       }
+-      this.mantle=plan;
+-      this.velocity.set(0,0,0);
+-      this.state='MANTLING';
+-      return;
+     }
+ 
+     if (!wallHit || wallHit.normal.dot(this.wallNormal)<0.35) {
+@@ -810,7 +822,8 @@
+ 
+     // Wall run velocity: run vertically up the wall
+     const upDir = new THREE.Vector3(0, 1, 0);
+-    this.velocity.copy(upDir.multiplyScalar(this.sprintSpeed));
++    const nearEdge=Number.isFinite(roof) && roof-this.position.y<1.1;
++    this.velocity.copy(upDir.multiplyScalar(nearEdge?2.4:this.sprintSpeed));
+ 
+     // Optional horizontal run along wall face
+     if (input.strafe !== 0) {
+@@ -819,9 +832,8 @@
+       this.velocity.add(wallSide.multiplyScalar(input.strafe * 4.5));
+     }
+ 
+-    // Drop off wall if timer expires or user stops moving forward
+-    if (this.wallRunTimer > 25.0 || !input.forward || !input.wallRun ||
+-        (this.wallBuilding && (this.position.x < this.wallBuilding.minX - 0.8 ||
++    // Lateral movement can leave the outer corner of the current facade.
++    if ((this.wallBuilding && (this.position.x < this.wallBuilding.minX - 0.8 ||
+           this.position.x > this.wallBuilding.maxX + 0.8 ||
+           this.position.z < this.wallBuilding.minZ - 0.8 || this.position.z > this.wallBuilding.maxZ + 0.8))) {
+       this.state = 'FALLING';
+@@ -842,7 +854,7 @@
+       if(jump)this.audio.playJump();
+     };
+     if(input.jump){cancel(true);return;}
+-    if(!hasMantleSupport(this.city,plan.end,plan.height)){cancel();return;}
++    if(!hasMantleSupport(this.city,plan.end,plan.end.y-.1)){cancel();return;}
+     plan.elapsed=Math.min(plan.duration,plan.elapsed+delta);
+     const target=mantlePosition(plan,plan.elapsed/plan.duration);
+     const resolved=resolveTraversal(this.city,this.position,target);
+@@ -1115,6 +1127,7 @@
+         if (input.wallRun && input.forward && this.wallAttachCooldown === 0 && this.velocity.dot(col.normal) <= 0 &&
+             ['IDLE','RUNNING','SPRINTING','FALLING','JUMPING'].includes(this.state)) {
+           this.state = 'WALL_RUNNING';
++          this.character.cancelAirTrick?.();
+           this.wallBuilding = col.building;
+           this.wallRunTimer = 0;
+           this.audio.playJump();
+--- before/src/Character.js
++++ current/src/Character.js
+@@ -137,7 +137,10 @@
+       this.firstPersonRig.add(segment);
+       const anchor = new THREE.Object3D();
+       anchor.position.copy(wrist);
+-      this.firstPersonRig.add(anchor);
++      // The glove and shooter must inherit the same punch/guard transform.
++      // Keeping anchors beside the arms made the right punch move a left
++      // anchor while the visible right arm stayed still.
++      segment.add(anchor);
+       this.firstPersonHands.push(anchor);
+     }
+     this.firstPersonRig.visible = false;
+@@ -288,8 +291,38 @@
+     });
+   }
+ 
++  captureTransitionPose() {
++    if(!this.model || !this.mixer)return null;
++    if(!this.transitionPoseAction){
++      const nodes=[];this.model.traverse(node=>{if(node.isBone)nodes.push(node);});
++      if(!nodes.length)return null;
++      this.transitionPoseTracks=nodes.flatMap(node=>['position','quaternion','scale'].map(property=>{
++        const values=node[property].toArray(),Track=property==='quaternion'?THREE.QuaternionKeyframeTrack:THREE.VectorKeyframeTrack;
++        const track=new Track(`${node.name}.${property}`,[0,1],[...values,...values]);
++        // A live blended pose is already a double-precision result. Keep it
++        // exact rather than accumulating Float32 rounding on rapid reversals.
++        track.values=new Float64Array([...values,...values]);
++        return {node,property,track};
++      }));
++      const clip=new THREE.AnimationClip('transitionPose',1,this.transitionPoseTracks.map(item=>item.track));
++      this.transitionPoseAction=this.mixer.clipAction(clip);this.transitionPoseAction.setLoop(THREE.LoopOnce,1);
++      this.transitionPoseAction.clampWhenFinished=true;
++    }
++    for(const {node,property,track} of this.transitionPoseTracks){
++      node[property].toArray(track.values,0);node[property].toArray(track.values,track.getValueSize());
++    }
++    return this.transitionPoseAction;
++  }
+ 
+   fadeToAction(name, duration = 0.2) {
++    // Three's fade control times use Float32 absolute mixer timestamps.
++    // Once a fade has settled, rebase that clock without changing clip times
++    // so a long play session cannot round the next fade past its first frame.
++    if(this.mixer?.time>60 && this.mixer.time>=(this.transitionEndsAt || 0)){
++      for(const action of Object.values(this.actions))action.stopFading();
++      this.transitionPoseAction?.stopFading();
++      this.mixer.time=0;this.transitionEndsAt=0;
++    }
+     if (!this.actions[name]) {
+       const alternatives = {
+         walk: ['jog', 'regularRun', 'run'], jog: ['walk', 'regularRun', 'run'],
+@@ -304,6 +337,7 @@
+     }
+     const previousAction = this.activeAction;
+     const nextAction = this.actions[name];
++    const stridePhase=previousAction ? (previousAction.time/previousAction.getClip().duration)%1 : 0;
+     // Timed skills sample their clip at speed zero. Release that override
+     // even when the ordinary state uses the same clip (e.g. slam landing).
+     nextAction.setEffectiveTimeScale(1);
+@@ -313,7 +347,19 @@
+     }
+ 
+     if (previousAction !== nextAction) {
+-      if (previousAction) {
++      this.transitionEndsAt=Math.max(this.transitionEndsAt || 0,this.mixer.time+Math.max(0,duration));
++      // A previously fading action still contributes to the visible pose.
++      // Resetting it to fade in from zero removes that contribution at once.
++      // Capture the blended rig before stopping actions, then use one bounded
++      // snapshot to blend into the restarted take without losing its pose.
++      let frozenPose=null;
++      if(duration>0 && nextAction.isScheduled() && nextAction.getEffectiveWeight()>1e-5)
++        frozenPose=this.captureTransitionPose();
++      if(frozenPose){
++        this.mixer.stopAllAction();
++        frozenPose.reset().setEffectiveWeight(1).play().fadeOut(duration);
++      }
++      if (previousAction && !frozenPose) {
+         if (duration > 0) {
+           // An interrupted fade-in must start fading out at its current weight.
+           // Three's fadeOut starts at 1, which otherwise revives a partial pose.
+@@ -330,16 +376,21 @@
+       this.activeAction = nextAction;
+       if (previousAction && STRIDES.includes(name) &&
+           STRIDES.includes(previousAction.getClip().name)) {
+-        nextAction.time = (previousAction.time / previousAction.getClip().duration % 1) * nextAction.getClip().duration;
++        nextAction.time = stridePhase * nextAction.getClip().duration;
+       }
+     }
+   }
+ 
+   stopAnimation() {
++    this.mantleArmPose=null;this.mantleArmRelease=0;
++    this.mantleExitFeet=null;this.mantleFootRelease=0;
++    this.mantleStartFeet=null;
++    this.wallGripWeights=null;this.wallGripHeights=null;this.wallGripTargets=null;
+     // Reset/respawn can interrupt a crossfade; every outgoing action must
+     // release its pose as well as the action currently selected.
+     if (this.mixer) {
+       this.mixer.stopAllAction();
++      this.mixer.time=0;this.transitionEndsAt=0;
+       this.activeAction = null;
+       return;
+     }
+@@ -447,6 +498,10 @@
+ 
+   update(delta, state, velocity, anchorPos) {
+     if (this.copySource) this.copyLoadedCharacter(this.copySource);
++    if(state==='MANTLING' && this.lastState!=='MANTLING' && this.model){
++      this.group.updateMatrixWorld(true);
++      this.mantleStartFeet=Object.fromEntries(['left','right'].map(side=>[side,Object.values(this.bones || {}).find(b=>boneId(b.name)===side+'foot')?.getWorldPosition(new THREE.Vector3())]));
++    }else if(state!=='MANTLING')this.mantleStartFeet=null;
+     for(const hand of ['left','right'])if(this.webLaunchTimers?.[hand]>0)
+       this.webLaunchTimers[hand]=Math.max(0,this.webLaunchTimers[hand]-delta);
+     this.webVisualTime=(this.webVisualTime || 0)+delta;
+@@ -482,7 +537,8 @@
+       this.activeAction.time < this.activeAction.getClip().duration - 0.05;
+     let name = 'idle';
+     if (state === 'SWINGING') name = 'swing';
+-    else if (state === 'WALL_RUNNING' || state === 'MANTLING') name = 'wall';
++    else if (state === 'WALL_RUNNING') name = 'wall';
++    else if (state === 'MANTLING') name=this.mantle && this.mantle.elapsed/this.mantle.duration>.68?'idle':'wall';
+     else if (state === 'WEB_ZIP') name = 'zip';
+     else if (state === 'TURNING') name = this.pendingTurn === 'left' ? 'turnLeft' : 'turnRight';
+     else if (state === 'LANDING') {
+@@ -507,7 +563,7 @@
+     if (this.airTrick) name = this.airTrick.key === 'front' && this.actions.airTrick
+       ? 'airTrick' : this.actions.fallIdle ? 'fallIdle' : 'fall';
+     else if(this.isTricking && !grounded && !['WALL_RUNNING','MANTLING','WEB_ZIP'].includes(state) && this.actions.airTrick)name='airTrick';
+-    this.fadeToAction(name, combat?.key===name ? (combat.duration ? 0.065 : name==='guard' ? 0.18 : 0.12) : ['LANDING','ROLLING'].includes(state) ? 0.06 : grounded ? 0.18 : 0.12);
++    this.fadeToAction(name, combat?.key===name ? (combat.duration ? 0.065 : name==='guard' ? 0.18 : 0.12) : state==='MANTLING' && name==='idle' ? .3 : ['LANDING','ROLLING'].includes(state) ? 0.06 : grounded ? 0.18 : 0.12);
+     if (STRIDES.includes(name)) {
+       const measuredSpeed = this.activeAction?.getClip().userData?.nominalSpeed;
+       const strideSpeed = measuredSpeed > 0.1 ? measuredSpeed : ({walk:2.8,jog:3.4,regularRun:4.8,run:6.5}[name]);
+@@ -585,9 +641,10 @@
+       this.model.position.addScaledVector(this.wallNormal,-Math.max(0,(this.mantle.gap ?? 0.7)-0.4)*(1-t));
+       // Crouch the visual pelvis while the swept capsule clears the edge;
+       // an upright chest would leave the planted roof grips out of reach.
+-      const inPose=THREE.MathUtils.smoothstep(t,0,0.12);
+-      const standUp=THREE.MathUtils.smoothstep(t,0.5,0.92);
+-      this.model.position.y=-0.1-1.15*inPose*(1-standUp);
++      const steppingDown=this.mantle.end.y<this.mantle.height;
++      const inPose=THREE.MathUtils.smoothstep(t,0,steppingDown?.20:.12);
++      const standUp=THREE.MathUtils.smoothstep(t,steppingDown?.32:.5,steppingDown?.80:.92);
++      this.model.position.y=-0.1*(steppingDown?inPose:1)-1.15*inPose*(1-standUp);
+     }
+     if(this.isFirstPerson && this.firstPersonRig)for(const [i,arm] of this.firstPersonRig.children.entries()){
+       const t=combat?.duration?combat.time/combat.duration:0,pulse=Math.sin(Math.PI*Math.min(1,t*2));
+@@ -635,6 +692,7 @@
+     if (state === 'WALL_RUNNING' && this.wallNormal) {
+       if(this.wallPoseNormal && this.wallPoseNormal.dot(this.wallNormal)<0.98) {
+         this.wallContacts=null;this.wallPoseRoot=null;this.wallPhase=0;this.wallSoleRotations=null;this.wallPoseWeight=0;
++        this.wallGripWeights=null;this.wallGripHeights=null;this.wallGripTargets=null;
+       }
+       this.wallPoseNormal=this.wallNormal.clone();
+       this.wallSoleRotations ||= Object.fromEntries(['left','right'].map(side=>[side,
+@@ -642,9 +700,37 @@
+           ? this.model.quaternion.clone().multiply(new THREE.Quaternion().fromArray(this.actions.wall.getClip().userData.soleRotations[side]))
+           : Object.values(this.bones || {}).find(b=>boneId(b.name)===side+'foot')?.getWorldQuaternion(new THREE.Quaternion())]));
+       poseWall(this,delta,velocity);
+-    } else {this.wallContacts=null;this.wallPoseRoot=null;this.wallPoseWeight=0;this.wallSoleRotations=null;this.wallPoseNormal=null;}
++    } else {this.wallContacts=null;this.wallPoseRoot=null;this.wallPoseWeight=0;this.wallSoleRotations=null;this.wallPoseNormal=null;this.wallGripWeights=null;this.wallGripHeights=null;this.wallGripTargets=null;}
+     if(state==='MANTLING')poseMantle(this,delta);
+     else this.mantleHandTargets=null;
++    // The frozen climb take and standing take have very different arm poses.
++    // Ease the released arms through the handoff while preserving the earlier
++    // fixed roof grips and the separately solved foot contacts.
++    const mantleRelease=state==='MANTLING' && name==='idle';
++    if(mantleRelease || (previous==='MANTLING' && state!=='MANTLING'))this.mantleArmRelease=.4;
++    else this.mantleArmRelease=Math.max(0,(this.mantleArmRelease || 0)-delta);
++    const armBones=Object.values(this.bones || {}).filter(b=>/^(left|right)(shoulder|arm|forearm|hand)$/.test(boneId(b.name)));
++    if(this.mantleArmRelease>0 && this.mantleArmPose){
++      const weight=1-Math.exp(-8*delta);
++      for(const b of armBones){const previousPose=this.mantleArmPose[b.name];if(previousPose)b.quaternion.slerpQuaternions(previousPose,b.quaternion.clone(),weight);}
++      this.group.updateMatrixWorld(true);
++    }
++    this.mantleArmPose=['WALL_RUNNING','MANTLING'].includes(state) || this.mantleArmRelease>0
++      ?Object.fromEntries(armBones.map(b=>[b.name,b.quaternion.clone()])):null;
++    if(previous==='MANTLING' && grounded)this.mantleFootRelease=.3;
++    else this.mantleFootRelease=Math.max(0,(this.mantleFootRelease || 0)-delta);
++    if(grounded && this.mantleFootRelease>0 && this.mantleExitFeet){
++      for(const side of ['left','right']){
++        const find=id=>Object.values(this.bones || {}).find(b=>boneId(b.name)===id);
++        const hip=find(side+'upleg'),knee=find(side+'leg'),foot=find(side+'foot'),lastFoot=this.mantleExitFeet[side];
++        if(!hip || !knee || !foot || !lastFoot)continue;
++        const current=foot.getWorldPosition(new THREE.Vector3()),move=current.clone().sub(lastFoot),limit=(7+horizontalSpeed)*delta;
++        if(move.length()>limit)this.solveLimb(hip,knee,foot,lastFoot.clone().add(move.setLength(limit)),.995);
++      }
++      this.group.updateMatrixWorld(true);
++    }
++    this.mantleExitFeet=state==='MANTLING' || (grounded && this.mantleFootRelease>0)
++      ?Object.fromEntries(['left','right'].map(side=>[side,Object.values(this.bones || {}).find(b=>boneId(b.name)===side+'foot')?.getWorldPosition(new THREE.Vector3())])):null;
+     const attached = ['SWINGING','WEB_ZIP'].includes(state) && !!anchorPos;
+     const visibleAnchor = attached ? anchorPos : (this.persistentWebAnchor || firingAnchor);
+     this.updateWeb(!!visibleAnchor, visibleAnchor);
+--- before/src/CharacterPose.js
++++ current/src/CharacterPose.js
+@@ -163,9 +163,27 @@
+       const lower=find(c,side+(limb==='hand'?'forearm':'leg')),end=find(c,side+limb);
+       if(!upper || !lower || !end)continue;
+       const target=worldPosition(end);target.addScaledVector(normal,-target.clone().sub(plane).dot(normal));
++      let grip=0;
++      if(limb==='hand'){
++        c.wallGripHeights ||= {};c.wallGripTargets ||= {};
++        const probe=target.clone().addScaledVector(normal,-.3);probe.y=root.y+1.8;
++        let sample=c.surfaceProbe?.(probe);
++        const cached=c.wallGripHeights[side];
++        if(!sample && Number.isFinite(cached)){probe.y=cached+.4;sample=c.surfaceProbe?.(probe);}
++        const ledge=sample && sample.normal.y>.85 && sample.height>=root.y-.2 && sample.height<=root.y+1.8;
++        c.wallGripWeights ||= {};
++        grip=c.wallGripWeights[side]=THREE.MathUtils.damp(c.wallGripWeights[side] || 0,ledge?1:0,18,delta);
++        if(ledge)c.wallGripHeights[side]=sample.height;
++        const height=c.wallGripHeights[side];
++        if(Number.isFinite(height) && grip>.001){
++          const roofGrip=target.clone().addScaledVector(normal,-.24);roofGrip.y=height+.06;
++          c.wallGripTargets[side] ||= target.clone();c.wallGripTargets[side].lerp(roofGrip,1-Math.exp(-8*delta));
++          target.lerp(c.wallGripTargets[side],grip);
++        }
++      }
+       const pole=worldPosition(lower).sub(worldPosition(upper)).normalize();
+       c.solveLimb(upper,lower,end,target,.995,pole);
+-      if(limb==='hand')alignPalm(c,side,end,normal,up);
++      if(limb==='hand')alignPalm(c,side,end,normal.clone().lerp(up,grip).normalize(),up.clone().lerp(normal.clone().negate(),grip).normalize());
+     }
+     return;
+   }
+@@ -217,10 +235,12 @@
+   const t=THREE.MathUtils.clamp(plan.elapsed/plan.duration,0,1);
+   const right=new THREE.Vector3().crossVectors(up,plan.normal.clone().negate()).normalize();
+   const ease=(a,b)=>{const p=THREE.MathUtils.clamp((t-a)/(b-a),0,1);return p*p*(3-2*p);};
+-  const handWeight=(1-Math.exp(-plan.elapsed*28))*(1-ease(0.52,0.75));
++  const steppingDown=plan.end.y<plan.height;
+   c.mantleHandTargets={};
+   for(const side of ['left','right']) {
+     const sign=side==='left'?1:-1;
++    const release=steppingDown?(side==='left'?[.46,.62]:[.44,.60]):[.52,.75];
++    const handWeight=(1-Math.exp(-plan.elapsed*(steppingDown?18:28)))*(1-ease(...release));
+     const arm=find(c,side+'arm'),forearm=find(c,side+'forearm'),hand=find(c,side+'hand');
+     if(arm && forearm && hand) {
+       const goal=plan.edge.clone().addScaledVector(right,sign*0.3).addScaledVector(plan.normal,-0.15);
+@@ -234,13 +254,35 @@
+     }
+     const hip=find(c,side+'upleg'),knee=find(c,side+'leg'),foot=find(c,side+'foot');
+     if(!hip || !knee || !foot)continue;
+-    const lift=ease(side==='left'?0.2:0.43,side==='left'?0.5:0.65);
++    const lift=steppingDown?ease(side==='left'?.16:.30,side==='left'?.40:.54):ease(side==='left'?.2:.43,side==='left'?.5:.65);
+     const target=worldPosition(foot);
+     const roofFoot=plan.edge.clone().addScaledVector(plan.normal,-0.35).addScaledVector(right,sign*0.22);
+     roofFoot.y=plan.height+0.11;
+-    if(t>0.65)roofFoot.lerp(plan.end.clone().addScaledVector(right,sign*0.22).addScaledVector(up,0.01),ease(0.65,1));
++    if(steppingDown){
++      const transfer=ease(side==='left'?.55:.60,side==='left'?.84:.89);
++      roofFoot.x=THREE.MathUtils.lerp(roofFoot.x,plan.end.x+right.x*sign*.22,transfer);
++      roofFoot.z=THREE.MathUtils.lerp(roofFoot.z,plan.end.z+right.z*sign*.22,transfer);
++      roofFoot.y=THREE.MathUtils.lerp(plan.height+.11,plan.end.y+.01,ease(.78,1));
++    }else if(t>0.65)roofFoot.lerp(plan.end.clone().addScaledVector(right,sign*0.22).addScaledVector(up,0.01),ease(0.65,1));
+     target.lerp(roofFoot,lift);
+-    c.solveLimb(hip,knee,foot,target,0.995,up.clone().multiplyScalar(0.8).addScaledVector(plan.normal,-0.35).addScaledVector(right,sign*0.3));
++    if(steppingDown){
++      const plant=ease(side==='left'?.40:.54,side==='left'?.48:.62);
++      const facadeFoot=plan.edge.clone().addScaledVector(plan.normal,.09).addScaledVector(right,sign*.22);
++      const initial=c.mantleStartFeet?.[side];
++      if(initial){
++        facadeFoot.x=THREE.MathUtils.lerp(initial.x,facadeFoot.x,ease(0,.2));
++        facadeFoot.z=THREE.MathUtils.lerp(initial.z,facadeFoot.z,ease(0,.2));
++        target.y=THREE.MathUtils.lerp(initial.y,roofFoot.y,lift);
++      }
++      target.x=THREE.MathUtils.lerp(facadeFoot.x,roofFoot.x,plant);
++      target.z=THREE.MathUtils.lerp(facadeFoot.z,roofFoot.z,plant);
++    }
++    const brace=steppingDown?1-ease(.45,.70):0;
++    // Brace knees to each side of the facade rather than folding both legs
++    // straight backwards; draw them forward once the feet clear the lip.
++    const kneePole=up.clone().multiplyScalar(.8-.2*brace)
++      .addScaledVector(plan.normal,-.35+.6*brace).addScaledVector(right,sign*(.3+.6*brace));
++    c.solveLimb(hip,knee,foot,target,0.995,kneePole);
+     const flat=soleRotation(c,side,up);
+     if(flat)worldRotation(foot,foot.getWorldQuaternion(new THREE.Quaternion()).slerp(flat,lift));
+   }
+--- before/src/MotionReview.js
++++ current/src/MotionReview.js
+@@ -3,6 +3,8 @@
+ import { SwingPhysics } from './SwingPhysics.js';
+ import { City } from './City.js';
+ import { StreamedCollision } from './StreamedCollision.js';
++import { AIR_TRICKS } from './AirTricks.js';
++import { fetchAsset } from './AssetLoader.js';
+ 
+ export function updateDualWebReview(physics,input,camera,old,elapsed) {
+   for(const [time,x,y,button]of [[0.05,-4,7,0],[0.3,4,7,2],[2.4,-4,9,0]]){
+@@ -38,9 +40,11 @@
+       <option value="swing">스윙 → 해제 → 낙하</option>
+       <option value="dualWeb">왼손 발사 → 오른손 발사 → 양손 매달리기 → 교체</option>
+       <option value="wall">벽 달리기 → 옥상 진입</option>
++      <option value="parapet">벽 오르기 → 난간 넘기 → 옥상 착지</option>
+       <option value="slope">경사면 걷기 → 정지</option>
+       <option value="slopeDown">경사면 내려가기 → 정지</option>
+       <option value="stairs">계단 걷기 → 정지</option>
++      ${Object.entries(AIR_TRICKS).map(([key,trick])=>`<option value="trick-${key}">공중 묘기 · ${trick.label}</option>`).join('')}
+     </select></label> <button id="scenario">검증 실행</button></p>
+     <p><label>전환 순간 자동 정지 <select id="break-on"><option value="">없음</option>
+       ${['walk','jog','regularRun','run','stop','runStop','turnLeft','turnRight','jump','drop','fall','land','roll','swing','wall','zip'].map(key=>`<option>${key}</option>`).join('')}
+@@ -61,8 +65,14 @@
+   const camera = new THREE.PerspectiveCamera(42, innerWidth / innerHeight, 0.01, 200);
+   const status = panel.querySelector('output'), select = panel.querySelector('select'), slider = panel.querySelector('input');
+   let playing = true, side = false, mode = 'clip', elapsed = 0, history = [], scenario = 'movement', actionHistory = [], breakOn = '';
+-  const character = new Character(scene, (n, s) => { status.textContent = `${n}% ${s}`; }, () => {
+-    select.replaceChildren(...Object.keys(character.actions).filter(k => k !== 'default').map(k => {
++  const character = new Character(scene, (n, s) => { status.textContent = `${n}% ${s}`; }, async () => {
++    // These retained candidates are review-only and never selected by gameplay.
++    for(const key of ['candidateFront','candidateStylish'])try{
++      const data=JSON.parse(new TextDecoder().decode(await fetchAsset(`/motions/${key}.json`)));
++      const clip=THREE.AnimationClip.parse(data);clip.userData=data.userData;
++      const action=character.mixer.clipAction(clip);action.setLoop(THREE.LoopOnce,1);action.clampWhenFinished=true;character.actions[key]=action;
++    }catch(error){console.warn('Could not load preserved review motion',key,error);}
++    select.replaceChildren(...Object.keys(character.actions).map(k => {
+       const o = document.createElement('option'); o.value = k; o.textContent = k; return o;
+     }));
+     select.value = 'idle'; choose();
+@@ -72,6 +82,8 @@
+     getRooftopSpawn:()=>new THREE.Vector3(0,.1,0) };
+   const wallFixture = new THREE.Mesh(new THREE.BoxGeometry(6,10,6),new THREE.MeshStandardMaterial({color:0x8595aa}));
+   wallFixture.position.set(0,5,-3); wallFixture.visible=false;wallFixture.receiveShadow=true; scene.add(wallFixture);
++  const parapetFixture=new THREE.Mesh(new THREE.BoxGeometry(6,1.2,.8),new THREE.MeshStandardMaterial({color:0xc2ccd4}));
++  parapetFixture.position.set(0,10.6,-.4);parapetFixture.visible=false;parapetFixture.receiveShadow=true;scene.add(parapetFixture);
+   const zipFixture = new THREE.Mesh(new THREE.BoxGeometry(8,8,2),new THREE.MeshStandardMaterial({color:0x8595aa}));
+   zipFixture.position.set(0,5,18);zipFixture.visible=false;scene.add(zipFixture);
+   const dualFixtures=[-4,4].map(x=>{
+@@ -97,7 +109,7 @@
+   const input = {forward:false,backward:false,left:false,right:false,sprint:false,jump:false,webHold:false,wallRun:false,strafe:0};
+   function choose() {
+     mode = 'clip'; character.mixer.stopAllAction(); character.activeAction = null;
+-    wallFixture.visible=false;zipFixture.visible=false; character.updateWeb(false,null);
++    wallFixture.visible=false;parapetFixture.visible=false;zipFixture.visible=false; character.updateWeb(false,null);
+     for(const mesh of dualFixtures)mesh.visible=false;
+     character.group.position.set(0,0,0); character.model.rotation.set(0,0,0);
+     character.model.position.y = 0;
+@@ -133,6 +145,7 @@
+     for (const key of Object.keys(input)) input[key] = key === 'strafe' ? 0 : false;
+     physics.position.set(0,0.1,0); physics.velocity.set(0,0,0); physics.state = 'IDLE';
+     if (scenario === 'landing' || scenario === 'roll') { physics.position.y = scenario === 'roll' ? 35 : 8; physics.state = 'FALLING'; if(scenario==='roll')physics.velocity.z=12; }
++    if(scenario.startsWith('trick-')){physics.position.y=30;physics.state='FALLING';}
+     if (scenario === 'swing') {
+       physics.position.y=10; physics.velocity.set(0,0,12); physics.state='SWINGING';
+       physics.isSwinging=true; physics.anchorPoint=new THREE.Vector3(0,25,8);
+@@ -141,11 +154,12 @@
+     if(scenario==='dualWeb') {
+       physics.position.set(0,3,0);physics.state='FALLING';physics.launchAssistAvailable=false;
+     }
+-    if (scenario === 'wall') {
+-      physics.state='WALL_RUNNING'; physics.position.y=3;
++    if (scenario === 'wall' || scenario==='parapet') {
++      physics.state='WALL_RUNNING'; physics.position.y=scenario==='parapet'?7:3;
+       physics.wallNormal.set(0,0,1); character.wallNormal=physics.wallNormal;
+       physics.wallBuilding={maxY:10}; physics.wallRunTimer=0;
+       city.colliders=[{minX:-3,maxX:3,minZ:-6,maxZ:0,minY:0,maxY:10}];
++      if(scenario==='parapet')city.colliders.push({minX:-3,maxX:3,minZ:-.8,maxZ:0,minY:10,maxY:11.2});
+       physics.position.z=0.7;
+     } else if(scenario==='zip') {
+       city.colliders=[{minX:-4,maxX:4,minZ:17,maxZ:19,minY:1,maxY:9}];
+@@ -162,7 +176,8 @@
+       physics.facingAngle=scenario==='slopeDown'?Math.PI:0;character.targetFacingAngle=physics.facingAngle;
+     }
+     physics.previousFixedPosition.copy(physics.position);physics.renderPosition.copy(physics.position);
+-    wallFixture.visible=scenario === 'wall';
++    wallFixture.visible=['wall','parapet'].includes(scenario);
++    parapetFixture.visible=scenario==='parapet';
+     zipFixture.visible=scenario === 'zip';
+     city.buildingMeshes=scenario === 'zip' ? [zipFixture] : [];
+     for(const mesh of dualFixtures)mesh.visible=scenario==='dualWeb';
+@@ -187,16 +202,17 @@
+   };
+   function advanceScenario(dt) {
+     const old=elapsed;elapsed+=dt;
+-    input.forward=scenario==='movement' && elapsed>=1 && elapsed<9 || scenario==='walkStop' && elapsed>=1 && elapsed<3 || scenario==='wall' && elapsed<2.2 || ['slope','slopeDown','stairs'].includes(scenario) && elapsed>=0.5 && elapsed<3.5;
+-    input.wallRun=scenario==='wall' && elapsed<2.2;
++    input.forward=scenario==='movement' && elapsed>=1 && elapsed<9 || scenario==='walkStop' && elapsed>=1 && elapsed<3 || ['wall','parapet'].includes(scenario) && elapsed<2.2 || ['slope','slopeDown','stairs'].includes(scenario) && elapsed>=0.5 && elapsed<3.5;
++    input.wallRun=['wall','parapet'].includes(scenario) && elapsed<2.2;
+     input.jog=scenario==='movement' && elapsed>=3 && elapsed<5;
+     input.run=scenario==='movement' && elapsed>=5 && elapsed<7;
+     input.sprint=scenario==='movement' && elapsed>=7 && elapsed<9;
+     input.jump=scenario==='movement' && old<11 && elapsed>=11;
+     const controllerCamera=new THREE.PerspectiveCamera();controllerCamera.rotation.y=Math.PI;
+     controllerCamera.position.copy(physics.position).add(new THREE.Vector3(0,1.3,0));
+-    if(scenario==='wall')controllerCamera.rotation.y=0;
++    if(['wall','parapet'].includes(scenario))controllerCamera.rotation.y=0;
+     if(scenario==='slopeDown')controllerCamera.rotation.y=0;
++    if(scenario.startsWith('trick-') && old<.2 && elapsed>=.2)physics.performAirTrick(scenario.slice(6));
+     if(scenario==='zip' && old<1 && elapsed>=1) {
+       controllerCamera.lookAt(0,8,18);controllerCamera.updateMatrixWorld(true);
+       if(physics.performWebPull(controllerCamera))input.webHold=true;
+--- before/scripts/check-wall-ledge.mjs
++++ current/scripts/check-wall-ledge.mjs
+@@ -0,0 +1,80 @@
++import assert from 'node:assert/strict';
++import * as THREE from 'three';
++import { SwingPhysics } from '../src/SwingPhysics.js';
++import { City } from '../src/City.js';
++import { planMantle, mantlePosition } from '../src/LedgeTraversal.js';
++import { StreamedCollision } from '../src/StreamedCollision.js';
++import { proceduralCollision } from './city-collision.mjs';
++
++const silent=new Proxy({},{get:()=>()=>{}});
++const held={forward:true,wallRun:true,strafe:0};
++function actor(city){return new SwingPhysics(new THREE.Scene(),city,{group:new THREE.Group(),update(){},fireWeb(){}},silent);}
++const roof={minX:-5,maxX:5,minY:0,maxY:10,minZ:-12,maxZ:0};
++const parapet={minX:-5,maxX:5,minY:10,maxY:11.2,minZ:-.8,maxZ:0};
++function rotated(box,angle){const b=new THREE.Box3();for(const x of [box.minX,box.maxX])for(const z of [box.minZ,box.maxZ])for(const y of [box.minY,box.maxY])b.expandByPoint(new THREE.Vector3(x,y,z).applyAxisAngle(new THREE.Vector3(0,1,0),angle));return {minX:b.min.x,maxX:b.max.x,minY:b.min.y,maxY:b.max.y,minZ:b.min.z,maxZ:b.max.z};}
++let passed=0,failed=0;
++async function check(name,run){try{await run();passed++;console.log('PASS '+name);}catch(e){failed++;console.error('FAIL '+name+': '+e.message);}}
++await check('Four facade directions and three frame rates climb over the actual 1.2m parapet and stay on its roof',()=>{
++  for(const angle of [0,Math.PI/2,Math.PI,Math.PI*1.5])for(const fps of [30,60,144]){
++    const city={colliders:[rotated(roof,angle),rotated(parapet,angle)],buildingMeshes:[],raycast:City.prototype.raycast,checkCollision:City.prototype.checkCollision};
++    const p=actor(city),normal=new THREE.Vector3(0,0,1).applyAxisAngle(new THREE.Vector3(0,1,0),angle),camera=new THREE.PerspectiveCamera();camera.rotation.y=angle;
++    p.position.copy(normal).multiplyScalar(.7);p.position.y=7;p.state='WALL_RUNNING';p.wallNormal.copy(normal);p.wallBuilding=city.colliders[0];
++    let mantle=false,landed=false,maxStep=0;
++    for(let frame=0;frame<fps*5;frame++){
++      const previous=p.position.clone();p.update(1/fps,{...held},camera);maxStep=Math.max(maxStep,previous.distanceTo(p.position));
++      mantle ||= p.state==='MANTLING';assert(!['FALLING','JUMPING'].includes(p.state),'A held climb detached at the parapet');
++      if(mantle && ['IDLE','RUNNING'].includes(p.state)){landed=true;break;}
++    }
++    assert(landed);assert.equal(p.position.y,10.1);assert(maxStep<.4,'Traversal root jumped between frames');
++    for(let frame=0;frame<fps;frame++)p.update(1/fps,{},camera);
++    assert.equal(p.state,'IDLE');assert.equal(p.position.y,10.1);
++  }
++});
++await check('Parapet plan distinguishes the hand-grip height from the lower supported landing',()=>{
++  const city={colliders:[roof,parapet],raycast:City.prototype.raycast},normal=new THREE.Vector3(0,0,1);
++  const plan=planMantle(city,new THREE.Vector3(0,10.4,.7),normal,11.2);assert(plan);
++  assert.equal(plan.end.y,10.1);assert(plan.end.z< -1.5);
++  for(let i=0;i<=100;i++){const t=i/100,p=mantlePosition(plan,t);if(t>.42 && t<.78)assert(p.y>=11.3,'Feet lowered into the parapet before crossing it');}
++});
++await check('Blocked headroom retains the wall grip without passing through the roof',()=>{
++  const ceiling={minX:-5,maxX:5,minY:11.3,maxY:11.6,minZ:-12,maxZ:1};
++  const city={colliders:[roof,ceiling],buildingMeshes:[],raycast:City.prototype.raycast,checkCollision:City.prototype.checkCollision},p=actor(city);
++  p.position.set(0,9.4,.7);p.wallNormal.set(0,0,1);p.state='WALL_RUNNING';
++  for(let i=0;i<180;i++)p.update(1/60,{...held},new THREE.PerspectiveCamera());
++  assert.equal(p.state,'WALL_RUNNING');assert(p.position.y<10);assert.equal(p.velocity.y,0);
++});
++await check('A blocked grip can move sideways to a clear, supported roof entry',()=>{
++  const ceiling={minX:-.9,maxX:.9,minY:11.3,maxY:11.6,minZ:-12,maxZ:1};
++  const city={colliders:[roof,ceiling],buildingMeshes:[],raycast:City.prototype.raycast,checkCollision:City.prototype.checkCollision},p=actor(city);
++  p.position.set(0,9.4,.7);p.wallNormal.set(0,0,1);p.state='WALL_RUNNING';let mantle=false,landed=false;
++  for(let i=0;i<240;i++){p.update(1/60,{...held,strafe:1},new THREE.PerspectiveCamera());mantle ||= p.state==='MANTLING';assert.notEqual(p.state,'FALLING');if(mantle && ['IDLE','RUNNING'].includes(p.state)){landed=true;break;}}
++  assert(landed);assert(p.position.x>1.6);assert.equal(p.position.y,10.1);
++});
++await check('Holding a climb past 25 seconds does not impose an unexplained fall',()=>{
++  const city={colliders:[{...roof,maxY:250}],buildingMeshes:[],raycast:City.prototype.raycast,checkCollision:City.prototype.checkCollision},p=actor(city);
++  p.position.set(0,40,.7);p.wallNormal.set(0,0,1);p.state='WALL_RUNNING';p.wallRunTimer=26;
++  p.update(1/60,{...held},new THREE.PerspectiveCamera());assert.equal(p.state,'WALL_RUNNING');assert(p.velocity.y>0);
++});
++await check('Real local-city building facades complete a supported arrival or retain the blocked grip',()=>{
++  const city=proceduralCollision(),boxes=city.colliders.filter(b=>b.maxY-b.minY>15 && b.maxX-b.minX>8 && b.maxZ-b.minZ>8);let landed=0,blocked=0;
++  for(const box of boxes)for(const face of ['north','south','east','west']){
++    const p=actor(city),normal=new THREE.Vector3(face==='east'?1:face==='west'?-1:0,0,face==='north'?1:face==='south'?-1:0);
++    p.position.set(normal.x?normal.x>0?box.maxX+.7:box.minX-.7:(box.minX+box.maxX)/2,box.maxY-2.5,normal.z?normal.z>0?box.maxZ+.7:box.minZ-.7:(box.minZ+box.maxZ)/2);
++    p.wallNormal.copy(normal);p.state='WALL_RUNNING';p.wallBuilding=box;let mantle=false;
++    for(let i=0;i<240;i++){p.update(1/60,{...held},new THREE.PerspectiveCamera());mantle ||= p.state==='MANTLING';assert.notEqual(p.state,'FALLING',`${face} facade at height ${box.maxY} detached`);if(mantle && ['IDLE','RUNNING'].includes(p.state))break;}
++    if(mantle && ['IDLE','RUNNING'].includes(p.state))landed++;else{assert.equal(p.state,'WALL_RUNNING');blocked++;}
++  }
++  assert(landed>=boxes.length);console.log(`  Actual city: ${landed} safe arrivals, ${blocked} blocked grips, ${boxes.length*4} facades.`);
++});
++await check('Real Rapier terrain supports crossing the lip onto its lower roof at 30/60/144 FPS',async()=>{
++  const world=new StreamedCollision();await world.initialized;
++  for(const box of [roof,parapet]){const mesh=new THREE.Mesh(new THREE.BoxGeometry(box.maxX-box.minX,box.maxY-box.minY,box.maxZ-box.minZ));mesh.position.set((box.maxX+box.minX)/2,(box.maxY+box.minY)/2,(box.maxZ+box.minZ)/2);world.enqueue(mesh);}
++  for(let i=0;i<30;i++)world.update(new THREE.Vector3());
++  try{for(const fps of [30,60,144]){
++    const city={collisionWorld:world,colliders:[],buildingMeshes:[],raycast:world.raycast.bind(world),resolveMovement:world.resolve.bind(world),supportHeight:p=>{const h=world.groundAt(p,.6);return h!==null && Math.abs(p.y-h-.1)<.3?h:null;},checkCollision:()=>({collided:false})};
++    const p=actor(city);p.position.set(0,7,.375);p.wallNormal.set(0,0,1);p.state='WALL_RUNNING';let mantle=false,landed=false;
++    for(let frame=0;frame<fps*5;frame++){p.update(1/fps,{...held},new THREE.PerspectiveCamera());mantle ||= p.state==='MANTLING';assert.notEqual(p.state,'FALLING');if(mantle && ['IDLE','RUNNING'].includes(p.state)){landed=true;break;}}
++    assert(landed);assert(Math.abs(p.position.y-10.1)<.12);
++  }}finally{world.dispose();}
++});
++console.log(`Wall ledge review: ${passed} passed, ${failed} failed.`);if(failed)process.exitCode=1;
+--- before/scripts/check-wall-ledge-rig.mjs
++++ current/scripts/check-wall-ledge-rig.mjs
+@@ -0,0 +1,51 @@
++import assert from 'node:assert/strict';
++import fs from 'node:fs';
++import * as THREE from 'three';
++import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
++import { clone } from 'three/addons/utils/SkeletonUtils.js';
++import { Character } from '../src/Character.js';
++import { MOTIONS } from '../src/MotionCatalog.js';
++import { boneId } from '../src/MotionRetarget.js';
++import { SwingPhysics } from '../src/SwingPhysics.js';
++import { City } from '../src/City.js';
++globalThis.ProgressEvent=class {constructor(type,values){Object.assign(this,values);}};
++const raw=fs.readFileSync('public/models/spiderman.glb'),length=raw.readUInt32LE(12),json=JSON.parse(raw.subarray(20,20+length));
++json.buffers[0].uri=`data:application/octet-stream;base64,${raw.subarray(28+length).toString('base64')}`;
++delete json.images;delete json.textures;json.materials=[];json.meshes.forEach(m=>m.primitives.forEach(p=>delete p.material));
++const template=(await new GLTFLoader().parseAsync(JSON.stringify(json),'')).scene;
++function character(){const c=Object.create(Character.prototype);Object.assign(c,{model:clone(template),group:new THREE.Group(),actions:{},bones:{},activeAction:null,lastState:null,bodyPitch:0,targetFacingAngle:Math.PI,visualYaw:Math.PI,trickRotation:0,idleTime:0,webShotTimer:0,currentHand:'right',groundProbe:()=>0,updateWeb(){}});
++  c.group.add(c.model);c.mixer=new THREE.AnimationMixer(c.model);c.model.traverse(b=>{if(b.isBone)c.bones[b.name]=b;});
++  for(const m of MOTIONS){const data=JSON.parse(fs.readFileSync(`public/motions/${m.key}.json`)),clip=THREE.AnimationClip.parse(data);clip.userData=data.userData;
++    const action=c.mixer.clipAction(clip);action.setLoop(m.loop?THREE.LoopRepeat:THREE.LoopOnce);action.clampWhenFinished=!m.loop;c.actions[m.key]=action;}
++  return c;
++}
++const roof={minX:-5,maxX:5,minY:0,maxY:10,minZ:-12,maxZ:0},lip={minX:-5,maxX:5,minY:10,maxY:11.2,minZ:-.8,maxZ:0};
++const results=[];let total=0;
++for(const fps of [30,60,144]){
++  const c=character(),city={colliders:[roof,lip],buildingMeshes:[],raycast:City.prototype.raycast,checkCollision:City.prototype.checkCollision},silent=new Proxy({},{get:()=>()=>{}}),p=new SwingPhysics(new THREE.Scene(),city,c,silent);
++  p.position.set(0,7,.7);p.previousFixedPosition.copy(p.position);p.renderPosition.copy(p.position);p.wallNormal.set(0,0,1);c.wallNormal=p.wallNormal;p.state='WALL_RUNNING';
++  const byId=id=>Object.values(c.bones).find(b=>boneId(b.name)===id),point=id=>byId(id).getWorldPosition(new THREE.Vector3());
++  const lengths=new Map(Object.values(c.bones).map(b=>[b,b.position.length()]));let maxGrip=0,maxStep=0,maxDetail,last=null,saw=false,landed=false;
++  for(let frame=0;frame<fps*5;frame++){
++    p.update(1/fps,{forward:true,wallRun:true,strafe:0},new THREE.PerspectiveCamera());c.group.updateMatrixWorld(true);total++;
++    const points=['head','lefthand','righthand','leftfoot','rightfoot'].map(point);
++    for(const b of Object.values(c.bones)){assert(b.quaternion.toArray().every(Number.isFinite));assert(Math.abs(b.quaternion.length()-1)<1e-5);if(boneId(b.name)!=='hips')assert(Math.abs(b.position.length()-lengths.get(b))<1e-5,'A limb was stretched');}
++    if(last && frame>fps*.3)for(const [i,v]of points.entries()){const step=v.distanceTo(last[i]);if(step>maxStep){maxStep=step;maxDetail={frame,state:p.state,phase:p.mantle?.elapsed/p.mantle?.duration,wallWeight:c.actions.wall.getEffectiveWeight(),idleWeight:c.actions.idle.getEffectiveWeight(),wallTime:c.actions.wall.time,idleTime:c.actions.idle.time,joint:['head','lefthand','righthand','leftfoot','rightfoot'][i],from:last[i].toArray(),to:v.toArray()};}}last=points;
++    if(p.state==='MANTLING'){
++      saw=true;const t=p.mantle.elapsed/p.mantle.duration;
++      if(t>.2 && t<.42)for(const side of ['left','right'])maxGrip=Math.max(maxGrip,point(side+'hand').distanceTo(c.mantleHandTargets[side]));
++      for(const side of ['left','right']){const foot=point(side+'foot');assert(!(foot.x>lip.minX && foot.x<lip.maxX && foot.z>lip.minZ+.02 && foot.z<lip.maxZ-.02 && foot.y<lip.maxY+.03 && foot.y>lip.minY),`Foot enters parapet at phase ${t.toFixed(3)}: ${foot.toArray()}`);}
++      for(const joint of ['hips','leftleg','rightleg']){const v=point(joint);assert(!(v.x>lip.minX && v.x<lip.maxX && v.z>lip.minZ+.02 && v.z<lip.maxZ-.02 && v.y<lip.maxY-.02 && v.y>lip.minY),`${joint} enters parapet at phase ${t.toFixed(3)}: ${v.toArray()}`);}
++    }
++    assert.notEqual(p.state,'FALLING');if(saw && ['IDLE','RUNNING'].includes(p.state)){landed=true;break;}
++  }
++  assert(landed);assert(maxGrip<.06,`Roof hand grip error ${maxGrip.toFixed(3)}m`);if(maxStep>=15/fps)console.log(maxDetail);assert(maxStep<15/fps,`Pose transition exceeds 15m/s: ${(maxStep*fps).toFixed(2)}m/s`);
++  for(let i=0;i<fps;i++){
++    p.update(1/fps,{},new THREE.PerspectiveCamera());c.group.updateMatrixWorld(true);total++;
++    const points=['head','lefthand','righthand','leftfoot','rightfoot'].map(point);
++    maxStep=Math.max(maxStep,...points.map((v,j)=>v.distanceTo(last[j])));last=points;
++  }
++  assert(maxStep<15/fps,'Roof arrival/stop has an abrupt pose change');assert.equal(p.state,'IDLE');assert.equal(c.mantleHandTargets,null);
++  results.push({fps,maxGrip,maxFrameStep:maxStep});console.log(`PASS ${fps}fps actual rig: grip ${(maxGrip*1000).toFixed(1)}mm, max extremity speed ${(maxStep*fps).toFixed(2)}m/s, no foot penetration or stretched limb`);
++}
++fs.mkdirSync('docs/qa/wall-ledge-2026-10-15',{recursive:true});fs.writeFileSync('docs/qa/wall-ledge-2026-10-15/rig-results.json',JSON.stringify({frames:total,results},null,2));
+--- before/package.json
++++ current/package.json
+@@ -7,7 +7,7 @@
+     "dev": "vite",
+     "build": "vite build",
+     "preview": "vite preview",
+-    "test": "node scripts/build-motions.mjs && node scripts/check-motions.mjs && node scripts/check-pose.mjs && node scripts/check-controller.mjs && node scripts/check-gameplay.mjs && node scripts/check-air-tricks.mjs && node scripts/check-dual-web.mjs && node scripts/check-pendulum.mjs && node scripts/check-mechanics-audit.mjs && node scripts/check-player-audit.mjs && node scripts/check-traversal.mjs && node scripts/check-qa.mjs && node scripts/check-review-2.mjs && node scripts/check-combat.mjs && node scripts/check-web-vfx.mjs && node scripts/check-superhero-landing-vfx.mjs && node scripts/check-combat-rig.mjs && node scripts/check-motion-timeline.mjs && node scripts/check-motion-transitions.mjs && node scripts/check-hong-kong-streaming.mjs && node scripts/check-minimap.mjs && node scripts/check-remote-motion.mjs && node scripts/check-tile-textures.mjs && node scripts/check-multiplayer.mjs && node scripts/check-upgrade.mjs && node scripts/check-upgrade-online.mjs && node scripts/check-release-audit.mjs && node scripts/check-online-edge-cases.mjs && node scripts/check-room-reconnect.mjs && node scripts/check-hong-kong-geometry-codec.mjs && node scripts/check-swing-accessibility.mjs && node scripts/check-cross-system-regressions.mjs && node scripts/check-web-continuity.mjs && node scripts/check-compact-map-and-locators.mjs && node scripts/check-expert-audit.mjs && node scripts/check-connection-lifecycle.mjs && node scripts/check-camera-motion-web.mjs && node scripts/check-full-game-audit.mjs && node scripts/check-input-lifecycle.mjs && node scripts/check-session-flow.mjs && node scripts/check-visibility.mjs && node scripts/check-loading-performance.mjs",
++    "test": "node scripts/build-motions.mjs && node scripts/check-motions.mjs && node scripts/check-pose.mjs && node scripts/check-controller.mjs && node scripts/check-gameplay.mjs && node scripts/check-air-tricks.mjs && node scripts/check-dual-web.mjs && node scripts/check-pendulum.mjs && node scripts/check-mechanics-audit.mjs && node scripts/check-player-audit.mjs && node scripts/check-traversal.mjs && node scripts/check-qa.mjs && node scripts/check-review-2.mjs && node scripts/check-combat.mjs && node scripts/check-web-vfx.mjs && node scripts/check-superhero-landing-vfx.mjs && node scripts/check-combat-rig.mjs && node scripts/check-motion-timeline.mjs && node scripts/check-motion-transitions.mjs && node scripts/check-hong-kong-streaming.mjs && node scripts/check-minimap.mjs && node scripts/check-remote-motion.mjs && node scripts/check-tile-textures.mjs && node scripts/check-multiplayer.mjs && node scripts/check-upgrade.mjs && node scripts/check-upgrade-online.mjs && node scripts/check-release-audit.mjs && node scripts/check-online-edge-cases.mjs && node scripts/check-room-reconnect.mjs && node scripts/check-hong-kong-geometry-codec.mjs && node scripts/check-swing-accessibility.mjs && node scripts/check-cross-system-regressions.mjs && node scripts/check-web-continuity.mjs && node scripts/check-compact-map-and-locators.mjs && node scripts/check-expert-audit.mjs && node scripts/check-connection-lifecycle.mjs && node scripts/check-camera-motion-web.mjs && node scripts/check-full-game-audit.mjs && node scripts/check-input-lifecycle.mjs && node scripts/check-session-flow.mjs && node scripts/check-visibility.mjs && node scripts/check-loading-performance.mjs && node scripts/check-wall-ledge.mjs && node scripts/check-wall-ledge-rig.mjs && node scripts/check-all-motions.mjs && node scripts/check-motion-sources.mjs",
+     "predev": "node scripts/build-motions.mjs",
+     "prebuild": "node scripts/build-motions.mjs",
+     "start": "node scripts/serve.mjs",
+@@ -26,7 +26,9 @@
+     "test:input-lifecycle": "node scripts/check-input-lifecycle.mjs",
+     "test:session-flow": "node scripts/check-session-flow.mjs",
+     "test:visibility": "node scripts/check-visibility.mjs",
+-    "test:loading": "node scripts/check-loading-performance.mjs"
++    "test:loading": "node scripts/check-loading-performance.mjs",
++    "test:wall-ledge": "node scripts/check-wall-ledge.mjs && node scripts/check-wall-ledge-rig.mjs",
++    "test:all-motions": "node scripts/build-motions.mjs && node scripts/check-all-motions.mjs && node scripts/check-motion-sources.mjs && node scripts/check-wall-ledge-rig.mjs"
+   },
+   "dependencies": {
+     "@dimforge/rapier3d-compat": "^0.21.0",
+--- before/README.md
++++ current/README.md
+@@ -60,7 +60,7 @@
+ - 우클릭: 좌클릭이 쓰는 손의 반대 손에서 같은 진자 스윙을 겁니다. 꾹 누르면 그 줄에 매달리고, 떼면 그 손만 놓으며 추가 가속은 없습니다. 두 버튼을 함께 누르면 두 줄이 같이 몸을 붙잡습니다. 지상 전투 모드에서는 스트레이트이고, 공중 전투에서는 거미줄입니다.
+ - E: 공중에서 한 번 눌러 쓰는 짧은 집입니다. 한 번에 최대 12m이며 꾹 눌러도 자동 반복하지 않습니다. 지상에서는 좌클릭 또는 우클릭을 꾹 눌러 도약 후 스윙으로 출발합니다. 화면 중앙 조준점을 사용하며, 도착 때 좌클릭 또는 우클릭을 누르고 있으면 그 버튼의 줄로 부착점에 매달립니다. 둘 다 누르지 않으면 줄을 놓습니다. 벽에 막히거나 시간이 끝나면 줄을 해제합니다. 지상 전투 모드에서는 훅입니다.
+ - F+W: 벽 달리기. 공중에서 T: 앞구르기, W+T: 360도 회전, S+T: 뒤구르기, A/D+T: 좌우 옆회전, Shift+T: 코르크스크루. 줄을 놓은 뒤 사용하며 충분한 착지 여유가 필요합니다. 묘기를 끝내야 점수를 받고, 착지 전 다양한 종류를 연결하면 최대 4배, 같은 종류 반복은 점수가 감소합니다.
+-- 벽 꼭대기의 안전한 옥상에는 손·발 지지 전환으로 진입합니다. 진입 중 Space는 점프로 중단합니다.
++- F+W를 유지하면 벽 꼭대기의 안전한 옥상으로 손·발 지지를 옮기며 진입합니다. 난간을 넘은 뒤 실제 옥상 바닥에 착지합니다. 진입 공간이 막혔으면 벽을 붙잡고 A/D로 옆의 진입 지점을 찾을 수 있습니다. 진입 중 Space는 점프로 중단합니다.
+ - C: 카메라 정렬. V: 근접/기본/원거리/1인칭.
+ - 마우스 휠: 줌. 마우스 잠금 없이 시작하면 휠 버튼 드래그로 카메라 회전.
+ - R: 타임트라이얼 시작/종료. 금색 링을 순서대로 통과.
+@@ -121,3 +121,5 @@
+ 입력·일시정지·재개의 후속 개선: [2026-10-14 입력 상태 검증](docs/qa/input-lifecycle-2026-10-14/REPORT.md). 키보드·패드 중복 동작, 거미줄 토글 취소, 정지 후 레이스 시간, 숨은 키 변경 대기, 자동 화질 상태를 수정했습니다. 재현 검사: `npm run test:input-lifecycle`.
+ 
+ 도움말·메뉴·레이스 전환 개선: [2026-10-14 플레이 전환 검증](docs/qa/session-flow-2026-10-14/REPORT.md). 혼자 플레이의 Escape 메뉴에서 레이스를 시작하거나 종료할 수 있습니다. 시작하면 메뉴를 닫고 전투 연습·공격을 정리한 뒤 거미줄 모드로 전환하며, 지형 준비가 실패하면 현재 위치와 활동을 유지합니다. 도움말은 플레이 중에 열 수 있고, 커서를 해제해 닫기 버튼을 사용할 수 있습니다. 일시정지·새 플레이 진입 시 이전 도움말을 정리하며, 패드 Start로 정지하는 프레임에는 이동·시점 입력을 적용하지 않습니다. 재현 검사: `npm run test:session-flow`.
++
++벽 끝 추락·난간 넘기·착지 모션의 후속 수정: [2026-10-15 벽·옥상 검증](docs/qa/wall-ledge-2026-10-15/REPORT.md). 재현 검사: `npm run test:wall-ledge`.

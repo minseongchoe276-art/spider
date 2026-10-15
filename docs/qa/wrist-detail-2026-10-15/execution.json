@@ -1,0 +1,34 @@
+{
+  "date": "2026-10-15",
+  "scope": "First-person wrist and sleeve detail; preserve existing hands",
+  "commands": {
+    "npm test": {
+      "exitCode": 0,
+      "stages": 47,
+      "log": "full-tests.log"
+    },
+    "npm run build": {
+      "exitCode": 0,
+      "log": "build.log"
+    },
+    "node docs/qa/wrist-detail-2026-10-15/verify-preservation.mjs": {
+      "exitCode": 0,
+      "results": "hand-preservation.json"
+    }
+  },
+  "visualSamples": 30,
+  "reviewFov": [
+    45,
+    55,
+    64,
+    95
+  ],
+  "restoredGameplayFov": 64,
+  "sha256": {
+    "src/FirstPersonArms.js": "47b8e68579cfd7bcbed5a17912ac8084e2e4f0accb43d229a96a591ffcefcd3c",
+    "src/WebHandReview.js": "ee619a083677f5251e5c065321f0369672e6373c9e780ec1aa1a152e1a5e48dd",
+    "scripts/check-web-hand-pose.mjs": "1a516b34305ac7e36b5f1cd4300a347b5e01f1e2802c4911f1a9424732c5c674",
+    "src/Character.js": "508fe1b01255dbc717e834d03886c46622c2df82a33682b5688f1838ddd06a59",
+    "src/WebHandPose.js": "b02b7a3df58c075ff709ccdd68140aeecaa84e3926e417e1d6d9ba81d6ad9ca8"
+  }
+}

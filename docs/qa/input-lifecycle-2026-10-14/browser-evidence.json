@@ -1,0 +1,36 @@
+{
+  "url": "http://127.0.0.1:5287/?city=procedural",
+  "checks": [
+    {
+      "name": "혼자 플레이 로딩·HUD",
+      "status": "PASS"
+    },
+    {
+      "name": "R 레이스 시작 및 종료",
+      "status": "PASS"
+    },
+    {
+      "name": "도움말을 연 동안 링 1/8 시간 0.02초 유지",
+      "status": "PASS"
+    },
+    {
+      "name": "앞으로 키 변경 대기 → 재개 → Escape 메뉴 복귀",
+      "status": "PASS",
+      "before": "새 키 입력 · Esc 취소",
+      "after": "W"
+    },
+    {
+      "name": "재개 직후 레이스 시간 0.02초 → 0.03초",
+      "status": "PASS"
+    },
+    {
+      "name": "Q 모드 전환 및 복귀",
+      "status": "PASS"
+    },
+    {
+      "name": "Space 점프: 고도 95m → 103m, JUMPING",
+      "status": "PASS"
+    }
+  ],
+  "console": []
+}

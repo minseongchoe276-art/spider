@@ -6,7 +6,7 @@ import { Character } from '../src/Character.js';
 import { sanitizePose, capturePose } from '../src/RemoteMotion.js';
 
 assert.equal(selectAirTrick(), 'front');
-for (const [input,key] of [[{forward:true},'spin'],[{backward:true},'back'],[{left:true},'left'],[{right:true},'right'],[{sprint:true,forward:true},'cork']]) assert.equal(selectAirTrick(input),key);
+for (const [input,key] of [[{forward:true},'front'],[{backward:true},'front'],[{left:true},'front'],[{right:true},'front'],[{sprint:true,forward:true},'front']]) assert.equal(selectAirTrick(input),key);
 function fixture() {
   const c=Object.create(Character.prototype);
   const model=new THREE.Group(),mixer=new THREE.AnimationMixer(model);
@@ -37,14 +37,14 @@ const {c,p}=fixture();
 for(const state of ['IDLE','SWINGING','WALL_RUNNING','MANTLING','WEB_ZIP']) {p.state=state;assert(!p.performAirTrick());}
 p.state='FALLING';c.contactTime=.3;assert(!p.performAirTrick('cork'));
 c.contactTime=10;assert(!p.performAirTrick('toString'));
-assert(p.performAirTrick('back'));c.update(.2,'FALLING',p.velocity);c.update(.1,'LANDING',p.velocity);assert.equal(p.stuntScore,0);assert.equal(c.airTrick,null);
-assert(p.performAirTrick('spin'));c.update(.2,'FALLING',p.velocity);c.update(.1,'SWINGING',p.velocity);assert.equal(p.stuntScore,0);
+assert(p.performAirTrick('front'));c.update(.2,'FALLING',p.velocity);c.update(.1,'LANDING',p.velocity);assert.equal(p.stuntScore,0);assert.equal(c.airTrick,null);
+assert(p.performAirTrick('front'));c.update(.2,'FALLING',p.velocity);c.update(.1,'SWINGING',p.velocity);assert.equal(p.stuntScore,0);
 function finish(key){assert(p.performAirTrick(key));c.update(AIR_TRICKS[key].duration+.01,'FALLING',p.velocity);}
 finish('front');let score=p.stuntScore;finish('front');assert.equal(p.stuntScore-score,125);
-score=p.stuntScore;finish('cork');assert.equal(p.stuntScore-score,585);
-assert(p.performAirTrick('right'));
-const pose=capturePose(p,c);assert.equal(pose.airTrick.key,'right');
+for(const key of ['back','left','right','spin','cork'])assert(!p.performAirTrick(key));
+assert(p.performAirTrick('front'));
+const pose=capturePose(p,c);assert.equal(pose.airTrick.key,'front');
 assert.equal(sanitizePose({...pose,airTrick:{key:'toString',elapsed:0}}).airTrick,null);
 assert.equal(sanitizePose({...pose,airTrick:{key:'front',elapsed:NaN}}).airTrick,null);
 p.resetPosition();assert.equal(c.airTrick,null);assert.equal(p.airTrickChain.size,0);
-console.log('Air tricks: 6 animations at 30/60/144 FPS, completion rewards, interruptions, selection, combos and pose validation passed.');
+console.log('Air tricks: Retained front animation at 30/60/144 FPS, completion rewards, interruptions, selection, combos and pose validation passed.');

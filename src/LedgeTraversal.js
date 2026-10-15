@@ -18,6 +18,17 @@ export function groundSample(city,point,range=0.8) {
 }
 
 export function mantlePosition(plan,progress) {
+  if(plan.end.y<plan.height){
+    const p=plan.start.clone();
+    // Clear the parapet with the full capsule before moving across; lower
+    // onto the real roof only after the body is safely behind the lip.
+    p.y=THREE.MathUtils.lerp(plan.start.y,plan.height+.16,smooth(progress/.42));
+    const across=smooth((progress-.42)/.36);
+    p.x=THREE.MathUtils.lerp(plan.start.x,plan.end.x,across);
+    p.z=THREE.MathUtils.lerp(plan.start.z,plan.end.z,across);
+    if(progress>.78)p.y=THREE.MathUtils.lerp(plan.height+.16,plan.end.y,smooth((progress-.78)/.22));
+    return p;
+  }
   // Keep the full capsule outside the facade until its feet clear the edge.
   const p=plan.start.clone();
   p.y=THREE.MathUtils.lerp(plan.start.y,plan.height+0.16,smooth(progress/0.55));
@@ -44,22 +55,29 @@ export function resolveTraversal(city,start,end) {
 export function planMantle(city,start,normal,height) {
   if(!Number.isFinite(height) || ![...start,...normal].every(Number.isFinite) || normal.lengthSq()<0.9)return null;
   if(Math.abs(normal.y)>0.2 || height-start.y>0.95 || height-start.y< -0.2)return null;
-  const end=start.clone().addScaledVector(normal,-1.65);end.y=height+0.1;
-  if(!hasMantleSupport(city,end,height))return null;
-  const plan={start:start.clone(),end,normal:normal.clone(),height,duration:0.72,elapsed:0};
+  for(const depth of [1.65,2.1,2.55,3,3.45]){
+  const end=start.clone().addScaledVector(normal,-depth);end.y=height+.3;
+  const support=groundSample(city,end,1.9);
+  if(!support || support.normal.y<.85 || support.height>height+.16 || support.height<height-1.4)continue;
+  end.y=support.height+.1;
+  if(!hasMantleSupport(city,end,support.height))continue;
+  const plan={start:start.clone(),end,normal:normal.clone(),height,duration:end.y<height?1.2:.72,elapsed:0};
   const origin=start.clone();origin.y=height-0.15;
   const hit=city.raycast?.(origin,normal.clone().negate(),1.2)
     || city.collisionWorld?.raycast?.(origin,normal.clone().negate(),1.2);
   plan.gap=hit?.distance ?? 0.7;
   plan.edge=start.clone().addScaledVector(normal,-plan.gap);plan.edge.y=height+0.06;
   let previous=start.clone();
-  for(let i=1;i<=18;i++) {
-    const target=mantlePosition(plan,i/18);
+  let clear=true;
+  for(let i=1;i<=36;i++) {
+    const target=mantlePosition(plan,i/36);
     const resolved=resolveTraversal(city,previous,target);
-    if(resolved.position.distanceTo(target)>0.075 || resolved.contacts.some(c=>c.normal.y< -0.5))return null;
+    if(resolved.position.distanceTo(target)>0.075 || resolved.contacts.some(c=>c.normal.y< -0.5)){clear=false;break;}
     previous=resolved.position;
   }
-  return plan;
+  if(clear)return plan;
+  }
+  return null;
 }
 
 export function hasMantleSupport(city,end,height) {

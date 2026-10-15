@@ -1,0 +1,12 @@
+
+> spiderman-web-swing@1.0.0 test:web-continuity
+> node scripts/check-web-continuity.mjs
+
+PASS 30fps: temporary LOD loss keeps the original pivot and full arc; permanent loss releases
+PASS 60fps: temporary LOD loss keeps the original pivot and full arc; permanent loss releases
+PASS 144fps: temporary LOD loss keeps the original pivot and full arc; permanent loss releases
+PASS attachment seam tolerance never ignores a real intervening wall
+PASS held press reconnects after obstruction; mouse release still detaches immediately
+PASS actual game render loop preserves a held button when physics loses its attachment
+PASS grazing ground keeps the pivot and returns to an airborne arc
+PASS actual Rapier triangles: full 8s arc survives visual LOD eviction; release frees the retained tile

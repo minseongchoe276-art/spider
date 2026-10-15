@@ -69,17 +69,21 @@ export class SupabaseRooms {
   async open() {
     try {
       let { data: { session }, error } = await this.client.auth.getSession();
+      if(this.readyState===WebSocket.CLOSED)return;
       if (error) throw error;
       if (!session) {
         const result = await this.client.auth.signInAnonymously();
+        if(this.readyState===WebSocket.CLOSED)return;
         if (result.error) throw result.error;
         session = result.data.session;
       }
       if (!session) throw new Error('익명 로그인을 시작하지 못했습니다.');
       this.userId = session.user.id;
       await this.client.realtime.setAuth(session.access_token);
+      if(this.readyState===WebSocket.CLOSED)return;
       this.readyState = WebSocket.OPEN;
     } catch (error) {
+      if(this.readyState===WebSocket.CLOSED)return;
       this.fatal = true;
       this.fail(error);
       this.readyState = WebSocket.CLOSED;
@@ -89,6 +93,7 @@ export class SupabaseRooms {
     try {
       const pendingCode = new URLSearchParams(location.search).get('join')?.toUpperCase();
       const resumed = await this.rpc('game_resume');
+      if(this.readyState===WebSocket.CLOSED)return;
       if (resumed?.room?.code) {
         if (pendingCode && pendingCode !== resumed.room.code) {
           try { await this.command('leave'); } catch (error) { this.fail(error); }
@@ -100,6 +105,7 @@ export class SupabaseRooms {
     } catch (error) {
       this.fail(error);
     }
+    if(this.readyState===WebSocket.CLOSED)return;
     this.onopen?.();
     this.listTimer = setInterval(() => {
       if (!this.roomCode) this.list().catch(error => this.fail(error));
@@ -132,6 +138,7 @@ export class SupabaseRooms {
   }
 
   fail(error) {
+    if(this.readyState===WebSocket.CLOSED)return;
     const message = /anonymous sign-ins are disabled/i.test(error?.message || '')
       ? 'Supabase 프로젝트에서 익명 로그인을 켜야 방을 사용할 수 있습니다.'
       : error?.message || '방 요청을 처리하지 못했습니다.';
@@ -157,7 +164,7 @@ export class SupabaseRooms {
     const entry = data.type==='create' || data.type==='join';
     if (entry && this.entryPending) return;
     if (entry) this.entryPending = true;
-    let task = this.controlQueue.then(()=>this.dispatch(data)).catch(error=>this.fail(error));
+    let task = this.controlQueue.then(()=>this.readyState===WebSocket.OPEN?this.dispatch(data):null).catch(error=>this.fail(error));
     if (entry) task = task.finally(()=>{ this.entryPending = false; });
     this.controlQueue = task;
   }
@@ -202,6 +209,7 @@ export class SupabaseRooms {
   }
 
   async presentRoom(state) {
+    if(this.readyState===WebSocket.CLOSED)return;
     if (!state?.room?.code) throw new Error('방을 열지 못했습니다.');
     this.roomCode = state.room.code;
     this.city = state.room.city;
@@ -218,6 +226,7 @@ export class SupabaseRooms {
   async subscribe(code) {
     const old=this.channel;this.channel=null;
     if (old) await this.client.removeChannel(old);
+    if(this.readyState===WebSocket.CLOSED)return;
     this.roomCode = code;
     // Queued broadcasts from an old subscription must not restore a room
     // after leaving it or overwrite a newly joined room's state.
@@ -255,6 +264,7 @@ export class SupabaseRooms {
   close() {
     if (this.readyState===WebSocket.CLOSED) return;
     this.readyState=WebSocket.CLOSED;
+    this.roomCode=null;
     clearInterval(this.listTimer);clearInterval(this.heartbeatTimer);
     const old=this.channel;this.channel=null;
     if (old) this.client.removeChannel(old).catch(()=>{});
@@ -277,12 +287,14 @@ export class SupabaseRooms {
     if (data.type === 'list') return this.list();
     if (data.type === 'create' || data.type === 'join') {
       const state = await this.enter(data.type, data);
+      if(this.readyState===WebSocket.CLOSED)return;
       if (state?.type === 'switch-city') return this.emit(state);
       await this.presentRoom(state);
       return;
     }
     if (data.type === 'leave') {
       const result = await this.command('leave');
+      if(this.readyState===WebSocket.CLOSED)return;
       const old = this.channel;
       this.channel = null;
       this.roomCode = null;

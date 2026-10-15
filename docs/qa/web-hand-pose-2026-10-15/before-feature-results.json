@@ -1,0 +1,210 @@
+{
+  "fps": [
+    24,
+    30,
+    60,
+    144
+  ],
+  "results": [
+    {
+      "name": "24fps left: anatomical third-person shooting, held grip and clean release",
+      "status": "FAIL",
+      "error": "Index/little finger did not extend"
+    },
+    {
+      "name": "24fps left: actual first-person suit hand has the same five-digit gesture",
+      "status": "FAIL",
+      "error": "Cannot read properties of undefined (reading 'triangles')"
+    },
+    {
+      "name": "24fps left: a missed shot articulates, expires and never attaches",
+      "status": "FAIL",
+      "error": "Index/little finger did not extend"
+    },
+    {
+      "name": "24fps right: anatomical third-person shooting, held grip and clean release",
+      "status": "FAIL",
+      "error": "Index/little finger did not extend"
+    },
+    {
+      "name": "24fps right: actual first-person suit hand has the same five-digit gesture",
+      "status": "FAIL",
+      "error": "Cannot read properties of undefined (reading 'triangles')"
+    },
+    {
+      "name": "24fps right: a missed shot articulates, expires and never attaches",
+      "status": "FAIL",
+      "error": "Index/little finger did not extend"
+    },
+    {
+      "name": "30fps left: anatomical third-person shooting, held grip and clean release",
+      "status": "FAIL",
+      "error": "Index/little finger did not extend"
+    },
+    {
+      "name": "30fps left: actual first-person suit hand has the same five-digit gesture",
+      "status": "FAIL",
+      "error": "Cannot read properties of undefined (reading 'triangles')"
+    },
+    {
+      "name": "30fps left: a missed shot articulates, expires and never attaches",
+      "status": "FAIL",
+      "error": "Index/little finger did not extend"
+    },
+    {
+      "name": "30fps right: anatomical third-person shooting, held grip and clean release",
+      "status": "FAIL",
+      "error": "Index/little finger did not extend"
+    },
+    {
+      "name": "30fps right: actual first-person suit hand has the same five-digit gesture",
+      "status": "FAIL",
+      "error": "Cannot read properties of undefined (reading 'triangles')"
+    },
+    {
+      "name": "30fps right: a missed shot articulates, expires and never attaches",
+      "status": "FAIL",
+      "error": "Index/little finger did not extend"
+    },
+    {
+      "name": "60fps left: anatomical third-person shooting, held grip and clean release",
+      "status": "FAIL",
+      "error": "Index/little finger did not extend"
+    },
+    {
+      "name": "60fps left: actual first-person suit hand has the same five-digit gesture",
+      "status": "FAIL",
+      "error": "Cannot read properties of undefined (reading 'triangles')"
+    },
+    {
+      "name": "60fps left: a missed shot articulates, expires and never attaches",
+      "status": "FAIL",
+      "error": "Index/little finger did not extend"
+    },
+    {
+      "name": "60fps right: anatomical third-person shooting, held grip and clean release",
+      "status": "FAIL",
+      "error": "Index/little finger did not extend"
+    },
+    {
+      "name": "60fps right: actual first-person suit hand has the same five-digit gesture",
+      "status": "FAIL",
+      "error": "Cannot read properties of undefined (reading 'triangles')"
+    },
+    {
+      "name": "60fps right: a missed shot articulates, expires and never attaches",
+      "status": "FAIL",
+      "error": "Index/little finger did not extend"
+    },
+    {
+      "name": "144fps left: anatomical third-person shooting, held grip and clean release",
+      "status": "FAIL",
+      "error": "Index/little finger did not extend"
+    },
+    {
+      "name": "144fps left: actual first-person suit hand has the same five-digit gesture",
+      "status": "FAIL",
+      "error": "Cannot read properties of undefined (reading 'triangles')"
+    },
+    {
+      "name": "144fps left: a missed shot articulates, expires and never attaches",
+      "status": "FAIL",
+      "error": "Index/little finger did not extend"
+    },
+    {
+      "name": "144fps right: anatomical third-person shooting, held grip and clean release",
+      "status": "FAIL",
+      "error": "Index/little finger did not extend"
+    },
+    {
+      "name": "144fps right: actual first-person suit hand has the same five-digit gesture",
+      "status": "FAIL",
+      "error": "Cannot read properties of undefined (reading 'triangles')"
+    },
+    {
+      "name": "144fps right: a missed shot articulates, expires and never attaches",
+      "status": "FAIL",
+      "error": "Index/little finger did not extend"
+    },
+    {
+      "name": "24fps: both hands can shoot and release independently",
+      "status": "FAIL",
+      "error": "Index/little finger did not extend"
+    },
+    {
+      "name": "24fps: web fingers cannot overwrite combat or wall contact fingers",
+      "status": "PASS"
+    },
+    {
+      "name": "24fps: remote hit/miss/dual hand gestures and stale cleanup use independent skin",
+      "status": "FAIL",
+      "error": "Index/little finger did not extend"
+    },
+    {
+      "name": "30fps: both hands can shoot and release independently",
+      "status": "FAIL",
+      "error": "Index/little finger did not extend"
+    },
+    {
+      "name": "30fps: web fingers cannot overwrite combat or wall contact fingers",
+      "status": "PASS"
+    },
+    {
+      "name": "30fps: remote hit/miss/dual hand gestures and stale cleanup use independent skin",
+      "status": "FAIL",
+      "error": "Index/little finger did not extend"
+    },
+    {
+      "name": "60fps: both hands can shoot and release independently",
+      "status": "FAIL",
+      "error": "Index/little finger did not extend"
+    },
+    {
+      "name": "60fps: web fingers cannot overwrite combat or wall contact fingers",
+      "status": "PASS"
+    },
+    {
+      "name": "60fps: remote hit/miss/dual hand gestures and stale cleanup use independent skin",
+      "status": "FAIL",
+      "error": "Index/little finger did not extend"
+    },
+    {
+      "name": "144fps: both hands can shoot and release independently",
+      "status": "FAIL",
+      "error": "Index/little finger did not extend"
+    },
+    {
+      "name": "144fps: web fingers cannot overwrite combat or wall contact fingers",
+      "status": "PASS"
+    },
+    {
+      "name": "144fps: remote hit/miss/dual hand gestures and stale cleanup use independent skin",
+      "status": "FAIL",
+      "error": "Index/little finger did not extend"
+    },
+    {
+      "name": "Remote shot capture validates handedness, expiry, target and payload size",
+      "status": "FAIL",
+      "error": "Cannot read properties of undefined (reading 'hand')"
+    },
+    {
+      "name": "First-person creation/replacement/disposal preserves shared suit resources",
+      "status": "FAIL",
+      "error": "The expression evaluated to a falsy value:\n\n  assert(!oldRig.parent)\n"
+    },
+    {
+      "name": "A new remote character never inherits the local firing fingers",
+      "status": "PASS"
+    },
+    {
+      "name": "Close walls cannot hide the hands, while folded fingers retain depth ordering",
+      "status": "FAIL",
+      "error": "Expected values to be strictly equal:\n\n0 !== 100\n"
+    },
+    {
+      "name": "Missing downloaded skin keeps an articulated fallback that can shoot",
+      "status": "FAIL",
+      "error": "Cannot read properties of undefined (reading 'push')"
+    }
+  ]
+}

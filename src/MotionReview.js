@@ -3,6 +3,9 @@ import { Character } from './Character.js';
 import { SwingPhysics } from './SwingPhysics.js';
 import { City } from './City.js';
 import { StreamedCollision } from './StreamedCollision.js';
+import { AIR_TRICKS } from './AirTricks.js';
+import { fetchAsset } from './AssetLoader.js';
+import { boneId } from './MotionRetarget.js';
 
 export function updateDualWebReview(physics,input,camera,old,elapsed) {
   for(const [time,x,y,button]of [[0.05,-4,7,0],[0.3,4,7,2],[2.4,-4,9,0]]){
@@ -25,11 +28,13 @@ export function startMotionReview() {
   panel.style.cssText = 'position:fixed;top:16px;left:16px;background:#ffffffed;padding:16px;border-radius:12px;max-width:340px;z-index:2';
   panel.innerHTML = `<h2 style="margin:0 0 12px">스파이더맨 모션 검증</h2>
     <label>모션 <select id="motion"><option>로딩 중</option></select></label>
-    <p><button id="pause">재생 / 정지</button> <button id="front">정면 / 측면</button></p>
+    <p><button id="pause">재생 / 정지</button> <button id="front">정면 / 측면</button>
+    <label>시점 <select id="review-view"><option value="third">3인칭</option><option value="first">1인칭</option></select></label>
+    <label>확대 <select id="review-framing"><option value="body">전신</option><option value="feet">발·발목</option></select></label></p>
     <label>구간 <input id="frame" type="range" min="0" max="100" value="0"></label>
     <p><input id="frame-percent" aria-label="검사할 모션 구간 퍼센트" type="number" min="0" max="100" value="45" style="width:55px">% <button id="pose-sample">자세 검사</button></p>
     <p><label>동작 연결 <select id="test-kind">
-      <option value="movement">걷기·조깅·달리기·정지·점프</option>
+      <option value="movement">걷기·달리기·정지·점프</option>
       <option value="walkStop">걷기 → 정지 → 대기</option>
       <option value="turn">좌우 제자리 회전</option>
       <option value="landing">낙하 → 착지 회복</option>
@@ -38,12 +43,17 @@ export function startMotionReview() {
       <option value="swing">스윙 → 해제 → 낙하</option>
       <option value="dualWeb">왼손 발사 → 오른손 발사 → 양손 매달리기 → 교체</option>
       <option value="wall">벽 달리기 → 옥상 진입</option>
+      <option value="wallCruise">긴 벽 기어가기</option>
+      <option value="wallStrafe">벽 대각선 이동</option>
+      <option value="wallSprint">빠른 벽 기어가기</option>
+      <option value="parapet">벽 오르기 → 난간 넘기 → 옥상 착지</option>
       <option value="slope">경사면 걷기 → 정지</option>
       <option value="slopeDown">경사면 내려가기 → 정지</option>
       <option value="stairs">계단 걷기 → 정지</option>
+      ${Object.entries(AIR_TRICKS).map(([key,trick])=>`<option value="trick-${key}">공중 묘기 · ${trick.label}</option>`).join('')}
     </select></label> <button id="scenario">검증 실행</button></p>
     <p><label>전환 순간 자동 정지 <select id="break-on"><option value="">없음</option>
-      ${['walk','jog','regularRun','run','stop','runStop','turnLeft','turnRight','jump','drop','fall','land','roll','swing','wall','zip'].map(key=>`<option>${key}</option>`).join('')}
+      ${['walk','regularRun','run','stop','runStop','turnLeft','turnRight','jump','drop','fall','land','roll','swing','wall','zip'].map(key=>`<option>${key}</option>`).join('')}
     </select></label></p>
     <p><label>시나리오 시간 <input id="sample-time" type="number" min="0" max="15" step="0.05" value="2.5" style="width:65px">초</label>
     <button id="sample">해당 장면 보기</button></p>
@@ -61,17 +71,27 @@ export function startMotionReview() {
   const camera = new THREE.PerspectiveCamera(42, innerWidth / innerHeight, 0.01, 200);
   const status = panel.querySelector('output'), select = panel.querySelector('select'), slider = panel.querySelector('input');
   let playing = true, side = false, mode = 'clip', elapsed = 0, history = [], scenario = 'movement', actionHistory = [], breakOn = '';
-  const character = new Character(scene, (n, s) => { status.textContent = `${n}% ${s}`; }, () => {
-    select.replaceChildren(...Object.keys(character.actions).filter(k => k !== 'default').map(k => {
+  const character = new Character(scene, (n, s) => { status.textContent = `${n}% ${s}`; }, async () => {
+    // These retained candidates are review-only and never selected by gameplay.
+    for(const key of ['candidateFront','candidateStylish'])try{
+      const data=JSON.parse(new TextDecoder().decode(await fetchAsset(`/motions/${key}.json`)));
+      const clip=THREE.AnimationClip.parse(data);clip.userData=data.userData;
+      const action=character.mixer.clipAction(clip);action.setLoop(THREE.LoopOnce,1);action.clampWhenFinished=true;character.actions[key]=action;
+    }catch(error){console.warn('Could not load preserved review motion',key,error);}
+    select.replaceChildren(...Object.keys(character.actions).map(k => {
       const o = document.createElement('option'); o.value = k; o.textContent = k; return o;
     }));
     select.value = 'idle'; choose();
   });
+  scene.add(camera);character.setFirstPersonCamera(camera);
   const silent = new Proxy({}, { get: () => () => {} });
   const city = { buildingMeshes: [], colliders: [], checkCollision: City.prototype.checkCollision,raycast:City.prototype.raycast,
     getRooftopSpawn:()=>new THREE.Vector3(0,.1,0) };
   const wallFixture = new THREE.Mesh(new THREE.BoxGeometry(6,10,6),new THREE.MeshStandardMaterial({color:0x8595aa}));
   wallFixture.position.set(0,5,-3); wallFixture.visible=false;wallFixture.receiveShadow=true; scene.add(wallFixture);
+  const wallGrid=new THREE.GridHelper(60,60,0x52677d,0xaab9c8);wallGrid.rotation.x=Math.PI/2;wallGrid.position.set(0,30,.014);wallGrid.visible=false;scene.add(wallGrid);
+  const parapetFixture=new THREE.Mesh(new THREE.BoxGeometry(6,1.2,.8),new THREE.MeshStandardMaterial({color:0xc2ccd4}));
+  parapetFixture.position.set(0,10.6,-.4);parapetFixture.visible=false;parapetFixture.receiveShadow=true;scene.add(parapetFixture);
   const zipFixture = new THREE.Mesh(new THREE.BoxGeometry(8,8,2),new THREE.MeshStandardMaterial({color:0x8595aa}));
   zipFixture.position.set(0,5,18);zipFixture.visible=false;scene.add(zipFixture);
   const dualFixtures=[-4,4].map(x=>{
@@ -96,8 +116,9 @@ export function startMotionReview() {
   physics.position.set(0,0.1,0); physics.state = 'IDLE';
   const input = {forward:false,backward:false,left:false,right:false,sprint:false,jump:false,webHold:false,wallRun:false,strafe:0};
   function choose() {
-    mode = 'clip'; character.mixer.stopAllAction(); character.activeAction = null;
-    wallFixture.visible=false;zipFixture.visible=false; character.updateWeb(false,null);
+    mode = 'clip'; panel.querySelector('#review-view').value='third';character.setFirstPersonMode(false);character.mixer.stopAllAction(); character.activeAction = null;
+    wallFixture.visible=false;parapetFixture.visible=false;zipFixture.visible=false; character.updateWeb(false,null);
+    for(const mesh of terrainFixtures)mesh.visible=false;wallGrid.visible=false;
     for(const mesh of dualFixtures)mesh.visible=false;
     character.group.position.set(0,0,0); character.model.rotation.set(0,0,0);
     character.model.position.y = 0;
@@ -122,6 +143,9 @@ export function startMotionReview() {
     history = [];
     actionHistory = []; breakOn = panel.querySelector('#break-on').value;
     scenario = panel.querySelector('#test-kind').value;
+    character.setFirstPersonMode(panel.querySelector('#review-view').value==='first');
+    const longWall=['wallCruise','wallStrafe','wallSprint'].includes(scenario);
+    wallFixture.scale.set(longWall?5:1,longWall?6:1,1);wallFixture.position.y=longWall?30:5;wallGrid.visible=longWall;
     physics.resetPosition();
     character.mixer.stopAllAction(); character.activeAction = null;
     character.visualYaw = 0; character.targetFacingAngle = 0;
@@ -133,6 +157,7 @@ export function startMotionReview() {
     for (const key of Object.keys(input)) input[key] = key === 'strafe' ? 0 : false;
     physics.position.set(0,0.1,0); physics.velocity.set(0,0,0); physics.state = 'IDLE';
     if (scenario === 'landing' || scenario === 'roll') { physics.position.y = scenario === 'roll' ? 35 : 8; physics.state = 'FALLING'; if(scenario==='roll')physics.velocity.z=12; }
+    if(scenario.startsWith('trick-')){physics.position.y=60;physics.state='FALLING';}
     if (scenario === 'swing') {
       physics.position.y=10; physics.velocity.set(0,0,12); physics.state='SWINGING';
       physics.isSwinging=true; physics.anchorPoint=new THREE.Vector3(0,25,8);
@@ -141,11 +166,12 @@ export function startMotionReview() {
     if(scenario==='dualWeb') {
       physics.position.set(0,3,0);physics.state='FALLING';physics.launchAssistAvailable=false;
     }
-    if (scenario === 'wall') {
-      physics.state='WALL_RUNNING'; physics.position.y=3;
+    if (['wall','parapet','wallCruise','wallStrafe','wallSprint'].includes(scenario)) {
+      physics.state='WALL_RUNNING'; physics.position.y=scenario==='parapet'?7:3;
       physics.wallNormal.set(0,0,1); character.wallNormal=physics.wallNormal;
-      physics.wallBuilding={maxY:10}; physics.wallRunTimer=0;
-      city.colliders=[{minX:-3,maxX:3,minZ:-6,maxZ:0,minY:0,maxY:10}];
+      physics.wallBuilding={maxY:longWall?60:10}; physics.wallRunTimer=0;
+      city.colliders=[{minX:longWall?-15:-3,maxX:longWall?15:3,minZ:-6,maxZ:0,minY:0,maxY:longWall?60:10}];
+      if(scenario==='parapet')city.colliders.push({minX:-3,maxX:3,minZ:-.8,maxZ:0,minY:10,maxY:11.2});
       physics.position.z=0.7;
     } else if(scenario==='zip') {
       city.colliders=[{minX:-4,maxX:4,minZ:17,maxZ:19,minY:1,maxY:9}];
@@ -162,7 +188,8 @@ export function startMotionReview() {
       physics.facingAngle=scenario==='slopeDown'?Math.PI:0;character.targetFacingAngle=physics.facingAngle;
     }
     physics.previousFixedPosition.copy(physics.position);physics.renderPosition.copy(physics.position);
-    wallFixture.visible=scenario === 'wall';
+    wallFixture.visible=['wall','parapet','wallCruise','wallStrafe','wallSprint'].includes(scenario);
+    parapetFixture.visible=scenario==='parapet';
     zipFixture.visible=scenario === 'zip';
     city.buildingMeshes=scenario === 'zip' ? [zipFixture] : [];
     for(const mesh of dualFixtures)mesh.visible=scenario==='dualWeb';
@@ -171,13 +198,15 @@ export function startMotionReview() {
     character.lastState = null;
     character.idleFootAnchors=null;character.idlePlantDelay=0;character.movingPlants=null;character.plantRoot=null;
     character.movingReleases=null;character.plantLastFeet=null;character.plantVelocityRoot=null;
+    character.groundFootRotations=null;
     character.wallPoseRoot=null;character.wallContacts=null;character.wallPhase=0;character.wallPoseWeight=0;character.wallSoleRotations=null;
-    character.wallDistance=0.7;
+    character.wallDistance=0.7;character.wallViewWeight=0;character.wallPhase=0;
     character.zipPoseWeight=0;character.persistentWebAnchor=null;character.webShotAnchor=null;character.webShotTimer=0;
     character.webArmWeight=0;character.webPoseAnchor=null;character.wallPoseNormal=null;
     character.terrainPelvis=0;
   }
   panel.querySelector('#scenario').onclick=resetScenario;
+  panel.querySelector('#review-view').onchange=()=>{if(mode==='clip')panel.querySelector('#test-kind').value='wallCruise';panel.querySelector('#sample').click();};
   panel.querySelector('#sample').onclick=()=>{
     if(!character.isLoaded)return;
     resetScenario();breakOn='';
@@ -187,16 +216,18 @@ export function startMotionReview() {
   };
   function advanceScenario(dt) {
     const old=elapsed;elapsed+=dt;
-    input.forward=scenario==='movement' && elapsed>=1 && elapsed<9 || scenario==='walkStop' && elapsed>=1 && elapsed<3 || scenario==='wall' && elapsed<2.2 || ['slope','slopeDown','stairs'].includes(scenario) && elapsed>=0.5 && elapsed<3.5;
-    input.wallRun=scenario==='wall' && elapsed<2.2;
-    input.jog=scenario==='movement' && elapsed>=3 && elapsed<5;
+    input.forward=scenario==='movement' && elapsed>=1 && elapsed<9 || scenario==='walkStop' && elapsed>=1 && elapsed<3 || ['wall','parapet','wallCruise','wallStrafe','wallSprint'].includes(scenario) && elapsed<10 || ['slope','slopeDown','stairs'].includes(scenario) && elapsed>=0.5 && elapsed<3.5;
+    input.wallRun=['wall','parapet','wallCruise','wallStrafe','wallSprint'].includes(scenario) && elapsed<10;
+    input.run=scenario==='movement' && elapsed>=3 && elapsed<7;
     input.run=scenario==='movement' && elapsed>=5 && elapsed<7;
-    input.sprint=scenario==='movement' && elapsed>=7 && elapsed<9;
+    input.sprint=scenario==='movement' && elapsed>=7 && elapsed<9 || scenario==='wallSprint';
+    input.strafe=scenario==='wallStrafe'?(elapsed<2?1:-1):0;
     input.jump=scenario==='movement' && old<11 && elapsed>=11;
     const controllerCamera=new THREE.PerspectiveCamera();controllerCamera.rotation.y=Math.PI;
     controllerCamera.position.copy(physics.position).add(new THREE.Vector3(0,1.3,0));
-    if(scenario==='wall')controllerCamera.rotation.y=0;
+    if(['wall','parapet','wallCruise','wallStrafe','wallSprint'].includes(scenario))controllerCamera.rotation.y=0;
     if(scenario==='slopeDown')controllerCamera.rotation.y=0;
+    if(scenario.startsWith('trick-') && old<.2 && elapsed>=.2)physics.performAirTrick(scenario.slice(6));
     if(scenario==='zip' && old<1 && elapsed>=1) {
       controllerCamera.lookAt(0,8,18);controllerCamera.updateMatrixWorld(true);
       if(physics.performWebPull(controllerCamera))input.webHold=true;
@@ -227,13 +258,30 @@ export function startMotionReview() {
       status.style.whiteSpace='pre-line';
     }
     const center = character.group.position.clone().add(new THREE.Vector3(0,1.1,0));
+    if(mode==='clip'){
+      const pelvis=Object.values(character.bones).find(bone=>boneId(bone.name)==='hips');
+      if(pelvis)pelvis.getWorldPosition(center);
+    }
     sun.position.copy(center).add(new THREE.Vector3(3,5,4));sun.target.position.copy(center);
     camera.position.copy(center).add(new THREE.Vector3(side ? 5.5 : 2.5,0.8,side ? 0 : 5.3));
     if(mode==='scenario' && scenario==='zip')camera.position.copy(center).add(new THREE.Vector3(8,2,0));
     if(mode==='scenario' && scenario==='dualWeb')camera.position.copy(center).add(new THREE.Vector3(side?9:2,3,side?1:11));
-    // Keep the character in the unobscured part of the inspection viewport.
-    camera.setViewOffset(innerWidth,innerHeight,-panel.offsetWidth/2,0,innerWidth,innerHeight);
-    camera.lookAt(center); renderer.render(scene,camera);
+    if(panel.querySelector('#review-framing').value==='feet') {
+      const feet=['left','right'].map(side=>Object.values(character.bones).find(b=>boneId(b.name)===side+'foot'));
+      if(feet.every(Boolean))center.copy(feet[0].getWorldPosition(new THREE.Vector3())).add(feet[1].getWorldPosition(new THREE.Vector3())).multiplyScalar(.5).add(new THREE.Vector3(0,.2,0));
+      camera.position.copy(center).add(new THREE.Vector3(side?2:1.1,.6,side?.2:2));
+    }
+    const first=mode==='scenario' && panel.querySelector('#review-view').value==='first';
+    character.setFirstPersonMode(first);camera.fov=first?64:42;camera.updateProjectionMatrix();
+    if(first){
+      camera.clearViewOffset();camera.position.copy(character.group.position).add(new THREE.Vector3(0,1.58,0));
+      const direction=character.wallNormal && ['WALL_RUNNING','MANTLING'].includes(physics.state)?character.wallNormal.clone().negate():new THREE.Vector3(0,0,1).applyAxisAngle(new THREE.Vector3(0,1,0),character.visualYaw);
+      camera.lookAt(camera.position.clone().add(direction).add(new THREE.Vector3(0,.12,0)));
+    }else{camera.setViewOffset(innerWidth,innerHeight,-panel.offsetWidth/2,0,innerWidth,innerHeight);camera.lookAt(center);}
+    camera.updateMatrixWorld(true);
+    const visibleAnchor=mode==='scenario'?(character.webShotAnchor || character.persistentWebAnchor || (['SWINGING','WEB_ZIP'].includes(physics.state)?physics.anchorPoint || physics.zipAnchor:null)):null;
+    character.updateWeb(!!visibleAnchor,visibleAnchor);
+    renderer.render(scene,camera);
   });
   window.addEventListener('resize', () => { camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix(); renderer.setSize(innerWidth,innerHeight); });
 }

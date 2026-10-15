@@ -1,5 +1,7 @@
 # Spider-Man motion review — 2026-10-10
 
+Latest full inventory and regression review: [2026-10-15 all motions](docs/qa/all-motions-2026-10-15/REPORT.md), including all 39 registered clips, the embedded fallback, two preserved candidates, six procedural tricks, and first-person combat.
+
 ## Implemented
 
 - Retarget all 12 FBX motions to the actual GLB skeleton (65 matched joints).

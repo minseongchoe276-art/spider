@@ -1,0 +1,84 @@
+PASS Repeated Escape closes help only once before opening the pause menu
+PASS Pad resume defers sticks until the next frame and does not use paused look time
+Session flow review: 2 passed, 10 failed.
+FAIL Help cannot remain hidden beneath the lobby or pause menu: Lobby shortcut opened an obscured help dialog
+FAIL Background pause closes solo help so resume really restores gameplay: Resume left the solo simulation suspended
+FAIL Solo and online session entry retire a help dialog from the previous activity: The expression evaluated to a falsy value:
+
+  assert(!game.gameplaySuspended)
+
+FAIL Opening help unlocks the cursor without pausing; closing restores game focus: Help close button is inaccessible while cursor is locked
++ actual - expected
+
++ EventTarget {
++   [Symbol(events.maxEventTargetListeners)]: 10,
++   [Symbol(events.maxEventTargetListenersWarned)]: false,
++   [Symbol(kEvents)]: SafeMap(3) [Map] {
++     'click' => <ref *3> {
++       next: Listener {
++         callback: [Function (anonymous)],
++         flags: 0,
++         listener: [Function (anonymous)],
++         next: undefined,
++         previous: [Circular *3]
++       },
++       resistStopPropagation: false,
++       size: 1
++     },
++     'contextmenu' => <ref *1> {
++       next: Listener {
++         callback: [Function (anonymous)],
++         flags: 0,
++         listener: [Function (anonymous)],
++         next: undefined,
++         previous: [Circular *1]
++       },
++       resistStopPropagation: false,
++       size: 1
++     },
++     'wheel' => <ref *2> {
++       next: Listener {
++         callback: [Function (anonymous)],
++         flags: 0,
++         listener: [Function (anonymous)],
++         next: undefined,
++         previous: [Circular *2]
++       },
++       resistStopPropagation: false,
++       size: 1
++     }
++   },
++   [Symbol(kHandlers)]: SafeMap(0) [Map] {},
++   classList: {
++     add: [Function: add],
++     contains: [Function: contains],
++     remove: [Function: remove],
++     toggle: [Function: toggle]
++   },
++   disabled: false,
++   focus: [Function: focus],
++   getBoundingClientRect: [Function: getBoundingClientRect],
++   querySelector: [Function: querySelector],
++   style: {},
++   textContent: ''
++ }
+- null
+
+FAIL Starting a race retires practice enemies, projectiles and the current strike: Practice AI still runs during the race
+FAIL A menu race start resumes play with fresh time and focus; menu stop stays paused: The expression evaluated to a falsy value:
+
+  assert(game.timeTrial.isActive)
+
+FAIL Unavailable race terrain preserves position, pause and practice: The input did not match the regular expression /지형/. Input:
+
+''
+
+FAIL A failed keyboard race start also preserves the current solo activity: Expected values to be strictly equal:
+
+1 !== 0
+
+FAIL Menu race controls respect online and lost graphics restrictions: Solo action is shown in an online menu
+FAIL Pad Start does not reintroduce stick movement or camera look in the pause frame: The expression evaluated to a falsy value:
+
+  assert(!game.input.forward && !game.input.right)
+

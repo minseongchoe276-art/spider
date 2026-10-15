@@ -1,0 +1,227 @@
+[
+  {
+    "kind": "movement",
+    "time": 1.7,
+    "status": "시나리오 1.70초\nIDLE → RUNNING\n모션: idle → walk\nwalk · 0.80초 / 0.97초 · 속도 2.79 m/s"
+  },
+  {
+    "kind": "movement",
+    "time": 3.8,
+    "status": "시나리오 3.80초\nIDLE → RUNNING\n모션: idle → walk → jog\njog · 0.37초 / 2.57초 · 속도 3.40 m/s"
+  },
+  {
+    "kind": "movement",
+    "time": 5.8,
+    "status": "시나리오 5.80초\nIDLE → RUNNING\n모션: idle → walk → jog → regularRun\nregularRun · 0.60초 / 0.70초 · 속도 4.80 m/s"
+  },
+  {
+    "kind": "movement",
+    "time": 7.5,
+    "status": "시나리오 7.50초\nIDLE → RUNNING → SPRINTING\n모션: idle → walk → jog → regularRun → run\nrun · 0.21초 / 0.53초 · 속도 6.48 m/s"
+  },
+  {
+    "kind": "movement",
+    "time": 9.3,
+    "status": "시나리오 9.30초\nIDLE → RUNNING → SPRINTING → IDLE\n모션: idle → walk → jog → regularRun → run → runStop\nrunStop · 0.31초 / 0.90초 · 속도 0.55 m/s"
+  },
+  {
+    "kind": "movement",
+    "time": 10.3,
+    "status": "시나리오 10.30초\nIDLE → RUNNING → SPRINTING → IDLE\n모션: idle → walk → jog → regularRun → run → runStop → idle\nidle · 0.46초 / 4.00초 · 속도 0.00 m/s"
+  },
+  {
+    "kind": "movement",
+    "time": 11.3,
+    "status": "시나리오 11.30초\nIDLE → RUNNING → SPRINTING → IDLE → JUMPING\n모션: idle → walk → jog → regularRun → run → runStop → idle → jump\njump · 0.31초 / 0.60초 · 속도 17.60 m/s"
+  },
+  {
+    "kind": "walkStop",
+    "time": 3.1,
+    "status": "시나리오 3.10초\nIDLE → RUNNING → IDLE\n모션: idle → walk → stop\nstop · 0.10초 / 0.23초 · 속도 1.26 m/s"
+  },
+  {
+    "kind": "walkStop",
+    "time": 3.8,
+    "status": "시나리오 3.80초\nIDLE → RUNNING → IDLE\n모션: idle → walk → stop → idle\nidle · 0.62초 / 4.00초 · 속도 0.00 m/s"
+  },
+  {
+    "kind": "turn",
+    "time": 1.4,
+    "status": "시나리오 1.40초\nIDLE → TURNING\n모션: idle → turnLeft\nturnLeft · 0.40초 / 0.93초 · 속도 0.00 m/s"
+  },
+  {
+    "kind": "turn",
+    "time": 3.4,
+    "status": "시나리오 3.40초\nIDLE → TURNING → IDLE → TURNING\n모션: idle → turnLeft → idle → turnRight\nturnRight · 0.40초 / 0.93초 · 속도 0.00 m/s"
+  },
+  {
+    "kind": "landing",
+    "time": 0.4,
+    "status": "시나리오 0.40초\nFALLING\n모션: drop\ndrop · 0.40초 / 0.53초 · 속도 11.20 m/s"
+  },
+  {
+    "kind": "landing",
+    "time": 0.9,
+    "status": "시나리오 0.90초\nFALLING → LANDING\n모션: drop → fall → drop → slamLand\nslamLand · 0.16초 / 0.88초 · 속도 0.00 m/s"
+  },
+  {
+    "kind": "roll",
+    "time": 1.2,
+    "status": "시나리오 1.20초\nFALLING\n모션: drop → fall\nfall · 0.77초 / 4.50초 · 속도 34.76 m/s"
+  },
+  {
+    "kind": "roll",
+    "time": 1.7,
+    "status": "시나리오 1.70초\nFALLING → ROLLING\n모션: drop → fall → drop → roll\nroll · 0.13초 / 1.54초 · 속도 5.08 m/s"
+  },
+  {
+    "kind": "swing",
+    "time": 1,
+    "status": "시나리오 1.00초\nSWINGING\n모션: swing\nswing · 1.00초 / 1.95초 · 속도 13.05 m/s"
+  },
+  {
+    "kind": "swing",
+    "time": 2.3,
+    "status": "시나리오 2.30초\nSWINGING → FALLING\n모션: swing → drop\ndrop · 0.30초 / 0.53초 · 속도 9.93 m/s"
+  },
+  {
+    "kind": "zip",
+    "time": 1.3,
+    "status": "시나리오 1.30초\nIDLE → WEB_ZIP\n모션: idle → zip\nzip · 0.30초 / 1.00초 · 속도 21.40 m/s"
+  },
+  {
+    "kind": "zip",
+    "time": 2.2,
+    "status": "시나리오 2.20초\nIDLE → WEB_ZIP → SWINGING\n모션: idle → zip → swing\nswing · 0.26초 / 1.95초 · 속도 3.70 m/s"
+  },
+  {
+    "kind": "dualWeb",
+    "time": 0.8,
+    "status": "시나리오 0.80초\nFALLING → SWINGING\n모션: drop → swing\nswing · 0.75초 / 1.95초 · 속도 7.33 m/s\n연결 줄 2개 · 왼손 부착 / 오른손 부착"
+  },
+  {
+    "kind": "dualWeb",
+    "time": 2.6,
+    "status": "시나리오 2.60초\nFALLING → SWINGING\n모션: drop → swing\nswing · 0.60초 / 1.95초 · 속도 6.66 m/s\n연결 줄 2개 · 오른손 부착 / 왼손 부착"
+  },
+  {
+    "kind": "wall",
+    "time": 0.5,
+    "status": "시나리오 0.50초\nWALL_RUNNING\n모션: wall\nwall · 1.00초 / 2.00초 · 속도 6.50 m/s"
+  },
+  {
+    "kind": "wall",
+    "time": 1.2,
+    "status": "시나리오 1.20초\nWALL_RUNNING → MANTLING\n모션: wall\nwall · 1.70초 / 2.00초 · 속도 4.00 m/s"
+  },
+  {
+    "kind": "parapet",
+    "time": 0.8,
+    "status": "시나리오 0.80초\nWALL_RUNNING\n모션: wall\nwall · 1.27초 / 2.00초 · 속도 2.40 m/s"
+  },
+  {
+    "kind": "parapet",
+    "time": 1.2,
+    "status": "시나리오 1.20초\nWALL_RUNNING → MANTLING\n모션: wall\nwall · 1.47초 / 2.00초 · 속도 2.89 m/s"
+  },
+  {
+    "kind": "parapet",
+    "time": 1.6,
+    "status": "시나리오 1.60초\nWALL_RUNNING → MANTLING\n모션: wall\nwall · 1.47초 / 2.00초 · 속도 8.85 m/s"
+  },
+  {
+    "kind": "slope",
+    "time": 1.5,
+    "status": "시나리오 1.50초\nIDLE → RUNNING\n모션: idle → walk\nwalk · 0.25초 / 0.97초 · 속도 2.92 m/s"
+  },
+  {
+    "kind": "slope",
+    "time": 4.2,
+    "status": "시나리오 4.20초\nIDLE → RUNNING → IDLE\n모션: idle → walk → stop → idle\nidle · 0.52초 / 4.00초 · 속도 0.00 m/s"
+  },
+  {
+    "kind": "slopeDown",
+    "time": 1.5,
+    "status": "시나리오 1.50초\nIDLE → RUNNING\n모션: idle → walk\nwalk · 0.25초 / 0.97초 · 속도 2.80 m/s"
+  },
+  {
+    "kind": "slopeDown",
+    "time": 4.2,
+    "status": "시나리오 4.20초\nIDLE → RUNNING → IDLE\n모션: idle → walk → stop → idle\nidle · 0.52초 / 4.00초 · 속도 0.00 m/s"
+  },
+  {
+    "kind": "stairs",
+    "time": 1.5,
+    "status": "시나리오 1.50초\nIDLE → RUNNING\n모션: idle → walk\nwalk · 0.25초 / 0.97초 · 속도 2.80 m/s"
+  },
+  {
+    "kind": "stairs",
+    "time": 4.2,
+    "status": "시나리오 4.20초\nIDLE → RUNNING → IDLE\n모션: idle → walk → stop → idle\nidle · 0.52초 / 4.00초 · 속도 0.00 m/s"
+  },
+  {
+    "kind": "trick-front",
+    "time": 0.61,
+    "status": "시나리오 0.61초\nFALLING\n모션: drop → airTrick\nairTrick · 0.47초 / 0.93초 · 속도 17.03 m/s"
+  },
+  {
+    "kind": "trick-front",
+    "time": 1.1,
+    "status": "시나리오 1.10초\nFALLING\n모션: drop → airTrick → fall\nfall · 0.08초 / 4.50초 · 속도 30.80 m/s"
+  },
+  {
+    "kind": "trick-back",
+    "time": 0.65,
+    "status": "시나리오 0.65초\nFALLING\n모션: drop → fallIdle\nfallIdle · 0.45초 / 4.50초 · 속도 18.20 m/s"
+  },
+  {
+    "kind": "trick-back",
+    "time": 1.18,
+    "status": "시나리오 1.18초\nFALLING\n모션: drop → fallIdle → fall\nfall · 0.08초 / 4.50초 · 속도 32.90 m/s"
+  },
+  {
+    "kind": "trick-left",
+    "time": 0.59,
+    "status": "시나리오 0.59초\nFALLING\n모션: drop → fallIdle\nfallIdle · 0.39초 / 4.50초 · 속도 16.33 m/s"
+  },
+  {
+    "kind": "trick-left",
+    "time": 1.06,
+    "status": "시나리오 1.06초\nFALLING\n모션: drop → fallIdle → fall\nfall · 0.09초 / 4.50초 · 속도 29.63 m/s"
+  },
+  {
+    "kind": "trick-right",
+    "time": 0.59,
+    "status": "시나리오 0.59초\nFALLING\n모션: drop → fallIdle\nfallIdle · 0.39초 / 4.50초 · 속도 16.33 m/s"
+  },
+  {
+    "kind": "trick-right",
+    "time": 1.06,
+    "status": "시나리오 1.06초\nFALLING\n모션: drop → fallIdle → fall\nfall · 0.09초 / 4.50초 · 속도 29.63 m/s"
+  },
+  {
+    "kind": "trick-spin",
+    "time": 0.56,
+    "status": "시나리오 0.56초\nFALLING\n모션: drop → fallIdle\nfallIdle · 0.36초 / 4.50초 · 속도 15.63 m/s"
+  },
+  {
+    "kind": "trick-spin",
+    "time": 1,
+    "status": "시나리오 1.00초\nFALLING\n모션: drop → fallIdle → fall\nfall · 0.08초 / 4.50초 · 속도 28.00 m/s"
+  },
+  {
+    "kind": "trick-cork",
+    "time": 0.775,
+    "status": "시나리오 0.77초\nFALLING\n모션: drop → fallIdle\nfallIdle · 0.58초 / 4.50초 · 속도 21.70 m/s"
+  },
+  {
+    "kind": "trick-cork",
+    "time": 1.43,
+    "status": "시나리오 1.43초\nFALLING\n모션: drop → fallIdle → fall\nfall · 0.08초 / 4.50초 · 속도 39.90 m/s"
+  },
+  {
+    "kind": "parapet",
+    "time": 2.4,
+    "status": "시나리오 2.40초\nWALL_RUNNING → MANTLING → RUNNING → IDLE\n모션: wall → idle → walk → stop → idle\nidle · 0.02초 / 4.00초 · 속도 0.37 m/s"
+  }
+]

@@ -9,6 +9,11 @@ const COMBAT = new Set(['combatIdle','jab','cross','hook','heavy','guard','dodge
   'dodgeLeft','dodgeRight','dodgeBack','dodgeForward','slam','slamLand','special','hit','hitHead']);
 const vector = v => v && [v.x,v.y,v.z].every(n => Number.isFinite(n) && Math.abs(n)<=10000)
   ? {x:v.x,y:v.y,z:v.z} : null;
+const cleanShot=shot=>{
+  const target=vector(shot?.target);
+  return target && ['left','right'].includes(shot?.hand) && Number.isFinite(shot.remaining) && shot.remaining>0
+    ? {hand:shot.hand,target,remaining:THREE.MathUtils.clamp(shot.remaining,0,.55),miss:shot.miss===true} : null;
+};
 
 export function sanitizePose(pose) {
   if (!pose || !STATES.has(pose.state)) return null;
@@ -17,6 +22,9 @@ export function sanitizePose(pose) {
   const webs = (Array.isArray(pose.webs)?pose.webs:[]).slice(0,2)
     .map(w => ({hand:w?.hand==='right'?'right':'left',anchor:vector(w?.anchor)})).filter(w => w.anchor);
   let combat = null;
+  const webShot=cleanShot(pose.webShot);
+  const webShots=(Array.isArray(pose.webShots)?pose.webShots:[]).slice(0,2).map(cleanShot).filter(Boolean)
+    .filter((shot,i,shots)=>shots.findIndex(other=>other.hand===shot.hand)===i);
   if (COMBAT.has(pose.combat?.key) && [pose.combat.time ?? 0,pose.combat.duration ?? 0].every(Number.isFinite))
     combat = {key:pose.combat.key,id:String(pose.combat.id || '').slice(0,40),
       time:THREE.MathUtils.clamp(pose.combat.time ?? 0,0,10),duration:THREE.MathUtils.clamp(pose.combat.duration ?? 0,0,10)};
@@ -26,7 +34,7 @@ export function sanitizePose(pose) {
     ? {...Object.fromEntries(['normal','edge','start','end'].map(k=>[k,vector(m[k])])),
       elapsed:THREE.MathUtils.clamp(m.elapsed,0,2),duration:THREE.MathUtils.clamp(m.duration,.1,2),
       gap:THREE.MathUtils.clamp(m.gap,0,2),height:m.height} : null;
-  return {state:pose.state,velocity,webs,anchor:vector(pose.anchor),wallNormal:vector(pose.wallNormal),
+  return {state:pose.state,velocity,webs,webShot,webShots,anchor:vector(pose.anchor),wallNormal:vector(pose.wallNormal),
     mantle,wallDistance:Number.isFinite(pose.wallDistance)?THREE.MathUtils.clamp(pose.wallDistance,0,2):.7,
     landingSpeed:Number.isFinite(pose.landingSpeed)?THREE.MathUtils.clamp(pose.landingSpeed,0,100):0,
     airTrick: pose.tricking && Object.hasOwn(AIR_TRICKS, pose.airTrick?.key) && Number.isFinite(pose.airTrick.elapsed)
@@ -35,7 +43,12 @@ export function sanitizePose(pose) {
 }
 
 export function capturePose(physics,character) {
-  return sanitizePose({state:physics.state,velocity:physics.velocity,webs:physics.webs,
+  return sanitizePose({state:physics.animationState || physics.state,velocity:physics.velocity,webs:physics.webs,
+    webShots:Object.entries(character.webLaunchTimers || {}).filter(([,remaining])=>remaining>0).map(([hand,remaining])=>({hand,remaining,
+      target:character.webAttachments?.find(web=>web.hand===hand)?.anchor || (hand===character.currentHand?character.webShotAnchor:null),
+      miss:hand===character.currentHand && character.webShotIsMiss})),
+    webShot:character.webShotTimer>0 && character.webShotAnchor ? {hand:character.currentHand,target:character.webShotAnchor,
+      remaining:character.webShotTimer,miss:character.webShotIsMiss} : null,
     anchor:physics.anchorPoint || physics.zipAnchor,wallNormal:physics.wallNormal,
     mantle:physics.mantle,wallDistance:character.wallDistance,landingSpeed:character.landingSpeed,
     pendingTurn:character.pendingTurn,combat:character.combatAction,tricking:character.isTricking,airTrick:character.airTrick});
@@ -88,6 +101,14 @@ export class RemoteMotion {
       v.copy(this.mesh.position).sub(this.previous).divideScalar(Math.max(delta,1e-5));
     c.targetFacingAngle=this.player.facing || 0;
     c.webAttachments=fresh ? this.pose.webs.map(w=>({hand:w.hand,anchor:new THREE.Vector3().copy(w.anchor)})) : [];
+    const shot=fresh?this.pose.webShot:null,remaining=shot?Math.max(0,shot.remaining-(now-this.poseAt)/1000):0;
+    c.webLaunchTimers={};
+    for(const launch of fresh?this.pose.webShots:[]){const left=launch.remaining-(now-this.poseAt)/1000;
+      if(left>0)c.webLaunchTimers[launch.hand]=left+delta;
+    }
+    c.webShotTimer=remaining>0?remaining+delta:0;c.webShotAnchor=remaining>0?new THREE.Vector3().copy(shot.target):null;
+    c.webShotIsMiss=remaining>0 && shot.miss;
+    if(remaining>0)c.currentHand=shot.hand;
     const anchor=fresh && this.pose.anchor ? new THREE.Vector3().copy(this.pose.anchor) : null;
     c.wallNormal=fresh && this.pose.wallNormal ? new THREE.Vector3().copy(this.pose.wallNormal).normalize() : null;
     c.wallDistance=fresh?this.pose.wallDistance:.7;

@@ -55,7 +55,12 @@ export class CombatPractice {
       const blocked=length>0&&g.city.raycast?.(previous,movement.clone().normalize(),length);
       const closest=previous.clone().addScaledVector(movement,length?THREE.MathUtils.clamp(g.physics.position.clone().add(new THREE.Vector3(0,1,0)).sub(previous).dot(movement)/(length*length),0,1):0);
       const hit=closest.distanceTo(g.physics.position.clone().add(new THREE.Vector3(0,1,0)))<.6;
-      if(!blocked&&hit)g.combat.receiveDamage(10,shot.enemy);
+      if(!blocked&&hit){
+        g.combat.receiveDamage(10,shot.enemy);
+        // Defeat respawns the player and clears enemies. Retire every shot
+        // before another projectile can damage the new life in this frame.
+        if(!g.combat.enemies.length){this.stop();return;}
+      }
       if(blocked||hit||shot.life<=0){g.scene.remove(shot.mesh);shot.mesh.geometry.dispose();shot.mesh.material.dispose();this.projectiles.splice(i,1);}
     }
     if(g.combat.enemies.length&&g.combat.enemies.every(e=>e.health<=0)){g.showNotice('전투 연습 완료 · 메뉴에서 다시 시작할 수 있습니다.');this.stop();}

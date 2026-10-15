@@ -1,0 +1,482 @@
+--- a/src/City.js
++++ b/src/City.js
+@@ -32,9 +32,9 @@
+ 
+   initTextures() {
+     // Generate procedural window grid and road textures on canvas
+-    this.windowGlassTex = this.createWindowTexture('#0b1d3a', '#1e3a66', '#ffea78', 0.25);
+-    this.windowBrickTex = this.createWindowTexture('#542c23', '#2a140f', '#ffe494', 0.35);
+-    this.windowDarkTex = this.createWindowTexture('#12151c', '#1c2333', '#00e5ff', 0.15);
++    this.windowGlassTex = this.createWindowTexture('#6c97b3', '#8ab5cf', '#fff0c2', 0.25);
++    this.windowBrickTex = this.createWindowTexture('#c1947e', '#d3ad97', '#ffe9ce', 0.35);
++    this.windowDarkTex = this.createWindowTexture('#6b8197', '#91a5b7', '#a8edff', 0.15);
+     this.roadTex = this.createRoadTexture();
+   }
+ 
+@@ -71,6 +71,7 @@
+     }
+ 
+     const tex = new THREE.CanvasTexture(canvas);
++    tex.colorSpace = THREE.SRGBColorSpace;
+     tex.wrapS = THREE.RepeatWrapping;
+     tex.wrapT = THREE.RepeatWrapping;
+     return tex;
+@@ -82,13 +83,13 @@
+     canvas.height = 512;
+     const ctx = canvas.getContext('2d');
+ 
+-    // Dark asphalt
+-    ctx.fillStyle = '#1c1f24';
++    // Daylight asphalt keeps street edges readable in building shadows.
++    ctx.fillStyle = '#707982';
+     ctx.fillRect(0, 0, 512, 512);
+ 
+     // Subtle asphalt noise
+     for (let i = 0; i < 4000; i++) {
+-      ctx.fillStyle = this.random() > 0.5 ? '#23282f' : '#15171a';
++      ctx.fillStyle = this.random() > 0.5 ? '#87919b' : '#616a73';
+       ctx.fillRect(this.random() * 512, this.random() * 512, 2, 2);
+     }
+ 
+@@ -111,6 +112,7 @@
+     }
+ 
+     const tex = new THREE.CanvasTexture(canvas);
++    tex.colorSpace = THREE.SRGBColorSpace;
+     tex.wrapS = THREE.RepeatWrapping;
+     tex.wrapT = THREE.RepeatWrapping;
+     return tex;
+@@ -119,35 +121,35 @@
+   initMaterials() {
+     this.matGlass = new THREE.MeshStandardMaterial({
+       map: this.windowGlassTex,
+-      roughness: 0.2,
+-      metalness: 0.85,
+-      color: 0x88bbff
++      roughness: 0.4,
++      metalness: 0.25,
++      color: 0xc0d7eb
+     });
+ 
+     this.matBrick = new THREE.MeshStandardMaterial({
+       map: this.windowBrickTex,
+       roughness: 0.8,
+       metalness: 0.1,
+-      color: 0xcc7766
++      color: 0xe0b9a1
+     });
+ 
+     this.matDark = new THREE.MeshStandardMaterial({
+       map: this.windowDarkTex,
+       roughness: 0.3,
+-      metalness: 0.9,
+-      color: 0x223344
++      metalness: 0.2,
++      color: 0xb0bcc9
+     });
+ 
+     this.matConcrete = new THREE.MeshStandardMaterial({
+-      color: 0x333940,
++      color: 0xa5afb9,
+       roughness: 0.85,
+       metalness: 0.1
+     });
+ 
+     this.matRoof = new THREE.MeshStandardMaterial({
+-      color: 0x252a30,
++      color: 0x919ca7,
+       roughness: 0.9,
+-      metalness: 0.2
++      metalness: 0.05
+     });
+ 
+     this.matMetal = new THREE.MeshStandardMaterial({
+--- a/src/main.js
++++ b/src/main.js
+@@ -1,3 +1,4 @@
++import { initCitySelection, selectedCity } from './CitySelection.js';
+ import { createHongKongAudit } from './HongKongAudit.js';
+ import { CombatSystem } from './Combat.js';
+ import * as THREE from 'three';
+@@ -24,6 +25,7 @@
+ 
+ export class GameApp {
+   constructor() {
++    initCitySelection();
+     // 1. Locate or create Canvas elements
+     const container = document.getElementById('game-container') || document.body;
+     let canvas = document.getElementById('webgl-canvas');
+@@ -143,8 +145,14 @@
+     this.camera = new THREE.PerspectiveCamera(65, window.innerWidth / window.innerHeight, 0.2, 1000);
+ 
+     // Lighting
+-    const ambientLight = new THREE.HemisphereLight(0xd8f1ff, 0x536273, 1.25);
++    const localCity=selectedCity(location.search)==='procedural';
++    const ambientLight = new THREE.HemisphereLight(0xd8f1ff, localCity?0xb8c6d5:0x536273, localCity?2.4:1.25);
+     this.scene.add(ambientLight);
++    if(localCity){
++      this.scene.add(new THREE.AmbientLight(0xffffff,.55));
++      const fill=new THREE.DirectionalLight(0xe4f1ff,1.2);
++      fill.position.set(-160,180,-140);this.scene.add(fill);
++    }
+ 
+     const sunLight = new THREE.DirectionalLight(0xfff8e8, 3.2);
+     sunLight.position.set(160, 280, 140);
+@@ -183,7 +191,7 @@
+       this.speedLines = new SpeedLinesEffect(this.speedLinesCanvas);
+     }
+ 
+-    const useUrbanGround = new URLSearchParams(location.search).get('city') !== 'procedural';
++    const useUrbanGround = selectedCity(location.search) === 'hong-kong';
+     this.city = useUrbanGround
+       ? new UrbanGroundCity(this.scene, this.camera, this.renderer, (pct, desc) => {
+         this.updateLoadingProgress(pct, desc);
+--- a/src/Multiplayer.js
++++ b/src/Multiplayer.js
+@@ -421,11 +421,12 @@
+   minimapPlayers(){
+     if(this.room?.phase!=='playing')return [];
+     const me=this.players.find(p=>p.id===this.id);
+-    return this.players.filter(p=>p.id!==this.id && p.seen && [p.x,p.y,p.z].every(Number.isFinite) &&
+-      (!p.eliminated || p.team===me?.team)).map(p=>{
++    return this.players.filter(p=>p.id!==this.id && [p.x,p.y,p.z].every(Number.isFinite)).map(p=>{
+         const rendered=this.avatars.get(p.id)?.mesh.position;
+-        return {...p,x:rendered?.x ?? p.x,y:rendered?.y ?? p.y,z:rendered?.z ?? p.z,
+-          eliminated:false,rescue:!!p.eliminated,ally:me?.team!=='free' && p.team===me?.team};
++        const validRendered=rendered && [rendered.x,rendered.y,rendered.z].every(Number.isFinite);
++        return {...p,x:validRendered?rendered.x:p.x,y:validRendered?rendered.y:p.y,z:validRendered?rendered.z:p.z,
++          seen:true,lastKnown:!p.seen || p.connected===false,downed:!!p.eliminated,
++          eliminated:false,rescue:!!p.eliminated && p.team===me?.team,ally:me?.team!=='free' && p.team===me?.team};
+       });
+   }
+   syncAvatars() {
+--- a/src/Minimap.js
++++ b/src/Minimap.js
+@@ -77,9 +77,27 @@
+   return { latitude, longitude };
+ }
+ 
++export function locatedPlayers(players = []) {
++  // Readiness, death, distance and reveal timers must not hide participants.
++  return players.filter(p => [p.x,p.y,p.z].every(Number.isFinite));
++}
++
++export function actorOverlayPoint(player,center,range,size,camera=null) {
++  if(camera){
++    const placed=terrainMarkerPoint(new THREE.Vector3(player.x,player.y+range*.04,player.z),camera);
++    const projected=placed.point.project(camera);
++    const raw=new THREE.Vector3(player.x,player.y+range*.04,player.z).project(camera);
++    return {x:(projected.x+1)*size/2,y:(1-projected.y)*size/2,offscreen:placed.offscreen,angle:Math.atan2(-raw.y,raw.x)};
++  }
++  const marker=edgeMinimapMarker(player,center,range,Math.max(1,size/2-16),size/2);
++  return {...marker,angle:Math.atan2(marker.y-size/2,marker.x-size/2)};
++}
++
+ export class HongKongMinimap {
+   constructor({ canvas, status, coordinates, rangeLabel, title, subtitle, city, combat, players }) {
+     Object.assign(this, { canvas, status, coordinates, rangeLabel, title, subtitle, city, combat, players });
++    this.actorRoot=canvas?.parentElement?.querySelector?.('#minimap-actors');
++    this.actorLabels=new Map();
+     this.range = city?.isStreamed ? 220 : LOCAL_CITY.minimapRange;
+     this.terrainCopies = new Map();
+     try { if (canvas) this.initTerrain(); }
+@@ -121,7 +139,7 @@
+     this.renderer.localClippingEnabled=true;
+     this.terrainMaterial.clippingPlanes=this.clipPlanes;
+     this.groundMaterial.clippingPlanes=this.clipPlanes;
+-    this.markerGeometry = new THREE.ConeGeometry(this.range * 0.025,this.range * 0.075,4);
++    this.markerGeometry = new THREE.ConeGeometry(this.range * 0.04,this.range * 0.1,4);
+     this.markers = new Map();
+     this.canvas.dataset.mapMode = 'terrain-3d';
+   }
+@@ -153,7 +171,7 @@
+     this.clipPlanes[0].constant = r-position.x; this.clipPlanes[1].constant = r+position.x;
+     this.clipPlanes[2].constant = r-position.z; this.clipPlanes[3].constant = r+position.z;
+     const actors = [{id:'self',position,facing:facingAngle,color:0xffffff},
+-      ...(this.players?.() || []).filter(p => !p.eliminated && p.seen)
++      ...locatedPlayers(this.players?.() || [])
+         .map(p => ({id:p.id,position:p,facing:p.facing,color:p.rescue?0xff6682:p.team==='police'?0x41d9ff:0xffce67})),
+       ...(this.combat?.enemies || []).filter(e => e.health>0)
+         .map((e,i) => ({id:`enemy-${i}`,position:e.position,color:0xff536e}))];
+@@ -186,6 +204,8 @@
+     this.markerGeometry?.dispose();
+     for (const marker of this.markers?.values() || []) marker.material.dispose();
+     this.terrainCopies.clear(); this.mapScene?.clear();
++    for(const el of this.actorLabels?.values() || [])el.remove();
++    this.actorLabels?.clear();
+   }
+ 
+   resize() {
+@@ -214,7 +234,37 @@
+     this.lastDraw = nowSeconds;
+     if (this.renderer) this.drawTerrain(position,facingAngle);
+     else this.draw(position, facingAngle);
++    this.drawActorOverlay(position);
+     this.updateLabels(position);
++  }
++
++  drawActorOverlay(position) {
++    if(!this.actorRoot)return;
++    const active=new Set();
++    for(const player of locatedPlayers(this.players?.() || [])){
++      active.add(player.id);let el=this.actorLabels.get(player.id);
++      if(!el){
++        el=document.createElement('div');el.className='minimap-player-marker';
++        const icon=document.createElement('span'),label=document.createElement('span');
++        icon.className='minimap-player-icon';label.className='minimap-player-label';
++        el.append(icon,label);this.actorRoot.append(el);this.actorLabels.set(player.id,el);
++      }
++      const placed=actorOverlayPoint(player,position,this.range,this.size,this.renderer?this.mapCamera:null);
++      const distance=Math.round(Math.hypot(player.x-position.x,player.y-position.y,player.z-position.z));
++      const name=String(player.name || (player.team==='police'?'경찰':player.team==='runner'?'도망자':'플레이어')).slice(0,12);
++      const status=player.rescue?' · 구조':player.downed||player.eliminated?' · 탈락':player.connected===false?' · 마지막 위치':player.lastKnown?' · 대기 위치':'';
++      el.children[0].textContent=player.downed||player.eliminated?'×':placed.offscreen?'➤':'●';
++      el.children[0].style.transform=placed.offscreen && !player.downed && !player.eliminated?`rotate(${placed.angle}rad)`:'';
++      el.children[1].textContent=`${name} · ${distance}m${status}`;
++      el.children[1].style.maxWidth=`${Math.min(145,this.size*.55)}px`;
++      el.dataset.team=player.ally?'ally':player.team;
++      el.dataset.side=placed.x<this.size*.33?'left':placed.x>this.size*.66?'right':'center';
++      el.dataset.bottom=String(placed.y>this.size*.7);
++      el.classList.toggle('offscreen',placed.offscreen);el.classList.toggle('last-known',!!player.lastKnown);
++      el.setAttribute('aria-label',`${name}, 거리 ${distance}미터${status}${placed.offscreen?', 지도 범위 밖':''}`);
++      el.style.left=`${placed.x/this.size*100}%`;el.style.top=`${placed.y/this.size*100}%`;
++    }
++    for(const[id,el]of this.actorLabels)if(!active.has(id)){el.remove();this.actorLabels.delete(id);}
+   }
+ 
+   collectFootprints(position) {
+@@ -287,8 +337,9 @@
+   }
+ 
+   drawActors(ctx, position, radius, center) {
+-    for(const player of this.players?.()||[]){if(!player.seen||player.eliminated||![player.x,player.y,player.z].every(Number.isFinite))continue;
+-      const marker=edgeMinimapMarker(player,position,this.range,radius-5,center);ctx.fillStyle=player.rescue?'#ff6682':player.team==='police'?'#41d9ff':'#ffce67';ctx.beginPath();ctx.arc(marker.x,marker.y,4,0,Math.PI*2);ctx.fill();
++    for(const player of locatedPlayers(this.players?.()||[])){
++      const marker=edgeMinimapMarker(player,position,this.range,radius-10,center);ctx.fillStyle=player.rescue?'#ff6682':player.ally?'#7cffa9':player.team==='police'?'#41d9ff':'#ffce67';ctx.beginPath();ctx.arc(marker.x,marker.y,8,0,Math.PI*2);ctx.fill();
++      ctx.strokeStyle='#ffffff';ctx.lineWidth=2.5;ctx.stroke();
+       if(player.rescue){ctx.font='bold 10px system-ui';ctx.textAlign='center';ctx.fillText('구조',marker.x,marker.y-7);}
+     }
+ 
+--- a/src/PlayerPositionMarkers.js
++++ b/src/PlayerPositionMarkers.js
+@@ -20,17 +20,18 @@
+     this.root.classList.toggle('hidden',!active);
+     const ids=new Set(),rect=this.game.canvas.getBoundingClientRect();
+     if(active)for(const player of players){
+-      if(player.rescue)continue;
++      if(![player.x,player.y,player.z].every(Number.isFinite))continue;
+       ids.add(player.id);let el=this.markers.get(player.id);
+       if(!el){el=document.createElement('div');el.className='player-position-marker';this.root.append(el);this.markers.set(player.id,el);}
+       const point=new THREE.Vector3(player.x,player.y+2.6,player.z);
+-      const placed=positionMarker(point,this.game.camera,rect.width,rect.height,110);
++      const padding=Math.min(140,Math.max(36,rect.width/2-20),Math.max(36,rect.height/2-20));
++      const placed=positionMarker(point,this.game.camera,rect.width,rect.height,padding);
+       const distance=Math.round(origin.distanceTo(new THREE.Vector3(player.x,player.y,player.z)));
+       const altitude=Math.round(player.y-origin.y);
+       const role=player.team==='police'?'경찰':player.team==='runner'?'도망자':'플레이어';
+       const arrow=placed.offscreen?['→','↘','↓','↙','←','↖','↑','↗'][(Math.round(placed.angle/(Math.PI/4))+8)%8]+' ':'';
+       const name=String(player.name || role).slice(0,12);
+-      el.textContent=`${arrow}${name} · ${distance}m${Math.abs(altitude)>=3?' · '+(altitude>0?'↑':'↓')+Math.abs(altitude)+'m':''}${player.connected===false?' · 연결 끊김':''}`;
++      el.textContent=`${arrow}${name} · ${distance}m${Math.abs(altitude)>=3?' · '+(altitude>0?'↑':'↓')+Math.abs(altitude)+'m':''}${player.rescue?' · 구조':player.downed?' · 탈락':''}${player.connected===false?' · 마지막 위치':''}`;
+       el.setAttribute('aria-label',`${role} ${player.name}, 거리 ${distance}미터, 높이 차 ${altitude}미터`);
+       el.dataset.team=player.ally?'ally':player.team;el.classList.toggle('offscreen',placed.offscreen);
+       el.style.left=`${placed.x}px`;el.style.top=`${placed.y}px`;
+--- a/src/style.css
++++ b/src/style.css
+@@ -553,7 +553,7 @@
+ }
+ #minimap-status[data-ready="false"] { color: #fff; background: #eb9e2d; box-shadow: none; }
+ #player-markers { position:absolute; inset:0; pointer-events:none; z-index:25; overflow:hidden; }
+-.player-position-marker { position:absolute; transform:translate(-50%,-100%); max-width:190px; padding:5px 8px; border:1px solid #ffce67; border-radius:7px; background:rgba(8,16,25,.86); color:#ffce67; font:700 11px/1.3 system-ui,sans-serif; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; text-shadow:0 1px 2px #000; }
++.player-position-marker { position:absolute; transform:translate(-50%,-100%); max-width:250px; padding:8px 12px; border:2px solid #ffce67; border-radius:7px; background:rgba(8,16,25,.86); color:#ffce67; font:800 15px/1.3 system-ui,sans-serif; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; text-shadow:0 1px 2px #000; }
+ .player-position-marker[data-team="police"] { border-color:#41d9ff; color:#41d9ff; }
+ .player-position-marker[data-team="ally"] { border-color:#7cffa9; color:#7cffa9; }
+ .player-position-marker.offscreen { border-style:dashed; }
+@@ -774,7 +774,7 @@
+ #trial-target { color: #a8dfdf; font-size: 11px; }
+ #session-hud > span:nth-child(3), #performance-status { color: #8fa5b6; font-size: 10px; }
+ #btn-time-trial { align-self: flex-start; border-color: #e14e68; border-radius: 2px; background: rgba(121,25,49,.6); font-size: 11px; }
+-#minimap-panel { bottom: 26px; right: 24px; width: 236px; padding: 10px; border-radius: 2px; border: 1px solid rgba(161,202,214,.35); background: rgba(8,21,34,.78); box-shadow: 0 18px 50px #0007; backdrop-filter: blur(12px); }
++#minimap-panel { bottom: 26px; right: 24px; width: 320px; padding: 10px; border-radius: 2px; border: 1px solid rgba(161,202,214,.35); background: rgba(8,21,34,.78); box-shadow: 0 18px 50px #0007; backdrop-filter: blur(12px); }
+ #minimap-canvas { border-radius: 2px; }
+ .minimap-legend { position: absolute; bottom: 10px; left: 9px; color: #92bbc8; font: 700 9px Outfit,sans-serif; text-shadow: 0 1px 4px #000; }
+ .minimap-legend b { color: #fff; padding-left: 4px; }
+@@ -860,7 +860,7 @@
+   body.in-game #hud-top-left { left: 10px; bottom: 15px; width: 133px; }
+   body.in-game #web-status-pill { left: 10px; bottom: 170px; }
+   .tele-val { font-size: 27px; }
+-  #minimap-panel { right: 8px; bottom: 8px; width: clamp(130px,34vw,170px); }
++  #minimap-panel { right: 8px; bottom: 8px; width: clamp(190px,46vw,240px); }
+   #gameplay-quickbar { display: none !important; }
+   .overlay-card { margin: auto; padding: 23px 20px; }
+ }
+@@ -888,3 +888,29 @@
+ body:not(.in-game) #anchor-preview,body:not(.in-game) #hand-status,body:not(.in-game) #combo-hud,body:not(.in-game) #boundary-warning,body:not(.in-game) #pursuit-hud { visibility:hidden; }
+ body.hud-quiet #hud-top-left { opacity:.35; }body.hud-combat #session-hud { opacity:.45; }
+ #hud-top-left,#minimap-panel,#session-hud { transform-origin:bottom left; }#minimap-panel { transform-origin:bottom right; }
++
++/* Visible map navigation in the lobby and during terrain loading. */
++.city-picker { margin-top: 24px; width: min(365px,100%); }
++.city-picker > span { display: block; margin-bottom: 9px; color: #c3d0dc; font-size: 12px; }
++.city-options { display: flex; gap: 10px; }
++.city-options a { flex: 1; min-width: 0; padding: 12px 14px; border: 1px solid #6c8298; border-radius: 4px; background: #101e30; color: #f4f7fb; text-decoration: none; }
++.city-options a:hover { background: #22334a; border-color: #fff; }
++.city-options a:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
++.city-options a[aria-current="page"] { border-color: #ff7890; background: #4b1e31; box-shadow: inset 0 0 0 1px #ff7890; }
++.city-options b, .city-options small { display: block; }
++.city-options b { font-size: 15px; }
++.city-options small { margin-top: 5px; color: #c3d0dc; font-size: 11px; }
++.loading-city-picker { margin: 20px auto 0; }
++
++/* Screen-space labels remain readable over 3D roofs and at map edges. */
++#minimap-actors { position:absolute; inset:0; z-index:2; pointer-events:none; }
++.minimap-player-marker { --marker-color:#ffce67; position:absolute; width:24px; height:24px; transform:translate(-50%,-50%); }
++.minimap-player-marker[data-team="police"] { --marker-color:#41d9ff; }
++.minimap-player-marker[data-team="ally"] { --marker-color:#7cffa9; }
++.minimap-player-icon { display:grid; place-items:center; width:24px; height:24px; border:3px solid white; border-radius:50%; background:#081321; color:var(--marker-color); font:900 18px/1 system-ui; box-shadow:0 0 0 3px #081321,0 0 14px var(--marker-color); }
++.minimap-player-label { position:absolute; top:29px; left:50%; transform:translateX(-50%); width:max-content; max-width:145px; padding:4px 6px; border:1px solid var(--marker-color); border-radius:4px; background:#081321f5; color:#fff; font:800 12px/1.3 system-ui; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
++.minimap-player-marker[data-side="left"] .minimap-player-label { left:0; transform:none; }
++.minimap-player-marker[data-side="right"] .minimap-player-label { left:auto; right:0; transform:none; }
++.minimap-player-marker[data-bottom="true"] .minimap-player-label { top:auto; bottom:29px; }
++.minimap-player-marker.offscreen .minimap-player-icon { border-color:var(--marker-color); }
++.minimap-player-marker.last-known .minimap-player-label { border-style:dashed; }
+--- a/index.html
++++ b/index.html
+@@ -77,6 +77,7 @@
+       </div>
+       <div class="minimap-wrap">
+         <canvas id="minimap-canvas" role="img" aria-label="현재 위치 미니맵"></canvas>
++        <div id="minimap-actors" aria-label="플레이어 위치 표시"></div>
+         <span class="minimap-north" aria-hidden="true">N ↑</span>
+         <span class="minimap-legend">3D · <b>나</b> <i>경찰</i> <em>도망자</em></span>
+         <span class="minimap-range-label"><b id="minimap-range">600m</b> RANGE</span>
+@@ -166,7 +167,14 @@
+             <span class="lobby-eyebrow"><i></i> YOUR CITY. YOUR MOVE.</span>
+             <h1 id="online-title">도시를<br><em>가로질러.</em></h1>
+             <p>건물 사이를 스윙하고, 추격전을 시작하고,<br>홍콩의 하늘을 네 방식대로 누벼봐.</p>
+-            <div class="lobby-hero-actions"><button id="play-solo" class="hero-play" type="button"><span class="play-triangle">▶</span><span><b>혼자 플레이</b><small>바로 도시로 뛰어들기</small></span><span class="action-arrow">↗</span></button></div>
++            <nav class="city-picker" aria-label="플레이 지도 선택">
++              <span>플레이 지도</span>
++              <div class="city-options">
++                <a href="?city=hong-kong" data-city="hong-kong"><b>홍콩</b><small>실제 3D 도시 탐험</small></a>
++                <a href="?city=procedural" data-city="procedural"><b>로컬 도시</b><small>빠르게 시작</small></a>
++              </div>
++            </nav>
++            <div class="lobby-hero-actions"><button id="play-solo" class="hero-play" type="button"><span class="play-triangle">▶</span><span><b>혼자 플레이</b><small><span data-current-city>홍콩</span>에서 시작</small></span><span class="action-arrow">↗</span></button></div>
+             <div class="lobby-statline"><span>01 / EXPLORE</span><span>02 / CHASE</span><span>03 / SWING</span></div>
+           </div>
+           <div class="online-card">
+@@ -237,6 +245,12 @@
+           <div id="loading-bar-fill"></div>
+         </div>
+         <span id="loading-pct">0%</span>
++        <nav class="city-picker loading-city-picker" aria-label="로딩 중 지도 선택">
++          <div class="city-options">
++            <a href="?city=hong-kong" data-city="hong-kong"><b>홍콩</b><small>실제 3D 도시 탐험</small></a>
++            <a href="?city=procedural" data-city="procedural"><b>로컬 도시</b><small>빠르게 시작</small></a>
++          </div>
++        </nav>
+         <div id="loading-recovery" class="hidden" role="status">
+           <p>연결이 복구되면 준비를 계속합니다.</p>
+           <button id="btn-retry-load" type="button">다시 불러오기</button>
+--- a/scripts/check-compact-map-and-locators.mjs
++++ b/scripts/check-compact-map-and-locators.mjs
+@@ -38,9 +38,11 @@
+     {id:'broken',team:'runner',seen:true,x:NaN,y:0,z:0},
+     {id:'downed',team:'runner',eliminated:true,seen:true,x:1,y:0,z:0}],
+   avatars:new Map([['enemy',{mesh:{position:new THREE.Vector3(48,19,0)}}]])});
+-const located=mp.minimapPlayers();assert.equal(located.length,1);assert.equal(located[0].id,'enemy');assert.equal(located[0].x,48);
++const located=mp.minimapPlayers();assert.equal(located.length,3);assert.equal(located[0].id,'enemy');assert.equal(located[0].x,48);
++assert(located.find(p=>p.id==='unseen').lastKnown);assert(located.find(p=>p.id==='downed').downed);
++assert(!located.some(p=>p.id==='broken'));
+ mp.room.phase='waiting';assert.deepEqual(mp.minimapPlayers(),[]);
+-console.log('PASS enemy location stays visible outside pulse windows, matches the rendered avatar, and excludes invalid/unseen targets');
++console.log('PASS all finite participant locations stay visible outside pulse windows, including pending and downed players; invalid coordinates are excluded');
+ 
+ for(const p of [new THREE.Vector3(0,0,-20),new THREE.Vector3(2000,500,-20),new THREE.Vector3(0,0,20),new THREE.Vector3(0,0,0)]){
+   const marker=positionMarker(p,camera,1280,720,110);assert([marker.x,marker.y,marker.angle].every(Number.isFinite));
+--- a/package.json
++++ b/package.json
+@@ -7,7 +7,7 @@
+     "dev": "vite",
+     "build": "vite build",
+     "preview": "vite preview",
+-    "test": "node scripts/build-motions.mjs && node scripts/check-motions.mjs && node scripts/check-pose.mjs && node scripts/check-controller.mjs && node scripts/check-gameplay.mjs && node scripts/check-air-tricks.mjs && node scripts/check-dual-web.mjs && node scripts/check-pendulum.mjs && node scripts/check-mechanics-audit.mjs && node scripts/check-player-audit.mjs && node scripts/check-traversal.mjs && node scripts/check-qa.mjs && node scripts/check-review-2.mjs && node scripts/check-combat.mjs && node scripts/check-web-vfx.mjs && node scripts/check-superhero-landing-vfx.mjs && node scripts/check-combat-rig.mjs && node scripts/check-motion-timeline.mjs && node scripts/check-motion-transitions.mjs && node scripts/check-hong-kong-streaming.mjs && node scripts/check-minimap.mjs && node scripts/check-remote-motion.mjs && node scripts/check-tile-textures.mjs && node scripts/check-multiplayer.mjs && node scripts/check-upgrade.mjs && node scripts/check-upgrade-online.mjs && node scripts/check-release-audit.mjs && node scripts/check-online-edge-cases.mjs && node scripts/check-room-reconnect.mjs && node scripts/check-hong-kong-geometry-codec.mjs && node scripts/check-swing-accessibility.mjs && node scripts/check-cross-system-regressions.mjs && node scripts/check-web-continuity.mjs && node scripts/check-compact-map-and-locators.mjs && node scripts/check-expert-audit.mjs && node scripts/check-connection-lifecycle.mjs && node scripts/check-camera-motion-web.mjs && node scripts/check-full-game-audit.mjs && node scripts/check-input-lifecycle.mjs && node scripts/check-session-flow.mjs",
++    "test": "node scripts/build-motions.mjs && node scripts/check-motions.mjs && node scripts/check-pose.mjs && node scripts/check-controller.mjs && node scripts/check-gameplay.mjs && node scripts/check-air-tricks.mjs && node scripts/check-dual-web.mjs && node scripts/check-pendulum.mjs && node scripts/check-mechanics-audit.mjs && node scripts/check-player-audit.mjs && node scripts/check-traversal.mjs && node scripts/check-qa.mjs && node scripts/check-review-2.mjs && node scripts/check-combat.mjs && node scripts/check-web-vfx.mjs && node scripts/check-superhero-landing-vfx.mjs && node scripts/check-combat-rig.mjs && node scripts/check-motion-timeline.mjs && node scripts/check-motion-transitions.mjs && node scripts/check-hong-kong-streaming.mjs && node scripts/check-minimap.mjs && node scripts/check-remote-motion.mjs && node scripts/check-tile-textures.mjs && node scripts/check-multiplayer.mjs && node scripts/check-upgrade.mjs && node scripts/check-upgrade-online.mjs && node scripts/check-release-audit.mjs && node scripts/check-online-edge-cases.mjs && node scripts/check-room-reconnect.mjs && node scripts/check-hong-kong-geometry-codec.mjs && node scripts/check-swing-accessibility.mjs && node scripts/check-cross-system-regressions.mjs && node scripts/check-web-continuity.mjs && node scripts/check-compact-map-and-locators.mjs && node scripts/check-expert-audit.mjs && node scripts/check-connection-lifecycle.mjs && node scripts/check-camera-motion-web.mjs && node scripts/check-full-game-audit.mjs && node scripts/check-input-lifecycle.mjs && node scripts/check-session-flow.mjs && node scripts/check-visibility.mjs",
+     "predev": "node scripts/build-motions.mjs",
+     "prebuild": "node scripts/build-motions.mjs",
+     "start": "node scripts/serve.mjs",
+@@ -24,7 +24,8 @@
+     "test:full-audit": "node scripts/check-full-game-audit.mjs",
+     "test:city-authority": "node scripts/check-city-authority.mjs",
+     "test:input-lifecycle": "node scripts/check-input-lifecycle.mjs",
+-    "test:session-flow": "node scripts/check-session-flow.mjs"
++    "test:session-flow": "node scripts/check-session-flow.mjs",
++    "test:visibility": "node scripts/check-visibility.mjs"
+   },
+   "dependencies": {
+     "@dimforge/rapier3d-compat": "^0.21.0",
+--- a/README.md
++++ b/README.md
+@@ -1,4 +1,6 @@
+ # Spider-Man Web Swing
++
++로컬 도시는 밝은 낮 조명과 밝은 건물·도로 재질을 사용합니다. 온라인 상대는 위치 공개 주기·준비·탈락 상태와 관계없이 수신한 위치를 미니맵에 표시하며, 연결이 끊기면 마지막 위치를 유지합니다. 미니맵은 기본 320px이고, 상대는 24px 아이콘과 이름·거리로 표시합니다. 지도 범위 밖의 상대는 가장자리 방향표로 안내합니다. 검증 기록: [밝기·상대 위치 개선](docs/qa/visibility-2026-10-14/REPORT.md).
+ 
+ Three.js + Rapier 기반 데스크톱 키보드/마우스 이동·웹 스윙 게임입니다. 로컬 WebSocket 또는 운영 Supabase 방에서 2~8명이 함께 플레이할 수 있습니다.
+ 기본 지도는 홍콩 3D Tiles 스트리밍이며, 로컬 절차 도시도 제공됩니다.
+--- /dev/null
++++ b/scripts/check-visibility.mjs
+@@ -0,0 +1,52 @@
++import assert from 'node:assert/strict';
++import * as THREE from 'three';
++import { HongKongMinimap, actorOverlayPoint, configureTerrainCamera, locatedPlayers } from '../src/Minimap.js';
++import { Multiplayer } from '../src/Multiplayer.js';
++import { City } from '../src/City.js';
++import { proceduralCollision } from './city-collision.mjs';
++
++const mp=Object.create(Multiplayer.prototype);
++Object.assign(mp,{id:'me',room:{phase:'playing'},pulseUntil:0,avatars:new Map(),players:[
++  {id:'me',team:'police',x:0,y:0,z:0},
++  {id:'pending',team:'runner',seen:false,x:10,y:4,z:0},
++  {id:'downed',team:'runner',seen:true,eliminated:true,x:20,y:4,z:0},
++  {id:'offline',team:'runner',seen:true,connected:false,x:1000,y:80,z:1000},
++  {id:'invalid',team:'runner',x:NaN,y:0,z:0},
++]});
++const players=mp.minimapPlayers();assert.equal(players.length,3);
++assert(players.find(p=>p.id==='pending').lastKnown);assert(players.find(p=>p.id==='downed').downed);
++assert(players.find(p=>p.id==='offline').lastKnown);
++mp.avatars.set('pending',{mesh:{position:new THREE.Vector3(NaN,0,0)}});
++assert.equal(mp.minimapPlayers()[0].x,10,'An invalid interpolation erased a valid server position');
++assert.equal(locatedPlayers([{x:0,y:0,z:0,seen:false,eliminated:true}]).length,1);
++console.log('PASS participant markers retain pending, eliminated, disconnected and distant positions; invalid interpolation falls back to server coordinates');
++
++const camera=new THREE.OrthographicCamera(),center=new THREE.Vector3();configureTerrainCamera(camera,center,180);
++for(const size of [168,298])for(const p of [{x:0,y:0,z:0},{x:5000,y:1000,z:5000},{x:-5000,y:-30,z:-5000}]){
++  for(const view of [null,camera]){const marker=actorOverlayPoint(p,center,180,size,view);
++    assert([marker.x,marker.y].every(Number.isFinite));assert(marker.x>=12 && marker.x<=size-12);assert(marker.y>=12 && marker.y<=size-12);
++    if(Math.abs(p.x)>180)assert(marker.offscreen);
++  }
++}
++console.log('PASS 3D and fallback projections keep far/high/behind-map markers inside large and narrow map bounds');
++
++function element(){return {children:[],style:{},dataset:{},classList:{toggle(){}},append(...nodes){this.children.push(...nodes);},setAttribute(){},remove(){this.removed=true;}};}
++const previousDocument=globalThis.document;globalThis.document={createElement:element};
++try{
++  const map=Object.create(HongKongMinimap.prototype),root=element();
++  Object.assign(map,{actorRoot:root,actorLabels:new Map(),players:()=>players,size:298,range:180,renderer:{},mapCamera:camera});
++  map.drawActorOverlay(center);assert.equal(root.children.length,3);assert.equal(map.actorLabels.size,3);
++  assert(map.actorLabels.get('pending').children[1].textContent.includes('대기 위치'));
++  assert(map.actorLabels.get('downed').children[1].textContent.includes('탈락'));
++  assert(map.actorLabels.get('offline').children[1].textContent.includes('마지막 위치'));
++  const removed=[...map.actorLabels.values()];map.players=()=>[];map.drawActorOverlay(center);
++  assert.equal(map.actorLabels.size,0);assert(removed.every(el=>el.removed));
++  console.log('PASS overlay labels show name/distance/status and remove stale room participants');
++  const silent=new Proxy({},{get:()=>()=>{}});globalThis.document={createElement:()=>({getContext:()=>silent})};
++  const city=new City(new THREE.Scene());
++  assert(city.matGlass.metalness<=.3);assert(city.matDark.metalness<=.3);
++  for(const material of [city.matConcrete,city.matRoof])assert(material.color.getHex()>0x808080);
++  for(const texture of [city.windowGlassTex,city.windowBrickTex,city.windowDarkTex,city.roadTex])assert.equal(texture.colorSpace,THREE.SRGBColorSpace);
++  assert.deepEqual(city.colliders.map(c=>[c.minX,c.maxX,c.minY,c.maxY,c.minZ,c.maxZ]),proceduralCollision().colliders.map(c=>[c.minX,c.maxX,c.minY,c.maxY,c.minZ,c.maxZ]));
++  console.log('PASS brighter daytime materials use sRGB textures and preserve every authoritative city collider');
++}finally{globalThis.document=previousDocument;}

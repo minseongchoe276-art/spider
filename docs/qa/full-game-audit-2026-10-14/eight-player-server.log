@@ -1,0 +1,30 @@
+{
+  "status": "PASS",
+  "checked_at": "2026-10-14T00:01:57.243Z",
+  "scope": "Real localhost HTTP/WebSocket, eight participants, trusted official map; local round-trip timing excludes internet and host cold starts.",
+  "results": [
+    {
+      "name": "Health, warmup, method restriction and browser origin rejection",
+      "status": "PASS"
+    },
+    {
+      "name": "Eight-player game with server-owned roles and real official-map clear-path hits",
+      "status": "PASS",
+      "roundTripMs": [
+        6.154167000000143,
+        8.544750000000022,
+        6.301749999999629
+      ],
+      "maxWarmLocalMs": 8.544750000000022
+    },
+    {
+      "name": "Actual official wall rejects a forged client approval",
+      "status": "PASS",
+      "health": 25
+    },
+    {
+      "name": "Service shutdown closes clients and cleans up listeners",
+      "status": "PASS"
+    }
+  ]
+}

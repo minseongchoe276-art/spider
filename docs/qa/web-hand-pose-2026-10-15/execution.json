@@ -1,0 +1,68 @@
+{
+  "generatedAt": "2026-10-15T02:52:32.328397+00:00",
+  "commands": {
+    "npm test": {
+      "exitCode": 0,
+      "stages": 47,
+      "log": "full-tests.log"
+    },
+    "npm run build": {
+      "exitCode": 0,
+      "log": "build.log"
+    }
+  },
+  "targeted": {
+    "passed": 41,
+    "failed": 0,
+    "fps": [
+      24,
+      30,
+      60,
+      144
+    ],
+    "minExtendedRatio": 0.999814365313202,
+    "maxFoldedRatio": 0.5554928099138388
+  },
+  "original": {
+    "passed": 5,
+    "failed": 36,
+    "expectedExitCode": 1
+  },
+  "allMotions": {
+    "groups": 249,
+    "failures": 0,
+    "clips": 42,
+    "timelineFrames": 18943,
+    "reversals": 7056
+  },
+  "sourceMotions": {
+    "files": 32,
+    "animatedTakes": 44,
+    "emptyTakes": 7,
+    "frames": 5476
+  },
+  "browser": {
+    "reviewScreenshots": 47,
+    "realGameInputs": [
+      "left click: attach/release",
+      "right click: missed shot gesture"
+    ],
+    "consoleWarnings": 0,
+    "consoleErrors": 0,
+    "consoleScope": "Final local game and hand-review sessions; screenshots retain raw originals."
+  },
+  "unchangedCompiledMotionHashes": true,
+  "sha256": {
+    "src/Character.js": "508fe1b01255dbc717e834d03886c46622c2df82a33682b5688f1838ddd06a59",
+    "src/RemoteMotion.js": "69a7b32368256f1767e969f0eb50e75d7eb67fcee5e0d7ed9f74d64912d421bc",
+    "src/FirstPersonArms.js": "22d1724b2fc33b2e28750b3780229bbac90ab0be648e4e6f1091e7ed19a53331",
+    "src/WebHandPose.js": "b02b7a3df58c075ff709ccdd68140aeecaa84e3926e417e1d6d9ba81d6ad9ca8",
+    "src/WebHandReview.js": "98f8d067dc59756579e3f2950907c395b9b8e74080014c87382203d454fc6346",
+    "src/main.js": "a0335af6b31eab5d01f7c588b99831e68e2e8f9c4f22058c3414e57db10db3cc",
+    "scripts/check-web-hand-pose.mjs": "6f821e319c1ff7ece12d859acfa5c65c4fd3c7920654e0c9a50cd75d1ff9ba5c",
+    "scripts/check-all-motions.mjs": "53bec6eb7afb67ee54e3561e855903edfdff97ec861b09bbb9fd4f11a90dbe82",
+    "scripts/lib/motion-rig.mjs": "544905b6d8ee811531bc1bb171c0cc1bb8573de0a3686c7be1326c085aa346db",
+    "package.json": "66f9bc9c700388425eac8f85d5c1039d4c257a2f0df2c25e39d959300c25a38a"
+  },
+  "completedAt": "2026-10-15T02:55:40.705918+00:00"
+}

@@ -1,0 +1,25 @@
+Wall ledge review: 0 passed, 7 failed.
+FAIL Four facade directions and three frame rates climb over the actual 1.2m parapet and stay on its roof: A held climb detached at the parapet
+FAIL Parapet plan distinguishes the hand-grip height from the lower supported landing: The expression evaluated to a falsy value:
+
+  assert(plan)
+
+FAIL Blocked headroom retains the wall grip without passing through the roof: Expected values to be strictly equal:
++ actual - expected
+
++ 'FALLING'
+- 'WALL_RUNNING'
+
+FAIL A blocked grip can move sideways to a clear, supported roof entry: Expected "actual" to be strictly unequal to:
+
+'FALLING'
+FAIL Holding a climb past 25 seconds does not impose an unexplained fall: Expected values to be strictly equal:
++ actual - expected
+
++ 'FALLING'
+- 'WALL_RUNNING'
+
+FAIL Real local-city building facades complete a supported arrival or retain the blocked grip: north facade at height 93.99197994705712 detached
+FAIL Real Rapier terrain supports crossing the lip onto its lower roof at 30/60/144 FPS: Expected "actual" to be strictly unequal to:
+
+'FALLING'

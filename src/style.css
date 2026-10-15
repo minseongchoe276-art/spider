@@ -529,7 +529,7 @@ button, select { font: inherit; }
 button:focus-visible, select:focus-visible, a:focus-visible, input:focus-visible {
   outline: 3px solid var(--spider-cyan); outline-offset: 3px;
 }
-#btn-start-drag, #btn-restart, #btn-leave-match, #btn-retry-load, #btn-time-trial, select {
+#btn-start-drag, #btn-restart, #btn-leave-match, #btn-retry-load, #btn-time-trial, #btn-menu-time-trial, select {
   background: #1c293d; color: var(--text-main); border: 1px solid #64748b;
   border-radius: 8px; padding: 8px 12px; cursor: pointer;
 }
@@ -553,7 +553,7 @@ a { color: #7deeff; }
 }
 #minimap-status[data-ready="false"] { color: #fff; background: #eb9e2d; box-shadow: none; }
 #player-markers { position:absolute; inset:0; pointer-events:none; z-index:25; overflow:hidden; }
-.player-position-marker { position:absolute; transform:translate(-50%,-100%); max-width:190px; padding:5px 8px; border:1px solid #ffce67; border-radius:7px; background:rgba(8,16,25,.86); color:#ffce67; font:700 11px/1.3 system-ui,sans-serif; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; text-shadow:0 1px 2px #000; }
+.player-position-marker { position:absolute; transform:translate(-50%,-100%); max-width:250px; padding:8px 12px; border:2px solid #ffce67; border-radius:7px; background:rgba(8,16,25,.86); color:#ffce67; font:800 15px/1.3 system-ui,sans-serif; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; text-shadow:0 1px 2px #000; }
 .player-position-marker[data-team="police"] { border-color:#41d9ff; color:#41d9ff; }
 .player-position-marker[data-team="ally"] { border-color:#7cffa9; color:#7cffa9; }
 .player-position-marker.offscreen { border-style:dashed; }
@@ -774,7 +774,7 @@ body.room-game #session-hud { display: none !important; }
 #trial-target { color: #a8dfdf; font-size: 11px; }
 #session-hud > span:nth-child(3), #performance-status { color: #8fa5b6; font-size: 10px; }
 #btn-time-trial { align-self: flex-start; border-color: #e14e68; border-radius: 2px; background: rgba(121,25,49,.6); font-size: 11px; }
-#minimap-panel { bottom: 26px; right: 24px; width: 236px; padding: 10px; border-radius: 2px; border: 1px solid rgba(161,202,214,.35); background: rgba(8,21,34,.78); box-shadow: 0 18px 50px #0007; backdrop-filter: blur(12px); }
+#minimap-panel { bottom: 26px; right: 24px; width: 320px; padding: 10px; border-radius: 2px; border: 1px solid rgba(161,202,214,.35); background: rgba(8,21,34,.78); box-shadow: 0 18px 50px #0007; backdrop-filter: blur(12px); }
 #minimap-canvas { border-radius: 2px; }
 .minimap-legend { position: absolute; bottom: 10px; left: 9px; color: #92bbc8; font: 700 9px Outfit,sans-serif; text-shadow: 0 1px 4px #000; }
 .minimap-legend b { color: #fff; padding-left: 4px; }
@@ -807,8 +807,9 @@ body.in-game #gameplay-quickbar { display: flex; }
 .start-btn { width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 14px 17px; border-radius: 2px; background: #ed3155; font-size: 14px; box-shadow: none; }
 .start-btn b { font-size: 22px; }
 #btn-start-drag { width: 100%; margin-top: 7px; border-radius: 2px; background: #173245; font-size: 11px; }
-.pause-secondary { display: flex; gap: 7px; margin-top: 8px; }
-.pause-secondary button { flex: 1; margin: 0 !important; border-radius: 2px !important; font-size: 11px; }
+.pause-secondary { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 8px; }
+.pause-secondary button { flex: 1 1 auto; margin: 0 !important; border-radius: 2px !important; font-size: 11px; }
+.pause-secondary button:disabled { opacity: .45; cursor: not-allowed; }
 .pause-settings { display: grid; gap: 0; margin-top: 20px; border-top: 1px solid #304457; }
 .settings-title { padding: 12px 0 6px; color: #819bad; font: 800 10px Outfit,sans-serif; letter-spacing: .18em; }
 #reduced-motion, .pause-settings .guide-setting { display: flex; align-items: center; justify-content: space-between; width: 100%; min-height: 37px; margin: 0; padding: 6px 0; border: 0; border-bottom: 1px solid #243a4b; border-radius: 0; background: none; color: #dde9ed; font-size: 11px; text-align: left; cursor: pointer; }
@@ -821,11 +822,14 @@ body.in-game #gameplay-quickbar { display: flex; }
 .loading-spinner { border-radius: 50%; }
 .loading-bar-wrap, #loading-bar-fill { border-radius: 0; }
 #controls-guide:not(.hidden) { width: min(520px,calc(100vw - 32px)); max-height: min(80vh,720px); padding: 23px; border: 1px solid #496577; border-top: 3px solid #ed3155; border-radius: 2px; background: rgba(8,19,33,.98); }
-.guide-header { padding-bottom: 12px; border-bottom: 1px solid #2d4253; }
+.guide-header { padding-bottom: 12px; border-bottom: 1px solid #2d4253; gap: 10px; flex-wrap: wrap; align-items: center; }
 .guide-header h3 { font-size: 18px; }
-.guide-row { padding: 6px 0; border-bottom: 1px solid rgba(111,153,173,.13); }
-.key-badge { min-width: 68px; border-radius: 2px; border-color: #496274; background: #172c40; text-align: center; }
-.guide-desc { color: #c4d2dc; }
+.guide-hint { flex: 1; text-align: right; }
+#btn-close-guide { padding: 5px 9px; border: 1px solid #496274; border-radius: 2px; background: #172c40; color: #fff; cursor: pointer; }
+#btn-close-guide:focus-visible { outline: 2px solid #94f7e0; outline-offset: 3px; }
+.guide-row { padding: 6px 0; border-bottom: 1px solid rgba(111,153,173,.13); align-items: flex-start; }
+.key-badge { min-width: 68px; flex: 0 0 84px; white-space: normal; overflow-wrap: anywhere; border-radius: 2px; border-color: #496274; background: #172c40; text-align: center; }
+.guide-desc { color: #c4d2dc; flex: 1; min-width: 0; text-align: left; line-height: 1.5; }
 
 @media (max-width: 950px) {
   .lobby-stage { grid-template-columns: 1fr; gap: 22px; padding: 30px 0; }
@@ -856,7 +860,7 @@ body.in-game #gameplay-quickbar { display: flex; }
   body.in-game #hud-top-left { left: 10px; bottom: 15px; width: 133px; }
   body.in-game #web-status-pill { left: 10px; bottom: 170px; }
   .tele-val { font-size: 27px; }
-  #minimap-panel { right: 8px; bottom: 8px; width: clamp(130px,34vw,170px); }
+  #minimap-panel { right: 8px; bottom: 8px; width: clamp(190px,46vw,240px); }
   #gameplay-quickbar { display: none !important; }
   .overlay-card { margin: auto; padding: 23px 20px; }
 }
@@ -897,3 +901,16 @@ body.hud-quiet #hud-top-left { opacity:.35; }body.hud-combat #session-hud { opac
 .city-options b { font-size: 15px; }
 .city-options small { margin-top: 5px; color: #c3d0dc; font-size: 11px; }
 .loading-city-picker { margin: 20px auto 0; }
+
+/* Screen-space labels remain readable over 3D roofs and at map edges. */
+#minimap-actors { position:absolute; inset:0; z-index:2; pointer-events:none; }
+.minimap-player-marker { --marker-color:#ffce67; position:absolute; width:24px; height:24px; transform:translate(-50%,-50%); }
+.minimap-player-marker[data-team="police"] { --marker-color:#41d9ff; }
+.minimap-player-marker[data-team="ally"] { --marker-color:#7cffa9; }
+.minimap-player-icon { display:grid; place-items:center; width:24px; height:24px; border:3px solid white; border-radius:50%; background:#081321; color:var(--marker-color); font:900 18px/1 system-ui; box-shadow:0 0 0 3px #081321,0 0 14px var(--marker-color); }
+.minimap-player-label { position:absolute; top:29px; left:50%; transform:translateX(-50%); width:max-content; max-width:145px; padding:4px 6px; border:1px solid var(--marker-color); border-radius:4px; background:#081321f5; color:#fff; font:800 12px/1.3 system-ui; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.minimap-player-marker[data-side="left"] .minimap-player-label { left:0; transform:none; }
+.minimap-player-marker[data-side="right"] .minimap-player-label { left:auto; right:0; transform:none; }
+.minimap-player-marker[data-bottom="true"] .minimap-player-label { top:auto; bottom:29px; }
+.minimap-player-marker.offscreen .minimap-player-icon { border-color:var(--marker-color); }
+.minimap-player-marker.last-known .minimap-player-label { border-style:dashed; }

@@ -1,0 +1,58 @@
+{
+  "date": "2026-10-15",
+  "commands": {
+    "npm test": {
+      "stages": 48,
+      "exitCode": 0,
+      "log": "full-tests.log"
+    },
+    "npm run build": {
+      "exitCode": 0,
+      "log": "build.log"
+    },
+    "npm run test:silk-gait": {
+      "passed": 91,
+      "failed": 0,
+      "log": "silk-gait.log"
+    },
+    "isolatedOriginalSources": {
+      "passed": 4,
+      "failed": 87,
+      "expectedExitCode": 1,
+      "log": "before-regressions.log"
+    },
+    "node scripts/check-pose.mjs": {
+      "exitCode": 0,
+      "passed": 63,
+      "log": "pose.log",
+      "note": "Final targeted rerun after correcting jog/run speeds in the legacy test."
+    }
+  },
+  "gait": {
+    "conditions": 80,
+    "frames": 15480,
+    "bootVerticesPerFrame": 354,
+    "bootVertexSamples": 5479920,
+    "minimumBootClearance": 0.0029000234059598073,
+    "maximumPlantedSoleGap": 0.003255001359051546,
+    "maximumAnkleDegreesPerSecond": 720.0670752317995
+  },
+  "screens": {
+    "clips": 126,
+    "runtime": 58,
+    "feet": 14,
+    "web": 44,
+    "total": 242
+  },
+  "sha256": {
+    "src/WebStrand.js": "c2fc2374f02a9229a4ed122e9b3ae3e08e7449a7dc574ec6683606ed9e806f54",
+    "src/Character.js": "9eadd8ef19b099e572064613c8bb03842dda0a9d8b0b3d5ac5df2e8ec59b2a5d",
+    "src/CharacterPose.js": "2a83747837ca917c9d1aecdc279354de0bd8207f77bc418518d3975e78632126",
+    "src/SwingPhysics.js": "970d852873607312282ee99a1d793d47e718158ebdb7e7e6568afe1f1bdf38c7",
+    "src/MotionReview.js": "c6e5194a393d7777cccd695ecdf500704e317e767c5cfe791a7c98096b6d4f9b",
+    "src/WebHandReview.js": "692a3a9ed8125e76a61a98d8760f72e0550f24df02667d2ff7b0d1470d2a887f",
+    "scripts/check-silk-gait.mjs": "c5bb27c22eb5b44ba5b82c424539f2a8aca3323872d30a073c507b6159b2b433",
+    "scripts/check-pose.mjs": "8ad8f5f03e7e54f00e874743a88808fbbccf1f7daeb281c400ee65d4f23c995a",
+    "package.json": "3f2bb01a4993f88c8fc303bc5b6bd0599bbdf8e30fdf0cb945134336990ba1b0"
+  }
+}

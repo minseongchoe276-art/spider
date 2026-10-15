@@ -33,6 +33,7 @@ function actor() {
   }
   return c;
 }
+const available=new Set(MOTIONS.map(m=>m.key));
 const bone=(c,id)=>Object.values(c.bones).find(b=>boneId(b.name)===id);
 const position=(c,id)=>bone(c,id).getWorldPosition(new THREE.Vector3());
 function finite(c) {
@@ -42,14 +43,14 @@ function finite(c) {
   }
 }
 
-for(const key of ['jab','cross','hook','heavy','special']) {
+for(const key of ['jab','cross','hook','heavy','special'].filter(key=>available.has(key))) {
  const c=actor(),clip=c.actions[key].getClip(),hit=ATTACKS[key],impact=hit.duration*clip.userData.impactPhase;
  assert(impact>=hit.from&&impact<=hit.to,`${key}: gameplay hit window misses the authored impact (${impact.toFixed(3)}s)`);
  c.mixer.stopAllAction();
 }
 
 let count=0;
-for(const dt of [1/30,1/60,1/144])for(const key of ['combatIdle','jab','cross','hook','heavy','special','guard','dodgeLeft','dodgeRight','dodgeBack','dodgeForward','slam','slamLand','hit','hitHead']) {
+for(const dt of [1/30,1/60,1/144])for(const key of ['combatIdle','jab','cross','hook','heavy','special','guard','dodgeLeft','dodgeRight','dodgeBack','dodgeForward','slam','slamLand','hit','hitHead'].filter(key=>available.has(key))) {
   const c=actor();const duration=ATTACKS[key]?.duration ?? 1;
   c.combatAction={id:1,key,duration,time:0};
   for(let t=0;t<duration;t+=dt){c.combatAction.time=t;c.update(dt,key==='slam'?'FALLING':'IDLE',new THREE.Vector3());finite(c);}
@@ -68,7 +69,7 @@ console.log(`PASS: ${count} real-rig combat cases at 30/60/144 FPS; finite joint
 
 // Validate the action's meaning, not just finite joint values: a punch must
 // travel forward while its other hand protects the face and feet keep stance.
-for(const key of ['jab','cross']) {
+for(const key of ['jab','cross'].filter(key=>available.has(key))) {
   const c=actor(),clip=c.actions[key].getClip();c.fadeToAction(key,0);
   const sample=t=>{c.activeAction.enabled=true;c.activeAction.paused=false;c.activeAction.time=t;c.mixer.update(0);c.group.updateMatrixWorld(true);};
   sample(0);const hand=key==='jab'?'left':'right',other=hand==='left'?'right':'left';
@@ -81,7 +82,7 @@ for(const key of ['jab','cross']) {
   sample(clip.duration-1e-6);const finish=position(c,hand+'hand'),recovery=finish.distanceTo(start);assert(recovery<.02,`${key}: hand did not recover to guard (${recovery.toFixed(3)}m; ${start.toArray()} -> ${finish.toArray()}; weight ${c.activeAction.getEffectiveWeight()}; time ${c.activeAction.time}/${clip.duration})`);
   c.mixer.stopAllAction();
 }
-for(const key of ['hook','heavy']) {
+for(const key of ['hook','heavy'].filter(key=>available.has(key))) {
  const c=actor(),clip=c.actions[key].getClip();c.fadeToAction(key,0);const side='left';
  c.activeAction.time=0;c.mixer.update(0);c.group.updateMatrixWorld(true);const start=position(c,side+'hand');
  c.activeAction.time=clip.duration*clip.userData.impactPhase;c.mixer.update(0);c.group.updateMatrixWorld(true);
@@ -101,7 +102,7 @@ for(const key of ['hook','heavy']) {
  assert(Math.min(...['left','right'].map((side,i)=>position(c,side+'foot').distanceTo(feetStart[i])))<.45,'special: no stable support foot');
  c.mixer.stopAllAction();
 }
-for(const key of ['dodgeLeft','dodgeRight','dodgeBack','dodgeForward']) {
+for(const key of ['dodgeLeft','dodgeRight','dodgeBack','dodgeForward'].filter(key=>available.has(key))) {
  const c=actor(),clip=c.actions[key].getClip();c.fadeToAction(key,0);
  c.activeAction.time=0;c.mixer.update(0);c.group.updateMatrixWorld(true);
  const headStart=position(c,'head'),hipsStart=position(c,'hips');
@@ -116,7 +117,7 @@ for(const key of ['dodgeLeft','dodgeRight','dodgeBack','dodgeForward']) {
  assert(position(c,'leftfoot').y<.25&&position(c,'rightfoot').y<.25,key+': feet left the floor');
  c.mixer.stopAllAction();
 }
-console.log('PASS: grounded power strike, compact guard, four short evasions and punch recovery');
+console.log('PASS: grounded power strike, compact guard, retained strike and punch recovery; removed evasions checked by motion-cleanup');
 {
  const c=actor(),clip=c.actions.combatIdle.getClip();c.fadeToAction('combatIdle',0);
  const positions=[];
@@ -146,7 +147,7 @@ console.log('PASS: boxing ready stance stays planted with restrained breathing')
  assert(c.activeAction.isRunning(),'An interrupted idle stayed paused');
  c.mixer.stopAllAction();
 }
-for(const key of ['jab','cross','hook','special','dodgeForward','airTrick']) {
+for(const key of ['jab','cross','hook','special','dodgeForward','airTrick'].filter(key=>available.has(key))) {
  const c=actor(),v=new THREE.Vector3();
  if(key==='airTrick')c.triggerAirTrick('front');
  else c.combatAction={id:1,key,time:0,duration:1};
@@ -163,7 +164,7 @@ for(const key of ['jab','cross','hook','special','dodgeForward','airTrick']) {
  assert.equal(c.activeAction,c.actions.walk);assert(c.activeAction.isRunning());finite(c);
  c.mixer.stopAllAction();
 }
-console.log('PASS: timed landing resumes, paused idle recovers, and six skills return to idle and walking');
+console.log('PASS: timed landing resumes, paused idle recovers, and retained skills return to idle and walking');
 {
  const c=actor();
  c.fadeToAction('airTrick',0);c.mixer.update(.15);

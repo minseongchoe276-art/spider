@@ -1,0 +1,27 @@
+{
+  "date": "2026-10-14",
+  "runtime": "Node.js 22.19.0",
+  "results": {
+    "baseline_npm_test": "PASS",
+    "reproduction_before_fixes": {
+      "passed": 0,
+      "failed": 10
+    },
+    "new_regressions": {
+      "passed": 10,
+      "failed": 0
+    },
+    "npm_test": "PASS",
+    "npm_run_build": "PASS",
+    "git_diff_check": "PASS",
+    "chrome_local_city": "PASS"
+  },
+  "source_sha256": {
+    "src/main.js": "be5b46a20a62665edaf024da85b40260c800957206c8dc7140ed108c9a426ded",
+    "src/PlayerExperience.js": "8a77b414e1efde338b46df376c5bf17ad094753d1a68d193b3af692a021752e9",
+    "scripts/check-input-lifecycle.mjs": "4ab14c41145e66510d989382075554ee724fc57bbeea7115ff1bf0de37a2c073",
+    "scripts/check-qa.mjs": "51a46c92d6447e5092a1f4e5dee458e79b3a37bcd44acb7e2e4d83b909bc7e69",
+    "package.json": "82bf26b29f9b6bb4ff7493143c28730602551720b5a8dd5fd575b518a7d81489"
+  },
+  "npm_test_stages": 39
+}

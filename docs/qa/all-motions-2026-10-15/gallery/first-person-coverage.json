@@ -1,0 +1,37 @@
+[
+  {
+    "key": "combatIdle",
+    "phase": 0.25,
+    "status": "전투 동작: 복싱 대기 자세"
+  },
+  {
+    "key": "jab",
+    "phase": 0.3,
+    "status": "전투 동작: 리드 잽"
+  },
+  {
+    "key": "cross",
+    "phase": 0.6,
+    "status": "전투 동작: 오른손 스트레이트"
+  },
+  {
+    "key": "hook",
+    "phase": 0.43,
+    "status": "전투 동작: 훅"
+  },
+  {
+    "key": "heavy",
+    "phase": 0.43,
+    "status": "전투 동작: heavy"
+  },
+  {
+    "key": "special",
+    "phase": 0.3,
+    "status": "전투 동작: 강한 잽"
+  },
+  {
+    "key": "guard",
+    "phase": 0.25,
+    "status": "전투 동작: 단단한 가드"
+  }
+]

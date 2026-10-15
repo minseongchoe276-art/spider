@@ -1,0 +1,29 @@
+FAIL 24fps long-running mixer starts a fade without a precision jump: Large mixer time displaced a joint by 12.1mm at fade start
+PASS 24fps reversal keeps the current blended rig pose
+PASS 24fps first-person jab moves the correct arm and its wrist together
+PASS 24fps first-person cross moves the correct arm and its wrist together
+PASS 24fps first-person hook moves the correct arm and its wrist together
+PASS 24fps first-person heavy moves the correct arm and its wrist together
+PASS 24fps first-person special moves the correct arm and its wrist together
+FAIL 30fps long-running mixer starts a fade without a precision jump: Large mixer time displaced a joint by 12.1mm at fade start
+PASS 30fps reversal keeps the current blended rig pose
+PASS 30fps first-person jab moves the correct arm and its wrist together
+PASS 30fps first-person cross moves the correct arm and its wrist together
+PASS 30fps first-person hook moves the correct arm and its wrist together
+PASS 30fps first-person heavy moves the correct arm and its wrist together
+PASS 30fps first-person special moves the correct arm and its wrist together
+FAIL 60fps long-running mixer starts a fade without a precision jump: Large mixer time displaced a joint by 12.1mm at fade start
+PASS 60fps reversal keeps the current blended rig pose
+PASS 60fps first-person jab moves the correct arm and its wrist together
+PASS 60fps first-person cross moves the correct arm and its wrist together
+PASS 60fps first-person hook moves the correct arm and its wrist together
+PASS 60fps first-person heavy moves the correct arm and its wrist together
+PASS 60fps first-person special moves the correct arm and its wrist together
+FAIL 144fps long-running mixer starts a fade without a precision jump: Large mixer time displaced a joint by 12.1mm at fade start
+PASS 144fps reversal keeps the current blended rig pose
+PASS 144fps first-person jab moves the correct arm and its wrist together
+PASS 144fps first-person cross moves the correct arm and its wrist together
+PASS 144fps first-person hook moves the correct arm and its wrist together
+PASS 144fps first-person heavy moves the correct arm and its wrist together
+PASS 144fps first-person special moves the correct arm and its wrist together
+Complete motion review: 24 passed, 4 failed.

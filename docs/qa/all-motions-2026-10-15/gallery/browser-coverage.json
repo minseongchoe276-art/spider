@@ -1,0 +1,422 @@
+[
+  {
+    "key": "default",
+    "phase": 20,
+    "status": "default · 0.15초 / 0.73초 · 속도 0.00 m/s"
+  },
+  {
+    "key": "default",
+    "phase": 70,
+    "status": "default · 0.51초 / 0.73초 · 속도 0.00 m/s"
+  },
+  {
+    "key": "idle",
+    "phase": 20,
+    "status": "idle · 0.80초 / 4.00초 · 속도 0.00 m/s"
+  },
+  {
+    "key": "idle",
+    "phase": 70,
+    "status": "idle · 2.80초 / 4.00초 · 속도 0.00 m/s"
+  },
+  {
+    "key": "jog",
+    "phase": 20,
+    "status": "jog · 0.51초 / 2.57초 · 속도 0.00 m/s"
+  },
+  {
+    "key": "jog",
+    "phase": 70,
+    "status": "jog · 1.80초 / 2.57초 · 속도 0.00 m/s"
+  },
+  {
+    "key": "regularRun",
+    "phase": 20,
+    "status": "regularRun · 0.14초 / 0.70초 · 속도 0.00 m/s"
+  },
+  {
+    "key": "regularRun",
+    "phase": 70,
+    "status": "regularRun · 0.49초 / 0.70초 · 속도 0.00 m/s"
+  },
+  {
+    "key": "walk",
+    "phase": 20,
+    "status": "walk · 0.19초 / 0.97초 · 속도 0.00 m/s"
+  },
+  {
+    "key": "walk",
+    "phase": 70,
+    "status": "walk · 0.68초 / 0.97초 · 속도 0.00 m/s"
+  },
+  {
+    "key": "run",
+    "phase": 20,
+    "status": "run · 0.11초 / 0.53초 · 속도 0.00 m/s"
+  },
+  {
+    "key": "run",
+    "phase": 70,
+    "status": "run · 0.37초 / 0.53초 · 속도 0.00 m/s"
+  },
+  {
+    "key": "runStop",
+    "phase": 20,
+    "status": "runStop · 0.18초 / 0.90초 · 속도 0.00 m/s"
+  },
+  {
+    "key": "runStop",
+    "phase": 70,
+    "status": "runStop · 0.63초 / 0.90초 · 속도 0.00 m/s"
+  },
+  {
+    "key": "femaleStop",
+    "phase": 20,
+    "status": "femaleStop · 0.11초 / 0.53초 · 속도 0.00 m/s"
+  },
+  {
+    "key": "femaleStop",
+    "phase": 70,
+    "status": "femaleStop · 0.37초 / 0.53초 · 속도 0.00 m/s"
+  },
+  {
+    "key": "stop",
+    "phase": 20,
+    "status": "stop · 0.05초 / 0.23초 · 속도 0.00 m/s"
+  },
+  {
+    "key": "stop",
+    "phase": 70,
+    "status": "stop · 0.16초 / 0.23초 · 속도 0.00 m/s"
+  },
+  {
+    "key": "zip",
+    "phase": 20,
+    "status": "zip · 0.20초 / 1.00초 · 속도 0.00 m/s"
+  },
+  {
+    "key": "zip",
+    "phase": 70,
+    "status": "zip · 0.70초 / 1.00초 · 속도 0.00 m/s"
+  },
+  {
+    "key": "turnRight",
+    "phase": 20,
+    "status": "turnRight · 0.19초 / 0.93초 · 속도 0.00 m/s"
+  },
+  {
+    "key": "turnRight",
+    "phase": 70,
+    "status": "turnRight · 0.65초 / 0.93초 · 속도 0.00 m/s"
+  },
+  {
+    "key": "turnLeft",
+    "phase": 20,
+    "status": "turnLeft · 0.19초 / 0.93초 · 속도 0.00 m/s"
+  },
+  {
+    "key": "turnLeft",
+    "phase": 70,
+    "status": "turnLeft · 0.65초 / 0.93초 · 속도 0.00 m/s"
+  },
+  {
+    "key": "drop",
+    "phase": 20,
+    "status": "drop · 0.11초 / 0.53초 · 속도 0.00 m/s"
+  },
+  {
+    "key": "drop",
+    "phase": 70,
+    "status": "drop · 0.37초 / 0.53초 · 속도 0.00 m/s"
+  },
+  {
+    "key": "land",
+    "phase": 20,
+    "status": "land · 0.17초 / 0.87초 · 속도 0.00 m/s"
+  },
+  {
+    "key": "land",
+    "phase": 70,
+    "status": "land · 0.61초 / 0.87초 · 속도 0.00 m/s"
+  },
+  {
+    "key": "jump",
+    "phase": 20,
+    "status": "jump · 0.12초 / 0.60초 · 속도 0.00 m/s"
+  },
+  {
+    "key": "jump",
+    "phase": 70,
+    "status": "jump · 0.42초 / 0.60초 · 속도 0.00 m/s"
+  },
+  {
+    "key": "jumpDown",
+    "phase": 20,
+    "status": "jumpDown · 0.46초 / 2.30초 · 속도 0.00 m/s"
+  },
+  {
+    "key": "jumpDown",
+    "phase": 70,
+    "status": "jumpDown · 1.61초 / 2.30초 · 속도 0.00 m/s"
+  },
+  {
+    "key": "jumpDownVariant",
+    "phase": 20,
+    "status": "jumpDownVariant · 0.53초 / 2.63초 · 속도 0.00 m/s"
+  },
+  {
+    "key": "jumpDownVariant",
+    "phase": 70,
+    "status": "jumpDownVariant · 1.84초 / 2.63초 · 속도 0.00 m/s"
+  },
+  {
+    "key": "swing",
+    "phase": 20,
+    "status": "swing · 0.39초 / 1.95초 · 속도 0.00 m/s"
+  },
+  {
+    "key": "swing",
+    "phase": 70,
+    "status": "swing · 1.37초 / 1.95초 · 속도 0.00 m/s"
+  },
+  {
+    "key": "fall",
+    "phase": 20,
+    "status": "fall · 0.90초 / 4.50초 · 속도 0.00 m/s"
+  },
+  {
+    "key": "fall",
+    "phase": 70,
+    "status": "fall · 3.15초 / 4.50초 · 속도 0.00 m/s"
+  },
+  {
+    "key": "fallVariant",
+    "phase": 20,
+    "status": "fallVariant · 0.90초 / 4.50초 · 속도 0.00 m/s"
+  },
+  {
+    "key": "fallVariant",
+    "phase": 70,
+    "status": "fallVariant · 3.15초 / 4.50초 · 속도 0.00 m/s"
+  },
+  {
+    "key": "fallIdle",
+    "phase": 20,
+    "status": "fallIdle · 0.90초 / 4.50초 · 속도 0.00 m/s"
+  },
+  {
+    "key": "fallIdle",
+    "phase": 70,
+    "status": "fallIdle · 3.15초 / 4.50초 · 속도 0.00 m/s"
+  },
+  {
+    "key": "roll",
+    "phase": 20,
+    "status": "roll · 0.31초 / 1.54초 · 속도 0.00 m/s"
+  },
+  {
+    "key": "roll",
+    "phase": 70,
+    "status": "roll · 1.08초 / 1.54초 · 속도 0.00 m/s"
+  },
+  {
+    "key": "wall",
+    "phase": 20,
+    "status": "wall · 0.40초 / 2.00초 · 속도 0.00 m/s"
+  },
+  {
+    "key": "wall",
+    "phase": 70,
+    "status": "wall · 1.40초 / 2.00초 · 속도 0.00 m/s"
+  },
+  {
+    "key": "injuredIdle",
+    "phase": 20,
+    "status": "injuredIdle · 1.87초 / 9.33초 · 속도 0.00 m/s"
+  },
+  {
+    "key": "injuredIdle",
+    "phase": 70,
+    "status": "injuredIdle · 6.53초 / 9.33초 · 속도 0.00 m/s"
+  },
+  {
+    "key": "combatIdle",
+    "phase": 20,
+    "status": "combatIdle · 0.88초 / 4.40초 · 속도 0.00 m/s"
+  },
+  {
+    "key": "combatIdle",
+    "phase": 70,
+    "status": "combatIdle · 3.08초 / 4.40초 · 속도 0.00 m/s"
+  },
+  {
+    "key": "jab",
+    "phase": 20,
+    "status": "jab · 0.24초 / 1.20초 · 속도 0.00 m/s"
+  },
+  {
+    "key": "jab",
+    "phase": 70,
+    "status": "jab · 0.84초 / 1.20초 · 속도 0.00 m/s"
+  },
+  {
+    "key": "cross",
+    "phase": 20,
+    "status": "cross · 0.13초 / 0.65초 · 속도 0.00 m/s"
+  },
+  {
+    "key": "cross",
+    "phase": 70,
+    "status": "cross · 0.46초 / 0.65초 · 속도 0.00 m/s"
+  },
+  {
+    "key": "guard",
+    "phase": 20,
+    "status": "guard · 0.40초 / 2.00초 · 속도 0.00 m/s"
+  },
+  {
+    "key": "guard",
+    "phase": 70,
+    "status": "guard · 1.40초 / 2.00초 · 속도 0.00 m/s"
+  },
+  {
+    "key": "dodgeRight",
+    "phase": 20,
+    "status": "dodgeRight · 0.08초 / 0.38초 · 속도 0.00 m/s"
+  },
+  {
+    "key": "dodgeRight",
+    "phase": 70,
+    "status": "dodgeRight · 0.27초 / 0.38초 · 속도 0.00 m/s"
+  },
+  {
+    "key": "dodgeBack",
+    "phase": 20,
+    "status": "dodgeBack · 0.08초 / 0.42초 · 속도 0.00 m/s"
+  },
+  {
+    "key": "dodgeBack",
+    "phase": 70,
+    "status": "dodgeBack · 0.29초 / 0.42초 · 속도 0.00 m/s"
+  },
+  {
+    "key": "dodgeLeft",
+    "phase": 20,
+    "status": "dodgeLeft · 0.08초 / 0.38초 · 속도 0.00 m/s"
+  },
+  {
+    "key": "dodgeLeft",
+    "phase": 70,
+    "status": "dodgeLeft · 0.27초 / 0.38초 · 속도 0.00 m/s"
+  },
+  {
+    "key": "slam",
+    "phase": 20,
+    "status": "slam · 0.54초 / 2.71초 · 속도 0.00 m/s"
+  },
+  {
+    "key": "slam",
+    "phase": 70,
+    "status": "slam · 1.90초 / 2.71초 · 속도 0.00 m/s"
+  },
+  {
+    "key": "dodgeForward",
+    "phase": 20,
+    "status": "dodgeForward · 0.10초 / 0.52초 · 속도 0.00 m/s"
+  },
+  {
+    "key": "dodgeForward",
+    "phase": 70,
+    "status": "dodgeForward · 0.36초 / 0.52초 · 속도 0.00 m/s"
+  },
+  {
+    "key": "heavy",
+    "phase": 20,
+    "status": "heavy · 0.28초 / 1.40초 · 속도 0.00 m/s"
+  },
+  {
+    "key": "heavy",
+    "phase": 70,
+    "status": "heavy · 0.98초 / 1.40초 · 속도 0.00 m/s"
+  },
+  {
+    "key": "hook",
+    "phase": 20,
+    "status": "hook · 0.28초 / 1.40초 · 속도 0.00 m/s"
+  },
+  {
+    "key": "hook",
+    "phase": 70,
+    "status": "hook · 0.98초 / 1.40초 · 속도 0.00 m/s"
+  },
+  {
+    "key": "special",
+    "phase": 20,
+    "status": "special · 0.24초 / 1.20초 · 속도 0.00 m/s"
+  },
+  {
+    "key": "special",
+    "phase": 70,
+    "status": "special · 0.84초 / 1.20초 · 속도 0.00 m/s"
+  },
+  {
+    "key": "airTrick",
+    "phase": 20,
+    "status": "airTrick · 0.19초 / 0.93초 · 속도 0.00 m/s"
+  },
+  {
+    "key": "airTrick",
+    "phase": 70,
+    "status": "airTrick · 0.65초 / 0.93초 · 속도 0.00 m/s"
+  },
+  {
+    "key": "slamLand",
+    "phase": 20,
+    "status": "slamLand · 0.18초 / 0.88초 · 속도 0.00 m/s"
+  },
+  {
+    "key": "slamLand",
+    "phase": 70,
+    "status": "slamLand · 0.62초 / 0.88초 · 속도 0.00 m/s"
+  },
+  {
+    "key": "hit",
+    "phase": 20,
+    "status": "hit · 0.08초 / 0.42초 · 속도 0.00 m/s"
+  },
+  {
+    "key": "hit",
+    "phase": 70,
+    "status": "hit · 0.29초 / 0.42초 · 속도 0.00 m/s"
+  },
+  {
+    "key": "hitHead",
+    "phase": 20,
+    "status": "hitHead · 0.11초 / 0.54초 · 속도 0.00 m/s"
+  },
+  {
+    "key": "hitHead",
+    "phase": 70,
+    "status": "hitHead · 0.38초 / 0.54초 · 속도 0.00 m/s"
+  },
+  {
+    "key": "candidateFront",
+    "phase": 20,
+    "status": "candidateFront · 0.33초 / 1.67초 · 속도 0.00 m/s"
+  },
+  {
+    "key": "candidateFront",
+    "phase": 70,
+    "status": "candidateFront · 1.17초 / 1.67초 · 속도 0.00 m/s"
+  },
+  {
+    "key": "candidateStylish",
+    "phase": 20,
+    "status": "candidateStylish · 0.43초 / 2.13초 · 속도 0.00 m/s"
+  },
+  {
+    "key": "candidateStylish",
+    "phase": 70,
+    "status": "candidateStylish · 1.49초 / 2.13초 · 속도 0.00 m/s"
+  }
+]

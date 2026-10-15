@@ -1,0 +1,929 @@
+{
+  "results": [
+    {
+      "name": "24fps walk: slope 0/0, ankle continuity and toe clearance",
+      "status": "PASS",
+      "detail": {
+        "frames": 72,
+        "minToeClearance": 0.0071590095351238,
+        "minBootMeshClearance": 0.0029003103011690434,
+        "maxPlantedSoleGap": 0.0030026176635160546,
+        "bootVertices": 354,
+        "maxAnkleDegreesPerSecond": 461.9657914430993,
+        "minKneeAngle": 108.32079711857337,
+        "maxKneeAngle": 164.03303005905528
+      }
+    },
+    {
+      "name": "24fps walk: slope 0/0.3, ankle continuity and toe clearance",
+      "status": "PASS",
+      "detail": {
+        "frames": 72,
+        "minToeClearance": 0.006794288952369554,
+        "minBootMeshClearance": 0.0029777043346911336,
+        "maxPlantedSoleGap": 0.0032240652110492873,
+        "bootVertices": 354,
+        "maxAnkleDegreesPerSecond": 699.4354448720777,
+        "minKneeAngle": 96.72783158631964,
+        "maxKneeAngle": 161.15491977849982
+      }
+    },
+    {
+      "name": "24fps walk: slope 0/-0.3, ankle continuity and toe clearance",
+      "status": "PASS",
+      "detail": {
+        "frames": 72,
+        "minToeClearance": 0.007038851338352137,
+        "minBootMeshClearance": 0.0029089887754948363,
+        "maxPlantedSoleGap": 0.004240258665077712,
+        "bootVertices": 354,
+        "maxAnkleDegreesPerSecond": 525.5761955459675,
+        "minKneeAngle": 90.39757019551098,
+        "maxKneeAngle": 168.53606396027905
+      }
+    },
+    {
+      "name": "24fps walk: slope 0.3/0, ankle continuity and toe clearance",
+      "status": "PASS",
+      "detail": {
+        "frames": 72,
+        "minToeClearance": 0.007904432046256203,
+        "minBootMeshClearance": 0.002901160984781619,
+        "maxPlantedSoleGap": 0.003032227773823913,
+        "bootVertices": 354,
+        "maxAnkleDegreesPerSecond": 512.0663851688157,
+        "minKneeAngle": 105.90484825867972,
+        "maxKneeAngle": 162.44902066756293
+      }
+    },
+    {
+      "name": "24fps walk: slope 0.4/0.2, ankle continuity and toe clearance",
+      "status": "PASS",
+      "detail": {
+        "frames": 72,
+        "minToeClearance": 0.008135711426730002,
+        "minBootMeshClearance": 0.002904353356120881,
+        "maxPlantedSoleGap": 0.003037369639810883,
+        "bootVertices": 354,
+        "maxAnkleDegreesPerSecond": 681.6706550296542,
+        "minKneeAngle": 102.67717873194688,
+        "maxKneeAngle": 157.09026261286445
+      }
+    },
+    {
+      "name": "24fps regularRun: slope 0/0, ankle continuity and toe clearance",
+      "status": "PASS",
+      "detail": {
+        "frames": 72,
+        "minToeClearance": 0.008487823418071055,
+        "minBootMeshClearance": 0.002974892742141013,
+        "maxPlantedSoleGap": 0.0030002899418767213,
+        "bootVertices": 354,
+        "maxAnkleDegreesPerSecond": 720.0000003914204,
+        "minKneeAngle": 63.71838219084521,
+        "maxKneeAngle": 168.5360673097822
+      }
+    },
+    {
+      "name": "24fps regularRun: slope 0/0.3, ankle continuity and toe clearance",
+      "status": "PASS",
+      "detail": {
+        "frames": 72,
+        "minToeClearance": 0.007425816531964058,
+        "minBootMeshClearance": 0.002988421501514793,
+        "maxPlantedSoleGap": 0.0030394169900795354,
+        "bootVertices": 354,
+        "maxAnkleDegreesPerSecond": 719.9999970169116,
+        "minKneeAngle": 63.71838219084518,
+        "maxKneeAngle": 168.53606728538057
+      }
+    },
+    {
+      "name": "24fps regularRun: slope 0/-0.3, ankle continuity and toe clearance",
+      "status": "PASS",
+      "detail": {
+        "frames": 72,
+        "minToeClearance": 0.0087087147708802,
+        "minBootMeshClearance": 0.002933662368380663,
+        "maxPlantedSoleGap": 0.003002667350448074,
+        "bootVertices": 354,
+        "maxAnkleDegreesPerSecond": 720.0000537435999,
+        "minKneeAngle": 63.71838219084521,
+        "maxKneeAngle": 168.5360650463192
+      }
+    },
+    {
+      "name": "24fps regularRun: slope 0.3/0, ankle continuity and toe clearance",
+      "status": "PASS",
+      "detail": {
+        "frames": 72,
+        "minToeClearance": 0.008838435810092804,
+        "minBootMeshClearance": 0.0029673426007328675,
+        "maxPlantedSoleGap": 0.003009571114592817,
+        "bootVertices": 354,
+        "maxAnkleDegreesPerSecond": 720.0006009394045,
+        "minKneeAngle": 63.7183821908452,
+        "maxKneeAngle": 168.53606731157456
+      }
+    },
+    {
+      "name": "24fps regularRun: slope 0.4/0.2, ankle continuity and toe clearance",
+      "status": "PASS",
+      "detail": {
+        "frames": 72,
+        "minToeClearance": 0.009098042181103771,
+        "minBootMeshClearance": 0.002982874878119157,
+        "maxPlantedSoleGap": 0.003013265324889103,
+        "bootVertices": 354,
+        "maxAnkleDegreesPerSecond": 719.9999778804008,
+        "minKneeAngle": 63.71838219084521,
+        "maxKneeAngle": 168.53606729158722
+      }
+    },
+    {
+      "name": "24fps run: slope 0/0, ankle continuity and toe clearance",
+      "status": "PASS",
+      "detail": {
+        "frames": 72,
+        "minToeClearance": 0.007396868357337105,
+        "minBootMeshClearance": 0.0029237501901955105,
+        "maxPlantedSoleGap": 0.003004311678678582,
+        "bootVertices": 354,
+        "maxAnkleDegreesPerSecond": 720.0003364931906,
+        "minKneeAngle": 49.66903111746023,
+        "maxKneeAngle": 168.53606712478955
+      }
+    },
+    {
+      "name": "24fps run: slope 0/0.3, ankle continuity and toe clearance",
+      "status": "PASS",
+      "detail": {
+        "frames": 72,
+        "minToeClearance": 0.007224012751158693,
+        "minBootMeshClearance": 0.0029999519183494527,
+        "maxPlantedSoleGap": 0.003439772025982335,
+        "bootVertices": 354,
+        "maxAnkleDegreesPerSecond": 720.0003355987,
+        "minKneeAngle": 49.58482701988211,
+        "maxKneeAngle": 168.5360666303521
+      }
+    },
+    {
+      "name": "24fps run: slope 0/-0.3, ankle continuity and toe clearance",
+      "status": "PASS",
+      "detail": {
+        "frames": 72,
+        "minToeClearance": 0.007787067215843102,
+        "minBootMeshClearance": 0.002926789207756908,
+        "maxPlantedSoleGap": 0.00314045367150273,
+        "bootVertices": 354,
+        "maxAnkleDegreesPerSecond": 720.0003322500934,
+        "minKneeAngle": 48.50632392120858,
+        "maxKneeAngle": 161.54762503041752
+      }
+    },
+    {
+      "name": "24fps run: slope 0.3/0, ankle continuity and toe clearance",
+      "status": "PASS",
+      "detail": {
+        "frames": 72,
+        "minToeClearance": 0.007698202060864225,
+        "minBootMeshClearance": 0.002928986370375638,
+        "maxPlantedSoleGap": 0.0030212346534597527,
+        "bootVertices": 354,
+        "maxAnkleDegreesPerSecond": 720.0003313760591,
+        "minKneeAngle": 49.60038770780685,
+        "maxKneeAngle": 168.53606715925906
+      }
+    },
+    {
+      "name": "24fps run: slope 0.4/0.2, ankle continuity and toe clearance",
+      "status": "PASS",
+      "detail": {
+        "frames": 72,
+        "minToeClearance": 0.007767995297084163,
+        "minBootMeshClearance": 0.0029793788250431774,
+        "maxPlantedSoleGap": 0.00305460898120008,
+        "bootVertices": 354,
+        "maxAnkleDegreesPerSecond": 720.0003688014133,
+        "minKneeAngle": 49.55265037197914,
+        "maxKneeAngle": 168.53606706185877
+      }
+    },
+    {
+      "name": "30fps walk: slope 0/0, ankle continuity and toe clearance",
+      "status": "PASS",
+      "detail": {
+        "frames": 90,
+        "minToeClearance": 0.0068604712048711824,
+        "minBootMeshClearance": 0.0029035041999254806,
+        "maxPlantedSoleGap": 0.0030026176635160667,
+        "bootVertices": 354,
+        "maxAnkleDegreesPerSecond": 513.5984422639383,
+        "minKneeAngle": 108.00523691710444,
+        "maxKneeAngle": 167.22858841293365
+      }
+    },
+    {
+      "name": "30fps walk: slope 0/0.3, ankle continuity and toe clearance",
+      "status": "PASS",
+      "detail": {
+        "frames": 90,
+        "minToeClearance": 0.006739037734663611,
+        "minBootMeshClearance": 0.0029746395148830818,
+        "maxPlantedSoleGap": 0.003242202343348627,
+        "bootVertices": 354,
+        "maxAnkleDegreesPerSecond": 720.0001915678338,
+        "minKneeAngle": 96.77276790175883,
+        "maxKneeAngle": 158.61632811486749
+      }
+    },
+    {
+      "name": "30fps walk: slope 0/-0.3, ankle continuity and toe clearance",
+      "status": "PASS",
+      "detail": {
+        "frames": 90,
+        "minToeClearance": 0.007634814046792837,
+        "minBootMeshClearance": 0.0029104547589733354,
+        "maxPlantedSoleGap": 0.004280782015158469,
+        "bootVertices": 354,
+        "maxAnkleDegreesPerSecond": 699.9514926927507,
+        "minKneeAngle": 89.76388506212717,
+        "maxKneeAngle": 168.53606371250237
+      }
+    },
+    {
+      "name": "30fps walk: slope 0.3/0, ankle continuity and toe clearance",
+      "status": "PASS",
+      "detail": {
+        "frames": 90,
+        "minToeClearance": 0.007758675227388025,
+        "minBootMeshClearance": 0.0029026210716864634,
+        "maxPlantedSoleGap": 0.0030326954313060137,
+        "bootVertices": 354,
+        "maxAnkleDegreesPerSecond": 562.9009614613213,
+        "minKneeAngle": 105.96220955560442,
+        "maxKneeAngle": 166.9911231108057
+      }
+    },
+    {
+      "name": "30fps walk: slope 0.4/0.2, ankle continuity and toe clearance",
+      "status": "PASS",
+      "detail": {
+        "frames": 90,
+        "minToeClearance": 0.008090243392161689,
+        "minBootMeshClearance": 0.00290048929920228,
+        "maxPlantedSoleGap": 0.0033325560676187305,
+        "bootVertices": 354,
+        "maxAnkleDegreesPerSecond": 719.9999785571505,
+        "minKneeAngle": 102.3694231397085,
+        "maxKneeAngle": 155.06038696132046
+      }
+    },
+    {
+      "name": "30fps regularRun: slope 0/0, ankle continuity and toe clearance",
+      "status": "PASS",
+      "detail": {
+        "frames": 90,
+        "minToeClearance": 0.007786304421647294,
+        "minBootMeshClearance": 0.002977165514446257,
+        "maxPlantedSoleGap": 0.003000001983439628,
+        "bootVertices": 354,
+        "maxAnkleDegreesPerSecond": 720.0001283307543,
+        "minKneeAngle": 63.71838219084521,
+        "maxKneeAngle": 168.53606747313435
+      }
+    },
+    {
+      "name": "30fps regularRun: slope 0/0.3, ankle continuity and toe clearance",
+      "status": "PASS",
+      "detail": {
+        "frames": 90,
+        "minToeClearance": 0.00891137856002211,
+        "minBootMeshClearance": 0.0029999660810848816,
+        "maxPlantedSoleGap": 0.0030003623122230594,
+        "bootVertices": 354,
+        "maxAnkleDegreesPerSecond": 720.0000017398878,
+        "minKneeAngle": 63.71838219084521,
+        "maxKneeAngle": 168.53606744640902
+      }
+    },
+    {
+      "name": "30fps regularRun: slope 0/-0.3, ankle continuity and toe clearance",
+      "status": "PASS",
+      "detail": {
+        "frames": 90,
+        "minToeClearance": 0.008968036108961464,
+        "minBootMeshClearance": 0.002907429971724239,
+        "maxPlantedSoleGap": 0.0029999950326820013,
+        "bootVertices": 354,
+        "maxAnkleDegreesPerSecond": 720.0001299108932,
+        "minKneeAngle": 63.53010898029971,
+        "maxKneeAngle": 157.72318053681354
+      }
+    },
+    {
+      "name": "30fps regularRun: slope 0.3/0, ankle continuity and toe clearance",
+      "status": "PASS",
+      "detail": {
+        "frames": 90,
+        "minToeClearance": 0.008890794354128484,
+        "minBootMeshClearance": 0.0029741092528901385,
+        "maxPlantedSoleGap": 0.0030086856358669013,
+        "bootVertices": 354,
+        "maxAnkleDegreesPerSecond": 720.0006113947176,
+        "minKneeAngle": 63.7183821908452,
+        "maxKneeAngle": 168.53606747520672
+      }
+    },
+    {
+      "name": "30fps regularRun: slope 0.4/0.2, ankle continuity and toe clearance",
+      "status": "PASS",
+      "detail": {
+        "frames": 90,
+        "minToeClearance": 0.00920239617383739,
+        "minBootMeshClearance": 0.0029995964170717593,
+        "maxPlantedSoleGap": 0.0029999857515101702,
+        "bootVertices": 354,
+        "maxAnkleDegreesPerSecond": 720.0009774791823,
+        "minKneeAngle": 63.71838219084521,
+        "maxKneeAngle": 168.53606620576858
+      }
+    },
+    {
+      "name": "30fps run: slope 0/0, ankle continuity and toe clearance",
+      "status": "PASS",
+      "detail": {
+        "frames": 90,
+        "minToeClearance": 0.007425781506347276,
+        "minBootMeshClearance": 0.00292921421384994,
+        "maxPlantedSoleGap": 0.0030028546652268195,
+        "bootVertices": 354,
+        "maxAnkleDegreesPerSecond": 720.0004475677805,
+        "minKneeAngle": 49.44107360164838,
+        "maxKneeAngle": 168.53606701637221
+      }
+    },
+    {
+      "name": "30fps run: slope 0/0.3, ankle continuity and toe clearance",
+      "status": "PASS",
+      "detail": {
+        "frames": 90,
+        "minToeClearance": 0.006775135684191191,
+        "minBootMeshClearance": 0.0029998798217227285,
+        "maxPlantedSoleGap": 0.003466917799891611,
+        "bootVertices": 354,
+        "maxAnkleDegreesPerSecond": 720.0004456399691,
+        "minKneeAngle": 49.54542862404077,
+        "maxKneeAngle": 168.5360669151352
+      }
+    },
+    {
+      "name": "30fps run: slope 0/-0.3, ankle continuity and toe clearance",
+      "status": "PASS",
+      "detail": {
+        "frames": 90,
+        "minToeClearance": 0.007805119929147342,
+        "minBootMeshClearance": 0.0029206129434209416,
+        "maxPlantedSoleGap": 0.0031412302353039934,
+        "bootVertices": 354,
+        "maxAnkleDegreesPerSecond": 720.0004509637588,
+        "minKneeAngle": 48.58329234506261,
+        "maxKneeAngle": 155.9504487151617
+      }
+    },
+    {
+      "name": "30fps run: slope 0.3/0, ankle continuity and toe clearance",
+      "status": "PASS",
+      "detail": {
+        "frames": 90,
+        "minToeClearance": 0.007505126823984942,
+        "minBootMeshClearance": 0.0029079170807550115,
+        "maxPlantedSoleGap": 0.0030202537638778088,
+        "bootVertices": 354,
+        "maxAnkleDegreesPerSecond": 720.0004485549281,
+        "minKneeAngle": 49.39951721263488,
+        "maxKneeAngle": 168.5360672964728
+      }
+    },
+    {
+      "name": "30fps run: slope 0.4/0.2, ankle continuity and toe clearance",
+      "status": "PASS",
+      "detail": {
+        "frames": 90,
+        "minToeClearance": 0.007715996224409771,
+        "minBootMeshClearance": 0.0029430560116794346,
+        "maxPlantedSoleGap": 0.0030519006457496722,
+        "bootVertices": 354,
+        "maxAnkleDegreesPerSecond": 720.0005135098334,
+        "minKneeAngle": 49.47937942840742,
+        "maxKneeAngle": 168.5360670702068
+      }
+    },
+    {
+      "name": "60fps walk: slope 0/0, ankle continuity and toe clearance",
+      "status": "PASS",
+      "detail": {
+        "frames": 180,
+        "minToeClearance": 0.006790083322171403,
+        "minBootMeshClearance": 0.0029030295858949407,
+        "maxPlantedSoleGap": 0.0030029404706556915,
+        "bootVertices": 354,
+        "maxAnkleDegreesPerSecond": 581.0327952289895,
+        "minKneeAngle": 107.98628181830946,
+        "maxKneeAngle": 159.7558217088949
+      }
+    },
+    {
+      "name": "60fps walk: slope 0/0.3, ankle continuity and toe clearance",
+      "status": "PASS",
+      "detail": {
+        "frames": 180,
+        "minToeClearance": 0.0073243253424541965,
+        "minBootMeshClearance": 0.002971489126760929,
+        "maxPlantedSoleGap": 0.0032106959559924098,
+        "bootVertices": 354,
+        "maxAnkleDegreesPerSecond": 720.0004594564829,
+        "minKneeAngle": 96.95405763282155,
+        "maxKneeAngle": 158.03041182900876
+      }
+    },
+    {
+      "name": "60fps walk: slope 0/-0.3, ankle continuity and toe clearance",
+      "status": "PASS",
+      "detail": {
+        "frames": 180,
+        "minToeClearance": 0.00715472554525326,
+        "minBootMeshClearance": 0.0029017157630606416,
+        "maxPlantedSoleGap": 0.004289785852600203,
+        "bootVertices": 354,
+        "maxAnkleDegreesPerSecond": 719.9998668188873,
+        "minKneeAngle": 89.21259440998138,
+        "maxKneeAngle": 160.64694470456746
+      }
+    },
+    {
+      "name": "60fps walk: slope 0.3/0, ankle continuity and toe clearance",
+      "status": "PASS",
+      "detail": {
+        "frames": 180,
+        "minToeClearance": 0.007948618469471161,
+        "minBootMeshClearance": 0.0029000620770659757,
+        "maxPlantedSoleGap": 0.003032215468114996,
+        "bootVertices": 354,
+        "maxAnkleDegreesPerSecond": 720.0036140705053,
+        "minKneeAngle": 105.8314642791438,
+        "maxKneeAngle": 168.5360616175286
+      }
+    },
+    {
+      "name": "60fps walk: slope 0.4/0.2, ankle continuity and toe clearance",
+      "status": "PASS",
+      "detail": {
+        "frames": 180,
+        "minToeClearance": 0.008072096521622163,
+        "minBootMeshClearance": 0.0029023482920536026,
+        "maxPlantedSoleGap": 0.003431229561693949,
+        "bootVertices": 354,
+        "maxAnkleDegreesPerSecond": 720.0066025599614,
+        "minKneeAngle": 102.3906918020184,
+        "maxKneeAngle": 159.47878660960694
+      }
+    },
+    {
+      "name": "60fps regularRun: slope 0/0, ankle continuity and toe clearance",
+      "status": "PASS",
+      "detail": {
+        "frames": 180,
+        "minToeClearance": 0.007786304421647294,
+        "minBootMeshClearance": 0.002978296338597587,
+        "maxPlantedSoleGap": 0.003000161641127446,
+        "bootVertices": 354,
+        "maxAnkleDegreesPerSecond": 720.0002210105035,
+        "minKneeAngle": 63.71838219084521,
+        "maxKneeAngle": 168.53606681199187
+      }
+    },
+    {
+      "name": "60fps regularRun: slope 0/0.3, ankle continuity and toe clearance",
+      "status": "PASS",
+      "detail": {
+        "frames": 180,
+        "minToeClearance": 0.007883028749767151,
+        "minBootMeshClearance": 0.0029869819645352846,
+        "maxPlantedSoleGap": 0.0031519217062600524,
+        "bootVertices": 354,
+        "maxAnkleDegreesPerSecond": 720.0010143492224,
+        "minKneeAngle": 63.71838219084518,
+        "maxKneeAngle": 168.53606678539606
+      }
+    },
+    {
+      "name": "60fps regularRun: slope 0/-0.3, ankle continuity and toe clearance",
+      "status": "PASS",
+      "detail": {
+        "frames": 180,
+        "minToeClearance": 0.00891552988591321,
+        "minBootMeshClearance": 0.0029069275866371175,
+        "maxPlantedSoleGap": 0.003000449068146782,
+        "bootVertices": 354,
+        "maxAnkleDegreesPerSecond": 720.0002192357814,
+        "minKneeAngle": 63.5138090058271,
+        "maxKneeAngle": 165.59891159154026
+      }
+    },
+    {
+      "name": "60fps regularRun: slope 0.3/0, ankle continuity and toe clearance",
+      "status": "PASS",
+      "detail": {
+        "frames": 180,
+        "minToeClearance": 0.008959294680698528,
+        "minBootMeshClearance": 0.0029776498724643392,
+        "maxPlantedSoleGap": 0.0030096498657098576,
+        "bootVertices": 354,
+        "maxAnkleDegreesPerSecond": 720.0022118497502,
+        "minKneeAngle": 63.7183821908452,
+        "maxKneeAngle": 168.536066812227
+      }
+    },
+    {
+      "name": "60fps regularRun: slope 0.4/0.2, ankle continuity and toe clearance",
+      "status": "PASS",
+      "detail": {
+        "frames": 180,
+        "minToeClearance": 0.009132796835572998,
+        "minBootMeshClearance": 0.002999574021588902,
+        "maxPlantedSoleGap": 0.0030017283578081533,
+        "bootVertices": 354,
+        "maxAnkleDegreesPerSecond": 720.0034182843316,
+        "minKneeAngle": 63.71838219084521,
+        "maxKneeAngle": 168.53606602968668
+      }
+    },
+    {
+      "name": "60fps run: slope 0/0, ankle continuity and toe clearance",
+      "status": "PASS",
+      "detail": {
+        "frames": 180,
+        "minToeClearance": 0.0073916386834625425,
+        "minBootMeshClearance": 0.002927789319350463,
+        "maxPlantedSoleGap": 0.0030044745610902134,
+        "bootVertices": 354,
+        "maxAnkleDegreesPerSecond": 720.0007127847649,
+        "minKneeAngle": 49.53634019870247,
+        "maxKneeAngle": 168.53606548710292
+      }
+    },
+    {
+      "name": "60fps run: slope 0/0.3, ankle continuity and toe clearance",
+      "status": "PASS",
+      "detail": {
+        "frames": 180,
+        "minToeClearance": 0.007235209405808796,
+        "minBootMeshClearance": 0.0029863221744523827,
+        "maxPlantedSoleGap": 0.003471477920615307,
+        "bootVertices": 354,
+        "maxAnkleDegreesPerSecond": 720.0019032550028,
+        "minKneeAngle": 49.437286221445,
+        "maxKneeAngle": 168.5360672617481
+      }
+    },
+    {
+      "name": "60fps run: slope 0/-0.3, ankle continuity and toe clearance",
+      "status": "PASS",
+      "detail": {
+        "frames": 180,
+        "minToeClearance": 0.007674463279075894,
+        "minBootMeshClearance": 0.0029379761790677694,
+        "maxPlantedSoleGap": 0.00314128970133698,
+        "bootVertices": 354,
+        "maxAnkleDegreesPerSecond": 720.0006837571656,
+        "minKneeAngle": 48.40297332022706,
+        "maxKneeAngle": 154.87433898443973
+      }
+    },
+    {
+      "name": "60fps run: slope 0.3/0, ankle continuity and toe clearance",
+      "status": "PASS",
+      "detail": {
+        "frames": 180,
+        "minToeClearance": 0.007843172032406259,
+        "minBootMeshClearance": 0.0029288345098308476,
+        "maxPlantedSoleGap": 0.003020648176282722,
+        "bootVertices": 354,
+        "maxAnkleDegreesPerSecond": 720.0035233939404,
+        "minKneeAngle": 49.44594529996963,
+        "maxKneeAngle": 168.53606516453175
+      }
+    },
+    {
+      "name": "60fps run: slope 0.4/0.2, ankle continuity and toe clearance",
+      "status": "PASS",
+      "detail": {
+        "frames": 180,
+        "minToeClearance": 0.007714885465909038,
+        "minBootMeshClearance": 0.00293071040854076,
+        "maxPlantedSoleGap": 0.0030527462863316757,
+        "bootVertices": 354,
+        "maxAnkleDegreesPerSecond": 720.0062613351648,
+        "minKneeAngle": 49.59251057492734,
+        "maxKneeAngle": 168.53606688735283
+      }
+    },
+    {
+      "name": "144fps walk: slope 0/0, ankle continuity and toe clearance",
+      "status": "PASS",
+      "detail": {
+        "frames": 432,
+        "minToeClearance": 0.0069205619034114485,
+        "minBootMeshClearance": 0.002900283137091676,
+        "maxPlantedSoleGap": 0.0030406712442924613,
+        "bootVertices": 354,
+        "maxAnkleDegreesPerSecond": 720.009714004373,
+        "minKneeAngle": 107.93924608758293,
+        "maxKneeAngle": 162.04099032509146
+      }
+    },
+    {
+      "name": "144fps walk: slope 0/0.3, ankle continuity and toe clearance",
+      "status": "PASS",
+      "detail": {
+        "frames": 432,
+        "minToeClearance": 0.006867566998752572,
+        "minBootMeshClearance": 0.0029436964749284256,
+        "maxPlantedSoleGap": 0.0032138654828044733,
+        "bootVertices": 354,
+        "maxAnkleDegreesPerSecond": 720.0131733141942,
+        "minKneeAngle": 94.63580449738222,
+        "maxKneeAngle": 158.200366924977
+      }
+    },
+    {
+      "name": "144fps walk: slope 0/-0.3, ankle continuity and toe clearance",
+      "status": "PASS",
+      "detail": {
+        "frames": 432,
+        "minToeClearance": 0.007038852469721912,
+        "minBootMeshClearance": 0.0029001606991505557,
+        "maxPlantedSoleGap": 0.004348647344533774,
+        "bootVertices": 354,
+        "maxAnkleDegreesPerSecond": 720.0006683899727,
+        "minKneeAngle": 89.71280991161223,
+        "maxKneeAngle": 158.94313294060913
+      }
+    },
+    {
+      "name": "144fps walk: slope 0.3/0, ankle continuity and toe clearance",
+      "status": "PASS",
+      "detail": {
+        "frames": 432,
+        "minToeClearance": 0.00799176587749139,
+        "minBootMeshClearance": 0.0029000247386289047,
+        "maxPlantedSoleGap": 0.0030313978952119583,
+        "bootVertices": 354,
+        "maxAnkleDegreesPerSecond": 720.0386928881672,
+        "minKneeAngle": 105.85245027342964,
+        "maxKneeAngle": 168.53606182088234
+      }
+    },
+    {
+      "name": "144fps walk: slope 0.4/0.2, ankle continuity and toe clearance",
+      "status": "PASS",
+      "detail": {
+        "frames": 432,
+        "minToeClearance": 0.008084868761790154,
+        "minBootMeshClearance": 0.0029009164196530657,
+        "maxPlantedSoleGap": 0.00346403333256734,
+        "bootVertices": 354,
+        "maxAnkleDegreesPerSecond": 720.0642604066318,
+        "minKneeAngle": 102.40868554181421,
+        "maxKneeAngle": 168.5360614067573
+      }
+    },
+    {
+      "name": "144fps regularRun: slope 0/0, ankle continuity and toe clearance",
+      "status": "PASS",
+      "detail": {
+        "frames": 432,
+        "minToeClearance": 0.007362829428066181,
+        "minBootMeshClearance": 0.0029292763151952624,
+        "maxPlantedSoleGap": 0.0030000044319656994,
+        "bootVertices": 354,
+        "maxAnkleDegreesPerSecond": 720.0058106676661,
+        "minKneeAngle": 63.718382190845105,
+        "maxKneeAngle": 168.53606647085988
+      }
+    },
+    {
+      "name": "144fps regularRun: slope 0/0.3, ankle continuity and toe clearance",
+      "status": "PASS",
+      "detail": {
+        "frames": 432,
+        "minToeClearance": 0.00749379746184875,
+        "minBootMeshClearance": 0.002954568593305673,
+        "maxPlantedSoleGap": 0.003101336051445136,
+        "bootVertices": 354,
+        "maxAnkleDegreesPerSecond": 720.0099990552826,
+        "minKneeAngle": 63.718382190845105,
+        "maxKneeAngle": 168.5360660375137
+      }
+    },
+    {
+      "name": "144fps regularRun: slope 0/-0.3, ankle continuity and toe clearance",
+      "status": "PASS",
+      "detail": {
+        "frames": 432,
+        "minToeClearance": 0.008145392452021172,
+        "minBootMeshClearance": 0.0029689995625519217,
+        "maxPlantedSoleGap": 0.0030008547541300334,
+        "bootVertices": 354,
+        "maxAnkleDegreesPerSecond": 720.0018672476577,
+        "minKneeAngle": 63.6482067463084,
+        "maxKneeAngle": 160.88645774372654
+      }
+    },
+    {
+      "name": "144fps regularRun: slope 0.3/0, ankle continuity and toe clearance",
+      "status": "PASS",
+      "detail": {
+        "frames": 432,
+        "minToeClearance": 0.00904039967047994,
+        "minBootMeshClearance": 0.0029506309939515488,
+        "maxPlantedSoleGap": 0.0030104749681652866,
+        "bootVertices": 354,
+        "maxAnkleDegreesPerSecond": 720.0264524508594,
+        "minKneeAngle": 63.718382190845105,
+        "maxKneeAngle": 168.53606647144568
+      }
+    },
+    {
+      "name": "144fps regularRun: slope 0.4/0.2, ankle continuity and toe clearance",
+      "status": "PASS",
+      "detail": {
+        "frames": 432,
+        "minToeClearance": 0.009080696476184813,
+        "minBootMeshClearance": 0.002974893910036247,
+        "maxPlantedSoleGap": 0.003014268564353273,
+        "bootVertices": 354,
+        "maxAnkleDegreesPerSecond": 720.0524574704446,
+        "minKneeAngle": 63.718382190845105,
+        "maxKneeAngle": 168.53606399918482
+      }
+    },
+    {
+      "name": "144fps run: slope 0/0, ankle continuity and toe clearance",
+      "status": "PASS",
+      "detail": {
+        "frames": 432,
+        "minToeClearance": 0.007657388126657838,
+        "minBootMeshClearance": 0.0029288219377310203,
+        "maxPlantedSoleGap": 0.003004978898789419,
+        "bootVertices": 354,
+        "maxAnkleDegreesPerSecond": 720.007969480348,
+        "minKneeAngle": 49.34968109436636,
+        "maxKneeAngle": 168.5360634595937
+      }
+    },
+    {
+      "name": "144fps run: slope 0/0.3, ankle continuity and toe clearance",
+      "status": "PASS",
+      "detail": {
+        "frames": 432,
+        "minToeClearance": 0.007002643260096253,
+        "minBootMeshClearance": 0.002932218270902176,
+        "maxPlantedSoleGap": 0.003455507351155518,
+        "bootVertices": 354,
+        "maxAnkleDegreesPerSecond": 720.0174466478904,
+        "minKneeAngle": 49.5162565843253,
+        "maxKneeAngle": 168.5360657385588
+      }
+    },
+    {
+      "name": "144fps run: slope 0/-0.3, ankle continuity and toe clearance",
+      "status": "PASS",
+      "detail": {
+        "frames": 432,
+        "minToeClearance": 0.007882112892381166,
+        "minBootMeshClearance": 0.0029425931135922193,
+        "maxPlantedSoleGap": 0.003143273426808868,
+        "bootVertices": 354,
+        "maxAnkleDegreesPerSecond": 720.0054278860745,
+        "minKneeAngle": 48.281903026861684,
+        "maxKneeAngle": 155.4013293690331
+      }
+    },
+    {
+      "name": "144fps run: slope 0.3/0, ankle continuity and toe clearance",
+      "status": "PASS",
+      "detail": {
+        "frames": 432,
+        "minToeClearance": 0.00810642044881794,
+        "minBootMeshClearance": 0.0029148162443979036,
+        "maxPlantedSoleGap": 0.003020773196091956,
+        "bootVertices": 354,
+        "maxAnkleDegreesPerSecond": 720.0370858266633,
+        "minKneeAngle": 49.22367179992089,
+        "maxKneeAngle": 168.53606162554075
+      }
+    },
+    {
+      "name": "144fps run: slope 0.4/0.2, ankle continuity and toe clearance",
+      "status": "PASS",
+      "detail": {
+        "frames": 432,
+        "minToeClearance": 0.0076107704508630025,
+        "minBootMeshClearance": 0.002974063178852404,
+        "maxPlantedSoleGap": 0.003947970517079735,
+        "bootVertices": 354,
+        "maxAnkleDegreesPerSecond": 720.0719293446525,
+        "minKneeAngle": 49.38154542914181,
+        "maxKneeAngle": 168.5360656477565
+      }
+    },
+    {
+      "name": "24fps walk/jog/run/sprint, stop, turn and jump sequence",
+      "status": "PASS",
+      "detail": {
+        "frames": 264
+      }
+    },
+    {
+      "name": "30fps walk/jog/run/sprint, stop, turn and jump sequence",
+      "status": "PASS",
+      "detail": {
+        "frames": 330
+      }
+    },
+    {
+      "name": "60fps walk/jog/run/sprint, stop, turn and jump sequence",
+      "status": "PASS",
+      "detail": {
+        "frames": 660
+      }
+    },
+    {
+      "name": "144fps walk/jog/run/sprint, stop, turn and jump sequence",
+      "status": "PASS",
+      "detail": {
+        "frames": 1584
+      }
+    },
+    {
+      "name": "24fps roof handoff preserves ankle orientation and final boot clearance",
+      "status": "PASS",
+      "detail": {
+        "minBootMeshClearance": 0.0029859703809561613,
+        "maxAnkleDegrees": 0.02343002327560777
+      }
+    },
+    {
+      "name": "30fps roof handoff preserves ankle orientation and final boot clearance",
+      "status": "PASS",
+      "detail": {
+        "minBootMeshClearance": 0.0029856146225745537,
+        "maxAnkleDegrees": 0.02394520203063475
+      }
+    },
+    {
+      "name": "60fps roof handoff preserves ankle orientation and final boot clearance",
+      "status": "PASS",
+      "detail": {
+        "minBootMeshClearance": 0.00290301167413223,
+        "maxAnkleDegrees": 0.02503070417993021
+      }
+    },
+    {
+      "name": "144fps roof handoff preserves ankle orientation and final boot clearance",
+      "status": "PASS",
+      "detail": {
+        "minBootMeshClearance": 0.002925289696485159,
+        "maxAnkleDegrees": 0.025634430755991935
+      }
+    },
+    {
+      "name": "Silk geometry: tapered ends, exposed fibers, tangent normals and reusable buffers",
+      "status": "PASS",
+      "detail": {
+        "tubeVertices": 246,
+        "fiberVertices": 240
+      }
+    },
+    {
+      "name": "Silk frame remains continuous when a swinging anchor crosses vertical",
+      "status": "PASS",
+      "detail": {
+        "maxFrameDegrees": 0
+      }
+    },
+    {
+      "name": "Slack silk sags, a taut strand settles, missed shots fade without a ghost attachment",
+      "status": "PASS",
+      "detail": {
+        "tautSag": 0.029999971389770508,
+        "slackSag": 0.3330245018005371
+      }
+    }
+  ],
+  "passed": 71,
+  "failed": 0
+}

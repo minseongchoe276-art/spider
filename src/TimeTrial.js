@@ -77,7 +77,7 @@ export class TimeTrialSystem {
         }
         // Missing streamed ground must not create an impossible race.
         if (top === null || top === undefined) continue;
-        // Remain within the jump apex (~5.16m), even on the tallest roof.
+        // Leave four metres of clearance above even the tallest roof.
         candidate.y = top + 4;
         if (this.city.raycast && [new THREE.Vector3(1,0,0),new THREE.Vector3(-1,0,0),
             new THREE.Vector3(0,1,0),new THREE.Vector3(0,-1,0),new THREE.Vector3(0,0,1),new THREE.Vector3(0,0,-1)]

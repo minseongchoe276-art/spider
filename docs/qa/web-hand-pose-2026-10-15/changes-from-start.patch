@@ -1,0 +1,657 @@
+--- before/src/Character.js
++++ after/src/Character.js
+@@ -8,6 +8,8 @@
+ import { fetchAsset, forEachConcurrent } from './AssetLoader.js';
+ import { clone as cloneSkeleton } from 'three/addons/utils/SkeletonUtils.js';
+ import { plantMovingFeet, poseWall, poseZipLegs, poseMantle, adaptPelvisToTerrain, footSupport, soleRotation } from './CharacterPose.js';
++import {createHandPoseRig,restoreHandPose,updateWebHandPose} from './WebHandPose.js';
++import {createFirstPersonArm,poseFirstPersonFingers,disposeFirstPersonRig,prepareFirstPersonDepth} from './FirstPersonArms.js';
+ 
+ export class Character {
+   constructor(scene, onProgress, onLoaded, source = null) {
+@@ -78,6 +80,8 @@
+       if (boneId(child.name)==='lefthand') this.leftHand = child;
+       if (boneId(child.name)==='righthand') this.rightHand = child;
+     });
++    this.webFingerRig=createHandPoseRig(this.model,this.bones);
++    for(const side of ['left','right'])for(const item of this.webFingerRig[side])item.bone.quaternion.copy(item.rest);
+     this.mixer = new THREE.AnimationMixer(this.model);
+     for (const [key,original] of Object.entries(source.actions)) {
+       const action = this.mixer.clipAction(original.getClip());
+@@ -91,6 +95,7 @@
+   }
+ 
+   disposeCopy() {
++    disposeFirstPersonRig(this.firstPersonRig);
+     this.copySource = null;
+     this.mixer?.stopAllAction(); if (this.model) this.mixer?.uncacheRoot(this.model);
+     this.model?.traverse(mesh => mesh.skeleton?.dispose());
+@@ -110,40 +115,17 @@
+   }
+ 
+   setFirstPersonCamera(camera) {
++    disposeFirstPersonRig(this.firstPersonRig);
+     this.firstPersonRig = new THREE.Group();
+     this.firstPersonRig.name = 'SpiderManFirstPersonArms';
+     camera.add(this.firstPersonRig);
+-    const sleeveMat = new THREE.MeshStandardMaterial({ color: 0x12345f, roughness: 0.68, metalness: 0.05 });
+-    const gloveMat = new THREE.MeshStandardMaterial({ color: 0xb51e32, roughness: 0.52, metalness: 0.04 });
+-    const cuffMat = new THREE.MeshStandardMaterial({ color: 0xdbe8f4, roughness: 0.45, metalness: 0.1 });
+-    for (const side of [-1, 1]) {
+-      const elbow = new THREE.Vector3(side * 0.53, -0.55, -0.22);
+-      const wrist = new THREE.Vector3(side * 0.29, -0.31, -0.67);
+-      const segment = new THREE.Group();
+-      const axis = wrist.clone().sub(elbow);
+-      const sleeve = new THREE.Mesh(new THREE.CylinderGeometry(0.095, 0.13, axis.length(), 10), sleeveMat);
+-      sleeve.position.copy(elbow).add(wrist).multiplyScalar(0.5);
+-      sleeve.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), axis.clone().normalize());
+-      sleeve.castShadow = true;
+-      segment.add(sleeve);
+-      const glove = new THREE.Mesh(new THREE.SphereGeometry(0.105, 12, 10), gloveMat);
+-      glove.position.copy(wrist);
+-      glove.scale.set(1, 0.82, 1.22);
+-      segment.add(glove);
+-      const cuff = new THREE.Mesh(new THREE.CylinderGeometry(0.105, 0.105, 0.055, 10), cuffMat);
+-      cuff.position.copy(wrist).addScaledVector(axis.clone().normalize(), -0.085);
+-      cuff.quaternion.copy(sleeve.quaternion);
+-      segment.add(cuff);
+-      this.firstPersonRig.add(segment);
+-      const anchor = new THREE.Object3D();
+-      anchor.position.copy(wrist);
+-      // The glove and shooter must inherit the same punch/guard transform.
+-      // Keeping anchors beside the arms made the right punch move a left
+-      // anchor while the visible right arm stayed still.
+-      segment.add(anchor);
+-      this.firstPersonHands.push(anchor);
+-    }
+-    this.firstPersonRig.visible = false;
++    this.firstPersonHands=[];this.firstPersonGloves=[];
++    for (const side of ['left','right']) {
++      const {arm,anchor,glove}=createFirstPersonArm(side,this.model);
++      this.firstPersonRig.add(arm);this.firstPersonHands.push(anchor);this.firstPersonGloves.push(glove);
++    }
++    prepareFirstPersonDepth(this.firstPersonRig);
++    this.firstPersonRig.visible = !!this.isFirstPerson;
+   }
+ 
+   setFirstPersonMode(enabled) {
+@@ -206,6 +188,8 @@
+       this.placeholder.geometry.dispose();
+       this.placeholder.material.dispose();
+       this.group.add(this.model);
++      this.webFingerRig=null;
++      if(this.firstPersonRig?.parent)this.setFirstPersonCamera(this.firstPersonRig.parent);
+ 
+       this.mixer = new THREE.AnimationMixer(this.model);
+ 
+@@ -382,6 +366,7 @@
+   }
+ 
+   stopAnimation() {
++    restoreHandPose(this.webFingerRig);this.webGestures={};
+     this.mantleArmPose=null;this.mantleArmRelease=0;
+     this.mantleExitFeet=null;this.mantleFootRelease=0;
+     this.mantleStartFeet=null;
+@@ -441,7 +426,7 @@
+     this.webShotAnchor=target.clone();
+     this.webShotIsMiss=true;
+     this.webShotTimer=0.55;
+-    this.webLaunchTimers[hand]=0.22;
++    this.webLaunchTimers ||= {};this.webLaunchTimers[hand]=0.22;
+     this.updateWeb(true,this.webShotAnchor);
+   }
+ 
+@@ -481,6 +466,21 @@
+     updateWebStrand(line,mesh,wrist,anchorPos,this.webVisualTime || 0,launch);
+   }
+ 
++  updateFirstPersonPose(combat=this.combatAction) {
++    if(this.isFirstPerson && this.firstPersonRig)for(const [i,arm] of this.firstPersonRig.children.entries()){
++      const t=THREE.MathUtils.clamp(combat?.duration?combat.time/combat.duration:0,0,1);
++      const impact=this.actions?.[combat?.key]?.getClip().userData?.impactPhase || .3;
++      const pulse=t<=impact?THREE.MathUtils.smoothstep(t/impact,0,1):1-THREE.MathUtils.smoothstep((t-impact)/(1-impact),0,1);
++      const striking=combat && ['jab','cross','hook','heavy','special'].includes(combat.key) && i===(combat.key==='cross'?1:0);
++      const reach=striking?Math.max(0,pulse):0;
++      const gesture=this.webGestures?.[i===0?'left':'right'] || {shoot:0,grip:0};
++      arm.position.set(['hook','heavy'].includes(combat?.key) && i===0 ? .26*reach : 0,
++        combat?.key==='guard' ? .14 : .045*gesture.shoot,
++        striking?(['hook','heavy'].includes(combat.key)?-0.25:-0.38)*reach:-.12*gesture.shoot);
++      poseFirstPersonFingers(arm,gesture.shoot,gesture.grip,combat);
++    }
++  }
++
+   triggerAirTrick(key = 'front') {
+     if (!Object.hasOwn(AIR_TRICKS, key)) return false;
+     this.airTrick = { key, elapsed: 0 };
+@@ -498,6 +498,7 @@
+ 
+   update(delta, state, velocity, anchorPos) {
+     if (this.copySource) this.copyLoadedCharacter(this.copySource);
++    restoreHandPose(this.webFingerRig);
+     if(state==='MANTLING' && this.lastState!=='MANTLING' && this.model){
+       this.group.updateMatrixWorld(true);
+       this.mantleStartFeet=Object.fromEntries(['left','right'].map(side=>[side,Object.values(this.bones || {}).find(b=>boneId(b.name)===side+'foot')?.getWorldPosition(new THREE.Vector3())]));
+@@ -520,6 +521,7 @@
+       }
+     }
+     if (!this.mixer || !this.model) {
++      updateWebHandPose(this,delta,state);this.updateFirstPersonPose();
+       const shotAnchor = this.webShotTimer > 0 ? this.webShotAnchor : null;
+       const attached = ['SWINGING', 'WEB_ZIP'].includes(state) && !!anchorPos;
+       const visibleAnchor = attached ? anchorPos : (this.persistentWebAnchor || shotAnchor);
+@@ -646,16 +648,8 @@
+       const standUp=THREE.MathUtils.smoothstep(t,steppingDown?.32:.5,steppingDown?.80:.92);
+       this.model.position.y=-0.1*(steppingDown?inPose:1)-1.15*inPose*(1-standUp);
+     }
+-    if(this.isFirstPerson && this.firstPersonRig)for(const [i,arm] of this.firstPersonRig.children.entries()){
+-      const t=THREE.MathUtils.clamp(combat?.duration?combat.time/combat.duration:0,0,1);
+-      const impact=this.actions[combat?.key]?.getClip().userData?.impactPhase || .3;
+-      const pulse=t<=impact?THREE.MathUtils.smoothstep(t/impact,0,1):1-THREE.MathUtils.smoothstep((t-impact)/(1-impact),0,1);
+-      const striking=combat && ['jab','cross','hook','heavy','special'].includes(combat.key) && i===(combat.key==='cross'?1:0);
+-      const reach=striking?Math.max(0,pulse):0;
+-      arm.position.set(['hook','heavy'].includes(combat?.key) && i===0 ? .26*reach : 0,
+-        combat?.key==='guard' ? .14 : 0,
+-        striking?(['hook','heavy'].includes(combat.key)?-0.25:-0.38)*reach:0);
+-    }
++    updateWebHandPose(this,delta,state);
++    this.updateFirstPersonPose(combat);
+     this.group.updateMatrixWorld(true);
+     adaptPelvisToTerrain(this,delta,grounded && state!=='ROLLING');
+     if (name === 'idle' && state === 'IDLE' && horizontalSpeed < 0.05) {
+@@ -748,6 +742,18 @@
+     arm.quaternion.slerpQuaternions(upper,arm.quaternion.clone(),weight);
+     forearm.quaternion.slerpQuaternions(lower,forearm.quaternion.clone(),weight);
+     arm.updateMatrixWorld(true);
++    const direction=anchor.clone().sub(hand.getWorldPosition(new THREE.Vector3())).normalize();
++    const up=new THREE.Vector3(0,1,0).addScaledVector(direction,-direction.y);
++    if(up.lengthSq()<1e-5)up.set(0,0,1).addScaledVector(direction,-direction.z);
++    up.normalize();
++    // Cock the wrist above the shot. Pointing the fingers along the rope
++    // sent the strand through the palm instead of out below the glove.
++    const finger=direction.clone().multiplyScalar(.574).addScaledVector(up,.819).normalize();
++    const palm=direction.clone().multiplyScalar(.819).addScaledVector(up,-.574).normalize();
++    const across=new THREE.Vector3().crossVectors(finger,palm).normalize();
++    const aim=new THREE.Quaternion().setFromRotationMatrix(new THREE.Matrix4().makeBasis(across,finger,palm));
++    const local=hand.parent.getWorldQuaternion(new THREE.Quaternion()).invert().multiply(aim);
++    hand.quaternion.slerp(local,weight*.95);hand.updateMatrixWorld(true);
+   }
+ 
+   reachBothWebAnchors(anchor,weight=1) {
+--- before/src/RemoteMotion.js
++++ after/src/RemoteMotion.js
+@@ -9,6 +9,11 @@
+   'dodgeLeft','dodgeRight','dodgeBack','dodgeForward','slam','slamLand','special','hit','hitHead']);
+ const vector = v => v && [v.x,v.y,v.z].every(n => Number.isFinite(n) && Math.abs(n)<=10000)
+   ? {x:v.x,y:v.y,z:v.z} : null;
++const cleanShot=shot=>{
++  const target=vector(shot?.target);
++  return target && ['left','right'].includes(shot?.hand) && Number.isFinite(shot.remaining) && shot.remaining>0
++    ? {hand:shot.hand,target,remaining:THREE.MathUtils.clamp(shot.remaining,0,.55),miss:shot.miss===true} : null;
++};
+ 
+ export function sanitizePose(pose) {
+   if (!pose || !STATES.has(pose.state)) return null;
+@@ -17,6 +22,9 @@
+   const webs = (Array.isArray(pose.webs)?pose.webs:[]).slice(0,2)
+     .map(w => ({hand:w?.hand==='right'?'right':'left',anchor:vector(w?.anchor)})).filter(w => w.anchor);
+   let combat = null;
++  const webShot=cleanShot(pose.webShot);
++  const webShots=(Array.isArray(pose.webShots)?pose.webShots:[]).slice(0,2).map(cleanShot).filter(Boolean)
++    .filter((shot,i,shots)=>shots.findIndex(other=>other.hand===shot.hand)===i);
+   if (COMBAT.has(pose.combat?.key) && [pose.combat.time ?? 0,pose.combat.duration ?? 0].every(Number.isFinite))
+     combat = {key:pose.combat.key,id:String(pose.combat.id || '').slice(0,40),
+       time:THREE.MathUtils.clamp(pose.combat.time ?? 0,0,10),duration:THREE.MathUtils.clamp(pose.combat.duration ?? 0,0,10)};
+@@ -26,7 +34,7 @@
+     ? {...Object.fromEntries(['normal','edge','start','end'].map(k=>[k,vector(m[k])])),
+       elapsed:THREE.MathUtils.clamp(m.elapsed,0,2),duration:THREE.MathUtils.clamp(m.duration,.1,2),
+       gap:THREE.MathUtils.clamp(m.gap,0,2),height:m.height} : null;
+-  return {state:pose.state,velocity,webs,anchor:vector(pose.anchor),wallNormal:vector(pose.wallNormal),
++  return {state:pose.state,velocity,webs,webShot,webShots,anchor:vector(pose.anchor),wallNormal:vector(pose.wallNormal),
+     mantle,wallDistance:Number.isFinite(pose.wallDistance)?THREE.MathUtils.clamp(pose.wallDistance,0,2):.7,
+     landingSpeed:Number.isFinite(pose.landingSpeed)?THREE.MathUtils.clamp(pose.landingSpeed,0,100):0,
+     airTrick: pose.tricking && Object.hasOwn(AIR_TRICKS, pose.airTrick?.key) && Number.isFinite(pose.airTrick.elapsed)
+@@ -36,6 +44,11 @@
+ 
+ export function capturePose(physics,character) {
+   return sanitizePose({state:physics.animationState || physics.state,velocity:physics.velocity,webs:physics.webs,
++    webShots:Object.entries(character.webLaunchTimers || {}).filter(([,remaining])=>remaining>0).map(([hand,remaining])=>({hand,remaining,
++      target:character.webAttachments?.find(web=>web.hand===hand)?.anchor || (hand===character.currentHand?character.webShotAnchor:null),
++      miss:hand===character.currentHand && character.webShotIsMiss})),
++    webShot:character.webShotTimer>0 && character.webShotAnchor ? {hand:character.currentHand,target:character.webShotAnchor,
++      remaining:character.webShotTimer,miss:character.webShotIsMiss} : null,
+     anchor:physics.anchorPoint || physics.zipAnchor,wallNormal:physics.wallNormal,
+     mantle:physics.mantle,wallDistance:character.wallDistance,landingSpeed:character.landingSpeed,
+     pendingTurn:character.pendingTurn,combat:character.combatAction,tricking:character.isTricking,airTrick:character.airTrick});
+@@ -88,6 +101,14 @@
+       v.copy(this.mesh.position).sub(this.previous).divideScalar(Math.max(delta,1e-5));
+     c.targetFacingAngle=this.player.facing || 0;
+     c.webAttachments=fresh ? this.pose.webs.map(w=>({hand:w.hand,anchor:new THREE.Vector3().copy(w.anchor)})) : [];
++    const shot=fresh?this.pose.webShot:null,remaining=shot?Math.max(0,shot.remaining-(now-this.poseAt)/1000):0;
++    c.webLaunchTimers={};
++    for(const launch of fresh?this.pose.webShots:[]){const left=launch.remaining-(now-this.poseAt)/1000;
++      if(left>0)c.webLaunchTimers[launch.hand]=left+delta;
++    }
++    c.webShotTimer=remaining>0?remaining+delta:0;c.webShotAnchor=remaining>0?new THREE.Vector3().copy(shot.target):null;
++    c.webShotIsMiss=remaining>0 && shot.miss;
++    if(remaining>0)c.currentHand=shot.hand;
+     const anchor=fresh && this.pose.anchor ? new THREE.Vector3().copy(this.pose.anchor) : null;
+     c.wallNormal=fresh && this.pose.wallNormal ? new THREE.Vector3().copy(this.pose.wallNormal).normalize() : null;
+     c.wallDistance=fresh?this.pose.wallDistance:.7;
+--- before/src/FirstPersonArms.js
++++ after/src/FirstPersonArms.js
+@@ -0,0 +1,110 @@
++import * as THREE from 'three';
++import {clone} from 'three/addons/utils/SkeletonUtils.js';
++import {boneId} from './MotionRetarget.js';
++import {bindTransforms,createHandPoseRig,applyHandPose} from './WebHandPose.js';
++
++const fingers=['thumb','index','middle','ring','pinky'];
++function viewHandOrientation(side){
++  const forward=new THREE.Vector3(side==='left'?-.02:.02,.85,-.526).normalize();
++  const palm=new THREE.Vector3(0,-.526,-.85);palm.addScaledVector(forward,-palm.dot(forward)).normalize();
++  return new THREE.Matrix4().makeBasis(new THREE.Vector3().crossVectors(forward,palm).normalize(),forward,palm);
++}
++
++function skinHand(source,side) {
++  if(!source?.getObjectByProperty('isSkinnedMesh',true))return null;
++  const model=clone(source);model.visible=true;model.position.set(0,0,0);model.rotation.set(0,0,0);
++  const bind=bindTransforms(model),bones={};
++  model.traverse(n=>{if(n.isBone){bones[n.name]=n;const rest=bind.get(n);if(rest){n.position.copy(rest.position);n.quaternion.copy(rest.quaternion);n.scale.copy(rest.scale);}}});
++  const hand=Object.values(bones).find(b=>boneId(b.name)===side+'hand');
++  if(!hand)return null;
++  const meshes=[];model.traverse(n=>{if(n.isMesh)meshes.push(n);});let count=0;
++  for(const mesh of meshes){
++    if(!mesh.isSkinnedMesh){mesh.removeFromParent();continue;}
++    const geometry=mesh.geometry,indices=geometry.index,weights=geometry.attributes.skinWeight,joints=geometry.attributes.skinIndex;
++    const selected=mesh.skeleton.bones.map(b=>boneId(b.name).startsWith(side+'hand'));
++    const member=vertex=>{let weight=0;for(let k=0;k<4;k++)if(selected[joints.getComponent(vertex,k)])weight+=weights.getComponent(vertex,k);return weight>.35;};
++    const kept=[];
++    for(let i=0;i<(indices?.count || geometry.attributes.position.count);i+=3){
++      const triangle=[0,1,2].map(k=>indices?indices.getX(i+k):i+k);
++      if(triangle.every(member))kept.push(...triangle);
++    }
++    if(!kept.length){mesh.removeFromParent();continue;}
++    mesh.geometry=geometry.clone();mesh.geometry.clearGroups();mesh.geometry.setIndex(kept);
++    mesh.material=Array.isArray(mesh.material)?mesh.material.map(m=>m.clone()):mesh.material.clone();
++    mesh.userData.ownViewMaterial=true;
++    mesh.frustumCulled=false;mesh.castShadow=false;count+=kept.length/3;
++    // View hands should remain readable even when a wall is close to the camera.
++    mesh.renderOrder=2;
++  }
++  if(!count)return null;
++  model.updateMatrixWorld(true);
++  const alignment=new THREE.Group();alignment.add(model);
++  const orientation=viewHandOrientation(side);
++  // Preserve the import's unit conversion while aligning the rigid wrist.
++  // Inverting its scale would enlarge both the skin and digit lengths.
++  const position=new THREE.Vector3(),rotation=new THREE.Quaternion(),scale=new THREE.Vector3();
++  hand.matrixWorld.decompose(position,rotation,scale);
++  const wristFrame=new THREE.Matrix4().compose(position,rotation,new THREE.Vector3(1,1,1));
++  const transform=orientation.multiply(wristFrame.invert());
++  transform.decompose(alignment.position,alignment.quaternion,alignment.scale);
++  return {object:alignment,rig:createHandPoseRig(model,bones),bones,triangles:count,model};
++}
++
++function fallbackHand(side,material) {
++  const object=new THREE.Group(),bones={};
++  const palm=new THREE.Mesh(new THREE.SphereGeometry(.047,12,10),material);palm.position.y=.045;palm.scale.set(1,1.2,.48);object.add(palm);
++  for(const [i,finger] of fingers.entries()){
++    let parent=object;const sign=side==='left'?1:-1;
++    for(let joint=1;joint<=4;joint++){
++      const bone=new THREE.Bone();bone.name=side+'hand'+finger+joint;
++      bone.position.set(joint===1?sign*(i-2)*.02:0,joint===1?(i===0?.025:.083):(i===0?.024:.027),0);parent.add(bone);bones[bone.name]=bone;
++      if(joint<4){const part=new THREE.Mesh(new THREE.CapsuleGeometry(.008,.017,3,6),material);part.position.y=.013;bone.add(part);}
++      parent=bone;
++    }
++  }
++  object.quaternion.setFromRotationMatrix(viewHandOrientation(side));
++  return {object,rig:createHandPoseRig(object,bones),bones,triangles:0,model:object};
++}
++
++export function createFirstPersonArm(side,source) {
++  const sign=side==='left'?-1:1,arm=new THREE.Group();
++  const sleeveMaterial=new THREE.MeshStandardMaterial({color:0x142c50,roughness:.65});
++  const cuffMaterial=new THREE.MeshStandardMaterial({color:0x343b46,roughness:.45,metalness:.35});
++  const elbow=new THREE.Vector3(sign*.39,-.47,-.15),wrist=new THREE.Vector3(sign*.21,-.18,-.64),axis=wrist.clone().sub(elbow);
++  const sleeve=new THREE.Mesh(new THREE.CylinderGeometry(.043,.066,axis.length(),12),sleeveMaterial);
++  sleeve.position.copy(elbow).add(wrist).multiplyScalar(.5);sleeve.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),axis.clone().normalize());arm.add(sleeve);
++  const cuff=new THREE.Mesh(new THREE.CylinderGeometry(.047,.047,.055,12),cuffMaterial);cuff.position.copy(wrist).addScaledVector(axis.clone().normalize(),-.025);cuff.quaternion.copy(sleeve.quaternion);arm.add(cuff);
++  const glove=new THREE.Group();glove.name=side+'Glove';glove.position.copy(wrist);arm.add(glove);
++  const hand=skinHand(source,side) || fallbackHand(side,new THREE.MeshStandardMaterial({color:0xb51e32,roughness:.55}));glove.add(hand.object);
++  const anchor=new THREE.Object3D();anchor.name=side+'WebShooter';anchor.position.copy(wrist);arm.add(anchor);
++  arm.userData.hand=hand;arm.userData.side=side;
++  arm.traverse(node=>{if(node.isMesh)node.renderOrder=2;});
++  return {arm,anchor,glove};
++}
++
++export function poseFirstPersonFingers(arm,shoot,grip,combat) {
++  const hand=arm.userData.hand,side=arm.userData.side;
++  const fighting=!!combat && !['slam','slamLand','hit','hitHead'].includes(combat.key);
++  const firing=fighting?0:shoot,closed=fighting?1:grip,relaxed=Math.max(0,1-firing-closed);
++  applyHandPose(hand.rig,side,firing,closed,{absolute:true,relaxed});
++}
++
++export function prepareFirstPersonDepth(rig){
++  let frame=-1;rig.renderOrder=100;
++  rig.traverse(node=>{if(node.isMesh){node.renderOrder=100;node.frustumCulled=false;
++    // Render the viewmodel after world geometry, retaining depth tests between
++    // its own fingers. Disabling material.depthTest makes folded digits draw
++    // through each other and disabling it on a shared suit affects opponents.
++    node.onBeforeRender=renderer=>{if(frame!==renderer.info.render.frame){frame=renderer.info.render.frame;renderer.clearDepth();}};
++  }});
++}
++
++export function disposeFirstPersonRig(rig) {
++  const geometries=new Set(),materials=new Set(),skeletons=new Set();
++  rig?.traverse(node=>{
++    if(node.isSkinnedMesh){geometries.add(node.geometry);skeletons.add(node.skeleton);
++      if(node.userData.ownViewMaterial)for(const m of Array.isArray(node.material)?node.material:[node.material])materials.add(m);}
++    else if(node.isMesh){geometries.add(node.geometry);for(const m of Array.isArray(node.material)?node.material:[node.material])materials.add(m);}
++  });
++  geometries.forEach(g=>g.dispose());materials.forEach(m=>m.dispose());skeletons.forEach(s=>s.dispose());rig?.removeFromParent();
++}
+--- before/src/WebHandPose.js
++++ after/src/WebHandPose.js
+@@ -0,0 +1,76 @@
++import * as THREE from 'three';
++import {boneId} from './MotionRetarget.js';
++
++const fingers=['thumb','index','middle','ring','pinky'];
++const axis=new THREE.Vector3(1,0,0);
++
++// Use inverse bind matrices, never whichever animated pose happens to be
++// visible when a first-person hand or remote character is created.
++export function bindTransforms(model) {
++  const world=new Map(),local=new Map();
++  model?.traverse(node=>{if(node.isSkinnedMesh)node.skeleton.bones.forEach((bone,i)=>{
++    if(!world.has(bone))world.set(bone,node.skeleton.boneInverses[i].clone().invert());
++  });});
++  for(const [bone,matrix] of world){
++    const parent=world.get(bone.parent),relative=parent?parent.clone().invert().multiply(matrix):bone.matrix.clone();
++    const p=new THREE.Vector3(),q=new THREE.Quaternion(),s=new THREE.Vector3();relative.decompose(p,q,s);
++    local.set(bone,{position:p,quaternion:q.normalize(),scale:s});
++  }
++  return local;
++}
++
++export function createHandPoseRig(model,bones) {
++  const bind=bindTransforms(model),rig={left:[],right:[]};
++  for(const side of ['left','right'])for(const finger of fingers)for(let joint=1;joint<=3;joint++){
++    const bone=Object.values(bones || {}).find(b=>boneId(b.name)===side+'hand'+finger+joint);
++    if(bone)rig[side].push({bone,finger,joint,rest:(bind.get(bone)?.quaternion || bone.quaternion).clone()});
++  }
++  return rig;
++}
++
++function targetRotation(item,shoot,grip,relaxed) {
++  const {rest,finger,joint}=item;
++  // The Mixamo digit chains run along +Y and flex toward the palm at +Z.
++  // Both mirrored hands use the same flexion sign in their own local frame.
++  const folded=[1.22,1.62,.82],loose=[.22,.28,.12];
++  const thwip=finger==='middle' || finger==='ring';
++  let angle=(thwip?folded[joint-1]:0)*shoot+folded[joint-1]*grip+loose[joint-1]*relaxed;
++  if(finger==='thumb')angle=[.12,.32,.18][joint-1]*shoot+[.3,.65,.45][joint-1]*grip+.12*relaxed;
++  const base=joint===1?rest.clone():new THREE.Quaternion();
++  return base.multiply(new THREE.Quaternion().setFromAxisAngle(axis,angle)).normalize();
++}
++
++export function restoreHandPose(rig) {
++  if(!rig)return;
++  for(const side of ['left','right'])for(const item of rig[side])if(item.authored){
++    item.bone.quaternion.copy(item.authored);item.authored=null;
++  }
++}
++
++export function applyHandPose(rig,side,shoot=0,grip=0,{absolute=false,relaxed=0}={}) {
++  const weight=THREE.MathUtils.clamp(shoot+grip,0,1);
++  for(const item of rig?.[side] || []){
++    if(!absolute && weight<1e-5)continue;
++    if(!absolute)item.authored=item.bone.quaternion.clone();
++    const target=targetRotation(item,shoot,grip,relaxed);
++    if(absolute)item.bone.quaternion.copy(target);
++    else item.bone.quaternion.slerp(target,weight);
++  }
++}
++
++export function updateWebHandPose(c,delta,state) {
++  c.webFingerRig ||= createHandPoseRig(c.model,c.bones);
++  c.webGestures ||= {};
++  const blocked=['WALL_RUNNING','MANTLING'].includes(state) || !!c.combatAction;
++  for(const side of ['left','right']){
++    const attached=c.webAttachments?.some(web=>web.hand===side);
++    const shooting=!blocked && ((c.webLaunchTimers?.[side] || 0)>0 || (c.currentHand===side && c.webShotTimer>0));
++    const gripping=!blocked && attached && !shooting;
++    const pose=c.webGestures[side] ||= {shoot:0,grip:0};
++    pose.shoot=THREE.MathUtils.damp(pose.shoot,shooting?1:0,40,Math.max(0,delta));
++    pose.grip=THREE.MathUtils.damp(pose.grip,gripping?1:0,24,Math.max(0,delta));
++    const total=pose.shoot+pose.grip;
++    if(total>1){pose.shoot/=total;pose.grip/=total;}
++    if(!blocked)applyHandPose(c.webFingerRig,side,pose.shoot,pose.grip);
++  }
++}
+--- before/src/WebHandReview.js
++++ after/src/WebHandReview.js
+@@ -0,0 +1,54 @@
++import * as THREE from 'three';
++import {Character} from './Character.js';
++import {boneId} from './MotionRetarget.js';
++import {restoreHandPose} from './WebHandPose.js';
++
++export function startWebHandReview(){
++  document.body.replaceChildren();document.body.style.cssText='margin:0;overflow:hidden;font:15px system-ui;background:#dbe7ef';
++  const renderer=new THREE.WebGLRenderer({antialias:true});renderer.setSize(innerWidth,innerHeight);renderer.setPixelRatio(Math.min(devicePixelRatio,2));document.body.append(renderer.domElement);
++  const scene=new THREE.Scene();scene.background=new THREE.Color('#dbe7ef');scene.add(new THREE.HemisphereLight(0xffffff,0x738294,2.5));
++  const sun=new THREE.DirectionalLight(0xffffff,3);sun.position.set(3,6,4);scene.add(sun,new THREE.GridHelper(100,100));
++  const camera=new THREE.PerspectiveCamera(45,innerWidth/innerHeight,.01,200);scene.add(camera);
++  const panel=document.createElement('section');panel.style.cssText='position:fixed;top:16px;left:16px;background:#fffffff0;color:#17232d;padding:16px;border-radius:12px;max-width:320px';
++  panel.innerHTML='<strong>거미줄 손 자세 검증</strong><p>손 <select id="web-hand"><option value="left">왼손</option><option value="right">오른손</option><option value="both">양손</option></select></p><p>동작 <select id="web-phase"><option value="fire">발사</option><option value="miss">빗나간 발사</option><option value="hold">줄 잡기</option><option value="release">해제</option><option value="combat">펀치</option></select></p><p>시점 <select id="web-view"><option value="first">1인칭</option><option value="third">3인칭 전신</option><option value="palm">손바닥 확대</option><option value="back">손등 확대</option></select></p><button id="web-sample">자세 보기</button> <button id="web-play">연속 재생</button><p><output id="web-status">로딩 중</output></p><a href="/">게임으로 돌아가기</a>';
++  document.body.append(panel);const status=panel.querySelector('output');let ready=false,playing=false,elapsed=0,released=false;
++  const c=new Character(scene,()=>{},()=>{ready=true;sample();});c.setFirstPersonCamera(camera);
++  function reset(){
++    restoreHandPose(c.webFingerRig);c.stopAnimation();c.webGestures={};c.webAttachments=[];c.webHandWeights={};c.webHandTargets={};c.webLaunchTimers={};c.persistentWebAnchor=null;c.webShotAnchor=null;c.webShotTimer=0;c.webShotIsMiss=false;c.combatAction=null;
++    c.group.position.set(0,.1,0);c.visualYaw=c.targetFacingAngle=Math.PI;c.model.rotation.set(0,Math.PI,0);c.model.position.set(0,0,0);c.lastState=null;elapsed=0;released=false;
++    for(const side of panel.querySelector('#web-hand').value==='both'?['left','right']:[panel.querySelector('#web-hand').value]){
++      const target=new THREE.Vector3(side==='left'?-2:2,4,-10);
++      if(panel.querySelector('#web-phase').value==='miss')c.fireWebMiss(target,side);else c.fireWeb(target,side);
++    }
++  }
++  function advance(dt){
++    elapsed+=dt;const phase=panel.querySelector('#web-phase').value;
++    if((phase==='release' || phase==='combat') && elapsed>=.35 && !released){released=true;c.webAttachments=[];c.webLaunchTimers={};c.webShotTimer=0;c.webShotAnchor=null;c.persistentWebAnchor=null;}
++    if(phase==='combat' && elapsed>=.35)c.combatAction={key:'jab',id:1,time:.3,duration:1};
++    const view=panel.querySelector('#web-view').value;c.setFirstPersonMode(view==='first');
++    c.update(dt,'IDLE',new THREE.Vector3(),c.persistentWebAnchor);
++  }
++  function sample(){if(!ready)return;playing=false;reset();const phase=panel.querySelector('#web-phase').value,target=['hold','release','combat'].includes(phase)?1.05:.16;
++    while(elapsed<target-1e-8)advance(Math.min(1/120,target-elapsed));render();}
++  panel.querySelector('#web-sample').onclick=sample;
++  panel.querySelector('#web-play').onclick=()=>{if(!ready)return;reset();playing=true;};
++  for(const select of panel.querySelectorAll('select'))select.onchange=sample;
++  function render(){
++    if(!ready)return;const view=panel.querySelector('#web-view').value,side=panel.querySelector('#web-hand').value==='right'?'right':'left';
++    const hand=Object.values(c.bones).find(b=>boneId(b.name)===side+'hand'),center=new THREE.Vector3(0,1.15,0);
++    camera.clearViewOffset();camera.up.set(0,1,0);
++    if(view==='first'){camera.position.set(0,1.75,0);camera.lookAt(0,1.75,-1);}
++    else if(view==='third'){camera.position.set(2.4,2.3,-4.8);camera.lookAt(center);camera.setViewOffset(innerWidth,innerHeight,-panel.offsetWidth/2,0,innerWidth,innerHeight);}
++    else if(hand){c.group.updateMatrixWorld(true);hand.getWorldPosition(center);const q=hand.getWorldQuaternion(new THREE.Quaternion());
++      const palm=new THREE.Vector3(0,0,view==='palm'?1:-1).applyQuaternion(q),tip=new THREE.Vector3(0,1,0).applyQuaternion(q);
++      camera.position.copy(center).addScaledVector(palm,.45).addScaledVector(tip,.1);camera.up.copy(tip);camera.lookAt(center.clone().addScaledVector(tip,.1));
++      camera.setViewOffset(innerWidth,innerHeight,-panel.offsetWidth/2,0,innerWidth,innerHeight);
++    }
++    if(view==='first' || view==='third')camera.up.set(0,1,0);
++    if(view==='palm' || view==='back')c.updateWeb(false,null);
++    else c.updateWeb(!!(c.persistentWebAnchor || c.webShotAnchor),c.persistentWebAnchor || c.webShotAnchor);
++    const gesture={hold:'다섯 손가락으로 줄 잡기',release:'기본 손 자세로 복귀',combat:'전투 주먹 자세'}[panel.querySelector('#web-phase').value] || '중지·약지 접기 / 검지·새끼손가락 펴기';status.textContent=`${panel.querySelector('#web-hand').selectedOptions[0].text} · ${panel.querySelector('#web-phase').selectedOptions[0].text} · ${elapsed.toFixed(2)}초\n${c.firstPersonRig.children.every(arm=>arm.userData.hand.triangles>0)?'실제 캐릭터 손 메시':'대체 관절 손'} · ${gesture}`;status.style.whiteSpace='pre-line';renderer.render(scene,camera);
++  }
++  const clock=new THREE.Clock();renderer.setAnimationLoop(()=>{const dt=Math.min(clock.getDelta(),.05);if(ready && playing){advance(dt);if(elapsed>2.5)playing=false;}render();});
++  window.addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);});
++}
+--- before/src/main.js
++++ after/src/main.js
+@@ -979,7 +979,9 @@
+ 
+ // Bootstrap application on DOM ready or immediately if document is already ready
+ function bootstrap() {
+-  if (new URLSearchParams(location.search).has('combatReview')) {
++  if (new URLSearchParams(location.search).has('webHandReview')) {
++    import('./WebHandReview.js').then(m => m.startWebHandReview());
++  } else if (new URLSearchParams(location.search).has('combatReview')) {
+     import('./CombatReview.js').then(m => m.startCombatReview());
+   } else if (new URLSearchParams(location.search).has('effectsReview')) {
+     import('./EffectsReview.js').then(m => m.startEffectsReview());
+--- before/scripts/check-web-hand-pose.mjs
++++ after/scripts/check-web-hand-pose.mjs
+@@ -0,0 +1,103 @@
++import assert from 'node:assert/strict';
++import fs from 'node:fs';
++import * as THREE from 'three';
++import {loadMotionRig,disposeRig,joint} from './lib/motion-rig.mjs';
++import {boneId} from '../src/MotionRetarget.js';
++import {Character} from '../src/Character.js';
++import {RemoteMotion,capturePose,sanitizePose} from '../src/RemoteMotion.js';
++import {disposeFirstPersonRig} from '../src/FirstPersonArms.js';
++
++const folder='docs/qa/web-hand-pose-2026-10-15';fs.mkdirSync(folder,{recursive:true});
++const {actor}=await loadMotionRig(),results=[],fpsList=[24,30,60,144],target=new THREE.Vector3(-2,5,-10);
++function check(name,run){try{const detail=run();results.push({name,status:'PASS',detail});console.log('PASS '+name);}catch(error){results.push({name,status:'FAIL',error:error.message});console.error('FAIL '+name+': '+error.message);}}
++const find=(bones,id)=>Object.values(bones).find(b=>boneId(b.name)===id);
++const angle=(a,b)=>a.clone().normalize().angleTo(b.clone().normalize());
++function extension(bones,side,finger){const p=[1,2,3,4].map(i=>find(bones,side+'hand'+finger+i)?.getWorldPosition(new THREE.Vector3()));assert(p.every(Boolean),'Missing articulated digit');
++  return p[0].distanceTo(p[3])/p.slice(1).reduce((sum,v,i)=>sum+v.distanceTo(p[i]),0);}
++function thwip(bones,side){const ratios=Object.fromEntries(['thumb','index','middle','ring','pinky'].map(f=>[f,extension(bones,side,f)]));
++  assert(ratios.index>.97 && ratios.pinky>.97,'Index/little finger did not extend');assert(ratios.middle<.62 && ratios.ring<.62,'Middle/ring finger did not fold');assert(ratios.thumb>.9,'Thumb folded into a fist');return ratios;}
++function tick(c,fps,seconds,state='IDLE'){for(let i=0;i<Math.ceil(seconds*fps);i++)c.update(1/fps,state,new THREE.Vector3(),c.persistentWebAnchor);c.group.updateMatrixWorld(true);c.firstPersonRig?.updateMatrixWorld(true);}
++function release(c){c.webAttachments=[];c.webLaunchTimers={};c.webShotTimer=0;c.webShotAnchor=null;c.persistentWebAnchor=null;}
++function valid(c){for(const b of Object.values(c.bones)){assert(b.quaternion.toArray().every(Number.isFinite));assert(Math.abs(b.quaternion.length()-1)<1e-4);}}
++function handBounds(arm){const box=new THREE.Box3();arm.userData.hand.object.traverse(mesh=>{if(!mesh.isSkinnedMesh)return;mesh.skeleton.update();
++  for(const i of new Set(mesh.geometry.index.array))box.expandByPoint(mesh.applyBoneTransform(i,new THREE.Vector3().fromBufferAttribute(mesh.geometry.attributes.position,i)).applyMatrix4(mesh.matrixWorld));});return box;}
++
++for(const fps of fpsList)for(const side of ['left','right']){
++  check(`${fps}fps ${side}: anatomical third-person shooting, held grip and clean release`,()=>{const c=actor(),control=actor();try{
++    c.fireWeb(target,side);tick(c,fps,.16);const firing=thwip(c.bones,side);valid(c);
++    const wrist=joint(c,side+'hand'),direction=target.clone().sub(wrist.getWorldPosition(new THREE.Vector3())).normalize();
++    const fingerDirection=new THREE.Vector3(0,1,0).applyQuaternion(wrist.getWorldQuaternion(new THREE.Quaternion()));
++    assert(fingerDirection.dot(direction)<.9,'Fingers point along the strand instead of clearing its wrist exit');
++    tick(c,fps,.7,'SWINGING');assert(extension(c.bones,side,'index')<.7,'Held strand kept an extended firing index');
++    release(c);tick(c,fps,.7);tick(control,fps,1.56);c.stopAnimation();control.stopAnimation();c.fadeToAction('idle',0);control.fadeToAction('idle',0);tick(c,fps,.2);tick(control,fps,.2);
++    assert((c.webGestures[side]?.shoot || 0)<1e-6);for(const [name,b] of Object.entries(c.bones))if(/hand/i.test(name))assert(angle(b.quaternion,control.bones[name].quaternion)<1e-4,'Released pose contaminated subsequent animation');
++    return firing;
++  }finally{disposeRig(c);disposeRig(control);}});
++  check(`${fps}fps ${side}: actual first-person suit hand has the same five-digit gesture`,()=>{const c=actor();try{
++    const camera=new THREE.PerspectiveCamera(45,16/9,.01,200);c.setFirstPersonCamera(camera);c.setFirstPersonMode(true);c.fireWeb(target,side);tick(c,fps,.16);
++    const arm=c.firstPersonRig.children[side==='left'?0:1],hand=arm.userData.hand;assert(hand.triangles>500,'Viewmodel is not the actual articulated suit mesh');
++    const ratios=thwip(hand.bones,side),box=handBounds(arm),size=box.getSize(new THREE.Vector3());assert(Math.max(...size.toArray())<.3 && size.length()>.1,'Import scale enlarged or shrank the visible skin');
++    assert(c.firstPersonHands[side==='left'?0:1].getWorldPosition(new THREE.Vector3()).distanceTo(c.firstPersonGloves[side==='left'?0:1].getWorldPosition(new THREE.Vector3()))<1e-7);
++    const before=Object.values(c.bones).map(b=>b.quaternion.clone());for(let i=0;i<4;i++){c.setFirstPersonMode(false);c.setFirstPersonMode(true);}assert(Object.values(c.bones).every((b,i)=>b.quaternion.equals(before[i])),'View switch changed body pose');
++    return {ratios,skinSize:size.toArray(),triangles:hand.triangles};
++  }finally{disposeRig(c);}});
++  check(`${fps}fps ${side}: a missed shot articulates, expires and never attaches`,()=>{const c=actor();try{
++    c.fireWebMiss(target,side);tick(c,fps,.16);thwip(c.bones,side);assert.equal(c.webAttachments.length,0);tick(c,fps,1);assert.equal(c.webShotTimer,0);assert(c.webGestures[side].shoot<1e-6);assert(!c.webMesh.visible && !c.webMeshOffhand.visible);valid(c);
++  }finally{disposeRig(c);}});
++}
++for(const fps of fpsList){
++  check(`${fps}fps: both hands can shoot and release independently`,()=>{const c=actor();try{
++    c.fireWeb(target,'left');c.fireWeb(target.clone().setX(2),'right');tick(c,fps,.16);thwip(c.bones,'left');thwip(c.bones,'right');
++    c.webAttachments=c.webAttachments.filter(w=>w.hand==='right');delete c.webLaunchTimers.left;tick(c,fps,.7,'SWINGING');assert(c.webGestures.left.shoot<1e-6 && c.webGestures.left.grip===0);assert(c.webGestures.right.grip>.95);valid(c);
++  }finally{disposeRig(c);}});
++  check(`${fps}fps: web fingers cannot overwrite combat or wall contact fingers`,()=>{for(const state of ['WALL_RUNNING','MANTLING','IDLE']){const c=actor(),control=actor();try{
++    c.fireWeb(target,'left');tick(c,fps,.16);tick(control,fps,.16);
++    if(state==='IDLE')c.combatAction=control.combatAction={key:'cross',id:1,time:.3,duration:1};
++    tick(c,fps,.16,state);tick(control,fps,.16,state);
++    for(const [name,b] of Object.entries(c.bones))if(/hand(index|middle|ring|pinky|thumb)/i.test(name))assert(angle(b.quaternion,control.bones[name].quaternion)<1e-4,'Web pose overrode contact/combat animation');
++  }finally{disposeRig(c);disposeRig(control);}}});
++  check(`${fps}fps: remote hit/miss/dual hand gestures and stale cleanup use independent skin`,()=>{const source=actor(),player={id:'web-gesture',x:0,y:.1,z:0,facing:0},remote=new RemoteMotion(new THREE.Scene(),source,player,{colliders:[]});try{
++    const original=Object.values(source.bones).map(b=>b.quaternion.clone());
++    for(const miss of [false,true]){const pose={state:'IDLE',velocity:{x:0,y:0,z:0},webs:miss?[]:[{hand:'left',anchor:target}],webShot:{hand:'left',target,remaining:.38,miss}};
++      remote.receive(player,pose,0);for(let i=0;i<Math.ceil(.16*fps);i++)remote.update(1/fps,i*1000/fps);remote.mesh.updateMatrixWorld(true);thwip(remote.character.bones,'left');
++      assert.equal(remote.character.webAttachments.length,miss?0:1);
++    }
++    const dualSource=actor();dualSource.fireWeb(target,'left');dualSource.fireWeb(target.clone().setX(2),'right');
++    const dualPose=capturePose({state:'SWINGING',velocity:new THREE.Vector3(),webs:dualSource.webAttachments},dualSource);
++    assert.equal(dualPose.webShots.length,2);remote.receive(player,dualPose,200);
++    for(let i=0;i<Math.ceil(.16*fps);i++)remote.update(1/fps,200+i*1000/fps);remote.mesh.updateMatrixWorld(true);
++    thwip(remote.character.bones,'left');thwip(remote.character.bones,'right');disposeRig(dualSource);
++    remote.receive(player,{state:'SWINGING',velocity:{x:0,y:0,z:0},webs:[{hand:'left',anchor:target},{hand:'right',anchor:target.clone().setX(2)}]},400);
++    for(let i=0;i<Math.ceil(.3*fps);i++)remote.update(1/fps,400+i*1000/fps);assert(remote.character.webGestures.right.grip>.95);
++    remote.update(.1,2000);remote.update(.5,2500);assert(!remote.character.webMesh.visible && !remote.character.webMeshOffhand.visible);assert.equal(remote.character.webShotTimer,0);
++    assert(Object.values(source.bones).every((b,i)=>b.quaternion.equals(original[i])),'Remote gesture modified local fingers');
++  }finally{remote.dispose();disposeRig(source);}});
++}
++check('Remote shot capture validates handedness, expiry, target and payload size',()=>{
++  const c=actor();try{c.fireWebMiss(target,'right');const pose=capturePose({state:'IDLE',velocity:new THREE.Vector3(),webs:[]},c);assert.equal(pose.webShot.hand,'right');assert(pose.webShot.miss);assert(JSON.stringify(pose).length<1200);
++    for(const shot of [{hand:'wrong',target,remaining:.3},{hand:'left',target:{x:NaN,y:0,z:0},remaining:.3},{hand:'left',target,remaining:Infinity},{hand:'left',target,remaining:-1}])assert.equal(sanitizePose({...pose,webShot:shot}).webShot,null);
++    assert.equal(sanitizePose({...pose,webShot:{hand:'left',target,remaining:100}}).webShot.remaining,.55);
++  }finally{disposeRig(c);}});
++check('First-person creation/replacement/disposal preserves shared suit resources',()=>{const c=actor(),camera=new THREE.PerspectiveCamera();try{
++  const sourceSkin=c.model.getObjectByProperty('isSkinnedMesh',true),sourceFinger=joint(c,'lefthandmiddle1').quaternion.clone();let disposed=0;
++  sourceSkin.material.addEventListener('dispose',()=>disposed++);sourceSkin.geometry.addEventListener('dispose',()=>disposed++);
++  c.setFirstPersonCamera(camera);const oldRig=c.firstPersonRig;c.setFirstPersonCamera(camera);assert(!oldRig.parent);assert.equal(camera.children.length,1);assert.equal(disposed,0);
++  const viewSkin=c.firstPersonRig.getObjectByProperty('isSkinnedMesh',true);assert.notEqual(viewSkin.material,sourceSkin.material);assert(viewSkin.material.depthTest && sourceSkin.material.depthTest,'Fingers lost their own depth ordering');
++  c.setFirstPersonMode(true);c.fireWeb(target,'left');tick(c,60,.16);assert(!joint(c,'lefthandmiddle1').quaternion.equals(sourceFinger));
++  disposeFirstPersonRig(c.firstPersonRig);assert.equal(disposed,0);assert.equal(camera.children.length,0);
++ }finally{disposeRig(c);}});
++check('A new remote character never inherits the local firing fingers',()=>{const c=actor();let remote;try{
++  c.fireWeb(target,'left');tick(c,60,.16);const before=joint(c,'lefthandmiddle1').quaternion.clone();
++  remote=new RemoteMotion(new THREE.Scene(),c,{id:'late-join',x:0,y:0,z:0,facing:0},{colliders:[]});remote.mesh.updateMatrixWorld(true);
++  assert(extension(remote.character.bones,'left','middle')>.9,'New opponent inherited the local web gesture');assert(joint(c,'lefthandmiddle1').quaternion.equals(before));
++ }finally{remote?.dispose();disposeRig(c);}});
++check('Close walls cannot hide the hands, while folded fingers retain depth ordering',()=>{const c=actor();try{
++  c.setFirstPersonCamera(new THREE.PerspectiveCamera());const meshes=[];c.firstPersonRig.traverse(n=>{if(n.isMesh)meshes.push(n);});
++  let clears=0;const renderer={info:{render:{frame:1}},clearDepth(){clears++;}};
++  for(const m of meshes){assert.equal(m.renderOrder,100);assert(m.material.depthTest);m.onBeforeRender(renderer);}assert.equal(clears,1,'Depth was cleared separately for overlapping fingers');
++  renderer.info.render.frame++;meshes[0].onBeforeRender(renderer);assert.equal(clears,2);
++ }finally{disposeRig(c);}});
++check('Missing downloaded skin keeps an articulated fallback that can shoot',()=>{const c=Object.create(Character.prototype);Object.assign(c,{group:new THREE.Group(),model:null,bones:{},webAttachments:[],webLaunchTimers:{},webShotTimer:0,currentHand:'left',updateWeb(){}});
++  try{c.setFirstPersonCamera(new THREE.PerspectiveCamera());c.setFirstPersonMode(true);c.fireWebMiss(target,'left');for(let i=0;i<12;i++)c.update(1/60,'IDLE',new THREE.Vector3());const hand=c.firstPersonRig.children[0].userData.hand;c.firstPersonRig.updateMatrixWorld(true);thwip(hand.bones,'left');}
++  finally{disposeFirstPersonRig(c.firstPersonRig);}});
++const failures=results.filter(r=>r.status==='FAIL');fs.writeFileSync(folder+'/results.json',JSON.stringify({fps:fpsList,results},null,2)+'\n');console.log(`Web hand pose: ${results.length-failures.length} passed, ${failures.length} failed.`);if(failures.length)process.exitCode=1;
+--- before/scripts/check-all-motions.mjs
++++ after/scripts/check-all-motions.mjs
+@@ -55,8 +55,9 @@
+       const start=c.firstPersonHands.map(hand=>hand.getWorldPosition(new THREE.Vector3()));
+       c.combatAction={id:1,key,time:.25,duration:1};c.update(1/fps,'IDLE',new THREE.Vector3());camera.updateMatrixWorld(true);
+       const side=key==='cross'?1:0,hand=c.firstPersonHands[side],wrist=hand.getWorldPosition(new THREE.Vector3());
+-      const arm=hand.parent,glove=arm.children.find(child=>child.geometry?.type==='SphereGeometry');
++      const arm=hand.parent,glove=c.firstPersonGloves[side];
+       assert(glove,`${key}: wrist anchor is outside its visible arm`);
++      assert.equal(glove.parent,arm,'Glove is outside its striking arm');
+       assert(wrist.distanceTo(glove.getWorldPosition(new THREE.Vector3()))<1e-6,`${key}: shooter and glove separated`);
+       assert(wrist.z<start[side].z-.1,`${key}: the striking arm did not move forward`);
+       assert(c.firstPersonHands[1-side].getWorldPosition(new THREE.Vector3()).distanceTo(start[1-side])<1e-6,'The guarding arm moved with the wrong punch');
+--- before/scripts/lib/motion-rig.mjs
++++ after/scripts/lib/motion-rig.mjs
+@@ -5,6 +5,7 @@
+ import {Character} from '../../src/Character.js';
+ import {MOTIONS} from '../../src/MotionCatalog.js';
+ import {boneId} from '../../src/MotionRetarget.js';
++import {disposeFirstPersonRig} from '../../src/FirstPersonArms.js';
+ 
+ export async function loadMotionRig() {
+   globalThis.ProgressEvent ||= class {constructor(type,values){Object.assign(this,values);}};
+@@ -37,4 +38,4 @@
+ export const landmarks=c=>['hips','head','lefthand','righthand','leftfoot','rightfoot'].map(id=>point(c,id));
+ export function disposeRig(c){c.mixer.stopAllAction();c.mixer.uncacheRoot(c.model);c.model.traverse(node=>node.skeleton?.dispose());
+   for(const object of [c.webLine,c.webMesh,c.webLineOffhand,c.webMeshOffhand]){object.geometry.dispose();object.material.dispose();}
+-  c.firstPersonRig?.traverse(node=>{node.geometry?.dispose();});}
++  disposeFirstPersonRig(c.firstPersonRig);}
+--- before/package.json
++++ after/package.json
+@@ -7,7 +7,7 @@
+     "dev": "vite",
+     "build": "vite build",
+     "preview": "vite preview",
+-    "test": "node scripts/build-motions.mjs && node scripts/check-motions.mjs && node scripts/check-pose.mjs && node scripts/check-controller.mjs && node scripts/check-gameplay.mjs && node scripts/check-air-tricks.mjs && node scripts/check-dual-web.mjs && node scripts/check-pendulum.mjs && node scripts/check-mechanics-audit.mjs && node scripts/check-player-audit.mjs && node scripts/check-traversal.mjs && node scripts/check-qa.mjs && node scripts/check-review-2.mjs && node scripts/check-combat.mjs && node scripts/check-web-vfx.mjs && node scripts/check-superhero-landing-vfx.mjs && node scripts/check-combat-rig.mjs && node scripts/check-motion-timeline.mjs && node scripts/check-motion-transitions.mjs && node scripts/check-hong-kong-streaming.mjs && node scripts/check-minimap.mjs && node scripts/check-remote-motion.mjs && node scripts/check-tile-textures.mjs && node scripts/check-multiplayer.mjs && node scripts/check-upgrade.mjs && node scripts/check-upgrade-online.mjs && node scripts/check-release-audit.mjs && node scripts/check-online-edge-cases.mjs && node scripts/check-room-reconnect.mjs && node scripts/check-hong-kong-geometry-codec.mjs && node scripts/check-swing-accessibility.mjs && node scripts/check-cross-system-regressions.mjs && node scripts/check-web-continuity.mjs && node scripts/check-compact-map-and-locators.mjs && node scripts/check-expert-audit.mjs && node scripts/check-connection-lifecycle.mjs && node scripts/check-camera-motion-web.mjs && node scripts/check-full-game-audit.mjs && node scripts/check-input-lifecycle.mjs && node scripts/check-session-flow.mjs && node scripts/check-visibility.mjs && node scripts/check-loading-performance.mjs && node scripts/check-wall-ledge.mjs && node scripts/check-wall-ledge-rig.mjs && node scripts/check-all-motions.mjs && node scripts/check-motion-sources.mjs",
++    "test": "node scripts/build-motions.mjs && node scripts/check-motions.mjs && node scripts/check-pose.mjs && node scripts/check-controller.mjs && node scripts/check-gameplay.mjs && node scripts/check-air-tricks.mjs && node scripts/check-dual-web.mjs && node scripts/check-pendulum.mjs && node scripts/check-mechanics-audit.mjs && node scripts/check-player-audit.mjs && node scripts/check-traversal.mjs && node scripts/check-qa.mjs && node scripts/check-review-2.mjs && node scripts/check-combat.mjs && node scripts/check-web-vfx.mjs && node scripts/check-superhero-landing-vfx.mjs && node scripts/check-combat-rig.mjs && node scripts/check-motion-timeline.mjs && node scripts/check-motion-transitions.mjs && node scripts/check-hong-kong-streaming.mjs && node scripts/check-minimap.mjs && node scripts/check-remote-motion.mjs && node scripts/check-tile-textures.mjs && node scripts/check-multiplayer.mjs && node scripts/check-upgrade.mjs && node scripts/check-upgrade-online.mjs && node scripts/check-release-audit.mjs && node scripts/check-online-edge-cases.mjs && node scripts/check-room-reconnect.mjs && node scripts/check-hong-kong-geometry-codec.mjs && node scripts/check-swing-accessibility.mjs && node scripts/check-cross-system-regressions.mjs && node scripts/check-web-continuity.mjs && node scripts/check-compact-map-and-locators.mjs && node scripts/check-expert-audit.mjs && node scripts/check-connection-lifecycle.mjs && node scripts/check-camera-motion-web.mjs && node scripts/check-full-game-audit.mjs && node scripts/check-input-lifecycle.mjs && node scripts/check-session-flow.mjs && node scripts/check-visibility.mjs && node scripts/check-loading-performance.mjs && node scripts/check-wall-ledge.mjs && node scripts/check-wall-ledge-rig.mjs && node scripts/check-all-motions.mjs && node scripts/check-motion-sources.mjs && node scripts/check-web-hand-pose.mjs",
+     "predev": "node scripts/build-motions.mjs",
+     "prebuild": "node scripts/build-motions.mjs",
+     "start": "node scripts/serve.mjs",
+@@ -28,7 +28,8 @@
+     "test:visibility": "node scripts/check-visibility.mjs",
+     "test:loading": "node scripts/check-loading-performance.mjs",
+     "test:wall-ledge": "node scripts/check-wall-ledge.mjs && node scripts/check-wall-ledge-rig.mjs",
+-    "test:all-motions": "node scripts/build-motions.mjs && node scripts/check-all-motions.mjs && node scripts/check-motion-sources.mjs && node scripts/check-wall-ledge-rig.mjs"
++    "test:all-motions": "node scripts/build-motions.mjs && node scripts/check-all-motions.mjs && node scripts/check-motion-sources.mjs && node scripts/check-wall-ledge-rig.mjs && node scripts/check-web-hand-pose.mjs",
++    "test:web-hand-pose": "node scripts/check-web-hand-pose.mjs"
+   },
+   "dependencies": {
+     "@dimforge/rapier3d-compat": "^0.21.0",

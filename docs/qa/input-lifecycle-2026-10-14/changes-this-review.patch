@@ -1,0 +1,159 @@
+--- before/src/main.js
++++ after/src/main.js
+@@ -20,6 +20,8 @@
+ import {PlayerExperience} from './PlayerExperience.js';
+ import {CombatPractice} from './CombatPractice.js';
+ 
++const ONE_SHOT_KEYS = new Set(['Space','KeyG','KeyE','KeyT','KeyC','KeyV','KeyQ','KeyR','ControlLeft','ControlRight']);
++
+ export class GameApp {
+   constructor() {
+     // 1. Locate or create Canvas elements
+@@ -331,7 +333,7 @@
+       if (gameplayKey && document.getElementById?.('controls-guide') && !document.getElementById('controls-guide').classList.contains('hidden')) return;
+       if (gameplayKey && (!this.isPlaying || this.isPaused || this.multiplayer?.spectating)) return;
+       if (gameplayKey) e.preventDefault();
+-      if (gameplayKey && e.repeat && ['Space','KeyG','KeyE','KeyT','KeyC','KeyV','KeyQ','ControlLeft','ControlRight'].includes(k)) return;
++      if (gameplayKey && e.repeat && ONE_SHOT_KEYS.has(k)) return;
+ 
+       if (gameplayKey) {
+         const keys=e.gamepadInput?(this.gamepadHeldKeys??=new Set()):this.heldKeys;
+@@ -341,6 +343,9 @@
+         keys.add(k);
+         if(k==='ShiftLeft' && !wasHeld && !e.repeat && this.preferences?.values.settings?.sprintToggle)this.sprintLatched=!this.sprintLatched;
+         this.syncHeldInput();
++        // Register every source, but discrete actions belong to the first
++        // press. A second device or modifier alias must not toggle it twice.
++        if(wasHeld && ONE_SHOT_KEYS.has(k))return;
+       }
+       if(k==='KeyB'){this.combat.guard(true);return;}
+       if(k==='KeyG'){if(GROUNDED.includes(this.physics.state)){if(this.combat.special(this.camera))this.multiplayer?.attack('punch');}else this.combat.airStrike?.(this.camera);return;}
+@@ -421,7 +426,9 @@
+       if (document.getElementById?.('controls-guide') && !document.getElementById('controls-guide').classList.contains('hidden')) return;
+       if (e.target !== this.canvas) return;
+       const buttons=e.gamepadInput?(this.gamepadMouseButtons??=new Set()):(this.mouseButtons??=new Set());
++      const wasHeld=this.mouseButtons?.has(e.button) || this.gamepadMouseButtons?.has(e.button);
+       buttons.add(e.button);
++      if(wasHeld)return;
+       this.audio.ensureContext();
+ 
+       const groundedCombat = this.combat?.mode==='combat' && GROUNDED.includes(this.physics.state);
+@@ -431,7 +438,7 @@
+         return;
+       }
+       if (e.button === 0) {
+-        if(this.preferences?.values.settings?.webToggle && this.input.webHold){this.input.webHold=this.input.webFireHeld=false;this.physics.releaseWebButton(0);return;}
++        if(this.preferences?.values.settings?.webToggle && this.input.webHold){this.input.webTap=this.input.webHold=this.input.webFireHeld=false;this.physics.releaseWebButton(0);return;}
+         // Holding the left button keeps one rope. Releasing lets it go.
+         this.physics.setWebAimPoint(
+           e.clientX,
+@@ -445,7 +452,7 @@
+         this.input.webHold = true;
+       }
+       if (e.button === 2) {
+-        if(this.preferences?.values.settings?.webToggle && this.input.webHoldRight){this.input.webHoldRight=this.input.webFireHeldRight=false;this.physics.releaseWebButton(2);return;}
++        if(this.preferences?.values.settings?.webToggle && this.input.webHoldRight){this.input.webTapRight=this.input.webHoldRight=this.input.webFireHeldRight=false;this.physics.releaseWebButton(2);return;}
+         // The opposite hand uses the same held pendulum as the left button.
+         this.physics.setWebAimPoint(
+           e.clientX,
+@@ -589,8 +596,10 @@
+   toggleHelp() {
+     const guide = document.getElementById('controls-guide');
+     if (guide) {
++      const wasSuspended=this.gameplaySuspended;
+       guide.classList.toggle('hidden');
+       this.helpOpen=!guide.classList.contains('hidden');
++      if(wasSuspended && !this.gameplaySuspended)this.clock?.getDelta();
+       if(this.helpOpen){
+         this.clearInput();this.speedLines?.setSpeed(0,1);this.audio.setWindSpeed(0);
+         const hint=guide.querySelector?.('.guide-hint');
+@@ -619,6 +628,12 @@
+ 
+   setPaused(paused) {
+     if(!paused && this.contextLost){this.showNotice('그래픽 연결을 복구한 뒤 계속할 수 있습니다.');return;}
++    if(!paused){
++      // A background tab may receive no animation frames for minutes. Drain
++      // that interval before resuming the simulation and active race clock.
++      if(this.isPaused)this.clock?.getDelta();
++      this.settingsPanel?.cancel();
++    }
+     this.isPaused = paused;
+     if (paused) {
+       if(this.multiplayer?.room?.phase==='playing'){
+@@ -843,9 +858,8 @@
+   animate() {
+     requestAnimationFrame(this.animate);
+ 
+-    const elapsed = this.clock.getDelta();
+-    const rawDelta = Math.min(elapsed, 0.1);
+-    const delta = rawDelta;
++    let elapsed = this.clock.getDelta();
++    let delta = Math.min(elapsed, 0.1);
+     this.frameTime = (this.frameTime || 0) + elapsed;
+     this.frameCount = (this.frameCount || 0) + 1;
+     if (this.frameTime >= 1) {
+@@ -861,7 +875,11 @@
+         (!(this.city instanceof UrbanGroundCity) || this.city.isReady)) this.onAssetsLoaded();
+ 
+     const spectating = !!this.multiplayer?.spectating;
++    const wasSuspended=!this.isPlaying || this.isPaused || spectating || this.gameplaySuspended;
+     this.gamepad?.update(delta);
++    // Start can resume from inside this callback after elapsed was read.
++    // Begin timing with the next frame in that case, including for quality QA.
++    if(wasSuspended && this.isPlaying && !this.isPaused && !spectating && !this.gameplaySuspended)elapsed=delta=0;
+     if (this.isPlaying && !this.isPaused && !spectating && !this.gameplaySuspended) {
+       // 1. Update Physics and Character
+       this.combat?.before(delta,this.camera,this.input);
+@@ -872,7 +890,7 @@
+ 
+       // 2. Update 3rd Person Follow Camera
+       this.tpsCamera.update(
+-        rawDelta,
++        delta,
+         this.physics.renderPosition,
+         this.physics.velocity,
+         this.physics.isSwinging,
+--- before/src/PlayerExperience.js
++++ after/src/PlayerExperience.js
+@@ -14,7 +14,7 @@
+       const unlocked=game.progression.bank(points);game.progression.save();this.refreshProgress();
+       game.showNotice(`착지 성공 +${points} · ${variety}종 연결${unlocked.length?' · '+unlocked.map(r=>r.label+' 해제').join(', '):''}`);
+     },onChange:(name,points)=>game.showStuntNotice(name,points)});
+-    this.ghost=new RaceGhost(game.scene);this.performance=new PerformanceBudget();
++    this.ghost=new RaceGhost(game.scene);this.performance=new PerformanceBudget();this.performanceActive=false;
+     const geometry=new THREE.BufferGeometry().setFromPoints(Array.from({length:17},()=>new THREE.Vector3()));
+     this.trajectory=new THREE.Line(geometry,new THREE.LineDashedMaterial({color:0x94f7e0,dashSize:1,gapSize:.8,transparent:true,opacity:.65}));
+     this.trajectory.frustumCulled=false;this.trajectory.visible=false;game.scene.add(this.trajectory);
+@@ -73,7 +73,10 @@
+   update(delta,elapsed) {
+     const g=this.game,p=g.physics,s=g.preferences.values.settings,active=g.isPlaying&&!g.isPaused&&!g.multiplayer?.spectating&&!g.gameplaySuspended;
+     const ceiling={low:1,balanced:1.5,high:2}[g.preferences.values.quality];
+-    const budget=this.performance.update(elapsed,active&&s.autoQuality,ceiling);
++    // Menus and hidden tabs are not gameplay performance samples. Preserve
++    // the applied resolution while discarding stale pressure on transitions.
++    if(this.performanceActive!==active){this.performance.reset?.(this.performance.level);this.performanceActive=active;}
++    const budget=active?this.performance.update(elapsed,s.autoQuality,ceiling):null;
+     if(budget!==null)g.renderer.setPixelRatio(Math.min(window.devicePixelRatio,budget));
+     if(!active){this.ghost.mesh.visible=false;this.trajectory.visible=false;const preview=document.getElementById('anchor-preview');if(preview)preview.style.display='none';return;}
+     this.stunts.update(delta,p.state,p.velocity.length());this.ghost.update(g.timeTrial,p.position,p.facingAngle,s.ghost);
+--- before/package.json
++++ after/package.json
+@@ -7,7 +7,7 @@
+     "dev": "vite",
+     "build": "vite build",
+     "preview": "vite preview",
+-    "test": "node scripts/build-motions.mjs && node scripts/check-motions.mjs && node scripts/check-pose.mjs && node scripts/check-controller.mjs && node scripts/check-gameplay.mjs && node scripts/check-air-tricks.mjs && node scripts/check-dual-web.mjs && node scripts/check-pendulum.mjs && node scripts/check-mechanics-audit.mjs && node scripts/check-player-audit.mjs && node scripts/check-traversal.mjs && node scripts/check-qa.mjs && node scripts/check-review-2.mjs && node scripts/check-combat.mjs && node scripts/check-web-vfx.mjs && node scripts/check-superhero-landing-vfx.mjs && node scripts/check-combat-rig.mjs && node scripts/check-motion-timeline.mjs && node scripts/check-motion-transitions.mjs && node scripts/check-hong-kong-streaming.mjs && node scripts/check-minimap.mjs && node scripts/check-remote-motion.mjs && node scripts/check-tile-textures.mjs && node scripts/check-multiplayer.mjs && node scripts/check-upgrade.mjs && node scripts/check-upgrade-online.mjs && node scripts/check-release-audit.mjs && node scripts/check-online-edge-cases.mjs && node scripts/check-room-reconnect.mjs && node scripts/check-hong-kong-geometry-codec.mjs && node scripts/check-swing-accessibility.mjs && node scripts/check-cross-system-regressions.mjs && node scripts/check-web-continuity.mjs && node scripts/check-compact-map-and-locators.mjs && node scripts/check-expert-audit.mjs && node scripts/check-connection-lifecycle.mjs && node scripts/check-camera-motion-web.mjs && node scripts/check-full-game-audit.mjs",
++    "test": "node scripts/build-motions.mjs && node scripts/check-motions.mjs && node scripts/check-pose.mjs && node scripts/check-controller.mjs && node scripts/check-gameplay.mjs && node scripts/check-air-tricks.mjs && node scripts/check-dual-web.mjs && node scripts/check-pendulum.mjs && node scripts/check-mechanics-audit.mjs && node scripts/check-player-audit.mjs && node scripts/check-traversal.mjs && node scripts/check-qa.mjs && node scripts/check-review-2.mjs && node scripts/check-combat.mjs && node scripts/check-web-vfx.mjs && node scripts/check-superhero-landing-vfx.mjs && node scripts/check-combat-rig.mjs && node scripts/check-motion-timeline.mjs && node scripts/check-motion-transitions.mjs && node scripts/check-hong-kong-streaming.mjs && node scripts/check-minimap.mjs && node scripts/check-remote-motion.mjs && node scripts/check-tile-textures.mjs && node scripts/check-multiplayer.mjs && node scripts/check-upgrade.mjs && node scripts/check-upgrade-online.mjs && node scripts/check-release-audit.mjs && node scripts/check-online-edge-cases.mjs && node scripts/check-room-reconnect.mjs && node scripts/check-hong-kong-geometry-codec.mjs && node scripts/check-swing-accessibility.mjs && node scripts/check-cross-system-regressions.mjs && node scripts/check-web-continuity.mjs && node scripts/check-compact-map-and-locators.mjs && node scripts/check-expert-audit.mjs && node scripts/check-connection-lifecycle.mjs && node scripts/check-camera-motion-web.mjs && node scripts/check-full-game-audit.mjs && node scripts/check-input-lifecycle.mjs",
+     "predev": "node scripts/build-motions.mjs",
+     "prebuild": "node scripts/build-motions.mjs",
+     "start": "node scripts/serve.mjs",
+@@ -22,7 +22,8 @@
+     "test:expert": "node scripts/check-expert-audit.mjs && node scripts/check-connection-lifecycle.mjs",
+     "test:camera-motion-web": "node scripts/check-camera-motion-web.mjs",
+     "test:full-audit": "node scripts/check-full-game-audit.mjs",
+-    "test:city-authority": "node scripts/check-city-authority.mjs"
++    "test:city-authority": "node scripts/check-city-authority.mjs",
++    "test:input-lifecycle": "node scripts/check-input-lifecycle.mjs"
+   },
+   "dependencies": {
+     "@dimforge/rapier3d-compat": "^0.21.0",

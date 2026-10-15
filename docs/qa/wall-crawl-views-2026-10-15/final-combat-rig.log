@@ -1,0 +1,6 @@
+PASS: 27 real-rig combat cases at 30/60/144 FPS; finite joints, grounded stance and same-clip restart
+PASS: grounded power strike, compact guard, retained strike and punch recovery; removed evasions checked by motion-cleanup
+PASS: boxing ready stance stays planted with restrained breathing
+PASS: timed landing resumes, paused idle recovers, and retained skills return to idle and walking
+PASS: resetting mid-transition stops every old skill before idle restarts
+PASS: heavy landing keeps its chosen recovery clip until the landing state ends

@@ -1,0 +1,146 @@
+[
+  {
+    "view": "first",
+    "hand": "left",
+    "phase": "fire",
+    "time": 0.16,
+    "file": "web-first-left-fire.png",
+    "state": "Browser tab: 1824846136, Title: \"스파이더맨: 3D 웹 스윙 (Spider-Man 3D Web Swing)\", URL: \"http://127.0.0.1:5297/?webHandReview\".\nThe following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.\nRemoved element IDs: 25\n+\t\t45 text 왼손 · 발사 · 0.16초\n실제 캐릭터 손 메시 · 중지·약지 접기 / 검지·새끼손가락 펴기\n~\t\t\t37 stepper (settable, float) 검사 시각 초, Value: 0.1599999964237213, Details: 0.16, ID: web-time\nThe focused UI element is 23 button 자세 보기, ID: web-sample"
+  },
+  {
+    "view": "first",
+    "hand": "left",
+    "phase": "hold",
+    "time": 0.7,
+    "file": "web-first-left-hold.png",
+    "state": "Browser tab: 1824846136, Title: \"스파이더맨: 3D 웹 스윙 (Spider-Man 3D Web Swing)\", URL: \"http://127.0.0.1:5297/?webHandReview\".\nThe following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.\n~\t\t9 pop up button (collapsed, settable) Value: 줄 잡기, ID: web-phase, Secondary Actions: Expand\n~\t\t\t\t11 발사\n~\t\t\t\t13 (selected) 줄 잡기\n~\t\t45 text 왼손 · 줄 잡기 · 0.70초\n실제 캐릭터 손 메시 · 다섯 손가락으로 줄 잡기\n~\t\t\t37 stepper (settable, float) 검사 시각 초, Value: 0.699999988079071, Details: 0.7, ID: web-time\nThe focused UI element is 23 button 자세 보기, ID: web-sample"
+  },
+  {
+    "view": "first",
+    "hand": "left",
+    "phase": "release",
+    "time": 0.5,
+    "file": "web-first-left-release.png",
+    "state": "Browser tab: 1824846136, Title: \"스파이더맨: 3D 웹 스윙 (Spider-Man 3D Web Swing)\", URL: \"http://127.0.0.1:5297/?webHandReview\".\nThe following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.\n~\t\t9 pop up button (collapsed, settable) Value: 해제, ID: web-phase, Secondary Actions: Expand\n~\t\t\t\t13 줄 잡기\n~\t\t\t\t14 (selected) 해제\n~\t\t45 text 왼손 · 해제 · 0.50초\n실제 캐릭터 손 메시 · 기본 손 자세로 복귀\n~\t\t\t37 stepper (settable, float) 검사 시각 초, Value: 0.5, ID: web-time\nThe focused UI element is 23 button 자세 보기, ID: web-sample"
+  },
+  {
+    "view": "first",
+    "hand": "right",
+    "phase": "fire",
+    "time": 0.16,
+    "file": "web-first-right-fire.png",
+    "state": "Browser tab: 1824846136, Title: \"스파이더맨: 3D 웹 스윙 (Spider-Man 3D Web Swing)\", URL: \"http://127.0.0.1:5297/?webHandReview\".\n0 AXWebArea 스파이더맨: 3D 웹 스윙 (Spider-Man 3D Web Swing), URL: 127.0.0.1:5297/?webHandReview\n\t1 container\n\t\t2 text 거미줄 손 자세 검증 손 \n\t\t3 pop up button (collapsed, settable) Value: 오른손, ID: web-hand, Secondary Actions: Expand\n\t\t\t4 menu\n\t\t\t\t5 왼손\n\t\t\t\t6 (selected) 오른손\n\t\t\t\t7 양손\n\t\t8 text 동작 \n\t\t9 pop up button (collapsed, settable) Value: 발사, ID: web-phase, Secondary Actions: Expand\n\t\t\t10 menu\n\t\t\t\t11 (selected) 발사\n\t\t\t\t12 빗나간 발사\n\t\t\t\t13 줄 잡기\n\t\t\t\t14 해제\n\t\t\t\t15 펀치\n\t\t16 text 시점 \n\t\t17 pop up button (collapsed, settable) Value: 1인칭, ID: web-view, Secondary Actions: Expand\n\t\t\t18 menu\n\t\t\t\t19 (selected) 1인칭\n\t\t\t\t20 3인칭 전신\n\t\t\t\t21 손바닥 확대\n\t\t\t\t22 손등 확대\n\t\t23 button 자세 보기, ID: web-sample\n\t\t24 button 연속 재생, ID: web-play\n\t\t45 text 오른손 · 발사 · 0.16초\n실제 캐릭터 손 메시 · 중지·약지 접기 / 검지·새끼손가락 펴기\n\t\t26 link Description: 게임으로 돌아가기, Value: 127.0.0.1:5297/\n\t\t27 container\n\t\t\t28 text 1인칭 시야각 \n\t\t\t29 pop up button (collapsed, settable) 1인칭 시야각, Value: 45, ID: web-fov, Secondary Actions: Expand\n\t\t\t\t30 menu\n\t\t\t\t\t31 (selected) 45\n\t\t\t\t\t32 55\n\t\t\t\t\t33 64\n\t\t\t\t\t34 95\n\t\t35 container\n\t\t\t36 text 검사 시각 \n\t\t\t37 stepper (settable, float) 검사 시각 초, Value: 0.1599999964237213, Details: 0.16, ID: web-time\n\t\t\t38 text 초\n\t\t39 container\n\t\t\t40 text 배경 \n\t\t\t41 pop up button (collapsed, settable) 배경, Value: 낮, ID: web-background, Secondary Actions: Expand\n\t\t\t\t42 menu\n\t\t\t\t\t43 (selected) 낮\n\t\t\t\t\t44 밤\n\nThe focused UI element is 23 button 자세 보기, ID: web-sample"
+  },
+  {
+    "view": "first",
+    "hand": "right",
+    "phase": "hold",
+    "time": 0.7,
+    "file": "web-first-right-hold.png",
+    "state": "Browser tab: 1824846136, Title: \"스파이더맨: 3D 웹 스윙 (Spider-Man 3D Web Swing)\", URL: \"http://127.0.0.1:5297/?webHandReview\".\nThe following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.\n~\t\t9 pop up button (collapsed, settable) Value: 줄 잡기, ID: web-phase, Secondary Actions: Expand\n~\t\t\t\t11 발사\n~\t\t\t\t13 (selected) 줄 잡기\n~\t\t45 text 오른손 · 줄 잡기 · 0.70초\n실제 캐릭터 손 메시 · 다섯 손가락으로 줄 잡기\n~\t\t\t37 stepper (settable, float) 검사 시각 초, Value: 0.699999988079071, Details: 0.7, ID: web-time\nThe focused UI element is 23 button 자세 보기, ID: web-sample"
+  },
+  {
+    "view": "first",
+    "hand": "right",
+    "phase": "release",
+    "time": 0.5,
+    "file": "web-first-right-release.png",
+    "state": "Browser tab: 1824846136, Title: \"스파이더맨: 3D 웹 스윙 (Spider-Man 3D Web Swing)\", URL: \"http://127.0.0.1:5297/?webHandReview\".\nThe following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.\n~\t\t9 pop up button (collapsed, settable) Value: 해제, ID: web-phase, Secondary Actions: Expand\n~\t\t\t\t13 줄 잡기\n~\t\t\t\t14 (selected) 해제\n~\t\t45 text 오른손 · 해제 · 0.50초\n실제 캐릭터 손 메시 · 기본 손 자세로 복귀\n~\t\t\t37 stepper (settable, float) 검사 시각 초, Value: 0.5, ID: web-time\nThe focused UI element is 23 button 자세 보기, ID: web-sample"
+  },
+  {
+    "view": "first",
+    "hand": "both",
+    "phase": "fire",
+    "time": 0.16,
+    "file": "web-first-both-fire.png",
+    "state": "Browser tab: 1824846136, Title: \"스파이더맨: 3D 웹 스윙 (Spider-Man 3D Web Swing)\", URL: \"http://127.0.0.1:5297/?webHandReview\".\n0 AXWebArea 스파이더맨: 3D 웹 스윙 (Spider-Man 3D Web Swing), URL: 127.0.0.1:5297/?webHandReview\n\t1 container\n\t\t2 text 거미줄 손 자세 검증 손 \n\t\t3 pop up button (collapsed, settable) Value: 양손, ID: web-hand, Secondary Actions: Expand\n\t\t\t4 menu\n\t\t\t\t5 왼손\n\t\t\t\t6 오른손\n\t\t\t\t7 (selected) 양손\n\t\t8 text 동작 \n\t\t9 pop up button (collapsed, settable) Value: 발사, ID: web-phase, Secondary Actions: Expand\n\t\t\t10 menu\n\t\t\t\t11 (selected) 발사\n\t\t\t\t12 빗나간 발사\n\t\t\t\t13 줄 잡기\n\t\t\t\t14 해제\n\t\t\t\t15 펀치\n\t\t16 text 시점 \n\t\t17 pop up button (collapsed, settable) Value: 1인칭, ID: web-view, Secondary Actions: Expand\n\t\t\t18 menu\n\t\t\t\t19 (selected) 1인칭\n\t\t\t\t20 3인칭 전신\n\t\t\t\t21 손바닥 확대\n\t\t\t\t22 손등 확대\n\t\t23 button 자세 보기, ID: web-sample\n\t\t24 button 연속 재생, ID: web-play\n\t\t45 text 양손 · 발사 · 0.16초\n실제 캐릭터 손 메시 · 중지·약지 접기 / 검지·새끼손가락 펴기\n\t\t26 link Description: 게임으로 돌아가기, Value: 127.0.0.1:5297/\n\t\t27 container\n\t\t\t28 text 1인칭 시야각 \n\t\t\t29 pop up button (collapsed, settable) 1인칭 시야각, Value: 45, ID: web-fov, Secondary Actions: Expand\n\t\t\t\t30 menu\n\t\t\t\t\t31 (selected) 45\n\t\t\t\t\t32 55\n\t\t\t\t\t33 64\n\t\t\t\t\t34 95\n\t\t35 container\n\t\t\t36 text 검사 시각 \n\t\t\t37 stepper (settable, float) 검사 시각 초, Value: 0.1599999964237213, Details: 0.16, ID: web-time\n\t\t\t38 text 초\n\t\t39 container\n\t\t\t40 text 배경 \n\t\t\t41 pop up button (collapsed, settable) 배경, Value: 낮, ID: web-background, Secondary Actions: Expand\n\t\t\t\t42 menu\n\t\t\t\t\t43 (selected) 낮\n\t\t\t\t\t44 밤\n\nThe focused UI element is 23 button 자세 보기, ID: web-sample"
+  },
+  {
+    "view": "first",
+    "hand": "both",
+    "phase": "hold",
+    "time": 0.7,
+    "file": "web-first-both-hold.png",
+    "state": "Browser tab: 1824846136, Title: \"스파이더맨: 3D 웹 스윙 (Spider-Man 3D Web Swing)\", URL: \"http://127.0.0.1:5297/?webHandReview\".\nThe following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.\n~\t\t9 pop up button (collapsed, settable) Value: 줄 잡기, ID: web-phase, Secondary Actions: Expand\n~\t\t\t\t11 발사\n~\t\t\t\t13 (selected) 줄 잡기\n~\t\t45 text 양손 · 줄 잡기 · 0.70초\n실제 캐릭터 손 메시 · 다섯 손가락으로 줄 잡기\n~\t\t\t37 stepper (settable, float) 검사 시각 초, Value: 0.699999988079071, Details: 0.7, ID: web-time\nThe focused UI element is 23 button 자세 보기, ID: web-sample"
+  },
+  {
+    "view": "first",
+    "hand": "both",
+    "phase": "release",
+    "time": 0.5,
+    "file": "web-first-both-release.png",
+    "state": "Browser tab: 1824846136, Title: \"스파이더맨: 3D 웹 스윙 (Spider-Man 3D Web Swing)\", URL: \"http://127.0.0.1:5297/?webHandReview\".\nThe following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.\n~\t\t9 pop up button (collapsed, settable) Value: 해제, ID: web-phase, Secondary Actions: Expand\n~\t\t\t\t13 줄 잡기\n~\t\t\t\t14 (selected) 해제\n~\t\t45 text 양손 · 해제 · 0.50초\n실제 캐릭터 손 메시 · 기본 손 자세로 복귀\n~\t\t\t37 stepper (settable, float) 검사 시각 초, Value: 0.5, ID: web-time\nThe focused UI element is 23 button 자세 보기, ID: web-sample"
+  },
+  {
+    "view": "third",
+    "hand": "left",
+    "phase": "fire",
+    "time": 0.16,
+    "file": "web-third-left-fire.png",
+    "state": "Browser tab: 1824846136, Title: \"스파이더맨: 3D 웹 스윙 (Spider-Man 3D Web Swing)\", URL: \"http://127.0.0.1:5297/?webHandReview\".\n0 AXWebArea 스파이더맨: 3D 웹 스윙 (Spider-Man 3D Web Swing), URL: 127.0.0.1:5297/?webHandReview\n\t1 container\n\t\t2 text 거미줄 손 자세 검증 손 \n\t\t3 pop up button (collapsed, settable) Value: 왼손, ID: web-hand, Secondary Actions: Expand\n\t\t\t4 menu\n\t\t\t\t5 (selected) 왼손\n\t\t\t\t6 오른손\n\t\t\t\t7 양손\n\t\t8 text 동작 \n\t\t9 pop up button (collapsed, settable) Value: 발사, ID: web-phase, Secondary Actions: Expand\n\t\t\t10 menu\n\t\t\t\t11 (selected) 발사\n\t\t\t\t12 빗나간 발사\n\t\t\t\t13 줄 잡기\n\t\t\t\t14 해제\n\t\t\t\t15 펀치\n\t\t16 text 시점 \n\t\t17 pop up button (collapsed, settable) Value: 3인칭 전신, ID: web-view, Secondary Actions: Expand\n\t\t\t18 menu\n\t\t\t\t19 1인칭\n\t\t\t\t20 (selected) 3인칭 전신\n\t\t\t\t21 손바닥 확대\n\t\t\t\t22 손등 확대\n\t\t23 button 자세 보기, ID: web-sample\n\t\t24 button 연속 재생, ID: web-play\n\t\t45 text 왼손 · 발사 · 0.16초\n실제 캐릭터 손 메시 · 중지·약지 접기 / 검지·새끼손가락 펴기\n\t\t26 link Description: 게임으로 돌아가기, Value: 127.0.0.1:5297/\n\t\t27 container\n\t\t\t28 text 1인칭 시야각 \n\t\t\t29 pop up button (collapsed, settable) 1인칭 시야각, Value: 45, ID: web-fov, Secondary Actions: Expand\n\t\t\t\t30 menu\n\t\t\t\t\t31 (selected) 45\n\t\t\t\t\t32 55\n\t\t\t\t\t33 64\n\t\t\t\t\t34 95\n\t\t35 container\n\t\t\t36 text 검사 시각 \n\t\t\t37 stepper (settable, float) 검사 시각 초, Value: 0.1599999964237213, Details: 0.16, ID: web-time\n\t\t\t38 text 초\n\t\t39 container\n\t\t\t40 text 배경 \n\t\t\t41 pop up button (collapsed, settable) 배경, Value: 낮, ID: web-background, Secondary Actions: Expand\n\t\t\t\t42 menu\n\t\t\t\t\t43 (selected) 낮\n\t\t\t\t\t44 밤\n\nThe focused UI element is 23 button 자세 보기, ID: web-sample"
+  },
+  {
+    "view": "third",
+    "hand": "left",
+    "phase": "hold",
+    "time": 0.7,
+    "file": "web-third-left-hold.png",
+    "state": "Browser tab: 1824846136, Title: \"스파이더맨: 3D 웹 스윙 (Spider-Man 3D Web Swing)\", URL: \"http://127.0.0.1:5297/?webHandReview\".\nThe following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.\n~\t\t9 pop up button (collapsed, settable) Value: 줄 잡기, ID: web-phase, Secondary Actions: Expand\n~\t\t\t\t11 발사\n~\t\t\t\t13 (selected) 줄 잡기\n~\t\t45 text 왼손 · 줄 잡기 · 0.70초\n실제 캐릭터 손 메시 · 다섯 손가락으로 줄 잡기\n~\t\t\t37 stepper (settable, float) 검사 시각 초, Value: 0.699999988079071, Details: 0.7, ID: web-time\nThe focused UI element is 23 button 자세 보기, ID: web-sample"
+  },
+  {
+    "view": "third",
+    "hand": "left",
+    "phase": "release",
+    "time": 0.5,
+    "file": "web-third-left-release.png",
+    "state": "Browser tab: 1824846136, Title: \"스파이더맨: 3D 웹 스윙 (Spider-Man 3D Web Swing)\", URL: \"http://127.0.0.1:5297/?webHandReview\".\nThe following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.\n~\t\t9 pop up button (collapsed, settable) Value: 해제, ID: web-phase, Secondary Actions: Expand\n~\t\t\t\t13 줄 잡기\n~\t\t\t\t14 (selected) 해제\n~\t\t45 text 왼손 · 해제 · 0.50초\n실제 캐릭터 손 메시 · 기본 손 자세로 복귀\n~\t\t\t37 stepper (settable, float) 검사 시각 초, Value: 0.5, ID: web-time\nThe focused UI element is 23 button 자세 보기, ID: web-sample"
+  },
+  {
+    "view": "third",
+    "hand": "right",
+    "phase": "fire",
+    "time": 0.16,
+    "file": "web-third-right-fire.png",
+    "state": "Browser tab: 1824846136, Title: \"스파이더맨: 3D 웹 스윙 (Spider-Man 3D Web Swing)\", URL: \"http://127.0.0.1:5297/?webHandReview\".\n0 AXWebArea 스파이더맨: 3D 웹 스윙 (Spider-Man 3D Web Swing), URL: 127.0.0.1:5297/?webHandReview\n\t1 container\n\t\t2 text 거미줄 손 자세 검증 손 \n\t\t3 pop up button (collapsed, settable) Value: 오른손, ID: web-hand, Secondary Actions: Expand\n\t\t\t4 menu\n\t\t\t\t5 왼손\n\t\t\t\t6 (selected) 오른손\n\t\t\t\t7 양손\n\t\t8 text 동작 \n\t\t9 pop up button (collapsed, settable) Value: 발사, ID: web-phase, Secondary Actions: Expand\n\t\t\t10 menu\n\t\t\t\t11 (selected) 발사\n\t\t\t\t12 빗나간 발사\n\t\t\t\t13 줄 잡기\n\t\t\t\t14 해제\n\t\t\t\t15 펀치\n\t\t16 text 시점 \n\t\t17 pop up button (collapsed, settable) Value: 3인칭 전신, ID: web-view, Secondary Actions: Expand\n\t\t\t18 menu\n\t\t\t\t19 1인칭\n\t\t\t\t20 (selected) 3인칭 전신\n\t\t\t\t21 손바닥 확대\n\t\t\t\t22 손등 확대\n\t\t23 button 자세 보기, ID: web-sample\n\t\t24 button 연속 재생, ID: web-play\n\t\t45 text 오른손 · 발사 · 0.16초\n실제 캐릭터 손 메시 · 중지·약지 접기 / 검지·새끼손가락 펴기\n\t\t26 link Description: 게임으로 돌아가기, Value: 127.0.0.1:5297/\n\t\t27 container\n\t\t\t28 text 1인칭 시야각 \n\t\t\t29 pop up button (collapsed, settable) 1인칭 시야각, Value: 45, ID: web-fov, Secondary Actions: Expand\n\t\t\t\t30 menu\n\t\t\t\t\t31 (selected) 45\n\t\t\t\t\t32 55\n\t\t\t\t\t33 64\n\t\t\t\t\t34 95\n\t\t35 container\n\t\t\t36 text 검사 시각 \n\t\t\t37 stepper (settable, float) 검사 시각 초, Value: 0.1599999964237213, Details: 0.16, ID: web-time\n\t\t\t38 text 초\n\t\t39 container\n\t\t\t40 text 배경 \n\t\t\t41 pop up button (collapsed, settable) 배경, Value: 낮, ID: web-background, Secondary Actions: Expand\n\t\t\t\t42 menu\n\t\t\t\t\t43 (selected) 낮\n\t\t\t\t\t44 밤\n\nThe focused UI element is 23 button 자세 보기, ID: web-sample"
+  },
+  {
+    "view": "third",
+    "hand": "right",
+    "phase": "hold",
+    "time": 0.7,
+    "file": "web-third-right-hold.png",
+    "state": "Browser tab: 1824846136, Title: \"스파이더맨: 3D 웹 스윙 (Spider-Man 3D Web Swing)\", URL: \"http://127.0.0.1:5297/?webHandReview\".\nThe following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.\n~\t\t9 pop up button (collapsed, settable) Value: 줄 잡기, ID: web-phase, Secondary Actions: Expand\n~\t\t\t\t11 발사\n~\t\t\t\t13 (selected) 줄 잡기\n~\t\t45 text 오른손 · 줄 잡기 · 0.70초\n실제 캐릭터 손 메시 · 다섯 손가락으로 줄 잡기\n~\t\t\t37 stepper (settable, float) 검사 시각 초, Value: 0.699999988079071, Details: 0.7, ID: web-time\nThe focused UI element is 23 button 자세 보기, ID: web-sample"
+  },
+  {
+    "view": "third",
+    "hand": "right",
+    "phase": "release",
+    "time": 0.5,
+    "file": "web-third-right-release.png",
+    "state": "Browser tab: 1824846136, Title: \"스파이더맨: 3D 웹 스윙 (Spider-Man 3D Web Swing)\", URL: \"http://127.0.0.1:5297/?webHandReview\".\nThe following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.\n~\t\t9 pop up button (collapsed, settable) Value: 해제, ID: web-phase, Secondary Actions: Expand\n~\t\t\t\t13 줄 잡기\n~\t\t\t\t14 (selected) 해제\n~\t\t45 text 오른손 · 해제 · 0.50초\n실제 캐릭터 손 메시 · 기본 손 자세로 복귀\n~\t\t\t37 stepper (settable, float) 검사 시각 초, Value: 0.5, ID: web-time\nThe focused UI element is 23 button 자세 보기, ID: web-sample"
+  },
+  {
+    "view": "third",
+    "hand": "both",
+    "phase": "fire",
+    "time": 0.16,
+    "file": "web-third-both-fire.png",
+    "state": "Browser tab: 1824846136, Title: \"스파이더맨: 3D 웹 스윙 (Spider-Man 3D Web Swing)\", URL: \"http://127.0.0.1:5297/?webHandReview\".\n0 AXWebArea 스파이더맨: 3D 웹 스윙 (Spider-Man 3D Web Swing), URL: 127.0.0.1:5297/?webHandReview\n\t1 container\n\t\t2 text 거미줄 손 자세 검증 손 \n\t\t3 pop up button (collapsed, settable) Value: 양손, ID: web-hand, Secondary Actions: Expand\n\t\t\t4 menu\n\t\t\t\t5 왼손\n\t\t\t\t6 오른손\n\t\t\t\t7 (selected) 양손\n\t\t8 text 동작 \n\t\t9 pop up button (collapsed, settable) Value: 발사, ID: web-phase, Secondary Actions: Expand\n\t\t\t10 menu\n\t\t\t\t11 (selected) 발사\n\t\t\t\t12 빗나간 발사\n\t\t\t\t13 줄 잡기\n\t\t\t\t14 해제\n\t\t\t\t15 펀치\n\t\t16 text 시점 \n\t\t17 pop up button (collapsed, settable) Value: 3인칭 전신, ID: web-view, Secondary Actions: Expand\n\t\t\t18 menu\n\t\t\t\t19 1인칭\n\t\t\t\t20 (selected) 3인칭 전신\n\t\t\t\t21 손바닥 확대\n\t\t\t\t22 손등 확대\n\t\t23 button 자세 보기, ID: web-sample\n\t\t24 button 연속 재생, ID: web-play\n\t\t45 text 양손 · 발사 · 0.16초\n실제 캐릭터 손 메시 · 중지·약지 접기 / 검지·새끼손가락 펴기\n\t\t26 link Description: 게임으로 돌아가기, Value: 127.0.0.1:5297/\n\t\t27 container\n\t\t\t28 text 1인칭 시야각 \n\t\t\t29 pop up button (collapsed, settable) 1인칭 시야각, Value: 45, ID: web-fov, Secondary Actions: Expand\n\t\t\t\t30 menu\n\t\t\t\t\t31 (selected) 45\n\t\t\t\t\t32 55\n\t\t\t\t\t33 64\n\t\t\t\t\t34 95\n\t\t35 container\n\t\t\t36 text 검사 시각 \n\t\t\t37 stepper (settable, float) 검사 시각 초, Value: 0.1599999964237213, Details: 0.16, ID: web-time\n\t\t\t38 text 초\n\t\t39 container\n\t\t\t40 text 배경 \n\t\t\t41 pop up button (collapsed, settable) 배경, Value: 낮, ID: web-background, Secondary Actions: Expand\n\t\t\t\t42 menu\n\t\t\t\t\t43 (selected) 낮\n\t\t\t\t\t44 밤\n\nThe focused UI element is 23 button 자세 보기, ID: web-sample"
+  },
+  {
+    "view": "third",
+    "hand": "both",
+    "phase": "hold",
+    "time": 0.7,
+    "file": "web-third-both-hold.png",
+    "state": "Browser tab: 1824846136, Title: \"스파이더맨: 3D 웹 스윙 (Spider-Man 3D Web Swing)\", URL: \"http://127.0.0.1:5297/?webHandReview\".\nThe following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.\n~\t\t9 pop up button (collapsed, settable) Value: 줄 잡기, ID: web-phase, Secondary Actions: Expand\n~\t\t\t\t11 발사\n~\t\t\t\t13 (selected) 줄 잡기\n~\t\t45 text 양손 · 줄 잡기 · 0.70초\n실제 캐릭터 손 메시 · 다섯 손가락으로 줄 잡기\n~\t\t\t37 stepper (settable, float) 검사 시각 초, Value: 0.699999988079071, Details: 0.7, ID: web-time\nThe focused UI element is 23 button 자세 보기, ID: web-sample"
+  },
+  {
+    "view": "third",
+    "hand": "both",
+    "phase": "release",
+    "time": 0.5,
+    "file": "web-third-both-release.png",
+    "state": "Browser tab: 1824846136, Title: \"스파이더맨: 3D 웹 스윙 (Spider-Man 3D Web Swing)\", URL: \"http://127.0.0.1:5297/?webHandReview\".\nThe following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.\n~\t\t9 pop up button (collapsed, settable) Value: 해제, ID: web-phase, Secondary Actions: Expand\n~\t\t\t\t13 줄 잡기\n~\t\t\t\t14 (selected) 해제\n~\t\t45 text 양손 · 해제 · 0.50초\n실제 캐릭터 손 메시 · 기본 손 자세로 복귀\n~\t\t\t37 stepper (settable, float) 검사 시각 초, Value: 0.5, ID: web-time\nThe focused UI element is 23 button 자세 보기, ID: web-sample"
+  }
+]

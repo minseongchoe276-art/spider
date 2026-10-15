@@ -1,7 +1,7 @@
 {
-  "motions": 39,
-  "cases": 117,
-  "samples": 16183,
+  "motions": 31,
+  "cases": 93,
+  "samples": 14665,
   "report": [
     {
       "key": "idle",
@@ -44,27 +44,6 @@
       "frames": 141,
       "maxFrame": 82,
       "maxStep": 0.0358
-    },
-    {
-      "key": "jog",
-      "fps": 30,
-      "frames": 78,
-      "maxFrame": 54,
-      "maxStep": 0.1217
-    },
-    {
-      "key": "jog",
-      "fps": 60,
-      "frames": 155,
-      "maxFrame": 108,
-      "maxStep": 0.0612
-    },
-    {
-      "key": "jog",
-      "fps": 144,
-      "frames": 371,
-      "maxFrame": 259,
-      "maxStep": 0.0255
     },
     {
       "key": "regularRun",
@@ -149,27 +128,6 @@
       "frames": 131,
       "maxFrame": 4,
       "maxStep": 0.0723
-    },
-    {
-      "key": "femaleStop",
-      "fps": 30,
-      "frames": 17,
-      "maxFrame": 7,
-      "maxStep": 0.077
-    },
-    {
-      "key": "femaleStop",
-      "fps": 60,
-      "frames": 33,
-      "maxFrame": 14,
-      "maxStep": 0.0387
-    },
-    {
-      "key": "femaleStop",
-      "fps": 144,
-      "frames": 78,
-      "maxFrame": 33,
-      "maxStep": 0.0161
     },
     {
       "key": "zip",
@@ -529,27 +487,6 @@
       "maxStep": 0.0245
     },
     {
-      "key": "cross",
-      "fps": 30,
-      "frames": 21,
-      "maxFrame": 8,
-      "maxStep": 0.2573
-    },
-    {
-      "key": "cross",
-      "fps": 60,
-      "frames": 40,
-      "maxFrame": 15,
-      "maxStep": 0.1674
-    },
-    {
-      "key": "cross",
-      "fps": 144,
-      "frames": 95,
-      "maxFrame": 35,
-      "maxStep": 0.0765
-    },
-    {
       "key": "guard",
       "fps": 30,
       "frames": 61,
@@ -569,69 +506,6 @@
       "frames": 289,
       "maxFrame": 268,
       "maxStep": 0.0003
-    },
-    {
-      "key": "dodgeLeft",
-      "fps": 30,
-      "frames": 13,
-      "maxFrame": 2,
-      "maxStep": 0.0305
-    },
-    {
-      "key": "dodgeLeft",
-      "fps": 60,
-      "frames": 24,
-      "maxFrame": 4,
-      "maxStep": 0.0172
-    },
-    {
-      "key": "dodgeLeft",
-      "fps": 144,
-      "frames": 56,
-      "maxFrame": 9,
-      "maxStep": 0.0072
-    },
-    {
-      "key": "dodgeRight",
-      "fps": 30,
-      "frames": 13,
-      "maxFrame": 2,
-      "maxStep": 0.0312
-    },
-    {
-      "key": "dodgeRight",
-      "fps": 60,
-      "frames": 24,
-      "maxFrame": 4,
-      "maxStep": 0.0176
-    },
-    {
-      "key": "dodgeRight",
-      "fps": 144,
-      "frames": 56,
-      "maxFrame": 9,
-      "maxStep": 0.0074
-    },
-    {
-      "key": "dodgeBack",
-      "fps": 30,
-      "frames": 14,
-      "maxFrame": 3,
-      "maxStep": 0.0407
-    },
-    {
-      "key": "dodgeBack",
-      "fps": 60,
-      "frames": 27,
-      "maxFrame": 5,
-      "maxStep": 0.0214
-    },
-    {
-      "key": "dodgeBack",
-      "fps": 144,
-      "frames": 62,
-      "maxFrame": 11,
-      "maxStep": 0.0091
     },
     {
       "key": "slam",
@@ -657,44 +531,23 @@
     {
       "key": "slamLand",
       "fps": 30,
-      "frames": 43,
-      "maxFrame": 8,
-      "maxStep": 0.5697
+      "frames": 28,
+      "maxFrame": 1,
+      "maxStep": 0.2891
     },
     {
       "key": "slamLand",
       "fps": 60,
-      "frames": 84,
-      "maxFrame": 15,
-      "maxStep": 0.2885
+      "frames": 55,
+      "maxFrame": 1,
+      "maxStep": 0.1453
     },
     {
       "key": "slamLand",
       "fps": 144,
-      "frames": 199,
-      "maxFrame": 34,
-      "maxStep": 0.121
-    },
-    {
-      "key": "dodgeForward",
-      "fps": 30,
-      "frames": 17,
-      "maxFrame": 3,
-      "maxStep": 0.0658
-    },
-    {
-      "key": "dodgeForward",
-      "fps": 60,
-      "frames": 33,
-      "maxFrame": 6,
-      "maxStep": 0.0332
-    },
-    {
-      "key": "dodgeForward",
-      "fps": 144,
-      "frames": 76,
-      "maxFrame": 14,
-      "maxStep": 0.0142
+      "frames": 129,
+      "maxFrame": 1,
+      "maxStep": 0.0614
     },
     {
       "key": "hook",
@@ -737,47 +590,26 @@
       "frames": 203,
       "maxFrame": 67,
       "maxStep": 0.0394
-    },
-    {
-      "key": "hit",
-      "fps": 30,
-      "frames": 14,
-      "maxFrame": 13,
-      "maxStep": 0.1033
-    },
-    {
-      "key": "hit",
-      "fps": 60,
-      "frames": 26,
-      "maxFrame": 25,
-      "maxStep": 0.0538
-    },
-    {
-      "key": "hit",
-      "fps": 144,
-      "frames": 61,
-      "maxFrame": 60,
-      "maxStep": 0.0224
     },
     {
       "key": "hitHead",
       "fps": 30,
       "frames": 18,
       "maxFrame": 8,
-      "maxStep": 0.0168
+      "maxStep": 0.0167
     },
     {
       "key": "hitHead",
       "fps": 60,
       "frames": 34,
       "maxFrame": 15,
-      "maxStep": 0.0087
+      "maxStep": 0.0086
     },
     {
       "key": "hitHead",
       "fps": 144,
       "frames": 80,
-      "maxFrame": 34,
+      "maxFrame": 37,
       "maxStep": 0.0036
     },
     {

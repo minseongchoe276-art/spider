@@ -1,0 +1,48 @@
+{
+  "completedAt": "2026-10-15T12:38:34.977845+00:00",
+  "commands": [
+    {
+      "command": "npm test",
+      "exitCode": 0,
+      "stages": 50,
+      "log": "final-merged-tests.log"
+    },
+    {
+      "command": "npm run build",
+      "exitCode": 0,
+      "log": "build.log"
+    }
+  ],
+  "wall": {
+    "passed": 101,
+    "failed": 0,
+    "frames": 18576,
+    "maxPlantDriftMeters": 2.3779678341910906e-06,
+    "minPlantedPalmAlignment": 0.9999999999996638,
+    "minPlantedSoleAlignment": 0.9674637195456538
+  },
+  "motionGroups": 189,
+  "motionTimelines": 136,
+  "motionFrames": 17386,
+  "visual": {
+    "clips": 34,
+    "clipScreens": 102,
+    "runtimeScenarios": 17,
+    "runtimeScreens": 76,
+    "wallScreens": 24,
+    "webScreens": 18
+  },
+  "sourceHashes": {
+    "src/Character.js": "2f64f4d4e9f846f80a94ff5c4a15240d25bee937f0a8223287e03020484963d3",
+    "src/CharacterPose.js": "fed65260b74b6e2fe9f1e3025d6394b7cc8dffc12e817b31207f6202270ada0c",
+    "src/FirstPersonArms.js": "b5cf1be6ee31a353968f71e55326a544a24de297703518e0c65df4f5d4bbc94e",
+    "src/JointConstraints.js": "e488acd765b88098f75a0cca9f69a79f9a4666e868d18f36d9098e71c50a0140",
+    "src/SwingPhysics.js": "3c73ff547a6618b26590fac87f969b8cf9ad4b9eb15a4e8403dee347ee17c411",
+    "src/WebHandPose.js": "34892290a8820fa27275f4cad4e7377171eea3501a0f2d5c8b66991fd6f03756",
+    "src/MotionReview.js": "847083f751e9c72f8588c0084f5ab5aa43622cb55f3213b6c4ee922d82d11ae7",
+    "scripts/check-wall-crawl.mjs": "2a406439fd69c850d4d3f5ff385629c4a6fb87ffddb492c397be785d572dc6c8",
+    "scripts/check-combat-rig.mjs": "1c6ac353efa3923d261c4e24b36c20b73987abfb3d49bf1900b75dab1f5c557a",
+    "scripts/check-expert-audit.mjs": "23c83cb4b291885e859ed9f7cf611a0439641ae8b76819ad0be251ab7ad0842a",
+    "package.json": "2b5b26e1be00904f9d44c054d86c9fbc0039a0f0ef7ecd4f7614acd12cc0c14e"
+  }
+}

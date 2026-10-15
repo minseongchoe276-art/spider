@@ -5,10 +5,11 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { FBXLoader } from 'three/addons/loaders/FBXLoader.js';
 import { retargetMotion, prepareMotion } from '../src/MotionRetarget.js';
+import {createJointConstraints} from '../src/JointConstraints.js';
 import { MOTIONS } from '../src/MotionCatalog.js';
 
 // Keep original FBXs for authoring, but ship lightweight retargeted tracks.
-const files=['public/models/spiderman.glb','src/MotionCatalog.js','src/MotionRetarget.js','src/CombatChoreography.js','src/MixamoMotion.js',
+const files=['public/models/spiderman.glb','src/MotionCatalog.js','src/MotionRetarget.js','src/CombatChoreography.js','src/MixamoMotion.js','src/JointConstraints.js','src/WebHandPose.js',
   ...new Set(MOTIONS.map(item=>'public'+item.url))];
 const hash=crypto.createHash('sha256');
 for(const file of files) hash.update(fs.readFileSync(file));
@@ -41,6 +42,15 @@ for(const item of MOTIONS) {
   const take=(gltf?.animations || source.animations).find(clip=>(!item.take || clip.name===item.take)&&clip.duration>0&&clip.tracks.length);
   assert(take,`No take in ${item.url}`);
   const clip=prepareMotion(retargetMotion(target,source,take),item.key,bones,item);
+  // Bake anatomical limits into review clips as well as live IK output.
+  for(const {bone,rest,limit} of createJointConstraints(target,bones)){
+    const track=clip.tracks.find(t=>t.name===bone.name+'.quaternion');
+    if(!track)continue;
+    for(let i=0;i<track.values.length;i+=4){
+      const q=new THREE.Quaternion().fromArray(track.values,i),angle=rest.angleTo(q);
+      if(angle>limit)q.slerpQuaternions(rest,q.clone(),limit/angle).normalize().toArray(track.values,i);
+    }
+  }
   const compiled={...THREE.AnimationClip.toJSON(clip),userData:clip.userData};
   const parsed=THREE.AnimationClip.parse(compiled);
   assert.equal(parsed.tracks.length,clip.tracks.length);

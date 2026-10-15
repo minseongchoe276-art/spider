@@ -1,0 +1,126 @@
+{
+  "checkedAt": "2026-10-14T00:20:21.894Z",
+  "status": "PASS",
+  "scope": "Defined local source and the recorded desktop/browser/database cases. Not a claim of production rollout or universal correctness.",
+  "gates": [
+    {
+      "name": "Whole 38-stage regression suite",
+      "command": "npm test",
+      "log": "full-tests.log",
+      "status": "PASS",
+      "exitCode": 0
+    },
+    {
+      "name": "12 added defect reproductions",
+      "command": "npm run test:full-audit",
+      "log": "added-regressions.log",
+      "status": "PASS",
+      "exitCode": 0
+    },
+    {
+      "name": "Actual SQL and WebSocket compact authority",
+      "command": "npm run test:city-authority",
+      "log": "city-authority.log",
+      "status": "PASS",
+      "exitCode": 0
+    },
+    {
+      "name": "PostgreSQL roles, concurrency and rules",
+      "command": "node scripts/check-postgres-rules.mjs",
+      "log": "postgres.log",
+      "status": "PASS",
+      "exitCode": 0
+    },
+    {
+      "name": "Hong Kong SQL damage authority",
+      "command": "node scripts/check-hong-kong-db-authority.mjs",
+      "log": "hong-kong-db.log",
+      "status": "PASS",
+      "exitCode": 0
+    },
+    {
+      "name": "Actual official Hong Kong geometry",
+      "command": "node scripts/check-hong-kong-terrain.mjs",
+      "log": "hong-kong-terrain.log",
+      "status": "PASS",
+      "exitCode": 0
+    },
+    {
+      "name": "Actual eight-player server",
+      "command": "node scripts/check-room-server.mjs",
+      "log": "eight-player-server.log",
+      "status": "PASS",
+      "exitCode": 0
+    },
+    {
+      "name": "Production build",
+      "command": "npm run build",
+      "log": "build.log",
+      "status": "PASS",
+      "exitCode": 0
+    },
+    {
+      "name": "10 production HTTP checks",
+      "command": "node scripts/check-server.mjs http://127.0.0.1:4195/",
+      "log": "production-server.log",
+      "status": "PASS",
+      "exitCode": 0
+    }
+  ],
+  "sourceHashFile": "source-sha256.json",
+  "sourceUnchangedAfterChecks": true,
+  "operatingDeployment": {
+    "frontend": "not applied",
+    "nodeRoomServer": "not applied",
+    "supabaseMigration": "not applied"
+  },
+  "remaining": [
+    "Large JS bundle warning",
+    "3D Tiles 1.1 partial feature support warning",
+    "Physical gamepads, all resolutions/terrain and real public internet latency not exhaustively tested"
+  ],
+  "runtime": {
+    "scope": "Observed Chrome Hong Kong stationary samples; environment and frame windows not controlled as a strict A/B benchmark",
+    "before": {
+      "physics": {
+        "calls": 5807,
+        "meanMs": 22.803,
+        "p95Ms": 72.6,
+        "samples": 600
+      },
+      "performance": {
+        "activeSeconds": 186.55,
+        "averageFps": 31.11,
+        "frameMs": {
+          "p50": 16.5,
+          "p95": 76.9,
+          "p99": 78.4
+        },
+        "longFramesOver50ms": 1780,
+        "totalFrames": 5806,
+        "windowFrames": 3600
+      }
+    },
+    "after": {
+      "physics": {
+        "calls": 4170,
+        "meanMs": 0.749,
+        "p95Ms": 0.9,
+        "samples": 600
+      },
+      "performance": {
+        "activeSeconds": 69.64,
+        "averageFps": 59.95,
+        "frameMs": {
+          "p50": 16.7,
+          "p95": 18.3,
+          "p99": 18.7
+        },
+        "longFramesOver50ms": 2,
+        "totalFrames": 4169,
+        "windowFrames": 3600
+      }
+    },
+    "screenshot": "final-game.jpg"
+  }
+}

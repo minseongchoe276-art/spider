@@ -43,7 +43,7 @@ function finite(c) {
 let checks=0;
 const dualOnly=process.argv.includes('--dual-only');
 for(const dt of (dualOnly?[]:[1/30,1/60,1/144])) {
-  for(const [key,speed] of [['walk',1.6],['jog',2.4],['regularRun',4.5],['run',6.5]]) {
+  for(const [key,speed] of [['walk',1.6],['jog',3.4],['regularRun',4.8],['run',6.5]]) {
     const c=actor();let contacts=0,maxSlip=0,maxFootStep=0;const last=new Map(),lastFeet=new Map();
     for(let t=0;t<3;t+=dt) {
       c.group.position.z+=speed*dt;c.update(dt,key==='run'?'SPRINTING':'RUNNING',new THREE.Vector3(0,0,speed));finite(c);
@@ -55,7 +55,7 @@ for(const dt of (dualOnly?[]:[1/30,1/60,1/144])) {
         const foot=position(c,side+'foot');const prev=last.get(side);
         if(prev?.plant===p)maxSlip=Math.max(maxSlip,foot.distanceTo(prev.foot));
         last.set(side,{plant:p,foot});contacts++;
-        assert(Math.abs(foot.y-0.11)<0.015,`${key}: stance ankle sank below sole clearance`);
+        assert(foot.y>=.095 && foot.y<.16,`${key}: stance ankle left the boot's ground clearance range`); // Curved sole clearance is measured on all boot vertices by check-silk-gait.
       }
     }
     assert(contacts>5,`${key}: no stance contacts`);assert(maxSlip<0.025,`${key}: planted foot slip ${maxSlip}`);

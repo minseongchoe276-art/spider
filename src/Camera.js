@@ -136,14 +136,21 @@ export class ThirdPersonCamera {
     );
     this.currentPos.copy(center).addScaledVector(direction, this.mode === 'first' ? 0 : this.distance);
     this.lookAtTarget.copy(center);
+    if (this.mode === 'first') {
+      this.lookAtTarget.add(new THREE.Vector3(Math.sin(facing), 0, Math.cos(facing)));
+    }
     this.collisionDistance = this.distance;
   }
 
   cycleMode() {
     const index = this.modeOrder.indexOf(this.mode);
+    return this.setMode(this.modeOrder[(index + 1) % this.modeOrder.length]);
+  }
+
+  setMode(mode) {
     const previous = this.mode;
-    this.mode = this.modeOrder[(index + 1) % this.modeOrder.length];
-    if (previous === 'first' || this.mode === 'first') this.pitch = -this.pitch;
+    this.mode = mode;
+    if ((previous === 'first') !== (this.mode === 'first')) this.pitch = -this.pitch;
     this.pitch = this.mode === 'first' ? THREE.MathUtils.clamp(this.pitch,-1.25,1.25) : THREE.MathUtils.clamp(this.pitch,-0.52,0.58);
     return this.mode;
   }
@@ -211,6 +218,7 @@ export class ThirdPersonCamera {
       this.camera.lookAt(view.clone().add(forward));
       this.lookAtTarget.copy(view).add(forward);
       this.roll = 0;
+      this.shakeIntensity = THREE.MathUtils.damp(this.shakeIntensity, 0, 10, delta);
       this.camera.updateMatrixWorld(true);
       return;
     }

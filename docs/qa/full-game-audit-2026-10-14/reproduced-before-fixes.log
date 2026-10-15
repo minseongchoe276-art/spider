@@ -1,0 +1,72 @@
+FAIL Local pursuit rejects off-map origins and excludes off-map objectives: Expected values to be strictly equal:
++ actual - expected
+
++ {
++   points: [
++     {
++       x: 120,
++       y: 50,
++       z: 0
++     },
++     {
++       x: 280,
++       y: 50,
++       z: 0
++     }
++   ],
++   radius: 300,
++   x: 200,
++   y: 50,
++   z: 0
++ }
+- null
+
+FAIL Late room and identity messages cannot replace an explicit solo session: Expected values to be strictly equal:
++ actual - expected
+
++ 'old-identity'
+- null
+
+FAIL First-person elimination hides local arms and follows a third-person spectator: The expression evaluated to a falsy value:
+
+  assert(!mp.game.character.firstPersonRig.visible)
+
+FAIL Match finish retires goal and rescue markers and restores player visibility: The expression evaluated to a falsy value:
+
+  assert(!mp.goalMarker.visible)
+
+FAIL Changing quality synchronizes the adaptive controller with manual resolution: Expected values to be strictly equal:
+
+0.9 !== 2
+
+FAIL Medals remain bounded during a long session and preserve an improved record: Expected values to be strictly equal:
+
+100 !== 64
+
+FAIL Stored ghost splits must be strictly ordered to compare checkpoint deltas: Expected values to be strictly deep-equal:
++ actual - expected
+
++ [
++   3,
++   2,
++   4
++ ]
+- []
+
+FAIL Small city warnings stay quiet at spawn and appear near the actual boundary: Expected values to be strictly equal:
++ actual - expected
+
++ '구역 경계 60m · 중심 방향으로 돌아가세요'
+- ''
+
+FAIL Context loss exposes retry controls and blocks gameplay until recovery: The expression evaluated to a falsy value:
+
+  assert(!screen.classList.contains('hidden'))
+
+FAIL Race start forgets prior travel samples so reset distance is not earned: Expected values to be strictly equal:
+
+50 !== 0
+
+FAIL Preview searches stay at 10Hz at 30/60/144fps while actual shots search immediately: 30fps caused 30 advisory searches
+FAIL indexed streamed targeting: Dense visual triangles were scanned despite baked support
+Full game audit: 0 passed, 12 failed.

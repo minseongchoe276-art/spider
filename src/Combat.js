@@ -26,7 +26,7 @@ export class CombatSystem {
     input.webZipHeld=false;
     this.physics.webEnabled=this.mode==='web';this.physics.clearPendingInput?.();
     if(this.mode==='combat')this.physics.clearWebAnchor?.();
-    this.onNotice(this.mode==='web'?'거미줄 ON · 좌클릭 꾹: 점프 후 스윙 / 우클릭: 반대 손 스윙 / 떼기: 관성 비행 / E 꾹: 연속 집 (12m)':'전투 모드 · 땅에서는 잽·스트레이트 / 공중 좌·우클릭은 거미줄 / B 방어 / Ctrl 회피');
+    this.onNotice(this.mode==='web'?'거미줄 ON · 좌클릭 꾹: 도약 후 스윙 / 우클릭: 반대 손 스윙 / 떼기: 관성 비행 / 공중 집: 한 번씩 짧게 이동':'전투 모드 · 땅에서는 잽·스트레이트 / 공중 좌·우클릭은 거미줄 / 방어·회피 키는 조작 가이드에서 확인하세요');
     return this.mode;
   }
   face(camera) {
@@ -77,7 +77,7 @@ export class CombatSystem {
     this.start(key,duration,null);this.action.direction=direction;this.invulnerable=0.28;return true;
   }
   guard(value) {this.blocking=value && this.mode==='combat' && !this.action && grounded(this.physics) && this.stamina>0;}
-  before(delta,camera) {
+  before(delta,camera,input=null) {
     delta=Math.max(0,Math.min(delta,0.1));this.elapsed+=delta;
     this.specialCooldown=Math.max(0,this.specialCooldown-delta);this.invulnerable=Math.max(0,this.invulnerable-delta);
     this.stamina=Math.min(100,this.stamina+delta*(this.blocking?3:this.action?0:18));
@@ -93,6 +93,7 @@ export class CombatSystem {
       }
     }
     if(this.queued && !this.action){const next=this.queued;this.queued=null;if(next.expires>=this.elapsed)this[next.method](next.camera);}
+    if(input)this.guard(!!input.guard);
     const current=this.action;
     const stopping=this.character.activeAction && ['stop','runStop'].some(key=>this.character.activeAction===this.character.actions?.[key] && this.character.activeAction?.time<this.character.activeAction.getClip().duration-.05) || ['RUNNING','SPRINTING'].includes(this.character.lastState);
     // The authored punches plant both feet. Translating the capsule during
@@ -142,7 +143,7 @@ export class CombatSystem {
     const guarded=this.blocking && d.dot(forward(this.physics))>0.2 && this.stamina>=12;
     if(guarded) {this.stamina-=12;this.audio?.playCombatHit?.(false);return 0;}
     this.health=Math.max(0,this.health-amount);this.invulnerable=0.65;this.cancel();
-    if(this.mode==='combat' && grounded(this.physics))this.start(++this.hurtCount%2?'hit':'hitHead',0.4,null);
+    if(this.mode==='combat' && grounded(this.physics))this.start('hitHead',0.4,null);
     if(this.health===0) {this.physics.resetPosition?.();this.health=100;this.stamina=100;this.cancel();this.clearEnemies();this.onNotice('시작 위치에서 회복');}
     return amount;
   }

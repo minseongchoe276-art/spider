@@ -23,9 +23,9 @@ check('Attachment effects fire only after a supported web actually attaches',()=
  attachmentPhysics.findBestAnchor=()=>new THREE.Vector3(6,25,0);assert.equal(attachmentPhysics.startSwing(camera),false);assert.equal(effects,1);
  attachmentPhysics.releaseSwing();assert.deepEqual(attachmentPhysics.character.webAttachments,[]);assert.equal(attachmentPhysics.character.persistentWebAnchor,null);assert.equal(attachmentPhysics.character.webShotTimer,0);assert(attachmentPhysics.lastWebAnchor);
  assert(attachmentPhysics.performWebPull(camera));assert.equal(effects,2);attachmentPhysics.clearWebAnchor();
- attachmentPhysics.canAirJump=true;attachmentPhysics.raycaster.intersectObjects=()=>[{point:anchor.anchor,face:{normal:anchor.normal},object:wall,distance:12}];
+ attachmentPhysics.canAirJump=true;attachmentPhysics.castWebSurface=()=>({point:anchor.anchor,normal:anchor.normal,object:wall,distance:12});
  assert(attachmentPhysics.performAirJump(camera));assert.equal(effects,3);attachmentPhysics.clearWebAnchor();
- attachmentPhysics.canAirJump=true;attachmentPhysics.raycaster.intersectObjects=()=>[{point:new THREE.Vector3(6,25,0),face:{normal:anchor.normal},object:wall,distance:12}];
+ attachmentPhysics.canAirJump=true;attachmentPhysics.castWebSurface=()=>({point:new THREE.Vector3(6,25,0),normal:anchor.normal,object:wall,distance:12});
  assert.equal(attachmentPhysics.performAirJump(camera),false);assert.equal(effects,3);assert.equal(attachmentPhysics.canAirJump,true);
 });
 check('Landing from a web pull removes its rope instead of leaving ghost webs',()=>{

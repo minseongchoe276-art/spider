@@ -1,0 +1,43 @@
+{
+  "date": "2026-10-14",
+  "scope": "Local root game; session flow, help, solo race menu and gamepad pause",
+  "commands": {
+    "baseline_regressions": {
+      "exitCode": 1,
+      "passed": 2,
+      "failed": 10
+    },
+    "final_regressions": {
+      "exitCode": 0,
+      "passed": 12,
+      "failed": 0
+    },
+    "npm test": {
+      "exitCode": 0,
+      "stages": 40
+    },
+    "npm run build": {
+      "exitCode": 0
+    },
+    "git diff --check": {
+      "exitCode": 0,
+      "output": ""
+    }
+  },
+  "sourceSha256": {
+    "src/main.js": "7996033b91df9c8ce401871ba2001b45299863953f2f33225db81fcbbf9d4c6e",
+    "src/GamepadInput.js": "3e5eed605e9655d6768b3d4ebb6a54ad8ced5965543bde64b928acc279f6bbaf",
+    "src/Multiplayer.js": "6c6b1538783418e4d54c8dd9dca268dd43d03474fcbc14ef081fcbd36908a0b1",
+    "index.html": "e567dd0b0721b1a784bf5a83268ff30d3ed7f44087b599d8c81af61175011cb8",
+    "src/style.css": "299de274d5afccd868d26fed9c948fea3a8db97afab61b61386c69d79f68315c",
+    "package.json": "2e00c71ad863434cc075e06fd53970c92deb30fca7b5dc3b18a01aab0d03f1ca",
+    "README.md": "53a94976eebe2c36077cbd6242e6b62ba3a92b268968c9fbfb2d8679d55fccca",
+    "scripts/check-expert-audit.mjs": "7daaa368827f885e844dd8d125fb3fcb075c8323ef3cff948defd60ed49c8815",
+    "scripts/check-session-flow.mjs": "9b8efdecb6150293e5e2e9ec79c325711beb56e89ef40a733fa055b9583dea57"
+  },
+  "limits": [
+    "No physical gamepad test",
+    "Manual browser verification on procedural city",
+    "No production deployment or database changes"
+  ]
+}

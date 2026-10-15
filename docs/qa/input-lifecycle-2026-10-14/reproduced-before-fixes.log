@@ -1,0 +1,41 @@
+Input lifecycle review: 0 passed, 10 failed.
+FAIL Keyboard and pad mode presses share one action until every source releases: Expected values to be strictly equal:
+
+2 !== 1
+
+FAIL Remapped left/right modifiers do not double-toggle modes: Expected values to be strictly equal:
+
+2 !== 1
+
+FAIL Concurrent race/trick presses fire once and can rearm after all releases: Expected values to be strictly equal:
+
+3 !== 2
+
+FAIL Two devices cannot toggle off the same held web button: The expression evaluated to a falsy value:
+
+  assert(g.input[hold])
+
+FAIL Toggle on then off between physics frames cancels both pending launches: A cancelled toggle still fired a pending web
+
+2 !== 0
+
+FAIL Resume drops time without animation frames while active stalls still count: The expression evaluated to a falsy value:
+
+  assert(Math.abs(timed-1/60)<1e-9)
+
+FAIL A pad resume within the animation callback also excludes suspended time: Expected values to be strictly equal:
+
+60 !== 0
+
+FAIL Closing solo help drops suspended time while online help preserves active time: The expression evaluated to a falsy value:
+
+  assert(Math.abs(g.clock.getDelta()-.02)<1e-9)
+
+FAIL Resuming cancels hidden key capture, but context-loss rejection leaves it available: Expected values to be strictly equal:
+
+'forward' !== null
+
+FAIL Pause preserves adaptive resolution and clears stale frame samples: Expected values to be strictly equal:
+
+1.5 !== 0.9
+

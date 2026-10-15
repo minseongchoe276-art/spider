@@ -15,11 +15,13 @@ import { Preferences } from './Preferences.js';
 import { HongKongMinimap } from './Minimap.js';
 import { Multiplayer } from './Multiplayer.js';
 import { GROUNDED } from './MotionCatalog.js';
-import {canonicalKey} from './PlayerSettings.js';
+import {canonicalKey,keyLabel} from './PlayerSettings.js';
 import {SettingsPanel} from './SettingsPanel.js';
 import {GamepadInput} from './GamepadInput.js';
 import {PlayerExperience} from './PlayerExperience.js';
 import {CombatPractice} from './CombatPractice.js';
+
+const ONE_SHOT_KEYS = new Set(['Space','KeyG','KeyE','KeyT','KeyC','KeyV','KeyQ','KeyR','ControlLeft','ControlRight']);
 
 export class GameApp {
   constructor() {
@@ -101,13 +103,14 @@ export class GameApp {
 
     this.canvas.addEventListener('webglcontextlost', event => {
       event.preventDefault();
-      this.setPaused(true);
       this.contextLost = true;
+      this.setPaused(true);
       this.showLoadingError('그래픽 연결이 중단되었습니다. 복구를 기다리거나 다시 불러오세요.');
     });
     this.canvas.addEventListener('webglcontextrestored', () => {
       this.contextLost = false;
-      this.loadingScreen?.classList.add('hidden');
+      if(this.assetsReady)this.loadingScreen?.classList.add('hidden');
+      document.getElementById('loading-recovery')?.classList.add('hidden');
       this.showNotice('그래픽 연결 복구 완료. 계속하기를 눌러 재개하세요.');
     });
 
@@ -142,8 +145,14 @@ export class GameApp {
     this.camera = new THREE.PerspectiveCamera(65, window.innerWidth / window.innerHeight, 0.2, 1000);
 
     // Lighting
-    const ambientLight = new THREE.HemisphereLight(0xd8f1ff, 0x536273, 1.25);
+    const localCity=selectedCity(location.search)==='procedural';
+    const ambientLight = new THREE.HemisphereLight(0xd8f1ff, localCity?0xb8c6d5:0x536273, localCity?2.4:1.25);
     this.scene.add(ambientLight);
+    if(localCity){
+      this.scene.add(new THREE.AmbientLight(0xffffff,.55));
+      const fill=new THREE.DirectionalLight(0xe4f1ff,1.2);
+      fill.position.set(-160,180,-140);this.scene.add(fill);
+    }
 
     const sunLight = new THREE.DirectionalLight(0xfff8e8, 3.2);
     sunLight.position.set(160, 280, 140);
@@ -311,7 +320,7 @@ export class GameApp {
     if (this.character.loadWarning) this.showNotice(this.character.loadWarning);
     document.getElementById('loading-recovery')?.classList.add('hidden');
     setTimeout(() => {
-      if (this.loadingScreen) {
+      if (this.loadingScreen && !this.contextLost) {
         this.loadingScreen.classList.add('hidden');
       }
     }, 400);
@@ -326,6 +335,7 @@ export class GameApp {
       if (e.target?.closest?.('input, select, textarea, [contenteditable="true"]') && k !== 'Escape') return;
       if (!this.isPlaying && e.target?.closest?.('button, a') && k !== 'Escape') return;
       if (k === 'Escape' && performance.now() < (this.ignoreEscapeUntil || 0)) return;
+      if(k==='Escape' && this.helpOpen){e.preventDefault();if(!e.repeat)this.toggleHelp();return;}
       const gameplayKey = [
         'KeyW', 'KeyA', 'KeyS', 'KeyD', 'ArrowUp', 'ArrowDown',
         'ArrowLeft', 'ArrowRight', 'ShiftLeft', 'ShiftRight', 'Space',
@@ -334,13 +344,19 @@ export class GameApp {
       if (gameplayKey && document.getElementById?.('controls-guide') && !document.getElementById('controls-guide').classList.contains('hidden')) return;
       if (gameplayKey && (!this.isPlaying || this.isPaused || this.multiplayer?.spectating)) return;
       if (gameplayKey) e.preventDefault();
-      if (gameplayKey && e.repeat && ['Space','KeyG','KeyE','KeyT','KeyC','KeyV','KeyQ','ControlLeft','ControlRight'].includes(k)) return;
+      if (gameplayKey && e.repeat && ONE_SHOT_KEYS.has(k)) return;
 
       if (gameplayKey) {
         const keys=e.gamepadInput?(this.gamepadHeldKeys??=new Set()):this.heldKeys;
+        const sources=e.gamepadInput?(this.gamepadKeySources??=new Map()):(this.keyboardKeySources??=new Map());
+        const wasHeld=this.heldKeys.has(k) || this.gamepadHeldKeys?.has(k);
+        sources.set(e.code,k);
         keys.add(k);
-        if(k==='ShiftLeft' && !e.repeat && this.preferences?.values.settings?.sprintToggle)this.sprintLatched=!this.sprintLatched;
+        if(k==='ShiftLeft' && !wasHeld && !e.repeat && this.preferences?.values.settings?.sprintToggle)this.sprintLatched=!this.sprintLatched;
         this.syncHeldInput();
+        // Register every source, but discrete actions belong to the first
+        // press. A second device or modifier alias must not toggle it twice.
+        if(wasHeld && ONE_SHOT_KEYS.has(k))return;
       }
       if(k==='KeyB'){this.combat.guard(true);return;}
       if(k==='KeyG'){if(GROUNDED.includes(this.physics.state)){if(this.combat.special(this.camera))this.multiplayer?.attack('punch');}else this.combat.airStrike?.(this.camera);return;}
@@ -352,7 +368,7 @@ export class GameApp {
       if (k === 'KeyR' && !e.repeat && !this.multiplayer?.room) this.toggleTimeTrial();
       if (!e.repeat && k === 'KeyC') {
         if (this.tpsCamera.mode === 'first') {
-          this.tpsCamera.mode = 'follow';
+          this.tpsCamera.setMode('follow');
           this.character.setFirstPersonMode(false);
           this.showCameraMode('follow');
         }
@@ -404,8 +420,11 @@ export class GameApp {
     });
 
     window.addEventListener('keyup', (e) => {
-      const k = canonicalKey(e.code,this.preferences?.values.settings);
-      (e.gamepadInput?this.gamepadHeldKeys:this.heldKeys)?.delete(k);
+      const sources=e.gamepadInput?this.gamepadKeySources:this.keyboardKeySources;
+      const k = sources?.get(e.code) || canonicalKey(e.code,this.preferences?.values.settings);
+      sources?.delete(e.code);
+      if(!sources || ![...sources.values()].includes(k))
+        (e.gamepadInput?this.gamepadHeldKeys:this.heldKeys)?.delete(k);
       if(k==='KeyB' && !this.heldKeys.has(k) && !this.gamepadHeldKeys?.has(k))this.combat?.guard(false);
       this.syncHeldInput();
       // Jump is a one-shot request consumed by physics, not a held button.
@@ -417,6 +436,10 @@ export class GameApp {
       if (!this.isPlaying || this.isPaused || this.multiplayer?.spectating) return;
       if (document.getElementById?.('controls-guide') && !document.getElementById('controls-guide').classList.contains('hidden')) return;
       if (e.target !== this.canvas) return;
+      const buttons=e.gamepadInput?(this.gamepadMouseButtons??=new Set()):(this.mouseButtons??=new Set());
+      const wasHeld=this.mouseButtons?.has(e.button) || this.gamepadMouseButtons?.has(e.button);
+      buttons.add(e.button);
+      if(wasHeld)return;
       this.audio.ensureContext();
 
       const groundedCombat = this.combat?.mode==='combat' && GROUNDED.includes(this.physics.state);
@@ -426,7 +449,7 @@ export class GameApp {
         return;
       }
       if (e.button === 0) {
-        if(this.preferences?.values.settings?.webToggle && this.input.webHold){this.input.webHold=this.input.webFireHeld=false;this.physics.releaseWebButton(0);return;}
+        if(this.preferences?.values.settings?.webToggle && this.input.webHold){this.input.webTap=this.input.webHold=this.input.webFireHeld=false;this.physics.releaseWebButton(0);return;}
         // Holding the left button keeps one rope. Releasing lets it go.
         this.physics.setWebAimPoint(
           e.clientX,
@@ -434,14 +457,13 @@ export class GameApp {
           this.canvas.getBoundingClientRect(),
           true // Both hands fire through the fixed screen-center reticle.
         );
-        this.physics.findBestAnchor(this.camera);
         this.multiplayer?.attack('web');
         this.input.webTap = true;
         this.input.webFireHeld = true;
         this.input.webHold = true;
       }
       if (e.button === 2) {
-        if(this.preferences?.values.settings?.webToggle && this.input.webHoldRight){this.input.webHoldRight=this.input.webFireHeldRight=false;this.physics.releaseWebButton(2);return;}
+        if(this.preferences?.values.settings?.webToggle && this.input.webHoldRight){this.input.webTapRight=this.input.webHoldRight=this.input.webFireHeldRight=false;this.physics.releaseWebButton(2);return;}
         // The opposite hand uses the same held pendulum as the left button.
         this.physics.setWebAimPoint(
           e.clientX,
@@ -449,7 +471,6 @@ export class GameApp {
           this.canvas.getBoundingClientRect(),
           true
         );
-        this.physics.findBestAnchor(this.camera);
         this.multiplayer?.attack('web');
         this.input.webTapRight = true;
         this.input.webFireHeldRight = true;
@@ -463,8 +484,9 @@ export class GameApp {
     });
 
     window.addEventListener('mouseup', (e) => {
-      this.cameraDragActive = false;
-      this.lastMousePosition = null;
+      (e.gamepadInput?this.gamepadMouseButtons:this.mouseButtons)?.delete(e.button);
+      if(e.button===1){this.cameraDragActive = false;this.lastMousePosition = null;}
+      if(this.mouseButtons?.has(e.button) || this.gamepadMouseButtons?.has(e.button))return;
       if (e.button === 0 && !this.preferences?.values.settings?.webToggle) {
         this.input.webFireHeld = false;
         this.input.webHold = false;
@@ -482,14 +504,14 @@ export class GameApp {
 
     // Mouse-wheel zoom, matching the on-screen controls.
     this.canvas.addEventListener('wheel', (e) => {
-      if (!this.isPlaying || this.isPaused) return;
+      if (!this.isPlaying || this.isPaused || this.helpOpen) return;
       e.preventDefault();
       this.tpsCamera.handleWheel(e.deltaY);
     }, { passive: false });
 
     // Mouse Look (Pointer Lock)
     window.addEventListener('mousemove', (e) => {
-      if (this.multiplayer?.spectating) return;
+      if (this.multiplayer?.spectating || this.helpOpen) return;
       if (this.isPlaying && !this.isPaused && document.pointerLockElement === this.canvas) {
         this.tpsCamera.handleMouseMove(e.movementX, e.movementY);
         this.physics.setWebAimPoint(0, 0, null, true);
@@ -505,7 +527,7 @@ export class GameApp {
 
     document.addEventListener('pointerlockchange', () => {
       const locked = document.pointerLockElement === this.canvas;
-      if (this.hadPointerLock && !locked && this.isPlaying && !this.isPaused) {
+      if (this.hadPointerLock && !locked && this.isPlaying && !this.isPaused && !this.helpOpen) {
         this.setPaused(true);
         this.ignoreEscapeUntil = performance.now() + 100;
       }
@@ -552,6 +574,8 @@ export class GameApp {
     document.getElementById('btn-retry-load')?.addEventListener('click', () => location.reload());
     document.getElementById('btn-restart')?.addEventListener('click', () => this.restartGame());
     document.getElementById('btn-time-trial')?.addEventListener('click', () => this.toggleTimeTrial());
+    document.getElementById('btn-menu-time-trial')?.addEventListener('click', () => this.toggleTimeTrial(true));
+    document.getElementById('btn-close-guide')?.addEventListener('click', () => this.toggleHelp());
     document.getElementById('reduced-motion')?.addEventListener('click', () => {
       this.preferences.values.reducedMotion = !this.preferences.values.reducedMotion;
       if (!this.preferences.save()) this.showNotice('설정을 저장할 수 없어 이번 실행에만 적용합니다.');
@@ -582,12 +606,35 @@ export class GameApp {
   }
 
   toggleHelp() {
+    this.setHelpOpen(!this.helpOpen);
+  }
+
+  setHelpOpen(open, restoreControls = true) {
     const guide = document.getElementById('controls-guide');
-    if (guide) {
-      guide.classList.toggle('hidden');
-      if (!guide.classList.contains('hidden')) this.clearInput();
+    // A dialog behind a lobby/menu can silently suspend the next solo game.
+    if(open && (!guide || !this.isPlaying || this.isPaused || this.contextLost))return;
+    const wasSuspended=this.gameplaySuspended,wasOpen=!!this.helpOpen;
+    this.helpOpen=open;
+    if(guide && guide.classList.contains('hidden')===open)guide.classList.toggle('hidden');
+    if(wasSuspended && !this.gameplaySuspended)this.clock?.getDelta();
+    if(open){
+      this.clearInput();this.speedLines?.setSpeed(0,1);this.audio.setWindSpeed(0);
+      const hint=guide.querySelector?.('.guide-hint');
+      if(hint)hint.textContent=this.multiplayer?.room?'온라인 경기는 계속 진행됩니다 · H / Esc 닫기':'혼자 플레이 일시정지 · H / Esc 닫기';
+      this.helpHadPointerLock=document.pointerLockElement===this.canvas;
+      if(this.helpHadPointerLock)document.exitPointerLock?.();
+      document.getElementById('btn-close-guide')?.focus?.();
+    }else if(wasOpen){
+      const relock=this.helpHadPointerLock && this.pointerLockWanted;
+      this.helpHadPointerLock=false;
+      if(restoreControls && this.isPlaying && !this.isPaused && !this.contextLost){
+        this.canvas.focus?.();
+        if(relock)Promise.resolve(this.canvas.requestPointerLock?.()).catch(()=>{});
+      }
     }
   }
+
+  get gameplaySuspended() { return !!this.helpOpen && !this.multiplayer?.room; }
 
   togglePause() {
     if (!this.isPlaying) return;
@@ -606,6 +653,14 @@ export class GameApp {
   }
 
   setPaused(paused) {
+    if(!paused && this.contextLost){this.showNotice('그래픽 연결을 복구한 뒤 계속할 수 있습니다.');return;}
+    this.setHelpOpen(false,false);
+    if(!paused){
+      // A background tab may receive no animation frames for minutes. Drain
+      // that interval before resuming the simulation and active race clock.
+      if(this.isPaused)this.clock?.getDelta();
+      this.settingsPanel?.cancel();
+    }
     this.isPaused = paused;
     if (paused) {
       if(this.multiplayer?.room?.phase==='playing'){
@@ -622,7 +677,10 @@ export class GameApp {
     const dragButton = document.getElementById('btn-start-drag');
     if (dragButton) dragButton.textContent = resume ? '마우스 잠금 없이 계속하기' : '마우스 잠금 없이 시작 · 휠 버튼 드래그';
     document.getElementById('btn-restart')?.classList.toggle('hidden', !resume || !!this.multiplayer?.room);
-    if (paused) setTimeout(() => document.getElementById('btn-start-game')?.focus(), 0);
+    if (paused) setTimeout(() => {if(this.isPaused && this.isPlaying)document.getElementById('btn-start-game')?.focus();}, 0);
+    const menuTrial=document.getElementById('btn-menu-time-trial');
+    menuTrial?.classList.toggle('hidden',!resume || !!this.multiplayer?.room);
+    if(menuTrial)menuTrial.disabled=!!this.contextLost;
     if (paused) this.audio.setWindSpeed(0);
     if (this.clickToPlayOverlay) {
       if (this.isPaused) {
@@ -637,6 +695,8 @@ export class GameApp {
     this.combat?.clearHeld();
     this.heldKeys.clear();
     this.gamepadHeldKeys?.clear();
+    this.keyboardKeySources?.clear();this.gamepadKeySources?.clear();
+    this.mouseButtons?.clear();this.gamepadMouseButtons?.clear();
     this.sprintLatched=false;this.gamepadDirections={};
     for (const key of Object.keys(this.input)) this.input[key] = key === 'strafe' ? 0 : false;
     this.cameraDragActive = false;
@@ -652,12 +712,14 @@ export class GameApp {
     this.input.right = !!pad.right || held('KeyD','ArrowRight');
     this.input.sprint = this.preferences?.values.settings.sprintToggle?!!this.sprintLatched:held('ShiftLeft','ShiftRight');
     this.input.wallRun = held('KeyF');
+    this.input.guard = held('KeyB');
     this.input.webZipHeld = held('KeyE') && this.combat?.mode !== 'combat';
     this.input.strafe = Number(this.input.right) - Number(this.input.left);
   }
 
   showLoadingError(message) {
     if (this.assetsReady && !this.contextLost) { this.showNotice(message); return; }
+    this.loadingScreen?.classList.remove('hidden');
     if (this.loadingDesc) this.loadingDesc.textContent = message;
     document.getElementById('loading-recovery')?.classList.remove('hidden');
   }
@@ -693,9 +755,12 @@ export class GameApp {
     this.city.reducedMotion = reducedMotion;
     this.timeTrial.reducedMotion = reducedMotion;
     document.body.classList.toggle('reduced-motion', reducedMotion);
-    if(this.appliedQuality!==quality){
-      this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, { low: 1, balanced: 1.5, high: 2 }[quality] || 1.5));
+    if(this.appliedQuality!==quality || this.appliedAutoQuality!==settings.autoQuality){
+      const ceiling={ low: 1, balanced: 1.5, high: 2 }[quality] || 1.5;
+      this.renderer.setPixelRatio(Math.min(window.devicePixelRatio,ceiling));
+      this.experience?.performance.reset(ceiling);
       this.appliedQuality=quality;
+      this.appliedAutoQuality=settings.autoQuality;
     }
     this.renderer.shadowMap.enabled = quality !== 'low';
     this.applyWebTheme();
@@ -726,16 +791,22 @@ export class GameApp {
     this.showNotice('시작점으로 돌아왔습니다. 계속하기를 눌러 플레이하세요.');
   }
 
-  toggleTimeTrial() {
+  toggleTimeTrial(fromMenu = false) {
     if (this.multiplayer?.room) return;
-    if (!this.isPlaying || this.isPaused) return;
+    if (!this.isPlaying || this.contextLost || (this.isPaused && !fromMenu) || this.helpOpen) return;
     if (this.timeTrial.isActive && !this.timeTrial.isCompleted) {this.timeTrial.stop();this.experience?.ghost.stop();}
     else {
-      this.clearInput();
-      this.physics.resetPosition();
-      this.resetCamera();
       if (!this.timeTrial.start()) this.showNotice('코스 지형이 아직 준비되지 않았거나 링을 놓을 공간이 부족합니다. 로컬 도시를 이용하거나 잠시 후 다시 시도하세요.');
-      else {this.experience?.raceStarted();this.showNotice('타임트라이얼 시작! 금색 링을 순서대로 통과하세요. 레이스 키로 종료합니다.');}
+      else {
+        this.practice?.stop();this.combat?.cancel();this.clearInput();
+        if(this.combat?.mode==='combat')this.combat.toggle(this.input);
+        this.physics.resetPosition();this.resetCamera();this.experience?.raceStarted();
+        if(fromMenu){
+          this.setPaused(false);this.canvas.focus?.();
+          if(this.pointerLockWanted)Promise.resolve(this.canvas.requestPointerLock?.()).catch(()=>{});
+        }
+        this.showNotice('타임트라이얼 시작! 금색 링을 순서대로 통과하세요. 레이스 키로 종료합니다.');
+      }
     }
     this.updateTrialHUD();
   }
@@ -743,6 +814,7 @@ export class GameApp {
   updateTrialHUD(result = null) {
     const status = document.getElementById('trial-status');
     const course = this.timeTrial.courseId;
+    const trialKey=keyLabel(this.preferences.values.settings?.bindings?.trial || 'KeyR');
     const best = this.preferences.values.bestTimes[course];
     if (result?.completed) {
       const race=this.experience?.raceFinished(result);
@@ -752,9 +824,9 @@ export class GameApp {
       this.showNotice(`완주 ${result.totalTime.toFixed(2)}초${newBest ? ' · 최고 기록!' : ''}${race?' · '+race.medal+'메달':''}${saveWarning}`);
     }
     if (status) status.textContent = this.timeTrial.isActive
-      ? this.timeTrial.isCompleted ? `완주 ${this.timeTrial.elapsedTime.toFixed(2)}초 · R 재도전`
+      ? this.timeTrial.isCompleted ? `완주 ${this.timeTrial.elapsedTime.toFixed(2)}초 · ${trialKey} 재도전`
         : `링 ${this.timeTrial.currentIndex + 1}/${this.timeTrial.checkpoints.length} · ${this.timeTrial.elapsedTime.toFixed(2)}초`
-      : `R 타임트라이얼${best ? ` · 최고 ${best.toFixed(2)}초` : ''}`;
+      : `${trialKey} 타임트라이얼${best ? ` · 최고 ${best.toFixed(2)}초` : ''}`;
     const target = document.getElementById('trial-target');
     const checkpoint = this.timeTrial.isActive && !this.timeTrial.isCompleted
       ? this.timeTrial.checkpoints[this.timeTrial.currentIndex] : null;
@@ -771,8 +843,14 @@ export class GameApp {
         const split=this.experience?.ghost.splitDelta;if(Number.isFinite(split))target.textContent+=` · 구간 ${split>=0?'+':''}${split.toFixed(2)}초`;
       }
     }
-    const button = document.getElementById('btn-time-trial');
-    if (button) { button.textContent = this.timeTrial.isActive && !this.timeTrial.isCompleted ? '레이스 종료' : '레이스 시작'; }
+    for(const id of ['btn-time-trial','btn-menu-time-trial']){
+      const button=document.getElementById(id);
+      if(button){
+        button.textContent=this.timeTrial.isActive && !this.timeTrial.isCompleted?'레이스 종료':'레이스 시작';
+        button.disabled=!!this.contextLost;
+        if(id==='btn-menu-time-trial')button.classList.toggle('hidden',!this.isPlaying || !!this.multiplayer?.room);
+      }
+    }
   }
 
   updateHUD(speedKmh, altitude, state) {
@@ -822,9 +900,8 @@ export class GameApp {
   animate() {
     requestAnimationFrame(this.animate);
 
-    const elapsed = this.clock.getDelta();
-    const rawDelta = Math.min(elapsed, 0.1);
-    const delta = rawDelta;
+    let elapsed = this.clock.getDelta();
+    let delta = Math.min(elapsed, 0.1);
     this.frameTime = (this.frameTime || 0) + elapsed;
     this.frameCount = (this.frameCount || 0) + 1;
     if (this.frameTime >= 1) {
@@ -840,9 +917,14 @@ export class GameApp {
         (!(this.city instanceof UrbanGroundCity) || this.city.isReady)) this.onAssetsLoaded();
 
     const spectating = !!this.multiplayer?.spectating;
-    if (this.isPlaying && !this.isPaused && !spectating) {
+    const wasSuspended=!this.isPlaying || this.isPaused || spectating || this.gameplaySuspended;
+    this.gamepad?.update(delta);
+    // Start can resume from inside this callback after elapsed was read.
+    // Begin timing with the next frame in that case, including for quality QA.
+    if(wasSuspended && this.isPlaying && !this.isPaused && !spectating && !this.gameplaySuspended)elapsed=delta=0;
+    if (this.isPlaying && !this.isPaused && !spectating && !this.gameplaySuspended) {
       // 1. Update Physics and Character
-      this.combat?.before(delta,this.camera);
+      this.combat?.before(delta,this.camera,this.input);
       this.physics.update(delta, this.input, this.camera);
       this.combat?.after(delta);
       this.practice?.update(delta);
@@ -850,7 +932,7 @@ export class GameApp {
 
       // 2. Update 3rd Person Follow Camera
       this.tpsCamera.update(
-        rawDelta,
+        delta,
         this.physics.renderPosition,
         this.physics.velocity,
         this.physics.isSwinging,
@@ -858,6 +940,12 @@ export class GameApp {
         this.city.raycast?.bind(this.city),
         this.physics.facingAngle
       );
+      // The first-person wrists are camera children. Refresh endpoints after
+      // moving the camera so fast traversal cannot leave the rope a frame behind.
+      if (this.character?.isFirstPerson) {
+        const anchor=this.character.persistentWebAnchor || this.character.webShotAnchor;
+        this.character.updateWeb(!!anchor,anchor);
+      }
 
       // 3. Update Visuals & FX
       const speedKmh = this.physics.velocity.length() * 3.6;
@@ -873,7 +961,6 @@ export class GameApp {
     }
 
     this.experience?.update(delta,elapsed);
-    this.gamepad?.update(delta);
     this.multiplayer?.update(delta);
     if (this.assetsReady) this.minimap?.update((spectating && this.multiplayer.spectatePoint()) || this.physics.renderPosition,
       this.physics.facingAngle, this.clock.elapsedTime);
@@ -885,14 +972,16 @@ export class GameApp {
 
     // Render 2D Speed lines overlay
     if (this.speedLines) {
-      this.speedLines.render(this.isPlaying && !this.isPaused ? delta : 0);
+      this.speedLines.render(this.isPlaying && !this.isPaused && !this.gameplaySuspended ? delta : 0);
     }
   }
 }
 
 // Bootstrap application on DOM ready or immediately if document is already ready
 function bootstrap() {
-  if (new URLSearchParams(location.search).has('combatReview')) {
+  if (new URLSearchParams(location.search).has('webHandReview')) {
+    import('./WebHandReview.js').then(m => m.startWebHandReview());
+  } else if (new URLSearchParams(location.search).has('combatReview')) {
     import('./CombatReview.js').then(m => m.startCombatReview());
   } else if (new URLSearchParams(location.search).has('effectsReview')) {
     import('./EffectsReview.js').then(m => m.startEffectsReview());

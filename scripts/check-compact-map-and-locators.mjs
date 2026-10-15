@@ -38,9 +38,11 @@ const mp=Object.create(Multiplayer.prototype);Object.assign(mp,{id:'me',room:{ph
     {id:'broken',team:'runner',seen:true,x:NaN,y:0,z:0},
     {id:'downed',team:'runner',eliminated:true,seen:true,x:1,y:0,z:0}],
   avatars:new Map([['enemy',{mesh:{position:new THREE.Vector3(48,19,0)}}]])});
-const located=mp.minimapPlayers();assert.equal(located.length,1);assert.equal(located[0].id,'enemy');assert.equal(located[0].x,48);
+const located=mp.minimapPlayers();assert.equal(located.length,3);assert.equal(located[0].id,'enemy');assert.equal(located[0].x,48);
+assert(located.find(p=>p.id==='unseen').lastKnown);assert(located.find(p=>p.id==='downed').downed);
+assert(!located.some(p=>p.id==='broken'));
 mp.room.phase='waiting';assert.deepEqual(mp.minimapPlayers(),[]);
-console.log('PASS enemy location stays visible outside pulse windows, matches the rendered avatar, and excludes invalid/unseen targets');
+console.log('PASS all finite participant locations stay visible outside pulse windows, including pending and downed players; invalid coordinates are excluded');
 
 for(const p of [new THREE.Vector3(0,0,-20),new THREE.Vector3(2000,500,-20),new THREE.Vector3(0,0,20),new THREE.Vector3(0,0,0)]){
   const marker=positionMarker(p,camera,1280,720,110);assert([marker.x,marker.y,marker.angle].every(Number.isFinite));

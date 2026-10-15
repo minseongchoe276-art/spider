@@ -1,0 +1,350 @@
+[
+  {
+    "kind": "movement",
+    "time": 1.7,
+    "file": "runtime-movement-1.7.png",
+    "state": "Browser tab: 1824846116, Title: \"스파이더맨: 3D 웹 스윙 (Spider-Man 3D Web Swing)\", URL: \"http://127.0.0.1:5296/?motionReview\".\nThe following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.\nRemoved element IDs: 8, 72\n~\t\t6 pop up button (collapsed, settable) 모션, Value: idle, ID: motion, Secondary Actions: Expand\n+\t\t\t\t74 default\n+\t\t\t\t75 regularRun\n+\t\t\t\t76 (selected) idle\n+\t\t\t\t77 walk\n+\t\t\t\t78 jog\n+\t\t\t\t79 run\n+\t\t\t\t80 stop\n+\t\t\t\t81 runStop\n+\t\t\t\t82 zip\n+\t\t\t\t83 femaleStop\n+\t\t\t\t84 turnLeft\n+\t\t\t\t85 turnRight\n+\t\t\t\t86 jump\n+\t\t\t\t87 land\n+\t\t\t\t88 jumpDown\n+\t\t\t\t89 drop\n+\t\t\t\t90 jumpDownVariant\n+\t\t\t\t91 swing\n+\t\t\t\t92 fall\n+\t\t\t\t93 fallVariant\n+\t\t\t\t94 fallIdle\n+\t\t\t\t95 roll\n+\t\t\t\t96 injuredIdle\n+\t\t\t\t97 wall\n+\t\t\t\t98 jab\n+\t\t\t\t99 combatIdle\n+\t\t\t\t100 cross\n+\t\t\t\t101 guard\n+\t\t\t\t102 dodgeLeft\n+\t\t\t\t103 dodgeRight\n+\t\t\t\t104 dodgeBack\n+\t\t\t\t105 slam\n+\t\t\t\t106 slamLand\n+\t\t\t\t107 dodgeForward\n+\t\t\t\t108 hook\n+\t\t\t\t109 heavy\n+\t\t\t\t110 hit\n+\t\t\t\t111 hitHead\n+\t\t\t\t112 special\n+\t\t\t\t113 airTrick\n+\t\t\t\t114 candidateFront\n+\t\t\t\t115 candidateStylish\n~\t\t\t69 stepper (settable, float) 시나리오 시간 초, Value: 1.7000000476837158, Details: 1.7, ID: sample-time\n+\t\t116 text 시나리오 1.70초\nIDLE → RUNNING\n모션: idle → walk\nwalk · 0.80초 / 0.97초 · 속도 2.79 m/s\nThe focused UI element is 71 button 해당 장면 보기, ID: sample"
+  },
+  {
+    "kind": "movement",
+    "time": 3.8,
+    "file": "runtime-movement-3.8.png",
+    "state": "Browser tab: 1824846116, Title: \"스파이더맨: 3D 웹 스윙 (Spider-Man 3D Web Swing)\", URL: \"http://127.0.0.1:5296/?motionReview\".\nThe following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.\n~\t\t\t69 stepper (settable, float) 시나리오 시간 초, Value: 3.799999952316284, Details: 3.8, ID: sample-time\n~\t\t116 text 시나리오 3.80초\nIDLE → RUNNING\n모션: idle → walk → jog\njog · 0.37초 / 2.57초 · 속도 3.40 m/s\nThe focused UI element is 71 button 해당 장면 보기, ID: sample"
+  },
+  {
+    "kind": "movement",
+    "time": 5.8,
+    "file": "runtime-movement-5.8.png",
+    "state": "Browser tab: 1824846116, Title: \"스파이더맨: 3D 웹 스윙 (Spider-Man 3D Web Swing)\", URL: \"http://127.0.0.1:5296/?motionReview\".\nThe following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.\n~\t\t\t69 stepper (settable, float) 시나리오 시간 초, Value: 5.800000190734863, Details: 5.8, ID: sample-time\n~\t\t116 text 시나리오 5.80초\nIDLE → RUNNING\n모션: idle → walk → jog → regularRun\nregularRun · 0.60초 / 0.70초 · 속도 4.80 m/s\nThe focused UI element is 71 button 해당 장면 보기, ID: sample"
+  },
+  {
+    "kind": "movement",
+    "time": 7.5,
+    "file": "runtime-movement-7.5.png",
+    "state": "Browser tab: 1824846116, Title: \"스파이더맨: 3D 웹 스윙 (Spider-Man 3D Web Swing)\", URL: \"http://127.0.0.1:5296/?motionReview\".\nThe following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.\n~\t\t\t69 stepper (settable, float) 시나리오 시간 초, Value: 7.5, ID: sample-time\n~\t\t116 text 시나리오 7.50초\nIDLE → RUNNING → SPRINTING\n모션: idle → walk → jog → regularRun → run\nrun · 0.21초 / 0.53초 · 속도 6.48 m/s\nThe focused UI element is 71 button 해당 장면 보기, ID: sample"
+  },
+  {
+    "kind": "movement",
+    "time": 9.3,
+    "file": "runtime-movement-9.3.png",
+    "state": "Browser tab: 1824846116, Title: \"스파이더맨: 3D 웹 스윙 (Spider-Man 3D Web Swing)\", URL: \"http://127.0.0.1:5296/?motionReview\".\nThe following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.\n~\t\t\t69 stepper (settable, float) 시나리오 시간 초, Value: 9.300000190734863, Details: 9.3, ID: sample-time\n~\t\t116 text 시나리오 9.30초\nIDLE → RUNNING → SPRINTING → IDLE\n모션: idle → walk → jog → regularRun → run → runStop\nrunStop · 0.31초 / 0.90초 · 속도 0.55 m/s\nThe focused UI element is 71 button 해당 장면 보기, ID: sample"
+  },
+  {
+    "kind": "movement",
+    "time": 10.3,
+    "file": "runtime-movement-10.3.png",
+    "state": "Browser tab: 1824846116, Title: \"스파이더맨: 3D 웹 스윙 (Spider-Man 3D Web Swing)\", URL: \"http://127.0.0.1:5296/?motionReview\".\nThe following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.\n~\t\t\t69 stepper (settable, float) 시나리오 시간 초, Value: 10.300000190734863, Details: 10.3, ID: sample-time\n~\t\t116 text 시나리오 10.30초\nIDLE → RUNNING → SPRINTING → IDLE\n모션: idle → walk → jog → regularRun → run → runStop → idle\nidle · 0.46초 / 4.00초 · 속도 0.00 m/s\nThe focused UI element is 71 button 해당 장면 보기, ID: sample"
+  },
+  {
+    "kind": "movement",
+    "time": 11.3,
+    "file": "runtime-movement-11.3.png",
+    "state": "Browser tab: 1824846116, Title: \"스파이더맨: 3D 웹 스윙 (Spider-Man 3D Web Swing)\", URL: \"http://127.0.0.1:5296/?motionReview\".\nThe following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.\n~\t\t\t69 stepper (settable, float) 시나리오 시간 초, Value: 11.300000190734863, Details: 11.3, ID: sample-time\n~\t\t116 text 시나리오 11.30초\nIDLE → RUNNING → SPRINTING → IDLE → JUMPING\n모션: idle → walk → jog → regularRun → run → runStop → idle → jump\njump · 0.31초 / 0.60초 · 속도 17.60 m/s\nThe focused UI element is 71 button 해당 장면 보기, ID: sample"
+  },
+  {
+    "kind": "walkStop",
+    "time": 3.1,
+    "file": "runtime-walkStop-3.1.png",
+    "state": "Browser tab: 1824846116, Title: \"스파이더맨: 3D 웹 스윙 (Spider-Man 3D Web Swing)\", URL: \"http://127.0.0.1:5296/?motionReview\".\nThe following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.\n~\t\t\t24 pop up button (collapsed, settable) 동작 연결, Value: 걷기 → 정지 → 대기, ID: test-kind, Secondary Actions: Expand\n~\t\t\t\t\t26 걷기·조깅·달리기·정지·점프\n~\t\t\t\t\t27 (selected) 걷기 → 정지 → 대기\n~\t\t\t69 stepper (settable, float) 시나리오 시간 초, Value: 3.0999999046325684, Details: 3.1, ID: sample-time\n~\t\t116 text 시나리오 3.10초\nIDLE → RUNNING → IDLE\n모션: idle → walk → stop\nstop · 0.10초 / 0.23초 · 속도 1.26 m/s\nThe focused UI element is 71 button 해당 장면 보기, ID: sample"
+  },
+  {
+    "kind": "walkStop",
+    "time": 3.8,
+    "file": "runtime-walkStop-3.8.png",
+    "state": "Browser tab: 1824846116, Title: \"스파이더맨: 3D 웹 스윙 (Spider-Man 3D Web Swing)\", URL: \"http://127.0.0.1:5296/?motionReview\".\nThe following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.\n~\t\t\t69 stepper (settable, float) 시나리오 시간 초, Value: 3.799999952316284, Details: 3.8, ID: sample-time\n~\t\t116 text 시나리오 3.80초\nIDLE → RUNNING → IDLE\n모션: idle → walk → stop → idle\nidle · 0.62초 / 4.00초 · 속도 0.00 m/s\nThe focused UI element is 71 button 해당 장면 보기, ID: sample"
+  },
+  {
+    "kind": "turn",
+    "time": 1.4,
+    "file": "runtime-turn-1.4.png",
+    "state": "Browser tab: 1824846116, Title: \"스파이더맨: 3D 웹 스윙 (Spider-Man 3D Web Swing)\", URL: \"http://127.0.0.1:5296/?motionReview\".\nThe following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.\n~\t\t\t24 pop up button (collapsed, settable) 동작 연결, Value: 좌우 제자리 회전, ID: test-kind, Secondary Actions: Expand\n~\t\t\t\t\t27 걷기 → 정지 → 대기\n~\t\t\t\t\t28 (selected) 좌우 제자리 회전\n~\t\t\t69 stepper (settable, float) 시나리오 시간 초, Value: 1.399999976158142, Details: 1.4, ID: sample-time\n~\t\t116 text 시나리오 1.40초\nIDLE → TURNING\n모션: idle → turnLeft\nturnLeft · 0.40초 / 0.93초 · 속도 0.00 m/s\nThe focused UI element is 71 button 해당 장면 보기, ID: sample"
+  },
+  {
+    "kind": "turn",
+    "time": 3.4,
+    "file": "runtime-turn-3.4.png",
+    "state": "Browser tab: 1824846116, Title: \"스파이더맨: 3D 웹 스윙 (Spider-Man 3D Web Swing)\", URL: \"http://127.0.0.1:5296/?motionReview\".\nThe following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.\n~\t\t\t69 stepper (settable, float) 시나리오 시간 초, Value: 3.4000000953674316, Details: 3.4, ID: sample-time\n~\t\t116 text 시나리오 3.40초\nIDLE → TURNING → IDLE → TURNING\n모션: idle → turnLeft → idle → turnRight\nturnRight · 0.40초 / 0.93초 · 속도 0.00 m/s\nThe focused UI element is 71 button 해당 장면 보기, ID: sample"
+  },
+  {
+    "kind": "landing",
+    "time": 0.4,
+    "file": "runtime-landing-0.4.png",
+    "state": "Browser tab: 1824846116, Title: \"스파이더맨: 3D 웹 스윙 (Spider-Man 3D Web Swing)\", URL: \"http://127.0.0.1:5296/?motionReview\".\nThe following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.\n~\t\t\t24 pop up button (collapsed, settable) 동작 연결, Value: 낙하 → 착지 회복, ID: test-kind, Secondary Actions: Expand\n~\t\t\t\t\t28 좌우 제자리 회전\n~\t\t\t\t\t29 (selected) 낙하 → 착지 회복\n~\t\t\t69 stepper (settable, float) 시나리오 시간 초, Value: 0.4000000059604645, Details: 0.4, ID: sample-time\n~\t\t116 text 시나리오 0.40초\nFALLING\n모션: drop\ndrop · 0.40초 / 0.53초 · 속도 11.20 m/s\nThe focused UI element is 71 button 해당 장면 보기, ID: sample"
+  },
+  {
+    "kind": "landing",
+    "time": 0.9,
+    "file": "runtime-landing-0.9.png",
+    "state": "Browser tab: 1824846116, Title: \"스파이더맨: 3D 웹 스윙 (Spider-Man 3D Web Swing)\", URL: \"http://127.0.0.1:5296/?motionReview\".\nThe following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.\n~\t\t\t69 stepper (settable, float) 시나리오 시간 초, Value: 0.8999999761581421, Details: 0.9, ID: sample-time\n~\t\t116 text 시나리오 0.90초\nFALLING → LANDING\n모션: drop → fall → drop → slamLand\nslamLand · 0.16초 / 0.88초 · 속도 0.00 m/s\nThe focused UI element is 71 button 해당 장면 보기, ID: sample"
+  },
+  {
+    "kind": "landing",
+    "time": 1.5,
+    "file": "runtime-landing-1.5.png",
+    "state": "Browser tab: 1824846116, Title: \"스파이더맨: 3D 웹 스윙 (Spider-Man 3D Web Swing)\", URL: \"http://127.0.0.1:5296/?motionReview\".\nThe following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.\n~\t\t\t69 stepper (settable, float) 시나리오 시간 초, Value: 1.5, ID: sample-time\n~\t\t116 text 시나리오 1.50초\nFALLING → LANDING\n모션: drop → fall → drop → slamLand\nslamLand · 0.76초 / 0.88초 · 속도 0.00 m/s\nThe focused UI element is 71 button 해당 장면 보기, ID: sample"
+  },
+  {
+    "kind": "roll",
+    "time": 1.2,
+    "file": "runtime-roll-1.2.png",
+    "state": "Browser tab: 1824846116, Title: \"스파이더맨: 3D 웹 스윙 (Spider-Man 3D Web Swing)\", URL: \"http://127.0.0.1:5296/?motionReview\".\nThe following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.\n~\t\t\t24 pop up button (collapsed, settable) 동작 연결, Value: 높은 낙하 → 구르기 회복, ID: test-kind, Secondary Actions: Expand\n~\t\t\t\t\t29 낙하 → 착지 회복\n~\t\t\t\t\t30 (selected) 높은 낙하 → 구르기 회복\n~\t\t\t69 stepper (settable, float) 시나리오 시간 초, Value: 1.2000000476837158, Details: 1.2, ID: sample-time\n~\t\t116 text 시나리오 1.20초\nFALLING\n모션: drop → fall\nfall · 0.77초 / 4.50초 · 속도 34.76 m/s\nThe focused UI element is 71 button 해당 장면 보기, ID: sample"
+  },
+  {
+    "kind": "roll",
+    "time": 1.7,
+    "file": "runtime-roll-1.7.png",
+    "state": "Browser tab: 1824846116, Title: \"스파이더맨: 3D 웹 스윙 (Spider-Man 3D Web Swing)\", URL: \"http://127.0.0.1:5296/?motionReview\".\nThe following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.\n~\t\t\t69 stepper (settable, float) 시나리오 시간 초, Value: 1.7000000476837158, Details: 1.7, ID: sample-time\n~\t\t116 text 시나리오 1.70초\nFALLING → ROLLING\n모션: drop → fall → drop → roll\nroll · 0.13초 / 1.54초 · 속도 5.08 m/s\nThe focused UI element is 71 button 해당 장면 보기, ID: sample"
+  },
+  {
+    "kind": "roll",
+    "time": 2.7,
+    "file": "runtime-roll-2.7.png",
+    "state": "Browser tab: 1824846116, Title: \"스파이더맨: 3D 웹 스윙 (Spider-Man 3D Web Swing)\", URL: \"http://127.0.0.1:5296/?motionReview\".\nThe following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.\n~\t\t\t69 stepper (settable, float) 시나리오 시간 초, Value: 2.700000047683716, Details: 2.7, ID: sample-time\n~\t\t116 text 시나리오 2.70초\nFALLING → ROLLING\n모션: drop → fall → drop → roll\nroll · 1.13초 / 1.54초 · 속도 0.84 m/s\nThe focused UI element is 71 button 해당 장면 보기, ID: sample"
+  },
+  {
+    "kind": "swing",
+    "time": 1,
+    "file": "runtime-swing-1.png",
+    "state": "Browser tab: 1824846116, Title: \"스파이더맨: 3D 웹 스윙 (Spider-Man 3D Web Swing)\", URL: \"http://127.0.0.1:5296/?motionReview\".\nThe following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.\n~\t\t\t24 pop up button (collapsed, settable) 동작 연결, Value: 스윙 → 해제 → 낙하, ID: test-kind, Secondary Actions: Expand\n~\t\t\t\t\t30 높은 낙하 → 구르기 회복\n~\t\t\t\t\t32 (selected) 스윙 → 해제 → 낙하\n~\t\t\t69 stepper (settable, integer) 시나리오 시간 초, Value: 1, ID: sample-time\n~\t\t116 text 시나리오 1.00초\nSWINGING\n모션: swing\nswing · 1.00초 / 1.95초 · 속도 13.05 m/s\nThe focused UI element is 71 button 해당 장면 보기, ID: sample"
+  },
+  {
+    "kind": "swing",
+    "time": 2.3,
+    "file": "runtime-swing-2.3.png",
+    "state": "Browser tab: 1824846116, Title: \"스파이더맨: 3D 웹 스윙 (Spider-Man 3D Web Swing)\", URL: \"http://127.0.0.1:5296/?motionReview\".\nThe following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.\n~\t\t\t69 stepper (settable, float) 시나리오 시간 초, Value: 2.299999952316284, Details: 2.3, ID: sample-time\n~\t\t116 text 시나리오 2.30초\nSWINGING → FALLING\n모션: swing → drop\ndrop · 0.30초 / 0.53초 · 속도 9.93 m/s\nThe focused UI element is 71 button 해당 장면 보기, ID: sample"
+  },
+  {
+    "kind": "zip",
+    "time": 1.3,
+    "file": "runtime-zip-1.3.png",
+    "state": "Browser tab: 1824846116, Title: \"스파이더맨: 3D 웹 스윙 (Spider-Man 3D Web Swing)\", URL: \"http://127.0.0.1:5296/?motionReview\".\nThe following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.\n~\t\t\t24 pop up button (collapsed, settable) 동작 연결, Value: 웹 집 → 연결 유지 → 스윙, ID: test-kind, Secondary Actions: Expand\n~\t\t\t\t\t31 (selected) 웹 집 → 연결 유지 → 스윙\n~\t\t\t\t\t32 스윙 → 해제 → 낙하\n~\t\t\t69 stepper (settable, float) 시나리오 시간 초, Value: 1.2999999523162842, Details: 1.3, ID: sample-time\n~\t\t116 text 시나리오 1.30초\nIDLE → WEB_ZIP\n모션: idle → zip\nzip · 0.30초 / 1.00초 · 속도 21.40 m/s\nThe focused UI element is 71 button 해당 장면 보기, ID: sample"
+  },
+  {
+    "kind": "zip",
+    "time": 2.2,
+    "file": "runtime-zip-2.2.png",
+    "state": "Browser tab: 1824846116, Title: \"스파이더맨: 3D 웹 스윙 (Spider-Man 3D Web Swing)\", URL: \"http://127.0.0.1:5296/?motionReview\".\nThe following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.\n~\t\t\t69 stepper (settable, float) 시나리오 시간 초, Value: 2.200000047683716, Details: 2.2, ID: sample-time\n~\t\t116 text 시나리오 2.20초\nIDLE → WEB_ZIP → SWINGING\n모션: idle → zip → swing\nswing · 0.26초 / 1.95초 · 속도 3.70 m/s\nThe focused UI element is 71 button 해당 장면 보기, ID: sample"
+  },
+  {
+    "kind": "dualWeb",
+    "time": 0.16,
+    "file": "runtime-dualWeb-0.16.png",
+    "state": "Browser tab: 1824846116, Title: \"스파이더맨: 3D 웹 스윙 (Spider-Man 3D Web Swing)\", URL: \"http://127.0.0.1:5296/?motionReview\".\nThe following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.\n~\t\t\t24 pop up button (collapsed, settable) 동작 연결, Value: 왼손 발사 → 오른손 발사 → 양손 매달리기 → 교체, ID: test-kind, Secondary Actions: Expand\n~\t\t\t\t\t31 웹 집 → 연결 유지 → 스윙\n~\t\t\t\t\t33 (selected) 왼손 발사 → 오른손 발사 → 양손 매달리기 → 교체\n~\t\t\t69 stepper (settable, float) 시나리오 시간 초, Value: 0.1599999964237213, Details: 0.16, ID: sample-time\n~\t\t116 text 시나리오 0.16초\nFALLING → SWINGING\n모션: drop → swing\nswing · 0.11초 / 1.95초 · 속도 2.53 m/s\n연결 줄 1개 · 왼손 부착\nThe focused UI element is 71 button 해당 장면 보기, ID: sample"
+  },
+  {
+    "kind": "dualWeb",
+    "time": 0.8,
+    "file": "runtime-dualWeb-0.8.png",
+    "state": "Browser tab: 1824846116, Title: \"스파이더맨: 3D 웹 스윙 (Spider-Man 3D Web Swing)\", URL: \"http://127.0.0.1:5296/?motionReview\".\nThe following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.\n~\t\t\t69 stepper (settable, float) 시나리오 시간 초, Value: 0.800000011920929, Details: 0.8, ID: sample-time\n~\t\t116 text 시나리오 0.80초\nFALLING → SWINGING\n모션: drop → swing\nswing · 0.75초 / 1.95초 · 속도 7.33 m/s\n연결 줄 2개 · 왼손 부착 / 오른손 부착\nThe focused UI element is 71 button 해당 장면 보기, ID: sample"
+  },
+  {
+    "kind": "dualWeb",
+    "time": 2.6,
+    "file": "runtime-dualWeb-2.6.png",
+    "state": "Browser tab: 1824846116, Title: \"스파이더맨: 3D 웹 스윙 (Spider-Man 3D Web Swing)\", URL: \"http://127.0.0.1:5296/?motionReview\".\nThe following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.\n~\t\t\t69 stepper (settable, float) 시나리오 시간 초, Value: 2.5999999046325684, Details: 2.6, ID: sample-time\n~\t\t116 text 시나리오 2.60초\nFALLING → SWINGING\n모션: drop → swing\nswing · 0.60초 / 1.95초 · 속도 6.66 m/s\n연결 줄 2개 · 오른손 부착 / 왼손 부착\nThe focused UI element is 71 button 해당 장면 보기, ID: sample"
+  },
+  {
+    "kind": "wall",
+    "time": 0.5,
+    "file": "runtime-wall-0.5.png",
+    "state": "Browser tab: 1824846116, Title: \"스파이더맨: 3D 웹 스윙 (Spider-Man 3D Web Swing)\", URL: \"http://127.0.0.1:5296/?motionReview\".\nThe following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.\nRemoved element IDs: 8, 72\n~\t\t6 pop up button (collapsed, settable) 모션, Value: idle, ID: motion, Secondary Actions: Expand\n+\t\t\t\t74 default\n+\t\t\t\t75 (selected) idle\n+\t\t\t\t76 walk\n+\t\t\t\t77 jog\n+\t\t\t\t78 regularRun\n+\t\t\t\t79 run\n+\t\t\t\t80 stop\n+\t\t\t\t81 runStop\n+\t\t\t\t82 femaleStop\n+\t\t\t\t83 zip\n+\t\t\t\t84 turnLeft\n+\t\t\t\t85 turnRight\n+\t\t\t\t86 jump\n+\t\t\t\t87 land\n+\t\t\t\t88 jumpDown\n+\t\t\t\t89 drop\n+\t\t\t\t90 jumpDownVariant\n+\t\t\t\t91 swing\n+\t\t\t\t92 fall\n+\t\t\t\t93 fallVariant\n+\t\t\t\t94 fallIdle\n+\t\t\t\t95 roll\n+\t\t\t\t96 wall\n+\t\t\t\t97 injuredIdle\n+\t\t\t\t98 combatIdle\n+\t\t\t\t99 jab\n+\t\t\t\t100 cross\n+\t\t\t\t101 guard\n+\t\t\t\t102 dodgeLeft\n+\t\t\t\t103 dodgeRight\n+\t\t\t\t104 dodgeBack\n+\t\t\t\t105 slamLand\n+\t\t\t\t106 slam\n+\t\t\t\t107 dodgeForward\n+\t\t\t\t108 hook\n+\t\t\t\t109 heavy\n+\t\t\t\t110 hit\n+\t\t\t\t111 hitHead\n+\t\t\t\t112 airTrick\n+\t\t\t\t113 special\n+\t\t\t\t114 candidateFront\n+\t\t\t\t115 candidateStylish\n~\t\t\t24 pop up button (collapsed, settable) 동작 연결, Value: 벽 달리기 → 옥상 진입, ID: test-kind, Secondary Actions: Expand\n~\t\t\t\t\t26 걷기·조깅·달리기·정지·점프\n~\t\t\t\t\t34 (selected) 벽 달리기 → 옥상 진입\n~\t\t\t69 stepper (settable, float) 시나리오 시간 초, Value: 0.5, ID: sample-time\n+\t\t116 text 시나리오 0.50초\nWALL_RUNNING\n모션: wall\nwall · 1.00초 / 2.00초 · 속도 6.50 m/s\nThe focused UI element is 71 button 해당 장면 보기, ID: sample"
+  },
+  {
+    "kind": "wall",
+    "time": 1.2,
+    "file": "runtime-wall-1.2.png",
+    "state": "Browser tab: 1824846116, Title: \"스파이더맨: 3D 웹 스윙 (Spider-Man 3D Web Swing)\", URL: \"http://127.0.0.1:5296/?motionReview\".\nThe following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.\n~\t\t\t69 stepper (settable, float) 시나리오 시간 초, Value: 1.2000000476837158, Details: 1.2, ID: sample-time\n~\t\t116 text 시나리오 1.20초\nWALL_RUNNING → MANTLING\n모션: wall\nwall · 1.70초 / 2.00초 · 속도 4.00 m/s\nThe focused UI element is 71 button 해당 장면 보기, ID: sample"
+  },
+  {
+    "kind": "wall",
+    "time": 2.3,
+    "file": "runtime-wall-2.3.png",
+    "state": "Browser tab: 1824846116, Title: \"스파이더맨: 3D 웹 스윙 (Spider-Man 3D Web Swing)\", URL: \"http://127.0.0.1:5296/?motionReview\".\nThe following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.\n~\t\t\t69 stepper (settable, float) 시나리오 시간 초, Value: 2.299999952316284, Details: 2.3, ID: sample-time\n~\t\t116 text 시나리오 2.30초\nWALL_RUNNING → MANTLING → RUNNING → IDLE\n모션: wall → idle → walk → stop\nstop · 0.10초 / 0.23초 · 속도 1.24 m/s\nThe focused UI element is 71 button 해당 장면 보기, ID: sample"
+  },
+  {
+    "kind": "parapet",
+    "time": 0.8,
+    "file": "runtime-parapet-0.8.png",
+    "state": "Browser tab: 1824846116, Title: \"스파이더맨: 3D 웹 스윙 (Spider-Man 3D Web Swing)\", URL: \"http://127.0.0.1:5296/?motionReview\".\nThe following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.\n~\t\t\t24 pop up button (collapsed, settable) 동작 연결, Value: 벽 오르기 → 난간 넘기 → 옥상 착지, ID: test-kind, Secondary Actions: Expand\n~\t\t\t\t\t34 벽 달리기 → 옥상 진입\n~\t\t\t\t\t35 (selected) 벽 오르기 → 난간 넘기 → 옥상 착지\n~\t\t\t69 stepper (settable, float) 시나리오 시간 초, Value: 0.800000011920929, Details: 0.8, ID: sample-time\n~\t\t116 text 시나리오 0.80초\nWALL_RUNNING\n모션: wall\nwall · 1.27초 / 2.00초 · 속도 2.40 m/s\nThe focused UI element is 71 button 해당 장면 보기, ID: sample"
+  },
+  {
+    "kind": "parapet",
+    "time": 1.2,
+    "file": "runtime-parapet-1.2.png",
+    "state": "Browser tab: 1824846116, Title: \"스파이더맨: 3D 웹 스윙 (Spider-Man 3D Web Swing)\", URL: \"http://127.0.0.1:5296/?motionReview\".\nThe following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.\n~\t\t\t69 stepper (settable, float) 시나리오 시간 초, Value: 1.2000000476837158, Details: 1.2, ID: sample-time\n~\t\t116 text 시나리오 1.20초\nWALL_RUNNING → MANTLING\n모션: wall\nwall · 1.47초 / 2.00초 · 속도 2.89 m/s\nThe focused UI element is 71 button 해당 장면 보기, ID: sample"
+  },
+  {
+    "kind": "parapet",
+    "time": 1.6,
+    "file": "runtime-parapet-1.6.png",
+    "state": "Browser tab: 1824846116, Title: \"스파이더맨: 3D 웹 스윙 (Spider-Man 3D Web Swing)\", URL: \"http://127.0.0.1:5296/?motionReview\".\nThe following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.\n~\t\t\t69 stepper (settable, float) 시나리오 시간 초, Value: 1.600000023841858, Details: 1.6, ID: sample-time\n~\t\t116 text 시나리오 1.60초\nWALL_RUNNING → MANTLING\n모션: wall\nwall · 1.47초 / 2.00초 · 속도 8.85 m/s\nThe focused UI element is 71 button 해당 장면 보기, ID: sample"
+  },
+  {
+    "kind": "parapet",
+    "time": 2.5,
+    "file": "runtime-parapet-2.5.png",
+    "state": "Browser tab: 1824846116, Title: \"스파이더맨: 3D 웹 스윙 (Spider-Man 3D Web Swing)\", URL: \"http://127.0.0.1:5296/?motionReview\".\nThe following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.\n~\t\t\t69 stepper (settable, float) 시나리오 시간 초, Value: 2.5, ID: sample-time\n~\t\t116 text 시나리오 2.50초\nWALL_RUNNING → MANTLING → RUNNING → IDLE\n모션: wall → idle → walk → stop → idle\nidle · 0.12초 / 4.00초 · 속도 0.17 m/s\nThe focused UI element is 71 button 해당 장면 보기, ID: sample"
+  },
+  {
+    "kind": "slope",
+    "time": 1.5,
+    "file": "runtime-slope-1.5.png",
+    "state": "Browser tab: 1824846116, Title: \"스파이더맨: 3D 웹 스윙 (Spider-Man 3D Web Swing)\", URL: \"http://127.0.0.1:5296/?motionReview\".\nThe following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.\n~\t\t\t24 pop up button (collapsed, settable) 동작 연결, Value: 경사면 걷기 → 정지, ID: test-kind, Secondary Actions: Expand\n~\t\t\t\t\t35 벽 오르기 → 난간 넘기 → 옥상 착지\n~\t\t\t\t\t36 (selected) 경사면 걷기 → 정지\n~\t\t\t69 stepper (settable, float) 시나리오 시간 초, Value: 1.5, ID: sample-time\n~\t\t116 text 시나리오 1.50초\nIDLE → RUNNING\n모션: idle → walk\nwalk · 0.25초 / 0.97초 · 속도 2.92 m/s\nThe focused UI element is 71 button 해당 장면 보기, ID: sample"
+  },
+  {
+    "kind": "slope",
+    "time": 2.2,
+    "file": "runtime-slope-2.2.png",
+    "state": "Browser tab: 1824846116, Title: \"스파이더맨: 3D 웹 스윙 (Spider-Man 3D Web Swing)\", URL: \"http://127.0.0.1:5296/?motionReview\".\nThe following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.\n~\t\t\t69 stepper (settable, float) 시나리오 시간 초, Value: 2.200000047683716, Details: 2.2, ID: sample-time\n~\t\t116 text 시나리오 2.20초\nIDLE → RUNNING\n모션: idle → walk\nwalk · 0.23초 / 0.97초 · 속도 2.92 m/s\nThe focused UI element is 71 button 해당 장면 보기, ID: sample"
+  },
+  {
+    "kind": "slope",
+    "time": 4.2,
+    "file": "runtime-slope-4.2.png",
+    "state": "Browser tab: 1824846116, Title: \"스파이더맨: 3D 웹 스윙 (Spider-Man 3D Web Swing)\", URL: \"http://127.0.0.1:5296/?motionReview\".\nThe following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.\n~\t\t\t69 stepper (settable, float) 시나리오 시간 초, Value: 4.199999809265137, Details: 4.2, ID: sample-time\n~\t\t116 text 시나리오 4.20초\nIDLE → RUNNING → IDLE\n모션: idle → walk → stop → idle\nidle · 0.52초 / 4.00초 · 속도 0.00 m/s\nThe focused UI element is 71 button 해당 장면 보기, ID: sample"
+  },
+  {
+    "kind": "slopeDown",
+    "time": 1.5,
+    "file": "runtime-slopeDown-1.5.png",
+    "state": "Browser tab: 1824846116, Title: \"스파이더맨: 3D 웹 스윙 (Spider-Man 3D Web Swing)\", URL: \"http://127.0.0.1:5296/?motionReview\".\nThe following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.\n~\t\t\t24 pop up button (collapsed, settable) 동작 연결, Value: 경사면 내려가기 → 정지, ID: test-kind, Secondary Actions: Expand\n~\t\t\t\t\t36 경사면 걷기 → 정지\n~\t\t\t\t\t37 (selected) 경사면 내려가기 → 정지\n~\t\t\t69 stepper (settable, float) 시나리오 시간 초, Value: 1.5, ID: sample-time\n~\t\t116 text 시나리오 1.50초\nIDLE → RUNNING\n모션: idle → walk\nwalk · 0.25초 / 0.97초 · 속도 2.80 m/s\nThe focused UI element is 71 button 해당 장면 보기, ID: sample"
+  },
+  {
+    "kind": "slopeDown",
+    "time": 2.2,
+    "file": "runtime-slopeDown-2.2.png",
+    "state": "Browser tab: 1824846116, Title: \"스파이더맨: 3D 웹 스윙 (Spider-Man 3D Web Swing)\", URL: \"http://127.0.0.1:5296/?motionReview\".\nThe following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.\n~\t\t\t69 stepper (settable, float) 시나리오 시간 초, Value: 2.200000047683716, Details: 2.2, ID: sample-time\n~\t\t116 text 시나리오 2.20초\nIDLE → RUNNING\n모션: idle → walk\nwalk · 0.23초 / 0.97초 · 속도 2.80 m/s\nThe focused UI element is 71 button 해당 장면 보기, ID: sample"
+  },
+  {
+    "kind": "slopeDown",
+    "time": 4.2,
+    "file": "runtime-slopeDown-4.2.png",
+    "state": "Browser tab: 1824846116, Title: \"스파이더맨: 3D 웹 스윙 (Spider-Man 3D Web Swing)\", URL: \"http://127.0.0.1:5296/?motionReview\".\nThe following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.\n~\t\t\t69 stepper (settable, float) 시나리오 시간 초, Value: 4.199999809265137, Details: 4.2, ID: sample-time\n~\t\t116 text 시나리오 4.20초\nIDLE → RUNNING → IDLE\n모션: idle → walk → stop → idle\nidle · 0.52초 / 4.00초 · 속도 0.00 m/s\nThe focused UI element is 71 button 해당 장면 보기, ID: sample"
+  },
+  {
+    "kind": "stairs",
+    "time": 1.5,
+    "file": "runtime-stairs-1.5.png",
+    "state": "Browser tab: 1824846116, Title: \"스파이더맨: 3D 웹 스윙 (Spider-Man 3D Web Swing)\", URL: \"http://127.0.0.1:5296/?motionReview\".\nThe following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.\n~\t\t\t24 pop up button (collapsed, settable) 동작 연결, Value: 계단 걷기 → 정지, ID: test-kind, Secondary Actions: Expand\n~\t\t\t\t\t37 경사면 내려가기 → 정지\n~\t\t\t\t\t38 (selected) 계단 걷기 → 정지\n~\t\t\t69 stepper (settable, float) 시나리오 시간 초, Value: 1.5, ID: sample-time\n~\t\t116 text 시나리오 1.50초\nIDLE → RUNNING\n모션: idle → walk\nwalk · 0.25초 / 0.97초 · 속도 2.80 m/s\nThe focused UI element is 71 button 해당 장면 보기, ID: sample"
+  },
+  {
+    "kind": "stairs",
+    "time": 2.6,
+    "file": "runtime-stairs-2.6.png",
+    "state": "Browser tab: 1824846116, Title: \"스파이더맨: 3D 웹 스윙 (Spider-Man 3D Web Swing)\", URL: \"http://127.0.0.1:5296/?motionReview\".\nThe following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.\n~\t\t\t69 stepper (settable, float) 시나리오 시간 초, Value: 2.5999999046325684, Details: 2.6, ID: sample-time\n~\t\t116 text 시나리오 2.60초\nIDLE → RUNNING\n모션: idle → walk\nwalk · 0.37초 / 0.97초 · 속도 1.28 m/s\nThe focused UI element is 71 button 해당 장면 보기, ID: sample"
+  },
+  {
+    "kind": "stairs",
+    "time": 4.2,
+    "file": "runtime-stairs-4.2.png",
+    "state": "Browser tab: 1824846116, Title: \"스파이더맨: 3D 웹 스윙 (Spider-Man 3D Web Swing)\", URL: \"http://127.0.0.1:5296/?motionReview\".\nThe following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.\n~\t\t\t69 stepper (settable, float) 시나리오 시간 초, Value: 4.199999809265137, Details: 4.2, ID: sample-time\n~\t\t116 text 시나리오 4.20초\nIDLE → RUNNING → IDLE\n모션: idle → walk → stop → idle\nidle · 0.52초 / 4.00초 · 속도 0.00 m/s\nThe focused UI element is 71 button 해당 장면 보기, ID: sample"
+  },
+  {
+    "kind": "trick-front",
+    "time": 0.3,
+    "file": "runtime-trick-front-0.3.png",
+    "state": "Browser tab: 1824846116, Title: \"스파이더맨: 3D 웹 스윙 (Spider-Man 3D Web Swing)\", URL: \"http://127.0.0.1:5296/?motionReview\".\nThe following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.\n~\t\t\t24 pop up button (collapsed, settable) 동작 연결, Value: 공중 묘기 · 앞구르기, ID: test-kind, Secondary Actions: Expand\n~\t\t\t\t\t38 계단 걷기 → 정지\n~\t\t\t\t\t39 (selected) 공중 묘기 · 앞구르기\n~\t\t\t69 stepper (settable, float) 시나리오 시간 초, Value: 0.30000001192092896, Details: 0.3, ID: sample-time\n~\t\t116 text 시나리오 0.30초\nFALLING\n모션: drop → airTrick\nairTrick · 0.11초 / 0.93초 · 속도 8.40 m/s\nThe focused UI element is 71 button 해당 장면 보기, ID: sample"
+  },
+  {
+    "kind": "trick-front",
+    "time": 0.65,
+    "file": "runtime-trick-front-0.65.png",
+    "state": "Browser tab: 1824846116, Title: \"스파이더맨: 3D 웹 스윙 (Spider-Man 3D Web Swing)\", URL: \"http://127.0.0.1:5296/?motionReview\".\nThe following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.\n~\t\t\t69 stepper (settable, float) 시나리오 시간 초, Value: 0.6499999761581421, Details: 0.65, ID: sample-time\n~\t\t116 text 시나리오 0.65초\nFALLING\n모션: drop → airTrick\nairTrick · 0.51초 / 0.93초 · 속도 18.20 m/s\nThe focused UI element is 71 button 해당 장면 보기, ID: sample"
+  },
+  {
+    "kind": "trick-front",
+    "time": 1.1,
+    "file": "runtime-trick-front-1.1.png",
+    "state": "Browser tab: 1824846116, Title: \"스파이더맨: 3D 웹 스윙 (Spider-Man 3D Web Swing)\", URL: \"http://127.0.0.1:5296/?motionReview\".\nThe following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.\n~\t\t\t69 stepper (settable, float) 시나리오 시간 초, Value: 1.100000023841858, Details: 1.1, ID: sample-time\n~\t\t116 text 시나리오 1.10초\nFALLING\n모션: drop → airTrick → fall\nfall · 0.08초 / 4.50초 · 속도 30.80 m/s\nThe focused UI element is 71 button 해당 장면 보기, ID: sample"
+  },
+  {
+    "kind": "trick-back",
+    "time": 0.3,
+    "file": "runtime-trick-back-0.3.png",
+    "state": "Browser tab: 1824846116, Title: \"스파이더맨: 3D 웹 스윙 (Spider-Man 3D Web Swing)\", URL: \"http://127.0.0.1:5296/?motionReview\".\nThe following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.\n~\t\t\t24 pop up button (collapsed, settable) 동작 연결, Value: 공중 묘기 · 뒤구르기, ID: test-kind, Secondary Actions: Expand\n~\t\t\t\t\t39 공중 묘기 · 앞구르기\n~\t\t\t\t\t40 (selected) 공중 묘기 · 뒤구르기\n~\t\t\t69 stepper (settable, float) 시나리오 시간 초, Value: 0.30000001192092896, Details: 0.3, ID: sample-time\n~\t\t116 text 시나리오 0.30초\nFALLING\n모션: drop → fallIdle\nfallIdle · 0.10초 / 4.50초 · 속도 8.40 m/s\nThe focused UI element is 71 button 해당 장면 보기, ID: sample"
+  },
+  {
+    "kind": "trick-back",
+    "time": 0.65,
+    "file": "runtime-trick-back-0.65.png",
+    "state": "Browser tab: 1824846116, Title: \"스파이더맨: 3D 웹 스윙 (Spider-Man 3D Web Swing)\", URL: \"http://127.0.0.1:5296/?motionReview\".\nThe following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.\n~\t\t\t69 stepper (settable, float) 시나리오 시간 초, Value: 0.6499999761581421, Details: 0.65, ID: sample-time\n~\t\t116 text 시나리오 0.65초\nFALLING\n모션: drop → fallIdle\nfallIdle · 0.45초 / 4.50초 · 속도 18.20 m/s\nThe focused UI element is 71 button 해당 장면 보기, ID: sample"
+  },
+  {
+    "kind": "trick-back",
+    "time": 1.1,
+    "file": "runtime-trick-back-1.1.png",
+    "state": "Browser tab: 1824846116, Title: \"스파이더맨: 3D 웹 스윙 (Spider-Man 3D Web Swing)\", URL: \"http://127.0.0.1:5296/?motionReview\".\nThe following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.\n~\t\t\t69 stepper (settable, float) 시나리오 시간 초, Value: 1.100000023841858, Details: 1.1, ID: sample-time\n~\t\t116 text 시나리오 1.10초\nFALLING\n모션: drop → fallIdle\nfallIdle · 0.90초 / 4.50초 · 속도 30.80 m/s\nThe focused UI element is 71 button 해당 장면 보기, ID: sample"
+  },
+  {
+    "kind": "trick-left",
+    "time": 0.3,
+    "file": "runtime-trick-left-0.3.png",
+    "state": "Browser tab: 1824846116, Title: \"스파이더맨: 3D 웹 스윙 (Spider-Man 3D Web Swing)\", URL: \"http://127.0.0.1:5296/?motionReview\".\nThe following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.\n~\t\t\t24 pop up button (collapsed, settable) 동작 연결, Value: 공중 묘기 · 왼쪽 옆회전, ID: test-kind, Secondary Actions: Expand\n~\t\t\t\t\t40 공중 묘기 · 뒤구르기\n~\t\t\t\t\t41 (selected) 공중 묘기 · 왼쪽 옆회전\n~\t\t\t69 stepper (settable, float) 시나리오 시간 초, Value: 0.30000001192092896, Details: 0.3, ID: sample-time\n~\t\t116 text 시나리오 0.30초\nFALLING\n모션: drop → fallIdle\nfallIdle · 0.10초 / 4.50초 · 속도 8.40 m/s\nThe focused UI element is 71 button 해당 장면 보기, ID: sample"
+  },
+  {
+    "kind": "trick-left",
+    "time": 0.65,
+    "file": "runtime-trick-left-0.65.png",
+    "state": "Browser tab: 1824846116, Title: \"스파이더맨: 3D 웹 스윙 (Spider-Man 3D Web Swing)\", URL: \"http://127.0.0.1:5296/?motionReview\".\nThe following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.\n~\t\t\t69 stepper (settable, float) 시나리오 시간 초, Value: 0.6499999761581421, Details: 0.65, ID: sample-time\n~\t\t116 text 시나리오 0.65초\nFALLING\n모션: drop → fallIdle\nfallIdle · 0.45초 / 4.50초 · 속도 18.20 m/s\nThe focused UI element is 71 button 해당 장면 보기, ID: sample"
+  },
+  {
+    "kind": "trick-left",
+    "time": 1.1,
+    "file": "runtime-trick-left-1.1.png",
+    "state": "Browser tab: 1824846116, Title: \"스파이더맨: 3D 웹 스윙 (Spider-Man 3D Web Swing)\", URL: \"http://127.0.0.1:5296/?motionReview\".\nThe following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.\n~\t\t\t69 stepper (settable, float) 시나리오 시간 초, Value: 1.100000023841858, Details: 1.1, ID: sample-time\n~\t\t116 text 시나리오 1.10초\nFALLING\n모션: drop → fallIdle → fall\nfall · 0.12초 / 4.50초 · 속도 30.80 m/s\nThe focused UI element is 71 button 해당 장면 보기, ID: sample"
+  },
+  {
+    "kind": "trick-right",
+    "time": 0.3,
+    "file": "runtime-trick-right-0.3.png",
+    "state": "Browser tab: 1824846116, Title: \"스파이더맨: 3D 웹 스윙 (Spider-Man 3D Web Swing)\", URL: \"http://127.0.0.1:5296/?motionReview\".\nThe following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.\n~\t\t\t24 pop up button (collapsed, settable) 동작 연결, Value: 공중 묘기 · 오른쪽 옆회전, ID: test-kind, Secondary Actions: Expand\n~\t\t\t\t\t41 공중 묘기 · 왼쪽 옆회전\n~\t\t\t\t\t42 (selected) 공중 묘기 · 오른쪽 옆회전\n~\t\t\t69 stepper (settable, float) 시나리오 시간 초, Value: 0.30000001192092896, Details: 0.3, ID: sample-time\n~\t\t116 text 시나리오 0.30초\nFALLING\n모션: drop → fallIdle\nfallIdle · 0.10초 / 4.50초 · 속도 8.40 m/s\nThe focused UI element is 71 button 해당 장면 보기, ID: sample"
+  },
+  {
+    "kind": "trick-right",
+    "time": 0.65,
+    "file": "runtime-trick-right-0.65.png",
+    "state": "Browser tab: 1824846116, Title: \"스파이더맨: 3D 웹 스윙 (Spider-Man 3D Web Swing)\", URL: \"http://127.0.0.1:5296/?motionReview\".\nThe following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.\n~\t\t\t69 stepper (settable, float) 시나리오 시간 초, Value: 0.6499999761581421, Details: 0.65, ID: sample-time\n~\t\t116 text 시나리오 0.65초\nFALLING\n모션: drop → fallIdle\nfallIdle · 0.45초 / 4.50초 · 속도 18.20 m/s\nThe focused UI element is 71 button 해당 장면 보기, ID: sample"
+  },
+  {
+    "kind": "trick-right",
+    "time": 1.1,
+    "file": "runtime-trick-right-1.1.png",
+    "state": "Browser tab: 1824846116, Title: \"스파이더맨: 3D 웹 스윙 (Spider-Man 3D Web Swing)\", URL: \"http://127.0.0.1:5296/?motionReview\".\nThe following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.\n~\t\t\t69 stepper (settable, float) 시나리오 시간 초, Value: 1.100000023841858, Details: 1.1, ID: sample-time\n~\t\t116 text 시나리오 1.10초\nFALLING\n모션: drop → fallIdle → fall\nfall · 0.12초 / 4.50초 · 속도 30.80 m/s\nThe focused UI element is 71 button 해당 장면 보기, ID: sample"
+  },
+  {
+    "kind": "trick-spin",
+    "time": 0.3,
+    "file": "runtime-trick-spin-0.3.png",
+    "state": "Browser tab: 1824846116, Title: \"스파이더맨: 3D 웹 스윙 (Spider-Man 3D Web Swing)\", URL: \"http://127.0.0.1:5296/?motionReview\".\nThe following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.\n~\t\t\t24 pop up button (collapsed, settable) 동작 연결, Value: 공중 묘기 · 360도 회전, ID: test-kind, Secondary Actions: Expand\n~\t\t\t\t\t42 공중 묘기 · 오른쪽 옆회전\n~\t\t\t\t\t43 (selected) 공중 묘기 · 360도 회전\n~\t\t\t69 stepper (settable, float) 시나리오 시간 초, Value: 0.30000001192092896, Details: 0.3, ID: sample-time\n~\t\t116 text 시나리오 0.30초\nFALLING\n모션: drop → fallIdle\nfallIdle · 0.10초 / 4.50초 · 속도 8.40 m/s\nThe focused UI element is 71 button 해당 장면 보기, ID: sample"
+  },
+  {
+    "kind": "trick-spin",
+    "time": 0.65,
+    "file": "runtime-trick-spin-0.65.png",
+    "state": "Browser tab: 1824846116, Title: \"스파이더맨: 3D 웹 스윙 (Spider-Man 3D Web Swing)\", URL: \"http://127.0.0.1:5296/?motionReview\".\nThe following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.\n~\t\t\t69 stepper (settable, float) 시나리오 시간 초, Value: 0.6499999761581421, Details: 0.65, ID: sample-time\n~\t\t116 text 시나리오 0.65초\nFALLING\n모션: drop → fallIdle\nfallIdle · 0.45초 / 4.50초 · 속도 18.20 m/s\nThe focused UI element is 71 button 해당 장면 보기, ID: sample"
+  },
+  {
+    "kind": "trick-spin",
+    "time": 1.1,
+    "file": "runtime-trick-spin-1.1.png",
+    "state": "Browser tab: 1824846116, Title: \"스파이더맨: 3D 웹 스윙 (Spider-Man 3D Web Swing)\", URL: \"http://127.0.0.1:5296/?motionReview\".\nThe following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.\n~\t\t\t69 stepper (settable, float) 시나리오 시간 초, Value: 1.100000023841858, Details: 1.1, ID: sample-time\n~\t\t116 text 시나리오 1.10초\nFALLING\n모션: drop → fallIdle → fall\nfall · 0.18초 / 4.50초 · 속도 30.80 m/s\nThe focused UI element is 71 button 해당 장면 보기, ID: sample"
+  },
+  {
+    "kind": "trick-cork",
+    "time": 0.3,
+    "file": "runtime-trick-cork-0.3.png",
+    "state": "Browser tab: 1824846116, Title: \"스파이더맨: 3D 웹 스윙 (Spider-Man 3D Web Swing)\", URL: \"http://127.0.0.1:5296/?motionReview\".\nThe following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.\n~\t\t\t24 pop up button (collapsed, settable) 동작 연결, Value: 공중 묘기 · 코르크스크루, ID: test-kind, Secondary Actions: Expand\n~\t\t\t\t\t43 공중 묘기 · 360도 회전\n~\t\t\t\t\t44 (selected) 공중 묘기 · 코르크스크루\n~\t\t\t69 stepper (settable, float) 시나리오 시간 초, Value: 0.30000001192092896, Details: 0.3, ID: sample-time\n~\t\t116 text 시나리오 0.30초\nFALLING\n모션: drop → fallIdle\nfallIdle · 0.10초 / 4.50초 · 속도 8.40 m/s\nThe focused UI element is 71 button 해당 장면 보기, ID: sample"
+  },
+  {
+    "kind": "trick-cork",
+    "time": 0.65,
+    "file": "runtime-trick-cork-0.65.png",
+    "state": "Browser tab: 1824846116, Title: \"스파이더맨: 3D 웹 스윙 (Spider-Man 3D Web Swing)\", URL: \"http://127.0.0.1:5296/?motionReview\".\nThe following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.\n~\t\t\t69 stepper (settable, float) 시나리오 시간 초, Value: 0.6499999761581421, Details: 0.65, ID: sample-time\n~\t\t116 text 시나리오 0.65초\nFALLING\n모션: drop → fallIdle\nfallIdle · 0.45초 / 4.50초 · 속도 18.20 m/s\nThe focused UI element is 71 button 해당 장면 보기, ID: sample"
+  },
+  {
+    "kind": "trick-cork",
+    "time": 1.1,
+    "file": "runtime-trick-cork-1.1.png",
+    "state": "Browser tab: 1824846116, Title: \"스파이더맨: 3D 웹 스윙 (Spider-Man 3D Web Swing)\", URL: \"http://127.0.0.1:5296/?motionReview\".\nThe following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.\n~\t\t\t69 stepper (settable, float) 시나리오 시간 초, Value: 1.100000023841858, Details: 1.1, ID: sample-time\n~\t\t116 text 시나리오 1.10초\nFALLING\n모션: drop → fallIdle\nfallIdle · 0.90초 / 4.50초 · 속도 30.80 m/s\nThe focused UI element is 71 button 해당 장면 보기, ID: sample"
+  }
+]

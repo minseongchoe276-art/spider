@@ -1,3 +1,4 @@
+import {createJointConstraints,constrainJoints} from './JointConstraints.js';
 import { AIR_TRICKS, trickRotation } from './AirTricks.js';
 import { createWebStrand, updateWebStrand } from './WebStrand.js';
 import * as THREE from 'three';
@@ -7,7 +8,9 @@ import { retargetMotion, prepareMotion, boneId } from './MotionRetarget.js';
 import { MOTIONS, STRIDES, GROUNDED } from './MotionCatalog.js';
 import { fetchAsset, forEachConcurrent } from './AssetLoader.js';
 import { clone as cloneSkeleton } from 'three/addons/utils/SkeletonUtils.js';
-import { plantMovingFeet, poseWall, poseZipLegs, poseMantle, adaptPelvisToTerrain, footSupport, soleRotation } from './CharacterPose.js';
+import { plantMovingFeet, poseWall, poseZipLegs, poseMantle, adaptPelvisToTerrain, footSupport, soleRotation, clearGroundSoles } from './CharacterPose.js';
+import {createHandPoseRig,restoreHandPose,updateWebHandPose} from './WebHandPose.js';
+import {createFirstPersonArm,poseFirstPersonFingers,disposeFirstPersonRig,prepareFirstPersonDepth} from './FirstPersonArms.js';
 
 export class Character {
   constructor(scene, onProgress, onLoaded, source = null) {
@@ -78,6 +81,8 @@ export class Character {
       if (boneId(child.name)==='lefthand') this.leftHand = child;
       if (boneId(child.name)==='righthand') this.rightHand = child;
     });
+    this.webFingerRig=createHandPoseRig(this.model,this.bones);
+    for(const side of ['left','right'])for(const item of this.webFingerRig[side])item.bone.quaternion.copy(item.rest);
     this.mixer = new THREE.AnimationMixer(this.model);
     for (const [key,original] of Object.entries(source.actions)) {
       const action = this.mixer.clipAction(original.getClip());
@@ -91,6 +96,7 @@ export class Character {
   }
 
   disposeCopy() {
+    disposeFirstPersonRig(this.firstPersonRig);
     this.copySource = null;
     this.mixer?.stopAllAction(); if (this.model) this.mixer?.uncacheRoot(this.model);
     this.model?.traverse(mesh => mesh.skeleton?.dispose());
@@ -110,37 +116,17 @@ export class Character {
   }
 
   setFirstPersonCamera(camera) {
+    disposeFirstPersonRig(this.firstPersonRig);
     this.firstPersonRig = new THREE.Group();
     this.firstPersonRig.name = 'SpiderManFirstPersonArms';
     camera.add(this.firstPersonRig);
-    const sleeveMat = new THREE.MeshStandardMaterial({ color: 0x12345f, roughness: 0.68, metalness: 0.05 });
-    const gloveMat = new THREE.MeshStandardMaterial({ color: 0xb51e32, roughness: 0.52, metalness: 0.04 });
-    const cuffMat = new THREE.MeshStandardMaterial({ color: 0xdbe8f4, roughness: 0.45, metalness: 0.1 });
-    for (const side of [-1, 1]) {
-      const elbow = new THREE.Vector3(side * 0.53, -0.55, -0.22);
-      const wrist = new THREE.Vector3(side * 0.29, -0.31, -0.67);
-      const segment = new THREE.Group();
-      const axis = wrist.clone().sub(elbow);
-      const sleeve = new THREE.Mesh(new THREE.CylinderGeometry(0.095, 0.13, axis.length(), 10), sleeveMat);
-      sleeve.position.copy(elbow).add(wrist).multiplyScalar(0.5);
-      sleeve.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), axis.clone().normalize());
-      sleeve.castShadow = true;
-      segment.add(sleeve);
-      const glove = new THREE.Mesh(new THREE.SphereGeometry(0.105, 12, 10), gloveMat);
-      glove.position.copy(wrist);
-      glove.scale.set(1, 0.82, 1.22);
-      segment.add(glove);
-      const cuff = new THREE.Mesh(new THREE.CylinderGeometry(0.105, 0.105, 0.055, 10), cuffMat);
-      cuff.position.copy(wrist).addScaledVector(axis.clone().normalize(), -0.085);
-      cuff.quaternion.copy(sleeve.quaternion);
-      segment.add(cuff);
-      this.firstPersonRig.add(segment);
-      const anchor = new THREE.Object3D();
-      anchor.position.copy(wrist);
-      this.firstPersonRig.add(anchor);
-      this.firstPersonHands.push(anchor);
+    this.firstPersonHands=[];this.firstPersonGloves=[];
+    for (const side of ['left','right']) {
+      const {arm,anchor,glove}=createFirstPersonArm(side,this.model);
+      this.firstPersonRig.add(arm);this.firstPersonHands.push(anchor);this.firstPersonGloves.push(glove);
     }
-    this.firstPersonRig.visible = false;
+    prepareFirstPersonDepth(this.firstPersonRig);
+    this.firstPersonRig.visible = !!this.isFirstPerson;
   }
 
   setFirstPersonMode(enabled) {
@@ -203,6 +189,8 @@ export class Character {
       this.placeholder.geometry.dispose();
       this.placeholder.material.dispose();
       this.group.add(this.model);
+      this.webFingerRig=null;
+      if(this.firstPersonRig?.parent)this.setFirstPersonCamera(this.firstPersonRig.parent);
 
       this.mixer = new THREE.AnimationMixer(this.model);
 
@@ -288,12 +276,42 @@ export class Character {
     });
   }
 
+  captureTransitionPose() {
+    if(!this.model || !this.mixer)return null;
+    if(!this.transitionPoseAction){
+      const nodes=[];this.model.traverse(node=>{if(node.isBone)nodes.push(node);});
+      if(!nodes.length)return null;
+      this.transitionPoseTracks=nodes.flatMap(node=>['position','quaternion','scale'].map(property=>{
+        const values=node[property].toArray(),Track=property==='quaternion'?THREE.QuaternionKeyframeTrack:THREE.VectorKeyframeTrack;
+        const track=new Track(`${node.name}.${property}`,[0,1],[...values,...values]);
+        // A live blended pose is already a double-precision result. Keep it
+        // exact rather than accumulating Float32 rounding on rapid reversals.
+        track.values=new Float64Array([...values,...values]);
+        return {node,property,track};
+      }));
+      const clip=new THREE.AnimationClip('transitionPose',1,this.transitionPoseTracks.map(item=>item.track));
+      this.transitionPoseAction=this.mixer.clipAction(clip);this.transitionPoseAction.setLoop(THREE.LoopOnce,1);
+      this.transitionPoseAction.clampWhenFinished=true;
+    }
+    for(const {node,property,track} of this.transitionPoseTracks){
+      node[property].toArray(track.values,0);node[property].toArray(track.values,track.getValueSize());
+    }
+    return this.transitionPoseAction;
+  }
 
   fadeToAction(name, duration = 0.2) {
+    // Three's fade control times use Float32 absolute mixer timestamps.
+    // Once a fade has settled, rebase that clock without changing clip times
+    // so a long play session cannot round the next fade past its first frame.
+    if(this.mixer?.time>60 && this.mixer.time>=(this.transitionEndsAt || 0)){
+      for(const action of Object.values(this.actions))action.stopFading();
+      this.transitionPoseAction?.stopFading();
+      this.mixer.time=0;this.transitionEndsAt=0;
+    }
     if (!this.actions[name]) {
       const alternatives = {
-        walk: ['jog', 'regularRun', 'run'], jog: ['walk', 'regularRun', 'run'],
-        regularRun: ['run', 'jog', 'walk'], run: ['regularRun', 'jog', 'walk'],
+        walk: ['regularRun', 'run'],
+        regularRun: ['run', 'walk'], run: ['regularRun', 'walk'],
         swing: ['jump', 'drop', 'fall'], zip: ['swing','jump'], wall: ['idle'], jump: ['drop', 'fall'],
         drop: ['fall', 'jump'], fall: ['drop', 'jump'],
         land: ['idle'], roll: ['land', 'idle'], stop: ['idle'], runStop: ['stop', 'idle'],
@@ -304,6 +322,7 @@ export class Character {
     }
     const previousAction = this.activeAction;
     const nextAction = this.actions[name];
+    const stridePhase=previousAction ? (previousAction.time/previousAction.getClip().duration)%1 : 0;
     // Timed skills sample their clip at speed zero. Release that override
     // even when the ordinary state uses the same clip (e.g. slam landing).
     nextAction.setEffectiveTimeScale(1);
@@ -313,8 +332,24 @@ export class Character {
     }
 
     if (previousAction !== nextAction) {
-      if (previousAction) {
-        if (duration > 0) previousAction.fadeOut(duration);
+      this.transitionEndsAt=Math.max(this.transitionEndsAt || 0,this.mixer.time+Math.max(0,duration));
+      // A previously fading action still contributes to the visible pose.
+      // Resetting it to fade in from zero removes that contribution at once.
+      // Capture the blended rig before stopping actions, then use one bounded
+      // snapshot to blend into the restarted take without losing its pose.
+      let frozenPose=null;
+      if(duration>0 && nextAction.isScheduled() && nextAction.getEffectiveWeight()>1e-5)
+        frozenPose=this.captureTransitionPose();
+      if(frozenPose){
+        this.mixer.stopAllAction();
+        frozenPose.reset().setEffectiveWeight(1).play().fadeOut(duration);
+      }
+      if (previousAction && !frozenPose) {
+        if (duration > 0) {
+          // An interrupted fade-in must start fading out at its current weight.
+          // Three's fadeOut starts at 1, which otherwise revives a partial pose.
+          previousAction.setEffectiveWeight(previousAction.getEffectiveWeight()).fadeOut(duration);
+        }
         else previousAction.stop();
       }
       nextAction
@@ -326,16 +361,25 @@ export class Character {
       this.activeAction = nextAction;
       if (previousAction && STRIDES.includes(name) &&
           STRIDES.includes(previousAction.getClip().name)) {
-        nextAction.time = (previousAction.time / previousAction.getClip().duration % 1) * nextAction.getClip().duration;
+        nextAction.time = stridePhase * nextAction.getClip().duration;
       }
     }
   }
 
   stopAnimation() {
+    restoreHandPose(this.webFingerRig);
+    if(this.model && this.jointConstraintModel!==this.model){
+      this.jointConstraintModel=this.model;this.jointConstraints=createJointConstraints(this.model,this.bones);
+    }this.webGestures={};
+    this.mantleArmPose=null;this.mantleArmRelease=0;
+    this.mantleExitFeet=null;this.mantleFootRelease=0;
+    this.mantleStartFeet=null;
+    this.wallGripWeights=null;this.wallGripHeights=null;this.wallGripTargets=null;
     // Reset/respawn can interrupt a crossfade; every outgoing action must
     // release its pose as well as the action currently selected.
     if (this.mixer) {
       this.mixer.stopAllAction();
+      this.mixer.time=0;this.transitionEndsAt=0;
       this.activeAction = null;
       return;
     }
@@ -370,6 +414,7 @@ export class Character {
     if (!anchor) return;
     this.currentHand=hand;
     this.webShotAnchor = anchor.clone();
+    this.webShotIsMiss = false;
     this.webShotTimer = 0.38;
     this.webLaunchTimers ||= {};
     this.webLaunchTimers[hand]=0.22;
@@ -383,8 +428,9 @@ export class Character {
     if (!target) return;
     this.currentHand=hand;
     this.webShotAnchor=target.clone();
+    this.webShotIsMiss=true;
     this.webShotTimer=0.55;
-    this.webLaunchTimers[hand]=0.22;
+    this.webLaunchTimers ||= {};this.webLaunchTimers[hand]=0.22;
     this.updateWeb(true,this.webShotAnchor);
   }
 
@@ -421,7 +467,40 @@ export class Character {
 
   updateWebStrand(line, mesh, wrist, anchorPos,hand) {
     const launch=Math.max(0.04,1-(this.webLaunchTimers?.[hand] || 0)/0.22);
-    updateWebStrand(line,mesh,wrist,anchorPos,this.webVisualTime || 0,launch);
+    const attachment=this.webAttachments?.find(web=>web.hand===hand);
+    const miss=this.webShotIsMiss && hand===this.currentHand;
+    const ratio=attachment?.length>0?this.group.position.distanceTo(anchorPos)/attachment.length:1;
+    updateWebStrand(line,mesh,wrist,anchorPos,this.webVisualTime || 0,launch,{
+      tension:miss?0:THREE.MathUtils.smoothstep(ratio,.82,.995),speed:this.webMotionSpeed || 0,
+      opacity:miss?THREE.MathUtils.smoothstep(this.webShotTimer,0,.16):1,
+    });
+  }
+
+  updateFirstPersonPose(combat=this.combatAction) {
+    if(this.isFirstPerson && this.firstPersonRig)for(const [i,arm] of this.firstPersonRig.children.entries()){
+      const t=THREE.MathUtils.clamp(combat?.duration?combat.time/combat.duration:0,0,1);
+      const impact=this.actions?.[combat?.key]?.getClip().userData?.impactPhase || .3;
+      const pulse=t<=impact?THREE.MathUtils.smoothstep(t/impact,0,1):1-THREE.MathUtils.smoothstep((t-impact)/(1-impact),0,1);
+      const striking=combat && ['jab','cross','hook','heavy','special'].includes(combat.key) && i===(combat.key==='cross'?1:0);
+      const reach=striking?Math.max(0,pulse):0;
+      const gesture=this.webGestures?.[i===0?'left':'right'] || {shoot:0,grip:0};
+      arm.position.set(['hook','heavy'].includes(combat?.key) && i===0 ? .26*reach : 0,
+        combat?.key==='guard' ? .14 : .045*gesture.shoot,
+        striking?(['hook','heavy'].includes(combat.key)?-0.25:-0.38)*reach:-.12*gesture.shoot);
+      const wall=this.wallViewWeight || 0,sign=i===0?-1:1;
+      const phase=(this.wallPhase || 0)*Math.PI*2+(i===0?0:Math.PI);
+      arm.rotation.set(.65*wall,0,sign*.045*wall);
+      if(wall>1e-5){
+        const mantle=this.poseState==='MANTLING'?THREE.MathUtils.smoothstep(this.mantle?.elapsed/this.mantle?.duration || 0,.3,1):0;
+        const source=i===0?this.leftHand:this.rightHand;
+        const height=source?source.getWorldPosition(new THREE.Vector3()).y-this.group.getWorldPosition(new THREE.Vector3()).y:1.6+.2*Math.sin(phase);
+        const handY=THREE.MathUtils.clamp((height-1.6)*.4,-.1,.2);
+        const baseY=this.firstPersonHands[i].position.clone().applyQuaternion(arm.quaternion).y;
+        const lift=Math.sin(Math.PI*(this.wallContacts?.[(i===0?'left':'right')+'hand']?.swing || 0));
+        arm.position.add(new THREE.Vector3(sign*.025*Math.cos(phase),handY-baseY-.15*mantle,.04+.05*lift).multiplyScalar(wall));
+      }
+      poseFirstPersonFingers(arm,gesture.shoot,gesture.grip,combat,wall);
+    }
   }
 
   triggerAirTrick(key = 'front') {
@@ -440,20 +519,23 @@ export class Character {
   }
 
   update(delta, state, velocity, anchorPos) {
+    this.poseState=state;this.wallViewWeight=THREE.MathUtils.damp(this.wallViewWeight || 0,['WALL_RUNNING','MANTLING'].includes(state)?1:0,14,delta);
+    this.webMotionSpeed=velocity.length();
     if (this.copySource) this.copyLoadedCharacter(this.copySource);
+    restoreHandPose(this.webFingerRig);
+    if(this.model && this.jointConstraintModel!==this.model){
+      this.jointConstraintModel=this.model;this.jointConstraints=createJointConstraints(this.model,this.bones);
+    }
+    if(state==='MANTLING' && this.lastState!=='MANTLING' && this.model){
+      this.group.updateMatrixWorld(true);
+      this.mantleStartFeet=Object.fromEntries(['left','right'].map(side=>[side,Object.values(this.bones || {}).find(b=>boneId(b.name)===side+'foot')?.getWorldPosition(new THREE.Vector3())]));
+    }else if(state!=='MANTLING')this.mantleStartFeet=null;
     for(const hand of ['left','right'])if(this.webLaunchTimers?.[hand]>0)
       this.webLaunchTimers[hand]=Math.max(0,this.webLaunchTimers[hand]-delta);
     this.webVisualTime=(this.webVisualTime || 0)+delta;
     this.webShotTimer = Math.max(0, this.webShotTimer - delta);
-    if (this.webShotTimer === 0) this.webShotAnchor = null;
-    if (!this.mixer || !this.model) {
-      const shotAnchor = this.webShotTimer > 0 ? this.webShotAnchor : null;
-      const attached = ['SWINGING', 'WEB_ZIP'].includes(state) && !!anchorPos;
-      const visibleAnchor = attached ? anchorPos : (this.persistentWebAnchor || shotAnchor);
-      this.updateWeb(!!visibleAnchor, visibleAnchor);
-      if (this.placeholder) this.placeholder.rotation.y = this.targetFacingAngle;
-      return;
-    }
+    if (this.webShotTimer === 0) {this.webShotAnchor = null;this.webShotIsMiss=false;}
+    // Gameplay trick completion also runs when the downloaded rig is absent.
     if (this.airTrick) {
       if (!['JUMPING', 'FALLING'].includes(state)) this.cancelAirTrick();
       else {
@@ -465,6 +547,18 @@ export class Character {
         }
       }
     }
+    if (!this.mixer || !this.model) {
+      updateWebHandPose(this,delta,state);this.updateFirstPersonPose();
+      const shotAnchor = this.webShotTimer > 0 ? this.webShotAnchor : null;
+      const attached = ['SWINGING', 'WEB_ZIP'].includes(state) && !!anchorPos;
+      const visibleAnchor = attached ? anchorPos : (this.persistentWebAnchor || shotAnchor);
+      this.updateWeb(!!visibleAnchor, visibleAnchor);
+      if (this.placeholder) {
+        const angles=this.airTrick?trickRotation(this.airTrick.key,this.airTrick.elapsed):{x:0,y:0,z:0};
+        this.placeholder.rotation.set(angles.x,this.targetFacingAngle+angles.y,angles.z);
+      }
+      return;
+    }
     const horizontalSpeed = Math.hypot(velocity.x, velocity.z);
     const grounded = GROUNDED.includes(state);
     const previous = this.lastState;
@@ -472,7 +566,8 @@ export class Character {
       this.activeAction.time < this.activeAction.getClip().duration - 0.05;
     let name = 'idle';
     if (state === 'SWINGING') name = 'swing';
-    else if (state === 'WALL_RUNNING' || state === 'MANTLING') name = 'wall';
+    else if (state === 'WALL_RUNNING') name = 'wall';
+    else if (state === 'MANTLING') name=this.mantle && this.mantle.elapsed/this.mantle.duration>.68?'idle':'wall';
     else if (state === 'WEB_ZIP') name = 'zip';
     else if (state === 'TURNING') name = this.pendingTurn === 'left' ? 'turnLeft' : 'turnRight';
     else if (state === 'LANDING') {
@@ -491,21 +586,22 @@ export class Character {
       else if (playing('runStop')) name = 'runStop';
       else if (playing('stop')) name = 'stop';
     } else name = state === 'SPRINTING' ? 'run' :
-      horizontalSpeed > 4.1 ? 'regularRun' : horizontalSpeed > 3.1 ? 'jog' : 'walk';
+      horizontalSpeed > 3.1 ? 'regularRun' : 'walk';
     const combat=this.combatAction;
-    if(combat && this.actions[combat.key] && (grounded || combat.key==='slam') && !['ROLLING','TURNING'].includes(state))name=combat.key;
+    const combatClip= combat?.key==='cross'?'jab':combat?.key==='hit'?'hitHead':combat?.key?.startsWith('dodge')?'combatIdle':combat?.key;
+    if(combat && this.actions[combatClip] && (grounded || combat.key==='slam') && !['ROLLING','TURNING'].includes(state))name=combatClip;
     if (this.airTrick) name = this.airTrick.key === 'front' && this.actions.airTrick
       ? 'airTrick' : this.actions.fallIdle ? 'fallIdle' : 'fall';
     else if(this.isTricking && !grounded && !['WALL_RUNNING','MANTLING','WEB_ZIP'].includes(state) && this.actions.airTrick)name='airTrick';
-    this.fadeToAction(name, combat?.key===name ? (combat.duration ? 0.065 : name==='guard' ? 0.18 : 0.12) : ['LANDING','ROLLING'].includes(state) ? 0.06 : grounded ? 0.18 : 0.12);
+    this.fadeToAction(name, combatClip===name ? (combat.duration ? 0.065 : name==='guard' ? 0.18 : 0.12) : state==='MANTLING' && name==='idle' ? .3 : ['LANDING','ROLLING'].includes(state) ? 0.06 : grounded ? 0.18 : 0.12);
     if (STRIDES.includes(name)) {
       const measuredSpeed = this.activeAction?.getClip().userData?.nominalSpeed;
-      const strideSpeed = measuredSpeed > 0.1 ? measuredSpeed : ({walk:2.8,jog:3.4,regularRun:4.8,run:6.5}[name]);
+      const strideSpeed = measuredSpeed > 0.1 ? measuredSpeed : ({walk:2.8,regularRun:4.8,run:6.5}[name]);
       this.activeAction?.setEffectiveTimeScale(THREE.MathUtils.clamp(
         horizontalSpeed / strideSpeed, 0.15, 1.6));
     }
-    if(combat?.key===name && combat.id && combat.id!==this.combatClipToken){this.activeAction?.reset().play();this.combatClipToken=combat.id;}
-    if(combat?.key===name && combat.duration) {
+    if(combatClip===name && combat.id && combat.id!==this.combatClipToken){this.activeAction?.reset().play();this.combatClipToken=combat.id;}
+    if(combatClip===name && combat.duration) {
       // The gameplay action owns time, including a slam held until actual
       // contact. Advancing the mixer independently could land in mid-air.
       this.activeAction.enabled=true;this.activeAction.paused=false;
@@ -569,24 +665,30 @@ export class Character {
       offset.applyAxisAngle(new THREE.Vector3(0, 1, 0), this.visualYaw);
       this.model.position.add(offset);
     }
-    if(state==='WALL_RUNNING' && this.wallNormal) this.model.position.addScaledVector(this.wallNormal,-Math.max(0,(this.wallDistance ?? 0.7)-0.4));
+    if(state==='WALL_RUNNING' && this.wallNormal) this.model.position.addScaledVector(this.wallNormal,-Math.max(0,(this.wallDistance ?? 0.7)-0.35));
     if(state==='MANTLING' && this.mantle) {
       const t=this.mantle.elapsed/this.mantle.duration;
-      this.model.position.addScaledVector(this.wallNormal,-Math.max(0,(this.mantle.gap ?? 0.7)-0.4)*(1-t));
+      this.model.position.addScaledVector(this.wallNormal,-Math.max(0,(this.mantle.gap ?? 0.7)-0.35)*(1-t));
       // Crouch the visual pelvis while the swept capsule clears the edge;
       // an upright chest would leave the planted roof grips out of reach.
-      const inPose=THREE.MathUtils.smoothstep(t,0,0.12);
-      const standUp=THREE.MathUtils.smoothstep(t,0.5,0.92);
-      this.model.position.y=-0.1-1.15*inPose*(1-standUp);
+      const steppingDown=this.mantle.end.y<this.mantle.height;
+      const inPose=THREE.MathUtils.smoothstep(t,0,steppingDown?.20:.12);
+      const standUp=THREE.MathUtils.smoothstep(t,steppingDown?.32:.5,steppingDown?.80:.92);
+      this.model.position.y=-0.1*(steppingDown?inPose:1)-1.28*inPose*(1-standUp);
     }
-    if(this.isFirstPerson && this.firstPersonRig)for(const [i,arm] of this.firstPersonRig.children.entries()){
-      const t=combat?.duration?combat.time/combat.duration:0,pulse=Math.sin(Math.PI*Math.min(1,t*2));
-      const striking=combat && ['jab','cross','hook','heavy','special'].includes(combat.key) && i===(combat.key==='cross'?1:0);
-      const reach=striking?Math.max(0,pulse):0;
-      arm.position.set(['hook','heavy'].includes(combat?.key) && i===0 ? .26*reach : 0,
-        combat?.key==='guard' ? .14 : 0,
-        striking?(['hook','heavy'].includes(combat.key)?-0.25:-0.38)*reach:0);
+    if(state==='MANTLING' && this.mantle){
+      // Lean the chest over the grip without sweeping the pelvis through
+      // the parapet while the capsule is still outside the facade.
+      this.group.updateMatrixWorld(true);
+      const hips=Object.values(this.bones).find(b=>boneId(b.name)==='hips');
+      if(hips){
+        const p=hips.getWorldPosition(new THREE.Vector3()),plan=this.mantle;
+        const outside=1-THREE.MathUtils.smoothstep(p.y,plan.height+.10,plan.height+.25);
+        const gap=p.clone().sub(plan.edge).dot(plan.normal);
+        this.model.position.addScaledVector(plan.normal,Math.max(0,.14-gap)*outside*(1-THREE.MathUtils.smoothstep(plan.elapsed/plan.duration,.45,.7)));
+      }
     }
+    updateWebHandPose(this,delta,state);
     this.group.updateMatrixWorld(true);
     adaptPelvisToTerrain(this,delta,grounded && state!=='ROLLING');
     if (name === 'idle' && state === 'IDLE' && horizontalSpeed < 0.05) {
@@ -595,19 +697,20 @@ export class Character {
       this.idlePlantDelay=0; this.idleFootAnchors=null;
     }
     if(grounded && state!=='ROLLING') plantMovingFeet(this,delta);
-    else {this.movingPlants=null;this.movingReleases=null;this.plantLastFeet=null;this.plantVelocityRoot=null;}
+    else {this.movingPlants=null;this.movingReleases=null;this.plantLastFeet=null;this.plantVelocityRoot=null;this.groundFootRotations=null;}
     if(state==='WEB_ZIP') poseZipLegs(this,delta);
     else this.zipPoseWeight=0;
     const firingAnchor = this.webShotTimer > 0 ? this.webShotAnchor : null;
-    const reachingAnchor=['SWINGING','WEB_ZIP'].includes(state)?anchorPos:firingAnchor;
+    const reachingAnchor=this.persistentWebAnchor || (['SWINGING','WEB_ZIP'].includes(state)?anchorPos:firingAnchor);
     this.webArmWeight=THREE.MathUtils.damp(this.webArmWeight || 0,reachingAnchor?1:0,18,delta);
     if(reachingAnchor)this.webPoseAnchor=reachingAnchor.clone();
     if(Array.isArray(this.webAttachments)) {
       this.webHandWeights ||= {};this.webHandTargets ||= {};
       for(const hand of ['left','right']) {
-        const target=['SWINGING','WEB_ZIP'].includes(state)
-          ?this.webAttachments.find(web=>web.hand===hand)?.anchor
-          :hand===this.currentHand?firingAnchor:null;
+        // Attachments also exist during ballistic takeoff (JUMPING). A missed
+        // offhand shot still reaches while the other hand keeps its real pivot.
+        const target=this.webAttachments.find(web=>web.hand===hand)?.anchor ||
+          (hand===this.currentHand?firingAnchor:null);
         const weight=THREE.MathUtils.damp(this.webHandWeights[hand] || 0,target?1:0,18,delta);
         this.webHandWeights[hand]=weight;
         if(target) {
@@ -624,6 +727,7 @@ export class Character {
     if (state === 'WALL_RUNNING' && this.wallNormal) {
       if(this.wallPoseNormal && this.wallPoseNormal.dot(this.wallNormal)<0.98) {
         this.wallContacts=null;this.wallPoseRoot=null;this.wallPhase=0;this.wallSoleRotations=null;this.wallPoseWeight=0;
+        this.wallGripWeights=null;this.wallGripHeights=null;this.wallGripTargets=null;
       }
       this.wallPoseNormal=this.wallNormal.clone();
       this.wallSoleRotations ||= Object.fromEntries(['left','right'].map(side=>[side,
@@ -631,9 +735,45 @@ export class Character {
           ? this.model.quaternion.clone().multiply(new THREE.Quaternion().fromArray(this.actions.wall.getClip().userData.soleRotations[side]))
           : Object.values(this.bones || {}).find(b=>boneId(b.name)===side+'foot')?.getWorldQuaternion(new THREE.Quaternion())]));
       poseWall(this,delta,velocity);
-    } else {this.wallContacts=null;this.wallPoseRoot=null;this.wallPoseWeight=0;this.wallSoleRotations=null;this.wallPoseNormal=null;}
+    } else {this.wallContacts=null;this.wallPoseRoot=null;this.wallPoseWeight=0;this.wallSoleRotations=null;this.wallPoseNormal=null;this.wallGripWeights=null;this.wallGripHeights=null;this.wallGripTargets=null;}
     if(state==='MANTLING')poseMantle(this,delta);
     else this.mantleHandTargets=null;
+    // The frozen climb take and standing take have very different arm poses.
+    // Ease the released arms through the handoff while preserving the earlier
+    // fixed roof grips and the separately solved foot contacts.
+    const mantleRelease=state==='MANTLING' && name==='idle';
+    if(mantleRelease || (previous==='MANTLING' && state!=='MANTLING'))this.mantleArmRelease=.4;
+    else this.mantleArmRelease=Math.max(0,(this.mantleArmRelease || 0)-delta);
+    const armBones=Object.values(this.bones || {}).filter(b=>/^(left|right)(shoulder|arm|forearm|hand)$/.test(boneId(b.name)));
+    if(this.mantleArmRelease>0 && this.mantleArmPose){
+      const weight=1-Math.exp(-6*delta);
+      for(const b of armBones){const previousPose=this.mantleArmPose[b.name];if(previousPose)b.quaternion.slerpQuaternions(previousPose,b.quaternion.clone(),weight).normalize();}
+      this.group.updateMatrixWorld(true);
+    }
+    this.mantleArmPose=['WALL_RUNNING','MANTLING'].includes(state) || this.mantleArmRelease>0
+      ?Object.fromEntries(armBones.map(b=>[b.name,b.quaternion.clone()])):null;
+    if(previous==='MANTLING' && grounded)this.mantleFootRelease=.3;
+    else this.mantleFootRelease=Math.max(0,(this.mantleFootRelease || 0)-delta);
+    if(grounded && this.mantleFootRelease>0 && this.mantleExitFeet){
+      for(const side of ['left','right']){
+        const find=id=>Object.values(this.bones || {}).find(b=>boneId(b.name)===id);
+        const hip=find(side+'upleg'),knee=find(side+'leg'),foot=find(side+'foot'),lastFoot=this.mantleExitFeet[side];
+        if(!hip || !knee || !foot || !lastFoot)continue;
+        const current=foot.getWorldPosition(new THREE.Vector3()),move=current.clone().sub(lastFoot),limit=(7+horizontalSpeed)*delta;
+        if(move.length()>limit){
+          const rotation=foot.getWorldQuaternion(new THREE.Quaternion());
+          this.solveLimb(hip,knee,foot,lastFoot.clone().add(move.setLength(limit)),.995);
+          foot.quaternion.copy(foot.parent.getWorldQuaternion(new THREE.Quaternion()).invert().multiply(rotation));
+          foot.updateMatrixWorld(true);
+        }
+      }
+      this.group.updateMatrixWorld(true);
+    }
+    constrainJoints(this.jointConstraints);
+    if(grounded && state!=='ROLLING')clearGroundSoles(this);
+    this.mantleExitFeet=state==='MANTLING' || (grounded && this.mantleFootRelease>0)
+      ?Object.fromEntries(['left','right'].map(side=>[side,Object.values(this.bones || {}).find(b=>boneId(b.name)===side+'foot')?.getWorldPosition(new THREE.Vector3())])):null;
+    this.updateFirstPersonPose(combat);
     const attached = ['SWINGING','WEB_ZIP'].includes(state) && !!anchorPos;
     const visibleAnchor = attached ? anchorPos : (this.persistentWebAnchor || firingAnchor);
     this.updateWeb(!!visibleAnchor, visibleAnchor);
@@ -649,6 +789,18 @@ export class Character {
     arm.quaternion.slerpQuaternions(upper,arm.quaternion.clone(),weight);
     forearm.quaternion.slerpQuaternions(lower,forearm.quaternion.clone(),weight);
     arm.updateMatrixWorld(true);
+    const direction=anchor.clone().sub(hand.getWorldPosition(new THREE.Vector3())).normalize();
+    const up=new THREE.Vector3(0,1,0).addScaledVector(direction,-direction.y);
+    if(up.lengthSq()<1e-5)up.set(0,0,1).addScaledVector(direction,-direction.z);
+    up.normalize();
+    // Cock the wrist above the shot. Pointing the fingers along the rope
+    // sent the strand through the palm instead of out below the glove.
+    const finger=direction.clone().multiplyScalar(.574).addScaledVector(up,.819).normalize();
+    const palm=direction.clone().multiplyScalar(.819).addScaledVector(up,-.574).normalize();
+    const across=new THREE.Vector3().crossVectors(finger,palm).normalize();
+    const aim=new THREE.Quaternion().setFromRotationMatrix(new THREE.Matrix4().makeBasis(across,finger,palm));
+    const local=hand.parent.getWorldQuaternion(new THREE.Quaternion()).invert().multiply(aim);
+    hand.quaternion.slerp(local,weight*.95);hand.updateMatrixWorld(true);
   }
 
   reachBothWebAnchors(anchor,weight=1) {
@@ -714,7 +866,7 @@ export class Character {
       const from = child.getWorldPosition(new THREE.Vector3()).sub(start).normalize();
       const to = goal.clone().sub(start).normalize();
       const world = new THREE.Quaternion().setFromUnitVectors(from,to).multiply(bone.getWorldQuaternion(new THREE.Quaternion()));
-      bone.quaternion.copy(bone.parent.getWorldQuaternion(new THREE.Quaternion()).invert().multiply(world));
+      bone.quaternion.copy(bone.parent.getWorldQuaternion(new THREE.Quaternion()).invert().multiply(world)).normalize();
       bone.updateMatrixWorld(true);
     };
     rotate(arm,forearm,elbowTarget); rotate(forearm,hand,target);

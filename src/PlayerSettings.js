@@ -8,7 +8,8 @@ export const SETTING_LIMITS = {
   follow:[0,1,1], speedLines:[0,1,1], effectsVolume:[0,1,0.8],
   environmentVolume:[0,1,0.55], musicVolume:[0,1,0.35], hudScale:[0.8,1.4,1],
 };
-export const validBinding = value => typeof value==='string' && /^(Key[A-Z]|Digit[0-9]|Space|ShiftLeft|ControlLeft|AltLeft)$/.test(value);
+// H/M remain available for help and mute, including while a dialog is open.
+export const validBinding = value => typeof value==='string' && !['KeyH','KeyM'].includes(value) && /^(Key[A-Z]|Digit[0-9]|Space|ShiftLeft|ControlLeft|AltLeft)$/.test(value);
 export function cleanSettings(saved={}) {
   if(!saved || typeof saved!=='object' || Array.isArray(saved))saved={};
   const result={invertY:false,webToggle:false,sprintToggle:false,aimAssist:true,autoQuality:true,
@@ -25,7 +26,8 @@ export function cleanSettings(saved={}) {
 }
 export function canonicalKey(code,settings) {
   const bindings=settings?.bindings || BINDINGS;
-  const aliases={ArrowUp:'forward',ArrowDown:'backward',ArrowLeft:'left',ArrowRight:'right',ShiftRight:'sprint',ControlRight:'dodge'};
+  const aliases={ArrowUp:'forward',ArrowDown:'backward',ArrowLeft:'left',ArrowRight:'right'};
+  code=({ShiftRight:'ShiftLeft',ControlRight:'ControlLeft',AltRight:'AltLeft'})[code] || code;
   const action=aliases[code] || Object.keys(BINDINGS).find(k=>bindings[k]===code);
   if(action)return BINDINGS[action];
   return Object.values(BINDINGS).includes(code)?null:code;

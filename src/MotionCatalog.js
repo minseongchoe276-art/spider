@@ -1,9 +1,8 @@
 // Original takes remain reviewable; derivatives are explicitly labelled.
 export const MOTIONS = [
-  ['idle','Idle',true], ['walk','Walking',true], ['jog','Jogging',true],
+  ['idle','Idle',true], ['walk','Walking',true],
   ['regularRun','Running',true], ['run','Fast Run',true],
   ['stop','Run To Stop'], ['runStop','Run To Stop'],
-  ['femaleStop','Female Stop Walking'],
   ['zip','Rope Swinging',true],
   ['turnLeft','Left Turn'], ['turnRight','Right Turn'],
   ['jump','Standing Jump'], ['land','Standing Jump'],
@@ -14,16 +13,15 @@ export const MOTIONS = [
   ['injuredIdle','Injured Idle',true],
 ].map(([key,file,loop=false]) => ({key,url:`/models/${file}.fbx`,loop}));
 MOTIONS.push({key:'wall',url:'/models/Climbing Up Wall.fbx',loop:true,authoredMixamo:true});
-export const STRIDES = ['walk','jog','regularRun','run'];
+export const STRIDES = ['walk','regularRun','run'];
 export const GROUNDED = ['IDLE','RUNNING','SPRINTING','TURNING','LANDING','ROLLING'];
 
 export const COMBAT_MOTIONS=[
   ['combatIdle','Fighting Idle',true],['jab','Fighting Left Jab'],
-  ['cross','Fighting Right Jab'],['guard','Defend',true],
-  ['dodgeLeft','Dodge_left'],['dodgeRight','Dodge_right'],['dodgeBack','Dodge_back'],
+  ['guard','Defend',true],
   ['slam','Attack_Ground_Pound'],['slamLand','Land_Three_Point'],
 ].map(([key,take,loop=false])=>({key,take,loop,url:'/models/sources/combat-addon.glb'}));
-COMBAT_MOTIONS.push(...[['dodgeForward','Roll'],['hook','Melee_Hook'],['heavy','Punch_Cross'],['hit','Hit_Chest'],['hitHead','Hit_Head']]
+COMBAT_MOTIONS.push(...[['hook','Melee_Hook'],['heavy','Punch_Cross'],['hitHead','Hit_Head']]
   .map(([key,take])=>({key,take,loop:false,url:'/models/sources/combat-base.glb'})));
 MOTIONS.push(...COMBAT_MOTIONS);
 
@@ -31,7 +29,6 @@ MOTIONS.push(...COMBAT_MOTIONS);
 const imported = {
  combatIdle:{file:'Boxing Stance',loop:true},
  jab:{file:'Boxing Lead Jab',impactPhase:.3},
- cross:{file:'Cross Punch',impactPhase:.6},
  // The source has a long idle tail. Use the complete swing and recovery,
  // then play that section slower so the fist does not snap out and back.
  hook:{file:'Boxing Hook',trim:[0,1.4],impactPhase:.43},

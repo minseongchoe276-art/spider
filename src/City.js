@@ -32,9 +32,9 @@ export class City {
 
   initTextures() {
     // Generate procedural window grid and road textures on canvas
-    this.windowGlassTex = this.createWindowTexture('#0b1d3a', '#1e3a66', '#ffea78', 0.25);
-    this.windowBrickTex = this.createWindowTexture('#542c23', '#2a140f', '#ffe494', 0.35);
-    this.windowDarkTex = this.createWindowTexture('#12151c', '#1c2333', '#00e5ff', 0.15);
+    this.windowGlassTex = this.createWindowTexture('#6c97b3', '#8ab5cf', '#fff0c2', 0.25);
+    this.windowBrickTex = this.createWindowTexture('#c1947e', '#d3ad97', '#ffe9ce', 0.35);
+    this.windowDarkTex = this.createWindowTexture('#6b8197', '#91a5b7', '#a8edff', 0.15);
     this.roadTex = this.createRoadTexture();
   }
 
@@ -71,6 +71,7 @@ export class City {
     }
 
     const tex = new THREE.CanvasTexture(canvas);
+    tex.colorSpace = THREE.SRGBColorSpace;
     tex.wrapS = THREE.RepeatWrapping;
     tex.wrapT = THREE.RepeatWrapping;
     return tex;
@@ -82,13 +83,13 @@ export class City {
     canvas.height = 512;
     const ctx = canvas.getContext('2d');
 
-    // Dark asphalt
-    ctx.fillStyle = '#1c1f24';
+    // Daylight asphalt keeps street edges readable in building shadows.
+    ctx.fillStyle = '#707982';
     ctx.fillRect(0, 0, 512, 512);
 
     // Subtle asphalt noise
     for (let i = 0; i < 4000; i++) {
-      ctx.fillStyle = this.random() > 0.5 ? '#23282f' : '#15171a';
+      ctx.fillStyle = this.random() > 0.5 ? '#87919b' : '#616a73';
       ctx.fillRect(this.random() * 512, this.random() * 512, 2, 2);
     }
 
@@ -111,6 +112,7 @@ export class City {
     }
 
     const tex = new THREE.CanvasTexture(canvas);
+    tex.colorSpace = THREE.SRGBColorSpace;
     tex.wrapS = THREE.RepeatWrapping;
     tex.wrapT = THREE.RepeatWrapping;
     return tex;
@@ -119,35 +121,35 @@ export class City {
   initMaterials() {
     this.matGlass = new THREE.MeshStandardMaterial({
       map: this.windowGlassTex,
-      roughness: 0.2,
-      metalness: 0.85,
-      color: 0x88bbff
+      roughness: 0.4,
+      metalness: 0.25,
+      color: 0xc0d7eb
     });
 
     this.matBrick = new THREE.MeshStandardMaterial({
       map: this.windowBrickTex,
       roughness: 0.8,
       metalness: 0.1,
-      color: 0xcc7766
+      color: 0xe0b9a1
     });
 
     this.matDark = new THREE.MeshStandardMaterial({
       map: this.windowDarkTex,
       roughness: 0.3,
-      metalness: 0.9,
-      color: 0x223344
+      metalness: 0.2,
+      color: 0xb0bcc9
     });
 
     this.matConcrete = new THREE.MeshStandardMaterial({
-      color: 0x333940,
+      color: 0xa5afb9,
       roughness: 0.85,
       metalness: 0.1
     });
 
     this.matRoof = new THREE.MeshStandardMaterial({
-      color: 0x252a30,
+      color: 0x919ca7,
       roughness: 0.9,
-      metalness: 0.2
+      metalness: 0.05
     });
 
     this.matMetal = new THREE.MeshStandardMaterial({

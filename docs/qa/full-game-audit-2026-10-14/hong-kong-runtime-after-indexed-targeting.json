@@ -1,0 +1,141 @@
+{
+  "cameraYaw": 0,
+  "collision": 141,
+  "cpuSections": {
+    "camera": {
+      "calls": 4170,
+      "meanMs": 0.074,
+      "p95Ms": 0.2,
+      "samples": 600
+    },
+    "character": {
+      "calls": 4170,
+      "meanMs": 0.29,
+      "p95Ms": 0.4,
+      "samples": 600
+    },
+    "city": {
+      "calls": 4170,
+      "meanMs": 1.354,
+      "p95Ms": 1.7,
+      "samples": 600
+    },
+    "collisionResolve": {
+      "calls": 8360,
+      "meanMs": 0.162,
+      "p95Ms": 0.3,
+      "samples": 600
+    },
+    "experience": {
+      "calls": 4170,
+      "meanMs": 0.014,
+      "p95Ms": 0.1,
+      "samples": 600
+    },
+    "minimap": {
+      "calls": 4170,
+      "meanMs": 0.178,
+      "p95Ms": 0.6,
+      "samples": 600
+    },
+    "physics": {
+      "calls": 4170,
+      "meanMs": 0.749,
+      "p95Ms": 0.9,
+      "samples": 600
+    },
+    "rapierStep": {
+      "calls": 8394,
+      "meanMs": 0.056,
+      "p95Ms": 0.2,
+      "samples": 600
+    },
+    "render": {
+      "calls": 4169,
+      "meanMs": 0.887,
+      "p95Ms": 1.1,
+      "samples": 600
+    }
+  },
+  "decodedRGBTextures": 3,
+  "facing": 0,
+  "feet": [
+    {
+      "ankle": [
+        -6.565,
+        20.947,
+        12.961
+      ],
+      "side": "left",
+      "surface": 20.83711574613287
+    },
+    {
+      "ankle": [
+        -6.706,
+        20.954,
+        12.315
+      ],
+      "side": "right",
+      "surface": 20.84396938621237
+    }
+  ],
+  "history": [
+    "IDLE/undefined",
+    "FALLING/undefined",
+    "IDLE/idle"
+  ],
+  "map": "Hong Kong",
+  "map3D": true,
+  "mapMeshes": 126,
+  "mode": "web",
+  "motion": "idle",
+  "paused": false,
+  "peers": [],
+  "pending": 0,
+  "performance": {
+    "activeSeconds": 69.64,
+    "averageFps": 59.95,
+    "frameMs": {
+      "p50": 16.7,
+      "p95": 18.3,
+      "p99": 18.7
+    },
+    "longFramesOver50ms": 2,
+    "totalFrames": 4169,
+    "windowFrames": 3600
+  },
+  "playing": true,
+  "position": [
+    -6.65,
+    20.965,
+    12.634
+  ],
+  "practice": false,
+  "quality": "balanced",
+  "ready": true,
+  "renderer": {
+    "calls": 72,
+    "geometries": 99,
+    "pixelRatio": 1,
+    "textures": 98,
+    "triangles": 217637
+  },
+  "resources": {
+    "count": 250,
+    "transferBytes": 565955
+  },
+  "state": "IDLE",
+  "support": 20.84045219361021,
+  "textureDiagnostics": [],
+  "velocity": [
+    0,
+    0,
+    0
+  ],
+  "viewport": {
+    "dpr": 1,
+    "height": 1178,
+    "width": 1280
+  },
+  "webs": []
+}

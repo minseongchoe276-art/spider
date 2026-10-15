@@ -1,0 +1,10 @@
+
+> spiderman-web-swing@1.0.0 test:camera-motion-web
+> node scripts/check-camera-motion-web.mjs
+
+PASS 30fps: interrupted blend, real offhand miss lifetime, sever cleanup, takeoff reach
+PASS 60fps: interrupted blend, real offhand miss lifetime, sever cleanup, takeoff reach
+PASS 144fps: interrupted blend, real offhand miss lifetime, sever cleanup, takeoff reach
+PASS first-person reset follows all four headings and impact shake expires
+PASS direct recenter mode switch converts and bounds first-person pitch
+PASS actual render loop updates first-person web endpoints after camera movement

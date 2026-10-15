@@ -1,0 +1,16 @@
+Browser tab: 1824846108, Title: "스파이더맨: 3D 웹 스윙 (Spider-Man 3D Web Swing)", URL: "http://127.0.0.1:5295/?city=procedural".
+The following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+Removed element IDs: 25, 40-43, 48, 50-53, 88
++			120 text R 타임트라이얼
++				121 text 60 FPS · 16.7 ms · P95 0.0 ms
++			122 text LOCAL
++				123 text 180m
++			124 text E -88m N +95m · ALT 95m
++			125 text 혼자 플레이
++			126 text 자유 탐험
++			127 text R · 타임트라이얼
++			128 text 1명
++			129 text W A S D  이동 SPACE  점프 T  공중 묘기 Q  모드 H  조작키 ESC  메뉴
+~						87 slider (settable, integer) Description: 시야각, Value: 64, ID: setting-fov
++						130 text 64
+The focused UI element is 87 slider (settable, integer) Description: 시야각, Value: 64, ID: setting-fov

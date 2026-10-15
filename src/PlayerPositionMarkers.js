@@ -20,17 +20,18 @@ export class PlayerPositionMarkers {
     this.root.classList.toggle('hidden',!active);
     const ids=new Set(),rect=this.game.canvas.getBoundingClientRect();
     if(active)for(const player of players){
-      if(player.rescue)continue;
+      if(![player.x,player.y,player.z].every(Number.isFinite))continue;
       ids.add(player.id);let el=this.markers.get(player.id);
       if(!el){el=document.createElement('div');el.className='player-position-marker';this.root.append(el);this.markers.set(player.id,el);}
       const point=new THREE.Vector3(player.x,player.y+2.6,player.z);
-      const placed=positionMarker(point,this.game.camera,rect.width,rect.height,110);
+      const padding=Math.min(140,Math.max(36,rect.width/2-20),Math.max(36,rect.height/2-20));
+      const placed=positionMarker(point,this.game.camera,rect.width,rect.height,padding);
       const distance=Math.round(origin.distanceTo(new THREE.Vector3(player.x,player.y,player.z)));
       const altitude=Math.round(player.y-origin.y);
       const role=player.team==='police'?'경찰':player.team==='runner'?'도망자':'플레이어';
       const arrow=placed.offscreen?['→','↘','↓','↙','←','↖','↑','↗'][(Math.round(placed.angle/(Math.PI/4))+8)%8]+' ':'';
       const name=String(player.name || role).slice(0,12);
-      el.textContent=`${arrow}${name} · ${distance}m${Math.abs(altitude)>=3?' · '+(altitude>0?'↑':'↓')+Math.abs(altitude)+'m':''}${player.connected===false?' · 연결 끊김':''}`;
+      el.textContent=`${arrow}${name} · ${distance}m${Math.abs(altitude)>=3?' · '+(altitude>0?'↑':'↓')+Math.abs(altitude)+'m':''}${player.rescue?' · 구조':player.downed?' · 탈락':''}${player.connected===false?' · 마지막 위치':''}`;
       el.setAttribute('aria-label',`${role} ${player.name}, 거리 ${distance}미터, 높이 차 ${altitude}미터`);
       el.dataset.team=player.ally?'ally':player.team;el.classList.toggle('offscreen',placed.offscreen);
       el.style.left=`${placed.x}px`;el.style.top=`${placed.y}px`;

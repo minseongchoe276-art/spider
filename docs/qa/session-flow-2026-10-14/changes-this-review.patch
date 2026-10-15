@@ -1,0 +1,403 @@
+--- a/src/main.js
++++ b/src/main.js
+@@ -324,7 +324,7 @@
+       if (e.target?.closest?.('input, select, textarea, [contenteditable="true"]') && k !== 'Escape') return;
+       if (!this.isPlaying && e.target?.closest?.('button, a') && k !== 'Escape') return;
+       if (k === 'Escape' && performance.now() < (this.ignoreEscapeUntil || 0)) return;
+-      if(k==='Escape' && this.helpOpen){e.preventDefault();this.toggleHelp();return;}
++      if(k==='Escape' && this.helpOpen){e.preventDefault();if(!e.repeat)this.toggleHelp();return;}
+       const gameplayKey = [
+         'KeyW', 'KeyA', 'KeyS', 'KeyD', 'ArrowUp', 'ArrowDown',
+         'ArrowLeft', 'ArrowRight', 'ShiftLeft', 'ShiftRight', 'Space',
+@@ -516,7 +516,7 @@
+ 
+     document.addEventListener('pointerlockchange', () => {
+       const locked = document.pointerLockElement === this.canvas;
+-      if (this.hadPointerLock && !locked && this.isPlaying && !this.isPaused) {
++      if (this.hadPointerLock && !locked && this.isPlaying && !this.isPaused && !this.helpOpen) {
+         this.setPaused(true);
+         this.ignoreEscapeUntil = performance.now() + 100;
+       }
+@@ -563,6 +563,7 @@
+     document.getElementById('btn-retry-load')?.addEventListener('click', () => location.reload());
+     document.getElementById('btn-restart')?.addEventListener('click', () => this.restartGame());
+     document.getElementById('btn-time-trial')?.addEventListener('click', () => this.toggleTimeTrial());
++    document.getElementById('btn-menu-time-trial')?.addEventListener('click', () => this.toggleTimeTrial(true));
+     document.getElementById('btn-close-guide')?.addEventListener('click', () => this.toggleHelp());
+     document.getElementById('reduced-motion')?.addEventListener('click', () => {
+       this.preferences.values.reducedMotion = !this.preferences.values.reducedMotion;
+@@ -594,16 +595,30 @@
+   }
+ 
+   toggleHelp() {
++    this.setHelpOpen(!this.helpOpen);
++  }
++
++  setHelpOpen(open, restoreControls = true) {
+     const guide = document.getElementById('controls-guide');
+-    if (guide) {
+-      const wasSuspended=this.gameplaySuspended;
+-      guide.classList.toggle('hidden');
+-      this.helpOpen=!guide.classList.contains('hidden');
+-      if(wasSuspended && !this.gameplaySuspended)this.clock?.getDelta();
+-      if(this.helpOpen){
+-        this.clearInput();this.speedLines?.setSpeed(0,1);this.audio.setWindSpeed(0);
+-        const hint=guide.querySelector?.('.guide-hint');
+-        if(hint)hint.textContent=this.multiplayer?.room?'온라인 경기는 계속 진행됩니다 · H / Esc 닫기':'혼자 플레이 일시정지 · H / Esc 닫기';
++    // A dialog behind a lobby/menu can silently suspend the next solo game.
++    if(open && (!guide || !this.isPlaying || this.isPaused || this.contextLost))return;
++    const wasSuspended=this.gameplaySuspended,wasOpen=!!this.helpOpen;
++    this.helpOpen=open;
++    if(guide && guide.classList.contains('hidden')===open)guide.classList.toggle('hidden');
++    if(wasSuspended && !this.gameplaySuspended)this.clock?.getDelta();
++    if(open){
++      this.clearInput();this.speedLines?.setSpeed(0,1);this.audio.setWindSpeed(0);
++      const hint=guide.querySelector?.('.guide-hint');
++      if(hint)hint.textContent=this.multiplayer?.room?'온라인 경기는 계속 진행됩니다 · H / Esc 닫기':'혼자 플레이 일시정지 · H / Esc 닫기';
++      this.helpHadPointerLock=document.pointerLockElement===this.canvas;
++      if(this.helpHadPointerLock)document.exitPointerLock?.();
++      document.getElementById('btn-close-guide')?.focus?.();
++    }else if(wasOpen){
++      const relock=this.helpHadPointerLock && this.pointerLockWanted;
++      this.helpHadPointerLock=false;
++      if(restoreControls && this.isPlaying && !this.isPaused && !this.contextLost){
++        this.canvas.focus?.();
++        if(relock)Promise.resolve(this.canvas.requestPointerLock?.()).catch(()=>{});
+       }
+     }
+   }
+@@ -628,6 +643,7 @@
+ 
+   setPaused(paused) {
+     if(!paused && this.contextLost){this.showNotice('그래픽 연결을 복구한 뒤 계속할 수 있습니다.');return;}
++    this.setHelpOpen(false,false);
+     if(!paused){
+       // A background tab may receive no animation frames for minutes. Drain
+       // that interval before resuming the simulation and active race clock.
+@@ -650,7 +666,10 @@
+     const dragButton = document.getElementById('btn-start-drag');
+     if (dragButton) dragButton.textContent = resume ? '마우스 잠금 없이 계속하기' : '마우스 잠금 없이 시작 · 휠 버튼 드래그';
+     document.getElementById('btn-restart')?.classList.toggle('hidden', !resume || !!this.multiplayer?.room);
+-    if (paused) setTimeout(() => document.getElementById('btn-start-game')?.focus(), 0);
++    if (paused) setTimeout(() => {if(this.isPaused && this.isPlaying)document.getElementById('btn-start-game')?.focus();}, 0);
++    const menuTrial=document.getElementById('btn-menu-time-trial');
++    menuTrial?.classList.toggle('hidden',!resume || !!this.multiplayer?.room);
++    if(menuTrial)menuTrial.disabled=!!this.contextLost;
+     if (paused) this.audio.setWindSpeed(0);
+     if (this.clickToPlayOverlay) {
+       if (this.isPaused) {
+@@ -761,16 +780,22 @@
+     this.showNotice('시작점으로 돌아왔습니다. 계속하기를 눌러 플레이하세요.');
+   }
+ 
+-  toggleTimeTrial() {
++  toggleTimeTrial(fromMenu = false) {
+     if (this.multiplayer?.room) return;
+-    if (!this.isPlaying || this.isPaused) return;
++    if (!this.isPlaying || this.contextLost || (this.isPaused && !fromMenu) || this.helpOpen) return;
+     if (this.timeTrial.isActive && !this.timeTrial.isCompleted) {this.timeTrial.stop();this.experience?.ghost.stop();}
+     else {
+-      this.clearInput();
+-      this.physics.resetPosition();
+-      this.resetCamera();
+       if (!this.timeTrial.start()) this.showNotice('코스 지형이 아직 준비되지 않았거나 링을 놓을 공간이 부족합니다. 로컬 도시를 이용하거나 잠시 후 다시 시도하세요.');
+-      else {this.experience?.raceStarted();this.showNotice('타임트라이얼 시작! 금색 링을 순서대로 통과하세요. 레이스 키로 종료합니다.');}
++      else {
++        this.practice?.stop();this.combat?.cancel();this.clearInput();
++        if(this.combat?.mode==='combat')this.combat.toggle(this.input);
++        this.physics.resetPosition();this.resetCamera();this.experience?.raceStarted();
++        if(fromMenu){
++          this.setPaused(false);this.canvas.focus?.();
++          if(this.pointerLockWanted)Promise.resolve(this.canvas.requestPointerLock?.()).catch(()=>{});
++        }
++        this.showNotice('타임트라이얼 시작! 금색 링을 순서대로 통과하세요. 레이스 키로 종료합니다.');
++      }
+     }
+     this.updateTrialHUD();
+   }
+@@ -807,8 +832,14 @@
+         const split=this.experience?.ghost.splitDelta;if(Number.isFinite(split))target.textContent+=` · 구간 ${split>=0?'+':''}${split.toFixed(2)}초`;
+       }
+     }
+-    const button = document.getElementById('btn-time-trial');
+-    if (button) { button.textContent = this.timeTrial.isActive && !this.timeTrial.isCompleted ? '레이스 종료' : '레이스 시작'; }
++    for(const id of ['btn-time-trial','btn-menu-time-trial']){
++      const button=document.getElementById(id);
++      if(button){
++        button.textContent=this.timeTrial.isActive && !this.timeTrial.isCompleted?'레이스 종료':'레이스 시작';
++        button.disabled=!!this.contextLost;
++        if(id==='btn-menu-time-trial')button.classList.toggle('hidden',!this.isPlaying || !!this.multiplayer?.room);
++      }
++    }
+   }
+ 
+   updateHUD(speedKmh, altitude, state) {
+--- a/src/GamepadInput.js
++++ b/src/GamepadInput.js
+@@ -16,12 +16,15 @@
+     const pad=Array.from(navigator.getGamepads?.()||[]).find(p=>p?.mapping==='standard');
+     if(!pad){if(this.lastPad!==null){this.release();this.game.showNotice('게임패드 연결이 끊겼습니다.');}this.lastPad=null;return;}
+     if(this.lastPad!==pad.index){if(this.lastPad!==null)this.release();this.lastPad=pad.index;this.game.showNotice('게임패드 연결됨');}
+-    const active=this.game.isPlaying&&!this.game.isPaused&&!this.game.multiplayer?.spectating&&!document.querySelector('#controls-guide:not(.hidden)');
++    const isActive=()=>this.game.isPlaying&&!this.game.isPaused&&!this.game.multiplayer?.spectating&&!document.querySelector('#controls-guide:not(.hidden)');
++    const wasActive=isActive();
+     const next=new Set(pad.buttons.map((b,i)=>b.pressed?i:-1).filter(i=>i>=0));
+-    for(const b of next)if(!this.buttons.has(b)&&(active||b===9))this.action(b,true);
++    for(const b of next)if(!this.buttons.has(b)&&((wasActive&&isActive())||b===9))this.action(b,true);
+     for(const b of this.buttons)if(!next.has(b))this.action(b,false);
+     this.buttons=next;
+-    if(!active){this.game.gamepadDirections={};this.game.syncHeldInput();return;}
++    // Start can pause inside action(). Do not restore cleared movement or
++    // rotate the camera using the state captured before the button events.
++    if(!wasActive||!isActive()){this.game.gamepadDirections={};this.game.syncHeldInput();return;}
+     const x=deadzone(pad.axes[0]||0),y=deadzone(pad.axes[1]||0);
+     this.game.gamepadDirections={forward:y<-.05,backward:y>.05,left:x<-.05,right:x>.05};this.game.syncHeldInput();
+     const rx=deadzone(pad.axes[2]||0),ry=deadzone(pad.axes[3]||0);
+--- a/src/Multiplayer.js
++++ b/src/Multiplayer.js
+@@ -241,6 +241,7 @@
+       return;
+     }
+     clearInterval(this.beginTimer);this.beginTimer=null;this.pendingPunch=null;
++    game.setHelpOpen?.(false,false);
+     const me=this.players.find(p=>p.id===this.id);
+     this.solo=false;
+     this.setSpectating(!!me?.eliminated);
+@@ -305,6 +306,7 @@
+   beginSoloReady() {
+     if(!this.solo)return;
+     const game=this.game;
++    game.setHelpOpen?.(false,false);
+     this.setSpectating(false);
+     game.clickToPlayOverlay?.classList.add('hidden');
+     game.isPlaying=true;game.isPaused=false;game.clearInput();game.audio.ensureContext();game.pointerLockWanted=true;
+--- a/index.html
++++ b/index.html
+@@ -215,7 +215,7 @@
+ 
+         <button id="btn-start-game" class="start-btn"><span>계속 플레이</span><b>↗</b></button>
+         <button id="btn-start-drag" type="button">마우스 잠금 없이 계속</button>
+-        <div class="pause-secondary"><button id="btn-restart" class="hidden" type="button">시작점 복귀</button><button id="btn-leave-match" type="button">로비로 돌아가기</button></div>
++        <div class="pause-secondary"><button id="btn-restart" class="hidden" type="button">시작점 복귀</button><button id="btn-menu-time-trial" class="hidden" type="button">레이스 시작</button><button id="btn-leave-match" type="button">로비로 돌아가기</button></div>
+         <div class="pause-settings"><span class="settings-title">설정</span><button id="reduced-motion" type="button" aria-pressed="false">화면 효과 줄이기 <span class="setting-value">꺼짐</span></button>
+         <label class="guide-setting" for="graphics-quality">그래픽 품질
+           <select id="graphics-quality" aria-label="그래픽 품질"><option value="low">낮음</option><option value="balanced" selected>기본</option><option value="high">높음</option></select>
+--- a/src/style.css
++++ b/src/style.css
+@@ -529,7 +529,7 @@
+ button:focus-visible, select:focus-visible, a:focus-visible, input:focus-visible {
+   outline: 3px solid var(--spider-cyan); outline-offset: 3px;
+ }
+-#btn-start-drag, #btn-restart, #btn-leave-match, #btn-retry-load, #btn-time-trial, select {
++#btn-start-drag, #btn-restart, #btn-leave-match, #btn-retry-load, #btn-time-trial, #btn-menu-time-trial, select {
+   background: #1c293d; color: var(--text-main); border: 1px solid #64748b;
+   border-radius: 8px; padding: 8px 12px; cursor: pointer;
+ }
+@@ -807,8 +807,9 @@
+ .start-btn { width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 14px 17px; border-radius: 2px; background: #ed3155; font-size: 14px; box-shadow: none; }
+ .start-btn b { font-size: 22px; }
+ #btn-start-drag { width: 100%; margin-top: 7px; border-radius: 2px; background: #173245; font-size: 11px; }
+-.pause-secondary { display: flex; gap: 7px; margin-top: 8px; }
+-.pause-secondary button { flex: 1; margin: 0 !important; border-radius: 2px !important; font-size: 11px; }
++.pause-secondary { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 8px; }
++.pause-secondary button { flex: 1 1 auto; margin: 0 !important; border-radius: 2px !important; font-size: 11px; }
++.pause-secondary button:disabled { opacity: .45; cursor: not-allowed; }
+ .pause-settings { display: grid; gap: 0; margin-top: 20px; border-top: 1px solid #304457; }
+ .settings-title { padding: 12px 0 6px; color: #819bad; font: 800 10px Outfit,sans-serif; letter-spacing: .18em; }
+ #reduced-motion, .pause-settings .guide-setting { display: flex; align-items: center; justify-content: space-between; width: 100%; min-height: 37px; margin: 0; padding: 6px 0; border: 0; border-bottom: 1px solid #243a4b; border-radius: 0; background: none; color: #dde9ed; font-size: 11px; text-align: left; cursor: pointer; }
+--- a/package.json
++++ b/package.json
+@@ -7,7 +7,7 @@
+     "dev": "vite",
+     "build": "vite build",
+     "preview": "vite preview",
+-    "test": "node scripts/build-motions.mjs && node scripts/check-motions.mjs && node scripts/check-pose.mjs && node scripts/check-controller.mjs && node scripts/check-gameplay.mjs && node scripts/check-air-tricks.mjs && node scripts/check-dual-web.mjs && node scripts/check-pendulum.mjs && node scripts/check-mechanics-audit.mjs && node scripts/check-player-audit.mjs && node scripts/check-traversal.mjs && node scripts/check-qa.mjs && node scripts/check-review-2.mjs && node scripts/check-combat.mjs && node scripts/check-web-vfx.mjs && node scripts/check-superhero-landing-vfx.mjs && node scripts/check-combat-rig.mjs && node scripts/check-motion-timeline.mjs && node scripts/check-motion-transitions.mjs && node scripts/check-hong-kong-streaming.mjs && node scripts/check-minimap.mjs && node scripts/check-remote-motion.mjs && node scripts/check-tile-textures.mjs && node scripts/check-multiplayer.mjs && node scripts/check-upgrade.mjs && node scripts/check-upgrade-online.mjs && node scripts/check-release-audit.mjs && node scripts/check-online-edge-cases.mjs && node scripts/check-room-reconnect.mjs && node scripts/check-hong-kong-geometry-codec.mjs && node scripts/check-swing-accessibility.mjs && node scripts/check-cross-system-regressions.mjs && node scripts/check-web-continuity.mjs && node scripts/check-compact-map-and-locators.mjs && node scripts/check-expert-audit.mjs && node scripts/check-connection-lifecycle.mjs && node scripts/check-camera-motion-web.mjs && node scripts/check-full-game-audit.mjs && node scripts/check-input-lifecycle.mjs",
++    "test": "node scripts/build-motions.mjs && node scripts/check-motions.mjs && node scripts/check-pose.mjs && node scripts/check-controller.mjs && node scripts/check-gameplay.mjs && node scripts/check-air-tricks.mjs && node scripts/check-dual-web.mjs && node scripts/check-pendulum.mjs && node scripts/check-mechanics-audit.mjs && node scripts/check-player-audit.mjs && node scripts/check-traversal.mjs && node scripts/check-qa.mjs && node scripts/check-review-2.mjs && node scripts/check-combat.mjs && node scripts/check-web-vfx.mjs && node scripts/check-superhero-landing-vfx.mjs && node scripts/check-combat-rig.mjs && node scripts/check-motion-timeline.mjs && node scripts/check-motion-transitions.mjs && node scripts/check-hong-kong-streaming.mjs && node scripts/check-minimap.mjs && node scripts/check-remote-motion.mjs && node scripts/check-tile-textures.mjs && node scripts/check-multiplayer.mjs && node scripts/check-upgrade.mjs && node scripts/check-upgrade-online.mjs && node scripts/check-release-audit.mjs && node scripts/check-online-edge-cases.mjs && node scripts/check-room-reconnect.mjs && node scripts/check-hong-kong-geometry-codec.mjs && node scripts/check-swing-accessibility.mjs && node scripts/check-cross-system-regressions.mjs && node scripts/check-web-continuity.mjs && node scripts/check-compact-map-and-locators.mjs && node scripts/check-expert-audit.mjs && node scripts/check-connection-lifecycle.mjs && node scripts/check-camera-motion-web.mjs && node scripts/check-full-game-audit.mjs && node scripts/check-input-lifecycle.mjs && node scripts/check-session-flow.mjs",
+     "predev": "node scripts/build-motions.mjs",
+     "prebuild": "node scripts/build-motions.mjs",
+     "start": "node scripts/serve.mjs",
+@@ -23,7 +23,8 @@
+     "test:camera-motion-web": "node scripts/check-camera-motion-web.mjs",
+     "test:full-audit": "node scripts/check-full-game-audit.mjs",
+     "test:city-authority": "node scripts/check-city-authority.mjs",
+-    "test:input-lifecycle": "node scripts/check-input-lifecycle.mjs"
++    "test:input-lifecycle": "node scripts/check-input-lifecycle.mjs",
++    "test:session-flow": "node scripts/check-session-flow.mjs"
+   },
+   "dependencies": {
+     "@dimforge/rapier3d-compat": "^0.21.0",
+--- a/README.md
++++ b/README.md
+@@ -117,3 +117,5 @@
+ 전체 분야의 최신 점검·수정·검증 범위: [2026-10-14 전체 게임 점검](docs/qa/full-game-audit-2026-10-14/REPORT.md). 새 교차 기능 검사: `npm run test:full-audit`. 실제 PostgreSQL 및 WebSocket의 지도 일치 검사: `npm run test:city-authority`.
+ 
+ 입력·일시정지·재개의 후속 개선: [2026-10-14 입력 상태 검증](docs/qa/input-lifecycle-2026-10-14/REPORT.md). 키보드·패드 중복 동작, 거미줄 토글 취소, 정지 후 레이스 시간, 숨은 키 변경 대기, 자동 화질 상태를 수정했습니다. 재현 검사: `npm run test:input-lifecycle`.
++
++도움말·메뉴·레이스 전환 개선: [2026-10-14 플레이 전환 검증](docs/qa/session-flow-2026-10-14/REPORT.md). 혼자 플레이의 Escape 메뉴에서 레이스를 시작하거나 종료할 수 있습니다. 시작하면 메뉴를 닫고 전투 연습·공격을 정리한 뒤 거미줄 모드로 전환하며, 지형 준비가 실패하면 현재 위치와 활동을 유지합니다. 도움말은 플레이 중에 열 수 있고, 커서를 해제해 닫기 버튼을 사용할 수 있습니다. 일시정지·새 플레이 진입 시 이전 도움말을 정리하며, 패드 Start로 정지하는 프레임에는 이동·시점 입력을 적용하지 않습니다. 재현 검사: `npm run test:session-flow`.
+--- a/scripts/check-expert-audit.mjs
++++ b/scripts/check-expert-audit.mjs
+@@ -80,7 +80,7 @@
+   document.getElementById=id=>id==='controls-guide'?guide:null;
+   g.toggleHelp();assert(g.helpOpen);assert(g.gameplaySuspended);assert.match(hint.textContent,/일시정지/);
+   let simulated=0,timed=0;Object.assign(g,{clock:{getDelta:()=>.05,elapsedTime:0},city:{update(){}},assetsReady:true,
+-    physics:{update(){simulated++;},clearPendingInput(){}},timeTrial:{update(){timed++;}},renderer:{render(){}},contextLost:true});
++    physics:{update(){simulated++;},clearPendingInput(){}},timeTrial:{update(){timed++;}},renderer:{render(){}},contextLost:false});
+   const old=globalThis.requestAnimationFrame;globalThis.requestAnimationFrame=()=>{};
+   try{g.animate();assert.equal(simulated,0);assert.equal(timed,0);}finally{globalThis.requestAnimationFrame=old;}
+   key('keydown','Escape');assert(!g.helpOpen);assert(!g.isPaused);
+--- /dev/null
++++ b/scripts/check-session-flow.mjs
+@@ -0,0 +1,153 @@
++import assert from 'node:assert/strict';
++import * as THREE from 'three';
++import { GameApp } from '../src/main.js';
++import { GamepadInput } from '../src/GamepadInput.js';
++import { Multiplayer } from '../src/Multiplayer.js';
++import { TimeTrialSystem } from '../src/TimeTrial.js';
++import { CombatPractice } from '../src/CombatPractice.js';
++import { cleanSettings } from '../src/PlayerSettings.js';
++
++let passed = 0, failed = 0;
++function check(name, run) {
++  try { run(); passed++; console.log(`PASS ${name}`); }
++  catch (error) { failed++; console.error(`FAIL ${name}: ${error.message}`); }
++}
++function element(hidden = false) {
++  const node = new EventTarget(), classes = new Set(hidden ? ['hidden'] : []);
++  Object.assign(node, { textContent: '', style: {}, disabled: false,
++    classList: { contains: k => classes.has(k), add: k => classes.add(k), remove: k => classes.delete(k),
++      toggle(k, force) { const add = force ?? !classes.has(k); add ? classes.add(k) : classes.delete(k); return add; } },
++    focus() { document.activeElement = node; }, querySelector: () => null,
++    getBoundingClientRect: () => ({ x: 0, y: 0, width: 800, height: 600 }),
++  });
++  return node;
++}
++function dom(run) {
++  const names = ['window', 'document', 'navigator', 'KeyboardEvent', 'MouseEvent', 'setTimeout'];
++  const descriptors = new Map(names.map(name => [name, Object.getOwnPropertyDescriptor(globalThis, name)]));
++  const nodes = new Map(['controls-guide', 'btn-close-guide', 'btn-start-game', 'btn-time-trial',
++    'btn-menu-time-trial', 'trial-status'].map(id => [id, element(id === 'controls-guide')]));
++  const document = new EventTarget();
++  Object.assign(document, { getElementById: id => nodes.get(id) || null, querySelector: () => null,
++    body: element(), pointerLockElement: null, exitPointerLock() { this.pointerLockElement = null; this.dispatchEvent(new Event('pointerlockchange')); } });
++  class InputEvent extends Event { constructor(type, options) { super(type, options); for (const [key, value] of Object.entries(options)) if (key !== 'bubbles') Object.defineProperty(this, key, { value }); } }
++  for (const [name, value] of Object.entries({ window: new EventTarget(), document, navigator: {},
++    KeyboardEvent: InputEvent, MouseEvent: InputEvent, setTimeout: callback => { callback(); return 0; } }))
++    Object.defineProperty(globalThis, name, { configurable: true, writable: true, value });
++  try { run(nodes); }
++  finally { for (const [name, descriptor] of descriptors) descriptor ? Object.defineProperty(globalThis, name, descriptor) : delete globalThis[name]; }
++}
++function app() {
++  const game = Object.create(GameApp.prototype), scene = new THREE.Scene();
++  const city = { playableHalfExtent: 160, colliders: [], getRooftopSpawn: () => new THREE.Vector3(0, 10, 0) };
++  const audio = { ensureContext() {}, setWindSpeed() {}, playCheckpointChime() {} };
++  Object.assign(game, { scene, city, audio, canvas: element(), isPlaying: true, isPaused: false, assetsReady: true,
++    input: {}, heldKeys: new Set(), preferences: { values: { settings: cleanSettings(), bestTimes: {} } },
++    physics: { position: new THREE.Vector3(5, 10, 0), state: 'IDLE', clearPendingInput() {},
++      resetPosition() { game.resets++; this.position.copy(city.getRooftopSpawn()); } },
++    combat: { mode: 'web', enemies: [], toggle() { this.mode = this.mode === 'web' ? 'combat' : 'web'; }, clearHeld() {}, cancel() { game.cancels++; }, clearEnemies() { this.enemies = []; } },
++    tpsCamera: { handleMouseMove() { game.cameraMoves++; } },
++    timeTrial: new TimeTrialSystem(scene, city, audio),
++    experience: { ghost: { stop() {} }, raceStarted() { game.races++; } },
++    resets: 0, cancels: 0, races: 0, cameraMoves: 0, resetCamera() {}, showNotice(message) { this.notice = message; },
++  });
++  const practice = Object.create(CombatPractice.prototype);
++  Object.assign(practice, { game, active: true, projectiles: [] }); game.practice = practice;
++  game.initInputListeners();
++  return game;
++}
++function key(type, code) {
++  const event = new Event(type, { cancelable: true }); Object.defineProperty(event, 'code', { value: code }); window.dispatchEvent(event);
++}
++
++check('Help cannot remain hidden beneath the lobby or pause menu', () => dom(nodes => {
++  const game = app(); game.isPlaying = false; key('keydown', 'KeyH'); key('keyup', 'KeyH');
++  assert(nodes.get('controls-guide').classList.contains('hidden'), 'Lobby shortcut opened an obscured help dialog');
++  game.isPlaying = true; game.setPaused(true); key('keydown', 'KeyH');
++  assert(nodes.get('controls-guide').classList.contains('hidden'), 'Pause shortcut opened an obscured help dialog');
++}));
++check('Background pause closes solo help so resume really restores gameplay', () => dom(nodes => {
++  const game = app(); game.toggleHelp(); assert(game.gameplaySuspended);
++  window.dispatchEvent(new Event('blur')); assert(game.isPaused);
++  game.setPaused(false); assert(!game.gameplaySuspended, 'Resume left the solo simulation suspended');
++  assert(nodes.get('controls-guide').classList.contains('hidden'));
++}));
++check('Solo and online session entry retire a help dialog from the previous activity', () => dom(nodes => {
++  const game = app(), multiplayer = Object.create(Multiplayer.prototype);
++  game.experience.restorePosition = () => false; game.applyPreferences = () => {};
++  game.character = { group: new THREE.Group() };
++  Object.assign(multiplayer, { game, solo: true, players: [], setSpectating() {}, render() {}, placeMatchSpawn() {} });
++  game.toggleHelp(); multiplayer.beginSoloReady();
++  assert(!game.gameplaySuspended); assert(nodes.get('controls-guide').classList.contains('hidden'));
++  game.toggleHelp(); assert(game.helpOpen);
++  multiplayer.room = { phase: 'playing', mode: 'free' }; multiplayer.begin();
++  assert(!game.helpOpen); assert(nodes.get('controls-guide').classList.contains('hidden'));
++}));
++check('Opening help unlocks the cursor without pausing; closing restores game focus', () => dom(nodes => {
++  const game = app(); game.hadPointerLock = true; game.pointerLockWanted = true; document.pointerLockElement = game.canvas;
++  game.toggleHelp(); assert.equal(document.pointerLockElement, null, 'Help close button is inaccessible while cursor is locked');
++  assert(!game.isPaused); assert.equal(document.activeElement, nodes.get('btn-close-guide'));
++  nodes.get('btn-close-guide').focus(); game.toggleHelp(); assert.equal(document.activeElement, game.canvas);
++}));
++check('Repeated Escape closes help only once before opening the pause menu', () => dom(() => {
++  const game = app(); game.toggleHelp(); key('keydown', 'Escape');
++  const repeat = new Event('keydown', { cancelable: true }); Object.defineProperties(repeat, { code: { value: 'Escape' }, repeat: { value: true } });
++  window.dispatchEvent(repeat); assert(!game.helpOpen); assert(!game.isPaused);
++}));
++check('Starting a race retires practice enemies, projectiles and the current strike', () => dom(() => {
++  const game = app(), mesh = new THREE.Mesh(new THREE.SphereGeometry(.1), new THREE.MeshBasicMaterial()); game.scene.add(mesh);
++  game.combat.mode = 'combat';
++  game.combat.enemies.push({ health: 100 }); game.practice.projectiles.push({ mesh });
++  game.toggleTimeTrial(); assert(game.timeTrial.isActive); assert.equal(game.races, 1);
++  assert(!game.practice.active, 'Practice AI still runs during the race'); assert.equal(game.combat.enemies.length, 0);
++  assert.equal(game.practice.projectiles.length, 0); assert(!game.scene.children.includes(mesh)); assert.equal(game.cancels, 1);
++  assert.equal(game.combat.mode, 'web', 'The race starts with ground clicks still assigned to punching');
++}));
++check('A menu race start resumes play with fresh time and focus; menu stop stays paused', () => dom(nodes => {
++  const game = app(); game.isPaused = true;
++  let drains = 0; game.clock = { getDelta() { drains++; return 90; } };
++  game.initUIListeners(); nodes.get('btn-menu-time-trial').dispatchEvent(new Event('click'));
++  assert(game.timeTrial.isActive); assert(!game.isPaused); assert.equal(game.races, 1);
++  assert(drains > 0); assert.equal(document.activeElement, game.canvas);
++  assert.equal(nodes.get('btn-menu-time-trial').textContent, '레이스 종료');
++  game.setPaused(true); nodes.get('btn-menu-time-trial').dispatchEvent(new Event('click')); assert(!game.timeTrial.isActive); assert(game.isPaused);
++  assert.equal(nodes.get('btn-menu-time-trial').textContent, '레이스 시작');
++}));
++check('Unavailable race terrain preserves position, pause and practice', () => dom(() => {
++  const game = app(); game.isPaused = true; game.timeTrial.createCourse = () => false;
++  const before = game.physics.position.clone(); game.toggleTimeTrial(true);
++  assert.match(game.notice || '', /지형/); assert(game.isPaused); assert(game.practice.active);
++  assert(game.physics.position.equals(before)); assert.equal(game.resets, 0);
++}));
++check('A failed keyboard race start also preserves the current solo activity', () => dom(() => {
++  const game = app(); game.timeTrial.createCourse = () => false;
++  const before = game.physics.position.clone(); key('keydown', 'KeyR');
++  assert.match(game.notice || '', /지형/); assert(game.practice.active); assert.equal(game.resets, 0);
++  assert(game.physics.position.equals(before)); assert(!game.isPaused);
++}));
++check('Menu race controls respect online and lost graphics restrictions', () => dom(nodes => {
++  const game = app(); game.isPaused = true; game.contextLost = true; game.toggleTimeTrial(true);
++  assert(!game.timeTrial.isActive); assert.equal(game.resets, 0);
++  game.contextLost = false; game.multiplayer = { room: { phase: 'playing' } }; game.updateTrialHUD();
++  assert(nodes.get('btn-menu-time-trial').classList.contains('hidden'), 'Solo action is shown in an online menu');
++  game.toggleTimeTrial(true); assert(!game.timeTrial.isActive);
++}));
++check('Pad Start does not reintroduce stick movement or camera look in the pause frame', () => dom(() => {
++  const game = app(), pad = new GamepadInput(game);
++  navigator.getGamepads = () => [{ index: 0, mapping: 'standard', axes: [1, -1, 1, 1],
++    buttons: Array.from({ length: 16 }, (_, i) => ({ pressed: i === 9 || i === 14 })) }];
++  let cameraCycles = 0; game.tpsCamera.cycleMode = () => { cameraCycles++; return 'follow'; };
++  game.character = { setFirstPersonMode() {} };
++  pad.update(1 / 60); assert(game.isPaused); assert(!game.input.forward && !game.input.right);
++  assert.equal(game.cameraMoves, 0); assert.equal(cameraCycles, 0, 'A button after Start changed the paused view');
++}));
++check('Pad resume defers sticks until the next frame and does not use paused look time', () => dom(() => {
++  const game = app(), pad = new GamepadInput(game); game.isPaused = true;
++  const buttons = Array.from({ length: 16 }, (_, i) => ({ pressed: i === 9 }));
++  navigator.getGamepads = () => [{ index: 0, mapping: 'standard', axes: [1, -1, 1, 1], buttons }];
++  pad.update(.1); assert(!game.isPaused); assert(!game.input.forward); assert.equal(game.cameraMoves, 0);
++  buttons[9].pressed = false; pad.update(1 / 60); assert(game.input.forward && game.input.right); assert.equal(game.cameraMoves, 1);
++}));
++
++console.log(`Session flow review: ${passed} passed, ${failed} failed.`);
++if (failed) process.exitCode = 1;

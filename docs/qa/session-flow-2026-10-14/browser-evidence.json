@@ -1,0 +1,106 @@
+{
+  "url": "http://127.0.0.1:5194/?city=procedural",
+  "scenarios": [
+    {
+      "scenario": "solo-help-pauses-race-and-unlocks-cursor",
+      "state": {
+        "focused": "btn-close-guide",
+        "helpVisible": true,
+        "pauseVisible": false,
+        "pointerLocked": false,
+        "trial": "링 1/8 · 6.94초"
+      }
+    },
+    {
+      "scenario": "pause-help-blocked-menu-race-stop-stays-paused",
+      "state": {
+        "button": "레이스 시작",
+        "helpVisible": false,
+        "pauseVisible": true,
+        "trial": "R 타임트라이얼"
+      }
+    },
+    {
+      "scenario": "narrow-menu-layout",
+      "state": {
+        "buttons": [
+          {
+            "label": "시작점 복귀",
+            "left": 37,
+            "right": 133.25,
+            "visible": true
+          },
+          {
+            "label": "레이스 시작",
+            "left": 140.25,
+            "right": 214.515625,
+            "visible": true
+          },
+          {
+            "label": "로비로 돌아가기",
+            "left": 221.515625,
+            "right": 338,
+            "visible": true
+          }
+        ],
+        "card": {
+          "clientWidth": 341,
+          "left": 16,
+          "right": 374,
+          "scrollWidth": 341,
+          "width": 358
+        },
+        "documentWidth": 390,
+        "row": {
+          "clientWidth": 301,
+          "scrollWidth": 301
+        },
+        "viewport": [
+          390,
+          844
+        ]
+      }
+    },
+    {
+      "scenario": "practice-before-race",
+      "state": {
+        "handStatus": "지상 전투 · B 방어",
+        "trial": "R 타임트라이얼",
+        "webStatus": "COMBAT READY"
+      }
+    },
+    {
+      "scenario": "race-after-practice",
+      "state": {
+        "handStatus": "좌클릭 준비 · 우클릭 준비 · 집: 공중 전용",
+        "trial": "링 1/8 · 0.22초",
+        "webStatus": "WEB READY"
+      }
+    },
+    {
+      "scenario": "final-menu-button-style",
+      "state": {
+        "background": "rgb(28, 41, 61)",
+        "color": "rgb(245, 244, 240)",
+        "disabled": false,
+        "label": "레이스 시작"
+      }
+    },
+    {
+      "scenario": "final-narrow-menu-layout",
+      "state": {
+        "buttonCount": 3,
+        "cardScrollWidth": 341,
+        "cardWidth": 341,
+        "documentWidth": 390,
+        "rowScrollWidth": 301,
+        "rowWidth": 301,
+        "viewport": [
+          390,
+          844
+        ]
+      }
+    }
+  ],
+  "logs": []
+}

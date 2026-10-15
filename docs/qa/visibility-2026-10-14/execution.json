@@ -1,0 +1,33 @@
+{
+  "date": "2026-10-15",
+  "commands": {
+    "npm test": {
+      "exitCode": 0,
+      "stages": 41
+    },
+    "final related regressions": {
+      "exitCode": 0
+    },
+    "npm run build": {
+      "exitCode": 0
+    },
+    "git diff --check": {
+      "exitCode": 0
+    }
+  },
+  "sourceSha256": {
+    "src/City.js": "d5a06269a0b03cbaaa63fb14a94d204b658519aea042a8d8986c9f1289e11ea1",
+    "src/main.js": "6686b3e0f89f4284cd779fd8a5eceddffefc4f810d1684825b76800af75ed016",
+    "src/Multiplayer.js": "70f1d6819dd469fae84ec4392e2e20deb31de198beb13dbf708cb5879dcd2cd1",
+    "src/Minimap.js": "90f45d49d89d6f55aba2e335faadd06be3b0c9c774e12e424718adc74f818614",
+    "src/PlayerPositionMarkers.js": "9f00d3ce24b76e43ef663d882104ced7fe75fb54271387620a65a4cb07d4be7a",
+    "src/style.css": "028bee644802324ad7803b3ce03be360678b817307f1a8c8e674136410466167",
+    "index.html": "8d7ba7d73ac86809ecfd6a1fe4ad8cff40b461bc43702ec831fa24245d965d84",
+    "scripts/check-compact-map-and-locators.mjs": "cca3cb603d713f5a4e3b6eb8469a2e34822f4f2c30f94d6b548e861a26044a32",
+    "package.json": "b7b3252807a8e0224aa5bb4aba0efa86fce459011abec5da7421ed4a247b13b1",
+    "README.md": "ca6778df6d3ae930bb39e5b3ad8505d4648b7a13b1262200a36c4f3bf214b38c",
+    "scripts/check-visibility.mjs": "fdffc19c6d35e6121b400895686cd8ae7641decc580e83e537b91d8e900111b0"
+  },
+  "manualVerification": "Local Chrome, procedural city, two real browser players",
+  "deployment": "Local source and build only"
+}

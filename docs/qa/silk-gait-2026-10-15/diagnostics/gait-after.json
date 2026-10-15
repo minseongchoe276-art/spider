@@ -1,0 +1,1189 @@
+[
+  {
+    "fps": 24,
+    "key": "walk",
+    "grade": 0,
+    "minToe": 0.024999957946885726,
+    "maxAnkle": 19.248575300740498,
+    "maxAnkleSpeed": 461.96580721777195,
+    "maxFlip": {
+      "time": 0.4166666666666667,
+      "side": "right",
+      "action": "walk",
+      "plant": false
+    },
+    "toeWorst": {
+      "time": 2.375,
+      "side": "right",
+      "plant": true,
+      "age": 0.29166666666666663,
+      "ankle": [
+        -0.04607686456193025,
+        0.13456901725302384,
+        3.9301471375694623
+      ]
+    }
+  },
+  {
+    "fps": 24,
+    "key": "walk",
+    "grade": 0.3,
+    "minToe": 0.02499992927184791,
+    "maxAnkle": 29.143143625700446,
+    "maxAnkleSpeed": 699.4354470168107,
+    "maxFlip": {
+      "time": 1.9583333333333333,
+      "side": "right",
+      "action": "walk",
+      "plant": true
+    },
+    "toeWorst": {
+      "time": 2.375,
+      "side": "right",
+      "plant": true,
+      "age": 0.29166666666666663,
+      "ankle": [
+        -0.046076915113775,
+        1.318437568389105,
+        3.9301471736165334
+      ]
+    }
+  },
+  {
+    "fps": 24,
+    "key": "walk",
+    "grade": -0.3,
+    "minToe": 0.02499995833930213,
+    "maxAnkle": 21.899007935680782,
+    "maxAnkleSpeed": 525.5761904563387,
+    "maxFlip": {
+      "time": 0.875,
+      "side": "right",
+      "action": "walk",
+      "plant": true
+    },
+    "toeWorst": {
+      "time": 2.4166666666666665,
+      "side": "right",
+      "plant": true,
+      "age": 0.3333333333333333,
+      "ankle": [
+        -0.04607689273028777,
+        -1.0396507159046557,
+        3.9301471080989376
+      ]
+    }
+  },
+  {
+    "fps": 24,
+    "key": "jog",
+    "grade": 0,
+    "minToe": 0.024999954106877373,
+    "maxAnkle": 30.00001348920881,
+    "maxAnkleSpeed": 720.0003237410115,
+    "maxFlip": {
+      "time": 2.7916666666666665,
+      "side": "right",
+      "action": "jog",
+      "plant": true
+    },
+    "toeWorst": {
+      "time": 0.7916666666666666,
+      "side": "left",
+      "plant": true,
+      "age": 0.16666666666666666,
+      "ankle": [
+        0.05559595852691708,
+        0.1345692157091864,
+        2.4911759812649326
+      ]
+    }
+  },
+  {
+    "fps": 24,
+    "key": "jog",
+    "grade": 0.3,
+    "minToe": 0.024999925234485576,
+    "maxAnkle": 30.000020414778326,
+    "maxAnkleSpeed": 720.0004899546798,
+    "maxFlip": {
+      "time": 2.7916666666666665,
+      "side": "right",
+      "action": "jog",
+      "plant": true
+    },
+    "toeWorst": {
+      "time": 0.7916666666666666,
+      "side": "left",
+      "plant": true,
+      "age": 0.16666666666666666,
+      "ankle": [
+        0.055595933936578745,
+        0.886746394746379,
+        2.4911759683118158
+      ]
+    }
+  },
+  {
+    "fps": 24,
+    "key": "jog",
+    "grade": -0.3,
+    "minToe": 0.024999853362878466,
+    "maxAnkle": 30.00000741824529,
+    "maxAnkleSpeed": 720.0001780378869,
+    "maxFlip": {
+      "time": 2.7916666666666665,
+      "side": "right",
+      "action": "jog",
+      "plant": true
+    },
+    "toeWorst": {
+      "time": 0.7916666666666666,
+      "side": "right",
+      "plant": false,
+      "ankle": [
+        -0.16749541551611355,
+        -0.4521842849445198,
+        2.2479591349321018
+      ]
+    }
+  },
+  {
+    "fps": 24,
+    "key": "regularRun",
+    "grade": 0,
+    "minToe": 0.02499997763976279,
+    "maxAnkle": 30.000000119553256,
+    "maxAnkleSpeed": 720.0000028692782,
+    "maxFlip": {
+      "time": 1.7916666666666667,
+      "side": "right",
+      "action": "regularRun",
+      "plant": false
+    },
+    "toeWorst": {
+      "time": 1.0416666666666667,
+      "side": "left",
+      "plant": true,
+      "age": 0.20833333333333331,
+      "ankle": [
+        -0.008839898564587279,
+        0.1345692161487821,
+        4.732971961469462
+      ]
+    }
+  },
+  {
+    "fps": 24,
+    "key": "regularRun",
+    "grade": 0.3,
+    "minToe": 0.02499995276839151,
+    "maxAnkle": 30.00000003360246,
+    "maxAnkleSpeed": 720.0000008064591,
+    "maxFlip": {
+      "time": 1.7916666666666667,
+      "side": "right",
+      "action": "regularRun",
+      "plant": false
+    },
+    "toeWorst": {
+      "time": 1.9583333333333333,
+      "side": "right",
+      "plant": true,
+      "age": 0.08333333333333333,
+      "ankle": [
+        -0.09316492996797003,
+        3.08703930746782,
+        9.825486272118368
+      ]
+    }
+  },
+  {
+    "fps": 24,
+    "key": "regularRun",
+    "grade": -0.3,
+    "minToe": 0.024999964940736863,
+    "maxAnkle": 30.00000155766585,
+    "maxAnkleSpeed": 720.0000373839804,
+    "maxFlip": {
+      "time": 0.875,
+      "side": "left",
+      "action": "regularRun",
+      "plant": true
+    },
+    "toeWorst": {
+      "time": 2.125,
+      "side": "right",
+      "plant": false,
+      "ankle": [
+        -0.09816767770136792,
+        -2.783023150514662,
+        9.845865685874724
+      ]
+    }
+  },
+  {
+    "fps": 24,
+    "key": "run",
+    "grade": 0,
+    "minToe": 0.024999970456457424,
+    "maxAnkle": 30.00001435510139,
+    "maxAnkleSpeed": 720.0003445224334,
+    "maxFlip": {
+      "time": 0.8333333333333334,
+      "side": "right",
+      "action": "run",
+      "plant": false
+    },
+    "toeWorst": {
+      "time": 1.5833333333333333,
+      "side": "right",
+      "plant": true,
+      "age": 0.08333333333333333,
+      "ankle": [
+        0.02733719576741625,
+        0.13456901813533545,
+        10.579822993380915
+      ]
+    }
+  },
+  {
+    "fps": 24,
+    "key": "run",
+    "grade": 0.3,
+    "minToe": 0.024999930778674795,
+    "maxAnkle": 30.00001431761039,
+    "maxAnkleSpeed": 720.0003436226493,
+    "maxFlip": {
+      "time": 0.8333333333333334,
+      "side": "right",
+      "action": "run",
+      "plant": false
+    },
+    "toeWorst": {
+      "time": 1.5833333333333333,
+      "side": "right",
+      "plant": true,
+      "age": 0.08333333333333333,
+      "ankle": [
+        0.02733730571136561,
+        3.31334031334914,
+        10.579823039607634
+      ]
+    }
+  },
+  {
+    "fps": 24,
+    "key": "run",
+    "grade": -0.3,
+    "minToe": 0.02499996658977499,
+    "maxAnkle": 30.00001415675196,
+    "maxAnkleSpeed": 720.000339762047,
+    "maxFlip": {
+      "time": 0.8333333333333334,
+      "side": "right",
+      "action": "run",
+      "plant": false
+    },
+    "toeWorst": {
+      "time": 0.3333333333333333,
+      "side": "left",
+      "plant": false,
+      "ankle": [
+        -0.008063036106493192,
+        -0.2678697607375995,
+        1.5496269708455492
+      ]
+    }
+  },
+  {
+    "fps": 30,
+    "key": "walk",
+    "grade": 0,
+    "minToe": 0.02499995639976009,
+    "maxAnkle": 17.119949895396733,
+    "maxAnkleSpeed": 513.5984968619019,
+    "maxFlip": {
+      "time": 0.7,
+      "side": "right",
+      "action": "walk",
+      "plant": true
+    },
+    "toeWorst": {
+      "time": 2.4,
+      "side": "right",
+      "plant": true,
+      "age": 0.3333333333333333,
+      "ankle": [
+        -0.057738443609705536,
+        0.1345690150558917,
+        3.903910694748493
+      ]
+    }
+  },
+  {
+    "fps": 30,
+    "key": "walk",
+    "grade": 0.3,
+    "minToe": 0.02499992328812861,
+    "maxAnkle": 24.000006388368778,
+    "maxAnkleSpeed": 720.0001916510633,
+    "maxFlip": {
+      "time": 0.7,
+      "side": "right",
+      "action": "walk",
+      "plant": true
+    },
+    "toeWorst": {
+      "time": 2.3666666666666667,
+      "side": "right",
+      "plant": true,
+      "age": 0.3,
+      "ankle": [
+        -0.05773850369888796,
+        1.310566630673795,
+        3.9039107293372353
+      ]
+    }
+  },
+  {
+    "fps": 30,
+    "key": "walk",
+    "grade": -0.3,
+    "minToe": 0.02499995570845992,
+    "maxAnkle": 23.331716525689572,
+    "maxAnkleSpeed": 699.9514957706872,
+    "maxFlip": {
+      "time": 0.9,
+      "side": "right",
+      "action": "walk",
+      "plant": true
+    },
+    "toeWorst": {
+      "time": 2.4,
+      "side": "right",
+      "plant": true,
+      "age": 0.3333333333333333,
+      "ankle": [
+        -0.05773849006824742,
+        -1.0317797901492534,
+        3.9039107026481856
+      ]
+    }
+  },
+  {
+    "fps": 30,
+    "key": "jog",
+    "grade": 0,
+    "minToe": 0.02499995296989002,
+    "maxAnkle": 24.00001132013844,
+    "maxAnkleSpeed": 720.0003396041532,
+    "maxFlip": {
+      "time": 2.8,
+      "side": "right",
+      "action": "jog",
+      "plant": true
+    },
+    "toeWorst": {
+      "time": 0.8,
+      "side": "left",
+      "plant": true,
+      "age": 0.16666666666666666,
+      "ankle": [
+        0.062592856184019,
+        0.1345692151758336,
+        2.4324716521918184
+      ]
+    }
+  },
+  {
+    "fps": 30,
+    "key": "jog",
+    "grade": 0.3,
+    "minToe": 0.024999921149646998,
+    "maxAnkle": 24.000021515250772,
+    "maxAnkleSpeed": 720.0006454575232,
+    "maxFlip": {
+      "time": 2.2,
+      "side": "right",
+      "action": "jog",
+      "plant": true
+    },
+    "toeWorst": {
+      "time": 2.033333333333333,
+      "side": "left",
+      "plant": true,
+      "age": 0.16666666666666666,
+      "ankle": [
+        0.049627528895863235,
+        2.1344620479970966,
+        6.650228150897535
+      ]
+    }
+  },
+  {
+    "fps": 30,
+    "key": "jog",
+    "grade": -0.3,
+    "minToe": 0.024999851555569386,
+    "maxAnkle": 24.0000156604711,
+    "maxAnkleSpeed": 720.000469814133,
+    "maxFlip": {
+      "time": 0.9333333333333333,
+      "side": "right",
+      "action": "jog",
+      "plant": false
+    },
+    "toeWorst": {
+      "time": 0.8,
+      "side": "right",
+      "plant": false,
+      "ankle": [
+        -0.16860469100118286,
+        -0.4490914727726746,
+        2.2387703073451197
+      ]
+    }
+  },
+  {
+    "fps": 30,
+    "key": "regularRun",
+    "grade": 0,
+    "minToe": 0.02499998006592355,
+    "maxAnkle": 24.00000409554922,
+    "maxAnkleSpeed": 720.0001228664765,
+    "maxFlip": {
+      "time": 0.7,
+      "side": "left",
+      "action": "regularRun",
+      "plant": false
+    },
+    "toeWorst": {
+      "time": 0.36666666666666664,
+      "side": "left",
+      "plant": false,
+      "ankle": [
+        -0.012415840155040783,
+        0.15718204903800692,
+        1.4153182986369304
+      ]
+    }
+  },
+  {
+    "fps": 30,
+    "key": "regularRun",
+    "grade": 0.3,
+    "minToe": 0.024999956681933,
+    "maxAnkle": 24.000004117985814,
+    "maxAnkleSpeed": 720.0001235395744,
+    "maxFlip": {
+      "time": 1.4,
+      "side": "left",
+      "action": "regularRun",
+      "plant": false
+    },
+    "toeWorst": {
+      "time": 1.2666666666666666,
+      "side": "right",
+      "plant": true,
+      "age": 0.06666666666666667,
+      "ankle": [
+        -0.08968085524277801,
+        2.081077448030456,
+        6.472280068604759
+      ]
+    }
+  },
+  {
+    "fps": 30,
+    "key": "regularRun",
+    "grade": -0.3,
+    "minToe": 0.024999959891600615,
+    "maxAnkle": 24.000004152079743,
+    "maxAnkleSpeed": 720.0001245623923,
+    "maxFlip": {
+      "time": 1.4,
+      "side": "left",
+      "action": "regularRun",
+      "plant": false
+    },
+    "toeWorst": {
+      "time": 0.06666666666666667,
+      "side": "right",
+      "plant": false,
+      "ankle": [
+        -0.1537540385796537,
+        0.16216018814881017,
+        0.08685755046577459
+      ]
+    }
+  },
+  {
+    "fps": 30,
+    "key": "run",
+    "grade": 0,
+    "minToe": 0.024999970677338376,
+    "maxAnkle": 24.000015067954326,
+    "maxAnkleSpeed": 720.0004520386298,
+    "maxFlip": {
+      "time": 1.4,
+      "side": "right",
+      "action": "run",
+      "plant": false
+    },
+    "toeWorst": {
+      "time": 0.4666666666666667,
+      "side": "right",
+      "plant": true,
+      "age": 0.1,
+      "ankle": [
+        0.027799381976554974,
+        0.1345690135857891,
+        3.1095145784941716
+      ]
+    }
+  },
+  {
+    "fps": 30,
+    "key": "run",
+    "grade": 0.3,
+    "minToe": 0.0249999226007116,
+    "maxAnkle": 24.00001499645114,
+    "maxAnkleSpeed": 720.0004498935342,
+    "maxFlip": {
+      "time": 1.4,
+      "side": "right",
+      "action": "run",
+      "plant": false
+    },
+    "toeWorst": {
+      "time": 2.7333333333333334,
+      "side": "right",
+      "plant": true,
+      "age": 0.06666666666666667,
+      "ankle": [
+        0.026908737718779996,
+        5.554419183221245,
+        18.05008594740394
+      ]
+    }
+  },
+  {
+    "fps": 30,
+    "key": "run",
+    "grade": -0.3,
+    "minToe": 0.024999965724717355,
+    "maxAnkle": 24.00001513561598,
+    "maxAnkleSpeed": 720.0004540684794,
+    "maxFlip": {
+      "time": 1.4,
+      "side": "right",
+      "action": "run",
+      "plant": false
+    },
+    "toeWorst": {
+      "time": 0.3333333333333333,
+      "side": "left",
+      "plant": false,
+      "ankle": [
+        -0.005612850699984968,
+        -0.2691250004821396,
+        1.5081005018479643
+      ]
+    }
+  },
+  {
+    "fps": 60,
+    "key": "walk",
+    "grade": 0,
+    "minToe": 0.024999957807486303,
+    "maxAnkle": 9.683881251376404,
+    "maxAnkleSpeed": 581.0328750825843,
+    "maxFlip": {
+      "time": 2.1666666666666665,
+      "side": "right",
+      "action": "walk",
+      "plant": true
+    },
+    "toeWorst": {
+      "time": 2.4166666666666665,
+      "side": "right",
+      "plant": true,
+      "age": 0.2833333333333333,
+      "ankle": [
+        -0.04607686097717093,
+        0.13456901616989492,
+        3.9301471256599143
+      ]
+    }
+  },
+  {
+    "fps": 60,
+    "key": "walk",
+    "grade": 0.3,
+    "minToe": 0.024999921982403528,
+    "maxAnkle": 12.000007488416466,
+    "maxAnkleSpeed": 720.000449304988,
+    "maxFlip": {
+      "time": 0.7166666666666667,
+      "side": "right",
+      "action": "walk",
+      "plant": true
+    },
+    "toeWorst": {
+      "time": 2.4,
+      "side": "right",
+      "plant": true,
+      "age": 0.3,
+      "ankle": [
+        -0.05773850204802988,
+        1.3105666349625,
+        3.903910743559329
+      ]
+    }
+  },
+  {
+    "fps": 60,
+    "key": "walk",
+    "grade": -0.3,
+    "minToe": 0.024999958545183,
+    "maxAnkle": 11.999998532745948,
+    "maxAnkleSpeed": 719.9999119647568,
+    "maxFlip": {
+      "time": 0.9166666666666666,
+      "side": "right",
+      "action": "walk",
+      "plant": true
+    },
+    "toeWorst": {
+      "time": 2.433333333333333,
+      "side": "right",
+      "plant": true,
+      "age": 0.3,
+      "ankle": [
+        -0.0460768986666639,
+        -1.0396507150561551,
+        3.9301471140399395
+      ]
+    }
+  },
+  {
+    "fps": 60,
+    "key": "jog",
+    "grade": 0,
+    "minToe": 0.024999952969889327,
+    "maxAnkle": 12.000020839011006,
+    "maxAnkleSpeed": 720.0012503406604,
+    "maxFlip": {
+      "time": 1.5833333333333333,
+      "side": "right",
+      "action": "jog",
+      "plant": false
+    },
+    "toeWorst": {
+      "time": 0.8166666666666667,
+      "side": "left",
+      "plant": true,
+      "age": 0.15,
+      "ankle": [
+        0.06259285618401825,
+        0.13456921517583298,
+        2.4324716521918215
+      ]
+    }
+  },
+  {
+    "fps": 60,
+    "key": "jog",
+    "grade": 0.3,
+    "minToe": 0.024999925521415278,
+    "maxAnkle": 12.000025913064993,
+    "maxAnkleSpeed": 720.0015547838996,
+    "maxFlip": {
+      "time": 1.5833333333333333,
+      "side": "right",
+      "action": "jog",
+      "plant": false
+    },
+    "toeWorst": {
+      "time": 2.466666666666667,
+      "side": "left",
+      "plant": false,
+      "ankle": [
+        0.1004563448529728,
+        2.717234831342398,
+        8.288219442686223
+      ]
+    }
+  },
+  {
+    "fps": 60,
+    "key": "jog",
+    "grade": -0.3,
+    "minToe": 0.024999850499163867,
+    "maxAnkle": 12.000020612932673,
+    "maxAnkleSpeed": 720.0012367759604,
+    "maxFlip": {
+      "time": 1.5833333333333333,
+      "side": "right",
+      "action": "jog",
+      "plant": false
+    },
+    "toeWorst": {
+      "time": 0.8166666666666667,
+      "side": "right",
+      "plant": false,
+      "ankle": [
+        -0.16946525871656518,
+        -0.44961262617685704,
+        2.2405074829099623
+      ]
+    }
+  },
+  {
+    "fps": 60,
+    "key": "regularRun",
+    "grade": 0,
+    "minToe": 0.02499997763975989,
+    "maxAnkle": 12.000003604422957,
+    "maxAnkleSpeed": 720.0002162653775,
+    "maxFlip": {
+      "time": 0.7166666666666667,
+      "side": "left",
+      "action": "regularRun",
+      "plant": false
+    },
+    "toeWorst": {
+      "time": 2.466666666666667,
+      "side": "left",
+      "plant": true,
+      "age": 0.18333333333333332,
+      "ankle": [
+        -0.008839914259195822,
+        0.13456921614878709,
+        11.452971908048847
+      ]
+    }
+  },
+  {
+    "fps": 60,
+    "key": "regularRun",
+    "grade": 0.3,
+    "minToe": 0.02499996633403523,
+    "maxAnkle": 12.000020918346806,
+    "maxAnkleSpeed": 720.0012551008083,
+    "maxFlip": {
+      "time": 1.0833333333333333,
+      "side": "left",
+      "action": "regularRun",
+      "plant": true
+    },
+    "toeWorst": {
+      "time": 1.3,
+      "side": "right",
+      "plant": true,
+      "age": 0.06666666666666667,
+      "ankle": [
+        -0.0896807952061571,
+        2.081077440385014,
+        6.4722800472879145
+      ]
+    }
+  },
+  {
+    "fps": 60,
+    "key": "regularRun",
+    "grade": -0.3,
+    "minToe": 0.0249999602417319,
+    "maxAnkle": 12.000003575979692,
+    "maxAnkleSpeed": 720.0002145587815,
+    "maxFlip": {
+      "time": 1.4166666666666667,
+      "side": "left",
+      "action": "regularRun",
+      "plant": false
+    },
+    "toeWorst": {
+      "time": 0.08333333333333333,
+      "side": "right",
+      "plant": false,
+      "ankle": [
+        -0.1537540373848677,
+        0.1621601881558387,
+        0.08685755091586495
+      ]
+    }
+  },
+  {
+    "fps": 60,
+    "key": "run",
+    "grade": 0,
+    "minToe": 0.024999969463459268,
+    "maxAnkle": 12.000012004716423,
+    "maxAnkleSpeed": 720.0007202829854,
+    "maxFlip": {
+      "time": 2.6,
+      "side": "right",
+      "action": "run",
+      "plant": false
+    },
+    "toeWorst": {
+      "time": 0.4666666666666667,
+      "side": "right",
+      "plant": true,
+      "age": 0.06666666666666667,
+      "ankle": [
+        0.027799445449554136,
+        0.13456901616847966,
+        3.1095145813138423
+      ]
+    }
+  },
+  {
+    "fps": 60,
+    "key": "run",
+    "grade": 0.3,
+    "minToe": 0.02499993019221325,
+    "maxAnkle": 12.000032429414322,
+    "maxAnkleSpeed": 720.0019457648593,
+    "maxFlip": {
+      "time": 2.8666666666666667,
+      "side": "right",
+      "action": "run",
+      "plant": true
+    },
+    "toeWorst": {
+      "time": 1.6,
+      "side": "right",
+      "plant": true,
+      "age": 0.05,
+      "ankle": [
+        0.025388629881165775,
+        3.324732935411292,
+        10.573822078094382
+      ]
+    }
+  },
+  {
+    "fps": 60,
+    "key": "run",
+    "grade": -0.3,
+    "minToe": 0.024999958218600682,
+    "maxAnkle": 12.000011537058867,
+    "maxAnkleSpeed": 720.000692223532,
+    "maxFlip": {
+      "time": 2.6,
+      "side": "right",
+      "action": "run",
+      "plant": false
+    },
+    "toeWorst": {
+      "time": 0.31666666666666665,
+      "side": "left",
+      "plant": true,
+      "age": 0.19999999999999998,
+      "ankle": [
+        0.028830718849594435,
+        -0.25326533971033494,
+        1.3088632158603133
+      ]
+    }
+  },
+  {
+    "fps": 144,
+    "key": "walk",
+    "grade": 0,
+    "minToe": 0.02499995854397842,
+    "maxAnkle": 5.000067084180041,
+    "maxAnkleSpeed": 720.0096601219259,
+    "maxFlip": {
+      "time": 2.1319444444444446,
+      "side": "left",
+      "action": "walk",
+      "plant": true
+    },
+    "toeWorst": {
+      "time": 2.4166666666666665,
+      "side": "right",
+      "plant": true,
+      "age": 0.2569444444444445,
+      "ankle": [
+        -0.043334888351723236,
+        0.13456901749672034,
+        3.932451231653894
+      ]
+    }
+  },
+  {
+    "fps": 144,
+    "key": "walk",
+    "grade": 0.3,
+    "minToe": 0.024999921424158744,
+    "maxAnkle": 5.000092230847058,
+    "maxAnkleSpeed": 720.0132812419764,
+    "maxFlip": {
+      "time": 2.6666666666666665,
+      "side": "right",
+      "action": "walk",
+      "plant": true
+    },
+    "toeWorst": {
+      "time": 2.4097222222222223,
+      "side": "right",
+      "plant": true,
+      "age": 0.2916666666666666,
+      "ankle": [
+        -0.05820821371554827,
+        1.3101972123382655,
+        3.9026793351656437
+      ]
+    }
+  },
+  {
+    "fps": 144,
+    "key": "walk",
+    "grade": -0.3,
+    "minToe": 0.024999960435587054,
+    "maxAnkle": 5.000006786790576,
+    "maxAnkleSpeed": 720.000977297843,
+    "maxFlip": {
+      "time": 1.8888888888888888,
+      "side": "left",
+      "action": "walk",
+      "plant": true
+    },
+    "toeWorst": {
+      "time": 1.2013888888888888,
+      "side": "right",
+      "plant": true,
+      "age": 0.2916666666666666,
+      "ankle": [
+        -0.04204573813800573,
+        -0.4390750773310452,
+        1.9282283190882379
+      ]
+    }
+  },
+  {
+    "fps": 144,
+    "key": "jog",
+    "grade": 0,
+    "minToe": 0.024999952364739536,
+    "maxAnkle": 5.000056013621419,
+    "maxAnkleSpeed": 720.0080659614844,
+    "maxFlip": {
+      "time": 1.5902777777777777,
+      "side": "right",
+      "action": "jog",
+      "plant": false
+    },
+    "toeWorst": {
+      "time": 0.8333333333333334,
+      "side": "left",
+      "plant": true,
+      "age": 0.14583333333333337,
+      "ankle": [
+        0.06145134602191738,
+        0.13456921447161813,
+        2.4422115994183913
+      ]
+    }
+  },
+  {
+    "fps": 144,
+    "key": "jog",
+    "grade": 0.3,
+    "minToe": 0.024999919193775533,
+    "maxAnkle": 5.000073207157154,
+    "maxAnkleSpeed": 720.0105418306302,
+    "maxFlip": {
+      "time": 1.7986111111111112,
+      "side": "right",
+      "action": "jog",
+      "plant": true
+    },
+    "toeWorst": {
+      "time": 2.4722222222222223,
+      "side": "left",
+      "plant": false,
+      "ankle": [
+        0.10300466634040906,
+        2.7087673159641756,
+        8.259457569460299
+      ]
+    }
+  },
+  {
+    "fps": 144,
+    "key": "jog",
+    "grade": -0.3,
+    "minToe": 0.024999829015173836,
+    "maxAnkle": 5.0000560265758365,
+    "maxAnkleSpeed": 720.0080678269204,
+    "maxFlip": {
+      "time": 1.5902777777777777,
+      "side": "right",
+      "action": "jog",
+      "plant": false
+    },
+    "toeWorst": {
+      "time": 0.4861111111111111,
+      "side": "left",
+      "plant": false,
+      "ankle": [
+        0.1096303895461273,
+        -0.09532101842301963,
+        1.0904627142781678
+      ]
+    }
+  },
+  {
+    "fps": 144,
+    "key": "regularRun",
+    "grade": 0,
+    "minToe": 0.024999976155991394,
+    "maxAnkle": 5.000034368075227,
+    "maxAnkleSpeed": 720.0049490028326,
+    "maxFlip": {
+      "time": 2.4930555555555554,
+      "side": "left",
+      "action": "regularRun",
+      "plant": true
+    },
+    "toeWorst": {
+      "time": 1.0833333333333333,
+      "side": "left",
+      "plant": true,
+      "age": 0.15972222222222227,
+      "ankle": [
+        -0.01922143289125728,
+        0.13456921696249963,
+        4.781888688911227
+      ]
+    }
+  },
+  {
+    "fps": 144,
+    "key": "regularRun",
+    "grade": 0.3,
+    "minToe": 0.02499996311435737,
+    "maxAnkle": 5.000069921953303,
+    "maxAnkleSpeed": 720.0100687612756,
+    "maxFlip": {
+      "time": 1.0833333333333333,
+      "side": "left",
+      "action": "regularRun",
+      "plant": true
+    },
+    "toeWorst": {
+      "time": 2.0069444444444446,
+      "side": "right",
+      "plant": true,
+      "age": 0.06250000000000001,
+      "ankle": [
+        -0.09199306261327658,
+        3.088317807149257,
+        9.822677725372216
+      ]
+    }
+  },
+  {
+    "fps": 144,
+    "key": "regularRun",
+    "grade": -0.3,
+    "minToe": 0.02499996241601475,
+    "maxAnkle": 5.000012326837778,
+    "maxAnkleSpeed": 720.00177506464,
+    "maxFlip": {
+      "time": 2.3333333333333335,
+      "side": "left",
+      "action": "regularRun",
+      "plant": true
+    },
+    "toeWorst": {
+      "time": 0.09027777777777778,
+      "side": "right",
+      "plant": false,
+      "ankle": [
+        -0.15349699244422582,
+        0.15788739132776414,
+        0.08736338972577856
+      ]
+    }
+  },
+  {
+    "fps": 144,
+    "key": "run",
+    "grade": 0,
+    "minToe": 0.024999968726401076,
+    "maxAnkle": 5.000056710553615,
+    "maxAnkleSpeed": 720.0081663197205,
+    "maxFlip": {
+      "time": 1.7083333333333333,
+      "side": "right",
+      "action": "run",
+      "plant": true
+    },
+    "toeWorst": {
+      "time": 1.6319444444444444,
+      "side": "right",
+      "plant": true,
+      "age": 0.06944444444444446,
+      "ankle": [
+        0.03131362158425979,
+        0.13456901460026505,
+        10.56683576494972
+      ]
+    }
+  },
+  {
+    "fps": 144,
+    "key": "run",
+    "grade": 0.3,
+    "minToe": 0.024999930164198325,
+    "maxAnkle": 5.000120224201799,
+    "maxAnkleSpeed": 720.0173122850591,
+    "maxFlip": {
+      "time": 2.2777777777777777,
+      "side": "right",
+      "action": "run",
+      "plant": true
+    },
+    "toeWorst": {
+      "time": 1.6111111111111112,
+      "side": "right",
+      "plant": true,
+      "age": 0.04861111111111112,
+      "ankle": [
+        0.02833384140861772,
+        3.3228105510422035,
+        10.56308380416545
+      ]
+    }
+  },
+  {
+    "fps": 144,
+    "key": "run",
+    "grade": -0.3,
+    "minToe": 0.024999961897912315,
+    "maxAnkle": 5.000037645124218,
+    "maxAnkleSpeed": 720.0054208978873,
+    "maxFlip": {
+      "time": 2.0208333333333335,
+      "side": "right",
+      "action": "run",
+      "plant": false
+    },
+    "toeWorst": {
+      "time": 0.3263888888888889,
+      "side": "left",
+      "plant": true,
+      "age": 0.18750000000000006,
+      "ankle": [
+        0.02532428651098735,
+        -0.25840813903093884,
+        1.3260058748383554
+      ]
+    }
+  }
+]

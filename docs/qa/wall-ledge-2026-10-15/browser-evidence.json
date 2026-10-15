@@ -1,0 +1,22 @@
+{
+  "url": "http://127.0.0.1:5194/?motionReview&city=procedural",
+  "samples": [
+    {
+      "time": 1.15,
+      "status": "시나리오 1.15초\nWALL_RUNNING → MANTLING\n모션: wall\nwall · 1.47초 / 2.00초 · 속도 3.11 m/s"
+    },
+    {
+      "time": 1.75,
+      "status": "시나리오 1.75초\nWALL_RUNNING → MANTLING\n모션: wall → idle\nidle · 0.07초 / 4.00초 · 속도 4.54 m/s"
+    },
+    {
+      "time": 2.5,
+      "status": "시나리오 2.50초\nWALL_RUNNING → MANTLING → RUNNING → IDLE\n모션: wall → idle → walk → stop → idle\nidle · 0.12초 / 4.00초 · 속도 0.17 m/s"
+    },
+    {
+      "time": 3.2,
+      "status": "시나리오 3.20초\nWALL_RUNNING → MANTLING → RUNNING → IDLE\n모션: wall → idle → walk → stop → idle\nidle · 0.82초 / 4.00초 · 속도 0.00 m/s"
+    }
+  ],
+  "logs": []
+}

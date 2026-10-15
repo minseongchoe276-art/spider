@@ -1,0 +1,45 @@
+Complete motion review: 0 passed, 44 failed.
+FAIL 24fps first-person strikes peak inside their authored impact phase: jab: maximum extension misses the authored impact (0.000m instead of 0.38m)
+FAIL 24fps hit keeps a supported foot during the full hit reaction: Hit reaction floated 81.3mm above its support
+FAIL 24fps hitHead keeps a supported foot during the full hit reaction: Hit reaction floated 62.8mm above its support
+FAIL 24fps three-point landing stays grounded throughout its recovery: A grounded recovery raised the pelvis to 6.98m
+FAIL 24fps long-running mixer starts a fade without a precision jump: Large mixer time displaced a joint by 12.1mm at fade start
+FAIL 24fps reversal keeps the current blended rig pose: Returning to a fading clip displaced a joint by 642.0mm without advancing time
+FAIL 24fps first-person jab moves the correct arm and its wrist together: jab: wrist anchor is outside its visible arm
+FAIL 24fps first-person cross moves the correct arm and its wrist together: cross: wrist anchor is outside its visible arm
+FAIL 24fps first-person hook moves the correct arm and its wrist together: hook: wrist anchor is outside its visible arm
+FAIL 24fps first-person heavy moves the correct arm and its wrist together: heavy: wrist anchor is outside its visible arm
+FAIL 24fps first-person special moves the correct arm and its wrist together: special: wrist anchor is outside its visible arm
+FAIL 30fps first-person strikes peak inside their authored impact phase: jab: maximum extension misses the authored impact (0.000m instead of 0.38m)
+FAIL 30fps hit keeps a supported foot during the full hit reaction: Hit reaction floated 81.3mm above its support
+FAIL 30fps hitHead keeps a supported foot during the full hit reaction: Hit reaction floated 62.8mm above its support
+FAIL 30fps three-point landing stays grounded throughout its recovery: A grounded recovery raised the pelvis to 6.98m
+FAIL 30fps long-running mixer starts a fade without a precision jump: Large mixer time displaced a joint by 12.1mm at fade start
+FAIL 30fps reversal keeps the current blended rig pose: Returning to a fading clip displaced a joint by 657.4mm without advancing time
+FAIL 30fps first-person jab moves the correct arm and its wrist together: jab: wrist anchor is outside its visible arm
+FAIL 30fps first-person cross moves the correct arm and its wrist together: cross: wrist anchor is outside its visible arm
+FAIL 30fps first-person hook moves the correct arm and its wrist together: hook: wrist anchor is outside its visible arm
+FAIL 30fps first-person heavy moves the correct arm and its wrist together: heavy: wrist anchor is outside its visible arm
+FAIL 30fps first-person special moves the correct arm and its wrist together: special: wrist anchor is outside its visible arm
+FAIL 60fps first-person strikes peak inside their authored impact phase: jab: maximum extension misses the authored impact (0.000m instead of 0.38m)
+FAIL 60fps hit keeps a supported foot during the full hit reaction: Hit reaction floated 81.3mm above its support
+FAIL 60fps hitHead keeps a supported foot during the full hit reaction: Hit reaction floated 62.8mm above its support
+FAIL 60fps three-point landing stays grounded throughout its recovery: A grounded recovery raised the pelvis to 6.98m
+FAIL 60fps long-running mixer starts a fade without a precision jump: Large mixer time displaced a joint by 12.1mm at fade start
+FAIL 60fps reversal keeps the current blended rig pose: Returning to a fading clip displaced a joint by 682.9mm without advancing time
+FAIL 60fps first-person jab moves the correct arm and its wrist together: jab: wrist anchor is outside its visible arm
+FAIL 60fps first-person cross moves the correct arm and its wrist together: cross: wrist anchor is outside its visible arm
+FAIL 60fps first-person hook moves the correct arm and its wrist together: hook: wrist anchor is outside its visible arm
+FAIL 60fps first-person heavy moves the correct arm and its wrist together: heavy: wrist anchor is outside its visible arm
+FAIL 60fps first-person special moves the correct arm and its wrist together: special: wrist anchor is outside its visible arm
+FAIL 144fps first-person strikes peak inside their authored impact phase: jab: maximum extension misses the authored impact (0.000m instead of 0.38m)
+FAIL 144fps hit keeps a supported foot during the full hit reaction: Hit reaction floated 81.3mm above its support
+FAIL 144fps hitHead keeps a supported foot during the full hit reaction: Hit reaction floated 62.8mm above its support
+FAIL 144fps three-point landing stays grounded throughout its recovery: A grounded recovery raised the pelvis to 6.98m
+FAIL 144fps long-running mixer starts a fade without a precision jump: Large mixer time displaced a joint by 12.1mm at fade start
+FAIL 144fps reversal keeps the current blended rig pose: Returning to a fading clip displaced a joint by 695.4mm without advancing time
+FAIL 144fps first-person jab moves the correct arm and its wrist together: jab: wrist anchor is outside its visible arm
+FAIL 144fps first-person cross moves the correct arm and its wrist together: cross: wrist anchor is outside its visible arm
+FAIL 144fps first-person hook moves the correct arm and its wrist together: hook: wrist anchor is outside its visible arm
+FAIL 144fps first-person heavy moves the correct arm and its wrist together: heavy: wrist anchor is outside its visible arm
+FAIL 144fps first-person special moves the correct arm and its wrist together: special: wrist anchor is outside its visible arm

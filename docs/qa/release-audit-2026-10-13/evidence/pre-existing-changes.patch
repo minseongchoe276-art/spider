@@ -1,0 +1,2485 @@
+diff --git a/README.md b/README.md
+index 1ba4b86..336bcc1 100644
+--- a/README.md
++++ b/README.md
+@@ -1,6 +1,6 @@
+ # Spider-Man Web Swing
+ 
+-Three.js + Rapier 기반 데스크톱 키보드/마우스 이동·웹 스윙 게임입니다. WebSocket 방에서 2~8명이 함께 플레이할 수 있습니다.
++Three.js + Rapier 기반 데스크톱 키보드/마우스 이동·웹 스윙 게임입니다. 로컬 WebSocket 또는 운영 Supabase 방에서 2~8명이 함께 플레이할 수 있습니다.
+ 기본 지도는 홍콩 3D Tiles 스트리밍이며, 로컬 절차 도시도 제공됩니다.
+ 
+ ## 실행
+@@ -24,10 +24,16 @@ npm start
+ `npm start`는 `dist`, 실시간 방 서버, 홍콩 지도용 읽기 전용 프록시를 `127.0.0.1:4173`에서 제공합니다.
+ 다른 포트는 `PORT=5175 npm start`로 설정합니다. 온라인 방은 `npm run dev` 또는 `npm start`에서 사용하세요.
+ 같은 네트워크의 다른 기기에서 접속하려면 `HOST=0.0.0.0 npm start`로 실행하고 서버 컴퓨터의 LAN IP와 포트로 접속하세요.
+-인터넷 접속에는 이 서버를 공개 호스트에 배포하고 HTTPS/WSS 및 방화벽 설정을 해야 합니다. 방 상태는 서버 메모리에만 보관되어 재시작하면 사라집니다.
++WebSocket 방식의 인터넷 접속에는 이 서버를 공개 호스트에 배포하고 HTTPS/WSS 및 방화벽 설정을 해야 합니다. 이 방식의 방 상태는 서버 메모리에 보관되어 재시작하면 사라집니다. 프로덕션 빌드는 기본적으로 Supabase를 사용하며 운영 설정은 `docs/ONLINE_SUPABASE.md`를 참고하세요.
+ 정적 파일 호스팅만으로는 기본 홍콩 지도 프록시가 제공되지 않습니다. 실제 공개 호스팅에는 이 실행 서버
+ 또는 동등한 `/urban-tiles/api/3d-data/` 프록시와 HTTPS 구성이 필요합니다.
+-이 저장소에서 공개 배포는 실행하지 않았습니다.
++이번 모션·지도 수정의 프런트엔드 배포는 실행하지 않았습니다. 운영 Supabase에는 모션 동기화 RPC를 적용하고 실제 2인 접속을 검증했습니다.
++
++### Vercel 화면과 별도 방 서버
++
++Vercel의 정적 배포에서는 기본 Supabase 방 연결을 사용합니다. `/ws` 방식으로 운영하려면 이 저장소의 Node 서버를 WebSocket을 지원하는 별도 웹 서비스에서 실행하세요. Render를 쓴다면 같은 Git 저장소를 연결해 저장소 루트의 `render.yaml` Blueprint로 Web Service를 만드세요. 설정에는 `npm ci && npm run build`, `npm start`, `HOST=0.0.0.0`이 포함되어 있습니다. 호스팅 서비스가 제공하는 `PORT`를 서버가 사용합니다. 무료 플랜은 유휴 시 잠들었다가 다음 연결 때 다시 시작하므로 첫 연결이 늦어질 수 있습니다.
++
++방 서버의 HTTPS 주소가 `https://YOUR-ROOM-SERVER`라면, Vercel 프로젝트의 **Environment Variables**에 `VITE_WS_URL=wss://YOUR-ROOM-SERVER/ws`를 설정하고 **재배포**하세요. 이 값은 브라우저에 포함되는 공개 주소이므로 비밀번호를 넣지 마세요. 로컬 `npm run dev`에서는 이 변수를 설정하지 않으면 기존처럼 같은 주소의 `/ws`에 연결합니다. 로비에 `온라인 · 방을 선택하세요`가 표시되고 실제 방을 만들고 다른 브라우저에서 코드로 입장되는지 확인하세요. 별도 서버를 여러 인스턴스로 늘리면 현재 메모리 기반 방 상태를 공유 저장소로 옮겨야 합니다.
+ 
+ ## 온라인 플레이
+ 
+@@ -42,9 +48,10 @@ npm start
+ - 전투 모드: 좌클릭은 왼손 잽, 우클릭은 오른손 스트레이트. B를 누르는 동안 방어, E는 훅, G는 강한 잽, Ctrl+방향키는 회피. Q로 전투/거미줄 모드를 전환합니다. 경찰과 도망자에서 도망자는 거미줄 모드로 고정됩니다.
+ - W/A/S/D 또는 방향키: 카메라가 보는 방향이 앞이고 화면 오른쪽이 D입니다. Shift: 질주.
+ - Space: 점프, 벽 점프. 줄에 매달린 상태에서는 속도를 안고 뛰어내립니다.
+-- 좌클릭: 누르고 있는 동안 왼손과 오른손 줄을 함께 쓸 수 있습니다. 첫 발사는 왼손, 다음은 오른손이고, 그다음부터는 쏘는 손의 줄만 바뀝니다. 버튼을 떼면 두 줄을 놓으며, 올라가는 중이거나 수평 속도가 빠를 때 속도를 더합니다. 전투 모드여도 공중 좌클릭은 거미줄을 쏘고, 땅에 있을 때만 잽입니다. 붙을 곳이 없으면 그대로 떨어집니다.
+-- 우클릭: 바라보는 지점으로 집. 조준이 빗나가면 지금 줄이나 마지막 부착점으로 당긴 뒤 한 줄 스윙이 됩니다. E는 공중에서 한 번만 쓰는 강한 집이고, 착지하면 다시 쓸 수 있습니다. 전투 모드에서 땅의 우클릭은 스트레이트, 땅의 E는 훅입니다.
+-- F+W: 벽 달리기. T: 공중 묘기.
++- 좌클릭: 점프 후 공중에서 꾹 누르면 한 부착점과 고정 길이의 줄에 매달려 진자처럼 스윙합니다. 누르는 동안 다시 발사하거나 줄을 감지 않습니다. 놓으면 추가 가속 없이 관성으로 날아갑니다. W/A/S/D로 줄의 접선 방향을 조절합니다. 전투 모드에서도 공중 좌클릭은 거미줄이고, 땅에서는 잽입니다. 붙을 곳이 없거나 줄 사이가 가려지면 자유 낙하합니다.
++- 우클릭: 좌클릭이 쓰는 손의 반대 손에서 같은 진자 스윙을 겁니다. 꾹 누르면 그 줄에 매달리고, 떼면 그 손만 놓으며 추가 가속은 없습니다. 두 버튼을 함께 누르면 두 줄이 같이 몸을 붙잡습니다. 지상 전투 모드에서는 스트레이트이고, 공중 전투에서는 거미줄입니다.
++- E: 공중에서 착지당 한 번 쓰는 집입니다. 좌클릭과 같은 조준점을 사용하며, 도착 때 좌클릭을 누르고 있으면 그 부착점에 매달립니다. 누르지 않으면 줄을 놓습니다. 벽에 막히거나 시간이 끝나면 줄을 해제합니다. 지상 전투 모드에서는 훅입니다.
++- F+W: 벽 달리기. 공중에서 T: 앞구르기, W+T: 360도 회전, S+T: 뒤구르기, A/D+T: 좌우 옆회전, Shift+T: 코르크스크루. 줄을 놓은 뒤 사용하며 충분한 착지 여유가 필요합니다. 묘기를 끝내야 점수를 받고, 착지 전 다양한 종류를 연결하면 최대 2.5배, 같은 종류 반복은 점수가 감소합니다.
+ - 벽 꼭대기의 안전한 옥상에는 손·발 지지 전환으로 진입합니다. 진입 중 Space는 점프로 중단합니다.
+ - C: 카메라 정렬. V: 근접/기본/원거리/1인칭.
+ - 마우스 휠: 줌. 마우스 잠금 없이 시작하면 휠 버튼 드래그로 카메라 회전.
+@@ -59,10 +66,10 @@ npm start
+ ## 모션 데이터
+ 
+ `npm run dev`, `npm run build`, `npm test`는 원본 GLB/FBX와 리타게팅 코드의 해시를 확인합니다.
+-변경된 경우 `public/motions/`에 23개 모션의 트랙 데이터를 다시 생성합니다.
++변경된 경우 `public/motions/`에 39개 모션의 트랙 데이터를 다시 생성합니다.
+ 각 트랙 값의 직렬화 전후 일치를 검사하며 원본 FBX는 제작/검증용으로 보존합니다.
+ 컴파일된 트랙을 읽지 못하면 원본 FBX로 복구를 시도합니다.
+-23개는 18개 원본 FBX에서 파생한 클립을 포함합니다. 벽 이동과 웹 집은 원본 자세에
++39개는 24개 FBX와 2개 GLB 원본에서 파생한 클립을 포함합니다. 벽 이동과 웹 집은 원본 자세에
+ 런타임 관절 보정을 더하며, 여성 정지 원본은 비교용으로 보존하고 일반 정지에는 사용하지 않습니다.
+ `?motionReview`에서 원본 클립과 연결 시나리오를 구분해 볼 수 있고, 시간을 입력해 전환 장면을 재현할 수 있습니다.
+ 경사면에서는 지면 법선 기반 발/골반 보정, 계단에서는 발끝 높이 보정을 적용합니다.
+@@ -75,7 +82,10 @@ npm start
+ 모션 자연스러움 개선과 실제 캐릭터 화면 검증의 추가 기록은
+ `docs/qa/MOTION_NATURALNESS_2026-10-11.md`에 있습니다.
+ 옥상 넘기기·경사면·계단의 후속 구현과 최신 검증은 `docs/qa/TERRAIN_MANTLE_2026-10-11.md`에 있습니다.
+-왼손·오른손 두 줄이 함께 몸을 붙잡습니다. 검증 기록은 `docs/qa/DUAL_WEB_2026-10-11.md`에 있습니다.
++현재 기본 조작은 좌클릭과 우클릭이 각자 한 손의 고정 줄로 진자 스윙을 하는 것입니다. 우클릭은 좌클릭 손의 반대 손입니다. 내부 두 줄 제약 검증은 `docs/qa/DUAL_WEB_2026-10-11.md`에 보존되어 있습니다.
++3D 지형 지도·온라인 모션·실제 2인 접속의 후속 검증은 `docs/qa/MOTION_MAP_ONLINE_2026-10-13.md`에 있습니다.
++최근 메커니즘 점검과 검증 범위는 `docs/qa/MECHANICS_AUDIT_2026-10-12.md`에 있습니다.
++양손 재부착·줄 잔상·집 경로 장애물 등 실제 입력의 후속 수정과 로컬/홍콩 브라우저 검증은 `docs/qa/PLAYER_AUDIT_2026-10-13.md`에 있습니다.
+ 레이스 기록은 실제 활성 시간 기준의 v4 코스로 구분하며 이전 시간 계산 방식의 기록과 비교하지 않습니다.
+-수정 전 소스 백업은 `docs/qa/source-before-fixes.tar.gz`입니다. Git 저장소는 구성되어 있지 않습니다.
++수정 전 소스 백업은 `docs/qa/source-before-fixes.tar.gz`입니다. 현재 작업은 Git으로 관리합니다.
+ 원본 도시 데이터, 캐릭터, 모션, 폰트와 이름의 공개 배포 권한은 별도로 확인해야 합니다.
+diff --git a/docs/ONLINE_SUPABASE.md b/docs/ONLINE_SUPABASE.md
+index b66d16e..340c166 100644
+--- a/docs/ONLINE_SUPABASE.md
++++ b/docs/ONLINE_SUPABASE.md
+@@ -18,6 +18,16 @@ Supabase 대시보드에서 **Authentication → Sign In / Providers → Anonymo
+ 떠나는 요청을 보내지 못하면 마지막 활동 후 120초가 지나 다음 방 요청 때
+ 정리됩니다. 방 목록은 5초마다 갱신됩니다.
+ 
++`supabase/migrations/20261012140000_game_move_pose.sql`은 기존 이동 검증을
++통과한 업데이트의 모션·속도·손별 거미줄·벽 자세를 같은 방에 전달합니다.
++서버의 인증 ID를 사용하며, 체력과 공격 판정은 기존 서버 규칙을 유지합니다.
++이 마이그레이션은 운영 `spider` 프로젝트에 적용하고 검증했습니다.
++
++브라우저 탭마다 별도의 인증 저장 키를 사용합니다. 같은 브라우저의 두 탭도
++독립된 플레이어로 참가할 수 있고, 새로고침은 그 탭의 로그인과 방을 복구합니다.
++복제 탭은 브라우저의 세션 저장소 복사 방식에 따라 같은 플레이어가 될 수 있으므로
++2인 검증에서는 새 탭을 각각 여세요. 재접속 시 인증 클라이언트를 재사용합니다.
++
+ 배포 전에 실제 Supabase 통합 점검을 실행합니다:
+ 
+ ```sh
+@@ -27,4 +37,4 @@ node scripts/check-supabase-rooms.mjs
+ ```
+ 
+ Vercel은 GitHub `main`에 푸시하면 자동 배포됩니다. 배포 후 두 개의 독립된
+-브라우저 프로필에서 방 생성, 코드 참가, 준비, 시작, 이동을 확인합니다.
++브라우저 프로필 또는 별도로 연 탭에서 방 생성, 코드 참가, 준비, 시작, 이동을 확인합니다.
+diff --git a/index.html b/index.html
+index 16c31ff..f240fab 100644
+--- a/index.html
++++ b/index.html
+@@ -19,6 +19,7 @@
+     <canvas id="speedlines-canvas"></canvas>
+ 
+     <!-- Center Aim Reticle / Crosshair -->
++    <div id="anchor-preview" aria-hidden="true"></div><div id="hand-status" aria-label="양손 거미줄 상태"></div><div id="combo-hud" role="status"></div><div id="boundary-warning" role="status"></div><div id="pursuit-hud" role="status"></div><button id="spectate-next" class="hidden" type="button">다음 플레이어 관전</button>
+     <div id="crosshair">
+       <div class="crosshair-dot"></div>
+       <div class="crosshair-ring"></div>
+@@ -75,7 +76,8 @@
+       </div>
+       <div class="minimap-wrap">
+         <canvas id="minimap-canvas" role="img" aria-label="현재 위치 미니맵"></canvas>
+-        <span class="minimap-north" aria-hidden="true">N</span>
++        <span class="minimap-north" aria-hidden="true">N ↑</span>
++        <span class="minimap-legend">3D · <b>나</b> <i>친구</i></span>
+         <span class="minimap-range-label"><b id="minimap-range">600m</b> RANGE</span>
+       </div>
+       <output id="minimap-coordinates" aria-live="off">E +0m&nbsp; N +0m&nbsp; ·&nbsp; ALT 0m</output>
+@@ -111,20 +113,20 @@
+         </div>
+         <div class="guide-row">
+           <span class="key-badge">좌클릭</span>
+-          <span class="guide-desc key-accent">꾹 누르면 한 줄에 매달려 진자 스윙 · 떼면 관성 비행 · 땅의 전투는 잽</span>
++          <span class="guide-desc key-accent">점프 후 꾹 누르면 한 줄에 매달려 진자 스윙 · 떼면 관성 비행 · 땅의 전투는 잽</span>
+         </div>
+         <div class="guide-row">
+           <span class="key-badge">우클릭</span>
+-          <span class="guide-desc key-accent">땅의 전투: 스트레이트</span>
++          <span class="guide-desc key-accent">반대 손에서 같은 진자 스윙. 꾹 누르면 매달리고, 떼면 그 손만 놓습니다. 땅의 전투는 스트레이트</span>
+         </div>
+         <div class="guide-row"><span class="key-badge">B</span><span class="guide-desc">전투: 누르는 동안 방어</span></div>
+         <div class="guide-row">
+           <span class="key-badge">E</span>
+-          <span class="guide-desc">공중에서 한 번의 강한 집. 땅의 전투는 훅</span>
++          <span class="guide-desc">공중에서 착지당 한 번 집 · 도착 때 좌클릭 꾹이면 매달리기 · 땅의 전투는 훅</span>
+         </div>
+         <div class="guide-row">
+           <span class="key-badge">T</span>
+-          <span class="guide-desc">공중 묘기 (착지 여유 필요)</span>
++          <span class="guide-desc">줄을 놓고 T: 앞구르기 · W+T: 360도 · S+T: 뒤구르기 · A/D+T: 옆회전 · Shift+T: 코르크스크루</span>
+         </div>
+         <div class="guide-row">
+           <span class="key-badge">마우스 이동</span>
+@@ -176,6 +178,9 @@
+           </div>
+           <select id="room-mode" class="visually-hidden" aria-label="게임 모드"><option value="tag">경찰과 도망자 · 5분</option><option value="free">자유 플레이 · 제한 없음</option></select>
+           <div class="online-grid"><label class="online-field">방 이름<input id="room-name" maxlength="24" value="새로운 도시 여행"></label><label class="online-field">정원<select id="room-capacity"><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option selected>8</option></select></label></div>
++        <div id="extended-settings" class="pause-settings"></div>
++        <details class="player-progress"><summary>탐험 기록 · 보상</summary><p id="progress-summary"></p><label for="web-theme">거미줄 색상</label><select id="web-theme"><option value="white">기본 흰색</option></select><button id="btn-save-position" type="button">안전 위치 저장</button><button id="btn-restore-position" type="button">저장 위치로 복귀</button></details>
++        <details class="player-progress"><summary>전투 연습</summary><p>현재 위치의 안전한 바닥에서 시작합니다. 온라인 경기에서는 사용할 수 없습니다.</p><select id="practice-type" aria-label="전투 연습 종류"><option value="dummy">훈련 표적</option><option value="melee">근접 상대</option><option value="ranged">원거리 상대</option><option value="shield">방패 상대</option><option value="mixed">혼합 상대</option></select><button id="btn-practice" type="button">연습 시작</button><button id="btn-practice-stop" type="button">연습 종료</button></details>
+           <button id="create-room" class="online-primary" type="button">새 방 만들기 <span>↗</span></button>
+           <div class="online-divider"><span>또는 바로 합류</span></div>
+           <div class="online-inline"><input id="room-code" maxlength="6" placeholder="초대 코드 6자리" aria-label="방 코드"><button id="join-code" type="button">코드 입장</button></div>
+@@ -205,7 +210,7 @@
+         
+         <div class="start-instruction">
+           <div class="mouse-icon">🖱️</div>
+-          <span>Q 전투/거미줄 · 좌클릭 꾹: 진자 스윙 · 떼기: 관성 비행 · 우클릭: 땅에서 스트레이트 · E 공중 집 · B 방어 · Ctrl 회피<br>Esc 메뉴 · R 타임트라이얼 · <span id="world-limit">구역 원점 기준 ±2.4km</span></span>
++          <span>Q 전투/거미줄 · 좌클릭 꾹: 진자 스윙 · 우클릭 꾹: 반대 손 진자 · 떼기: 관성 비행 · E 공중 집 · B 방어 · Ctrl 회피<br>Esc 메뉴 · R 타임트라이얼 · <span id="world-limit">구역 원점 기준 ±2.4km</span></span>
+         </div>
+ 
+         <button id="btn-start-game" class="start-btn"><span>계속 플레이</span><b>↗</b></button>
+diff --git a/package.json b/package.json
+index 1940314..30d552e 100644
+--- a/package.json
++++ b/package.json
+@@ -7,7 +7,7 @@
+     "dev": "vite",
+     "build": "vite build",
+     "preview": "vite preview",
+-    "test": "node scripts/build-motions.mjs && node scripts/check-motions.mjs && node scripts/check-pose.mjs && node scripts/check-controller.mjs && node scripts/check-gameplay.mjs && node scripts/check-dual-web.mjs && node scripts/check-pendulum.mjs && node scripts/check-traversal.mjs && node scripts/check-qa.mjs && node scripts/check-review-2.mjs && node scripts/check-combat.mjs && node scripts/check-web-vfx.mjs && node scripts/check-superhero-landing-vfx.mjs && node scripts/check-combat-rig.mjs && node scripts/check-motion-timeline.mjs && node scripts/check-hong-kong-streaming.mjs && node scripts/check-minimap.mjs && node scripts/check-tile-textures.mjs && node scripts/check-multiplayer.mjs",
++    "test": "node scripts/build-motions.mjs && node scripts/check-motions.mjs && node scripts/check-pose.mjs && node scripts/check-controller.mjs && node scripts/check-gameplay.mjs && node scripts/check-air-tricks.mjs && node scripts/check-dual-web.mjs && node scripts/check-pendulum.mjs && node scripts/check-mechanics-audit.mjs && node scripts/check-player-audit.mjs && node scripts/check-traversal.mjs && node scripts/check-qa.mjs && node scripts/check-review-2.mjs && node scripts/check-combat.mjs && node scripts/check-web-vfx.mjs && node scripts/check-superhero-landing-vfx.mjs && node scripts/check-combat-rig.mjs && node scripts/check-motion-timeline.mjs && node scripts/check-hong-kong-streaming.mjs && node scripts/check-minimap.mjs && node scripts/check-remote-motion.mjs && node scripts/check-tile-textures.mjs && node scripts/check-multiplayer.mjs",
+     "predev": "node scripts/build-motions.mjs",
+     "prebuild": "node scripts/build-motions.mjs",
+     "start": "node scripts/serve.mjs"
+diff --git a/scripts/check-controller.mjs b/scripts/check-controller.mjs
+index a84d006..4b31c8b 100644
+--- a/scripts/check-controller.mjs
++++ b/scripts/check-controller.mjs
+@@ -37,7 +37,8 @@ const land=controller();land.position.y=0.3;land.velocity.y=-15;land.state='FALL
+ const roll=controller();roll.character.actions={roll:{getClip:()=>({duration:1,userData:{rootMotion:[{time:0,distance:0},{time:1,distance:2}]}})}};
+ roll.position.y=0.3;roll.velocity.set(0,-30,4);roll.state='FALLING';roll.update(1/60,input(),camera);assert.equal(roll.state,'ROLLING');advance(roll,input(),1.5);assert.equal(roll.state,'IDLE');assert(Math.abs(roll.position.z-2)<0.1);assert.equal(roll.velocity.length(),0);
+ const verticalLand=controller();verticalLand.position.y=0.3;verticalLand.velocity.y=-30;verticalLand.state='FALLING';verticalLand.update(1/60,input(),camera);assert.equal(verticalLand.state,'LANDING','Vertical falls must not launch a forward roll');
+-const zip=controller();assert.equal(zip.performAirJump(camera),false);assert.equal(zip.canAirJump,true,'A missed zip target must not consume the air ability');
++const zip=controller();zip.state='FALLING';zip.position.y=2;
++assert.equal(zip.performAirJump(camera),false);assert.equal(zip.canAirJump,true,'A missed zip target must not consume the air ability');
+ const facade=new THREE.Mesh(new THREE.BoxGeometry(10,20,2),new THREE.MeshBasicMaterial());facade.position.set(0,10,20);facade.updateMatrixWorld(true);zip.city.buildingMeshes=[facade];
+ assert.equal(zip.performAirJump(camera),true);assert.equal(zip.state,'WEB_ZIP');assert.equal(zip.canAirJump,false);advance(zip,input(),0.2);assert.equal(zip.state,'WEB_ZIP');
+ for(let t=0;zip.state==='WEB_ZIP'&&t<3;t+=1/60)zip.update(1/60,input(),camera);
+@@ -45,7 +46,8 @@ assert.notEqual(zip.state,'WEB_ZIP');assert(zip.position.z<20,'Zip passed throug
+ const zipArrival=zip.position.z;zip.update(1/60,input(),camera);
+ assert.equal(zip.isSwinging,false,'An air zip stayed attached after the button was already up');
+ assert(zip.position.z<zipArrival+1.5,'Letting go of an air zip launched through the wall on the release frame');
+-const aimedZip=controller();const offCenterBuilding=new THREE.Mesh(new THREE.BoxGeometry(4,10,2));
++const aimedZip=controller();aimedZip.state='FALLING';aimedZip.position.y=2;
++const offCenterBuilding=new THREE.Mesh(new THREE.BoxGeometry(4,10,2));
+ offCenterBuilding.position.set(-6,5,20);offCenterBuilding.updateMatrixWorld(true);aimedZip.city.buildingMeshes=[offCenterBuilding];
+ assert(aimedZip.performAirJump(camera,new THREE.Vector2(0.5,0)),'Screen-point web zip failed to acquire its clicked building');
+ assert(aimedZip.zipAnchor.x<-3,'Web zip ignored the right-click screen coordinate');
+@@ -62,7 +64,7 @@ grapple.update(1/120,holdPull,grappleCamera);
+ assert.equal(grapple.state,'WEB_ZIP','A held web silently replaced the pull with a newly aimed swing');
+ const persistentAnchor=grapple.lastWebAnchor.clone();
+ for(let elapsed=0;grapple.state==='WEB_ZIP'&&elapsed<4;elapsed+=1/120)
+-  grapple.update(1/120,input(),grappleCamera);
++  grapple.update(1/120,holdPull,grappleCamera);
+ assert.equal(grapple.state,'SWINGING','Grapple did not continue into a swing at the attached wall');
+ assert(Math.abs(grapple.position.distanceTo(persistentAnchor)-grapple.ropeLength)<0.5,
+   'Grapple arrival did not keep the player connected to the wall anchor');
+diff --git a/scripts/check-dual-web.mjs b/scripts/check-dual-web.mjs
+index e6a6fa5..c47c024 100644
+--- a/scripts/check-dual-web.mjs
++++ b/scripts/check-dual-web.mjs
+@@ -100,7 +100,7 @@ check('One obstructed strand releases only that hand',()=>{
+   assert.equal(p.isSwinging,false);assert.equal(p.state,'FALLING');assert.equal(p.webs.length,0);assert.equal(p.character.webAttachments.length,0);
+   assert.equal(p.performWebPull(camera),false,'Blocked old anchor allowed a pull through the wall');
+ });
+-check('Right-click zips to the latest anchor and arrives on that tether',()=>{
++check('The explicit pull API zips to the latest anchor and arrives on that tether',()=>{
+   const p=player();p.shoot(new THREE.Vector3(-5,20,2));p.shoot(new THREE.Vector3(5,20,2));
+   const latest=p.webs.at(-1).anchor.clone();assert(p.performWebPull(camera));
+   assert(p.zipAnchor.equals(latest));assert.equal(p.webs.length,0);assert.equal(p.pullHand,'right');
+@@ -128,8 +128,12 @@ check('Aimed facade shots keep a left web and a right web',()=>{
+   const i=input();const cam=new THREE.PerspectiveCamera();
+   for(let n=0;n<50;n++) {
+     const old=n/120,t=(n+1)/120;cam.position.copy(p.position).add(new THREE.Vector3(0,1.3,0));cam.rotation.y=Math.PI;
+-    i.webTap=false;i.webFireHeld=false;
+-    for(const [time,x,y] of [[0.05,-4,7],[0.3,4,7]])if(old<time && t>=time) {cam.lookAt(x,y,4);cam.updateMatrixWorld(true);i.webTap=true;i.webFireHeld=true;}
++    i.webTap=i.webTapRight=false;
++    for(const [time,x,y,button] of [[0.05,-4,7,0],[0.3,4,7,2]])if(old<time && t>=time) {
++      cam.lookAt(x,y,4);cam.updateMatrixWorld(true);
++      if(button===0)i.webTap=i.webFireHeld=true;
++      else i.webTapRight=i.webFireHeldRight=i.webHoldRight=true;
++    }
+     p.update(1/120,i,cam);
+   }
+   assert.equal(p.webs.length,2);assert.equal(p.state,'SWINGING');
+diff --git a/scripts/check-minimap.mjs b/scripts/check-minimap.mjs
+index 672bd40..ab0a445 100644
+--- a/scripts/check-minimap.mjs
++++ b/scripts/check-minimap.mjs
+@@ -1,6 +1,6 @@
+ import assert from 'node:assert/strict';
+ import * as THREE from 'three';
+-import { HongKongMinimap, isInsideMinimap, worldToHongKongCoordinates, worldToMinimap } from '../src/Minimap.js';
++import { HongKongMinimap, collectTerrainMeshes, configureTerrainCamera, isInsideMinimap, worldToHongKongCoordinates, worldToMinimap } from '../src/Minimap.js';
+ 
+ const center = { x: 100, z: -50 };
+ assert.deepEqual(worldToMinimap(center, center, 600, 100), { x: 100, y: 100 });
+@@ -30,3 +30,29 @@ const footprints=streamed.collectFootprints({x:0,z:0});
+ assert.equal(footprints.length,1,'Nearby streamed building was lost while sampling distant tiles');
+ assert(Math.abs(footprints[0].minX-14)<.001);
+ console.log('Minimap projection checks passed.');
++
++const camera=new THREE.OrthographicCamera();
++const focus=new THREE.Vector3(100,90,-50);
++configureTerrainCamera(camera,focus,240);
++const screen=p=>p.clone().project(camera);
++const ground=screen(new THREE.Vector3(100,0,-50));
++const roof=screen(new THREE.Vector3(100,100,-50));
++assert(roof.y>ground.y+.1,'Height disappeared from terrain projection');
++assert(screen(new THREE.Vector3(80,0,-50)).x>ground.x,'East points left');
++assert(screen(new THREE.Vector3(100,0,-30)).y>ground.y,'North points down');
++assert(roof.toArray().every(Number.isFinite));
++const group=new THREE.Group();group.position.set(20,0,30);group.add(near);
++const hidden=new THREE.Mesh(new THREE.BoxGeometry(20,20,20));hidden.visible=false;group.add(hidden);
++const terrain=collectTerrainMeshes({isStreamed:true,buildingMeshes:[...far,group]}, {x:0,z:0},600);
++assert.deepEqual(terrain,[near],'Group terrain lost its real geometry or included distant/hidden meshes');
++const map=Object.create(HongKongMinimap.prototype);
++Object.assign(map,{range:600,city:{isStreamed:true,buildingMeshes:[group]},mapScene:new THREE.Scene(),
++  terrainCopies:new Map(),terrainMaterial:new THREE.MeshLambertMaterial()});
++let disposed=0;near.geometry.addEventListener('dispose',()=>disposed++);
++map.syncTerrain({x:0,z:0});
++const copy=map.terrainCopies.get(near);
++assert.equal(copy.geometry,near.geometry,'Terrain triangles were replaced by tile boxes');
++assert.deepEqual(copy.matrix.elements,near.matrixWorld.elements,'Nested tile transform lost');
++map.syncTerrain({x:4000,z:0});
++assert.equal(map.terrainCopies.size,0);assert.equal(disposed,0,'Streaming out disposed the main city');
++console.log('PASS 3D minimap: height, compass, nested real terrain, distance filtering, shared geometry lifecycle');
+diff --git a/scripts/check-pendulum.mjs b/scripts/check-pendulum.mjs
+index df41df5..ef79a95 100644
+--- a/scripts/check-pendulum.mjs
++++ b/scripts/check-pendulum.mjs
+@@ -49,3 +49,85 @@ const {p}=player();const held=input();held.forward=true;
+ for(let n=0;n<240;n++)p.update(1/120,held,camera);
+ assert.equal(p.ropeLength,20,'W reeled the rope toward the anchor');
+ console.log('PASS PENDULUM: W applies tangent steering without shortening the rope');
++
++function bare() {
++  const shots=[];
++  const character={group:new THREE.Group(),update(){},stopAnimation(){},fireWeb(anchor,hand){this.currentHand=hand;shots.push(hand);}};
++  const city={buildingMeshes:[],colliders:[],checkCollision:()=>({collided:false}),getRooftopSpawn:()=>new THREE.Vector3(0,10,0)};
++  const body=new SwingPhysics(new THREE.Scene(),city,character,silent);
++  body.position.set(-12,44,0);body.velocity.set(0,0,0);
++  body.findBestAnchor=()=>new THREE.Vector3(0,60,0);
++  body.shots=shots;
++  return body;
++}
++const heldInput=side=>{
++  const value={forward:false,backward:false,left:false,right:false,strafe:0,jump:false,
++    webTap:false,webFireHeld:false,webHold:false,webTapRight:false,webFireHeldRight:false,webHoldRight:false};
++  if(side==='left')value.webTap=value.webFireHeld=value.webHold=true;
++  else value.webTapRight=value.webFireHeldRight=value.webHoldRight=true;
++  return value;
++};
++const ride=side=>{
++  const body=bare(),held=heldInput(side);
++  body.update(1/60,held,camera);
++  held.webTap=held.webTapRight=false;
++  for(let n=0;n<240;n++)body.update(1/60,held,camera);
++  return body;
++};
++const leftRide=ride('left'),rightRide=ride('right');
++assert.equal(leftRide.webs.length,1);assert.equal(leftRide.webs[0].hand,'left');assert.equal(leftRide.shots.length,1);
++assert.equal(rightRide.webs.length,1);assert.equal(rightRide.webs[0].hand,'right');assert.equal(rightRide.shots.length,1);
++assert.equal(rightRide.nextWebHand,'left','Right click advanced the left-click hand');
++assert(leftRide.anchorPoint.equals(rightRide.anchorPoint));
++assert.equal(leftRide.ropeLength,rightRide.ropeLength);
++assert(leftRide.position.distanceTo(rightRide.position)<1e-6,'Right-click pendulum diverged from the left-click pendulum');
++assert(leftRide.velocity.distanceTo(rightRide.velocity)<1e-6,'Right-click pendulum velocity diverged');
++console.log('PASS PENDULUM: right click matches the left-click Viking swing from the opposite hand');
++
++const paired=bare();
++paired.findBestAnchor=()=>paired.webs.length?new THREE.Vector3(5,30,2):new THREE.Vector3(-5,30,2);
++paired.position.set(0,10,0);
++const both=heldInput('left');
++paired.update(1/60,both,camera);
++assert.equal(paired.webs[0].hand,'left');assert.equal(paired.nextWebHand,'right');
++both.webTap=false;both.webTapRight=both.webFireHeldRight=both.webHoldRight=true;
++paired.update(1/60,both,camera);
++assert.deepEqual(paired.webs.map(web=>web.hand),['left','right']);
++assert.deepEqual(paired.webs.map(web=>web.button),[0,2]);
++assert.equal(paired.nextWebHand,'right');
++assert(paired.webs[0].anchor.x<0&&paired.webs[1].anchor.x>0);
++const boosts=[];
++const originalRelease=paired.releaseSwing.bind(paired);
++paired.releaseSwing=flag=>{boosts.push(flag);return originalRelease(flag);};
++const kept=paired.webs[1].length;
++both.webHold=both.webFireHeld=false;both.webTapRight=false;
++paired.update(1/60,both,camera);
++assert.equal(paired.webs.length,1);assert.equal(paired.webs[0].hand,'right');assert.equal(paired.webs[0].length,kept);
++assert(paired.isSwinging);assert.equal(boosts.length,0,'Releasing the left hand boosted or dropped the right rope');
++both.webHoldRight=both.webFireHeldRight=false;
++paired.update(1/60,both,camera);
++assert.equal(paired.isSwinging,false);assert.deepEqual(boosts,[false],'Letting go of the last rope added a slingshot');
++console.log('PASS PENDULUM: releasing one hand keeps the opposite rope without a slingshot');
++
++const swapped=bare();
++const first=heldInput('left');
++swapped.update(1/60,first,camera);
++first.webTap=first.webHold=first.webFireHeld=false;
++swapped.update(1/60,first,camera);
++assert.equal(swapped.isSwinging,false);assert.equal(swapped.nextWebHand,'right');
++const other=heldInput('right');
++swapped.update(1/60,other,camera);
++assert.equal(swapped.webs.length,1);assert.equal(swapped.webs[0].hand,'left','Right click repeated the hand left click would use');
++assert.equal(swapped.nextWebHand,'right');
++console.log('PASS PENDULUM: right click follows the opposite of the next left-click hand');
++
++const locked=bare();
++locked.webEnabled=false;locked.state='IDLE';locked.position.set(0,0.1,0);
++const denied=heldInput('right');
++locked.update(1/60,denied,camera);
++assert.equal(locked.isSwinging,false);assert.equal(denied.webTapRight,false);
++locked.state='FALLING';locked.position.set(0,6,0);
++denied.webTapRight=denied.webFireHeldRight=denied.webHoldRight=true;
++locked.update(1/60,denied,camera);
++assert.equal(locked.isSwinging,true);assert.equal(locked.webs[0].hand,'right');
++console.log('PASS PENDULUM: grounded combat blocks a right-click web and airborne combat allows it');
+diff --git a/scripts/check-pose.mjs b/scripts/check-pose.mjs
+index 1e5a0f9..bc189bd 100644
+--- a/scripts/check-pose.mjs
++++ b/scripts/check-pose.mjs
+@@ -140,7 +140,14 @@ for(const dt of [1/30,1/60,1/144]) {
+   assert(c.webHandTargets.left.distanceTo(new THREE.Vector3(-12,20,-3))>0.1,'Re-fired arm target snapped instantly');
+   for(let t=0;t<0.6;t+=dt)c.update(dt,'SWINGING',new THREE.Vector3(0,0,5),left);
+   finite(c);
+-  c.webAttachments=[];
++  const releasePhysics=new SwingPhysics(new THREE.Scene(),{buildingMeshes:[],colliders:[]},c,{});
++  releasePhysics.isSwinging=true;releasePhysics.state='SWINGING';
++  const reachWeight=c.webHandWeights.left;
++  releasePhysics.releaseSwing(false);
++  assert.equal(c.webAttachments.length,0);
++  assert.equal(c.webHandWeights.left,reachWeight,'Physics release snapped the IK pose before its fade');
++  c.update(dt,'FALLING',new THREE.Vector3(0,-5,0),null);
++  assert(c.webHandWeights.left>0 && c.webHandWeights.left<reachWeight,'Released reaching arm did not blend out');
+   for(let t=0;t<0.8;t+=dt)c.update(dt,'FALLING',new THREE.Vector3(0,-5,0),null);
+   assert(c.webHandWeights.left<0.001 && c.webHandWeights.right<0.001,'Released hand pose stayed locked');
+   finite(c);dualHandChecks++;c.mixer.stopAllAction();
+diff --git a/scripts/check-qa.mjs b/scripts/check-qa.mjs
+index 01f7bb7..37af342 100644
+--- a/scripts/check-qa.mjs
++++ b/scripts/check-qa.mjs
+@@ -314,6 +314,7 @@ await check('Grounded combat clicks punch, airborne clicks web, and Space jumps
+     const physics={state:'IDLE',isSwinging:false,webAimNdc:new THREE.Vector2(),webLatch:false,jumpForce:17,
+       velocity:new THREE.Vector3(),lastWebAnchor:null,
+       setWebAimPoint(){},findBestAnchor(){},
++      clearPendingInput(){},
+       performWebPull(){pulls.push(this.state);this.state='WEB_ZIP';this.zipAnchor=new THREE.Vector3();return true;},
+       performAirJump(){airs.push(this.state);return true;},
+       clearWebAnchor(){clears++;this.lastWebAnchor=null;this.isSwinging=false;},
+@@ -334,10 +335,11 @@ await check('Grounded combat clicks punch, airborne clicks web, and Space jumps
+     assert.equal(app.input.webTap,true);assert.deepEqual(webs,['punch','punch','web']);assert.deepEqual(punches,['left','right']);
+     mouse('mouseup',0);assert.equal(app.input.webHold,false);assert.equal(app.input.webTap,true);
+     mouse('mousedown',2);assert.equal(pulls.length,0);assert.deepEqual(punches,['left','right']);assert.equal(app.input.webHold,false);
+-    assert.deepEqual(webs,['punch','punch','web'],'Airborne right click also threw a punch');
++    assert.equal(app.input.webTapRight,true);assert.equal(app.input.webHoldRight,true);
++    assert.deepEqual(webs,['punch','punch','web','web'],'Airborne right click did not shoot a web');
+     physics.state='FALLING';key('KeyE');assert.deepEqual(airs,['FALLING']);assert.equal(punches.includes('hook'),false);
+     physics.state='IDLE';key('KeyE');assert.deepEqual(punches,['left','right','hook']);assert.deepEqual(airs,['FALLING']);
+-    assert.deepEqual(webs,['punch','punch','web','punch']);
++    assert.deepEqual(webs,['punch','punch','web','web','punch']);
+     physics.state='SWINGING';physics.isSwinging=true;physics.velocity.set(16,1,0);physics.lastWebAnchor=new THREE.Vector3(0,10,0);
+     app.input.webHold=true;app.input.webFireHeld=true;app.input.webTap=true;
+     key('Space');
+diff --git a/scripts/check-review-2.mjs b/scripts/check-review-2.mjs
+index b4db2ce..9a94f54 100644
+--- a/scripts/check-review-2.mjs
++++ b/scripts/check-review-2.mjs
+@@ -25,13 +25,14 @@ async function withDOM(run) {
+   try { await run(); }
+   finally { await new Promise(resolve=>setTimeout(resolve,5)); globalThis.document = original; }
+ }
+-await check('Pausing a reel preserves its swing after reaching the target',()=>withDOM(()=>{
++await check('Resuming does not latch an unheld swing after a reel reaches the target',()=>withDOM(()=>{
+   const p=player();p.position.set(0,12,9.9);p.zipTarget=new THREE.Vector3(0,12,10);
+   p.zipAnchor=new THREE.Vector3(0,14,10);p.zipTime=8;p.state='WEB_ZIP';
+   const app=Object.create(GameApp.prototype);Object.assign(app,{physics:p,input:{webHold:true,strafe:0},heldKeys:new Set(),audio:silent,isPlaying:true});
+   app.setPaused(true);app.setPaused(false);
+   p.update(1/120,app.input,camera);p.update(1/120,app.input,camera);
+-  assert(p.isSwinging,'The resumed reel immediately dropped its attached web');
++  assert(!p.isSwinging,'The resumed reel kept swinging without a held mouse button');
++  assert.equal(app.input.webHold,false);
+   p.isSwinging=false;p.position.set(0,12,10);p.state='WEB_ZIP';p.zipTime=8;
+   p.zipTarget=new THREE.Vector3(0,12,100);p.zipAnchor=new THREE.Vector3(0,14,100);
+   p.findBestAnchor=()=>new THREE.Vector3(0,30,40);
+diff --git a/scripts/check-supabase-rooms.mjs b/scripts/check-supabase-rooms.mjs
+index a1e7e42..e5188c7 100644
+--- a/scripts/check-supabase-rooms.mjs
++++ b/scripts/check-supabase-rooms.mjs
+@@ -34,23 +34,29 @@ try {
+   assert.equal(joined.room.count, 2);
+   assert.equal((await call(host, 'game_state', { p_code: roomCode })).players.length, 2);
+   await assert.rejects(() => call(guest, 'game_state', { p_code: '000000' }));
+-  const token = (await host.auth.getSession()).data.session.access_token;
+-  await host.realtime.setAuth(token);
+-  let receivedReady;
+-  const readyBroadcast = new Promise((resolve, reject) => {
+-    receivedReady = resolve;
+-    setTimeout(() => reject(new Error('Realtime room state did not arrive')), 5000);
+-  });
+-  const channel = host.channel(`game:${roomCode}`, { config: { private: true } })
+-    .on('broadcast', { event: 'state' }, ({ payload }) => {
+-      if (payload.players?.some(player => player.ready)) receivedReady(payload);
++  const events=[[],[]],channels=[];
++  const waitEvent=async(index,predicate)=>{
++    const end=Date.now()+6000;
++    while(Date.now()<end){const event=events[index].find(predicate);if(event)return event;await new Promise(r=>setTimeout(r,20));}
++    throw new Error(`Realtime event did not arrive for client ${index}`);
++  };
++  for (const [index,client] of clients.entries()) {
++    await client.realtime.setAuth((await client.auth.getSession()).data.session.access_token);
++    const channel=client.channel(`game:${roomCode}`,{config:{private:true}});
++    for(const event of ['state','move','pose','hit'])channel.on('broadcast',{event},({payload})=>events[index].push(payload));
++    await new Promise((resolve,reject)=>{
++      const timer=setTimeout(()=>reject(new Error('Realtime subscription timed out')),8000);
++      channel.subscribe((status,error)=>{
++        if(status==='SUBSCRIBED'){clearTimeout(timer);resolve();}
++        if(['CHANNEL_ERROR','TIMED_OUT'].includes(status)){clearTimeout(timer);reject(error || new Error('Realtime authorization failed'));}
++      });
+     });
+-  await new Promise((resolve, reject) => channel.subscribe((status, error) => {
+-    if (status === 'SUBSCRIBED') resolve();
+-    if (status === 'CHANNEL_ERROR') reject(error || new Error('Realtime authorization failed'));
+-  }));
++    channels.push(channel);
++  }
++  await assert.rejects(()=>cmd(host,'start'),'Unready players were allowed to start');
++  await assert.rejects(()=>cmd(guest,'start'),'Guest was allowed to start');
+   await cmd(host, 'ready', { ready: true });
+-  await readyBroadcast;
++  await waitEvent(1,p=>p.type==='room' && p.players?.some(player=>player.ready));
+   await cmd(guest, 'ready', { ready: true });
+   const started = await cmd(host, 'start');
+   assert.equal(started.room.phase, 'playing');
+@@ -58,18 +64,40 @@ try {
+   const hostId = (await host.auth.getUser()).data.user.id;
+   const police = started.players.find(player => player.team === 'police').id === hostId ? host : guest;
+   const runner = police === host ? guest : host;
+-  await cmd(police, 'move', { x: 0, y: 0, z: 0, facing: 0 });
+-  await cmd(runner, 'move', { x: 0, y: 0, z: 2, facing: 0 });
++  const pose={state:'SWINGING',velocity:{x:0,y:-2,z:8},anchor:{x:0,y:25,z:12},
++    webs:[{hand:'left',anchor:{x:0,y:25,z:12}}]};
++  await call(police,'game_move_pose',{p_data:{x:0,y:0,z:0,facing:0,pose,id:'forged-player'}});
++  await call(runner,'game_move_pose',{p_data:{x:0,y:0,z:2,facing:0,pose:{...pose,state:'IDLE'}}});
++  const policeId=started.players.find(p=>p.team==='police').id;
++  const runnerId=started.players.find(p=>p.team==='runner').id;
++  const remotePose=await waitEvent(police===host?1:0,p=>p.type==='pose' && p.id===policeId);
++  assert.equal(remotePose.pose.state,'SWINGING');assert.equal(remotePose.pose.webs[0].hand,'left');
++  await waitEvent(runner===host?1:0,p=>p.type==='move' && p.id===runnerId);
+   const snapshot = await call(host, 'game_state', { p_code: roomCode });
+   assert(snapshot.players.every(player => player.seen));
++  assert.equal((await call(guest,'game_resume')).room.code,roomCode,'Session resume lost room');
+   assert.equal(await cmd(police, 'attack', { kind: 'punch', facing: 0 }), null,
+     'Opening grace must prevent damage');
+   await new Promise(resolve => setTimeout(resolve, 8200));
+   const hit = await cmd(police, 'attack', { kind: 'punch', facing: 0 });
+   assert.equal(hit.health, 75);
+   assert.equal(hit.kind, 'punch');
+-  await host.removeChannel(channel);
+-  console.log('PASS Supabase: two guests, private Realtime, match start, movement, and server damage');
++  const receivedHit=await waitEvent(runner===host?0:1,p=>p.type==='hit' && p.target===runnerId);
++  assert.equal(receivedHit.health,75,'Other client did not receive damage');
++  await cmd(host,'leave');
++  const remaining=await call(guest,'game_state',{p_code:roomCode});
++  assert.equal(remaining.room.count,1);assert.equal(remaining.host,(await guest.auth.getUser()).data.user.id);
++  assert.equal(remaining.room.phase,'finished');
++  await cmd(guest,'rematch');assert.equal((await call(guest,'game_resume')).room.phase,'waiting');
++  await cmd(guest,'leave');
++  for(const [i,channel] of channels.entries())await clients[i].removeChannel(channel);
++  const free=await cmd(host,'create',{name:'자유 플레이 검증',capacity:2,mode:'free',city:'procedural'});
++  await cmd(guest,'join',{code:free.room.code,city:'procedural'});
++  await cmd(host,'ready',{ready:true});await cmd(guest,'ready',{ready:true});
++  const freeStart=await cmd(host,'start');assert.equal(freeStart.room.phase,'playing');
++  assert(freeStart.players.every(p=>p.team==='free'));
++  assert.equal(await cmd(host,'attack',{kind:'punch',facing:0}),null,'Free play caused damage');
++  console.log('PASS live Supabase: independent users, private channels, ready/host gates, start, bidirectional movement, authenticated pose/web, grace, hit broadcast, resume, host leave, rematch, free play');
+ } finally {
+   for (const client of clients) {
+     try { await cmd(client, 'leave'); } catch { /* A failed setup may not have joined. */ }
+diff --git a/scripts/rooms.mjs b/scripts/rooms.mjs
+index 7770edf..6e11705 100644
+--- a/scripts/rooms.mjs
++++ b/scripts/rooms.mjs
+@@ -1,15 +1,18 @@
+ import { WebSocketServer } from 'ws';
+ import { randomBytes } from 'node:crypto';
+ import { MATCH, policeCount } from '../src/MatchRules.js';
++import { sanitizePose } from '../src/RemoteMotion.js';
++import {PURSUIT,matchDuration,arenaFrom,arenaContains} from '../src/PursuitRules.js';
++import {proceduralCollision,blockedSegment} from './city-collision.mjs';
+ 
+ const rooms = new Map();
+ const clients = new Set();
+ const validName = value => String(value || '').trim().slice(0, 16) || '플레이어';
+ const send = (ws, data) => { if (ws.readyState === 1) ws.send(JSON.stringify(data)); };
+-const publicRoom = room => ({ code: room.code, name: room.name, mode: room.mode, city:room.city, count: room.players.size, capacity: room.capacity, phase: room.phase });
+-const playerView = p => ({ id:p.id, name:p.name, ready:p.ready, team:p.team, health:p.health, eliminated:p.eliminated, seen:!!p.seen, x:p.x, y:p.y, z:p.z, facing:p.facing });
++const publicRoom = room => ({ code: room.code, name: room.name, mode: room.mode, city:room.city, count: room.players.size, capacity: room.capacity, phase: room.phase, enhanced:!!room.enhanced });
++const playerView = p => ({ id:p.id, name:p.name, ready:p.ready, team:p.team, health:p.health, eliminated:p.eliminated, seen:!!p.seen, x:p.x, y:p.y, z:p.z, facing:p.facing, progress:p.progress||0, connected:p.ws?.readyState===1 });
+ const broadcast = (room, data) => { for (const p of room.players.values()) send(p.ws, data); };
+-const roomState = room => ({ type:'room', room:publicRoom(room), players:[...room.players.values()].map(playerView), host:room.host, endsAt:room.endsAt || null, vulnerableAt:room.vulnerableAt || null, serverNow:Date.now(), winner:room.winner || null });
++const roomState = room => ({ type:'room', room:publicRoom(room), players:[...room.players.values()].map(playerView), host:room.host, endsAt:room.endsAt || null, vulnerableAt:room.vulnerableAt || null, serverNow:Date.now(), winner:room.winner || null, arena:room.arena||null, round:room.round||1, pulseUntil:room.pulseUntil||0 });
+ const publish = room => { broadcast(room, roomState(room)); publishList(); };
+ const publishList = () => { const data={type:'rooms', rooms:[...rooms.values()].filter(r=>r.phase==='waiting').map(publicRoom)}; for (const ws of clients) send(ws,data); };
+ const error = (ws, message) => send(ws,{type:'error',message});
+@@ -35,50 +38,58 @@ function join(ws, room, name, city) {
+   if(room.city!==city)return send(ws,{type:'switch-city',city:room.city,code:room.code});
+   if(ws.player) leave(ws);
+   const id=randomBytes(8).toString('hex');
+-  const p={ws,id,room:room.code,name:validName(name),ready:false,team:null,health:100,eliminated:false,seen:false,x:0,y:0,z:0,facing:0,lastMove:0,cooldowns:{punch:0,web:0}};
++  const p={ws,id,resumeToken:randomBytes(24).toString('hex'),room:room.code,name:validName(name),ready:false,team:null,health:100,eliminated:false,seen:false,x:0,y:0,z:0,facing:0,lastMove:0,cooldowns:{punch:0,web:0}};
+   room.players.set(id,p);ws.player=p;
+-  send(ws,{type:'joined',id});publish(room);
++  send(ws,{type:'joined',id,resumeToken:p.resumeToken,code:room.code});publish(room);
+ }
+ function start(room) {
+   const players=[...room.players.values()];
+   if(players.length<MATCH.minPlayers || players.some(p=>!p.ready)) return;
+   room.phase='playing';room.winner=null;
+-  room.endsAt=room.mode==='tag'?Date.now()+MATCH.durationMs:0;
++  room.endsAt=room.mode==='tag'?Date.now()+(room.enhanced?matchDuration(players.length):MATCH.durationMs):0;
+   room.vulnerableAt=room.mode==='tag'?Date.now()+MATCH.graceMs:0;
+   const shuffled=[...players];
+   for(let i=shuffled.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[shuffled[i],shuffled[j]]=[shuffled[j],shuffled[i]];}
++  if(room.enhanced){shuffled.sort((a,b)=>(a.policeRounds||0)-(b.policeRounds||0));room.arena=arenaFrom(room.anchor,room.city,room.roofs);}
+   const cops=room.mode==='tag'?policeCount(players.length):0;
+-  shuffled.forEach((p,i)=>{p.team=room.mode==='tag'?(i<cops?'police':'runner'):'free';p.health=100;p.eliminated=false;p.seen=false;p.x=0;p.y=0;p.z=0;p.lastMove=0;p.cooldowns={punch:0,web:0};});
++  shuffled.forEach((p,i)=>{p.team=room.mode==='tag'?(i<cops?'police':'runner'):'free';if(p.team==='police')p.policeRounds=(p.policeRounds||0)+1;p.progress=0;p.goalAt=0;p.rescue=null;p.history=[];p.health=100;p.eliminated=false;p.seen=false;p.x=0;p.y=0;p.z=0;p.lastMove=0;p.cooldowns={punch:0,web:0};});
+   publish(room);
+ }
+ function handle(ws, data) {
+   if(!data || typeof data!=='object')return;
++  if(data.type==='resume'){const room=rooms.get(String(data.code||''));const player=room&&[...room.players.values()].find(p=>p.resumeToken===data.token&&p.disconnectedAt&&Date.now()-p.disconnectedAt<30000);if(!player)return error(ws,'복귀 시간이 만료되었습니다.');player.ws=ws;player.disconnectedAt=0;ws.player=player;send(ws,{type:'joined',id:player.id,resumeToken:player.resumeToken,code:room.code});publish(room);return;}
+   if(data.type==='list') return publishList();
+   if(data.type==='create') {
+     const capacity=Number(data.capacity);
+     if(!Number.isInteger(capacity)||capacity<MATCH.minPlayers||capacity>MATCH.maxPlayers) return error(ws,`정원은 ${MATCH.minPlayers}~${MATCH.maxPlayers}명입니다.`);
+-    const room={code:code(),name:String(data.name||'새 방').trim().slice(0,24)||'새 방',mode:data.mode==='tag'?'tag':'free',city:data.city==='hong-kong'?'hong-kong':'procedural',capacity,phase:'waiting',players:new Map(),host:null,endsAt:0,winner:null};
++    const room={code:code(),name:String(data.name||'새 방').trim().slice(0,24)||'새 방',mode:data.mode==='tag'?'tag':'free',city:data.city==='hong-kong'?'hong-kong':'procedural',capacity,phase:'waiting',players:new Map(),host:null,endsAt:0,winner:null,enhanced:data.enhanced===true,round:1,pendingHits:new Map()};
+     rooms.set(room.code,room);join(ws,room,data.playerName,room.city);room.host=ws.player?.id;publish(room);return;
+   }
+   if(data.type==='join') return join(ws,rooms.get(String(data.code||'').trim().toUpperCase()),data.playerName,data.city);
+   const p=ws.player, room=p&&rooms.get(p.room);if(!room)return;
+   if(data.type==='leave') {leave(ws);send(ws,{type:'left'});return;}
+-  if(data.type==='ready' && room.phase==='waiting') {p.ready=!!data.ready;publish(room);return;}
++  if(data.type==='ready' && room.phase==='waiting') {p.ready=!!data.ready;if(room.enhanced&&data.ready){if(!data.terrainReady){p.ready=false;return error(ws,'지형 로딩이 완료된 뒤 준비하세요.');}if(p.id===room.host){room.anchor=data.spawn;room.roofs=Array.isArray(data.roofs)?data.roofs.slice(0,12):[];}}publish(room);return;}
+   if(data.type==='start' && room.host===p.id && room.phase==='waiting') {
+     if(room.players.size<MATCH.minPlayers)return error(ws,`최소 ${MATCH.minPlayers}명이 모여야 시작할 수 있습니다.`);
+     if([...room.players.values()].some(v=>!v.ready))return error(ws,'모든 플레이어가 준비해야 합니다.');
+     start(room);return;
+   }
+-  if(data.type==='rematch' && room.host===p.id && room.phase==='finished') {room.phase='waiting';room.winner=null;room.endsAt=0;for(const v of room.players.values()){v.ready=false;v.eliminated=false;v.health=100;v.team=null;}publish(room);return;}
+-  if(room.phase!=='playing'||p.eliminated)return;
++  if(data.type==='rematch' && room.host===p.id && room.phase==='finished') {room.phase='waiting';room.round=(room.round||1)+1;room.winner=null;room.endsAt=0;for(const v of room.players.values()){v.ready=false;v.eliminated=false;v.health=100;v.team=null;}publish(room);return;}
++  if(data.type==='ping'){send(ws,{type:'pong',stamp:data.stamp,serverNow:Date.now()});return;}
++  if(room.phase!=='playing')return;
++  if(data.type==='hit-confirm'&&room.enhanced){const pending=room.pendingHits.get(data.hitId);if(!pending||pending.target!==p.id||Date.now()>pending.expires)return;room.pendingHits.delete(data.hitId);if(data.clear===true&&!p.eliminated)applyHit(room,room.players.get(pending.attacker),p,pending.kind);return;}
++  if(p.eliminated)return;
+   if(data.type==='move') {
+     const coords=[data.x,data.y,data.z,data.facing];
+     if(coords.some(n=>!Number.isFinite(n))||Math.abs(data.x)>2500||Math.abs(data.z)>2500||data.y < -100 || data.y>1000)return;
+     const now=Date.now();if(now-p.lastMove<40)return;
++    if(room.enhanced&&!arenaContains(room.arena,data,3)){send(ws,{type:'correction',x:p.x,y:p.y,z:p.z});return;}
+     const distance=Math.hypot(data.x-p.x,data.y-p.y,data.z-p.z);
+     if(p.lastMove && distance>Math.max(20,(now-p.lastMove)*0.15))return;
++    if(room.enhanced&&p.lastMove&&room.city==='procedural'&&blockedSegment(p,data,proceduralCollision().colliders)){send(ws,{type:'correction',x:p.x,y:p.y,z:p.z});return;}
+     p.x=data.x;p.y=data.y;p.z=data.z;p.facing=data.facing;p.seen=true;p.lastMove=now;
+-    broadcast(room,{type:'move',id:p.id,x:p.x,y:p.y,z:p.z,facing:p.facing});return;
++    if(room.enhanced){p.history||=[];p.history.push({x:p.x,y:p.y,z:p.z,time:now});p.history=p.history.filter(h=>now-h.time<600);advanceGoal(room,p,now);}
++    broadcast(room,{type:'move',id:p.id,x:p.x,y:p.y,z:p.z,facing:p.facing,pose:sanitizePose(data.pose)});return;
+   }
+   if(data.type==='attack' && room.mode==='tag' && p.team==='police') {
+     if(!p.seen || Date.now()<(room.vulnerableAt || 0))return;
+@@ -93,12 +104,22 @@ function handle(ws, data) {
+       .filter(({v,d,dy})=>d<=rule.reach&&dy<rule.vertical&&(d<=0.35||aimAt(v)>=rule.cone))
+       .sort((a,b)=>a.d-b.d)[0]?.v;
+     if(!target)return;
+-    target.health=Math.max(0,target.health-rule.damage);
+-    if(target.health===0)target.eliminated=true;
+-    broadcast(room,{type:'hit',attacker:p.id,target:target.id,kind,health:target.health,eliminated:target.eliminated});
+-    if([...room.players.values()].filter(v=>v.team==='runner').every(v=>v.eliminated))finish(room,'police');
++    if(room.enhanced){if(now-target.lastMove>1500||now-p.lastMove>1500)return;if(room.city==='procedural'){if(blockedSegment(p,target,proceduralCollision().colliders))return;}else{const hitId=randomBytes(8).toString('hex');room.pendingHits.set(hitId,{attacker:p.id,target:target.id,kind,expires:now+600});send(target.ws,{type:'hit-check',hitId,from:{x:p.x,y:p.y,z:p.z},to:{x:target.x,y:target.y,z:target.z}});return;}}
++    applyHit(room,p,target,kind);
++    return;
++
+   }
+ }
++
++function applyHit(room,attacker,target,kind){if(!attacker||!target)return;target.health=Math.max(0,target.health-MATCH[kind].damage);target.eliminated=target.health===0;
++ broadcast(room,{type:'hit',attacker:attacker.id,target:target.id,kind,health:target.health,eliminated:target.eliminated});
++ if([...room.players.values()].filter(v=>v.team==='runner').every(v=>v.eliminated))finish(room,'police');}
++function advanceGoal(room,p,now){if(room.mode!=='tag'||p.team!=='runner'||!room.arena?.points?.length)return;
++ const target=room.arena.points[(p.progress||0)%room.arena.points.length];
++ if(now-(p.goalAt||0)>=PURSUIT.checkpointCooldown&&Math.hypot(p.x-target.x,p.y-target.y,p.z-target.z)<PURSUIT.checkpointRadius){p.progress=(p.progress||0)+1;p.goalAt=now;publish(room);if(p.progress>=PURSUIT.goal)finish(room,'runner');}
++ const ally=[...room.players.values()].find(v=>v.team==='runner'&&v.eliminated&&v.seen&&Math.hypot(v.x-p.x,v.y-p.y,v.z-p.z)<PURSUIT.reviveRadius);
++ if(ally){if(p.rescue?.id!==ally.id)p.rescue={id:ally.id,since:now};if(now-p.rescue.since>=PURSUIT.reviveMs){ally.health=50;ally.eliminated=false;p.rescue=null;publish(room);}}else p.rescue=null;}
++
+ export function attachRooms(server) {
+   if (!server) return;
+   const wss = new WebSocketServer({ noServer: true });
+@@ -124,7 +145,7 @@ export function attachRooms(server) {
+     clients.add(ws);
+     publishList();
+     ws.on('message', raw => {
+-      if (raw.length > 2048) return;
++      if (raw.length > 4096) return;
+       try {
+         handle(ws, JSON.parse(raw.toString()));
+       } catch {
+@@ -133,12 +154,13 @@ export function attachRooms(server) {
+     });
+     ws.on('close', () => {
+       clients.delete(ws);
+-      leave(ws);
++      if(ws.player&&rooms.get(ws.player.room)?.enhanced&&rooms.get(ws.player.room)?.phase==='playing'){ws.player.disconnectedAt=Date.now();publish(rooms.get(ws.player.room));}else leave(ws);
+     });
+   });
+ 
+   const ticker = setInterval(() => {
+     for (const room of rooms.values()) {
++      if(room.enhanced&&room.phase==='playing'){const now=Date.now();for(const p of [...room.players.values()])if(p.disconnectedAt&&now-p.disconnectedAt>30000)leave(p.ws);if(!rooms.has(room.code))continue;for(const [id,hit] of room.pendingHits)if(now>hit.expires)room.pendingHits.delete(id);if(now-(room.lastPulse||0)>PURSUIT.pulseInterval){room.lastPulse=now;room.pulseUntil=now+PURSUIT.pulseLength;publish(room);}}
+       if (room.phase === 'playing' && room.mode === 'tag' && Date.now() >= room.endsAt) {
+         finish(room, 'runner');
+       }
+diff --git a/src/Audio.js b/src/Audio.js
+index b17b68f..cd7385b 100644
+--- a/src/Audio.js
++++ b/src/Audio.js
+@@ -10,6 +10,7 @@ export class SoundController {
+     this.slowMoFilter = null;
+     this.masterGain = null;
+     this.lastWindSpeed = 0;
++    this.volumes={effectsVolume:.8,environmentVolume:.55,musicVolume:.35};this.musicClock=0;this.musicNote=0;
+   }
+ 
+   init() {
+@@ -20,6 +21,9 @@ export class SoundController {
+     this.masterGain = this.ctx.createGain();
+     this.masterGain.gain.value = this.isMuted ? 0 : 1;
+     this.masterGain.connect(this.ctx.destination);
++    this.effectsGain=this.ctx.createGain();this.environmentGain=this.ctx.createGain();this.musicGain=this.ctx.createGain();
++    for(const bus of [this.effectsGain,this.environmentGain,this.musicGain])bus.connect(this.masterGain);
++    this.configure(this.volumes);
+     this.initWind();
+     this.initialized = true;
+   }
+@@ -57,7 +61,7 @@ export class SoundController {
+ 
+     whiteNoise.connect(this.windFilter);
+     this.windFilter.connect(this.windGain);
+-    this.windGain.connect(this.masterGain);
++    this.windGain.connect(this.environmentGain);
+     whiteNoise.start(0);
+     this.windNode = whiteNoise;
+   }
+@@ -140,7 +144,7 @@ export class SoundController {
+     gain.gain.exponentialRampToValueAtTime(0.001, t + 0.35);
+ 
+     osc.connect(gain);
+-    gain.connect(this.masterGain);
++    gain.connect(this.effectsGain);
+     osc.start(t);
+     osc.stop(t + 0.36);
+   }
+@@ -181,7 +185,7 @@ export class SoundController {
+     gain.gain.exponentialRampToValueAtTime(0.001, t + 0.18);
+ 
+     osc.connect(gain);
+-    gain.connect(this.masterGain);
++    gain.connect(this.effectsGain);
+     osc.start(t);
+     osc.stop(t + 0.19);
+   }
+@@ -200,7 +204,7 @@ export class SoundController {
+     gain.gain.exponentialRampToValueAtTime(0.001, t + 0.16);
+ 
+     osc.connect(gain);
+-    gain.connect(this.masterGain);
++    gain.connect(this.effectsGain);
+     osc.start(t);
+     osc.stop(t + 0.17);
+   }
+@@ -223,7 +227,7 @@ export class SoundController {
+       gain.gain.exponentialRampToValueAtTime(0.001, t + idx * 0.05 + 0.35);
+ 
+       osc.connect(gain);
+-      gain.connect(this.masterGain);
++      gain.connect(this.effectsGain);
+       osc.start(t + idx * 0.05);
+       osc.stop(t + idx * 0.05 + 0.36);
+     });
+@@ -234,7 +238,25 @@ export class SoundController {
+     const t=this.ctx.currentTime,osc=this.ctx.createOscillator(),gain=this.ctx.createGain();
+     osc.type='triangle';osc.frequency.setValueAtTime(heavy?100:180,t);osc.frequency.exponentialRampToValueAtTime(45,t+0.1);
+     gain.gain.setValueAtTime(0.22,t);gain.gain.exponentialRampToValueAtTime(0.001,t+0.13);
+-    osc.connect(gain);gain.connect(this.masterGain);osc.start(t);osc.stop(t+0.14);
++    osc.connect(gain);gain.connect(this.effectsGain);osc.start(t);osc.stop(t+0.14);
++  }
++  configure(settings) {
++    for(const key of ['effectsVolume','environmentVolume','musicVolume'])if(Number.isFinite(settings[key]))this.volumes[key]=Math.max(0,Math.min(1,settings[key]));
++    if(!this.ctx)return;
++    for(const [bus,key]of [[this.effectsGain,'effectsVolume'],[this.environmentGain,'environmentVolume'],[this.musicGain,'musicVolume']])bus?.gain.setTargetAtTime(this.volumes[key],this.ctx.currentTime,.03);
++  }
++  tone(frequency,duration=.12,volume=.08,bus=this.effectsGain,type='sine') {
++    if(!this.ctx||this.isMuted||this.ctx.state!=='running')return;
++    const osc=this.ctx.createOscillator(),gain=this.ctx.createGain(),t=this.ctx.currentTime;
++    osc.type=type;osc.frequency.setValueAtTime(frequency,t);gain.gain.setValueAtTime(volume,t);gain.gain.exponentialRampToValueAtTime(.001,t+duration);
++    osc.connect(gain);gain.connect(bus||this.masterGain);osc.onended=()=>{osc.disconnect();gain.disconnect();};osc.start(t);osc.stop(t+duration+.01);
++  }
++  playWebFailure(){this.tone(145,.12,.08,this.effectsGain,'triangle');}
++  playSurfaceStep(surface='roof',strength=.4){this.tone(surface==='street'?105:surface==='landing'?65:165,.07,Math.max(.01,strength*.07),this.effectsGain,'triangle');}
++  updateMusic(delta,intense=false) {
++    if(!this.ctx||this.isMuted||this.volumes.musicVolume<=0)return;
++    this.musicClock+=delta;const beat=intense?.32:.65;if(this.musicClock<beat)return;this.musicClock=0;
++    const notes=[146.83,220,293.66,196,146.83,246.94,220,196];this.tone(notes[this.musicNote++%notes.length],beat*.85,.035,this.musicGain,'sine');
+   }
+   toggleMute() {
+     this.isMuted = !this.isMuted;
+diff --git a/src/Camera.js b/src/Camera.js
+index d0adcdc..b23a9f2 100644
+--- a/src/Camera.js
++++ b/src/Camera.js
+@@ -29,6 +29,7 @@ export class ThirdPersonCamera {
+ 
+     // Camera Shake
+     this.shakeIntensity = 0;
++    this.sensitivity=1;this.invertY=false;this.shakeStrength=.5;this.speedFov=1;this.followStrength=1;
+ 
+     // Aim Mode
+     this.isAiming = false;
+@@ -100,9 +101,9 @@ export class ThirdPersonCamera {
+     // Keep the camera where the player aimed it. Auto-centering after a pause
+     // makes the view drift unexpectedly; C is the deliberate recenter action.
+     this.orbitReturnTime = Infinity;
+-    this.yaw -= deltaX * sensitivity;
++    this.yaw -= deltaX * sensitivity * this.sensitivity;
+     // Boom height and first-person look pitch use opposite sign conventions.
+-    this.pitch += deltaY * sensitivity * (this.mode === 'first' ? -1 : 1);
++    this.pitch += deltaY * sensitivity * this.sensitivity * (this.invertY?-1:1) * (this.mode === 'first' ? -1 : 1);
+ 
+     // Clamp pitch so camera doesn't flip
+     this.pitch = this.mode === 'first'
+@@ -161,7 +162,7 @@ export class ThirdPersonCamera {
+ 
+   triggerShake(intensity = 0.5) {
+     if (this.reducedMotion) return;
+-    this.shakeIntensity = Math.max(this.shakeIntensity, intensity);
++    this.shakeIntensity = Math.max(this.shakeIntensity, intensity*this.shakeStrength);
+   }
+ 
+   update(delta, playerPos, playerVelocity, isSwinging, cityMeshes = [], cityRaycast = null, facingAngle = null) {
+@@ -177,7 +178,7 @@ export class ThirdPersonCamera {
+     // third-person follow camera. Mouse input temporarily unlocks this orbit.
+     if (this.mode !== 'first' && this.lockBehind && facingAngle !== null) {
+       const difference = Math.atan2(Math.sin(facingAngle - this.yaw), Math.cos(facingAngle - this.yaw));
+-      this.yaw += difference * (1 - Math.exp(-10 * delta));
++      this.yaw += difference * (1 - Math.exp(-10 * this.followStrength * delta));
+     }
+     const speed = playerVelocity.length();
+     const speedKmh = speed * 3.6;
+@@ -185,7 +186,7 @@ export class ThirdPersonCamera {
+     // 1. Dynamic FOV based on speed
+     const fovRatio = this.reducedMotion ? 0 : Math.min(Math.max((speedKmh - 20) / 70, 0), 1);
+     const targetFov = this.isAiming ? 50 : this.mode === 'first'
+-      ? this.firstPersonFov : this.baseFov + fovRatio * (this.maxFov - this.baseFov);
++      ? this.firstPersonFov : this.baseFov + fovRatio * (this.maxFov - this.baseFov) * this.speedFov;
+     this.camera.fov = THREE.MathUtils.damp(this.camera.fov, targetFov, 6, delta);
+     this.camera.updateProjectionMatrix();
+ 
+@@ -196,7 +197,9 @@ export class ThirdPersonCamera {
+         Math.sin(this.pitch),
+         Math.cos(this.yaw) * Math.cos(this.pitch)
+       ).normalize();
+-      this.currentPos.lerp(eye, 1 - Math.exp(-24 * delta));
++      // A first-person view is attached to the head; a spring boom here can
++      // trail metres behind a fast character and cross walls on mode changes.
++      this.currentPos.copy(eye);
+       // The near plane must not enter the wall the player is looking at.
+       let view = this.currentPos.clone();
+       if ((cityMeshes.length || cityRaycast) && forward.lengthSq() > 0) {
+diff --git a/src/Character.js b/src/Character.js
+index 6c33161..a8f7c0b 100644
+--- a/src/Character.js
++++ b/src/Character.js
+@@ -1,3 +1,4 @@
++import { AIR_TRICKS, trickRotation } from './AirTricks.js';
+ import { createWebStrand, updateWebStrand } from './WebStrand.js';
+ import * as THREE from 'three';
+ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+@@ -5,10 +6,11 @@ import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader.js';
+ import { retargetMotion, prepareMotion, boneId } from './MotionRetarget.js';
+ import { MOTIONS, STRIDES, GROUNDED } from './MotionCatalog.js';
+ import { fetchAsset } from './AssetLoader.js';
++import { clone as cloneSkeleton } from 'three/addons/utils/SkeletonUtils.js';
+ import { plantMovingFeet, poseWall, poseZipLegs, poseMantle, adaptPelvisToTerrain, footSupport, soleRotation } from './CharacterPose.js';
+ 
+ export class Character {
+-  constructor(scene, onProgress, onLoaded) {
++  constructor(scene, onProgress, onLoaded, source = null) {
+     this.scene = scene;
+     this.onProgress = onProgress;
+     this.onLoaded = onLoaded;
+@@ -53,7 +55,46 @@ export class Character {
+     this.initWebVisual();
+ 
+     // Start loading models and animations
+-    this.loadCharacter();
++    if (source) this.copyLoadedCharacter(source);
++    else this.loadCharacter();
++  }
++
++  copyLoadedCharacter(source) {
++    if (source.model && source.mixer) {
++      this.model = cloneSkeleton(source.model);
++      this.model.visible = true;
++      this.model.position.set(0,0,0); this.model.rotation.set(0,0,0);
++      this.group.add(this.model);
++      this.model.traverse(child => {
++        if (!child.isBone) return;
++        this.bones[child.name] = child;
++        if (boneId(child.name)==='lefthand') this.leftHand = child;
++        if (boneId(child.name)==='righthand') this.rightHand = child;
++      });
++      this.mixer = new THREE.AnimationMixer(this.model);
++      for (const [key,original] of Object.entries(source.actions)) {
++        const action = this.mixer.clipAction(original.getClip());
++        action.setLoop(original.loop,original.repetitions);
++        action.clampWhenFinished = original.clampWhenFinished;
++        this.actions[key] = action;
++      }
++    } else {
++      this.placeholder = new THREE.Mesh(new THREE.CapsuleGeometry(.35,1.1,8,12),
++        new THREE.MeshStandardMaterial({color:0xff2a3a}));
++      this.placeholder.position.y=.9; this.group.add(this.placeholder);
++    }
++    this.isLoaded = true;
++  }
++
++  disposeCopy() {
++    this.mixer?.stopAllAction(); if (this.model) this.mixer?.uncacheRoot(this.model);
++    this.model?.traverse(mesh => mesh.skeleton?.dispose());
++    this.scene.remove(this.group);
++    if (this.placeholder) {this.placeholder.geometry.dispose();this.placeholder.material.dispose();}
++    for (const object of [this.webLine,this.webMesh,this.webLineOffhand,this.webMeshOffhand]) {
++      this.scene.remove(object);object.geometry.dispose();object.material.dispose();
++    }
++    // Shared skin geometry, textures, and animation clips belong to the local actor.
+   }
+ 
+   initWebVisual() {
+@@ -362,10 +403,19 @@ export class Character {
+     updateWebStrand(line,mesh,wrist,anchorPos,this.webVisualTime || 0,launch);
+   }
+ 
+-  triggerAirTrick() {
++  triggerAirTrick(key = 'front') {
++    if (!Object.hasOwn(AIR_TRICKS, key)) return false;
++    this.airTrick = { key, elapsed: 0 };
+     this.isTricking = true;
+     this.trickRotation = 0;
+     this.actions?.airTrick?.reset();
++    return true;
++  }
++
++  cancelAirTrick() {
++    this.airTrick = null;
++    this.isTricking = false;
++    this.trickRotation = 0;
+   }
+ 
+   update(delta, state, velocity, anchorPos) {
+@@ -382,6 +432,17 @@ export class Character {
+       if (this.placeholder) this.placeholder.rotation.y = this.targetFacingAngle;
+       return;
+     }
++    if (this.airTrick) {
++      if (!['JUMPING', 'FALLING'].includes(state)) this.cancelAirTrick();
++      else {
++        this.airTrick.elapsed += Math.max(0, delta);
++        if (this.airTrick.elapsed >= AIR_TRICKS[this.airTrick.key].duration) {
++          const key = this.airTrick.key;
++          this.cancelAirTrick();
++          this.onAirTrickComplete?.(key);
++        }
++      }
++    }
+     const horizontalSpeed = Math.hypot(velocity.x, velocity.z);
+     const grounded = GROUNDED.includes(state);
+     const previous = this.lastState;
+@@ -405,7 +466,9 @@ export class Character {
+       horizontalSpeed > 4.1 ? 'regularRun' : horizontalSpeed > 3.1 ? 'jog' : 'walk';
+     const combat=this.combatAction;
+     if(combat && this.actions[combat.key] && (grounded || combat.key==='slam') && !['ROLLING','TURNING'].includes(state))name=combat.key;
+-    if(this.isTricking && !grounded && !['WALL_RUNNING','MANTLING','WEB_ZIP'].includes(state) && this.actions.airTrick)name='airTrick';
++    if (this.airTrick) name = this.airTrick.key === 'front' && this.actions.airTrick
++      ? 'airTrick' : this.actions.fallIdle ? 'fallIdle' : 'fall';
++    else if(this.isTricking && !grounded && !['WALL_RUNNING','MANTLING','WEB_ZIP'].includes(state) && this.actions.airTrick)name='airTrick';
+     this.fadeToAction(name, combat?.key===name ? (combat.duration ? 0.065 : name==='guard' ? 0.18 : 0.12) : ['LANDING','ROLLING'].includes(state) ? 0.06 : grounded ? 0.18 : 0.12);
+     if (STRIDES.includes(name)) {
+       const measuredSpeed = this.activeAction?.getClip().userData?.nominalSpeed;
+@@ -422,14 +485,17 @@ export class Character {
+         this.activeAction.getClip().duration*THREE.MathUtils.clamp(combat.time/combat.duration,0,1));
+       this.activeAction.setEffectiveTimeScale(0);
+     }
+-    if(name==='airTrick')this.activeAction?.setEffectiveTimeScale(1.15);
++    if(name==='airTrick')this.activeAction?.setEffectiveTimeScale(
++      this.activeAction.getClip().duration / AIR_TRICKS.front.duration);
+     if(name==='wall')this.activeAction?.setEffectiveTimeScale(state==='MANTLING'?0:THREE.MathUtils.clamp(velocity.length()/(this.activeAction.getClip().userData.climbSpeed || 3),0,6));
+     this.mixer.update(delta);
+     if (state !== 'LANDING') this.landingSpeed = 0;
+     this.lastState = state;
+     this.idleTime += delta;
+     if (grounded || state==='MANTLING') { this.isTricking = false; this.trickRotation = 0; }
+-    if(this.isTricking && this.actions.airTrick){
++    if(this.airTrick){
++      this.trickRotation=0;
++    } else if(this.isTricking && this.actions.airTrick){
+       this.trickRotation=0;
+       if(this.activeAction===this.actions.airTrick && this.activeAction.time>=this.activeAction.getClip().duration-.02)this.isTricking=false;
+     } else if (this.isTricking) {
+@@ -464,6 +530,16 @@ export class Character {
+     // the support surface, not inherit that collision padding.
+     this.model.position.y = grounded && state !== 'ROLLING' ? -0.1 : 0;
+     this.model.position.x=0;this.model.position.z=0;
++    if (this.airTrick && (this.airTrick.key !== 'front' || !this.actions.airTrick)) {
++      const angles = trickRotation(this.airTrick.key, this.airTrick.elapsed);
++      const rotation = new THREE.Quaternion().setFromEuler(new THREE.Euler(angles.x, angles.y, angles.z, 'YXZ'));
++      this.model.quaternion.multiply(rotation);
++      // Rotate around the torso, keeping the body centre on its flight path.
++      const pivot = new THREE.Vector3(0, 1, 0);
++      const offset = pivot.clone().sub(pivot.clone().applyQuaternion(rotation));
++      offset.applyAxisAngle(new THREE.Vector3(0, 1, 0), this.visualYaw);
++      this.model.position.add(offset);
++    }
+     if(state==='WALL_RUNNING' && this.wallNormal) this.model.position.addScaledVector(this.wallNormal,-Math.max(0,(this.wallDistance ?? 0.7)-0.4));
+     if(state==='MANTLING' && this.mantle) {
+       const t=this.mantle.elapsed/this.mantle.duration;
+diff --git a/src/Combat.js b/src/Combat.js
+index 9b6ea2e..8d2e783 100644
+--- a/src/Combat.js
++++ b/src/Combat.js
+@@ -4,9 +4,9 @@ import {GROUNDED} from './MotionCatalog.js';
+ export const ATTACKS={
+   jab:{duration:0.56,from:0.14,to:0.22,damage:12,reach:1.8},
+   cross:{duration:0.68,from:0.37,to:0.47,damage:17,reach:1.9},
+-  hook:{duration:2.0,from:0.76,to:0.96,damage:32,reach:2.1},
++  hook:{duration:0.9,from:0.342,to:0.432,damage:32,reach:2.1},
+   special:{duration:1.2,from:0.30,to:0.46,damage:48,reach:2.0},
+-  heavy:{duration:2.0,from:0.76,to:0.96,damage:32,reach:2.1},
++  heavy:{duration:0.9,from:0.342,to:0.432,damage:32,reach:2.1},
+ };
+ const grounded=p=>GROUNDED.includes(p.state);
+ const forward=p=>new THREE.Vector3(Math.sin(p.facingAngle),0,Math.cos(p.facingAngle));
+@@ -17,14 +17,15 @@ export class CombatSystem {
+     this.blocking=false;this.health=100;this.stamina=100;this.invulnerable=0;
+     this.specialCooldown=0;this.enemies=[];this.serial=0;this.hurtCount=0;this.hits=0;this.elapsed=0;this.physics.webEnabled=false;this.physics.onReset=()=>{this.cancel();this.clearEnemies();this.health=this.stamina=100;this.specialCooldown=0;};
+   }
+-  cancel(){this.action=null;this.blocking=false;this.character.combatAction=null;this.physics.combatMotion=null;}
++  cancel(){this.queued=null;this.action=null;this.blocking=false;this.character.combatAction=null;this.physics.combatMotion=null;}
+   clearHeld(){this.blocking=false;}
+   toggle(input={}) {
+     this.mode=this.mode==='combat'?'web':'combat';this.cancel();
+     input.webTap=input.webHold=input.webFireHeld=false;
++    input.webTapRight=input.webHoldRight=input.webFireHeldRight=false;
+     this.physics.webEnabled=this.mode==='web';this.physics.clearPendingInput?.();
+     if(this.mode==='combat')this.physics.clearWebAnchor?.();
+-    this.onNotice(this.mode==='web'?'거미줄 ON · 좌클릭 양손 / 우클릭 집 / E 공중 집':'전투 모드 · 땅에서는 잽·스트레이트 / 공중 좌클릭은 거미줄 / B 방어 / Ctrl 회피');
++    this.onNotice(this.mode==='web'?'거미줄 ON · 좌클릭 꾹: 진자 스윙 / 우클릭: 반대 손 진자 / 떼기: 관성 비행 / E 공중 집':'전투 모드 · 땅에서는 잽·스트레이트 / 공중 좌·우클릭은 거미줄 / B 방어 / Ctrl 회피');
+     return this.mode;
+   }
+   face(camera) {
+@@ -39,11 +40,12 @@ export class CombatSystem {
+   }
+   attack(camera) {
+     if(this.mode!=='combat' || !grounded(this.physics) || this.blocking || this.stamina<4)return false;
+-    if(this.action)return false;
++    if(this.action){this.queue('attack',camera);return false;}
+     this.stamina-=4;this.start('jab',ATTACKS.jab.duration,camera);return true;
+   }
+   straight(camera) {
+-    if(this.mode!=='combat' || !grounded(this.physics) || this.blocking || this.action || this.stamina<7)return false;
++    if(this.action){this.queue('straight',camera);return false;}
++    if(this.mode!=='combat' || !grounded(this.physics) || this.blocking || this.stamina<7)return false;
+     this.stamina-=7;this.start('cross',ATTACKS.cross.duration,camera);return true;
+   }
+   heavy(camera) {
+@@ -57,6 +59,12 @@ export class CombatSystem {
+     this.stamina-=35;this.specialCooldown=4;
+     this.start('special',ATTACKS.special.duration,camera);return true;
+   }
++  queue(method,camera) {if(this.action && this.action.time>=this.action.duration*.75)this.queued={method,camera,expires:this.elapsed+.18};}
++  airStrike(camera) {
++    if(this.mode!=='combat'||grounded(this.physics)||this.action||this.stamina<25||!this.enemies.some(e=>e.health>0))return false;
++    this.stamina-=25;this.physics.clearWebAnchor?.();this.physics.velocity.y=Math.min(this.physics.velocity.y,-14);
++    this.start('slam',1,camera);return true;
++  }
+   dodge(input,camera) {
+     if(this.mode!=='combat' || !grounded(this.physics) || this.stamina<18 || this.action?.key.startsWith('dodge'))return false;
+     if(this.action && this.action.time<this.action.duration*0.55)return false;
+@@ -73,6 +81,8 @@ export class CombatSystem {
+     this.specialCooldown=Math.max(0,this.specialCooldown-delta);this.invulnerable=Math.max(0,this.invulnerable-delta);
+     this.stamina=Math.min(100,this.stamina+delta*(this.blocking?3:this.action?0:18));
+     if(this.blocking && (!grounded(this.physics)||this.stamina<=0))this.blocking=false;
++    // Grounded strikes and evasions cannot resume halfway through on landing.
++    if(this.action && !grounded(this.physics) && this.action.key!=='slam')this.cancel();
+     const a=this.action;
+     if(a) {
+       a.previous=a.time;a.time+=delta;
+@@ -81,6 +91,7 @@ export class CombatSystem {
+         this.action=null;
+       }
+     }
++    if(this.queued && !this.action){const next=this.queued;this.queued=null;if(next.expires>=this.elapsed)this[next.method](next.camera);}
+     const current=this.action;
+     const stopping=this.character.activeAction && ['stop','runStop'].some(key=>this.character.activeAction===this.character.actions?.[key] && this.character.activeAction?.time<this.character.activeAction.getClip().duration-.05) || ['RUNNING','SPRINTING'].includes(this.character.lastState);
+     // The authored punches plant both feet. Translating the capsule during
+@@ -116,7 +127,9 @@ export class CombatSystem {
+       if(e.health<=0 || action.hits.has(e))continue;
+       const target=e.position.clone().add(new THREE.Vector3(0,1,0)),d=target.clone().sub(origin);
+       if(Math.abs(d.y)>1.5 || Math.hypot(d.x,d.z)>hit.reach || (!hit.radial && d.clone().setY(0).normalize().dot(f)<0.45) || this.obstructed(origin,target))continue;
+-      action.hits.add(e);e.health=Math.max(0,e.health-hit.damage);e.flash=0.15;e.stagger=0.45;this.hits++;
++      action.hits.add(e);
++      if(e.type==='shield' && !['hook','heavy','special','slamLand'].includes(action.key)){e.flash=.1;e.stagger=.08;this.audio?.playCombatHit?.(false);this.onNotice('방패 방어 · 훅이나 강공격으로 돌파하세요.');continue;}
++      e.health=Math.max(0,e.health-hit.damage);e.flash=0.15;e.stagger=0.45;this.hits++;
+       this.vfx?.spawnWebImpact(target);this.audio?.playCombatHit?.(hit.damage>=24);
+       if(e.health===0){e.mesh.visible=false;this.onNotice('대상 제압');}
+     }
+diff --git a/src/HongKongAudit.js b/src/HongKongAudit.js
+index 3cbc359..4ba5cbb 100644
+--- a/src/HongKongAudit.js
++++ b/src/HongKongAudit.js
+@@ -1,15 +1,29 @@
+ // Opt-in evidence surface. Gameplay uses the same real city and controller.
++import * as THREE from 'three';
++import { boneId } from './MotionRetarget.js';
++import { groundSample } from './LedgeTraversal.js';
+ export function createHongKongAudit(app) {
+   if(typeof location==='undefined')return null;
+   if(!new URLSearchParams(location.search).has('hongKongAudit'))return null;
+   const panel=document.createElement('aside');panel.style.cssText='position:fixed;right:12px;top:80px;width:360px;max-height:45vh;overflow:auto;background:#11202eed;color:white;padding:12px;z-index:20;font:12px monospace;white-space:pre-wrap';
+-  const title=document.createElement('strong');title.textContent='홍콩 실제 지형 · 동작 검사';
++  const title=document.createElement('strong');title.textContent='실제 지형 · 모션 · 온라인 검사';
+   const output=document.createElement('pre');output.id='hong-kong-audit';panel.append(title,output);document.body.append(panel);
+   const history=[];let last='',next=0;
+   return {update(now){
+     const p=app.physics,c=app.city,a=app.character.activeAction?.getClip().name;
+     const state=p.state+'/'+a;if(state!==last){history.push(state);if(history.length>40)history.shift();last=state;}
+     if(now<next)return;next=now+.25;
+-    output.textContent=JSON.stringify({map:c.isStreamed?'Hong Kong':'procedural',ready:c.isReady,position:p.position.toArray().map(n=>+n.toFixed(3)),velocity:p.velocity.toArray().map(n=>+n.toFixed(3)),state:p.state,motion:a,mode:app.combat.mode,webs:p.webs.map(w=>({hand:w.hand,anchor:w.anchor.toArray().map(n=>+n.toFixed(2)),length:+w.length.toFixed(2),supported:p.anchorSupported?.(w)})),support:c.supportHeight?.(p.position),collision:c.collisionWorld?.meshes.size,pending:c.collisionWorld?.pending.length,history,decodedRGBTextures:c.decodedRGBTextures || 0,textureDiagnostics:c.textureDiagnostics},null,1);
++    const feet=['left','right'].map(side=>{
++      const bone=Object.values(app.character.bones).find(b=>boneId(b.name)===side+'foot');
++      const point=bone?.getWorldPosition(new THREE.Vector3());
++      return {side,ankle:point?.toArray().map(n=>+n.toFixed(3)),
++        surface:point?groundSample(c,new THREE.Vector3(point.x,p.position.y+.45,point.z),.8)?.height:null};
++    });
++    const peers=[...(app.multiplayer?.avatars.values() || [])].map(remote=>({name:remote.player.name,
++      position:remote.mesh.position.toArray().map(n=>+n.toFixed(2)),state:remote.character.lastState,
++      motion:remote.character.activeAction?.getClip().name,web:remote.character.webMesh.visible || remote.character.webMeshOffhand.visible}));
++    output.textContent=JSON.stringify({map:c.isStreamed?'Hong Kong':'procedural',ready:c.isReady,position:p.position.toArray().map(n=>+n.toFixed(3)),velocity:p.velocity.toArray().map(n=>+n.toFixed(3)),state:p.state,motion:a,mode:app.combat.mode,feet,peers,map3D:!!app.minimap?.renderer,mapMeshes:app.minimap?.terrainCopies.size,
++      facing:p.facingAngle,cameraYaw:app.tpsCamera.yaw,
++      webs:p.webs.map(w=>({hand:w.hand,anchor:w.anchor.toArray().map(n=>+n.toFixed(2)),length:+w.length.toFixed(2),supported:p.anchorSupported?.(w)})),support:c.supportHeight?.(p.position),collision:c.collisionWorld?.meshes.size,pending:c.collisionWorld?.pending.length,history,decodedRGBTextures:c.decodedRGBTextures || 0,textureDiagnostics:c.textureDiagnostics},null,1);
+   }};
+ }
+diff --git a/src/Minimap.js b/src/Minimap.js
+index 8370ffc..14efeb0 100644
+--- a/src/Minimap.js
++++ b/src/Minimap.js
+@@ -5,6 +5,44 @@ const MAX_STREAMED_FOOTPRINTS = 420;
+ const EARTH_RADIUS = 6378137;
+ const HONG_KONG_ORIGIN = { latitude: 22.2799955, longitude: 114.165495 };
+ 
++// Reuse the city's triangles, including sloping streamed terrain. A tile's
++// world bounding box is not a building and must never become a solid tower.
++export function collectTerrainMeshes(city, position, range, limit = 900) {
++  const roots = city?.buildingMeshes?.length ? city.buildingMeshes
++    : [...(city?.collisionWorld?.meshes?.values?.() || [])].map(entry => entry.mesh);
++  const found = new Map();
++  for (const root of [...roots, city?.groundMesh].filter(Boolean)) {
++    root.updateWorldMatrix(true, true);
++    root.traverseVisible(mesh => {
++      if (!mesh.isMesh || !mesh.geometry?.attributes?.position) return;
++      if (!mesh.geometry.boundingBox) mesh.geometry.computeBoundingBox();
++      const box = mesh.geometry.boundingBox.clone().applyMatrix4(mesh.matrixWorld);
++      const size = box.getSize(new THREE.Vector3());
++      if (!city?.isStreamed && mesh!==city?.groundMesh && size.x*size.y*size.z<25) return;
++      const dx = Math.max(box.min.x-position.x, 0, position.x-box.max.x);
++      const dz = Math.max(box.min.z-position.z, 0, position.z-box.max.z);
++      if (Math.hypot(dx, dz) > range * 1.5) return;
++      found.set(mesh, { mesh, distance: Math.hypot(dx,dz),
++        triangles: (mesh.geometry.index?.count || mesh.geometry.attributes.position.count) / 3 });
++    });
++  }
++  let triangles = 0;
++  return [...found.values()].sort((a,b) => a.distance-b.distance || b.triangles-a.triangles)
++    .filter(entry => { if (triangles + entry.triangles > 350000) return false; triangles += entry.triangles; return true; })
++    .slice(0,limit).map(entry => entry.mesh);
++}
++
++export function configureTerrainCamera(camera, position, range) {
++  camera.left = -range; camera.right = range;
++  camera.top = range; camera.bottom = -range;
++  camera.near = 1; camera.far = range * 12;
++  const focus = new THREE.Vector3(position.x, position.y * 0.55, position.z);
++  // An oblique view exposes roofs and two facade sides. The compass below
++  // follows the projection instead of falsely labelling screen-up as north.
++  camera.position.copy(focus).add(new THREE.Vector3(-range*1.3,range*2.2,-range*1.8));
++  camera.lookAt(focus); camera.updateProjectionMatrix(); camera.updateMatrixWorld(true);
++}
++
+ export function worldToMinimap(point, center, range, radius, canvasCenter = radius) {
+   const scale = radius / Math.max(1, range);
+   // ReorientationPlugin uses +X west and +Z north. Flip X for a true
+@@ -25,10 +63,13 @@ export function worldToHongKongCoordinates(position) {
+ }
+ 
+ export class HongKongMinimap {
+-  constructor({ canvas, status, coordinates, rangeLabel, title, subtitle, city, combat }) {
+-    Object.assign(this, { canvas, status, coordinates, rangeLabel, title, subtitle, city, combat });
+-    this.context = canvas?.getContext('2d');
+-    this.range = city?.isStreamed ? 600 : 240;
++  constructor({ canvas, status, coordinates, rangeLabel, title, subtitle, city, combat, players }) {
++    Object.assign(this, { canvas, status, coordinates, rangeLabel, title, subtitle, city, combat, players });
++    this.range = city?.isStreamed ? 220 : 240;
++    this.terrainCopies = new Map();
++    try { if (canvas) this.initTerrain(); }
++    catch (error) { console.warn('3D minimap unavailable; using location map',error); }
++    if (!this.renderer) this.context = canvas?.getContext('2d');
+     this.footprints = [];
+     this.lastFootprintUpdate = -Infinity;
+     this.lastDraw = -Infinity;
+@@ -37,12 +78,105 @@ export class HongKongMinimap {
+       if (this.title) this.title.textContent = 'LOCAL CITY';
+       if (this.subtitle) this.subtitle.textContent = 'PROCEDURAL DISTRICT';
+     }
+-    window.addEventListener('resize', () => this.resize());
++    this.onResize = () => this.resize();
++    window.addEventListener('resize', this.onResize);
++  }
++
++  initTerrain() {
++    this.renderer = new THREE.WebGLRenderer({canvas:this.canvas, antialias:true, alpha:false, powerPreference:'low-power'});
++    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
++    this.renderer.setClearColor(0x091722);
++    this.mapScene = new THREE.Scene();
++    this.mapCamera = new THREE.OrthographicCamera();
++    configureTerrainCamera(this.mapCamera,this.city?.playerPosition || new THREE.Vector3(),this.range);
++    this.tileCulling = new Map();
++    for (const tiles of this.city?.tilesets || []) {
++      this.tileCulling.set(tiles,tiles.autoDisableRendererCulling);
++      // Multiple selection cameras need per-view mesh culling; otherwise
++      // map-only tiles are needlessly drawn in the full-screen main view.
++      tiles.autoDisableRendererCulling=false;
++      tiles.setCamera(this.mapCamera);
++    }
++    this.mapScene.add(new THREE.HemisphereLight(0xd5faff,0x17374a,2));
++    const sun = new THREE.DirectionalLight(0xffffff,2.4); sun.position.set(-1,3,-2); this.mapScene.add(sun);
++    this.terrainMaterial = new THREE.MeshLambertMaterial({color:0x428da0,side:THREE.DoubleSide});
++    this.groundMaterial = new THREE.MeshLambertMaterial({color:0x163443,side:THREE.DoubleSide});
++    this.clipPlanes = [new THREE.Plane(new THREE.Vector3(1,0,0)),new THREE.Plane(new THREE.Vector3(-1,0,0)),
++      new THREE.Plane(new THREE.Vector3(0,0,1)),new THREE.Plane(new THREE.Vector3(0,0,-1))];
++    this.renderer.clippingPlanes = this.clipPlanes;
++    this.markerGeometry = new THREE.ConeGeometry(this.range * 0.025,this.range * 0.075,4);
++    this.markers = new Map();
++    this.canvas.dataset.mapMode = 'terrain-3d';
++  }
++
++  syncTerrain(position) {
++    const active = new Set(collectTerrainMeshes(this.city,position,this.range));
++    for (const source of active) {
++      let copy = this.terrainCopies.get(source);
++      if (!copy) {
++        copy = new THREE.Mesh(source.geometry,source===this.city.groundMesh ? this.groundMaterial : this.terrainMaterial);
++        copy.matrixAutoUpdate = false;
++        this.terrainCopies.set(source,copy); this.mapScene.add(copy);
++      }
++      copy.matrix.copy(source.matrixWorld); copy.matrixWorldNeedsUpdate = true;
++    }
++    for (const [source,copy] of this.terrainCopies) if (!active.has(source)) {
++      this.mapScene.remove(copy); this.terrainCopies.delete(source);
++      // Geometry belongs to the city; disposing it would break the main view.
++    }
++  }
++
++  drawTerrain(position, facingAngle) {
++    configureTerrainCamera(this.mapCamera,position,this.range);
++    const origin = new THREE.Vector3(position.x,0,position.z).project(this.mapCamera);
++    const north = new THREE.Vector3(position.x,0,position.z+1).project(this.mapCamera).sub(origin);
++    const compass = this.canvas.parentElement?.querySelector('.minimap-north');
++    if (compass) compass.style.transform = `translateX(-50%) rotate(${Math.atan2(north.x,north.y)}rad)`;
++    const r = this.range*1.4;
++    this.clipPlanes[0].constant = r-position.x; this.clipPlanes[1].constant = r+position.x;
++    this.clipPlanes[2].constant = r-position.z; this.clipPlanes[3].constant = r+position.z;
++    const actors = [{id:'self',position,facing:facingAngle,color:0xffffff},
++      ...(this.players?.() || []).filter(p => !p.eliminated && p.seen)
++        .map(p => ({id:p.id,position:p,facing:p.facing,color:p.team==='police'?0x41d9ff:0xffce67})),
++      ...(this.combat?.enemies || []).filter(e => e.health>0)
++        .map((e,i) => ({id:`enemy-${i}`,position:e.position,color:0xff536e}))];
++    const active = new Set();
++    for (const actor of actors) {
++      if (!isInsideMinimap(actor.position,position,this.range)) continue;
++      active.add(actor.id);
++      let marker = this.markers.get(actor.id);
++      if (!marker) {
++        marker = new THREE.Mesh(this.markerGeometry,new THREE.MeshBasicMaterial({color:actor.color,depthTest:false,depthWrite:false}));
++        marker.renderOrder = 10; this.markers.set(actor.id,marker); this.mapScene.add(marker);
++      }
++      marker.position.set(actor.position.x,actor.position.y+this.range*.04,actor.position.z);
++      marker.rotation.set(Math.PI/2,0,-(actor.facing || 0));
++    }
++    for (const [id,marker] of this.markers) if (!active.has(id)) {
++      this.mapScene.remove(marker); marker.material.dispose(); this.markers.delete(id);
++    }
++    this.renderer.render(this.mapScene,this.mapCamera);
++  }
++
++  dispose() {
++    window.removeEventListener('resize',this.onResize);
++    this.renderer?.dispose(); this.terrainMaterial?.dispose(); this.groundMaterial?.dispose();
++    for (const [tiles,culling] of this.tileCulling || []) {
++      tiles.deleteCamera(this.mapCamera);tiles.autoDisableRendererCulling=culling;
++    }
++    this.markerGeometry?.dispose();
++    for (const marker of this.markers?.values() || []) marker.material.dispose();
++    this.terrainCopies.clear(); this.mapScene?.clear();
+   }
+ 
+   resize() {
+-    if (!this.canvas || !this.context) return;
++    if (!this.canvas || (!this.context && !this.renderer)) return;
+     const size = Math.max(120, Math.round(this.canvas.getBoundingClientRect().width || 220));
++    if (this.renderer) {
++      this.size=size; this.renderer.setSize(size,size,false);
++      for (const tiles of this.city?.tilesets || []) tiles.setResolutionFromRenderer(this.mapCamera,this.renderer);
++      return;
++    }
+     const dpr = Math.min(window.devicePixelRatio || 1, 2);
+     this.canvas.width = Math.round(size * dpr);
+     this.canvas.height = Math.round(size * dpr);
+@@ -51,14 +185,16 @@ export class HongKongMinimap {
+   }
+ 
+   update(position, facingAngle, nowSeconds = 0) {
+-    if (!this.context || !position) return;
++    if ((!this.context && !this.renderer) || !position) return;
+     if (nowSeconds - this.lastFootprintUpdate >= 0.6) {
+-      this.footprints = this.collectFootprints(position);
++      if (this.renderer) this.syncTerrain(position);
++      else this.footprints = this.collectFootprints(position);
+       this.lastFootprintUpdate = nowSeconds;
+     }
+     if (nowSeconds - this.lastDraw < 1 / 20) return;
+     this.lastDraw = nowSeconds;
+-    this.draw(position, facingAngle);
++    if (this.renderer) this.drawTerrain(position,facingAngle);
++    else this.draw(position, facingAngle);
+     this.updateLabels(position);
+   }
+ 
+diff --git a/src/Multiplayer.js b/src/Multiplayer.js
+index 05f8b72..8bd1795 100644
+--- a/src/Multiplayer.js
++++ b/src/Multiplayer.js
+@@ -1,6 +1,9 @@
+ import * as THREE from 'three';
+ import { MATCH, resolveMatchSpawn, teamOffset } from './MatchRules.js';
+ import { SupabaseRooms } from './SupabaseRooms.js';
++import { RemoteMotion, capturePose, sanitizePose } from './RemoteMotion.js';
++import { ATTACKS } from './Combat.js';
++import {PURSUIT,arenaContains} from './PursuitRules.js';
+ 
+ const $ = id => document.getElementById(id);
+ const label = mode => mode === 'tag' ? '경찰과 도망자' : '자유 플레이';
+@@ -8,7 +11,7 @@ const make = (tag, className, value) => { const el=document.createElement(tag);e
+ 
+ export class Multiplayer {
+   constructor(game) {
+-    this.game=game;this.ws=null;this.id=null;this.room=null;this.solo=false;this.players=[];this.avatars=new Map();this.lastSend=0;this.lastPhase=null;this.spectating=false;this.clockOffset=0;this.vulnerableAt=0;
++    this.game=game;this.ws=null;this.id=null;this.room=null;this.solo=false;this.players=[];this.avatars=new Map();this.lastSend=0;this.lastPhase=null;this.spectating=false;this.clockOffset=0;this.vulnerableAt=0;this.arena=null;this.pulseUntil=0;this.spectateIndex=0;
+     this.connect();this.bind();
+   }
+   send(data) {
+@@ -27,11 +30,12 @@ export class Multiplayer {
+       return;
+     }
+     $('online-status').textContent='서버 연결 중…';
+-    this.ws.onopen=()=>{ $('online-status').textContent='온라인 · 방을 선택하세요';this.send({type:'list'});const pending=new URLSearchParams(location.search).get('join');if(pending){if(pending.toUpperCase()!==this.ws.resumedCode)this.send({type:'join',code:pending,playerName:sessionStorage.getItem('online-name')||$('player-name').value,city:this.city});history.replaceState(null,'',location.pathname+location.search.replace(/([?&])join=[^&]*&?/,'$1').replace(/[?&]$/,''));} };
++    this.ws.onopen=()=>{ if(!(this.ws instanceof SupabaseRooms)){try{const saved=JSON.parse(sessionStorage.getItem('web-runner-room-resume')||'null');if(saved?.token)this.send({type:'resume',...saved});}catch{}} $('online-status').textContent='온라인 · 방을 선택하세요';this.send({type:'list'});const pending=new URLSearchParams(location.search).get('join');if(pending){if(pending.toUpperCase()!==this.ws.resumedCode)this.send({type:'join',code:pending,playerName:sessionStorage.getItem('online-name')||$('player-name').value,city:this.city});history.replaceState(null,'',location.pathname+location.search.replace(/([?&])join=[^&]*&?/,'$1').replace(/[?&]$/,''));} };
+     this.ws.onmessage=event=>{try{this.message(JSON.parse(event.data));}catch(error){console.error(error);}};
+     this.ws.onclose=()=>{
+       $('online-status').textContent=this.ws?.fatal?'방 연결 설정을 확인하세요':'연결이 끊겼습니다. 다시 연결 중…';
+-      this.room=null;this.id=null;this.players=[];this.clearAvatars();this.render();
++      this.room=null;this.id=null;this.players=[];this.lastPhase=null;this.spectating=false;this.pendingPunch=null;
++      clearInterval(this.beginTimer);this.beginTimer=null;this.clearAvatars();this.render();
+       if(!this.solo){this.game.isPlaying=false;this.game.clearInput();this.game.setPaused(true);}
+       if(!this.ws?.fatal)setTimeout(()=>this.connect(),2500);
+     };
+@@ -46,30 +50,39 @@ export class Multiplayer {
+         option.setAttribute('aria-selected',String(selected));
+       });
+     }));
+-    $('create-room').addEventListener('click',()=>this.send({type:'create',name:$('room-name').value,playerName:$('player-name').value,capacity:Number($('room-capacity').value),mode:$('room-mode').value,city:this.city}));
++    $('create-room').addEventListener('click',()=>this.send({type:'create',name:$('room-name').value,playerName:$('player-name').value,capacity:Number($('room-capacity').value),mode:$('room-mode').value,city:this.city,enhanced:true}));
+     $('join-code').addEventListener('click',()=>this.join($('room-code').value));
+     $('room-code').addEventListener('keydown',e=>{if(e.key==='Enter')$('join-code').click();});
+-    $('room-ready').addEventListener('click',()=>{const me=this.players.find(p=>p.id===this.id);this.send({type:'ready',ready:!me?.ready});});
++    $('room-ready').addEventListener('click',()=>{const me=this.players.find(p=>p.id===this.id);const spawn=this.game.city.getRooftopSpawn(95);this.send({type:'ready',ready:!me?.ready,terrainReady:!!this.game.assetsReady,spawn:{x:spawn.x,y:spawn.y,z:spawn.z},roofs:(this.game.city.rooftopSpawns||[]).filter(p=>p.distanceTo(spawn)<430&&p.distanceTo(spawn)>25).slice(0,12).map(p=>({x:p.x,y:p.y,z:p.z}))});});
+     $('room-start').addEventListener('click',()=>this.send({type:'start'}));
+     $('room-rematch').addEventListener('click',()=>this.send({type:'rematch'}));
+     $('room-leave').addEventListener('click',()=>{this.send({type:'leave'});this.leaveLocal();});
+     $('btn-leave-match').addEventListener('click',()=>{if(this.room)this.send({type:'leave'});this.leaveLocal();});
+     $('room-copy').addEventListener('click',async()=>{try{await navigator.clipboard.writeText(this.room?.code||'');this.game.showNotice('방 코드를 복사했습니다.');}catch{this.game.showNotice(`방 코드: ${this.room?.code||''}`);}});
++    $('spectate-next')?.addEventListener('click',()=>{this.spectateIndex++;});
+     $('match-help').addEventListener('click',()=>this.game.toggleHelp());
+   }
+   message(data) {
+     if(data.type==='error')return this.game.showNotice(data.message);
+     if(data.type==='switch-city')return this.switchCity(data.code,data.city);
+     if(data.type==='rooms')return this.renderList(data.rooms);
+-    if(data.type==='joined'){this.id=data.id;return;}
++    if(data.type==='joined'){this.id=data.id;if(data.resumeToken)try{sessionStorage.setItem('web-runner-room-resume',JSON.stringify({code:data.code,token:data.resumeToken}));}catch{}return;}
++    if(data.type==='pong'){this.latency=Math.max(0,performance.now()-data.stamp);return;}
++    if(data.type==='correction'){const p=this.game.physics;if([data.x,data.y,data.z].every(Number.isFinite)){this.game.clearInput();p.clearWebAnchor();p.position.set(data.x,data.y,data.z);p.previousFixedPosition.copy(p.position);p.renderPosition.copy(p.position);p.velocity.set(0,0,0);}return;}
++    if(data.type==='hit-check'){if(data.to&&data.from){const from=new THREE.Vector3(data.from.x,data.from.y+1,data.from.z),to=new THREE.Vector3(data.to.x,data.to.y+1,data.to.z),dir=to.clone().sub(from),length=dir.length();const clear=this.game.assetsReady&&!this.game.city.raycast?.(from,dir.normalize(),Math.max(0,length-.3));this.send({type:'hit-confirm',hitId:data.hitId,clear});}return;}
+     if(data.type==='left')return this.leaveLocal();
++    if(data.type==='pose') {
++      const avatar=this.avatars.get(data.id),player=this.players.find(p=>p.id===data.id);
++      if(avatar && player)avatar.receive(player,sanitizePose(data.pose));
++      return;
++    }
+     if(data.type==='room') {
+       const phaseChanged=data.room.phase!==this.lastPhase;
+       this.room=data.room;this.players=data.players;this.host=data.host;this.endsAt=data.endsAt;this.winner=data.winner;
+-      this.vulnerableAt=data.vulnerableAt || 0;
++      this.vulnerableAt=data.vulnerableAt || 0;this.arena=data.arena||null;this.pulseUntil=data.pulseUntil||0;
+       if(Number.isFinite(data.serverNow))this.clockOffset=data.serverNow-Date.now();
+       this.lastPhase=data.room.phase;
+-      if(data.room.phase!=='playing')this.spectating=false;
++      if(data.room.phase!=='playing')this.spectating=false;else {const me=this.players.find(p=>p.id===this.id);if(this.spectating&&me&&!me.eliminated){this.spectating=false;this.game.clearInput();this.game.physics.position.set(me.x,me.y,me.z);this.game.physics.previousFixedPosition.copy(this.game.physics.position);this.game.physics.renderPosition.copy(this.game.physics.position);this.game.physics.velocity.set(0,0,0);this.game.resetCamera();this.game.showNotice('팀원이 구조했습니다. HP 50으로 복귀합니다.');}}
+       if(phaseChanged&&data.room.phase==='playing')this.begin();
+       if(phaseChanged&&data.room.phase==='finished')this.finish();
+       if(phaseChanged&&data.room.phase==='waiting'&&this.game.isPlaying){this.game.isPlaying=false;this.game.setPaused(true);}
+@@ -79,6 +92,7 @@ export class Multiplayer {
+       const player=this.players.find(p=>p.id===data.id);
+       if(player && [data.x,data.y,data.z,data.facing].every(Number.isFinite)){
+         player.x=data.x;player.y=data.y;player.z=data.z;player.facing=data.facing;player.seen=true;
++        player.pose=sanitizePose(data.pose);
+       }
+       this.syncAvatars();
+       return;
+@@ -140,7 +154,9 @@ export class Multiplayer {
+     const me=this.players.find(p=>p.id===this.id);if(!me||!this.room)return;
+     $('match-role').textContent=this.room.mode==='free'?'자유 플레이':me.team==='police'?'경찰 · 추격':'도망자 · 생존';
+     $('match-health').textContent=this.room.mode==='tag'?`HP ${me.health}/100${me.eliminated?' · 관전 중':''}`:'피해 없음';
+-    $('match-count').textContent=`${this.players.length}명 접속`;
++    $('match-count').textContent=`${this.players.length}명${Number.isFinite(this.latency)?' · '+Math.round(this.latency)+'ms':''}`;
++    $('spectate-next')?.classList.toggle('hidden',!this.spectating);
++    this.renderPursuit();
+     const now=Date.now()+this.clockOffset;
+     if(this.room.mode==='tag'&&this.vulnerableAt>now)$('match-timer').textContent=`시작 여유 ${Math.max(0,Math.ceil((this.vulnerableAt-now)/1000))}초`;
+     else if(this.room.mode==='tag'&&this.endsAt)$('match-timer').textContent=`남은 시간 ${Math.max(0,Math.ceil((this.endsAt-now)/1000))}초`;
+@@ -148,13 +164,21 @@ export class Multiplayer {
+   }
+   begin() {
+     const game=this.game;
+-    if(!game.assetsReady){const wait=setInterval(()=>{if(game.assetsReady){clearInterval(wait);if(this.room?.phase==='playing')this.begin();}},300);return;}
++    if(!game.assetsReady){
++      if(!this.beginTimer)this.beginTimer=setInterval(()=>{
++        if(game.assetsReady){clearInterval(this.beginTimer);this.beginTimer=null;if(this.room?.phase==='playing')this.begin();}
++      },300);
++      return;
++    }
++    clearInterval(this.beginTimer);this.beginTimer=null;this.pendingPunch=null;
+     this.spectating=false;
+     game.clickToPlayOverlay?.classList.add('hidden');
+     game.isPlaying=true;game.isPaused=false;game.clearInput();game.audio.ensureContext();game.pointerLockWanted=true;
+-    game.physics.resetPosition();this.placeMatchSpawn();game.resetCamera();game.timeTrial.stop();game.combat.cancel();game.combat.clearEnemies();
++    game.practice?.stop();game.physics.resetPosition();this.placeMatchSpawn();game.resetCamera();game.timeTrial.stop();game.combat.cancel();game.combat.clearEnemies();
+     const me=this.players.find(p=>p.id===this.id);
+     const desiredMode=me?.team==='police'?'combat':'web';
++    if(this.arena&&me?.seen){game.physics.position.set(me.x,me.y,me.z);game.physics.previousFixedPosition.copy(game.physics.position);game.physics.renderPosition.copy(game.physics.position);game.resetCamera();}
++    game.applyPreferences();
+     if(game.combat.mode!==desiredMode)game.combat.toggle(game.input);
+     this.game.showNotice(this.room.mode==='tag'
+       ? '경찰은 주먹 25, Q 후 거미줄 15로 쫓습니다. 도망자는 공격할 수 없고 5분을 버티면 이깁니다. 시작 8초는 공격이 없습니다.'
+@@ -166,7 +190,7 @@ export class Multiplayer {
+   placeMatchSpawn() {
+     const me=this.players.find(p=>p.id===this.id);if(!me)return;
+     const physics=this.game.physics;
+-    const anchor=physics.position.clone();
++    const anchor=this.arena?new THREE.Vector3(this.arena.x,this.arena.y,this.arena.z):physics.position.clone();
+     const team=me.team || 'free';
+     const mates=this.players.filter(p=>(p.team||'free')===team).sort((a,b)=>a.id<b.id?-1:1);
+     const index=Math.max(0,mates.findIndex(p=>p.id===me.id));
+@@ -175,7 +199,8 @@ export class Multiplayer {
+     physics.position.set(placed.x,placed.y,placed.z);
+     physics.previousFixedPosition.copy(physics.position);
+     physics.renderPosition.copy(physics.position);
+-    const facing=team==='runner'?Math.PI:0;
++    const facing=team==='free' && Math.hypot(anchor.x-placed.x,anchor.z-placed.z)>.1
++      ? Math.atan2(anchor.x-placed.x,anchor.z-placed.z) : team==='runner'?Math.PI:0;
+     physics.facingAngle=facing;
+     physics.character.targetFacingAngle=facing;
+     if('visualYaw' in physics.character)physics.character.visualYaw=facing;
+@@ -203,21 +228,48 @@ export class Multiplayer {
+     game.isPlaying=true;game.isPaused=false;game.clearInput();game.audio.ensureContext();game.pointerLockWanted=true;
+     game.physics.resetPosition();game.resetCamera();game.timeTrial.stop();game.combat.cancel();game.combat.clearEnemies();
+     if(game.combat.mode!=='web')game.combat.toggle(game.input);
++    game.experience?.restorePosition();game.applyPreferences();
+     this.render();
+     game.showNotice('혼자 플레이 시작! 화면을 클릭해 카메라를 조작하세요. R로 타임트라이얼을 시작할 수 있습니다.');
+   }
+-  finish(){this.spectating=false;this.game.isPlaying=false;this.game.clearInput();this.game.setPaused(true);this.game.clickToPlayOverlay?.classList.add('hidden');this.clearAvatars();}
+-  leaveLocal(){this.room=null;this.spectating=false;this.solo=false;clearInterval(this.soloStartTimer);this.soloStartTimer=null;this.players=[];this.id=null;this.lastPhase=null;this.game.isPlaying=false;this.game.clearInput();this.game.setPaused(true);this.game.clickToPlayOverlay?.classList.add('hidden');this.game.timeTrial.stop();this.game.updateTrialHUD();this.clearAvatars();this.render();this.send({type:'list'});}
++  finish(){this.pendingPunch=null;clearInterval(this.beginTimer);this.beginTimer=null;this.spectating=false;this.game.isPlaying=false;this.game.clearInput();this.game.setPaused(true);this.game.clickToPlayOverlay?.classList.add('hidden');this.clearAvatars();}
++  leaveLocal(){try{sessionStorage.removeItem('web-runner-room-resume');}catch{}this.arena=null;this.pulseUntil=0;this.game.experience?.ghost.stop();this.game.practice?.stop();this.room=null;this.pendingPunch=null;clearInterval(this.beginTimer);this.beginTimer=null;this.spectating=false;this.solo=false;clearInterval(this.soloStartTimer);this.soloStartTimer=null;this.players=[];this.id=null;this.lastPhase=null;this.game.isPlaying=false;this.game.clearInput();this.game.setPaused(true);this.game.clickToPlayOverlay?.classList.add('hidden');this.game.timeTrial.stop();this.game.updateTrialHUD();this.clearAvatars();this.render();this.send({type:'list'});}
+   attack(kind){
+     const me=this.players.find(p=>p.id===this.id);
+-    if(this.spectating||me?.eliminated)return;
+-    if(this.room?.phase==='playing'&&me?.team==='police')this.send({type:'attack',kind,facing:this.game.physics.facingAngle});
++    if(this.spectating||me?.eliminated||this.room?.phase!=='playing'||me?.team!=='police')return;
++    if(kind==='punch'){
++      const action=this.game.combat.action;
++      if(action && ATTACKS[action.key])this.pendingPunch=action.id;
++      return;
++    }
++    const ray=new THREE.Raycaster();
++    ray.setFromCamera(this.game.physics.webAimNdc || new THREE.Vector2(),this.game.camera);
++    const direction=ray.ray.direction;
++    const facing=Math.hypot(direction.x,direction.z)>.001?Math.atan2(direction.x,direction.z):this.game.physics.facingAngle;
++    this.sendAttack(kind,facing);
++  }
++  sendAttack(kind,facing){
++    const me=this.players.find(p=>p.id===this.id);
++    if(this.spectating||me?.eliminated||this.room?.phase!=='playing'||me?.team!=='police')return;
++    const origin=this.game.physics.position.clone().add(new THREE.Vector3(0,1,0)),rule=MATCH[kind];
++    const targets=this.players.filter(p=>p.team==='runner'&&!p.eliminated&&p.seen)
++      .map(p=>({p,dx:p.x-origin.x,dz:p.z-origin.z}))
++      .filter(t=>Math.abs(t.p.y-this.game.physics.position.y)<rule.vertical &&
++        Math.hypot(t.dx,t.dz)<=rule.reach && (Math.hypot(t.dx,t.dz)<=.35 ||
++          Math.cos(Math.atan2(t.dx,t.dz)-facing)>=rule.cone))
++      .sort((a,b)=>Math.hypot(a.dx,a.dz)-Math.hypot(b.dx,b.dz));
++    if(targets.length){
++      const target=targets[0].p,dir=new THREE.Vector3(target.x,target.y+1,target.z).sub(origin);
++      if(this.game.city.raycast?.(origin,dir.clone().normalize(),Math.max(0,dir.length()-.3)))return;
++    }
++    this.send({type:'attack',kind,facing});
+   }
+   serverNow(){return Date.now()+this.clockOffset;}
+   spectatePoint() {
+     const me=this.players.find(p=>p.id===this.id);
+     const living=this.players.filter(p=>p.id!==this.id&&!p.eliminated&&p.seen);
+-    const ally=living.find(p=>p.team===me?.team) || living[0];
++    const ordered=[...living.filter(p=>p.team===me?.team),...living.filter(p=>p.team!==me?.team)];
++    const ally=ordered[this.spectateIndex%Math.max(1,ordered.length)];
+     if(!ally)return null;
+     const avatar=this.avatars.get(ally.id);
+     return avatar ? avatar.mesh.position : new THREE.Vector3(ally.x,ally.y,ally.z);
+@@ -225,6 +277,14 @@ export class Multiplayer {
+   update(delta) {
+     if(this.room?.phase!=='playing')return;
+     const now=performance.now();
++    if(!(this.ws instanceof SupabaseRooms)&&now-(this.lastPing||0)>5000){this.lastPing=now;this.send({type:'ping',stamp:now});}
++    const me=this.players.find(p=>p.id===this.id);
++    if(this.arena&&!this.spectating&&this.game.isPlaying&&!this.game.isPaused)this.constrainArena(delta);
++    if(this.pendingPunch!=null && this.game.isPlaying && !this.game.isPaused){
++      const action=this.game.combat.action,rule=ATTACKS[action?.key];
++      if(!action || action.id!==this.pendingPunch || !rule)this.pendingPunch=null;
++      else if(action.time>=rule.from){this.pendingPunch=null;this.sendAttack('punch',this.game.physics.facingAngle);}
++    }
+     if(this.spectating){
+       const point=this.spectatePoint();
+       if(point){
+@@ -233,23 +293,38 @@ export class Multiplayer {
+         this.game.tpsCamera.update(delta,point,new THREE.Vector3(),false,this.game.city.buildingMeshes||[],ray,null);
+       }
+     } else if(now-this.lastSend>100&&this.game.isPlaying&&!this.game.isPaused){
+-      const p=this.game.physics.position;this.send({type:'move',x:p.x,y:p.y,z:p.z,facing:this.game.physics.facingAngle});this.lastSend=now;
++      const p=this.game.physics.position;this.send({type:'move',x:p.x,y:p.y,z:p.z,facing:this.game.physics.facingAngle,
++        pose:capturePose(this.game.physics,this.game.character)});this.lastSend=now;
+     }
+     if(now-(this.lastHud||0)>500){this.renderHud();this.lastHud=now;}
+-    for(const avatar of this.avatars.values()){avatar.mesh.position.lerp(avatar.target,Math.min(1,delta*12));avatar.mesh.rotation.y=avatar.player.facing || 0;}
++    for(const avatar of this.avatars.values())avatar.update(delta,now);
+   }
++  constrainArena(delta) {
++    const p=this.game.physics,a=this.arena,dx=p.position.x-a.x,dz=p.position.z-a.z,d=Math.hypot(dx,dz);
++    if(d<a.radius-12)return;
++    const direction=new THREE.Vector3(dx,0,dz).normalize(),outward=p.velocity.dot(direction);
++    if(outward>0)p.velocity.addScaledVector(direction,-outward*Math.min(1,delta*8));
++    if(d>a.radius-2){p.position.x=a.x+direction.x*(a.radius-2);p.position.z=a.z+direction.z*(a.radius-2);p.previousFixedPosition.copy(p.position);p.renderPosition.copy(p.position);}
++  }
++  renderPursuit() {
++    const output=$('pursuit-hud');if(!output)return;
++    const me=this.players.find(p=>p.id===this.id);if(!this.arena||!me||this.room?.mode!=='tag'){output.textContent='';this.goalMarker&&(this.goalMarker.visible=false);return;}
++    const point=this.arena.points[(me.progress||0)%this.arena.points.length];
++    if(me.team==='runner'&&!me.eliminated&&point){const delta=new THREE.Vector3(point.x,point.y,point.z).sub(this.game.physics.position);
++      output.textContent=`탈출 준비 ${me.progress||0}/${PURSUIT.goal} · 이동 목표 ${Math.round(delta.length())}m · 고도 ${Math.round(point.y)}m · 쓰러진 팀원 곁에서 3초 유지하면 구조`;
++      if(!this.goalMarker){this.goalMarker=new THREE.Mesh(new THREE.OctahedronGeometry(1.2),new THREE.MeshBasicMaterial({color:0x90ffdf,wireframe:true}));this.game.scene.add(this.goalMarker);}
++      this.goalMarker.visible=true;this.goalMarker.position.set(point.x,point.y+2,point.z);
++    }else{this.goalMarker&&(this.goalMarker.visible=false);output.textContent=me.eliminated?'관전 중 · 팀원이 가까이 오면 구조 가능':this.serverNow()<this.pulseUntil?'위치 단서 공개 중 · 미니맵 확인':'추격 중 · 20초마다 위치 단서';}
++  }
++  minimapPlayers(){const me=this.players.find(p=>p.id===this.id);return this.players.filter(p=>p.id!==this.id&&(!this.arena||p.team===me?.team||this.serverNow()<this.pulseUntil));}
+   syncAvatars() {
+     if(this.room?.phase!=='playing')return this.clearAvatars();
++    if(!this.game.character.isLoaded)return;
+     const alive=new Set();
+     for(const p of this.players){if(p.id===this.id||p.eliminated||!p.seen)continue;alive.add(p.id);let a=this.avatars.get(p.id);if(!a){
+-      const color=p.team==='police'?0x45cfff:p.team==='runner'?0xff536e:0xf7c84b;
+-      const mesh=new THREE.Group();
+-      const body=new THREE.Mesh(new THREE.CapsuleGeometry(.38,1.05,4,8),new THREE.MeshStandardMaterial({color,roughness:.55}));body.position.y=1.05;mesh.add(body);
+-      const head=new THREE.Mesh(new THREE.SphereGeometry(.31,12,8),new THREE.MeshStandardMaterial({color:0xffffff}));head.position.y=2.06;mesh.add(head);
+-      const marker=new THREE.Mesh(new THREE.ConeGeometry(.18,.38,6),new THREE.MeshBasicMaterial({color}));marker.position.y=2.7;mesh.add(marker);
+-      this.game.scene.add(mesh);a={mesh,target:new THREE.Vector3(p.x,p.y,p.z),player:p};this.avatars.set(p.id,a);
+-    }a.player=p;a.target.set(p.x,p.y,p.z);if(!a.mesh.position.lengthSq())a.mesh.position.copy(a.target);}
+-    for(const [id,a] of this.avatars)if(!alive.has(id)){this.game.scene.remove(a.mesh);a.mesh.traverse(v=>{v.geometry?.dispose();v.material?.dispose();});this.avatars.delete(id);}
+-  }
+-  clearAvatars(){for(const a of this.avatars.values()){this.game.scene.remove(a.mesh);a.mesh.traverse(v=>{v.geometry?.dispose();v.material?.dispose();});}this.avatars.clear();}
++      a=new RemoteMotion(this.game.scene,this.game.character,p,this.game.city);this.avatars.set(p.id,a);
++    }a.receive(p,p.pose);p.pose=null;}
++    for(const [id,a] of this.avatars)if(!alive.has(id)){a.dispose();this.avatars.delete(id);}
++  }
++  clearAvatars(){for(const a of this.avatars.values())a.dispose();this.avatars.clear();}
+ }
+diff --git a/src/Preferences.js b/src/Preferences.js
+index deb7b56..6610ee8 100644
+--- a/src/Preferences.js
++++ b/src/Preferences.js
+@@ -1,3 +1,4 @@
++import {cleanSettings} from './PlayerSettings.js';
+ const KEY = 'spiderman-preferences-v1';
+ const validCourse = course => /^(procedural|hong-kong)-(v2|v[34]-[0-9a-f]{8})$/.test(course);
+ 
+@@ -5,10 +6,11 @@ export class Preferences {
+   constructor(storage = null, reducedMotion = false) {
+     this.storage = storage;
+     this.lastSaveSucceeded = false;
+-    this.values = { muted: false, reducedMotion, quality: 'balanced', bestTimes: {} };
++    this.values = { muted: false, reducedMotion, quality: 'balanced', bestTimes: {}, settings:cleanSettings() };
+     try {
+       const saved = JSON.parse(storage?.getItem(KEY) || 'null');
+       if (saved && typeof saved === 'object') {
++        this.values.settings=cleanSettings(saved.settings);
+         for (const key of ['muted', 'reducedMotion']) {
+           if (typeof saved[key] === 'boolean') this.values[key] = saved[key];
+         }
+diff --git a/src/RemoteMotion.js b/src/RemoteMotion.js
+index d9def99..ac246be 100644
+--- a/src/RemoteMotion.js
++++ b/src/RemoteMotion.js
+@@ -1,3 +1,4 @@
++import { AIR_TRICKS } from './AirTricks.js';
+ import * as THREE from 'three';
+ import { Character } from './Character.js';
+ import { groundSample } from './LedgeTraversal.js';
+@@ -27,6 +28,8 @@ export function sanitizePose(pose) {
+   return {state:pose.state,velocity,webs,anchor:vector(pose.anchor),wallNormal:vector(pose.wallNormal),
+     mantle,wallDistance:Number.isFinite(pose.wallDistance)?THREE.MathUtils.clamp(pose.wallDistance,0,2):.7,
+     landingSpeed:Number.isFinite(pose.landingSpeed)?THREE.MathUtils.clamp(pose.landingSpeed,0,100):0,
++    airTrick: pose.tricking && Object.hasOwn(AIR_TRICKS, pose.airTrick?.key) && Number.isFinite(pose.airTrick.elapsed)
++      ? { key: pose.airTrick.key, elapsed: THREE.MathUtils.clamp(pose.airTrick.elapsed, 0, AIR_TRICKS[pose.airTrick.key].duration) } : null,
+     pendingTurn:pose.pendingTurn==='left'?'left':'right',combat,tricking:!!pose.tricking};
+ }
+ 
+@@ -34,7 +37,7 @@ export function capturePose(physics,character) {
+   return sanitizePose({state:physics.state,velocity:physics.velocity,webs:physics.webs,
+     anchor:physics.anchorPoint || physics.zipAnchor,wallNormal:physics.wallNormal,
+     mantle:physics.mantle,wallDistance:character.wallDistance,landingSpeed:character.landingSpeed,
+-    pendingTurn:character.pendingTurn,combat:character.combatAction,tricking:character.isTricking});
++    pendingTurn:character.pendingTurn,combat:character.combatAction,tricking:character.isTricking,airTrick:character.airTrick});
+ }
+ 
+ export class RemoteMotion {
+@@ -93,6 +96,8 @@ export class RemoteMotion {
+     c.combatAction=fresh && this.pose.combat ? {...this.pose.combat,time:this.pose.combat.time+(now-this.poseAt)/1000} : null;
+     if (c.combatAction?.duration && c.combatAction.time>c.combatAction.duration) c.combatAction=null;
+     c.isTricking=!!(fresh && this.pose.tricking);
++    c.airTrick=fresh && this.pose.airTrick ? {...this.pose.airTrick,
++      elapsed:this.pose.airTrick.elapsed+Math.max(0,(now-this.poseAt)/1000)-delta} : null;
+     c.update(delta,state,v,anchor);
+   }
+   dispose() {
+diff --git a/src/SwingPhysics.js b/src/SwingPhysics.js
+index cdbb142..d043ef7 100644
+--- a/src/SwingPhysics.js
++++ b/src/SwingPhysics.js
+@@ -1,3 +1,4 @@
++import { AIR_TRICKS, selectAirTrick } from './AirTricks.js';
+ import * as THREE from 'three';
+ import { GROUNDED } from './MotionCatalog.js';
+ import { resolveBody, sweepBody } from './MovementCollision.js';
+@@ -57,6 +58,18 @@ export class SwingPhysics {
+     this.canAirJump = true;
+     this.stuntScore = 0;
+     this.onStuntCallback = null;
++    this.airTrickChain = new Set();
++    this.airTrickRepeats = new Map();
++    this.character.onAirTrickComplete = key => {
++      const trick = AIR_TRICKS[key];
++      const repeats = this.airTrickRepeats.get(key) || 0;
++      this.airTrickRepeats.set(key, repeats + 1);
++      this.airTrickChain.add(key);
++      const multiplier = Math.min(2.5, 1 + (this.airTrickChain.size - 1) * .3);
++      const points = Math.round(trick.points * multiplier / (2 ** Math.min(repeats, 3)));
++      this.stuntScore += points;
++      this.onStuntCallback?.(`${trick.label} · ${this.airTrickChain.size}종 연결 ×${multiplier.toFixed(1)}`, points);
++    };
+ 
+     // Character rotation
+     this.facingAngle = 0;
+@@ -70,6 +83,7 @@ export class SwingPhysics {
+     this.jumpBuffer = 0;
+     this.coyoteTime = 0;
+     this.webLatch = false;
++    this.webLatchRight = false;
+     this.swingCooldown = 0;
+     this.zipTarget = null;
+     this.zipAnchor = null;
+@@ -91,12 +105,19 @@ export class SwingPhysics {
+   }
+ 
+   findBestAnchor(camera) {
++    this.webFailureReason='대상 없음 · 건물을 향해 조준하세요.';
++    this.bestAnchorCandidate = null;
++    this.bestAnchorNormal = null;
++    this.bestAnchorObject = null;
+     camera.updateMatrixWorld(true);
+     const eye=this.position.clone().add(new THREE.Vector3(0,1.3,0));
+     const accept = hit => {
+-      if (!hit || hit.distance < 1 || hit.distance > 130) return null;
++      if(!hit)return null;
++      if(hit.distance<1 || hit.distance>130 || hit.point.distanceTo(eye)>130){this.webFailureReason='거리가 맞지 않습니다 · 부착 범위 1~130m';return null;}
++      const normal=hit.face ? surfaceNormal(hit) : new THREE.Vector3(0,1,0);
++      if(this.webObstructed({anchor:hit.point,normal})){this.webFailureReason='장애물이 거미줄 경로를 가립니다.';return null;}
+       this.bestAnchorObject = hit.object;
+-      this.bestAnchorNormal = hit.face ? surfaceNormal(hit) : new THREE.Vector3(0, 1, 0);
++      this.bestAnchorNormal = normal;
+       this.bestAnchorCandidate = hit.point.clone();
+       return this.bestAnchorCandidate;
+     };
+@@ -107,6 +128,7 @@ export class SwingPhysics {
+     const aimed = accept(this.raycaster.intersectObjects(this.city.buildingMeshes, true)[0]);
+     this.raycaster.far = 140;
+     if (aimed) return aimed;
++    if(this.aimAssist===false)return null;
+ 
+     // The center ray missed. Search ahead and above the travel direction
+     // for a facade about 15–45m over the body.
+@@ -136,7 +158,11 @@ export class SwingPhysics {
+         this.raycaster.far = 130;
+         const hit = this.raycaster.intersectObjects(this.city.buildingMeshes, true)[0];
+         this.raycaster.far = 140;
+-        if (!hit || hit.distance < 4 || hit.distance > 130) continue;
++        if (!hit || hit.distance < 4 || hit.distance > 130 || hit.point.distanceTo(eye)>130) continue;
++        // Rank only reachable surfaces, otherwise a blocked high facade
++        // masks every usable alternative in the search cone.
++        const normal=hit.face ? surfaceNormal(hit) : new THREE.Vector3(0,1,0);
++        if(this.webObstructed({anchor:hit.point,normal}))continue;
+         const height = hit.point.y - eye.y;
+         let score = 100 - hit.distance * 0.35 + Math.min(Math.max(height, 0), 50) * 1.5;
+         if (height >= 15 && height <= 45) score += 40;
+@@ -146,18 +172,32 @@ export class SwingPhysics {
+     return accept(best);
+   }
+ 
+-  startSwing(camera,allowSame=true) {
++  // Right click passes the hand opposite the latest left-button rope.
++  offhand() {
++    return this.handForButton(2);
++  }
++
++  handForButton(button) {
++    const owned=this.webs.findLast(web=>(web.button??0)===button);
++    if(owned)return owned.hand;
++    const other=this.webs.findLast(web=>(web.button??0)!==button);
++    const base=other?.hand || this.nextWebHand;
++    return other || button===2 ? (base==='left'?'right':'left') : base;
++  }
++
++  startSwing(camera,allowSame=true,shot=null) {
+     if(this.webEnabled===false && GROUNDED.includes(this.state))return false;
+     const anchor = this.findBestAnchor(camera);
+-    if (!anchor) return false;
+-    const hand=this.nextWebHand;
++    if (!anchor) {this.onWebFailure?.(this.webFailureReason);return false;}
++    const hand=shot?.hand || this.nextWebHand;
++    const button=shot?.button ?? 0;
+     const sameHand=this.webs.find(web=>web.hand===hand);
+     if (!allowSame && this.isSwinging && sameHand?.anchor.distanceTo(anchor) < 0.8 &&
+         sameHand.object === this.bestAnchorObject) return false;
+     if(this.webObstructed({anchor,normal:this.bestAnchorNormal}))return false;
+ 
+     if(this.state==='WEB_ZIP' && this.zipAnchor && !this.webs.length)this.webs=[{
+-      hand:this.pullHand || this.character.currentHand || 'left',anchor:this.zipAnchor.clone(),
++      hand:this.pullHand || this.character.currentHand || 'left',button:0,anchor:this.zipAnchor.clone(),
+       normal:this.lastWebNormal?.clone(),object:this.bestAnchorObject,
+       length:Math.max(1.45,this.position.distanceTo(this.zipAnchor))}];
+ 
+@@ -175,12 +215,12 @@ export class SwingPhysics {
+     this.lastWebNormal = this.bestAnchorNormal?.clone() || new THREE.Vector3(0, 1, 0);
+     this.ropeLength = Math.max(1.45, this.position.distanceTo(this.anchorPoint));
+     // Each hand keeps its own anchor. A later shot replaces only that hand.
+-    this.webs=this.webs.filter(web=>web.hand!==hand);
+-    this.webs.push({hand,anchor:anchor.clone(),normal:this.lastWebNormal.clone(),
++    this.webs=this.webs.filter(web=>web.hand!==hand && (!shot || (web.button??0)!==button));
++    this.webs.push({hand,button,anchor:anchor.clone(),normal:this.lastWebNormal.clone(),
+       object:this.anchorObject,length:this.ropeLength});
+     this.character.fireWeb?.(this.anchorPoint,hand);
+     this.syncWebHands();
+-    this.nextWebHand=hand==='left'?'right':'left';
++    if(shot?.advance!==false)this.nextWebHand=hand==='left'?'right':'left';
+ 
+     // Attachment changes the constraint, never the player's momentum.
+     this.launchAssistAvailable = false;
+@@ -195,23 +235,12 @@ export class SwingPhysics {
+     if (!anchor || !this.anchorSupported({anchor,normal:this.lastWebNormal})) return false;
+     const radial = this.position.clone().sub(anchor).normalize();
+     const radialSpeed = this.velocity.dot(radial);
+-    this.velocity.addScaledVector(radial, -radialSpeed);
+-    if (this.velocity.length() < 5) {
+-      const tangent = new THREE.Vector3();
+-      camera.getWorldDirection(tangent);
+-      tangent.addScaledVector(radial, -tangent.dot(radial)).normalize();
+-      if (tangent.lengthSq() < 1e-5) {
+-        tangent.crossVectors(radial, new THREE.Vector3(0, 1, 0));
+-        if (tangent.lengthSq() < 1e-5) tangent.crossVectors(radial, new THREE.Vector3(1, 0, 0));
+-        tangent.normalize();
+-      }
+-      this.velocity.addScaledVector(tangent, 6 - this.velocity.length());
+-    }
++    if(radialSpeed>0)this.velocity.addScaledVector(radial, -radialSpeed);
+     this.anchorPoint = anchor.clone();
+     this.anchorObject = this.bestAnchorObject || null;
+     this.ropeLength = Math.max(1.45, this.position.distanceTo(anchor));
+     const hand=this.pullHand || this.character.currentHand || 'left';
+-    this.webs=[{hand,anchor:anchor.clone(),normal:this.lastWebNormal?.clone(),
++    this.webs=[{hand,button:0,anchor:anchor.clone(),normal:this.lastWebNormal?.clone(),
+       object:this.anchorObject,length:this.ropeLength}];
+     this.syncWebHands();
+     this.isSwinging = true;
+@@ -246,17 +275,44 @@ export class SwingPhysics {
+     this.anchorPoint = null;
+     this.anchorObject = null;
+     this.webs=[];
+-    this.clearWebVisuals();
++    this.clearWebVisuals(true);
+     this.swingCooldown = 0;
+     this.velocity.clampLength(0, this.maxSpeed);
+   }
+ 
+-  clearWebVisuals() {
++  // Drop only the ropes owned by one mouse button. The last rope uses the
++  // same inert release as letting go of a left-click pendulum.
++  releaseWebButton(button) {
++    if (!this.isSwinging) return;
++    const dropped=this.webs.filter(web=>(web.button??0)===button);
++    if (!dropped.length) return;
++    this.webs=this.webs.filter(web=>(web.button??0)!==button);
++    if (!this.webs.length) {
++      this.releaseSwing(false);
++      return;
++    }
++    this.syncWebHands();
++    const latest=this.webs.at(-1);
++    this.anchorPoint=latest.anchor;
++    this.anchorObject=latest.object;
++    this.ropeLength=latest.length;
++    this.lastWebAnchor=latest.anchor.clone();
++    this.lastWebNormal=latest.normal?.clone() || this.lastWebNormal;
++    this.character.persistentWebAnchor=latest.anchor.clone();
++    if (dropped.some(web=>web.hand===this.character.currentHand)) {
++      this.character.webShotTimer=0;
++      this.character.webShotAnchor=null;
++    }
++  }
++
++  clearWebVisuals(preservePose = false) {
+     this.character.webAttachments=[];
+     this.character.persistentWebAnchor=null;
+     this.character.webShotAnchor=null;
+     this.character.webShotTimer=0;
+-    this.character.webHandWeights={};this.character.webHandTargets={};
++    // Hide the strand immediately, but let Character fade its reaching arm
++    // out after release. Clearing IK here made the wrist snap in one frame.
++    if(!preservePose){this.character.webHandWeights={};this.character.webHandTargets={};}
+     this.character.webLaunchTimers={};
+     this.character.updateWeb?.(false,null);
+   }
+@@ -267,6 +323,7 @@ export class SwingPhysics {
+     this.lastWebNormal = null;
+     this.zipAnchor = null;
+     this.zipTarget = null;
++    this.zipTime = 0;
+     if (this.state === 'WEB_ZIP') this.state = this.velocity.y > 0 ? 'JUMPING' : 'FALLING';
+     this.character.persistentWebAnchor = null;
+     this.character.webShotAnchor = null;
+@@ -339,7 +396,7 @@ export class SwingPhysics {
+ 
+   performAirJump(camera, aimNdc = new THREE.Vector2(0, 0)) {
+     if(this.webEnabled===false && GROUNDED.includes(this.state))return false;
+-    if (!this.canAirJump || this.isSwinging || this.state === 'SWINGING') return false;
++    if (!this.canAirJump || this.isSwinging || !['FALLING','JUMPING'].includes(this.state)) return false;
+ 
+     // Web Zip: Pulls character forward and upward
+     camera.updateMatrixWorld(true);
+@@ -347,7 +404,7 @@ export class SwingPhysics {
+     this.raycaster.far = 80;
+     const hit = this.raycaster.intersectObjects(this.city.buildingMeshes, true)[0];
+     this.raycaster.far = 140;
+-    if (!hit || hit.distance < 4 || !hit.face) return false;
++    if (!hit || hit.distance < 4 || !hit.face || hit.point.distanceTo(this.position)>80) return false;
+     const normal = surfaceNormal(hit);
+     if(!this.anchorSupported({anchor:hit.point,normal}))return false;
+     const target = hit.point.clone().addScaledVector(normal, 1.05);
+@@ -384,19 +441,22 @@ export class SwingPhysics {
+     return true;
+   }
+ 
+-  performAirTrick() {
+-    if (this.character.isTricking || this.character.contactTime < 0.7 ||
+-        this.position.y < 3) return false;
+-    if (this.state === 'FALLING' || this.state === 'JUMPING' || this.state === 'SWINGING') {
+-      this.character.triggerAirTrick();
+-      this.audio.playTrickSound();
+-      this.stuntScore += 250;
+-      if (this.onStuntCallback) {
+-        this.onStuntCallback('SPIDEY FLIP', 250);
+-      }
+-      return true;
++  performAirTrick(input = {}) {
++    const key = typeof input === 'string' ? input : selectAirTrick(input);
++    const trick = AIR_TRICKS[key];
++    if (!Object.hasOwn(AIR_TRICKS, key) || this.character.isTricking) return false;
++    if (!['FALLING', 'JUMPING'].includes(this.state) || this.isSwinging) {
++      if (this.state === 'SWINGING') this.onStuntCallback?.('줄을 놓고 T로 공중 묘기를 연결하세요', 0);
++      return false;
++    }
++    if (this.character.contactTime < trick.duration + .15 || this.position.y < 3) {
++      this.onStuntCallback?.('묘기를 마칠 높이가 부족합니다', 0);
++      return false;
+     }
+-    return false;
++    this.character.triggerAirTrick(key);
++    this.audio.playTrickSound();
++    this.onStuntCallback?.(trick.label, 0);
++    return true;
+   }
+ 
+   update(delta, input, camera) {
+@@ -405,33 +465,52 @@ export class SwingPhysics {
+     this.character.landingSpeed = 0;
+ 
+     const websLocked=this.webEnabled===false && GROUNDED.includes(this.state);
+-    if(websLocked){input.webTap=input.webFireHeld=input.webHold=false;}
++    if(websLocked){
++      input.webTap=input.webFireHeld=input.webHold=false;
++      input.webTapRight=input.webFireHeldRight=input.webHoldRight=false;
++    }
+     // 1. Raycast for candidate anchor point in real-time
+     this.findBestAnchor(camera);
+ 
+-    // 2. Stay on the line only while the button is held.
++    // 2. Each held mouse button keeps its own pendulum rope.
+     const webTap = !!input.webTap;
++    const webTapRight = !!input.webTapRight;
+     input.webTap = false;
++    input.webTapRight = false;
+     this.webFireCooldown = Math.max(0, this.webFireCooldown - Math.max(0, delta));
++    const showMiss=(hand)=>{
++      this.raycaster.setFromCamera(this.webAimNdc,camera);
++      const direction=this.raycaster.ray.direction.clone();
++      // A downward camera angle would bury the missed strand in the roof.
++      direction.y=Math.max(direction.y,0.1);direction.normalize();
++      const target=this.position.clone().add(new THREE.Vector3(0,1.3,0)).addScaledVector(direction,28);
++      this.character.fireWebMiss?.(target,hand);
++      this.audio.playWebShoot?.();
++    };
+     if (webTap) {
+-      const attached = this.startSwing(camera);
+-      if (!attached && !this.isSwinging) {
+-        this.raycaster.setFromCamera(this.webAimNdc,camera);
+-        const direction=this.raycaster.ray.direction.clone();
+-        // A downward camera angle would bury the missed strand in the roof.
+-        direction.y=Math.max(direction.y,0.1);direction.normalize();
+-        const target=this.position.clone().add(new THREE.Vector3(0,1.3,0)).addScaledVector(direction,28);
+-        this.character.fireWebMiss?.(target,this.nextWebHand);
+-        this.audio.playWebShoot?.();
+-      }
++      const attached = this.startSwing(camera,true,{hand:this.handForButton(0),button:0});
++      if (!attached && !this.isSwinging) showMiss(this.nextWebHand);
+       if (!attached && !this.isSwinging && this.state !== 'WEB_ZIP' && !input.webFireHeld) input.webHold = false;
+       this.webFireCooldown = this.webFireInterval;
+     } else if (input.webHold && !this.webLatch && !this.isSwinging && this.state !== 'WEB_ZIP') {
+-      this.startSwing(camera);
++      this.startSwing(camera,true,{hand:this.handForButton(0),button:0});
++    }
++    if (webTapRight) {
++      const hand=this.offhand();
++      const attached=this.startSwing(camera,true,{hand,button:2,advance:false});
++      if (!attached && !this.isSwinging) showMiss(hand);
++      if (!attached && !this.webs.some(web=>(web.button??0)===2) && this.state!=='WEB_ZIP' && !input.webFireHeldRight) input.webHoldRight=false;
++      this.webFireCooldown = this.webFireInterval;
++    } else if (input.webHoldRight && !this.webLatchRight && !this.webs.some(web=>(web.button??0)===2) && this.state!=='WEB_ZIP') {
++      const hand=this.offhand();
++      this.startSwing(camera,true,{hand,button:2,advance:false});
+     }
+-    const webButton=!!(input.webFireHeld || input.webHold);
+-    if (this.isSwinging && !webButton) this.releaseSwing(false);
+-    this.webLatch = webButton;
++    const leftButton=!!(input.webFireHeld || input.webHold);
++    const rightButton=!!(input.webFireHeldRight || input.webHoldRight);
++    if (this.isSwinging && !leftButton) this.releaseWebButton(0);
++    if (this.isSwinging && !rightButton) this.releaseWebButton(2);
++    this.webLatch = leftButton;
++    this.webLatchRight = rightButton;
+     if (input.jump) this.jumpBuffer = 0.14;
+     input.jump = false;
+ 
+@@ -460,6 +539,10 @@ export class SwingPhysics {
+ 
+     // 4. City Collisions
+     this.handleCollisions(step, input);
++    if (['SWINGING','WEB_ZIP'].includes(this.state) && Math.hypot(this.velocity.x,this.velocity.z)>0.5) {
++      this.facingAngle=Math.atan2(this.velocity.x,this.velocity.z);
++      this.character.targetFacingAngle=this.facingAngle;
++    }
+     this.jumpBuffer = Math.max(0, this.jumpBuffer - step);
+     input.jump = false;
+     this.velocity.clampLength(0, this.maxSpeed);
+@@ -518,7 +601,7 @@ export class SwingPhysics {
+       const camForward=new THREE.Vector3();
+       camera?.getWorldDirection(camForward);
+       camForward.y=0;
+-      if(camForward.lengthSq()<1e-6)camForward.set(0,0,1);
++      if(camForward.lengthSq()<1e-6)camForward.set(Math.sin(this.facingAngle),0,Math.cos(this.facingAngle));
+       camForward.normalize();
+       const side=new THREE.Vector3().crossVectors(camForward,new THREE.Vector3(0,1,0));
+       const effort=camForward.multiplyScalar((input.forward?1:0)-(input.backward?1:0))
+@@ -538,6 +621,17 @@ export class SwingPhysics {
+ 
+   syncWebHands() {
+     this.character.webAttachments=this.webs.map(web=>({hand:web.hand,anchor:web.anchor}));
++    const latest=this.webs.at(-1);
++    this.character.persistentWebAnchor=latest?.anchor.clone() || null;
++    // Shot visuals outlive their launch animation. When collision severs a
++    // hand, its transient shot must not redraw a rope physics already removed.
++    if(!this.webs.some(web=>web.hand===this.character.currentHand)) {
++      this.character.webShotTimer=0;
++      this.character.webShotAnchor=null;
++    }
++    for(const hand of Object.keys(this.character.webLaunchTimers || {})) {
++      if(!this.webs.some(web=>web.hand===hand))delete this.character.webLaunchTimers[hand];
++    }
+   }
+ 
+   anchorSupported(web) {
+@@ -663,22 +757,19 @@ export class SwingPhysics {
+   }
+ 
+   updateFreePhysics(delta, input, camera) {
+-    if (this.state === 'WEB_ZIP' && this.zipTarget && !this.anchorSupported({anchor:this.zipAnchor,normal:this.lastWebNormal}))this.clearWebAnchor();
++    if (this.state === 'WEB_ZIP' && this.zipTarget && this.webObstructed({anchor:this.zipAnchor,normal:this.lastWebNormal}))this.clearWebAnchor();
+     if (this.state === 'WEB_ZIP' && this.zipTarget) {
+       this.zipTime -= delta;
+       const toTarget = this.zipTarget.clone().sub(this.position);
+       const distance = toTarget.length();
+       if (distance < 0.28) {
+         this.jumpBuffer = 0;
+-        if (this.enterSwingFromPull(camera)) return;
+-        this.zipTarget = null;
+-        this.zipAnchor = this.lastWebAnchor?.clone() || null;
+-        this.state = 'FALLING';
+-        return;
++        // Arrival retains a tether only for a physically held left button.
++        if ((input.webHold || input.webFireHeld) && this.enterSwingFromPull(camera)) return;
++        this.clearWebAnchor();
+       } else if (this.zipTime <= 0 || input.jump) {
+-        this.zipTarget = null; this.zipAnchor = this.lastWebAnchor?.clone() || null;
++        this.clearWebAnchor();
+         this.jumpBuffer = 0;
+-        this.state = 'FALLING';
+       } else {
+         const desiredSpeed = Math.min(22, Math.sqrt(2 * 35 * distance));
+         this.velocity.lerp(toTarget.normalize().multiplyScalar(desiredSpeed), 1 - Math.exp(-12 * delta));
+@@ -815,6 +906,8 @@ export class SwingPhysics {
+       }
+     }
+ 
++    // Bound displacement as well as the velocity displayed after the step.
++    this.velocity.clampLength(0, this.maxSpeed);
+     // Integrate position
+     this.position.addScaledVector(this.velocity, delta);
+   }
+@@ -828,9 +921,8 @@ export class SwingPhysics {
+       : resolveBody(previous, this.position, this.velocity, this.city.colliders);
+     this.position.copy(resolved.position);
+     const sweptWall = resolved.contacts.find(hit => Math.abs(hit.normal.y) < 0.5 && hit.blocked!==false);
+-    if (resolved.contacts.length && this.state === 'WEB_ZIP') {
+-      this.zipTarget = null; this.zipAnchor = this.lastWebAnchor?.clone() || null; this.state = 'FALLING';
+-    }
++    if(sweptWall && this.velocity.length()>8)this.onCollision?.();
++    if (resolved.contacts.some(contact=>contact.blocked!==false) && this.state === 'WEB_ZIP') this.clearWebAnchor();
+     let floor = this.city.resolveMovement ? null : this.position.y <= 0.1 ? 0 : null;
+     if (resolved.grounded && fallingSpeed <= 0) floor = this.city.supportHeight(this.position);
+     for (const c of this.city.colliders || []) {
+@@ -868,6 +960,11 @@ export class SwingPhysics {
+         const floorContact = resolved.contacts.find(c => c.normal && c.normal.y > 0.5);
+         if (floorContact) groundNormal.copy(floorContact.normal);
+       }
++      if (airborne) {
++        this.character.cancelAirTrick?.();
++        this.airTrickChain.clear();
++        this.airTrickRepeats.clear();
++      }
+       if (airborne) this.onLanding?.(this.position.clone(), impact, groundNormal);
+       const moving = input.forward || input.backward || input.left || input.right;
+       if (airborne && impact > 7) {
+@@ -925,6 +1022,9 @@ export class SwingPhysics {
+ 
+   resetPosition(reason = null) {
+     this.onReset?.();
++    this.character.cancelAirTrick?.();
++    this.airTrickChain.clear();
++    this.airTrickRepeats.clear();
+     // Spawn on a nice rooftop
+     const spawn = this.city.getRooftopSpawn(95);
+     this.position.copy(spawn);
+@@ -943,6 +1043,7 @@ export class SwingPhysics {
+     this.lastWebAnchor = null;
+     this.lastWebNormal = null;
+     this.webLatch = false;
++    this.webLatchRight = false;
+     this.character.isTricking = false;
+     this.character.trickRotation = 0;
+     this.character.lastState = null;
+@@ -967,7 +1068,7 @@ export class SwingPhysics {
+     if (reason) this.onRecovery?.(reason);
+   }
+ 
+-  clearPendingInput() { this.jumpBuffer = 0; this.coyoteTime = 0; this.webLatch = false; }
++  clearPendingInput() { this.jumpBuffer = 0; this.coyoteTime = 0; this.webLatch = false; this.webLatchRight = false; }
+ 
+   supportHeight(pos) {
+     if (this.city.supportHeight) {
+diff --git a/src/TimeTrial.js b/src/TimeTrial.js
+index 1a1d9f4..41dbd46 100644
+--- a/src/TimeTrial.js
++++ b/src/TimeTrial.js
+@@ -12,6 +12,7 @@ export class TimeTrialSystem {
+     this.currentIndex = 0;
+     this.startTime = 0;
+     this.elapsedTime = 0;
++    this.splitTimes=[];
+     this.isCompleted = false;
+ 
+     this.ringMeshGroup = new THREE.Group();
+@@ -105,6 +106,7 @@ export class TimeTrialSystem {
+     this.currentIndex = 0;
+     this.startTime = 0;
+     this.elapsedTime = 0;
++    this.splitTimes=[];
+ 
+     // Show rings
+     this.checkpoints.forEach((cp, idx) => {
+@@ -169,6 +171,7 @@ export class TimeTrialSystem {
+         // Checkpoint passed!
+         this.audio.playCheckpointChime();
+         currentCp.mesh.visible = false;
++        this.splitTimes.push(this.elapsedTime-delta*(1-fraction));
+         this.currentIndex++;
+ 
+         if (this.currentIndex >= this.checkpoints.length) {
+diff --git a/src/main.js b/src/main.js
+index df4face..21fbc8b 100644
+--- a/src/main.js
++++ b/src/main.js
+@@ -14,6 +14,11 @@ import { Preferences } from './Preferences.js';
+ import { HongKongMinimap } from './Minimap.js';
+ import { Multiplayer } from './Multiplayer.js';
+ import { GROUNDED } from './MotionCatalog.js';
++import {canonicalKey} from './PlayerSettings.js';
++import {SettingsPanel} from './SettingsPanel.js';
++import {GamepadInput} from './GamepadInput.js';
++import {PlayerExperience} from './PlayerExperience.js';
++import {CombatPractice} from './CombatPractice.js';
+ 
+ export class GameApp {
+   constructor() {
+@@ -47,6 +52,9 @@ export class GameApp {
+       webHold: false,
+       webTap: false,
+       webFireHeld: false,
++      webHoldRight: false,
++      webTapRight: false,
++      webFireHeldRight: false,
+       wallRun: false,
+       strafe: 0
+     };
+@@ -79,6 +87,10 @@ export class GameApp {
+       document.getElementById('btn-retry-load')?.addEventListener('click', () => location.reload());
+       return;
+     }
++    this.experience=new PlayerExperience(this,storage);
++    this.practice=new CombatPractice(this);
++    this.settingsPanel=new SettingsPanel(this);
++    this.gamepad=new GamepadInput(this);
+     this.initInputListeners();
+     this.initUIListeners();
+     this.applyPreferences();
+@@ -235,6 +247,7 @@ export class GameApp {
+       subtitle: document.getElementById('minimap-subtitle'),
+       city: this.city,
+       combat: this.combat,
++      players: () => this.multiplayer?.minimapPlayers() || [],
+     });
+ 
+     this.city.onError = error => this.showLoadingError(error.message || '도시 데이터를 불러오지 못했습니다.');
+@@ -242,6 +255,8 @@ export class GameApp {
+       this.combat?.cancel();this.combat?.clearEnemies();
+       this.input.webHold = false;
+       this.input.webFireHeld = false;
++      this.input.webHoldRight = false;
++      this.input.webFireHeldRight = false;
+       if (this.timeTrial.isActive) { this.timeTrial.stop(); this.updateTrialHUD(); }
+       this.resetCamera();
+       this.showNotice(reason === 'boundary' ? `플레이 구역(±${this.city.playableHalfExtent || 2400}m)을 벗어나 시작점으로 돌아왔습니다.` : '안전한 시작점으로 돌아왔습니다.');
+@@ -300,7 +315,7 @@ export class GameApp {
+     window.addEventListener('blur', () => { this.clearInput(); if (this.isPlaying) this.setPaused(true); });
+     document.addEventListener('visibilitychange', () => { if (document.hidden) { this.clearInput(); if (this.isPlaying) this.setPaused(true); } });
+     window.addEventListener('keydown', (e) => {
+-      const k = e.code;
++      const k = canonicalKey(e.code,this.preferences?.values.settings);
+       if (e.target?.closest?.('input, select, textarea, button, a') && k !== 'Escape') return;
+       if (k === 'Escape' && performance.now() < (this.ignoreEscapeUntil || 0)) return;
+       const gameplayKey = [
+@@ -313,9 +328,9 @@ export class GameApp {
+       if (gameplayKey) e.preventDefault();
+       if (gameplayKey && e.repeat && ['Space','KeyG','KeyE','KeyT','KeyC','KeyV','KeyQ','ControlLeft','ControlRight'].includes(k)) return;
+ 
+-      if (gameplayKey) { this.heldKeys.add(k); this.syncHeldInput(); }
++      if (gameplayKey) { this.heldKeys.add(k); if(k==='ShiftLeft' && !e.repeat && this.preferences?.values.settings?.sprintToggle)this.sprintLatched=!this.sprintLatched; this.syncHeldInput(); }
+       if(k==='KeyB'){this.combat.guard(true);return;}
+-      if(k==='KeyG'){if(this.combat.special(this.camera))this.multiplayer?.attack('punch');return;}
++      if(k==='KeyG'){if(GROUNDED.includes(this.physics.state)){if(this.combat.special(this.camera))this.multiplayer?.attack('punch');}else this.combat.airStrike?.(this.camera);return;}
+       if(k==='KeyQ'){
+         if(this.multiplayer?.locksCombatToggle()){this.showNotice('도망자는 거미줄로만 이동합니다.');return;}
+         this.combat.toggle(this.input);return;
+@@ -347,15 +362,20 @@ export class GameApp {
+       if (k === 'Space') {
+         this.input.jump = true;
+         const swinging = this.physics.isSwinging;
+-        const onWeb = swinging || this.physics.state === 'WEB_ZIP' || this.physics.lastWebAnchor;
++        const onWeb = swinging || this.physics.state === 'WEB_ZIP';
+         if (onWeb) {
+           this.input.webHold = false;
+           this.input.webFireHeld = false;
+           this.input.webTap = false;
++          this.input.webHoldRight = false;
++          this.input.webFireHeldRight = false;
++          this.input.webTapRight = false;
+           if (swinging) this.physics.releaseSwing(true);
+           else this.physics.clearWebAnchor();
+           this.physics.velocity.y = Math.max(this.physics.velocity.y, this.physics.jumpForce);
+           this.physics.state = 'JUMPING';
++          this.input.jump = false;
++          this.physics.clearPendingInput();
+         }
+       }
+       if (k === 'KeyF') this.input.wallRun = true;
+@@ -363,16 +383,16 @@ export class GameApp {
+         const groundedCombat = this.combat?.mode==='combat' && GROUNDED.includes(this.physics.state);
+         if (groundedCombat) {
+           if (this.combat.heavy(this.camera)) this.multiplayer?.attack('punch');
+-        } else this.physics.performAirJump(this.camera);
++        } else this.physics.performAirJump(this.camera, this.physics.webAimNdc);
+       }
+-      if (k === 'KeyT') this.physics.performAirTrick();
++      if (k === 'KeyT') this.physics.performAirTrick(this.input);
+       if (k === 'KeyM' && !e.repeat) this.toggleMute();
+       if (k === 'KeyH' && !e.repeat) this.toggleHelp();
+       if (k === 'Escape' && !e.repeat) this.togglePause();
+     });
+ 
+     window.addEventListener('keyup', (e) => {
+-      const k = e.code;
++      const k = canonicalKey(e.code,this.preferences?.values.settings);
+       this.heldKeys.delete(k);
+       if(k==='KeyB')this.combat?.guard(false);
+       this.syncHeldInput();
+@@ -394,7 +414,7 @@ export class GameApp {
+         return;
+       }
+       if (e.button === 0) {
+-        this.multiplayer?.attack('web');
++        if(this.preferences?.values.settings?.webToggle && this.input.webHold){this.input.webHold=this.input.webFireHeld=false;this.physics.releaseWebButton(0);return;}
+         // Holding the left button keeps one rope. Releasing lets it go.
+         this.physics.setWebAimPoint(
+           e.clientX,
+@@ -403,10 +423,26 @@ export class GameApp {
+           document.pointerLockElement === this.canvas
+         );
+         this.physics.findBestAnchor(this.camera);
++        this.multiplayer?.attack('web');
+         this.input.webTap = true;
+         this.input.webFireHeld = true;
+         this.input.webHold = true;
+       }
++      if (e.button === 2) {
++        if(this.preferences?.values.settings?.webToggle && this.input.webHoldRight){this.input.webHoldRight=this.input.webFireHeldRight=false;this.physics.releaseWebButton(2);return;}
++        // The opposite hand uses the same held pendulum as the left button.
++        this.physics.setWebAimPoint(
++          e.clientX,
++          e.clientY,
++          this.canvas.getBoundingClientRect(),
++          document.pointerLockElement === this.canvas
++        );
++        this.physics.findBestAnchor(this.camera);
++        this.multiplayer?.attack('web');
++        this.input.webTapRight = true;
++        this.input.webFireHeldRight = true;
++        this.input.webHoldRight = true;
++      }
+       if (e.button === 1 && document.pointerLockElement !== this.canvas) {
+         e.preventDefault();
+         this.cameraDragActive = true;
+@@ -417,10 +453,15 @@ export class GameApp {
+     window.addEventListener('mouseup', (e) => {
+       this.cameraDragActive = false;
+       this.lastMousePosition = null;
+-      if (e.button === 0) {
++      if (e.button === 0 && !this.preferences?.values.settings?.webToggle) {
+         this.input.webFireHeld = false;
+         this.input.webHold = false;
+-        if (this.physics?.isSwinging) this.physics.releaseSwing(false);
++        this.physics?.releaseWebButton?.(0);
++      }
++      if (e.button === 2 && !this.preferences?.values.settings?.webToggle) {
++        this.input.webFireHeldRight = false;
++        this.input.webHoldRight = false;
++        this.physics?.releaseWebButton?.(2);
+       }
+     });
+ 
+@@ -579,6 +620,7 @@ export class GameApp {
+   clearInput() {
+     this.combat?.clearHeld();
+     this.heldKeys.clear();
++    this.sprintLatched=false;this.gamepadDirections={};
+     for (const key of Object.keys(this.input)) this.input[key] = key === 'strafe' ? 0 : false;
+     this.cameraDragActive = false;
+     if (this.physics) this.physics.clearPendingInput();
+@@ -586,11 +628,12 @@ export class GameApp {
+ 
+   syncHeldInput() {
+     const held = (...keys) => keys.some(key => this.heldKeys.has(key));
+-    this.input.forward = held('KeyW','ArrowUp');
+-    this.input.backward = held('KeyS','ArrowDown');
+-    this.input.left = held('KeyA','ArrowLeft');
+-    this.input.right = held('KeyD','ArrowRight');
+-    this.input.sprint = held('ShiftLeft','ShiftRight');
++    const pad=this.gamepadDirections||{};
++    this.input.forward = !!pad.forward || held('KeyW','ArrowUp');
++    this.input.backward = !!pad.backward || held('KeyS','ArrowDown');
++    this.input.left = !!pad.left || held('KeyA','ArrowLeft');
++    this.input.right = !!pad.right || held('KeyD','ArrowRight');
++    this.input.sprint = this.preferences?.values.settings.sprintToggle?!!this.sprintLatched:held('ShiftLeft','ShiftRight');
+     this.input.wallRun = held('KeyF');
+     this.input.strafe = Number(this.input.right) - Number(this.input.left);
+   }
+@@ -615,7 +658,11 @@ export class GameApp {
+   }
+ 
+   applyPreferences() {
+-    const { muted, reducedMotion, quality } = this.preferences.values;
++    const { muted, reducedMotion, quality,settings } = this.preferences.values;
++    Object.assign(this.tpsCamera,{sensitivity:settings.sensitivity,invertY:settings.invertY,baseFov:settings.fov,maxFov:settings.fov+12,firstPersonFov:settings.fov,shakeStrength:settings.shake,speedFov:settings.speedFov,followStrength:settings.follow});
++    this.physics.aimAssist=this.multiplayer?.room?true:settings.aimAssist;
++    this.audio.configure?.(settings);
++    for(const id of ['hud-top-left','minimap-panel','session-hud']){const el=document.getElementById(id);if(el)el.style.scale=String(settings.hudScale);}
+     if (this.audio.isMuted !== muted) this.audio.toggleMute();
+     const motionButton = document.getElementById('reduced-motion');
+     motionButton?.setAttribute('aria-pressed', String(reducedMotion));
+@@ -628,6 +675,13 @@ export class GameApp {
+     document.body.classList.toggle('reduced-motion', reducedMotion);
+     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, { low: 1, balanced: 1.5, high: 2 }[quality] || 1.5));
+     this.renderer.shadowMap.enabled = quality !== 'low';
++    this.applyWebTheme();
++  }
++
++  applyWebTheme() {
++    const color=this.progression?.color||0xf4f8ff;
++    for(const mesh of [this.character.webMesh,this.character.webMeshOffhand])mesh?.material?.color?.setHex(color);
++    for(const line of [this.character.webLine,this.character.webLineOffhand])line?.material?.color?.setHex(color);
+   }
+ 
+   resetCamera() {
+@@ -642,6 +696,7 @@ export class GameApp {
+     this.clearInput();
+     this.physics.resetPosition();
+     this.physics.stuntScore = 0;
++    this.experience?.stunts.reset();if(this.experience)this.experience.stunts.total=0;this.experience?.ghost.stop();
+     this.timeTrial.stop();
+     this.updateTrialHUD();
+     this.resetCamera();
+@@ -651,13 +706,13 @@ export class GameApp {
+   toggleTimeTrial() {
+     if (this.multiplayer?.room) return;
+     if (!this.isPlaying || this.isPaused) return;
+-    if (this.timeTrial.isActive && !this.timeTrial.isCompleted) this.timeTrial.stop();
++    if (this.timeTrial.isActive && !this.timeTrial.isCompleted) {this.timeTrial.stop();this.experience?.ghost.stop();}
+     else {
+       this.clearInput();
+       this.physics.resetPosition();
+       this.resetCamera();
+       if (!this.timeTrial.start()) this.showNotice('코스 지형이 아직 준비되지 않았거나 링을 놓을 공간이 부족합니다. 로컬 도시를 이용하거나 잠시 후 다시 시도하세요.');
+-      else this.showNotice('타임트라이얼 시작! 금색 링을 순서대로 통과하세요. R로 종료합니다.');
++      else {this.experience?.raceStarted();this.showNotice('타임트라이얼 시작! 금색 링을 순서대로 통과하세요. 레이스 키로 종료합니다.');}
+     }
+     this.updateTrialHUD();
+   }
+@@ -667,10 +722,11 @@ export class GameApp {
+     const course = this.timeTrial.courseId;
+     const best = this.preferences.values.bestTimes[course];
+     if (result?.completed) {
++      const race=this.experience?.raceFinished(result);
+       const newBest = this.preferences.recordTime(course, result.totalTime);
+       const saveWarning = newBest && !this.preferences.lastSaveSucceeded
+         ? ' · 저장할 수 없어 최고 기록은 이번 실행에만 적용됩니다.' : '';
+-      this.showNotice(`완주 ${result.totalTime.toFixed(2)}초${newBest ? ' · 최고 기록!' : ''}${saveWarning}`);
++      this.showNotice(`완주 ${result.totalTime.toFixed(2)}초${newBest ? ' · 최고 기록!' : ''}${race?' · '+race.medal+'메달':''}${saveWarning}`);
+     }
+     if (status) status.textContent = this.timeTrial.isActive
+       ? this.timeTrial.isCompleted ? `완주 ${this.timeTrial.elapsedTime.toFixed(2)}초 · R 재도전`
+@@ -689,6 +745,7 @@ export class GameApp {
+         const arrows = ['↑','↗','→','↘','↓','↙','←','↖'];
+         const arrow = arrows[(Math.round(angle/(Math.PI/4))+8)%8];
+         target.textContent = `다음 링 ${Math.round(offset.length())}m ${arrow} · 높이 ${offset.y>=0?'+':''}${Math.round(offset.y)}m`;
++        const split=this.experience?.ghost.splitDelta;if(Number.isFinite(split))target.textContent+=` · 구간 ${split>=0?'+':''}${split.toFixed(2)}초`;
+       }
+     }
+     const button = document.getElementById('btn-time-trial');
+@@ -699,7 +756,7 @@ export class GameApp {
+     const score = document.getElementById('stunt-score');
+     if (score) score.textContent = String(this.physics.stuntScore);
+     const combatHud=document.getElementById('combat-status');
+-    if(combatHud && this.combat)combatHud.textContent=`${this.combat.mode==='web'?'거미줄 ON':'전투 모드'} · HP ${Math.ceil(this.combat.health)} · 기력 ${Math.ceil(this.combat.stamina)} · Q 모드 전환`;
++    if(combatHud && this.combat){const airborne=!GROUNDED.includes(state);combatHud.textContent=this.multiplayer?.room?'':`${airborne?'공중 · 양손 거미줄':this.combat.mode==='web'?'거미줄 이동':'전투'} · HP ${Math.ceil(this.combat.health)} · 기력 ${Math.ceil(this.combat.stamina)} · ${this.combat.enemies.some(e=>e.windup>0)?'공격 예고! · 방어 / 회피':'모드 '+this.preferences.values.settings.bindings.mode.replace('Key','')}`;combatHud.classList.toggle('hidden',!!this.multiplayer?.room);}
+     // 1. Speedometer
+     if (this.speedDisplay) {
+       this.speedDisplay.textContent = Math.round(speedKmh);
+@@ -756,7 +813,6 @@ export class GameApp {
+     // Keep streamed city tiles advancing while the start overlay is visible;
+     // TilesRenderer performs visibility/LOD work independently of gameplay.
+     this.city.update(this.clock.elapsedTime);
+-    this.minimap?.update(this.physics.position, this.physics.facingAngle, this.clock.elapsedTime);
+     if (!this.assetsReady && this.character.isLoaded &&
+         (!(this.city instanceof UrbanGroundCity) || this.city.isReady)) this.onAssetsLoaded();
+ 
+@@ -767,7 +823,15 @@ export class GameApp {
+       this.combat?.before(delta,this.camera);
+       this.physics.update(delta, this.input, this.camera);
+       this.combat?.after(delta);
+-      if (wasSwinging && !this.physics.isSwinging) this.input.webHold = false;
++      this.practice?.update(delta);
++      if (wasSwinging && !this.physics.isSwinging) {
++        this.input.webHold = false;
++        this.input.webFireHeld = false;
++        this.input.webTap = false;
++        this.input.webHoldRight = false;
++        this.input.webFireHeldRight = false;
++        this.input.webTapRight = false;
++      }
+ 
+       // 2. Update 3rd Person Follow Camera
+       this.tpsCamera.update(
+@@ -783,7 +847,7 @@ export class GameApp {
+       // 3. Update Visuals & FX
+       const speedKmh = this.physics.velocity.length() * 3.6;
+       if (this.speedLines) {
+-        this.speedLines.setSpeed(this.preferences.values.reducedMotion ? 0 : speedKmh, delta);
++        this.speedLines.setSpeed(this.preferences.values.reducedMotion ? 0 : speedKmh*this.preferences.values.settings.speedLines, delta);
+       }
+       this.vfx.update(delta);
+       // Simulation steps stay bounded, but active race time includes frame stalls.
+@@ -793,7 +857,11 @@ export class GameApp {
+       this.updateHUD(speedKmh, this.physics.position.y, this.physics.state);
+     }
+ 
++    this.experience?.update(delta,elapsed);
++    this.gamepad?.update(delta);
+     this.multiplayer?.update(delta);
++    this.minimap?.update((spectating && this.multiplayer.spectatePoint()) || this.physics.renderPosition,
++      this.physics.facingAngle, this.clock.elapsedTime);
+ 
+     this.hongKongAudit?.update(this.clock.elapsedTime);
+ 
+diff --git a/src/style.css b/src/style.css
+index c3a9a60..4c35ed6 100644
+--- a/src/style.css
++++ b/src/style.css
+@@ -766,8 +766,11 @@ body.room-game #session-hud { display: none !important; }
+ #trial-target { color: #a8dfdf; font-size: 11px; }
+ #session-hud > span:nth-child(3), #performance-status { color: #8fa5b6; font-size: 10px; }
+ #btn-time-trial { align-self: flex-start; border-color: #e14e68; border-radius: 2px; background: rgba(121,25,49,.6); font-size: 11px; }
+-#minimap-panel { bottom: 26px; right: 24px; width: 206px; padding: 10px; border-radius: 2px; border: 1px solid rgba(161,202,214,.35); background: rgba(8,21,34,.78); box-shadow: 0 18px 50px #0007; backdrop-filter: blur(12px); }
++#minimap-panel { bottom: 26px; right: 24px; width: 236px; padding: 10px; border-radius: 2px; border: 1px solid rgba(161,202,214,.35); background: rgba(8,21,34,.78); box-shadow: 0 18px 50px #0007; backdrop-filter: blur(12px); }
+ #minimap-canvas { border-radius: 2px; }
++.minimap-legend { position: absolute; bottom: 10px; left: 9px; color: #92bbc8; font: 700 9px Outfit,sans-serif; text-shadow: 0 1px 4px #000; }
++.minimap-legend b { color: #fff; padding-left: 4px; }
++.minimap-legend i { color: #ffce67; font-style: normal; padding-left: 4px; }
+ #minimap-status { border-radius: 2px; }
+ #match-hud { top: 21px; left: 24px; right: 24px; width: auto; transform: none; justify-content: center; gap: 18px; padding: 9px 17px; border-radius: 2px; border: 1px solid rgba(142,185,204,.28); border-top: 2px solid #ec3858; background: rgba(7,17,30,.78); backdrop-filter: blur(13px); }
+ .hud-district { margin-right: auto; color: #b5c9d4; font: 800 10px Outfit,sans-serif; letter-spacing: .18em; }
+@@ -856,3 +859,20 @@ body.in-game #gameplay-quickbar { display: flex; }
+   .lobby-hero-actions { margin-top: 20px; }
+   .online-card { max-height: calc(100dvh - 105px); }
+ }
++
++/* Player preferences stay in a scrollable, keyboard reachable menu. */
++#overlay-click-to-play .overlay-card { max-height: calc(100dvh - 32px); overflow-y:auto; overscroll-behavior:contain; }
++#extended-settings details, .player-progress { border-bottom:1px solid #304457; padding:10px 0; color:#dceaf2; font-size:12px; }
++#extended-settings summary, .player-progress summary { cursor:pointer; min-height:28px; }
++.setting-row { display:flex; align-items:center; gap:10px; justify-content:space-between; min-height:38px; border-bottom:1px solid #243a4b; }
++.setting-row span { flex:1; }.setting-row input[type=range] { width:105px; accent-color:#8ee8e7; }.setting-row output { min-width:28px; }
++.setting-row button { margin:0; padding:6px 10px; min-width:74px; }.player-progress button { margin:7px 4px 0 0; padding:8px; }.player-progress select { max-width:180px; }
++#anchor-preview { position:fixed; z-index:7; pointer-events:none; width:16px; height:16px; border:2px solid #88f7e0; border-radius:50%; transform:translate(-50%,-50%); display:none; box-shadow:0 0 0 3px #071c29aa; }
++#hand-status { position:fixed; bottom:74px; left:50%; transform:translateX(-50%); z-index:7; pointer-events:none; color:#b9fff0; font:12px system-ui; text-shadow:0 1px 4px #000; }
++#combo-hud { position:fixed; right:26px; top:100px; z-index:7; color:#b9fff0; text-align:right; font:700 15px system-ui; text-shadow:0 2px 5px #000; pointer-events:none; }
++#boundary-warning, #pursuit-hud { position:fixed; top:155px; left:50%; transform:translateX(-50%); z-index:7; max-width:90vw; color:#ffe299; background:#102339e0; padding:6px 12px; font:12px system-ui; pointer-events:none; }
++#pursuit-hud { top:115px; color:#d4f7ff; }#boundary-warning:empty,#pursuit-hud:empty { display:none; }
++#spectate-next { position:fixed; bottom:85px; left:50%; transform:translateX(-50%); z-index:12; }
++body:not(.in-game) #anchor-preview,body:not(.in-game) #hand-status,body:not(.in-game) #combo-hud,body:not(.in-game) #boundary-warning,body:not(.in-game) #pursuit-hud { visibility:hidden; }
++body.hud-quiet #hud-top-left { opacity:.35; }body.hud-combat #session-hud { opacity:.45; }
++#hud-top-left,#minimap-panel,#session-hud { transform-origin:bottom left; }#minimap-panel { transform-origin:bottom right; }

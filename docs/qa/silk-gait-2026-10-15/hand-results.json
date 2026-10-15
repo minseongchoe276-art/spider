@@ -1,0 +1,350 @@
+{
+  "fps": [
+    24,
+    30,
+    60,
+    144
+  ],
+  "results": [
+    {
+      "name": "24fps left: anatomical third-person shooting, held grip and clean release",
+      "status": "PASS",
+      "detail": {
+        "thumb": 0.9716780557523629,
+        "index": 0.999814365313202,
+        "middle": 0.5403474329716751,
+        "ring": 0.5554928099138384,
+        "pinky": 0.9998344056876802
+      }
+    },
+    {
+      "name": "24fps left: actual first-person suit hand has the same five-digit gesture",
+      "status": "PASS",
+      "detail": {
+        "ratios": {
+          "thumb": 0.971586085625846,
+          "index": 0.9998137133922165,
+          "middle": 0.5393466678265576,
+          "ring": 0.5546022406248307,
+          "pinky": 0.9998348410402437
+        },
+        "skinSize": [
+          0.11656505944114937,
+          0.19296740966906412,
+          0.1524841824296035
+        ],
+        "triangles": 1657
+      }
+    },
+    {
+      "name": "24fps left: a missed shot articulates, expires and never attaches",
+      "status": "PASS"
+    },
+    {
+      "name": "24fps right: anatomical third-person shooting, held grip and clean release",
+      "status": "PASS",
+      "detail": {
+        "thumb": 0.9790800763984137,
+        "index": 0.9999524636560296,
+        "middle": 0.5446340497466591,
+        "ring": 0.5430094755152668,
+        "pinky": 0.9999085983471967
+      }
+    },
+    {
+      "name": "24fps right: actual first-person suit hand has the same five-digit gesture",
+      "status": "PASS",
+      "detail": {
+        "ratios": {
+          "thumb": 0.9790051701468662,
+          "index": 0.9999522418340637,
+          "middle": 0.543686574898789,
+          "ring": 0.5421070190419064,
+          "pinky": 0.9999093885413475
+        },
+        "skinSize": [
+          0.1172251035318258,
+          0.19824188900372952,
+          0.1545745213837295
+        ],
+        "triangles": 1774
+      }
+    },
+    {
+      "name": "24fps right: a missed shot articulates, expires and never attaches",
+      "status": "PASS"
+    },
+    {
+      "name": "30fps left: anatomical third-person shooting, held grip and clean release",
+      "status": "PASS",
+      "detail": {
+        "thumb": 0.9716780557523629,
+        "index": 0.999814365313202,
+        "middle": 0.5403474329716755,
+        "ring": 0.5554928099138384,
+        "pinky": 0.9998344056876802
+      }
+    },
+    {
+      "name": "30fps left: actual first-person suit hand has the same five-digit gesture",
+      "status": "PASS",
+      "detail": {
+        "ratios": {
+          "thumb": 0.971586085625846,
+          "index": 0.9998137133922165,
+          "middle": 0.5393466678265576,
+          "ring": 0.5546022406248307,
+          "pinky": 0.9998348410402437
+        },
+        "skinSize": [
+          0.11656505944114937,
+          0.19296740966906412,
+          0.1524841824296035
+        ],
+        "triangles": 1657
+      }
+    },
+    {
+      "name": "30fps left: a missed shot articulates, expires and never attaches",
+      "status": "PASS"
+    },
+    {
+      "name": "30fps right: anatomical third-person shooting, held grip and clean release",
+      "status": "PASS",
+      "detail": {
+        "thumb": 0.9790800763984141,
+        "index": 0.9999524636560296,
+        "middle": 0.5446340497466591,
+        "ring": 0.5430094755152668,
+        "pinky": 0.9999085983471967
+      }
+    },
+    {
+      "name": "30fps right: actual first-person suit hand has the same five-digit gesture",
+      "status": "PASS",
+      "detail": {
+        "ratios": {
+          "thumb": 0.9790051701468662,
+          "index": 0.9999522418340637,
+          "middle": 0.543686574898789,
+          "ring": 0.5421070190419064,
+          "pinky": 0.9999093885413475
+        },
+        "skinSize": [
+          0.1172251035318258,
+          0.19824188900372952,
+          0.1545745213837295
+        ],
+        "triangles": 1774
+      }
+    },
+    {
+      "name": "30fps right: a missed shot articulates, expires and never attaches",
+      "status": "PASS"
+    },
+    {
+      "name": "60fps left: anatomical third-person shooting, held grip and clean release",
+      "status": "PASS",
+      "detail": {
+        "thumb": 0.9716780557523629,
+        "index": 0.999814365313202,
+        "middle": 0.5403474329716751,
+        "ring": 0.5554928099138385,
+        "pinky": 0.9998344056876802
+      }
+    },
+    {
+      "name": "60fps left: actual first-person suit hand has the same five-digit gesture",
+      "status": "PASS",
+      "detail": {
+        "ratios": {
+          "thumb": 0.971586085625846,
+          "index": 0.9998137133922165,
+          "middle": 0.5393466678265576,
+          "ring": 0.5546022406248307,
+          "pinky": 0.9998348410402437
+        },
+        "skinSize": [
+          0.11656505944114937,
+          0.19296740966906412,
+          0.1524841824296035
+        ],
+        "triangles": 1657
+      }
+    },
+    {
+      "name": "60fps left: a missed shot articulates, expires and never attaches",
+      "status": "PASS"
+    },
+    {
+      "name": "60fps right: anatomical third-person shooting, held grip and clean release",
+      "status": "PASS",
+      "detail": {
+        "thumb": 0.9790800763984142,
+        "index": 0.9999524636560296,
+        "middle": 0.5446340497466591,
+        "ring": 0.5430094755152668,
+        "pinky": 0.9999085983471967
+      }
+    },
+    {
+      "name": "60fps right: actual first-person suit hand has the same five-digit gesture",
+      "status": "PASS",
+      "detail": {
+        "ratios": {
+          "thumb": 0.9790051701468662,
+          "index": 0.9999522418340637,
+          "middle": 0.543686574898789,
+          "ring": 0.5421070190419064,
+          "pinky": 0.9999093885413475
+        },
+        "skinSize": [
+          0.1172251035318258,
+          0.19824188900372952,
+          0.1545745213837295
+        ],
+        "triangles": 1774
+      }
+    },
+    {
+      "name": "60fps right: a missed shot articulates, expires and never attaches",
+      "status": "PASS"
+    },
+    {
+      "name": "144fps left: anatomical third-person shooting, held grip and clean release",
+      "status": "PASS",
+      "detail": {
+        "thumb": 0.9716780557523627,
+        "index": 0.999814365313202,
+        "middle": 0.5403474329716755,
+        "ring": 0.5554928099138388,
+        "pinky": 0.9998344056876802
+      }
+    },
+    {
+      "name": "144fps left: actual first-person suit hand has the same five-digit gesture",
+      "status": "PASS",
+      "detail": {
+        "ratios": {
+          "thumb": 0.971586085625846,
+          "index": 0.9998137133922165,
+          "middle": 0.5393466678265576,
+          "ring": 0.5546022406248307,
+          "pinky": 0.9998348410402437
+        },
+        "skinSize": [
+          0.11656505944114937,
+          0.19296740966906412,
+          0.1524841824296035
+        ],
+        "triangles": 1657
+      }
+    },
+    {
+      "name": "144fps left: a missed shot articulates, expires and never attaches",
+      "status": "PASS"
+    },
+    {
+      "name": "144fps right: anatomical third-person shooting, held grip and clean release",
+      "status": "PASS",
+      "detail": {
+        "thumb": 0.9790800763984145,
+        "index": 0.9999524636560296,
+        "middle": 0.5446340497466591,
+        "ring": 0.5430094755152668,
+        "pinky": 0.9999085983471967
+      }
+    },
+    {
+      "name": "144fps right: actual first-person suit hand has the same five-digit gesture",
+      "status": "PASS",
+      "detail": {
+        "ratios": {
+          "thumb": 0.9790051701468662,
+          "index": 0.9999522418340637,
+          "middle": 0.543686574898789,
+          "ring": 0.5421070190419064,
+          "pinky": 0.9999093885413475
+        },
+        "skinSize": [
+          0.1172251035318258,
+          0.19824188900372952,
+          0.1545745213837295
+        ],
+        "triangles": 1774
+      }
+    },
+    {
+      "name": "144fps right: a missed shot articulates, expires and never attaches",
+      "status": "PASS"
+    },
+    {
+      "name": "24fps: both hands can shoot and release independently",
+      "status": "PASS"
+    },
+    {
+      "name": "24fps: web fingers cannot overwrite combat or wall contact fingers",
+      "status": "PASS"
+    },
+    {
+      "name": "24fps: remote hit/miss/dual hand gestures and stale cleanup use independent skin",
+      "status": "PASS"
+    },
+    {
+      "name": "30fps: both hands can shoot and release independently",
+      "status": "PASS"
+    },
+    {
+      "name": "30fps: web fingers cannot overwrite combat or wall contact fingers",
+      "status": "PASS"
+    },
+    {
+      "name": "30fps: remote hit/miss/dual hand gestures and stale cleanup use independent skin",
+      "status": "PASS"
+    },
+    {
+      "name": "60fps: both hands can shoot and release independently",
+      "status": "PASS"
+    },
+    {
+      "name": "60fps: web fingers cannot overwrite combat or wall contact fingers",
+      "status": "PASS"
+    },
+    {
+      "name": "60fps: remote hit/miss/dual hand gestures and stale cleanup use independent skin",
+      "status": "PASS"
+    },
+    {
+      "name": "144fps: both hands can shoot and release independently",
+      "status": "PASS"
+    },
+    {
+      "name": "144fps: web fingers cannot overwrite combat or wall contact fingers",
+      "status": "PASS"
+    },
+    {
+      "name": "144fps: remote hit/miss/dual hand gestures and stale cleanup use independent skin",
+      "status": "PASS"
+    },
+    {
+      "name": "Remote shot capture validates handedness, expiry, target and payload size",
+      "status": "PASS"
+    },
+    {
+      "name": "First-person creation/replacement/disposal preserves shared suit resources",
+      "status": "PASS"
+    },
+    {
+      "name": "A new remote character never inherits the local firing fingers",
+      "status": "PASS"
+    },
+    {
+      "name": "Close walls cannot hide the hands, while folded fingers retain depth ordering",
+      "status": "PASS"
+    },
+    {
+      "name": "Missing downloaded skin keeps an articulated fallback that can shoot",
+      "status": "PASS"
+    }
+  ]
+}

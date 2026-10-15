@@ -117,7 +117,7 @@ export class SwingPhysics {
     const accept = hit => {
       if(!hit)return null;
       if(hit.distance<1 || hit.distance>130 || hit.point.distanceTo(eye)>130){this.webFailureReason='거리가 맞지 않습니다 · 부착 범위 1~130m';return null;}
-      const normal=hit.face ? surfaceNormal(hit) : new THREE.Vector3(0,1,0);
+      const normal=hit.face ? surfaceNormal(hit) : hit.normal?.clone().normalize() || new THREE.Vector3(0,1,0);
       if(this.webObstructed({anchor:hit.point,normal})){this.webFailureReason='장애물이 거미줄 경로를 가립니다.';return null;}
       this.bestAnchorObject = hit.object;
       this.bestAnchorNormal = normal;
@@ -128,7 +128,7 @@ export class SwingPhysics {
     // A deliberate screen point wins. Pointer lock uses the view center.
     this.raycaster.far = 130;
     this.raycaster.setFromCamera(this.webAimNdc, camera);
-    const aimed = accept(this.raycaster.intersectObjects(this.city.buildingMeshes, true)[0]);
+    const aimed = accept(this.castWebSurface(this.raycaster.ray.origin,this.raycaster.ray.direction,130));
     this.raycaster.far = 140;
     // Only a clearly rideable point skips the search. A lower hit stays in
     // the running so a downward look can still catch a higher real surface.
@@ -161,12 +161,12 @@ export class SwingPhysics {
         );
         this.raycaster.set(eye, direction);
         this.raycaster.far = 130;
-        const hit = this.raycaster.intersectObjects(this.city.buildingMeshes, true)[0];
+        const hit = this.castWebSurface(eye,direction,130);
         this.raycaster.far = 140;
         if (!hit || hit.distance < 4 || hit.distance > 130 || hit.point.distanceTo(eye)>130) continue;
         // Rank only reachable surfaces, otherwise a blocked high facade
         // masks every usable alternative in the search cone.
-        const normal=hit.face ? surfaceNormal(hit) : new THREE.Vector3(0,1,0);
+        const normal=hit.face ? surfaceNormal(hit) : hit.normal?.clone().normalize() || new THREE.Vector3(0,1,0);
         if(this.webObstructed({anchor:hit.point,normal}))continue;
         const height = hit.point.y - eye.y;
         if (height < 4.5) continue;
@@ -179,6 +179,19 @@ export class SwingPhysics {
     // A deliberate point that can already be ridden wins over a barely higher search hit.
     if (best && aimed && aimed.y >= eye.y + 4 && best.point.y < aimed.y + 2.5) return aimed;
     return best ? accept(best) : aimed;
+  }
+
+  castWebSurface(origin,direction,distance) {
+    // Streamed visuals contain hundreds of thousands of triangles. Rapier's
+    // baked terrain already indexes those same surfaces and validates every
+    // tether. Unbaked visuals cannot support a tether yet, so do not scan them.
+    if(this.city.isStreamed && this.city.collisionWorld?.ready){
+      const hit=this.city.raycast(origin,direction,distance,false);
+      return hit?{...hit,object:hit.collider}:null;
+    }
+    this.raycaster.set(origin,direction);this.raycaster.far=distance;
+    const hit=this.raycaster.intersectObjects(this.city.buildingMeshes,true)[0];
+    this.raycaster.far=140;return hit;
   }
 
   // Right click passes the hand opposite the latest left-button rope.
@@ -328,6 +341,7 @@ export class SwingPhysics {
     this.character.persistentWebAnchor=null;
     this.character.webShotAnchor=null;
     this.character.webShotTimer=0;
+    this.character.webShotIsMiss=false;
     // Hide the strand immediately, but let Character fade its reaching arm
     // out after release. Clearing IK here made the wrist snap in one frame.
     if(!preservePose){this.character.webHandWeights={};this.character.webHandTargets={};}
@@ -361,10 +375,10 @@ export class SwingPhysics {
     camera.updateMatrixWorld(true);
     this.raycaster.setFromCamera(aimNdc, camera);
     this.raycaster.far = 130;
-    const hit = this.raycaster.intersectObjects(this.city.buildingMeshes, true)[0];
+    const hit = this.castWebSurface(this.raycaster.ray.origin,this.raycaster.ray.direction,130);
     this.raycaster.far = 140;
-    let anchor = hit && hit.distance >= 1 && hit.face ? hit.point.clone() : null;
-    let normal = anchor ? surfaceNormal(hit) : null;
+    let anchor = hit && hit.distance >= 1 && (hit.face || hit.normal) ? hit.point.clone() : null;
+    let normal = anchor ? hit.face ? surfaceNormal(hit) : hit.normal.clone().normalize() : null;
     if (anchor) this.bestAnchorObject = hit.object;
     if (!anchor && this.isSwinging && this.anchorPoint) {
       anchor = this.anchorPoint.clone();
@@ -424,10 +438,10 @@ export class SwingPhysics {
     camera.updateMatrixWorld(true);
     this.raycaster.setFromCamera(aimNdc, camera);
     this.raycaster.far = 80;
-    const hit = this.raycaster.intersectObjects(this.city.buildingMeshes, true)[0];
+    const hit = this.castWebSurface(this.raycaster.ray.origin,this.raycaster.ray.direction,80);
     this.raycaster.far = 140;
-    let anchor = hit && hit.distance >= 4 && hit.face && hit.point.distanceTo(this.position)<=80 ? hit.point.clone() : null;
-    let normal = anchor ? surfaceNormal(hit) : null;
+    let anchor = hit && hit.distance >= 4 && (hit.face || hit.normal) && hit.point.distanceTo(this.position)<=80 ? hit.point.clone() : null;
+    let normal = anchor ? hit.face ? surfaceNormal(hit) : hit.normal.clone().normalize() : null;
     let object = anchor ? hit.object : null;
     if (!anchor && this.aimAssist !== false) {
       anchor = this.findBestAnchor(camera)?.clone();
@@ -506,8 +520,14 @@ export class SwingPhysics {
       input.webTap=input.webFireHeld=input.webHold=false;
       input.webTapRight=input.webFireHeldRight=input.webHoldRight=false;
     }
-    // 1. Raycast for candidate anchor point in real-time
-    this.findBestAnchor(camera);
+    // The reticle is advisory and its HUD refreshes at 10Hz. Dense streamed
+    // triangles need no new search every render frame. Every actual swing/zip
+    // still searches immediately in its action method, using the current view.
+    this.anchorPreviewElapsed=(this.anchorPreviewElapsed ?? .1)+Math.max(0,delta);
+    if(websLocked){this.bestAnchorCandidate=null;this.anchorPreviewElapsed=.1;}
+    else if(this.anchorPreviewElapsed>=.1-1e-8){
+      this.findBestAnchor(camera);this.anchorPreviewElapsed=0;
+    }
 
     // 2. Each held mouse button keeps its own pendulum rope.
     const webTap = !!input.webTap;
@@ -612,20 +632,22 @@ export class SwingPhysics {
         this.position.z >= c.minZ && this.position.z <= c.maxZ) below = Math.max(below ?? -Infinity,c.maxY);
     }
     const clearance = below === null ? Infinity : Math.max(0,this.position.y-below-0.1);
-    const downward = Math.max(0,-this.velocity.y);
-    this.character.contactTime = this.velocity.y < 0
-      ? (Math.sqrt(downward*downward+2*this.gravity*clearance)-downward)/this.gravity : Infinity;
+    this.character.contactTime = (this.velocity.y + Math.sqrt(this.velocity.y*this.velocity.y+2*this.gravity*clearance))/this.gravity;
     this.character.group.position.copy(this.renderPosition);
     this.character.surfaceProbe=p=>groundSample(this.city,p,0.8);
     this.character.groundProbe=p=>this.character.surfaceProbe(p)?.height ?? null;
     this.character.mantle=this.state==='MANTLING'?this.mantle:null;
-    const visualState = this.isSwinging && this.webs.some(web=>web.launchPending) ? 'JUMPING' : this.state;
+    const visualState = this.animationState;
     this.character.update(delta, visualState, this.velocity,
       this.anchorPoint || this.zipAnchor || this.lastWebAnchor);
 
     // 6. Sound speed tracking
     const speedKmh = this.velocity.length() * 3.6;
     this.audio.setWindSpeed(speedKmh);
+  }
+
+  get animationState() {
+    return this.isSwinging && this.webs.some(web=>web.launchPending) ? 'JUMPING' : this.state;
   }
 
   updateSwingPhysics(delta, input, camera) {
@@ -686,17 +708,19 @@ export class SwingPhysics {
 
   syncWebHands() {
     this.city.collisionWorld?.setTetherColliders?.(this.webs.map(web=>web.supportCollider?.handle).filter(handle=>handle!==undefined));
-    this.character.webAttachments=this.webs.map(web=>({hand:web.hand,anchor:web.anchor}));
+    this.character.webAttachments=this.webs.map(web=>({hand:web.hand,anchor:web.anchor,length:web.length}));
     const latest=this.webs.at(-1);
     this.character.persistentWebAnchor=latest?.anchor.clone() || null;
     // Shot visuals outlive their launch animation. When collision severs a
     // hand, its transient shot must not redraw a rope physics already removed.
-    if(!this.webs.some(web=>web.hand===this.character.currentHand)) {
+    if(!this.character.webShotIsMiss && !this.webs.some(web=>web.hand===this.character.currentHand)) {
       this.character.webShotTimer=0;
       this.character.webShotAnchor=null;
     }
     for(const hand of Object.keys(this.character.webLaunchTimers || {})) {
-      if(!this.webs.some(web=>web.hand===hand))delete this.character.webLaunchTimers[hand];
+      if(!this.webs.some(web=>web.hand===hand) &&
+        !(this.character.webShotIsMiss && this.character.webShotTimer>0 && hand===this.character.currentHand))
+        delete this.character.webLaunchTimers[hand];
     }
   }
 
@@ -738,8 +762,10 @@ export class SwingPhysics {
     this.wallRunTimer += delta;
     this.facingAngle=Math.atan2(-this.wallNormal.x,-this.wallNormal.z);
     this.character.targetFacingAngle=this.facingAngle;
-    const wallProbe=this.position.clone().add(new THREE.Vector3(0,0.8,0));
-    const wallHit=this.city.raycast?.(wallProbe,this.wallNormal.clone().negate(),1.1);
+    const inward=this.wallNormal.clone().negate();
+    const chestHit=this.city.raycast?.(this.position.clone().add(new THREE.Vector3(0,.8,0)),inward,1.1);
+    const lowerHit=this.city.raycast?.(this.position.clone().add(new THREE.Vector3(0,.2,0)),inward,1.1);
+    const wallHit=[chestHit,lowerHit].find(hit=>hit?.normal.dot(this.wallNormal)>.35);
     if(wallHit)this.character.wallDistance=wallHit.distance;
 
     // A jump pressed at the wall edge should still detach cleanly; on the
@@ -754,6 +780,10 @@ export class SwingPhysics {
       this.position.addScaledVector(this.velocity,delta);
       return;
     }
+    if(!input.forward || !input.wallRun){
+      this.state='FALLING';this.wallBuilding=null;this.velocity.copy(this.wallNormal).multiplyScalar(3);
+      return;
+    }
 
     // At the top edge, enter the roof only when the capsule footprint has a
     // real walkable surface. Otherwise release into a fall.
@@ -766,15 +796,21 @@ export class SwingPhysics {
           c.maxY >= roofProbe.y - 1.4).sort((a,b) => b.maxY-a.maxY)[0]?.maxY;
     if (roof!==null && roof!==undefined && roof-this.position.y>=-0.2 && roof-this.position.y<0.9) {
       const plan=planMantle(this.city,this.position,this.wallNormal,roof);
-      if(!plan) {
-        this.state='FALLING';this.wallBuilding=null;this.wallAttachCooldown=0.35;
-        this.velocity.copy(this.wallNormal).multiplyScalar(3);
+      if(plan){
+        this.character.cancelAirTrick?.();
+        this.mantle=plan;this.velocity.set(0,0,0);this.state='MANTLING';return;
+      }
+      // A parapet or blocked landing is not a request to let go. Keep the
+      // facade grip; continue to its higher lip, or hang if only the lower
+      // probe still has support. Never climb through missing headroom.
+      if(wallHit && (!chestHit || chestHit.normal.dot(this.wallNormal)<.35)){
+        this.velocity.set(0,0,0);
+        if(input.strafe){
+          this.velocity.crossVectors(new THREE.Vector3(0,1,0),this.wallNormal).multiplyScalar(input.strafe*2.8);
+          this.position.addScaledVector(this.velocity,delta);
+        }
         return;
       }
-      this.mantle=plan;
-      this.velocity.set(0,0,0);
-      this.state='MANTLING';
-      return;
     }
 
     if (!wallHit || wallHit.normal.dot(this.wallNormal)<0.35) {
@@ -786,18 +822,18 @@ export class SwingPhysics {
 
     // Wall run velocity: run vertically up the wall
     const upDir = new THREE.Vector3(0, 1, 0);
-    this.velocity.copy(upDir.multiplyScalar(this.sprintSpeed));
+    const nearEdge=Number.isFinite(roof) && roof-this.position.y<1.1;
+    this.velocity.copy(upDir.multiplyScalar(nearEdge?2.4:input.sprint?4.2:2.8));
 
     // Optional horizontal run along wall face
     if (input.strafe !== 0) {
       // Look into the wall is -normal, so screen-right is up × normal.
       const wallSide = new THREE.Vector3().crossVectors(upDir, this.wallNormal).normalize();
-      this.velocity.add(wallSide.multiplyScalar(input.strafe * 4.5));
+      this.velocity.add(wallSide.multiplyScalar(input.strafe * 2.4));
     }
 
-    // Drop off wall if timer expires or user stops moving forward
-    if (this.wallRunTimer > 25.0 || !input.forward || !input.wallRun ||
-        (this.wallBuilding && (this.position.x < this.wallBuilding.minX - 0.8 ||
+    // Lateral movement can leave the outer corner of the current facade.
+    if ((this.wallBuilding && (this.position.x < this.wallBuilding.minX - 0.8 ||
           this.position.x > this.wallBuilding.maxX + 0.8 ||
           this.position.z < this.wallBuilding.minZ - 0.8 || this.position.z > this.wallBuilding.maxZ + 0.8))) {
       this.state = 'FALLING';
@@ -818,7 +854,7 @@ export class SwingPhysics {
       if(jump)this.audio.playJump();
     };
     if(input.jump){cancel(true);return;}
-    if(!hasMantleSupport(this.city,plan.end,plan.height)){cancel();return;}
+    if(!hasMantleSupport(this.city,plan.end,plan.end.y-.1)){cancel();return;}
     plan.elapsed=Math.min(plan.duration,plan.elapsed+delta);
     const target=mantlePosition(plan,plan.elapsed/plan.duration);
     const resolved=resolveTraversal(this.city,this.position,target);
@@ -1091,6 +1127,7 @@ export class SwingPhysics {
         if (input.wallRun && input.forward && this.wallAttachCooldown === 0 && this.velocity.dot(col.normal) <= 0 &&
             ['IDLE','RUNNING','SPRINTING','FALLING','JUMPING'].includes(this.state)) {
           this.state = 'WALL_RUNNING';
+          this.character.cancelAirTrick?.();
           this.wallBuilding = col.building;
           this.wallRunTimer = 0;
           this.audio.playJump();
@@ -1145,6 +1182,7 @@ export class SwingPhysics {
     this.character.persistentWebAnchor = null;
     this.wallBuilding = null; this.wallRunTimer = 0; this.swingCooldown = 0;
     this.webFireCooldown = 0;
+    this.anchorPreviewElapsed=.1;this.bestAnchorCandidate=null;
     this.zipCooldown = 0;
     this.facingAngle = 0; this.character.targetFacingAngle = 0;
     this.character.visualYaw = 0; this.character.bodyPitch = 0;
@@ -1152,6 +1190,7 @@ export class SwingPhysics {
     this.character.idlePlantDelay=0;this.character.terrainPelvis=0;
     this.character.movingPlants=null;this.character.movingReleases=null;
     this.character.plantLastFeet=null;this.character.plantRoot=null;this.character.plantVelocityRoot=null;
+    this.character.groundFootRotations=null;this.character.wallViewWeight=0;this.character.wallPhase=0;
     this.character.mantleHandTargets=null;
     this.character.updateWeb?.(false, null);
     this.previousFixedPosition.copy(this.position); this.renderPosition.copy(this.position);

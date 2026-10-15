@@ -329,10 +329,7 @@ PASS remote real rig 60fps: strides, independent bones, swing/release, stale pos
 PASS remote real rig 144fps: strides, independent bones, swing/release, stale pose, leave cleanup
 PASS transport: ordered ready/start, idempotent connection cleanup, bounded pose payloads
 PASS online regressions: stale room, channel replacement, camera web aim, wall obstruction, timed single punch, cancellation
-PASS browser auth: isolated tab broadcasts, stable refresh identity, blocked-storage fallback
-PASS: 2 tile texture routing paths, including extension-based loading and mislabeled embedded KTX2
-PASS: actual Hong Kong RGB KTX2 color preserved as RGBA; oversized and truncated payloads rejected
-PASS multiplayer: 4-player room, ready gate, teams, server damage, late join rejection
+PASS browser auth: isolated tab broadcasts, stable refresh identiPASS multiplayer: 4-player room, ready gate, teams, server damage, late join rejection
 PASS upgrade: key remaps, corrupt settings, combo banking/failure, persistent rewards, safe saves, ghost interpolation, quota failure, adaptive quality, identical server terrain, shield and air strike
 PASS real input: mouse toggle, remapped movement, unbound original key, sprint toggle, pause clearing
 PASS saved-position race invalidation and mantle landing combo banking
@@ -458,4 +455,6 @@ PASS enhanced online: terrain readiness, arena/time, server-authoritative visibi
   ]
 }
 PASS real WebSocket: free-play reconnection preserves identity; finished-match disconnected seats expire
+PASS server geometry codec: binary and JSON RTC centers, exact client up-axis, malformed geometry and bounded response rejection
+al WebSocket: free-play reconnection preserves identity; finished-match disconnected seats expire
 PASS server geometry codec: binary and JSON RTC centers, exact client up-axis, malformed geometry and bounded response rejection

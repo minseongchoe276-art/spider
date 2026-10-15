@@ -5,6 +5,7 @@ import { MATCH, policeCount } from '../src/MatchRules.js';
 import { sanitizePose } from '../src/RemoteMotion.js';
 import {PURSUIT,matchDuration,arenaFrom,arenaContains} from '../src/PursuitRules.js';
 import {proceduralCollision,blockedSegment} from './city-collision.mjs';
+import {LOCAL_CITY} from '../src/LocalCityLayout.js';
 
 const rooms = new Map();
 const clients = new Set();
@@ -97,6 +98,8 @@ async function handle(ws, data, terrain) {
   if(data.type==='move') {
     const coords=[data.x,data.y,data.z,data.facing];
     if(coords.some(n=>!Number.isFinite(n))||Math.abs(data.x)>2500||Math.abs(data.z)>2500||data.y < -100 || data.y>1000)return;
+    const limit=room.city==='procedural'?LOCAL_CITY.playableHalfExtent:2400;
+    if(Math.abs(data.x)>=limit || Math.abs(data.z)>=limit){send(ws,{type:'correction',x:p.x,y:p.y,z:p.z});return;}
     const now=Date.now();if(now-p.lastMove<40)return;
     if(room.enhanced&&!arenaContains(room.arena,data,3)){send(ws,{type:'correction',x:p.x,y:p.y,z:p.z});return;}
     const distance=Math.hypot(data.x-p.x,data.y-p.y,data.z-p.z);

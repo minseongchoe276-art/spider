@@ -1,0 +1,134 @@
+[
+  {
+    "cmd": "node scripts/check-motion-timeline.mjs",
+    "exit": 0
+  },
+  {
+    "cmd": "node scripts/check-motion-transitions.mjs",
+    "exit": 0
+  },
+  {
+    "cmd": "node scripts/check-hong-kong-streaming.mjs",
+    "exit": 0
+  },
+  {
+    "cmd": "node scripts/check-minimap.mjs",
+    "exit": 0
+  },
+  {
+    "cmd": "node scripts/check-remote-motion.mjs",
+    "exit": 0
+  },
+  {
+    "cmd": "node scripts/check-tile-textures.mjs",
+    "exit": 0
+  },
+  {
+    "cmd": "node scripts/check-multiplayer.mjs",
+    "exit": 0
+  },
+  {
+    "cmd": "node scripts/check-upgrade.mjs",
+    "exit": 0
+  },
+  {
+    "cmd": "node scripts/check-upgrade-online.mjs",
+    "exit": 0
+  },
+  {
+    "cmd": "node scripts/check-release-audit.mjs",
+    "exit": 0
+  },
+  {
+    "cmd": "node scripts/check-online-edge-cases.mjs",
+    "exit": 0
+  },
+  {
+    "cmd": "node scripts/check-room-reconnect.mjs",
+    "exit": 0
+  },
+  {
+    "cmd": "node scripts/check-hong-kong-geometry-codec.mjs",
+    "exit": 0
+  },
+  {
+    "cmd": "node scripts/check-swing-accessibility.mjs",
+    "exit": 0
+  },
+  {
+    "cmd": "node scripts/check-cross-system-regressions.mjs",
+    "exit": 0
+  },
+  {
+    "cmd": "node scripts/check-web-continuity.mjs",
+    "exit": 0
+  },
+  {
+    "cmd": "node scripts/check-compact-map-and-locators.mjs",
+    "exit": 0
+  },
+  {
+    "cmd": "node scripts/check-expert-audit.mjs",
+    "exit": 1
+  },
+  {
+    "cmd": "node scripts/check-connection-lifecycle.mjs",
+    "exit": 0
+  },
+  {
+    "cmd": "node scripts/check-camera-motion-web.mjs",
+    "exit": 0
+  },
+  {
+    "cmd": "node scripts/check-full-game-audit.mjs",
+    "exit": 0
+  },
+  {
+    "cmd": "node scripts/check-input-lifecycle.mjs",
+    "exit": 0
+  },
+  {
+    "cmd": "node scripts/check-session-flow.mjs",
+    "exit": 0
+  },
+  {
+    "cmd": "node scripts/check-visibility.mjs",
+    "exit": 0
+  },
+  {
+    "cmd": "node scripts/check-loading-performance.mjs",
+    "exit": 0
+  },
+  {
+    "cmd": "node scripts/check-wall-ledge.mjs",
+    "exit": 0
+  },
+  {
+    "cmd": "node scripts/check-wall-ledge-rig.mjs",
+    "exit": 0
+  },
+  {
+    "cmd": "node scripts/check-all-motions.mjs",
+    "exit": 0
+  },
+  {
+    "cmd": "node scripts/check-motion-sources.mjs",
+    "exit": 0
+  },
+  {
+    "cmd": "node scripts/check-web-hand-pose.mjs",
+    "exit": 0
+  },
+  {
+    "cmd": "node scripts/check-silk-gait.mjs",
+    "exit": 0
+  },
+  {
+    "cmd": "node scripts/check-wall-crawl.mjs",
+    "exit": 1
+  },
+  {
+    "cmd": "node scripts/check-motion-cleanup.mjs",
+    "exit": 0
+  }
+]

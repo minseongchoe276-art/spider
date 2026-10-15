@@ -36,6 +36,12 @@ export function prepareMotion(clip, key, bones, item={}) {
   // takeoff immediately, so use only the airborne portion here.
   if (key === 'jump') clip = THREE.AnimationUtils.subclip(clip, 'jump', 24, 43, 30);
   if (key === 'land') clip = THREE.AnimationUtils.subclip(clip, 'land', 44, 71, 30);
+  if(key==='slamLand'){
+    // Land_Three_Point starts six metres above the floor. Gameplay selects
+    // this action after contact, so retain only impact compression/recovery.
+    clip=THREE.AnimationUtils.subclip(clip,key,14,Math.ceil(clip.duration*30),30);
+    clip.userData={sourceContactTime:14/30};
+  }
   if (key === 'drop') clip = THREE.AnimationUtils.subclip(clip, 'drop', 0, 16, 30);
   if (key === 'femaleStop') clip = THREE.AnimationUtils.subclip(clip, 'femaleStop', 29, 47, 30);
   if (key === 'stop') clip = THREE.AnimationUtils.subclip(clip, 'stop', Math.max(0,Math.floor(clip.duration*30)-8), Math.floor(clip.duration*30), 30);
@@ -104,6 +110,22 @@ export function prepareMotion(clip, key, bones, item={}) {
     }
   }
   clip.userData = {...audit,...clip.userData};
+  if(['slamLand','hit','hitHead'].includes(key)){
+    const nodes=Object.values(bones),saved=nodes.map(n=>({n,p:n.position.clone(),q:n.quaternion.clone()}));
+    const hips=nodes.find(n=>boneId(n.name)==='hips'),feet=['left','right'].map(side=>nodes.find(n=>boneId(n.name)===side+'foot'));
+    let root=hips;while(root.parent && !root.parent.name?.includes('SpiderManGroup'))root=root.parent;
+    const position=clip.tracks.find(track=>track.name===hips.name+'.position');
+    // Preserve the authored bend relative to the legs while keeping the
+    // support ankle on the floor. Bind-pose pelvis height floated hit poses.
+    const mixer=new THREE.AnimationMixer(root),action=mixer.clipAction(clip);action.setLoop(THREE.LoopOnce,1);action.clampWhenFinished=true;action.play();
+    try{for(let i=0;i<position.times.length;i++){
+      action.time=position.times[i];action.enabled=true;action.paused=false;mixer.update(0);root.updateMatrixWorld(true);
+      const ground=root.getWorldPosition(new THREE.Vector3()).y,contact=Math.min(...feet.map(foot=>foot.getWorldPosition(new THREE.Vector3()).y));
+      const correction=new THREE.Vector3(0,ground+.11-contact,0).applyQuaternion(hips.parent.getWorldQuaternion(new THREE.Quaternion()).invert()).divide(hips.parent.getWorldScale(new THREE.Vector3()));
+      hips.position.clone().add(correction).toArray(position.values,i*3);
+    }}finally{mixer.stopAllAction();mixer.uncacheRoot(root);saved.forEach(({n,p,q})=>{n.position.copy(p);n.quaternion.copy(q);});root.updateMatrixWorld(true);}
+    clip.userData.groundedContact=true;
+  }
   if (key === 'roll' && !item.authoredMixamo && audit.rootMotion) {
     const start = 16 / 30;
     const points = audit.rootMotion.filter(p => p.time >= start);
@@ -114,7 +136,7 @@ export function prepareMotion(clip, key, bones, item={}) {
     }));
   }
   clip.name = key;
-  if (['walk','jog','regularRun','run','stop','runStop','land','turnLeft','turnRight','wall','combatIdle','jab','cross','hook','heavy','special','guard','dodgeLeft','dodgeRight','dodgeBack','hit','hitHead'].includes(key)) {
+  if (['walk','jog','regularRun','run','stop','runStop','land','slamLand','turnLeft','turnRight','wall','combatIdle','jab','cross','hook','heavy','special','guard','dodgeLeft','dodgeRight','dodgeBack','hit','hitHead'].includes(key)) {
     // Contact windows measured on this character, not guessed from the
     // clip name. Preserve the compiler's bind pose after sampling.
     const nodes=Object.values(bones), saved=nodes.map(n=>({n,p:n.position.clone(),q:n.quaternion.clone()}));

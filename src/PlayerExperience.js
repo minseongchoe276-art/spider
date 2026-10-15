@@ -14,14 +14,16 @@ export class PlayerExperience {
       const unlocked=game.progression.bank(points);game.progression.save();this.refreshProgress();
       game.showNotice(`착지 성공 +${points} · ${variety}종 연결${unlocked.length?' · '+unlocked.map(r=>r.label+' 해제').join(', '):''}`);
     },onChange:(name,points)=>game.showStuntNotice(name,points)});
-    this.ghost=new RaceGhost(game.scene);this.performance=new PerformanceBudget();
+    this.ghost=new RaceGhost(game.scene);this.performance=new PerformanceBudget();this.performanceActive=false;
     const geometry=new THREE.BufferGeometry().setFromPoints(Array.from({length:17},()=>new THREE.Vector3()));
     this.trajectory=new THREE.Line(geometry,new THREE.LineDashedMaterial({color:0x94f7e0,dashSize:1,gapSize:.8,transparent:true,opacity:.65}));
     this.trajectory.frustumCulled=false;this.trajectory.visible=false;game.scene.add(this.trajectory);
     const previousLanding=game.physics.onLanding;
     game.physics.onLanding=(position,impact,normal)=>{previousLanding?.(position,impact,normal);this.stunts.bank(impact);game.audio.playSurfaceStep?.('landing',Math.min(1,impact/30));};
     const previousRecovery=game.physics.onRecovery;
-    game.physics.onRecovery=reason=>{this.stunts.fail();this.ghost.stop();previousRecovery?.(reason);};
+    game.physics.onRecovery=reason=>{game.progression.resetTravel();this.stunts.fail();this.ghost.stop();previousRecovery?.(reason);};
+    const previousReset=game.physics.onReset;
+    game.physics.onReset=()=>{game.progression.resetTravel();previousReset?.();};
     game.physics.onStuntCallback=(name,points)=>this.stunts.add(name,points);
     // The authored trick system reports completion. Banking owns game scores;
     // do not also award its standalone physics score or apply two multipliers.
@@ -61,7 +63,7 @@ export class PlayerExperience {
     if(summary)summary.textContent=`총 묘기 ${Math.round(d.score)} · 최고 연결 ${d.bestCombo} · 탐험 ${d.discoveries.length}구역 · 이동 ${(d.distance/1000).toFixed(1)}km · 레이스 메달 ${Object.keys(d.medals).length}개`;
     const select=document.getElementById('web-theme');if(select){select.replaceChildren();for(const r of [{id:'white',label:'기본 흰색'},...g.progression.unlocked]){const option=document.createElement('option');option.value=r.id;option.textContent=r.label;select.append(option);}select.value=d.theme;}
   }
-  raceStarted(){const g=this.game;this.stunts.fail();this.ghost.start(g.timeTrial.courseId,g.progression,g.physics.position,g.physics.facingAngle);}
+  raceStarted(){const g=this.game;g.progression.resetTravel();this.stunts.fail();this.ghost.start(g.timeTrial.courseId,g.progression,g.physics.position,g.physics.facingAngle);}
   raceFinished(result){const g=this.game,trial=g.timeTrial;
     this.ghost.finish(trial,result.finishPosition || g.physics.position,g.physics.facingAngle);
     let distance=0;let previous=g.city.getRooftopSpawn(95);for(const cp of trial.checkpoints){distance+=previous.distanceTo(cp.position);previous=cp.position;}
@@ -69,9 +71,12 @@ export class PlayerExperience {
     g.progression.recordGhost(trial.courseId,result.totalTime,this.ghost.samples,this.ghost.splits,medal);this.refreshProgress();this.ghost.stop();
     return {medal:{gold:'금',silver:'은',bronze:'동'}[medal],delta:this.ghost.splitDelta};}
   update(delta,elapsed) {
-    const g=this.game,p=g.physics,s=g.preferences.values.settings,active=g.isPlaying&&!g.isPaused&&!g.multiplayer?.spectating;
+    const g=this.game,p=g.physics,s=g.preferences.values.settings,active=g.isPlaying&&!g.isPaused&&!g.multiplayer?.spectating&&!g.gameplaySuspended;
     const ceiling={low:1,balanced:1.5,high:2}[g.preferences.values.quality];
-    const budget=this.performance.update(elapsed,active&&s.autoQuality,ceiling);
+    // Menus and hidden tabs are not gameplay performance samples. Preserve
+    // the applied resolution while discarding stale pressure on transitions.
+    if(this.performanceActive!==active){this.performance.reset?.(this.performance.level);this.performanceActive=active;}
+    const budget=active?this.performance.update(elapsed,s.autoQuality,ceiling):null;
     if(budget!==null)g.renderer.setPixelRatio(Math.min(window.devicePixelRatio,budget));
     if(!active){this.ghost.mesh.visible=false;this.trajectory.visible=false;const preview=document.getElementById('anchor-preview');if(preview)preview.style.display='none';return;}
     this.stunts.update(delta,p.state,p.velocity.length());this.ghost.update(g.timeTrial,p.position,p.facingAngle,s.ghost);
@@ -82,7 +87,8 @@ export class PlayerExperience {
     const limit=g.multiplayer?.arena?.radius || g.city.playableHalfExtent || 2400;
     const center=g.multiplayer?.arena || {x:0,z:0},distance=g.multiplayer?.arena?Math.hypot(p.position.x-center.x,p.position.z-center.z):Math.max(Math.abs(p.position.x),Math.abs(p.position.z));
     const remaining=Math.min(limit-distance,(g.city.playableHalfExtent||2400)-Math.max(Math.abs(p.position.x),Math.abs(p.position.z))),warning=document.getElementById('boundary-warning');
-    if(warning)warning.textContent=remaining<65?`구역 경계 ${Math.max(0,Math.round(remaining))}m · 중심 방향으로 돌아가세요`:'';
+    const warningDistance=Math.min(65,(g.city.playableHalfExtent||2400)*.15,limit*.15);
+    if(warning)warning.textContent=remaining<warningDistance?`구역 경계 ${Math.max(0,Math.round(remaining))}m · 중심 방향으로 돌아가세요`:'';
     this.previewTime+=delta;if(this.previewTime>.1){this.previewTime=0;this.previewAnchor();}
     this.trajectory.visible=s.trajectory&&!g.multiplayer?.room&&!GROUNDED.includes(p.state);
     if(this.trajectory.visible){const attr=this.trajectory.geometry.attributes.position;
@@ -99,7 +105,7 @@ export class PlayerExperience {
   }
   previewAnchor(){const g=this.game,p=g.physics,marker=document.getElementById('anchor-preview'),hands=document.getElementById('hand-status');
     const inCombat=GROUNDED.includes(p.state)&&g.combat.mode==='combat';
-    const zipStatus=p.state==='WEB_ZIP'?'집 이동 중':p.zipCooldown>0?'집 대기':'집 준비';
+    const zipStatus=GROUNDED.includes(p.state)?'집: 공중 전용':p.state==='WEB_ZIP'?'집 이동 중':p.zipCooldown>0?'집 대기':'집 준비';
     if(hands)hands.textContent=inCombat?`지상 전투 · ${keyLabel(g.preferences.values.settings.bindings.guard)} 방어`:
       `${p.webs.some(w=>w.button===0)?'좌클릭 연결':'좌클릭 준비'} · ${p.webs.some(w=>w.button===2)?'우클릭 연결':'우클릭 준비'} · ${zipStatus}`;
     // Availability belongs on the fixed reticle, not a moving world marker.

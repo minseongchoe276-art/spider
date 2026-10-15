@@ -1,0 +1,729 @@
+{
+  "files": 32,
+  "animatedTakes": 44,
+  "emptyTakes": 7,
+  "frames": 5476,
+  "results": [
+    {
+      "file": "public/models/Boxing Hook.fbx",
+      "take": "mixamo.com",
+      "status": "PASS",
+      "usedBy": [
+        "hook",
+        "heavy"
+      ],
+      "archived": false,
+      "duration": 2,
+      "frames": 121,
+      "bones": 65,
+      "hipRange": [
+        0.9879398198239077,
+        1.1357278094127459
+      ]
+    },
+    {
+      "file": "public/models/Boxing Idle.fbx",
+      "take": "mixamo.com",
+      "status": "PASS",
+      "usedBy": [],
+      "archived": true,
+      "duration": 2.200000047683716,
+      "frames": 134,
+      "bones": 65,
+      "hipRange": [
+        1.0922359361491665,
+        1.1815025887636523
+      ]
+    },
+    {
+      "file": "public/models/Boxing Lead Jab.fbx",
+      "take": "mixamo.com",
+      "status": "PASS",
+      "usedBy": [
+        "jab",
+        "special"
+      ],
+      "archived": false,
+      "duration": 1.2000000476837158,
+      "frames": 74,
+      "bones": 65,
+      "hipRange": [
+        1.0681913537247147,
+        1.1520909777821637
+      ]
+    },
+    {
+      "file": "public/models/Boxing Stance.fbx",
+      "take": "mixamo.com",
+      "status": "PASS",
+      "usedBy": [
+        "combatIdle"
+      ],
+      "archived": false,
+      "duration": 4.400000095367432,
+      "frames": 266,
+      "bones": 65,
+      "hipRange": [
+        1.0916091961456231,
+        1.1828715925250277
+      ]
+    },
+    {
+      "file": "public/models/Climbing Up Wall.fbx",
+      "take": "mixamo.com",
+      "status": "PASS",
+      "usedBy": [
+        "wall"
+      ],
+      "archived": false,
+      "duration": 2,
+      "frames": 121,
+      "bones": 65,
+      "hipRange": [
+        1.2386121446232494,
+        2.919203372769338
+      ]
+    },
+    {
+      "file": "public/models/Cross Punch.fbx",
+      "take": "mixamo.com",
+      "status": "PASS",
+      "usedBy": [],
+      "archived": true,
+      "duration": 2,
+      "frames": 121,
+      "bones": 65,
+      "hipRange": [
+        1.0625677339174395,
+        1.174461786522716
+      ]
+    },
+    {
+      "file": "public/models/Falling (2).fbx",
+      "take": "mixamo.com",
+      "status": "PASS",
+      "usedBy": [
+        "fall"
+      ],
+      "archived": false,
+      "duration": 4.5,
+      "frames": 271,
+      "bones": 65,
+      "hipRange": [
+        1.3135661058997554,
+        1.3614368331033881
+      ]
+    },
+    {
+      "file": "public/models/Falling Idle.fbx",
+      "take": "mixamo.com",
+      "status": "PASS",
+      "usedBy": [
+        "fallIdle"
+      ],
+      "archived": false,
+      "duration": 4.5,
+      "frames": 271,
+      "bones": 65,
+      "hipRange": [
+        1.3165598188813126,
+        1.364170581301423
+      ]
+    },
+    {
+      "file": "public/models/Falling Idle.fbx",
+      "take": "Take 001",
+      "status": "EMPTY",
+      "duration": 0,
+      "tracks": 0
+    },
+    {
+      "file": "public/models/Falling To Roll.fbx",
+      "take": "mixamo.com",
+      "status": "PASS",
+      "usedBy": [
+        "roll"
+      ],
+      "archived": false,
+      "duration": 2.133333444595337,
+      "frames": 130,
+      "bones": 65,
+      "hipRange": [
+        0.16908356376470263,
+        2.816210228757299
+      ]
+    },
+    {
+      "file": "public/models/Falling.fbx",
+      "take": "mixamo.com",
+      "status": "PASS",
+      "usedBy": [
+        "fallVariant"
+      ],
+      "archived": false,
+      "duration": 4.5,
+      "frames": 271,
+      "bones": 65,
+      "hipRange": [
+        1.3135661058997554,
+        1.3614368331033881
+      ]
+    },
+    {
+      "file": "public/models/Fast Run.fbx",
+      "take": "mixamo.com",
+      "status": "PASS",
+      "usedBy": [
+        "run"
+      ],
+      "archived": false,
+      "duration": 0.5333333611488342,
+      "frames": 34,
+      "bones": 65,
+      "hipRange": [
+        1.1255403003440256,
+        1.1888366865570856
+      ]
+    },
+    {
+      "file": "public/models/Female Stop Walking.fbx",
+      "take": "mixamo.com",
+      "status": "PASS",
+      "usedBy": [],
+      "archived": true,
+      "duration": 1.5333333015441895,
+      "frames": 93,
+      "bones": 65,
+      "hipRange": [
+        1.1753787883389524,
+        1.267982703523841
+      ]
+    },
+    {
+      "file": "public/models/Front Flip.fbx",
+      "take": "mixamo.com",
+      "status": "PASS",
+      "usedBy": [
+        "airTrick"
+      ],
+      "archived": false,
+      "duration": 1.6666666269302368,
+      "frames": 101,
+      "bones": 65,
+      "hipRange": [
+        0.8740447769344853,
+        2.9276799887860414
+      ]
+    },
+    {
+      "file": "public/models/Idle.fbx",
+      "take": "mixamo.com",
+      "status": "PASS",
+      "usedBy": [
+        "idle"
+      ],
+      "archived": false,
+      "duration": 4,
+      "frames": 241,
+      "bones": 65,
+      "hipRange": [
+        1.1541764937756578,
+        1.1877395653132732
+      ]
+    },
+    {
+      "file": "public/models/Idle.fbx",
+      "take": "Take 001",
+      "status": "EMPTY",
+      "duration": 0,
+      "tracks": 0
+    },
+    {
+      "file": "public/models/Injured Idle.fbx",
+      "take": "mixamo.com",
+      "status": "PASS",
+      "usedBy": [
+        "injuredIdle"
+      ],
+      "archived": false,
+      "duration": 9.333333015441895,
+      "frames": 561,
+      "bones": 65,
+      "hipRange": [
+        1.14622697805549,
+        1.207003601712358
+      ]
+    },
+    {
+      "file": "public/models/Jogging.fbx",
+      "take": "mixamo.com",
+      "status": "PASS",
+      "usedBy": [],
+      "archived": true,
+      "duration": 2.566666603088379,
+      "frames": 155,
+      "bones": 65,
+      "hipRange": [
+        1.1027768204286097,
+        1.2868737366728613
+      ]
+    },
+    {
+      "file": "public/models/Jogging.fbx",
+      "take": "Take 001",
+      "status": "EMPTY",
+      "duration": 0,
+      "tracks": 0
+    },
+    {
+      "file": "public/models/Jumping Down (1).fbx",
+      "take": "mixamo.com",
+      "status": "PASS",
+      "usedBy": [
+        "jumpDown",
+        "drop"
+      ],
+      "archived": false,
+      "duration": 2.299999952316284,
+      "frames": 139,
+      "bones": 65,
+      "hipRange": [
+        0.46617843665712255,
+        2.4067822573482376
+      ]
+    },
+    {
+      "file": "public/models/Jumping Down.fbx",
+      "take": "mixamo.com",
+      "status": "PASS",
+      "usedBy": [
+        "jumpDownVariant"
+      ],
+      "archived": false,
+      "duration": 2.633333444595337,
+      "frames": 160,
+      "bones": 65,
+      "hipRange": [
+        0.5426353660460306,
+        2.3217716479718984
+      ]
+    },
+    {
+      "file": "public/models/Jumping Down.fbx",
+      "take": "Take 001",
+      "status": "EMPTY",
+      "duration": 0,
+      "tracks": 0
+    },
+    {
+      "file": "public/models/Lead Jab.fbx",
+      "take": "mixamo.com",
+      "status": "PASS",
+      "usedBy": [],
+      "archived": true,
+      "duration": 1.3333333730697632,
+      "frames": 82,
+      "bones": 65,
+      "hipRange": [
+        1.0681252983513176,
+        1.1526161168093791
+      ]
+    },
+    {
+      "file": "public/models/Left Turn.fbx",
+      "take": "mixamo.com",
+      "status": "PASS",
+      "usedBy": [
+        "turnLeft"
+      ],
+      "archived": false,
+      "duration": 0.9333333373069763,
+      "frames": 58,
+      "bones": 65,
+      "hipRange": [
+        1.2328033438163637,
+        1.2569681000842523
+      ]
+    },
+    {
+      "file": "public/models/Mma Kick.fbx",
+      "take": "mixamo.com",
+      "status": "PASS",
+      "usedBy": [],
+      "archived": true,
+      "duration": 1.600000023841858,
+      "frames": 98,
+      "bones": 65,
+      "hipRange": [
+        1.123370270461459,
+        1.325444296992287
+      ]
+    },
+    {
+      "file": "public/models/Right Turn.fbx",
+      "take": "mixamo.com",
+      "status": "PASS",
+      "usedBy": [
+        "turnRight"
+      ],
+      "archived": false,
+      "duration": 0.9333333373069763,
+      "frames": 58,
+      "bones": 65,
+      "hipRange": [
+        1.2344748573634097,
+        1.2568515374174118
+      ]
+    },
+    {
+      "file": "public/models/Rope Swinging.fbx",
+      "take": "Take 001",
+      "status": "EMPTY",
+      "duration": 0,
+      "tracks": 0
+    },
+    {
+      "file": "public/models/Rope Swinging.fbx",
+      "take": "mixamo.com",
+      "status": "PASS",
+      "usedBy": [
+        "zip",
+        "swing"
+      ],
+      "archived": false,
+      "duration": 4.433333396911621,
+      "frames": 268,
+      "bones": 65,
+      "hipRange": [
+        0.637846309359956,
+        2.138846258909599
+      ]
+    },
+    {
+      "file": "public/models/Run To Stop.fbx",
+      "take": "mixamo.com",
+      "status": "PASS",
+      "usedBy": [
+        "stop",
+        "runStop"
+      ],
+      "archived": false,
+      "duration": 0.8999999761581421,
+      "frames": 55,
+      "bones": 65,
+      "hipRange": [
+        0.8754378568621616,
+        1.1927441049902219
+      ]
+    },
+    {
+      "file": "public/models/Running.fbx",
+      "take": "Take 001",
+      "status": "EMPTY",
+      "duration": 0,
+      "tracks": 0
+    },
+    {
+      "file": "public/models/Running.fbx",
+      "take": "mixamo.com",
+      "status": "PASS",
+      "usedBy": [
+        "regularRun"
+      ],
+      "archived": false,
+      "duration": 0.699999988079071,
+      "frames": 43,
+      "bones": 65,
+      "hipRange": [
+        1.1090864300643657,
+        1.2661328513470482
+      ]
+    },
+    {
+      "file": "public/models/Standing Jump.fbx",
+      "take": "mixamo.com",
+      "status": "PASS",
+      "usedBy": [
+        "jump",
+        "land"
+      ],
+      "archived": false,
+      "duration": 2.366666555404663,
+      "frames": 143,
+      "bones": 65,
+      "hipRange": [
+        0.7710480890599184,
+        1.8016677665715854
+      ]
+    },
+    {
+      "file": "public/models/Standing Jump.fbx",
+      "take": "Take 001",
+      "status": "EMPTY",
+      "duration": 0,
+      "tracks": 0
+    },
+    {
+      "file": "public/models/Surprise Uppercut.fbx",
+      "take": "mixamo.com",
+      "status": "PASS",
+      "usedBy": [],
+      "archived": true,
+      "duration": 3.5,
+      "frames": 211,
+      "bones": 65,
+      "hipRange": [
+        0.9576607553086508,
+        1.2399479108124987
+      ]
+    },
+    {
+      "file": "public/models/Walking.fbx",
+      "take": "mixamo.com",
+      "status": "PASS",
+      "usedBy": [
+        "walk"
+      ],
+      "archived": false,
+      "duration": 0.9666666388511658,
+      "frames": 59,
+      "bones": 65,
+      "hipRange": [
+        1.183850753505122,
+        1.2347512355843757
+      ]
+    },
+    {
+      "file": "public/models/sources/combat-addon.glb",
+      "take": "Attack_Ground_Pound",
+      "status": "PASS",
+      "usedBy": [
+        "slam"
+      ],
+      "archived": false,
+      "duration": 2.7083332538604736,
+      "frames": 164,
+      "bones": 65,
+      "hipRange": [
+        0.527585212288993,
+        1.193118718199779
+      ]
+    },
+    {
+      "file": "public/models/sources/combat-addon.glb",
+      "take": "Defend",
+      "status": "PASS",
+      "usedBy": [
+        "guard"
+      ],
+      "archived": false,
+      "duration": 0.9583333134651184,
+      "frames": 59,
+      "bones": 65,
+      "hipRange": [
+        0.8619975868363454,
+        0.8912176090430194
+      ]
+    },
+    {
+      "file": "public/models/sources/combat-addon.glb",
+      "take": "Dodge_back",
+      "status": "PASS",
+      "usedBy": [],
+      "archived": true,
+      "duration": 1,
+      "frames": 61,
+      "bones": 65,
+      "hipRange": [
+        0.7515422539070576,
+        1.1161699744325768
+      ]
+    },
+    {
+      "file": "public/models/sources/combat-addon.glb",
+      "take": "Dodge_left",
+      "status": "PASS",
+      "usedBy": [],
+      "archived": true,
+      "duration": 0.8333333134651184,
+      "frames": 51,
+      "bones": 65,
+      "hipRange": [
+        0.8641504646230109,
+        1.1440751667762976
+      ]
+    },
+    {
+      "file": "public/models/sources/combat-addon.glb",
+      "take": "Dodge_right",
+      "status": "PASS",
+      "usedBy": [],
+      "archived": true,
+      "duration": 0.8333333134651184,
+      "frames": 51,
+      "bones": 65,
+      "hipRange": [
+        0.8641504646230109,
+        1.1440751667762976
+      ]
+    },
+    {
+      "file": "public/models/sources/combat-addon.glb",
+      "take": "Fighting Idle",
+      "status": "PASS",
+      "usedBy": [],
+      "archived": true,
+      "duration": 1.7083333730697632,
+      "frames": 104,
+      "bones": 65,
+      "hipRange": [
+        1.17486418590394,
+        1.1756380738128276
+      ]
+    },
+    {
+      "file": "public/models/sources/combat-addon.glb",
+      "take": "Fighting Left Jab",
+      "status": "PASS",
+      "usedBy": [],
+      "archived": true,
+      "duration": 0.9166666865348816,
+      "frames": 57,
+      "bones": 65,
+      "hipRange": [
+        1.080707810130161,
+        1.082842273129187
+      ]
+    },
+    {
+      "file": "public/models/sources/combat-addon.glb",
+      "take": "Fighting Right Jab",
+      "status": "PASS",
+      "usedBy": [],
+      "archived": true,
+      "duration": 0.9166666865348816,
+      "frames": 57,
+      "bones": 65,
+      "hipRange": [
+        1.080707810130161,
+        1.130809699796103
+      ]
+    },
+    {
+      "file": "public/models/sources/combat-addon.glb",
+      "take": "Land_Three_Point",
+      "status": "PASS",
+      "usedBy": [
+        "slamLand"
+      ],
+      "archived": false,
+      "duration": 1.375,
+      "frames": 84,
+      "bones": 65,
+      "hipRange": [
+        0.5417501353974915,
+        6.878770890906751
+      ]
+    },
+    {
+      "file": "public/models/sources/combat-base.glb",
+      "take": "Hit_Chest",
+      "status": "PASS",
+      "usedBy": [],
+      "archived": true,
+      "duration": 0.4166666567325592,
+      "frames": 26,
+      "bones": 65,
+      "hipRange": [
+        2.0095271986026546,
+        2.0369110032624844
+      ]
+    },
+    {
+      "file": "public/models/sources/combat-base.glb",
+      "take": "Hit_Head",
+      "status": "PASS",
+      "usedBy": [
+        "hitHead"
+      ],
+      "archived": false,
+      "duration": 0.5416666865348816,
+      "frames": 34,
+      "bones": 65,
+      "hipRange": [
+        1.208565234621841,
+        1.2119036940918844
+      ]
+    },
+    {
+      "file": "public/models/sources/combat-base.glb",
+      "take": "Melee_Hook",
+      "status": "PASS",
+      "usedBy": [],
+      "archived": true,
+      "duration": 0.4583333432674408,
+      "frames": 29,
+      "bones": 65,
+      "hipRange": [
+        0.6143852015743733,
+        1.0367377173209154
+      ]
+    },
+    {
+      "file": "public/models/sources/combat-base.glb",
+      "take": "Punch_Cross",
+      "status": "PASS",
+      "usedBy": [],
+      "archived": true,
+      "duration": 1.25,
+      "frames": 76,
+      "bones": 65,
+      "hipRange": [
+        1.1370961387107594,
+        1.1752486595501248
+      ]
+    },
+    {
+      "file": "public/models/sources/combat-base.glb",
+      "take": "Roll",
+      "status": "PASS",
+      "usedBy": [],
+      "archived": true,
+      "duration": 1.8333333730697632,
+      "frames": 112,
+      "bones": 65,
+      "hipRange": [
+        0.02013068061146078,
+        1.5910369857835736
+      ]
+    },
+    {
+      "file": "public/models/sources/mesh2motion-climb.glb",
+      "take": "Climb Wall",
+      "status": "PASS",
+      "usedBy": [],
+      "archived": true,
+      "duration": 2.0833332538604736,
+      "frames": 126,
+      "bones": 65,
+      "hipRange": [
+        1.2521199458545265,
+        1.3222782085644482
+      ]
+    },
+    {
+      "file": "public/models/spiderman.glb",
+      "take": "Armature|mixamo.com|Layer0",
+      "status": "PASS",
+      "usedBy": [],
+      "archived": false,
+      "duration": 0.7333333492279053,
+      "frames": 46,
+      "bones": 65,
+      "hipRange": [
+        1.1095875526268093,
+        1.2653260739702332
+      ]
+    }
+  ]
+}

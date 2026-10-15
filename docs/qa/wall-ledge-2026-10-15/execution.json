@@ -1,0 +1,44 @@
+{
+  "date": "2026-10-15",
+  "checks": [
+    {
+      "command": "baseline replay: node scripts/check-wall-ledge.mjs",
+      "exitCode": 1
+    },
+    {
+      "command": "npm test",
+      "exitCode": 0
+    },
+    {
+      "command": "node scripts/check-wall-ledge.mjs",
+      "exitCode": 0
+    },
+    {
+      "command": "node scripts/check-wall-ledge-rig.mjs",
+      "exitCode": 0
+    },
+    {
+      "command": "node scripts/check-pose.mjs",
+      "exitCode": 0
+    },
+    {
+      "command": "npm run build",
+      "exitCode": 0
+    },
+    {
+      "command": "git diff --check",
+      "exitCode": 0
+    }
+  ],
+  "sha256": {
+    "src/LedgeTraversal.js": "88d39ccfaabf3039b62e2a1847737980cdc062643190a7ea73dd8c0e18926911",
+    "src/SwingPhysics.js": "a6a0dd63fd70156a766b35df57008cfa8203290c146cc2b39756f5dbca826aaa",
+    "src/Character.js": "d5108f8476f4a8d6522442872bcc4f1ef65932103d5e3133c4d65916e92c2dfd",
+    "src/CharacterPose.js": "5cd34a9563692e7c8de386f72ac4affdff4e36e223068cf908ac4187f89ba882",
+    "src/MotionReview.js": "ac4770cc73bc329f6c730a165c013b80131880e9648e137ca0e2fe43b8af9b29",
+    "scripts/check-wall-ledge.mjs": "1030e30e68c3fd03e0b5f401aebd3169cbdc8d5bc8c86e33ee3120cea43fb443",
+    "scripts/check-wall-ledge-rig.mjs": "7af7916ed3396c2a23cc055952a73839956abe4d8fb6496d237bb93df1e4b4f5",
+    "package.json": "9328bc0ea049722dfaa01575100647b3025ce3bc8031e99a0682f3ec9ca9fa60",
+    "README.md": "62f9fd2251a826e50538b328ed53cb120014af19901193522af07df7c5679437"
+  }
+}

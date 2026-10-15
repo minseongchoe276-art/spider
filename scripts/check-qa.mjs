@@ -328,9 +328,12 @@ await check('Grounded combat clicks punch, airborne clicks web, and Space jumps 
     const mouse=(type,button)=>{const event=new Event(type,{cancelable:true});
       Object.defineProperties(event,{button:{value:button},clientX:{value:400},clientY:{value:300},target:{value:canvas}});
       fakeWindow.dispatchEvent(event);};
-    const key=code=>{const event=new Event('keydown',{cancelable:true});Object.defineProperty(event,'code',{value:code});fakeWindow.dispatchEvent(event);};
+    const key=code=>{for(const type of ['keydown','keyup']){const event=new Event(type,{cancelable:true});Object.defineProperty(event,'code',{value:code});fakeWindow.dispatchEvent(event);}};
     mouse('mousedown',0);mouse('mousedown',2);
     assert.deepEqual(punches,['left','right']);assert.equal(app.input.webTap,false);assert.equal(pulls.length,0);
+    // These are distinct presses across grounded/airborne states. Real input
+    // releases the original buttons before another mousedown can occur.
+    mouse('mouseup',0);mouse('mouseup',2);
     physics.state='FALLING';mouse('mousedown',0);
     assert.equal(app.input.webTap,true);assert.deepEqual(webs,['punch','punch','web']);assert.deepEqual(punches,['left','right']);
     mouse('mouseup',0);assert.equal(app.input.webHold,false);assert.equal(app.input.webTap,true);

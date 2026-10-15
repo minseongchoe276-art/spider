@@ -1,5 +1,6 @@
 export class PerformanceBudget {
   constructor(){this.samples=[];this.time=0;this.bad=0;this.good=0;this.level=1.5;this.p95=0;}
+  reset(level=1.5){this.samples=[];this.time=0;this.bad=this.good=0;this.level=level;this.p95=0;}
   update(seconds,enabled,ceiling=1.5) {
     if(!Number.isFinite(seconds)||seconds<=0)return null;
     this.samples.push(Math.min(seconds*1000,1000));if(this.samples.length>240)this.samples.shift();

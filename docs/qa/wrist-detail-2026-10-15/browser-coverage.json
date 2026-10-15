@@ -1,0 +1,212 @@
+[
+  {
+    "fov": 45,
+    "side": "left",
+    "phase": "fire",
+    "file": "left-fire.png",
+    "status": "왼손 · 발사 · 0.16초\n실제 캐릭터 손 메시 · 중지·약지 접기 / 검지·새끼손가락 펴기"
+  },
+  {
+    "fov": 45,
+    "side": "left",
+    "phase": "miss",
+    "file": "left-miss.png",
+    "status": "왼손 · 빗나간 발사 · 0.16초\n실제 캐릭터 손 메시 · 중지·약지 접기 / 검지·새끼손가락 펴기"
+  },
+  {
+    "fov": 45,
+    "side": "left",
+    "phase": "hold",
+    "file": "left-hold.png",
+    "status": "왼손 · 줄 잡기 · 1.05초\n실제 캐릭터 손 메시 · 다섯 손가락으로 줄 잡기"
+  },
+  {
+    "fov": 45,
+    "side": "left",
+    "phase": "release",
+    "file": "left-release.png",
+    "status": "왼손 · 해제 · 1.05초\n실제 캐릭터 손 메시 · 기본 손 자세로 복귀"
+  },
+  {
+    "fov": 45,
+    "side": "left",
+    "phase": "combat",
+    "file": "left-combat.png",
+    "status": "왼손 · 펀치 · 1.05초\n실제 캐릭터 손 메시 · 전투 주먹 자세"
+  },
+  {
+    "fov": 45,
+    "side": "right",
+    "phase": "fire",
+    "file": "right-fire.png",
+    "status": "오른손 · 발사 · 0.16초\n실제 캐릭터 손 메시 · 중지·약지 접기 / 검지·새끼손가락 펴기"
+  },
+  {
+    "fov": 45,
+    "side": "right",
+    "phase": "miss",
+    "file": "right-miss.png",
+    "status": "오른손 · 빗나간 발사 · 0.16초\n실제 캐릭터 손 메시 · 중지·약지 접기 / 검지·새끼손가락 펴기"
+  },
+  {
+    "fov": 45,
+    "side": "right",
+    "phase": "hold",
+    "file": "right-hold.png",
+    "status": "오른손 · 줄 잡기 · 1.05초\n실제 캐릭터 손 메시 · 다섯 손가락으로 줄 잡기"
+  },
+  {
+    "fov": 45,
+    "side": "right",
+    "phase": "release",
+    "file": "right-release.png",
+    "status": "오른손 · 해제 · 1.05초\n실제 캐릭터 손 메시 · 기본 손 자세로 복귀"
+  },
+  {
+    "fov": 45,
+    "side": "right",
+    "phase": "combat",
+    "file": "right-combat.png",
+    "status": "오른손 · 펀치 · 1.05초\n실제 캐릭터 손 메시 · 전투 주먹 자세"
+  },
+  {
+    "fov": 45,
+    "side": "both",
+    "phase": "fire",
+    "file": "both-fire.png",
+    "status": "양손 · 발사 · 0.16초\n실제 캐릭터 손 메시 · 중지·약지 접기 / 검지·새끼손가락 펴기"
+  },
+  {
+    "fov": 45,
+    "side": "both",
+    "phase": "miss",
+    "file": "both-miss.png",
+    "status": "양손 · 빗나간 발사 · 0.16초\n실제 캐릭터 손 메시 · 중지·약지 접기 / 검지·새끼손가락 펴기"
+  },
+  {
+    "fov": 45,
+    "side": "both",
+    "phase": "hold",
+    "file": "both-hold.png",
+    "status": "양손 · 줄 잡기 · 1.05초\n실제 캐릭터 손 메시 · 다섯 손가락으로 줄 잡기"
+  },
+  {
+    "fov": 45,
+    "side": "both",
+    "phase": "release",
+    "file": "both-release.png",
+    "status": "양손 · 해제 · 1.05초\n실제 캐릭터 손 메시 · 기본 손 자세로 복귀"
+  },
+  {
+    "fov": 45,
+    "side": "both",
+    "phase": "combat",
+    "file": "both-combat.png",
+    "status": "양손 · 펀치 · 1.05초\n실제 캐릭터 손 메시 · 전투 주먹 자세"
+  },
+  {
+    "fov": 55,
+    "side": "both",
+    "phase": "fire",
+    "file": "fov55-both-fire.png",
+    "status": "양손 · 발사 · 0.16초\n실제 캐릭터 손 메시 · 중지·약지 접기 / 검지·새끼손가락 펴기"
+  },
+  {
+    "fov": 55,
+    "side": "both",
+    "phase": "miss",
+    "file": "fov55-both-miss.png",
+    "status": "양손 · 빗나간 발사 · 0.16초\n실제 캐릭터 손 메시 · 중지·약지 접기 / 검지·새끼손가락 펴기"
+  },
+  {
+    "fov": 55,
+    "side": "both",
+    "phase": "hold",
+    "file": "fov55-both-hold.png",
+    "status": "양손 · 줄 잡기 · 1.05초\n실제 캐릭터 손 메시 · 다섯 손가락으로 줄 잡기"
+  },
+  {
+    "fov": 55,
+    "side": "both",
+    "phase": "release",
+    "file": "fov55-both-release.png",
+    "status": "양손 · 해제 · 1.05초\n실제 캐릭터 손 메시 · 기본 손 자세로 복귀"
+  },
+  {
+    "fov": 55,
+    "side": "both",
+    "phase": "combat",
+    "file": "fov55-both-combat.png",
+    "status": "양손 · 펀치 · 1.05초\n실제 캐릭터 손 메시 · 전투 주먹 자세"
+  },
+  {
+    "fov": 64,
+    "side": "both",
+    "phase": "fire",
+    "file": "fov64-both-fire.png",
+    "status": "양손 · 발사 · 0.16초\n실제 캐릭터 손 메시 · 중지·약지 접기 / 검지·새끼손가락 펴기"
+  },
+  {
+    "fov": 64,
+    "side": "both",
+    "phase": "miss",
+    "file": "fov64-both-miss.png",
+    "status": "양손 · 빗나간 발사 · 0.16초\n실제 캐릭터 손 메시 · 중지·약지 접기 / 검지·새끼손가락 펴기"
+  },
+  {
+    "fov": 64,
+    "side": "both",
+    "phase": "hold",
+    "file": "fov64-both-hold.png",
+    "status": "양손 · 줄 잡기 · 1.05초\n실제 캐릭터 손 메시 · 다섯 손가락으로 줄 잡기"
+  },
+  {
+    "fov": 64,
+    "side": "both",
+    "phase": "release",
+    "file": "fov64-both-release.png",
+    "status": "양손 · 해제 · 1.05초\n실제 캐릭터 손 메시 · 기본 손 자세로 복귀"
+  },
+  {
+    "fov": 64,
+    "side": "both",
+    "phase": "combat",
+    "file": "fov64-both-combat.png",
+    "status": "양손 · 펀치 · 1.05초\n실제 캐릭터 손 메시 · 전투 주먹 자세"
+  },
+  {
+    "fov": 95,
+    "side": "both",
+    "phase": "fire",
+    "file": "fov95-both-fire.png",
+    "status": "양손 · 발사 · 0.16초\n실제 캐릭터 손 메시 · 중지·약지 접기 / 검지·새끼손가락 펴기"
+  },
+  {
+    "fov": 95,
+    "side": "both",
+    "phase": "miss",
+    "file": "fov95-both-miss.png",
+    "status": "양손 · 빗나간 발사 · 0.16초\n실제 캐릭터 손 메시 · 중지·약지 접기 / 검지·새끼손가락 펴기"
+  },
+  {
+    "fov": 95,
+    "side": "both",
+    "phase": "hold",
+    "file": "fov95-both-hold.png",
+    "status": "양손 · 줄 잡기 · 1.05초\n실제 캐릭터 손 메시 · 다섯 손가락으로 줄 잡기"
+  },
+  {
+    "fov": 95,
+    "side": "both",
+    "phase": "release",
+    "file": "fov95-both-release.png",
+    "status": "양손 · 해제 · 1.05초\n실제 캐릭터 손 메시 · 기본 손 자세로 복귀"
+  },
+  {
+    "fov": 95,
+    "side": "both",
+    "phase": "combat",
+    "file": "fov95-both-combat.png",
+    "status": "양손 · 펀치 · 1.05초\n실제 캐릭터 손 메시 · 전투 주먹 자세"
+  }
+]

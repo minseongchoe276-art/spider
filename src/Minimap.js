@@ -77,9 +77,27 @@ export function worldToHongKongCoordinates(position) {
   return { latitude, longitude };
 }
 
+export function locatedPlayers(players = []) {
+  // Readiness, death, distance and reveal timers must not hide participants.
+  return players.filter(p => [p.x,p.y,p.z].every(Number.isFinite));
+}
+
+export function actorOverlayPoint(player,center,range,size,camera=null) {
+  if(camera){
+    const placed=terrainMarkerPoint(new THREE.Vector3(player.x,player.y+range*.04,player.z),camera);
+    const projected=placed.point.project(camera);
+    const raw=new THREE.Vector3(player.x,player.y+range*.04,player.z).project(camera);
+    return {x:(projected.x+1)*size/2,y:(1-projected.y)*size/2,offscreen:placed.offscreen,angle:Math.atan2(-raw.y,raw.x)};
+  }
+  const marker=edgeMinimapMarker(player,center,range,Math.max(1,size/2-16),size/2);
+  return {...marker,angle:Math.atan2(marker.y-size/2,marker.x-size/2)};
+}
+
 export class HongKongMinimap {
   constructor({ canvas, status, coordinates, rangeLabel, title, subtitle, city, combat, players }) {
     Object.assign(this, { canvas, status, coordinates, rangeLabel, title, subtitle, city, combat, players });
+    this.actorRoot=canvas?.parentElement?.querySelector?.('#minimap-actors');
+    this.actorLabels=new Map();
     this.range = city?.isStreamed ? 220 : LOCAL_CITY.minimapRange;
     this.terrainCopies = new Map();
     try { if (canvas) this.initTerrain(); }
@@ -121,7 +139,7 @@ export class HongKongMinimap {
     this.renderer.localClippingEnabled=true;
     this.terrainMaterial.clippingPlanes=this.clipPlanes;
     this.groundMaterial.clippingPlanes=this.clipPlanes;
-    this.markerGeometry = new THREE.ConeGeometry(this.range * 0.025,this.range * 0.075,4);
+    this.markerGeometry = new THREE.ConeGeometry(this.range * 0.04,this.range * 0.1,4);
     this.markers = new Map();
     this.canvas.dataset.mapMode = 'terrain-3d';
   }
@@ -153,7 +171,7 @@ export class HongKongMinimap {
     this.clipPlanes[0].constant = r-position.x; this.clipPlanes[1].constant = r+position.x;
     this.clipPlanes[2].constant = r-position.z; this.clipPlanes[3].constant = r+position.z;
     const actors = [{id:'self',position,facing:facingAngle,color:0xffffff},
-      ...(this.players?.() || []).filter(p => !p.eliminated && p.seen)
+      ...locatedPlayers(this.players?.() || [])
         .map(p => ({id:p.id,position:p,facing:p.facing,color:p.rescue?0xff6682:p.team==='police'?0x41d9ff:0xffce67})),
       ...(this.combat?.enemies || []).filter(e => e.health>0)
         .map((e,i) => ({id:`enemy-${i}`,position:e.position,color:0xff536e}))];
@@ -186,6 +204,8 @@ export class HongKongMinimap {
     this.markerGeometry?.dispose();
     for (const marker of this.markers?.values() || []) marker.material.dispose();
     this.terrainCopies.clear(); this.mapScene?.clear();
+    for(const el of this.actorLabels?.values() || [])el.remove();
+    this.actorLabels?.clear();
   }
 
   resize() {
@@ -214,7 +234,37 @@ export class HongKongMinimap {
     this.lastDraw = nowSeconds;
     if (this.renderer) this.drawTerrain(position,facingAngle);
     else this.draw(position, facingAngle);
+    this.drawActorOverlay(position);
     this.updateLabels(position);
+  }
+
+  drawActorOverlay(position) {
+    if(!this.actorRoot)return;
+    const active=new Set();
+    for(const player of locatedPlayers(this.players?.() || [])){
+      active.add(player.id);let el=this.actorLabels.get(player.id);
+      if(!el){
+        el=document.createElement('div');el.className='minimap-player-marker';
+        const icon=document.createElement('span'),label=document.createElement('span');
+        icon.className='minimap-player-icon';label.className='minimap-player-label';
+        el.append(icon,label);this.actorRoot.append(el);this.actorLabels.set(player.id,el);
+      }
+      const placed=actorOverlayPoint(player,position,this.range,this.size,this.renderer?this.mapCamera:null);
+      const distance=Math.round(Math.hypot(player.x-position.x,player.y-position.y,player.z-position.z));
+      const name=String(player.name || (player.team==='police'?'경찰':player.team==='runner'?'도망자':'플레이어')).slice(0,12);
+      const status=player.rescue?' · 구조':player.downed||player.eliminated?' · 탈락':player.connected===false?' · 마지막 위치':player.lastKnown?' · 대기 위치':'';
+      el.children[0].textContent=player.downed||player.eliminated?'×':placed.offscreen?'➤':'●';
+      el.children[0].style.transform=placed.offscreen && !player.downed && !player.eliminated?`rotate(${placed.angle}rad)`:'';
+      el.children[1].textContent=`${name} · ${distance}m${status}`;
+      el.children[1].style.maxWidth=`${Math.min(145,this.size*.55)}px`;
+      el.dataset.team=player.ally?'ally':player.team;
+      el.dataset.side=placed.x<this.size*.33?'left':placed.x>this.size*.66?'right':'center';
+      el.dataset.bottom=String(placed.y>this.size*.7);
+      el.classList.toggle('offscreen',placed.offscreen);el.classList.toggle('last-known',!!player.lastKnown);
+      el.setAttribute('aria-label',`${name}, 거리 ${distance}미터${status}${placed.offscreen?', 지도 범위 밖':''}`);
+      el.style.left=`${placed.x/this.size*100}%`;el.style.top=`${placed.y/this.size*100}%`;
+    }
+    for(const[id,el]of this.actorLabels)if(!active.has(id)){el.remove();this.actorLabels.delete(id);}
   }
 
   collectFootprints(position) {
@@ -287,8 +337,9 @@ export class HongKongMinimap {
   }
 
   drawActors(ctx, position, radius, center) {
-    for(const player of this.players?.()||[]){if(!player.seen||player.eliminated||![player.x,player.y,player.z].every(Number.isFinite))continue;
-      const marker=edgeMinimapMarker(player,position,this.range,radius-5,center);ctx.fillStyle=player.rescue?'#ff6682':player.team==='police'?'#41d9ff':'#ffce67';ctx.beginPath();ctx.arc(marker.x,marker.y,4,0,Math.PI*2);ctx.fill();
+    for(const player of locatedPlayers(this.players?.()||[])){
+      const marker=edgeMinimapMarker(player,position,this.range,radius-10,center);ctx.fillStyle=player.rescue?'#ff6682':player.ally?'#7cffa9':player.team==='police'?'#41d9ff':'#ffce67';ctx.beginPath();ctx.arc(marker.x,marker.y,8,0,Math.PI*2);ctx.fill();
+      ctx.strokeStyle='#ffffff';ctx.lineWidth=2.5;ctx.stroke();
       if(player.rescue){ctx.font='bold 10px system-ui';ctx.textAlign='center';ctx.fillText('구조',marker.x,marker.y-7);}
     }
 
