@@ -1,0 +1,220 @@
+{
+  "map": "Hong Kong",
+  "ready": true,
+  "playing": true,
+  "paused": false,
+  "practice": false,
+  "performance": {
+    "windowFrames": 3600,
+    "totalFrames": 13827,
+    "activeSeconds": 236.05,
+    "averageFps": 56.74,
+    "frameMs": {
+      "p50": 16.7,
+      "p95": 17.7,
+      "p99": 20.5
+    },
+    "longFramesOver50ms": 20
+  },
+  "cpuSections": {
+    "city": {
+      "calls": 13829,
+      "samples": 600,
+      "meanMs": 1.71,
+      "p95Ms": 2.2
+    },
+    "physics": {
+      "calls": 13829,
+      "samples": 600,
+      "meanMs": 1.558,
+      "p95Ms": 1.8
+    },
+    "character": {
+      "calls": 13829,
+      "samples": 600,
+      "meanMs": 1.259,
+      "p95Ms": 1.5
+    },
+    "camera": {
+      "calls": 13829,
+      "samples": 600,
+      "meanMs": 0.103,
+      "p95Ms": 0.2
+    },
+    "render": {
+      "calls": 13828,
+      "samples": 600,
+      "meanMs": 2.017,
+      "p95Ms": 2.6
+    },
+    "collisionResolve": {
+      "calls": 68898,
+      "samples": 600,
+      "meanMs": 0.081,
+      "p95Ms": 0.2
+    },
+    "minimap": {
+      "calls": 13829,
+      "samples": 600,
+      "meanMs": 0.301,
+      "p95Ms": 1.1
+    },
+    "experience": {
+      "calls": 13829,
+      "samples": 600,
+      "meanMs": 0.02,
+      "p95Ms": 0.1
+    },
+    "rapierStep": {
+      "calls": 75758,
+      "samples": 600,
+      "meanMs": 0.069,
+      "p95Ms": 0.2
+    }
+  },
+  "renderer": {
+    "calls": 142,
+    "triangles": 318810,
+    "geometries": 307,
+    "textures": 220,
+    "pixelRatio": 1
+  },
+  "viewport": {
+    "width": 1280,
+    "height": 720,
+    "dpr": 1
+  },
+  "quality": "balanced",
+  "resources": {
+    "count": 250,
+    "transferBytes": 1999092
+  },
+  "position": [
+    -12.524,
+    21.899,
+    -74.054
+  ],
+  "velocity": [
+    0,
+    0,
+    0
+  ],
+  "state": "IDLE",
+  "motion": "idle",
+  "mode": "web",
+  "feet": [
+    {
+      "side": "left",
+      "angleDegrees": 10.44,
+      "peakDegrees": 35,
+      "limitDegrees": 35,
+      "ankle": [
+        -12.409,
+        21.716,
+        -74.372
+      ],
+      "surface": 21.59893880664657
+    },
+    {
+      "side": "right",
+      "angleDegrees": 31.19,
+      "peakDegrees": 35,
+      "limitDegrees": 35,
+      "ankle": [
+        -12.658,
+        21.721,
+        -73.759
+      ],
+      "surface": 21.600017293089135
+    }
+  ],
+  "peers": [
+    {
+      "name": "QA 홍콩 B",
+      "position": [
+        -2,
+        19.63,
+        0
+      ],
+      "state": "FALLING",
+      "motion": "drop",
+      "web": false
+    }
+  ],
+  "input": {
+    "forward": false,
+    "wall": false,
+    "left": false
+  },
+  "auditRun": {
+    "name": "climb-left",
+    "result": "완료",
+    "states": [
+      "RUNNING/walk",
+      "RUNNING/regularRun",
+      "WALL_RUNNING/wall"
+    ],
+    "start": [
+      -9.610240733271878,
+      21.723698944486486,
+      -71.26885673814256
+    ],
+    "end": [
+      -12.032388425869994,
+      22.930337604519977,
+      -74.7729800321914
+    ]
+  },
+  "map3D": true,
+  "mapMeshes": 198,
+  "facing": 2.5422767237544397,
+  "cameraYaw": 2.9293490169072336,
+  "webs": [],
+  "support": 21.599256904714807,
+  "collision": 220,
+  "pending": 1,
+  "history": [
+    "IDLE/stop",
+    "IDLE/idle",
+    "SWINGING/jump",
+    "SWINGING/swing",
+    "FALLING/swing",
+    "FALLING/drop",
+    "WALL_RUNNING/wall",
+    "FALLING/drop",
+    "LANDING/land",
+    "IDLE/idle",
+    "RUNNING/walk",
+    "RUNNING/regularRun",
+    "RUNNING/walk",
+    "RUNNING/regularRun",
+    "RUNNING/walk",
+    "IDLE/stop",
+    "IDLE/idle",
+    "RUNNING/walk",
+    "RUNNING/regularRun",
+    "IDLE/stop",
+    "IDLE/idle",
+    "SWINGING/jump",
+    "SWINGING/swing",
+    "FALLING/swing",
+    "FALLING/drop",
+    "WALL_RUNNING/wall",
+    "FALLING/drop",
+    "FALLING/fall",
+    "WALL_RUNNING/wall",
+    "MANTLING/wall",
+    "MANTLING/idle",
+    "RUNNING/walk",
+    "IDLE/stop",
+    "IDLE/idle",
+    "RUNNING/walk",
+    "RUNNING/regularRun",
+    "WALL_RUNNING/wall",
+    "FALLING/drop",
+    "LANDING/land",
+    "IDLE/idle"
+  ],
+  "decodedRGBTextures": 8,
+  "textureDiagnostics": []
+}

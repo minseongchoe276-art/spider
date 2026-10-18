@@ -1,0 +1,167 @@
+{
+  "map": "Hong Kong",
+  "ready": true,
+  "playing": true,
+  "paused": true,
+  "practice": false,
+  "performance": {
+    "windowFrames": 2277,
+    "totalFrames": 2277,
+    "activeSeconds": 40.56,
+    "averageFps": 56.13,
+    "frameMs": {
+      "p50": 16.7,
+      "p95": 23.5,
+      "p99": 36
+    },
+    "longFramesOver50ms": 10
+  },
+  "cpuSections": {
+    "city": {
+      "calls": 2278,
+      "samples": 600,
+      "meanMs": 2.729,
+      "p95Ms": 4.7
+    },
+    "physics": {
+      "calls": 2278,
+      "samples": 600,
+      "meanMs": 2.943,
+      "p95Ms": 3.5
+    },
+    "character": {
+      "calls": 2278,
+      "samples": 600,
+      "meanMs": 1.036,
+      "p95Ms": 2.5
+    },
+    "camera": {
+      "calls": 2278,
+      "samples": 600,
+      "meanMs": 0.533,
+      "p95Ms": 0.3
+    },
+    "render": {
+      "calls": 2278,
+      "samples": 600,
+      "meanMs": 2.899,
+      "p95Ms": 5.3
+    },
+    "collisionResolve": {
+      "calls": 11261,
+      "samples": 600,
+      "meanMs": 0.176,
+      "p95Ms": 0.4
+    },
+    "minimap": {
+      "calls": 2278,
+      "samples": 600,
+      "meanMs": 0.381,
+      "p95Ms": 1.8
+    },
+    "experience": {
+      "calls": 2278,
+      "samples": 600,
+      "meanMs": 0.029,
+      "p95Ms": 0.1
+    },
+    "rapierStep": {
+      "calls": 12058,
+      "samples": 600,
+      "meanMs": 0.104,
+      "p95Ms": 0.3
+    }
+  },
+  "renderer": {
+    "calls": 166,
+    "triangles": 325815,
+    "geometries": 196,
+    "textures": 154,
+    "pixelRatio": 1
+  },
+  "viewport": {
+    "width": 1280,
+    "height": 720,
+    "dpr": 1
+  },
+  "quality": "balanced",
+  "resources": {
+    "count": 250,
+    "transferBytes": 73800
+  },
+  "position": [
+    2.613,
+    10.098,
+    -67.149
+  ],
+  "velocity": [
+    0.001,
+    0,
+    0
+  ],
+  "state": "LANDING",
+  "motion": "slamLand",
+  "mode": "web",
+  "feet": [
+    {
+      "side": "left",
+      "ankle": [
+        1.81,
+        10.148,
+        -66.573
+      ]
+    },
+    {
+      "side": "right",
+      "ankle": [
+        3.158,
+        10.095,
+        -67.125
+      ],
+      "surface": 9.9732326994753
+    }
+  ],
+  "peers": [
+    {
+      "name": "QA 홍콩 B",
+      "position": [
+        -2,
+        19.63,
+        0
+      ],
+      "state": "FALLING",
+      "motion": "drop",
+      "web": false
+    }
+  ],
+  "map3D": true,
+  "mapMeshes": 202,
+  "facing": -2.185619413026785,
+  "cameraYaw": -2.185619413026785,
+  "webs": [],
+  "support": 9.973348231158269,
+  "collision": 230,
+  "pending": 1,
+  "history": [
+    "IDLE/undefined",
+    "FALLING/undefined",
+    "IDLE/idle",
+    "RUNNING/walk",
+    "RUNNING/regularRun",
+    "RUNNING/walk",
+    "WALL_RUNNING/wall",
+    "FALLING/drop",
+    "LANDING/land",
+    "IDLE/idle",
+    "RUNNING/walk",
+    "RUNNING/regularRun",
+    "RUNNING/walk",
+    "WALL_RUNNING/wall",
+    "FALLING/drop",
+    "FALLING/fall",
+    "FALLING/drop",
+    "LANDING/slamLand"
+  ],
+  "decodedRGBTextures": 5,
+  "textureDiagnostics": []
+}

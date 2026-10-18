@@ -1,0 +1,220 @@
+{
+  "map": "Hong Kong",
+  "ready": true,
+  "playing": true,
+  "paused": false,
+  "practice": false,
+  "performance": {
+    "windowFrames": 3600,
+    "totalFrames": 21284,
+    "activeSeconds": 360.59,
+    "averageFps": 59.83,
+    "frameMs": {
+      "p50": 16.7,
+      "p95": 17.7,
+      "p99": 20.2
+    },
+    "longFramesOver50ms": 20
+  },
+  "cpuSections": {
+    "city": {
+      "calls": 21286,
+      "samples": 600,
+      "meanMs": 1.642,
+      "p95Ms": 2.1
+    },
+    "physics": {
+      "calls": 21286,
+      "samples": 600,
+      "meanMs": 1.911,
+      "p95Ms": 2.2
+    },
+    "character": {
+      "calls": 21286,
+      "samples": 600,
+      "meanMs": 1.307,
+      "p95Ms": 1.5
+    },
+    "camera": {
+      "calls": 21286,
+      "samples": 600,
+      "meanMs": 1.963,
+      "p95Ms": 2.1
+    },
+    "render": {
+      "calls": 21285,
+      "samples": 600,
+      "meanMs": 1.714,
+      "p95Ms": 2.3
+    },
+    "collisionResolve": {
+      "calls": 83841,
+      "samples": 600,
+      "meanMs": 0.24,
+      "p95Ms": 0.4
+    },
+    "minimap": {
+      "calls": 21286,
+      "samples": 600,
+      "meanMs": 0.249,
+      "p95Ms": 0.9
+    },
+    "experience": {
+      "calls": 21286,
+      "samples": 600,
+      "meanMs": 0.023,
+      "p95Ms": 0.1
+    },
+    "rapierStep": {
+      "calls": 95957,
+      "samples": 600,
+      "meanMs": 0.061,
+      "p95Ms": 0.2
+    }
+  },
+  "renderer": {
+    "calls": 131,
+    "triangles": 271876,
+    "geometries": 304,
+    "textures": 235,
+    "pixelRatio": 1
+  },
+  "viewport": {
+    "width": 1280,
+    "height": 720,
+    "dpr": 1
+  },
+  "quality": "balanced",
+  "resources": {
+    "count": 250,
+    "transferBytes": 1999092
+  },
+  "position": [
+    -8.248,
+    21.725,
+    -72.184
+  ],
+  "velocity": [
+    0,
+    0,
+    0
+  ],
+  "state": "IDLE",
+  "motion": "combatIdle",
+  "mode": "combat",
+  "feet": [
+    {
+      "side": "left",
+      "angleDegrees": 13.63,
+      "peakDegrees": 35,
+      "limitDegrees": 35,
+      "ankle": [
+        -7.894,
+        21.737,
+        -72.255
+      ],
+      "surface": 21.5998502861901
+    },
+    {
+      "side": "right",
+      "angleDegrees": 12.88,
+      "peakDegrees": 35,
+      "limitDegrees": 35,
+      "ankle": [
+        -8.635,
+        21.728,
+        -72.271
+      ],
+      "surface": 21.60004859084327
+    }
+  ],
+  "peers": [
+    {
+      "name": "QA 홍콩 B",
+      "position": [
+        -2,
+        19.63,
+        0
+      ],
+      "state": "FALLING",
+      "motion": "drop",
+      "web": false
+    }
+  ],
+  "input": {
+    "forward": false,
+    "wall": false,
+    "left": false
+  },
+  "auditRun": {
+    "name": "moving-hook",
+    "result": "완료",
+    "states": [
+      "RUNNING/walk",
+      "RUNNING/regularRun",
+      "RUNNING/rightHook"
+    ],
+    "start": [
+      -9.441363784376717,
+      21.724437071519375,
+      -73.00231371387973
+    ],
+    "end": [
+      -8.247826747004565,
+      21.724933303539345,
+      -72.18426956944596
+    ]
+  },
+  "map3D": true,
+  "mapMeshes": 160,
+  "facing": 0.9770207238173835,
+  "cameraYaw": 0.9770207238173834,
+  "webs": [],
+  "support": 21.59993398899276,
+  "collision": 206,
+  "pending": 0,
+  "history": [
+    "IDLE/stop",
+    "IDLE/idle",
+    "SWINGING/jump",
+    "SWINGING/swing",
+    "FALLING/swing",
+    "FALLING/drop",
+    "WALL_RUNNING/wall",
+    "FALLING/drop",
+    "FALLING/fall",
+    "WALL_RUNNING/wall",
+    "MANTLING/wall",
+    "MANTLING/idle",
+    "RUNNING/walk",
+    "IDLE/stop",
+    "IDLE/idle",
+    "RUNNING/walk",
+    "RUNNING/regularRun",
+    "WALL_RUNNING/wall",
+    "FALLING/drop",
+    "LANDING/land",
+    "IDLE/idle",
+    "RUNNING/walk",
+    "RUNNING/regularRun",
+    "RUNNING/walk",
+    "IDLE/stop",
+    "IDLE/idle",
+    "IDLE/combatIdle",
+    "RUNNING/walk",
+    "RUNNING/regularRun",
+    "IDLE/stop",
+    "IDLE/idle",
+    "IDLE/combatIdle",
+    "RUNNING/walk",
+    "RUNNING/regularRun",
+    "RUNNING/rightHook",
+    "RUNNING/walk",
+    "IDLE/stop",
+    "IDLE/combatIdle",
+    "IDLE/rightHook",
+    "IDLE/combatIdle"
+  ],
+  "decodedRGBTextures": 9,
+  "textureDiagnostics": []
+}

@@ -1,0 +1,79 @@
+{
+  "status": "PASS",
+  "codeCommit": "d9fb2bb",
+  "productionAsset": "index-DPDuigPr.js",
+  "productionSha256": "669a271ed3452f22d9d5e1f401ed149d3518ec55d2b2d11e4be80a793c8793e8",
+  "actualTwoGuestSessions": true,
+  "tagWebHp": [
+    100,
+    85,
+    70
+  ],
+  "movingJabHp": [
+    100,
+    75
+  ],
+  "mantleSeen": true,
+  "roofIdlePosition": [
+    -12.524,
+    21.899,
+    -74.054
+  ],
+  "roofAnkles": [
+    {
+      "side": "left",
+      "angleDegrees": 10.44,
+      "peakDegrees": 35,
+      "limitDegrees": 35,
+      "ankle": [
+        -12.409,
+        21.716,
+        -74.372
+      ],
+      "surface": 21.59893880664657
+    },
+    {
+      "side": "right",
+      "angleDegrees": 31.19,
+      "peakDegrees": 35,
+      "limitDegrees": 35,
+      "ankle": [
+        -12.658,
+        21.721,
+        -73.759
+      ],
+      "surface": 21.600017293089135
+    }
+  ],
+  "movingHookThirdMetres": 2.6099524155152953,
+  "movingHookFirstMetres": 1.4469716244009327,
+  "postCombatAnkles": [
+    {
+      "side": "left",
+      "angleDegrees": 13.63,
+      "peakDegrees": 35,
+      "limitDegrees": 35,
+      "ankle": [
+        -7.894,
+        21.737,
+        -72.255
+      ],
+      "surface": 21.5998502861901
+    },
+    {
+      "side": "right",
+      "angleDegrees": 12.88,
+      "peakDegrees": 35,
+      "limitDegrees": 35,
+      "ankle": [
+        -8.635,
+        21.728,
+        -72.271
+      ],
+      "surface": 21.60004859084327
+    }
+  ],
+  "exactFinalFullSuite": "PASS",
+  "exactFinalBuild": "PASS",
+  "testParticipantsLeft": true
+}
