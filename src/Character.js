@@ -531,7 +531,8 @@ export class Character {
       arm.position.x+=sign*.008*Math.sin(gait)*stride;
       arm.position.y+=.009*Math.cos(gait*2)*stride;
       arm.rotation.z+=sign*.012*Math.sin(gait)*stride;
-      poseFirstPersonFingers(arm,gesture.shoot,gesture.grip,combat,wall);
+      const guard=combat || (this.combatStance && GROUNDED.includes(this.poseState)?{key:'combatIdle'}:null);
+      poseFirstPersonFingers(arm,gesture.shoot,gesture.grip,guard,wall);
     }
   }
 
