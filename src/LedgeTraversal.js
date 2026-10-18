@@ -70,9 +70,15 @@ export function planMantle(city,start,normal,height) {
   if(!support || support.normal.y<.85 || support.height>height+.16 || support.height<height-1.4)continue;
   end.y=support.height+.1;
   if(!hasMantleSupport(city,end,support.height))continue;
-  const plan={start:start.clone(),end,normal:normal.clone(),height,duration:end.y<height?1.2:.72,elapsed:0};
+  if(city.raycast?.(end.clone().add(new THREE.Vector3(0,.15,0)),up,1.6))continue;
+  // A railing can have open space at chest height and a bar above the roof.
+  // Try reachable grips above that bar, still sweeping every capsule step.
+  for(const lift of [0,.3,.6,.9,1.2]){
+  const gripHeight=height+lift;
+  if(gripHeight-start.y>1.25)continue;
+  const plan={start:start.clone(),end,normal:normal.clone(),height:gripHeight,duration:end.y<gripHeight?1.2:.72,elapsed:0};
   plan.gap=gap;
-  plan.edge=start.clone().addScaledVector(normal,-plan.gap);plan.edge.y=height+0.06;
+  plan.edge=start.clone().addScaledVector(normal,-plan.gap);plan.edge.y=gripHeight+0.06;
   let previous=start.clone();
   let clear=true;
   for(let i=1;i<=36;i++) {
@@ -82,6 +88,7 @@ export function planMantle(city,start,normal,height) {
     previous=resolved.position;
   }
   if(clear)return plan;
+  }
   }
   return null;
 }

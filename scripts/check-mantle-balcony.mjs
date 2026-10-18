@@ -3,6 +3,7 @@ import * as THREE from 'three';
 import {StreamedCollision} from '../src/StreamedCollision.js';
 import {SwingPhysics} from '../src/SwingPhysics.js';
 import {planMantle,mantlePosition,resolveTraversal} from '../src/LedgeTraversal.js';
+import {loadMotionRig,point,disposeRig} from './lib/motion-rig.mjs';
 
 const normal=new THREE.Vector3(0,0,-1),start=new THREE.Vector3(0,19.3,-.375);
 async function terrain(width,ceiling=false,span=8){
@@ -13,7 +14,7 @@ async function terrain(width,ceiling=false,span=8){
   ...(ceiling?[[[8,.3,width],[0,21.15,width/2]]]:[]),
  ]){const mesh=new THREE.Mesh(new THREE.BoxGeometry(...size));mesh.position.set(...position);mesh.updateMatrixWorld(true);world.enqueue(mesh);}
  for(let n=0;n<10;n++)world.update(start);
- return {collisionWorld:world,colliders:[],raycast:(...args)=>world.raycast(...args)};
+ return {collisionWorld:world,colliders:[],buildingMeshes:[],raycast:(...args)=>world.raycast(...args)};
 }
 const city=await terrain(1.5);
 const plan=planMantle(city,start,normal,20);
@@ -42,3 +43,34 @@ assert(Math.abs(actor.wallDistance-.375)<.001,'Grip used the angled ray length i
 player.updateWallRunPhysics(1/60,{forward:true,wallRun:true,strafe:0},new THREE.PerspectiveCamera());
 assert.equal(player.state,'MANTLING','A rounded edge contact aimed the roof probe off the supported balcony');
 console.log('PASS rounded edge contact uses the actual facade normal and enters the supported roof instead of twisting the grip');
+
+const railing=await terrain(4),bar=new THREE.Mesh(new THREE.BoxGeometry(8,.12,.12));
+bar.position.set(0,21.15,.06);bar.updateMatrixWorld(true);railing.collisionWorld.enqueue(bar);
+for(let n=0;n<5;n++)railing.collisionWorld.update(start);
+const railStart=new THREE.Vector3(0,19.95,-.375),vault=planMantle(railing,railStart,normal,20);
+assert(vault,'An open railing trapped the climber below its top bar');
+assert(vault.height>21.1 && vault.height-railStart.y<=1.25);
+assert(Math.abs(vault.end.y-20.1)<.001);
+console.log('PASS open railing uses a reachable higher grip and lands on the supported lower roof');
+
+railing.resolveMovement=(a,b,v)=>railing.collisionWorld.resolve(a,b,v);
+railing.supportHeight=p=>{const h=railing.collisionWorld.groundAt(p,.5);return h!==null&&Math.abs(p.y-h-.1)<.25?h:null;};
+railing.checkCollision=()=>({collided:false});
+const rig=await loadMotionRig();
+for(const fps of [30,60,144]){
+ const suit=rig.actor(),physics=new SwingPhysics(suit.scene,railing,suit,silent);let grip=0,peak=0;
+ physics.position.copy(railStart);physics.previousFixedPosition.copy(railStart);physics.renderPosition.copy(railStart);
+ suit.wallNormal=normal;suit.wallDistance=.375;suit.group.position.copy(railStart);
+ for(let n=0;n<fps*.3;n++)suit.update(1/fps,'WALL_RUNNING',new THREE.Vector3(0,2.8,0));
+ physics.mantle=planMantle(railing,railStart,normal,20);physics.state='MANTLING';
+ try{
+  for(let n=0;n<fps*2;n++){
+   physics.update(1/fps,{strafe:0},new THREE.PerspectiveCamera());
+   if(physics.mantle){const t=physics.mantle.elapsed/physics.mantle.duration;
+    if(t>.2&&t<.42)for(const side of ['left','right'])grip=Math.max(grip,point(suit,side+'hand').distanceTo(suit.mantleHandTargets[side]));}
+   for(const joint of suit.jointConstraints || [])if(joint.kind==='foot')peak=Math.max(peak,THREE.MathUtils.radToDeg(joint.rest.angleTo(joint.bone.quaternion)));
+  }
+  assert.equal(physics.state,'IDLE');assert(grip<.06,`Railing grip unreachable: ${grip}m`);assert(peak<=35.001);
+  console.log(`PASS ${fps}fps real rig over open railing: grip ${(grip*1000).toFixed(1)}mm, ankle ${peak.toFixed(2)}deg, supported idle`);
+ }finally{disposeRig(suit);}
+}
