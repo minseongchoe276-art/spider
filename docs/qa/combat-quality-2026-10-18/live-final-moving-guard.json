@@ -1,0 +1,243 @@
+{
+  "entry": "/assets/index-Bg8axaag.js",
+  "observations": [
+    {
+      "i": 0,
+      "state": "IDLE",
+      "attack": null,
+      "position": [
+        0,
+        19.646,
+        0
+      ],
+      "velocity": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "i": 1,
+      "state": "RUNNING",
+      "attack": null,
+      "position": [
+        0.025,
+        19.646,
+        0
+      ],
+      "velocity": [
+        1.14,
+        0,
+        -0.016
+      ]
+    },
+    {
+      "i": 2,
+      "state": "RUNNING",
+      "attack": null,
+      "position": [
+        0.025,
+        19.646,
+        0
+      ],
+      "velocity": [
+        1.14,
+        0,
+        -0.016
+      ]
+    },
+    {
+      "i": 3,
+      "state": "RUNNING",
+      "attack": null,
+      "position": [
+        0.025,
+        19.646,
+        0
+      ],
+      "velocity": [
+        1.14,
+        0,
+        -0.016
+      ]
+    },
+    {
+      "i": 4,
+      "state": "RUNNING",
+      "attack": null,
+      "position": [
+        0.813,
+        19.643,
+        -0.012
+      ],
+      "velocity": [
+        4.056,
+        0,
+        -0.058
+      ]
+    }
+  ],
+  "final": {
+    "map": "Hong Kong",
+    "ready": true,
+    "playing": true,
+    "paused": false,
+    "practice": false,
+    "performance": {
+      "windowFrames": 1153,
+      "totalFrames": 1153,
+      "activeSeconds": 19.24,
+      "averageFps": 59.93,
+      "frameMs": {
+        "p50": 16.6,
+        "p95": 19.6,
+        "p99": 22.2
+      },
+      "longFramesOver50ms": 0
+    },
+    "cpuSections": {
+      "city": {
+        "calls": 1155,
+        "samples": 600,
+        "meanMs": 1.484,
+        "p95Ms": 1.6
+      },
+      "physics": {
+        "calls": 1155,
+        "samples": 600,
+        "meanMs": 1.573,
+        "p95Ms": 1.7
+      },
+      "character": {
+        "calls": 1155,
+        "samples": 600,
+        "meanMs": 1.265,
+        "p95Ms": 1.4
+      },
+      "camera": {
+        "calls": 1155,
+        "samples": 600,
+        "meanMs": 0.09,
+        "p95Ms": 0.2
+      },
+      "render": {
+        "calls": 1154,
+        "samples": 600,
+        "meanMs": 1.436,
+        "p95Ms": 1.7
+      },
+      "collisionResolve": {
+        "calls": 2312,
+        "samples": 600,
+        "meanMs": 0.098,
+        "p95Ms": 0.2
+      },
+      "minimap": {
+        "calls": 1155,
+        "samples": 600,
+        "meanMs": 0.148,
+        "p95Ms": 0.5
+      },
+      "experience": {
+        "calls": 1155,
+        "samples": 600,
+        "meanMs": 0.018,
+        "p95Ms": 0.1
+      },
+      "rapierStep": {
+        "calls": 2709,
+        "samples": 600,
+        "meanMs": 0.053,
+        "p95Ms": 0.1
+      }
+    },
+    "renderer": {
+      "calls": 143,
+      "triangles": 289539,
+      "geometries": 188,
+      "textures": 147,
+      "pixelRatio": 1.5
+    },
+    "viewport": {
+      "width": 1280,
+      "height": 720,
+      "dpr": 2
+    },
+    "quality": "balanced",
+    "resources": {
+      "count": 250,
+      "transferBytes": 2053240
+    },
+    "position": [
+      5.411,
+      19.626,
+      -0.077
+    ],
+    "velocity": [
+      0,
+      0,
+      0
+    ],
+    "state": "IDLE",
+    "motion": "combatIdle",
+    "mode": "combat",
+    "feet": [
+      {
+        "side": "left",
+        "angleDegrees": 19.01,
+        "peakDegrees": 34.55,
+        "limitDegrees": 35,
+        "ankle": [
+          5.636,
+          19.625,
+          -0.307
+        ],
+        "surface": 19.499251944064415
+      },
+      {
+        "side": "right",
+        "angleDegrees": 26.26,
+        "peakDegrees": 34.4,
+        "limitDegrees": 35,
+        "ankle": [
+          5.149,
+          19.625,
+          0.134
+        ],
+        "surface": 19.503364008902825
+      }
+    ],
+    "peers": [],
+    "attack": null,
+    "input": {
+      "forward": false,
+      "wall": false,
+      "left": false
+    },
+    "auditRun": null,
+    "map3D": true,
+    "mapMeshes": 136,
+    "facing": 1.5850559999370573,
+    "cameraYaw": 1.585055999937057,
+    "webs": [],
+    "support": 19.50113782310418,
+    "collision": 168,
+    "pending": 0,
+    "history": [
+      "IDLE/undefined",
+      "FALLING/undefined",
+      "IDLE/idle",
+      "IDLE/combatIdle",
+      "RUNNING/combatIdle",
+      "RUNNING/walk",
+      "RUNNING/regularRun",
+      "IDLE/stop",
+      "IDLE/idle",
+      "IDLE/combatIdle"
+    ],
+    "decodedRGBTextures": 4,
+    "textureDiagnostics": []
+  },
+  "scoreNodes": 0,
+  "errors": []
+}

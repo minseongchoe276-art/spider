@@ -1,0 +1,1859 @@
+{
+  "rooms": [
+    "F26A38",
+    "5CA082"
+  ],
+  "removedScores": {
+    "comboAndScoreNodes": 0
+  },
+  "runs": [
+    {
+      "view": "third",
+      "map": "Hong Kong",
+      "ready": true,
+      "playing": true,
+      "paused": false,
+      "practice": false,
+      "performance": {
+        "windowFrames": 2181,
+        "totalFrames": 2181,
+        "activeSeconds": 37.04,
+        "averageFps": 58.88,
+        "frameMs": {
+          "p50": 16.7,
+          "p95": 18.5,
+          "p99": 21.8
+        },
+        "longFramesOver50ms": 4
+      },
+      "cpuSections": {
+        "city": {
+          "calls": 2183,
+          "samples": 600,
+          "meanMs": 2.284,
+          "p95Ms": 3.6
+        },
+        "physics": {
+          "calls": 2183,
+          "samples": 600,
+          "meanMs": 1.466,
+          "p95Ms": 1.9
+        },
+        "character": {
+          "calls": 2183,
+          "samples": 600,
+          "meanMs": 1.116,
+          "p95Ms": 1.5
+        },
+        "camera": {
+          "calls": 2183,
+          "samples": 600,
+          "meanMs": 0.067,
+          "p95Ms": 0.2
+        },
+        "render": {
+          "calls": 2182,
+          "samples": 600,
+          "meanMs": 1.74,
+          "p95Ms": 2.6
+        },
+        "collisionResolve": {
+          "calls": 4424,
+          "samples": 600,
+          "meanMs": 0.122,
+          "p95Ms": 0.3
+        },
+        "minimap": {
+          "calls": 2183,
+          "samples": 600,
+          "meanMs": 0.214,
+          "p95Ms": 0.9
+        },
+        "experience": {
+          "calls": 2183,
+          "samples": 600,
+          "meanMs": 0.023,
+          "p95Ms": 0.1
+        },
+        "rapierStep": {
+          "calls": 5170,
+          "samples": 600,
+          "meanMs": 0.06,
+          "p95Ms": 0.2
+        }
+      },
+      "renderer": {
+        "calls": 129,
+        "triangles": 348822,
+        "geometries": 144,
+        "textures": 124,
+        "pixelRatio": 1
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 720,
+        "dpr": 1
+      },
+      "quality": "balanced",
+      "resources": {
+        "count": 250,
+        "transferBytes": 2178585
+      },
+      "position": [
+        3.951,
+        19.632,
+        0.004
+      ],
+      "velocity": [
+        0,
+        0,
+        0
+      ],
+      "state": "IDLE",
+      "motion": "combatIdle",
+      "mode": "combat",
+      "feet": [
+        {
+          "side": "left",
+          "angleDegrees": 19.97,
+          "peakDegrees": 33.87,
+          "limitDegrees": 35,
+          "ankle": [
+            3.723,
+            19.635,
+            0.23
+          ],
+          "surface": 19.509446916013655
+        },
+        {
+          "side": "right",
+          "angleDegrees": 26.34,
+          "peakDegrees": 34.99,
+          "limitDegrees": 35,
+          "ankle": [
+            4.217,
+            19.627,
+            -0.204
+          ],
+          "surface": 19.505064603715834
+        }
+      ],
+      "peers": [
+        {
+          "name": "모션검사-B",
+          "position": [
+            -2,
+            19.63,
+            0
+          ],
+          "state": "IDLE",
+          "motion": "idle",
+          "web": false
+        }
+      ],
+      "attack": null,
+      "input": {
+        "forward": false,
+        "wall": false,
+        "left": false
+      },
+      "auditRun": {
+        "name": "moving-jab",
+        "result": "완료",
+        "states": [
+          "RUNNING/walk",
+          "RUNNING/regularRun"
+        ],
+        "attacks": [
+          "jab"
+        ],
+        "start": [
+          6.500005939890798,
+          19.59914637525071,
+          0.0000036272458601160906
+        ],
+        "end": [
+          4.477205678968858,
+          19.63060982090974,
+          0.0035372423953960127
+        ]
+      },
+      "map3D": true,
+      "mapMeshes": 160,
+      "facing": -1.5707963267948963,
+      "cameraYaw": -1.5707963267948966,
+      "webs": [],
+      "support": 19.507396146684584,
+      "collision": 188,
+      "pending": 0,
+      "history": [
+        "IDLE/undefined",
+        "FALLING/undefined",
+        "IDLE/idle",
+        "IDLE/combatIdle",
+        "RUNNING/walk",
+        "RUNNING/regularRun",
+        "IDLE/stop",
+        "IDLE/idle",
+        "IDLE/combatIdle"
+      ],
+      "decodedRGBTextures": 4,
+      "textureDiagnostics": []
+    },
+    {
+      "view": "third",
+      "map": "Hong Kong",
+      "ready": true,
+      "playing": true,
+      "paused": false,
+      "practice": false,
+      "performance": {
+        "windowFrames": 2703,
+        "totalFrames": 2703,
+        "activeSeconds": 45.75,
+        "averageFps": 59.08,
+        "frameMs": {
+          "p50": 16.7,
+          "p95": 18.5,
+          "p99": 21.2
+        },
+        "longFramesOver50ms": 4
+      },
+      "cpuSections": {
+        "city": {
+          "calls": 2705,
+          "samples": 600,
+          "meanMs": 2.216,
+          "p95Ms": 3.4
+        },
+        "physics": {
+          "calls": 2705,
+          "samples": 600,
+          "meanMs": 1.389,
+          "p95Ms": 1.8
+        },
+        "character": {
+          "calls": 2705,
+          "samples": 600,
+          "meanMs": 1.08,
+          "p95Ms": 1.4
+        },
+        "camera": {
+          "calls": 2705,
+          "samples": 600,
+          "meanMs": 0.065,
+          "p95Ms": 0.2
+        },
+        "render": {
+          "calls": 2704,
+          "samples": 600,
+          "meanMs": 1.643,
+          "p95Ms": 2.4
+        },
+        "collisionResolve": {
+          "calls": 5469,
+          "samples": 600,
+          "meanMs": 0.099,
+          "p95Ms": 0.2
+        },
+        "minimap": {
+          "calls": 2705,
+          "samples": 600,
+          "meanMs": 0.223,
+          "p95Ms": 0.9
+        },
+        "experience": {
+          "calls": 2705,
+          "samples": 600,
+          "meanMs": 0.025,
+          "p95Ms": 0.1
+        },
+        "rapierStep": {
+          "calls": 6390,
+          "samples": 600,
+          "meanMs": 0.055,
+          "p95Ms": 0.2
+        }
+      },
+      "renderer": {
+        "calls": 127,
+        "triangles": 342303,
+        "geometries": 145,
+        "textures": 125,
+        "pixelRatio": 1
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 720,
+        "dpr": 1
+      },
+      "quality": "balanced",
+      "resources": {
+        "count": 250,
+        "transferBytes": 2178585
+      },
+      "position": [
+        0.813,
+        19.643,
+        0.004
+      ],
+      "velocity": [
+        0,
+        0,
+        0
+      ],
+      "state": "IDLE",
+      "motion": "combatIdle",
+      "mode": "combat",
+      "feet": [
+        {
+          "side": "left",
+          "angleDegrees": 20.12,
+          "peakDegrees": 34.4,
+          "limitDegrees": 35,
+          "ankle": [
+            0.584,
+            19.645,
+            0.23
+          ],
+          "surface": 19.51982955645475
+        },
+        {
+          "side": "right",
+          "angleDegrees": 26.54,
+          "peakDegrees": 34.99,
+          "limitDegrees": 35,
+          "ankle": [
+            1.078,
+            19.638,
+            -0.204
+          ],
+          "surface": 19.515771374215216
+        }
+      ],
+      "peers": [
+        {
+          "name": "모션검사-B",
+          "position": [
+            -2,
+            19.63,
+            0
+          ],
+          "state": "IDLE",
+          "motion": "idle",
+          "web": false
+        }
+      ],
+      "attack": null,
+      "input": {
+        "forward": false,
+        "wall": false,
+        "left": false
+      },
+      "auditRun": {
+        "name": "moving-hook",
+        "result": "완료",
+        "states": [
+          "RUNNING/walk",
+          "RUNNING/regularRun"
+        ],
+        "attacks": [
+          "cross"
+        ],
+        "start": [
+          3.951130188611387,
+          19.632404252916274,
+          0.0035372423953960335
+        ],
+        "end": [
+          1.3410511199208486,
+          19.64110055884197,
+          0.0035359209891798896
+        ]
+      },
+      "map3D": true,
+      "mapMeshes": 159,
+      "facing": -1.5707963267948961,
+      "cameraYaw": -1.5707963267948966,
+      "webs": [],
+      "support": 19.517879608382316,
+      "collision": 188,
+      "pending": 0,
+      "history": [
+        "IDLE/undefined",
+        "FALLING/undefined",
+        "IDLE/idle",
+        "IDLE/combatIdle",
+        "RUNNING/walk",
+        "RUNNING/regularRun",
+        "IDLE/stop",
+        "IDLE/idle",
+        "IDLE/combatIdle",
+        "RUNNING/walk",
+        "RUNNING/regularRun",
+        "IDLE/stop",
+        "IDLE/idle",
+        "IDLE/combatIdle"
+      ],
+      "decodedRGBTextures": 5,
+      "textureDiagnostics": []
+    },
+    {
+      "view": "third",
+      "map": "Hong Kong",
+      "ready": true,
+      "playing": true,
+      "paused": false,
+      "practice": false,
+      "performance": {
+        "windowFrames": 3600,
+        "totalFrames": 3634,
+        "activeSeconds": 61.51,
+        "averageFps": 59.63,
+        "frameMs": {
+          "p50": 16.7,
+          "p95": 18.6,
+          "p99": 21.6
+        },
+        "longFramesOver50ms": 5
+      },
+      "cpuSections": {
+        "city": {
+          "calls": 3636,
+          "samples": 600,
+          "meanMs": 2.187,
+          "p95Ms": 3.3
+        },
+        "physics": {
+          "calls": 3636,
+          "samples": 600,
+          "meanMs": 1.375,
+          "p95Ms": 1.8
+        },
+        "character": {
+          "calls": 3636,
+          "samples": 600,
+          "meanMs": 1.113,
+          "p95Ms": 1.4
+        },
+        "camera": {
+          "calls": 3636,
+          "samples": 600,
+          "meanMs": 0.155,
+          "p95Ms": 0.3
+        },
+        "render": {
+          "calls": 3635,
+          "samples": 600,
+          "meanMs": 1.568,
+          "p95Ms": 2.4
+        },
+        "collisionResolve": {
+          "calls": 7360,
+          "samples": 600,
+          "meanMs": 0.076,
+          "p95Ms": 0.2
+        },
+        "minimap": {
+          "calls": 3636,
+          "samples": 600,
+          "meanMs": 0.203,
+          "p95Ms": 0.8
+        },
+        "experience": {
+          "calls": 3636,
+          "samples": 600,
+          "meanMs": 0.02,
+          "p95Ms": 0.1
+        },
+        "rapierStep": {
+          "calls": 8593,
+          "samples": 600,
+          "meanMs": 0.053,
+          "p95Ms": 0.2
+        }
+      },
+      "renderer": {
+        "calls": 120,
+        "triangles": 342253,
+        "geometries": 152,
+        "textures": 131,
+        "pixelRatio": 1
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 720,
+        "dpr": 1
+      },
+      "quality": "balanced",
+      "resources": {
+        "count": 250,
+        "transferBytes": 2178585
+      },
+      "position": [
+        -5.483,
+        17.339,
+        0.004
+      ],
+      "velocity": [
+        0,
+        0,
+        0
+      ],
+      "state": "IDLE",
+      "motion": "combatIdle",
+      "mode": "combat",
+      "feet": [
+        {
+          "side": "left",
+          "angleDegrees": 17.43,
+          "peakDegrees": 35,
+          "limitDegrees": 35,
+          "ankle": [
+            -5.753,
+            17.244,
+            0.212
+          ],
+          "surface": 17.119224150799383
+        },
+        {
+          "side": "right",
+          "angleDegrees": 26.08,
+          "peakDegrees": 34.99,
+          "limitDegrees": 35,
+          "ankle": [
+            -5.216,
+            17.241,
+            -0.219
+          ],
+          "surface": 17.118392666004766
+        }
+      ],
+      "peers": [
+        {
+          "name": "모션검사-B",
+          "position": [
+            -2,
+            19.63,
+            0
+          ],
+          "state": "IDLE",
+          "motion": "idle",
+          "web": false
+        }
+      ],
+      "attack": null,
+      "input": {
+        "forward": false,
+        "wall": false,
+        "left": false
+      },
+      "auditRun": {
+        "name": "moving-special",
+        "result": "완료",
+        "states": [
+          "RUNNING/walk",
+          "RUNNING/regularRun",
+          "FALLING/drop",
+          "LANDING/land"
+        ],
+        "attacks": [
+          "special"
+        ],
+        "start": [
+          0.8127205669470641,
+          19.642873200883002,
+          0.0035359209891799586
+        ],
+        "end": [
+          -5.247668700333634,
+          17.339244671486487,
+          0.003548709835969047
+        ]
+      },
+      "map3D": true,
+      "mapMeshes": 162,
+      "facing": -1.5707963267948966,
+      "cameraYaw": -1.5707963267948966,
+      "webs": [],
+      "support": 17.118838556431403,
+      "collision": 190,
+      "pending": 0,
+      "history": [
+        "IDLE/undefined",
+        "FALLING/undefined",
+        "IDLE/idle",
+        "IDLE/combatIdle",
+        "RUNNING/walk",
+        "RUNNING/regularRun",
+        "IDLE/stop",
+        "IDLE/idle",
+        "IDLE/combatIdle",
+        "RUNNING/walk",
+        "RUNNING/regularRun",
+        "IDLE/stop",
+        "IDLE/idle",
+        "IDLE/combatIdle",
+        "RUNNING/walk",
+        "RUNNING/regularRun",
+        "FALLING/drop",
+        "LANDING/land",
+        "IDLE/idle",
+        "IDLE/combatIdle"
+      ],
+      "decodedRGBTextures": 5,
+      "textureDiagnostics": []
+    },
+    {
+      "view": "third-complete-G",
+      "map": "Hong Kong",
+      "ready": true,
+      "playing": true,
+      "paused": false,
+      "practice": false,
+      "performance": {
+        "windowFrames": 1250,
+        "totalFrames": 1250,
+        "activeSeconds": 22.87,
+        "averageFps": 54.65,
+        "frameMs": {
+          "p50": 17,
+          "p95": 25.1,
+          "p99": 32.6
+        },
+        "longFramesOver50ms": 4
+      },
+      "cpuSections": {
+        "city": {
+          "calls": 1252,
+          "samples": 600,
+          "meanMs": 2.008,
+          "p95Ms": 3.7
+        },
+        "physics": {
+          "calls": 1252,
+          "samples": 600,
+          "meanMs": 1.759,
+          "p95Ms": 3.5
+        },
+        "character": {
+          "calls": 1252,
+          "samples": 600,
+          "meanMs": 1.375,
+          "p95Ms": 2.9
+        },
+        "camera": {
+          "calls": 1252,
+          "samples": 600,
+          "meanMs": 0.103,
+          "p95Ms": 0.2
+        },
+        "render": {
+          "calls": 1251,
+          "samples": 600,
+          "meanMs": 2.152,
+          "p95Ms": 3.7
+        },
+        "collisionResolve": {
+          "calls": 2715,
+          "samples": 600,
+          "meanMs": 0.103,
+          "p95Ms": 0.2
+        },
+        "minimap": {
+          "calls": 1252,
+          "samples": 600,
+          "meanMs": 0.247,
+          "p95Ms": 1
+        },
+        "experience": {
+          "calls": 1252,
+          "samples": 600,
+          "meanMs": 0.029,
+          "p95Ms": 0.1
+        },
+        "rapierStep": {
+          "calls": 3136,
+          "samples": 600,
+          "meanMs": 0.064,
+          "p95Ms": 0.2
+        }
+      },
+      "renderer": {
+        "calls": 146,
+        "triangles": 324945,
+        "geometries": 164,
+        "textures": 133,
+        "pixelRatio": 1.3
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 720,
+        "dpr": 2
+      },
+      "quality": "balanced",
+      "resources": {
+        "count": 250,
+        "transferBytes": 74700
+      },
+      "position": [
+        2.93,
+        19.635,
+        -0.003
+      ],
+      "velocity": [
+        0,
+        0,
+        0
+      ],
+      "state": "IDLE",
+      "motion": "combatIdle",
+      "mode": "combat",
+      "feet": [
+        {
+          "side": "left",
+          "angleDegrees": 19.23,
+          "peakDegrees": 34.82,
+          "limitDegrees": 35,
+          "ankle": [
+            3.156,
+            19.634,
+            -0.232
+          ],
+          "surface": 19.50852847173976
+        },
+        {
+          "side": "right",
+          "angleDegrees": 26.7,
+          "peakDegrees": 35,
+          "limitDegrees": 35,
+          "ankle": [
+            2.667,
+            19.634,
+            0.209
+          ],
+          "surface": 19.51242739036845
+        }
+      ],
+      "peers": [
+        {
+          "name": "최종동작-B",
+          "position": [
+            6.5,
+            19.6,
+            0
+          ],
+          "state": "IDLE",
+          "motion": "idle",
+          "web": false
+        }
+      ],
+      "attack": null,
+      "input": {
+        "forward": false,
+        "wall": false,
+        "left": false
+      },
+      "auditRun": {
+        "name": "moving-special",
+        "result": "완료",
+        "states": [
+          "RUNNING/walk",
+          "RUNNING/regularRun"
+        ],
+        "attacks": [
+          "special"
+        ],
+        "start": [
+          -2,
+          19.625672270358546,
+          2.4492935982947064e-16
+        ],
+        "end": [
+          2.400829838588834,
+          19.63672089528576,
+          -0.003019011940779234
+        ]
+      },
+      "map3D": true,
+      "mapMeshes": 135,
+      "facing": 1.5707963267948968,
+      "cameraYaw": 1.5707963267948968,
+      "webs": [],
+      "support": 19.510300058873167,
+      "collision": 168,
+      "pending": 0,
+      "history": [
+        "IDLE/undefined",
+        "FALLING/undefined",
+        "IDLE/idle",
+        "IDLE/combatIdle",
+        "RUNNING/walk",
+        "RUNNING/regularRun",
+        "IDLE/stop",
+        "IDLE/idle",
+        "IDLE/combatIdle"
+      ],
+      "decodedRGBTextures": 4,
+      "textureDiagnostics": []
+    },
+    {
+      "view": "first-complete-G",
+      "map": "Hong Kong",
+      "ready": true,
+      "playing": true,
+      "paused": false,
+      "practice": false,
+      "performance": {
+        "windowFrames": 2263,
+        "totalFrames": 2263,
+        "activeSeconds": 40.77,
+        "averageFps": 55.51,
+        "frameMs": {
+          "p50": 16.9,
+          "p95": 25,
+          "p99": 33.4
+        },
+        "longFramesOver50ms": 6
+      },
+      "cpuSections": {
+        "city": {
+          "calls": 2265,
+          "samples": 600,
+          "meanMs": 1.9,
+          "p95Ms": 3.4
+        },
+        "physics": {
+          "calls": 2265,
+          "samples": 600,
+          "meanMs": 1.652,
+          "p95Ms": 2.3
+        },
+        "character": {
+          "calls": 2265,
+          "samples": 600,
+          "meanMs": 1.311,
+          "p95Ms": 1.7
+        },
+        "camera": {
+          "calls": 2265,
+          "samples": 600,
+          "meanMs": 0.139,
+          "p95Ms": 0.2
+        },
+        "render": {
+          "calls": 2264,
+          "samples": 600,
+          "meanMs": 1.989,
+          "p95Ms": 3.3
+        },
+        "collisionResolve": {
+          "calls": 4857,
+          "samples": 600,
+          "meanMs": 0.092,
+          "p95Ms": 0.2
+        },
+        "minimap": {
+          "calls": 2265,
+          "samples": 600,
+          "meanMs": 0.252,
+          "p95Ms": 1
+        },
+        "experience": {
+          "calls": 2265,
+          "samples": 600,
+          "meanMs": 0.021,
+          "p95Ms": 0.1
+        },
+        "rapierStep": {
+          "calls": 5569,
+          "samples": 600,
+          "meanMs": 0.06,
+          "p95Ms": 0.2
+        }
+      },
+      "renderer": {
+        "calls": 122,
+        "triangles": 293459,
+        "geometries": 250,
+        "textures": 184,
+        "pixelRatio": 1.1
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 720,
+        "dpr": 2
+      },
+      "quality": "balanced",
+      "resources": {
+        "count": 250,
+        "transferBytes": 74700
+      },
+      "position": [
+        -3.387,
+        17.339,
+        0.013
+      ],
+      "velocity": [
+        0,
+        0,
+        0
+      ],
+      "state": "IDLE",
+      "motion": "combatIdle",
+      "mode": "combat",
+      "feet": [
+        {
+          "side": "left",
+          "angleDegrees": 17.16,
+          "peakDegrees": 35,
+          "limitDegrees": 35,
+          "ankle": [
+            -3.656,
+            17.244,
+            0.221
+          ],
+          "surface": 17.11845728316878
+        },
+        {
+          "side": "right",
+          "angleDegrees": 25.27,
+          "peakDegrees": 35,
+          "limitDegrees": 35,
+          "ankle": [
+            -3.119,
+            17.242,
+            -0.21
+          ],
+          "surface": 17.119198526531207
+        }
+      ],
+      "peers": [
+        {
+          "name": "최종동작-B",
+          "position": [
+            6.5,
+            19.6,
+            0
+          ],
+          "state": "IDLE",
+          "motion": "idle",
+          "web": false
+        }
+      ],
+      "attack": null,
+      "input": {
+        "forward": false,
+        "wall": false,
+        "left": false
+      },
+      "auditRun": {
+        "name": "moving-special",
+        "result": "완료",
+        "states": [
+          "RUNNING/walk",
+          "RUNNING/regularRun"
+        ],
+        "attacks": [
+          "special"
+        ],
+        "start": [
+          2.930098065029597,
+          19.63529710844325,
+          -0.0030238542038888904
+        ],
+        "end": [
+          -1.9524357907066587,
+          19.628909227550707,
+          0.009251830495600029
+        ]
+      },
+      "map3D": true,
+      "mapMeshes": 159,
+      "facing": -1.5682809805735136,
+      "cameraYaw": 4.714904326606073,
+      "webs": [],
+      "support": 17.118805421977985,
+      "collision": 189,
+      "pending": 1,
+      "history": [
+        "IDLE/undefined",
+        "FALLING/undefined",
+        "IDLE/idle",
+        "IDLE/combatIdle",
+        "RUNNING/walk",
+        "RUNNING/regularRun",
+        "IDLE/stop",
+        "IDLE/idle",
+        "IDLE/combatIdle",
+        "RUNNING/walk",
+        "RUNNING/regularRun",
+        "IDLE/stop",
+        "FALLING/drop",
+        "LANDING/land",
+        "IDLE/idle",
+        "IDLE/combatIdle"
+      ],
+      "decodedRGBTextures": 6,
+      "textureDiagnostics": []
+    },
+    {
+      "view": "first-jab",
+      "map": "Hong Kong",
+      "ready": true,
+      "playing": true,
+      "paused": false,
+      "practice": false,
+      "performance": {
+        "windowFrames": 2771,
+        "totalFrames": 2771,
+        "activeSeconds": 49.3,
+        "averageFps": 56.21,
+        "frameMs": {
+          "p50": 16.8,
+          "p95": 24.3,
+          "p99": 32.5
+        },
+        "longFramesOver50ms": 6
+      },
+      "cpuSections": {
+        "city": {
+          "calls": 2773,
+          "samples": 600,
+          "meanMs": 1.821,
+          "p95Ms": 3
+        },
+        "physics": {
+          "calls": 2773,
+          "samples": 600,
+          "meanMs": 1.353,
+          "p95Ms": 1.8
+        },
+        "character": {
+          "calls": 2773,
+          "samples": 600,
+          "meanMs": 1.053,
+          "p95Ms": 1.5
+        },
+        "camera": {
+          "calls": 2773,
+          "samples": 600,
+          "meanMs": 0.472,
+          "p95Ms": 3.8
+        },
+        "render": {
+          "calls": 2772,
+          "samples": 600,
+          "meanMs": 1.986,
+          "p95Ms": 3.1
+        },
+        "collisionResolve": {
+          "calls": 5881,
+          "samples": 600,
+          "meanMs": 0.08,
+          "p95Ms": 0.2
+        },
+        "minimap": {
+          "calls": 2773,
+          "samples": 600,
+          "meanMs": 0.212,
+          "p95Ms": 0.8
+        },
+        "experience": {
+          "calls": 2773,
+          "samples": 600,
+          "meanMs": 0.019,
+          "p95Ms": 0.1
+        },
+        "rapierStep": {
+          "calls": 6788,
+          "samples": 600,
+          "meanMs": 0.056,
+          "p95Ms": 0.2
+        }
+      },
+      "renderer": {
+        "calls": 146,
+        "triangles": 314953,
+        "geometries": 251,
+        "textures": 178,
+        "pixelRatio": 1.1
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 720,
+        "dpr": 2
+      },
+      "quality": "balanced",
+      "resources": {
+        "count": 250,
+        "transferBytes": 74700
+      },
+      "position": [
+        0.067,
+        16.248,
+        0.092
+      ],
+      "velocity": [
+        0,
+        0,
+        0
+      ],
+      "state": "IDLE",
+      "motion": "combatIdle",
+      "mode": "combat",
+      "feet": [
+        {
+          "side": "left",
+          "angleDegrees": 14.41,
+          "peakDegrees": 35,
+          "limitDegrees": 35,
+          "ankle": [
+            0.293,
+            16.102,
+            -0.143
+          ]
+        },
+        {
+          "side": "right",
+          "angleDegrees": 25.11,
+          "peakDegrees": 35,
+          "limitDegrees": 35,
+          "ankle": [
+            -0.205,
+            16.114,
+            0.309
+          ],
+          "surface": 15.991886443183333
+        }
+      ],
+      "peers": [
+        {
+          "name": "최종동작-B",
+          "position": [
+            6.5,
+            19.6,
+            0
+          ],
+          "state": "IDLE",
+          "motion": "idle",
+          "web": false
+        }
+      ],
+      "attack": null,
+      "input": {
+        "forward": false,
+        "wall": false,
+        "left": false
+      },
+      "auditRun": {
+        "name": "moving-jab",
+        "result": "완료",
+        "states": [
+          "RUNNING/walk",
+          "RUNNING/regularRun",
+          "FALLING/drop"
+        ],
+        "attacks": [
+          "jab"
+        ],
+        "start": [
+          -3.3865599308828678,
+          17.33931250730132,
+          0.012859156827548741
+        ],
+        "end": [
+          -1.2465592832504626,
+          17.251523492768914,
+          0.062019336855232705
+        ]
+      },
+      "map3D": true,
+      "mapMeshes": 134,
+      "facing": 1.5478283266690163,
+      "cameraYaw": 1.5478283266690158,
+      "webs": [],
+      "support": null,
+      "collision": 168,
+      "pending": 0,
+      "history": [
+        "IDLE/undefined",
+        "FALLING/undefined",
+        "IDLE/idle",
+        "IDLE/combatIdle",
+        "RUNNING/walk",
+        "RUNNING/regularRun",
+        "IDLE/stop",
+        "IDLE/idle",
+        "IDLE/combatIdle",
+        "RUNNING/walk",
+        "RUNNING/regularRun",
+        "IDLE/stop",
+        "FALLING/drop",
+        "LANDING/land",
+        "IDLE/idle",
+        "IDLE/combatIdle",
+        "RUNNING/walk",
+        "RUNNING/regularRun",
+        "FALLING/drop",
+        "LANDING/land",
+        "IDLE/idle",
+        "IDLE/combatIdle"
+      ],
+      "decodedRGBTextures": 7,
+      "textureDiagnostics": []
+    },
+    {
+      "view": "first-hook",
+      "map": "Hong Kong",
+      "ready": true,
+      "playing": true,
+      "paused": false,
+      "practice": false,
+      "performance": {
+        "windowFrames": 3303,
+        "totalFrames": 3303,
+        "activeSeconds": 58.17,
+        "averageFps": 56.78,
+        "frameMs": {
+          "p50": 16.8,
+          "p95": 23.6,
+          "p99": 31.5
+        },
+        "longFramesOver50ms": 6
+      },
+      "cpuSections": {
+        "city": {
+          "calls": 3305,
+          "samples": 600,
+          "meanMs": 1.701,
+          "p95Ms": 2.5
+        },
+        "physics": {
+          "calls": 3305,
+          "samples": 600,
+          "meanMs": 1.424,
+          "p95Ms": 1.8
+        },
+        "character": {
+          "calls": 3305,
+          "samples": 600,
+          "meanMs": 1.135,
+          "p95Ms": 1.4
+        },
+        "camera": {
+          "calls": 3305,
+          "samples": 600,
+          "meanMs": 0.1,
+          "p95Ms": 0.2
+        },
+        "render": {
+          "calls": 3304,
+          "samples": 600,
+          "meanMs": 1.932,
+          "p95Ms": 2.8
+        },
+        "collisionResolve": {
+          "calls": 6945,
+          "samples": 600,
+          "meanMs": 0.092,
+          "p95Ms": 0.2
+        },
+        "minimap": {
+          "calls": 3305,
+          "samples": 600,
+          "meanMs": 0.205,
+          "p95Ms": 0.8
+        },
+        "experience": {
+          "calls": 3305,
+          "samples": 600,
+          "meanMs": 0.022,
+          "p95Ms": 0.1
+        },
+        "rapierStep": {
+          "calls": 8032,
+          "samples": 600,
+          "meanMs": 0.065,
+          "p95Ms": 0.2
+        }
+      },
+      "renderer": {
+        "calls": 145,
+        "triangles": 294707,
+        "geometries": 254,
+        "textures": 181,
+        "pixelRatio": 1.1
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 720,
+        "dpr": 2
+      },
+      "quality": "balanced",
+      "resources": {
+        "count": 250,
+        "transferBytes": 74700
+      },
+      "position": [
+        3.438,
+        15.848,
+        0.17
+      ],
+      "velocity": [
+        0,
+        0,
+        0
+      ],
+      "state": "IDLE",
+      "motion": "combatIdle",
+      "mode": "combat",
+      "feet": [
+        {
+          "side": "left",
+          "angleDegrees": 20.19,
+          "peakDegrees": 35,
+          "limitDegrees": 35,
+          "ankle": [
+            3.666,
+            15.704,
+            -0.057
+          ],
+          "surface": 15.578405542649378
+        },
+        {
+          "side": "right",
+          "angleDegrees": 26.83,
+          "peakDegrees": 35,
+          "limitDegrees": 35,
+          "ankle": [
+            3.175,
+            15.699,
+            0.384
+          ],
+          "surface": 15.576778753079523
+        }
+      ],
+      "peers": [
+        {
+          "name": "최종동작-B",
+          "position": [
+            6.5,
+            19.6,
+            0
+          ],
+          "state": "IDLE",
+          "motion": "idle",
+          "web": false
+        }
+      ],
+      "attack": null,
+      "input": {
+        "forward": false,
+        "wall": false,
+        "left": false
+      },
+      "auditRun": {
+        "name": "moving-hook",
+        "result": "완료",
+        "states": [
+          "RUNNING/walk",
+          "FALLING/drop",
+          "RUNNING/regularRun"
+        ],
+        "attacks": [
+          "cross"
+        ],
+        "start": [
+          0.06723448731281678,
+          16.248190158889205,
+          0.0921998596992955
+        ],
+        "end": [
+          2.905550939769455,
+          15.846166307607067,
+          0.1574017781155737
+        ]
+      },
+      "map3D": true,
+      "mapMeshes": 136,
+      "facing": 1.5478283266690163,
+      "cameraYaw": 1.5478283266690158,
+      "webs": [],
+      "support": 15.5772618368045,
+      "collision": 168,
+      "pending": 0,
+      "history": [
+        "IDLE/undefined",
+        "FALLING/undefined",
+        "IDLE/idle",
+        "IDLE/combatIdle",
+        "RUNNING/walk",
+        "RUNNING/regularRun",
+        "IDLE/stop",
+        "IDLE/idle",
+        "IDLE/combatIdle",
+        "RUNNING/walk",
+        "RUNNING/regularRun",
+        "IDLE/stop",
+        "FALLING/drop",
+        "LANDING/land",
+        "IDLE/idle",
+        "IDLE/combatIdle",
+        "RUNNING/walk",
+        "RUNNING/regularRun",
+        "FALLING/drop",
+        "LANDING/land",
+        "IDLE/idle",
+        "IDLE/combatIdle",
+        "RUNNING/walk",
+        "FALLING/drop",
+        "RUNNING/regularRun",
+        "IDLE/stop",
+        "IDLE/idle",
+        "IDLE/combatIdle"
+      ],
+      "decodedRGBTextures": 7,
+      "textureDiagnostics": []
+    },
+    {
+      "view": "first-hook-complete",
+      "map": "Hong Kong",
+      "ready": true,
+      "playing": true,
+      "paused": false,
+      "practice": false,
+      "performance": {
+        "windowFrames": 3600,
+        "totalFrames": 4408,
+        "activeSeconds": 76.67,
+        "averageFps": 58.73,
+        "frameMs": {
+          "p50": 16.7,
+          "p95": 20.9,
+          "p99": 27.8
+        },
+        "longFramesOver50ms": 6
+      },
+      "cpuSections": {
+        "city": {
+          "calls": 4410,
+          "samples": 600,
+          "meanMs": 1.813,
+          "p95Ms": 3.1
+        },
+        "physics": {
+          "calls": 4410,
+          "samples": 600,
+          "meanMs": 1.598,
+          "p95Ms": 2.7
+        },
+        "character": {
+          "calls": 4410,
+          "samples": 600,
+          "meanMs": 1.293,
+          "p95Ms": 2
+        },
+        "camera": {
+          "calls": 4410,
+          "samples": 600,
+          "meanMs": 0.106,
+          "p95Ms": 0.2
+        },
+        "render": {
+          "calls": 4409,
+          "samples": 600,
+          "meanMs": 2.031,
+          "p95Ms": 3.7
+        },
+        "collisionResolve": {
+          "calls": 9165,
+          "samples": 600,
+          "meanMs": 0.092,
+          "p95Ms": 0.2
+        },
+        "minimap": {
+          "calls": 4410,
+          "samples": 600,
+          "meanMs": 0.227,
+          "p95Ms": 0.9
+        },
+        "experience": {
+          "calls": 4410,
+          "samples": 600,
+          "meanMs": 0.02,
+          "p95Ms": 0.1
+        },
+        "rapierStep": {
+          "calls": 10620,
+          "samples": 600,
+          "meanMs": 0.061,
+          "p95Ms": 0.2
+        }
+      },
+      "renderer": {
+        "calls": 140,
+        "triangles": 280507,
+        "geometries": 254,
+        "textures": 181,
+        "pixelRatio": 1.1
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 720,
+        "dpr": 2
+      },
+      "quality": "balanced",
+      "resources": {
+        "count": 250,
+        "transferBytes": 74700
+      },
+      "position": [
+        6.576,
+        15.86,
+        0.242
+      ],
+      "velocity": [
+        0,
+        0,
+        0
+      ],
+      "state": "IDLE",
+      "motion": "combatIdle",
+      "mode": "combat",
+      "feet": [
+        {
+          "side": "left",
+          "angleDegrees": 19.35,
+          "peakDegrees": 35,
+          "limitDegrees": 35,
+          "ankle": [
+            6.81,
+            15.715,
+            0.021
+          ],
+          "surface": 15.58953670405323
+        },
+        {
+          "side": "right",
+          "angleDegrees": 25.52,
+          "peakDegrees": 35,
+          "limitDegrees": 35,
+          "ankle": [
+            6.304,
+            15.71,
+            0.442
+          ],
+          "surface": 15.588356532086678
+        }
+      ],
+      "peers": [
+        {
+          "name": "최종동작-B",
+          "position": [
+            6.5,
+            19.6,
+            0
+          ],
+          "state": "IDLE",
+          "motion": "idle",
+          "web": false
+        }
+      ],
+      "attack": null,
+      "input": {
+        "forward": false,
+        "wall": false,
+        "left": false
+      },
+      "auditRun": {
+        "name": "moving-hook",
+        "result": "완료",
+        "states": [
+          "RUNNING/walk",
+          "RUNNING/regularRun"
+        ],
+        "attacks": [
+          "cross"
+        ],
+        "start": [
+          3.438000800739246,
+          15.848051102437129,
+          0.16963323752742437
+        ],
+        "end": [
+          6.0473921945776965,
+          15.858036736508328,
+          0.22957628045213935
+        ]
+      },
+      "map3D": true,
+      "mapMeshes": 136,
+      "facing": 1.5478283266690163,
+      "cameraYaw": 1.5478283266690158,
+      "webs": [],
+      "support": 15.589130248059579,
+      "collision": 169,
+      "pending": 0,
+      "history": [
+        "IDLE/undefined",
+        "FALLING/undefined",
+        "IDLE/idle",
+        "IDLE/combatIdle",
+        "RUNNING/walk",
+        "RUNNING/regularRun",
+        "IDLE/stop",
+        "IDLE/idle",
+        "IDLE/combatIdle",
+        "RUNNING/walk",
+        "RUNNING/regularRun",
+        "IDLE/stop",
+        "FALLING/drop",
+        "LANDING/land",
+        "IDLE/idle",
+        "IDLE/combatIdle",
+        "RUNNING/walk",
+        "RUNNING/regularRun",
+        "FALLING/drop",
+        "LANDING/land",
+        "IDLE/idle",
+        "IDLE/combatIdle",
+        "RUNNING/walk",
+        "FALLING/drop",
+        "RUNNING/regularRun",
+        "IDLE/stop",
+        "IDLE/idle",
+        "IDLE/combatIdle",
+        "RUNNING/walk",
+        "RUNNING/regularRun",
+        "IDLE/stop",
+        "IDLE/idle",
+        "IDLE/combatIdle"
+      ],
+      "decodedRGBTextures": 7,
+      "textureDiagnostics": []
+    },
+    {
+      "view": "first-jab-complete",
+      "map": "Hong Kong",
+      "ready": true,
+      "playing": true,
+      "paused": false,
+      "practice": false,
+      "performance": {
+        "windowFrames": 3600,
+        "totalFrames": 5140,
+        "activeSeconds": 89.32,
+        "averageFps": 58.73,
+        "frameMs": {
+          "p50": 16.7,
+          "p95": 20.7,
+          "p99": 27.5
+        },
+        "longFramesOver50ms": 6
+      },
+      "cpuSections": {
+        "city": {
+          "calls": 5142,
+          "samples": 600,
+          "meanMs": 1.903,
+          "p95Ms": 3.3
+        },
+        "physics": {
+          "calls": 5142,
+          "samples": 600,
+          "meanMs": 1.619,
+          "p95Ms": 2.6
+        },
+        "character": {
+          "calls": 5142,
+          "samples": 600,
+          "meanMs": 1.307,
+          "p95Ms": 2.1
+        },
+        "camera": {
+          "calls": 5142,
+          "samples": 600,
+          "meanMs": 0.098,
+          "p95Ms": 0.2
+        },
+        "render": {
+          "calls": 5141,
+          "samples": 600,
+          "meanMs": 1.948,
+          "p95Ms": 3.7
+        },
+        "collisionResolve": {
+          "calls": 10683,
+          "samples": 600,
+          "meanMs": 0.089,
+          "p95Ms": 0.2
+        },
+        "minimap": {
+          "calls": 5142,
+          "samples": 600,
+          "meanMs": 0.236,
+          "p95Ms": 1
+        },
+        "experience": {
+          "calls": 5142,
+          "samples": 600,
+          "meanMs": 0.018,
+          "p95Ms": 0.1
+        },
+        "rapierStep": {
+          "calls": 12382,
+          "samples": 600,
+          "meanMs": 0.06,
+          "p95Ms": 0.2
+        }
+      },
+      "renderer": {
+        "calls": 140,
+        "triangles": 284287,
+        "geometries": 256,
+        "textures": 183,
+        "pixelRatio": 1.1
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 720,
+        "dpr": 2
+      },
+      "quality": "balanced",
+      "resources": {
+        "count": 250,
+        "transferBytes": 74700
+      },
+      "position": [
+        9.163,
+        15.869,
+        0.301
+      ],
+      "velocity": [
+        0,
+        0,
+        0
+      ],
+      "state": "IDLE",
+      "motion": "combatIdle",
+      "mode": "combat",
+      "feet": [
+        {
+          "side": "left",
+          "angleDegrees": 19.64,
+          "peakDegrees": 35,
+          "limitDegrees": 35,
+          "ankle": [
+            9.396,
+            15.728,
+            0.08
+          ],
+          "surface": 15.598467749530798
+        },
+        {
+          "side": "right",
+          "angleDegrees": 25.56,
+          "peakDegrees": 35,
+          "limitDegrees": 35,
+          "ankle": [
+            8.892,
+            15.72,
+            0.502
+          ],
+          "surface": 15.597659510547643
+        }
+      ],
+      "peers": [
+        {
+          "name": "최종동작-B",
+          "position": [
+            6.5,
+            19.6,
+            0
+          ],
+          "state": "IDLE",
+          "motion": "idle",
+          "web": false
+        }
+      ],
+      "attack": null,
+      "input": {
+        "forward": false,
+        "wall": false,
+        "left": false
+      },
+      "auditRun": {
+        "name": "moving-jab",
+        "result": "완료",
+        "states": [
+          "RUNNING/walk",
+          "RUNNING/regularRun"
+        ],
+        "attacks": [
+          "jab"
+        ],
+        "start": [
+          6.575583395137073,
+          15.85996946238453,
+          0.24170990979581913
+        ],
+        "end": [
+          8.63691772828679,
+          15.867100959944825,
+          0.28906296424719696
+        ]
+      },
+      "map3D": true,
+      "mapMeshes": 137,
+      "facing": 1.5478283266690163,
+      "cameraYaw": 1.5478283266690158,
+      "webs": [],
+      "support": 15.598524600440985,
+      "collision": 170,
+      "pending": 0,
+      "history": [
+        "IDLE/undefined",
+        "FALLING/undefined",
+        "IDLE/idle",
+        "IDLE/combatIdle",
+        "RUNNING/walk",
+        "RUNNING/regularRun",
+        "IDLE/stop",
+        "IDLE/idle",
+        "IDLE/combatIdle",
+        "RUNNING/walk",
+        "RUNNING/regularRun",
+        "IDLE/stop",
+        "FALLING/drop",
+        "LANDING/land",
+        "IDLE/idle",
+        "IDLE/combatIdle",
+        "RUNNING/walk",
+        "RUNNING/regularRun",
+        "FALLING/drop",
+        "LANDING/land",
+        "IDLE/idle",
+        "IDLE/combatIdle",
+        "RUNNING/walk",
+        "FALLING/drop",
+        "RUNNING/regularRun",
+        "IDLE/stop",
+        "IDLE/idle",
+        "IDLE/combatIdle",
+        "RUNNING/walk",
+        "RUNNING/regularRun",
+        "IDLE/stop",
+        "IDLE/idle",
+        "IDLE/combatIdle",
+        "RUNNING/walk",
+        "RUNNING/regularRun",
+        "IDLE/stop",
+        "IDLE/idle",
+        "IDLE/combatIdle"
+      ],
+      "decodedRGBTextures": 7,
+      "textureDiagnostics": []
+    }
+  ]
+}
