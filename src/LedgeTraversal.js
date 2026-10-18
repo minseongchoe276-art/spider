@@ -55,17 +55,23 @@ export function resolveTraversal(city,start,end) {
 export function planMantle(city,start,normal,height) {
   if(!Number.isFinite(height) || ![...start,...normal].every(Number.isFinite) || normal.lengthSq()<0.9)return null;
   if(Math.abs(normal.y)>0.2 || height-start.y>0.95 || height-start.y< -0.2)return null;
-  for(const depth of [1.65,2.1,2.55,3,3.45]){
+  const origin=start.clone();origin.y=height-0.15;
+  const hit=city.raycast?.(origin,normal.clone().negate(),1.2)
+    || city.collisionWorld?.raycast?.(origin,normal.clone().negate(),1.2);
+  const gap=hit?.distance ?? 0.7;
+  // Streamed facades can leave the capsule only 0.375m from the edge.
+  // A fixed 1.65m crossing then overshoots a usable balcony into its back
+  // wall. Place the capsule and its support footprint beyond the measured lip
+  // before considering deeper landings; all footprint/path checks still run.
+  const landingInset=city.collisionWorld?.resolve ? .58 : .82;
+  for(const depth of [gap+landingInset,gap+1.15,1.65,2.1,2.55,3,3.45]){
   const end=start.clone().addScaledVector(normal,-depth);end.y=height+.3;
   const support=groundSample(city,end,1.9);
   if(!support || support.normal.y<.85 || support.height>height+.16 || support.height<height-1.4)continue;
   end.y=support.height+.1;
   if(!hasMantleSupport(city,end,support.height))continue;
   const plan={start:start.clone(),end,normal:normal.clone(),height,duration:end.y<height?1.2:.72,elapsed:0};
-  const origin=start.clone();origin.y=height-0.15;
-  const hit=city.raycast?.(origin,normal.clone().negate(),1.2)
-    || city.collisionWorld?.raycast?.(origin,normal.clone().negate(),1.2);
-  plan.gap=hit?.distance ?? 0.7;
+  plan.gap=gap;
   plan.edge=start.clone().addScaledVector(normal,-plan.gap);plan.edge.y=height+0.06;
   let previous=start.clone();
   let clear=true;

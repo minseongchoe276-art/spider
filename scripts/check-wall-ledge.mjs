@@ -5,6 +5,7 @@ import { City } from '../src/City.js';
 import { planMantle, mantlePosition } from '../src/LedgeTraversal.js';
 import { StreamedCollision } from '../src/StreamedCollision.js';
 import { proceduralCollision } from './city-collision.mjs';
+import './check-mantle-balcony.mjs';
 
 const silent=new Proxy({},{get:()=>()=>{}});
 const held={forward:true,wallRun:true,strafe:0};
