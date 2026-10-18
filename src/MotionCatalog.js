@@ -27,14 +27,14 @@ MOTIONS.push(...COMBAT_MOTIONS);
 
 // Keep the supplied boxing takes as the fighting stance and matching strikes.
 const imported = {
- combatIdle:{file:'Boxing Stance',loop:true},
- jab:{file:'Boxing Lead Jab',impactPhase:.3},
+ combatIdle:{file:'Boxing Stance',loop:true,authoredMixamo:false},
+ jab:{file:'Boxing Stance',authoredMixamo:false},
  // The source has a long idle tail. Use the complete swing and recovery,
  // then play that section slower so the fist does not snap out and back.
  hook:{file:'Boxing Hook',trim:[0,1.4],impactPhase:.43},
  heavy:{file:'Boxing Hook',trim:[0,1.4],impactPhase:.43},
  airTrick:{file:'Front Flip',trim:[.5,1.43]},
- special:{file:'Boxing Lead Jab',impactPhase:.3},
+ special:{file:'Boxing Stance',authoredMixamo:false},
 };
 MOTIONS.push({key:'rightHook',url:'/models/Boxing Stance.fbx',loop:false});
 for(const [key,{file,...settings}] of Object.entries(imported)){

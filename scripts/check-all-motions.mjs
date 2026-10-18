@@ -14,10 +14,16 @@ for(const fps of fpsList){
   check(`${fps}fps first-person strikes peak inside their authored impact phase`,()=>{
     const c=actor();try{const camera=new THREE.PerspectiveCamera();c.setFirstPersonCamera(camera);c.setFirstPersonMode(true);c.update(1/fps,'IDLE',new THREE.Vector3());
       const start=c.firstPersonHands.map(hand=>hand.getWorldPosition(new THREE.Vector3()));
-      for(const key of ['jab','hook','heavy','special']){
-        const phase=c.actions[key].getClip().userData.impactPhase;c.combatAction={id:key,key,time:phase,duration:1};c.update(1/fps,'IDLE',new THREE.Vector3());
-        const side=key==='cross'?1:0,expected=['hook','heavy'].includes(key)?.25:.38,extension=start[side].z-c.firstPersonHands[side].getWorldPosition(new THREE.Vector3()).z;
-        assert(Math.abs(extension-expected)<1e-6,`${key}: maximum extension misses the authored impact (${extension.toFixed(3)}m instead of ${expected}m)`);
+      for(const key of ['jab','cross','hook','heavy','special']){
+        const phase=c.actions[key==='cross'?'rightHook':key].getClip().userData.impactPhase;c.combatAction={id:key,key,time:phase,duration:1};c.update(1/fps,'IDLE',new THREE.Vector3());
+        const side=['cross','special'].includes(key)?1:0;
+        const extension=start[side].z-c.firstPersonHands[side].getWorldPosition(new THREE.Vector3()).z;
+        assert(extension>(['hook','heavy'].includes(key)?.2:.3),`${key}: contact lacks forward reach (${extension.toFixed(3)}m)`);
+        for(const offset of [-.15,.15]){
+          c.combatAction.time=THREE.MathUtils.clamp(phase+offset,0,1);c.update(1/fps,'IDLE',new THREE.Vector3());
+          const adjacent=start[side].z-c.firstPersonHands[side].getWorldPosition(new THREE.Vector3()).z;
+          assert(extension>adjacent+.015,`${key}: maximum reach is not synchronized with contact`);
+        }
       }
     }finally{disposeRig(c);}
   });
@@ -49,12 +55,12 @@ for(const fps of fpsList){
       c.mixer.update(.25);assert(c.activeAction.isRunning());return {maxDiscontinuity:error};
     }finally{disposeRig(c);}
   });
-  for(const key of ['jab','hook','heavy','special'])check(`${fps}fps first-person ${key} moves the correct arm and its wrist together`,()=>{
+  for(const key of ['jab','cross','hook','heavy','special'])check(`${fps}fps first-person ${key} moves the correct arm and its wrist together`,()=>{
     const c=actor();try{const camera=new THREE.PerspectiveCamera();c.setFirstPersonCamera(camera);c.setFirstPersonMode(true);
       c.update(1/fps,'IDLE',new THREE.Vector3());camera.updateMatrixWorld(true);
       const start=c.firstPersonHands.map(hand=>hand.getWorldPosition(new THREE.Vector3()));
-      c.combatAction={id:1,key,time:.25,duration:1};c.update(1/fps,'IDLE',new THREE.Vector3());camera.updateMatrixWorld(true);
-      const side=key==='cross'?1:0,hand=c.firstPersonHands[side],wrist=hand.getWorldPosition(new THREE.Vector3());
+      c.combatAction={id:1,key,time:c.actions[key==='cross'?'rightHook':key].getClip().userData.impactPhase,duration:1};c.update(1/fps,'IDLE',new THREE.Vector3());camera.updateMatrixWorld(true);
+      const side=['cross','special'].includes(key)?1:0,hand=c.firstPersonHands[side],wrist=hand.getWorldPosition(new THREE.Vector3());
       const arm=hand.parent,glove=c.firstPersonGloves[side];
       assert(glove,`${key}: wrist anchor is outside its visible arm`);
       assert.equal(glove.parent,arm,'Glove is outside its striking arm');

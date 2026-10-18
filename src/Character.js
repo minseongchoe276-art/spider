@@ -484,7 +484,7 @@ export class Character {
       const viewClip=combat?.key==='cross'?'rightHook':combat?.key;
       const impact=this.actions?.[viewClip]?.getClip().userData?.impactPhase || .3;
       const pulse=t<=impact?THREE.MathUtils.smoothstep(t/impact,0,1):1-THREE.MathUtils.smoothstep((t-impact)/(1-impact),0,1);
-      const striking=combat && ['jab','cross','hook','heavy','special'].includes(combat.key) && i===(combat.key==='cross'?1:0);
+      const striking=combat && ['jab','cross','hook','heavy','special'].includes(combat.key) && i===(['cross','special'].includes(combat.key)?1:0);
       const reach=striking?Math.max(0,pulse):0;
       const gesture=this.webGestures?.[i===0?'left':'right'] || {shoot:0,grip:0};
       const rightHook=combat?.key==='cross' && i===1;
@@ -494,6 +494,26 @@ export class Character {
       const wall=this.wallViewWeight || 0,sign=i===0?-1:1;
       const phase=(this.wallPhase || 0)*Math.PI*2+(i===0?0:Math.PI);
       arm.rotation.set(.28*wall,sign*.08*wall+(rightHook?.16*reach:0),sign*.10*wall+(rightHook?-.15*reach:0));
+      if(rightHook){
+        const wind=Math.sin(Math.PI*THREE.MathUtils.clamp(t/impact,0,1))*(1-reach);
+        arm.position.x=.10*wind-.10*reach;
+        arm.position.y=.025*reach;
+      }
+      if(combat?.key==='special' && i===1){
+        const keys=[[0,0,0,0],[.28,.12,-.10,.14],[.4,.07,.14,-.02],
+          [.5,-.10,.02,-.42],[.64,-.16,-.08,-.25],[1,0,0,0]];
+        const index=Math.max(1,keys.findIndex(k=>k[0]>=t)),a=keys[index-1],b=keys[index];
+        arm.position.set(...a.slice(1));arm.position.lerp(new THREE.Vector3(...b.slice(1)),THREE.MathUtils.smoothstep((t-a[0])/(b[0]-a[0]),0,1));
+        arm.rotation.y=.12*reach;arm.rotation.z=-.18*reach;
+      }
+      if(striking){
+        // Turn the knuckles into the punch. Translating the upright guard
+        // alone made first-person attacks look like a raised forearm.
+        const wrist=this.firstPersonHands[i].position;
+        const before=wrist.clone().applyQuaternion(arm.quaternion);
+        arm.rotation.x-=(rightHook?.40:.70)*reach;
+        arm.position.add(before.sub(wrist.clone().applyQuaternion(arm.quaternion)));
+      }
       if(wall>1e-5){
         const mantle=this.poseState==='MANTLING'?THREE.MathUtils.smoothstep(this.mantle?.elapsed/this.mantle?.duration || 0,.3,1):0;
         const source=i===0?this.leftHand:this.rightHand;
@@ -627,8 +647,10 @@ export class Character {
       this.activeAction.getClip().duration / AIR_TRICKS.front.duration);
     if(name==='wall')this.activeAction?.setEffectiveTimeScale(state==='MANTLING'?0:THREE.MathUtils.clamp(velocity.length()/(this.activeAction.getClip().userData.climbSpeed || 3),0,6));
     this.mixer.update(delta);
-    if(movingStrike) {
-      const clip=this.actions[combatClip]?.getClip();
+    this.movingGuardWeight=THREE.MathUtils.damp(this.movingGuardWeight || 0,
+      grounded && horizontalSpeed>.25 && (this.combatStance || movingStrike)?1:0,18,delta);
+    if(movingStrike || this.movingGuardWeight>.001) {
+      const clip=this.actions[movingStrike?combatClip:'combatIdle']?.getClip();
       if(clip) {
         this.strikeLayers ||= new WeakMap();
         if(!this.strikeLayers.has(clip))this.strikeLayers.set(clip,clip.tracks.flatMap(track=>{
@@ -636,8 +658,20 @@ export class Character {
           return bone && property==='quaternion' && /^(spine|neck|head|leftshoulder|rightshoulder|leftarm|rightarm|leftforearm|rightforearm|lefthand|righthand)/.test(boneId(id))
             ?[{bone,sample:track.createInterpolant()}]:[];
         }));
-        const phase=THREE.MathUtils.clamp(combat.time/combat.duration,0,1);
-        const weight=Math.min(1,phase/.12,(1-phase)/.18);
+        const phase=movingStrike?THREE.MathUtils.clamp(combat.time/combat.duration,0,1):0;
+        // Enter guard before the strike instead of snapping from a running
+        // arm swing. Contact stays fully weighted; recovery returns to guard.
+        const weight=this.movingGuardWeight;
+        const hip=Object.values(this.bones).find(b=>boneId(b.name)==='hips');
+        const hipTrack=clip.tracks.find(t=>t.name===hip?.name+'.quaternion');
+        if(hipTrack && movingStrike){
+          const sample=hipTrack.createInterpolant(),guard=new THREE.Quaternion().fromArray(sample.evaluate(0));
+          const pose=new THREE.Quaternion().fromArray(sample.evaluate(phase*clip.duration));
+          const twist=new THREE.Quaternion().slerpQuaternions(new THREE.Quaternion(),guard.invert().multiply(pose),weight);
+          hip.quaternion.multiply(twist);
+          // Preserve running foot placement while the pelvis drives the punch.
+          for(const child of hip.children)if(['leftupleg','rightupleg'].includes(boneId(child.name)))child.quaternion.premultiply(twist.clone().invert());
+        }
         for(const {bone,sample} of this.strikeLayers.get(clip))bone.quaternion.slerp(new THREE.Quaternion().fromArray(sample.evaluate(phase*clip.duration)),weight);
       }
     }

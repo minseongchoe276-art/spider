@@ -73,7 +73,7 @@ export function prepareMotion(clip, key, bones, item={}) {
       position.toArray(positionTrack.values,i);
     }
   }
-  if((!item.authoredMixamo || key==='cross') && ['combatIdle','jab','cross','rightHook','hook','heavy','guard','dodgeLeft','dodgeRight','dodgeBack','dodgeForward'].includes(key)) {
+  if((!item.authoredMixamo || key==='cross') && ['combatIdle','jab','cross','rightHook','special','hook','heavy','guard','dodgeLeft','dodgeRight','dodgeBack','dodgeForward'].includes(key)) {
     const base=combatBases.get(Object.values(bones).find(b=>boneId(b.name)==='hips'));
     if(base)clip=choreographCombat(base,key,bones,boneId);
   }
@@ -154,7 +154,7 @@ export function prepareMotion(clip, key, bones, item={}) {
     }
     if(key!=='wall')clip.userData.footContacts=samples.map(p=>({time:p.time,
       left:p.heights[0]<0.17,right:p.heights[1]<0.17}));
-    if(['combatIdle','jab','cross','rightHook','hook','heavy','special'].includes(key))clip.userData.soleRotations=initialSoles;
+    if(['combatIdle','jab','cross','rightHook','hook','heavy','special'].includes(key))clip.userData.soleRotations ||= initialSoles;
     mixer.stopAllAction();mixer.uncacheRoot(root);
     saved.forEach(({n,p,q})=>{n.position.copy(p);n.quaternion.copy(q);});root.updateMatrixWorld(true);
     // Wall soles use the neutral standing bind pose, never a bent climb frame.

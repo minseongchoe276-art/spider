@@ -40,10 +40,10 @@ try{let released=0;const app=Object.create(GameApp.prototype);const prefs=cleanS
  console.log('PASS real input: mouse toggle, remapped movement, unbound original key, sprint toggle, pause clearing');
 }finally{globalThis.window=previousWindow;globalThis.document=previousDocument;}
 
-// Returning to a saved position must invalidate an active timed run and combo.
+// Returning to a saved position invalidates a timed run; stunt scoring is removed.
 const {PlayerExperience}=await import('../src/PlayerExperience.js');let stopped=0,ghostStopped=0,failed=0;
 const restore=Object.create(PlayerExperience.prototype);restore.safe=()=>true;
 restore.game={city:{isStreamed:false},progression:{data:{safe:{procedural:[4,20,6]}}},timeTrial:{stop(){stopped++;}},updateTrialHUD(){},clearInput(){},resetCamera(){},physics:{resetPosition(){},position:new THREE.Vector3(),previousFixedPosition:new THREE.Vector3(),renderPosition:new THREE.Vector3(),velocity:new THREE.Vector3(5,4,3)}};
-restore.ghost={stop(){ghostStopped++;}};restore.stunts={fail(){failed++;}};assert(restore.restorePosition());assert.equal(stopped,1);assert.equal(ghostStopped,1);assert.equal(failed,1);assert.deepEqual(restore.game.physics.position.toArray(),[4,20,6]);assert.equal(restore.game.physics.velocity.length(),0);
+restore.ghost={stop(){ghostStopped++;}};assert(restore.restorePosition());assert.equal(stopped,1);assert.equal(ghostStopped,1);assert.deepEqual(restore.game.physics.position.toArray(),[4,20,6]);assert.equal(restore.game.physics.velocity.length(),0);
 const mantle=new StuntSystem();mantle.update(.1,'MANTLING');assert(mantle.pending>0);mantle.update(.1,'IDLE');assert(mantle.total>0);assert.equal(mantle.pending,0);
 console.log('PASS saved-position race invalidation and mantle landing combo banking');

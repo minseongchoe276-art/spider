@@ -725,7 +725,7 @@ export class GameApp {
   }
 
   showStuntNotice(name, pts) {
-    this.showNotice(pts > 0 ? `${name} +${pts}` : name);
+    if (!pts) this.showNotice(name);
   }
 
   applyPreferences() {
@@ -775,7 +775,7 @@ export class GameApp {
     this.clearInput();
     this.physics.resetPosition();
     this.physics.stuntScore = 0;
-    this.experience?.stunts.reset();if(this.experience)this.experience.stunts.total=0;this.experience?.ghost.stop();
+    this.experience?.ghost.stop();
     this.timeTrial.stop();
     this.updateTrialHUD();
     this.resetCamera();
@@ -845,8 +845,6 @@ export class GameApp {
   }
 
   updateHUD(speedKmh, altitude, state) {
-    const score = document.getElementById('stunt-score');
-    if (score) score.textContent = String(this.physics.stuntScore);
     const combatHud=document.getElementById('combat-status');
     if(combatHud && this.combat){const airborne=!GROUNDED.includes(state);combatHud.textContent=this.multiplayer?.room?'':`${airborne?'공중 · 양손 거미줄':this.combat.mode==='web'?'거미줄 이동':'전투'} · HP ${Math.ceil(this.combat.health)} · 기력 ${Math.ceil(this.combat.stamina)} · ${this.combat.enemies.some(e=>e.windup>0)?'공격 예고! · 방어 / 회피':'모드 '+this.preferences.values.settings.bindings.mode.replace('Key','')}`;combatHud.classList.toggle('hidden',!!this.multiplayer?.room);}
     // 1. Speedometer

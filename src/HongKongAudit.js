@@ -12,13 +12,13 @@ export function createHongKongAudit(app) {
   const controls=document.createElement('div');controls.style.cssText='display:flex;flex-wrap:wrap;gap:4px;margin:8px 0';
   let run=null,lastRun=null;
   const release=reason=>{if(!run)return;for(const code of run.keys)app.gamepad.key(code,false);if(run.mouse!==undefined)app.gamepad.mouse(run.mouse,false);
-    lastRun={name:run.name,result:reason,states:[...run.states],start:run.start,end:app.physics.position.toArray()};run=null;};
+    lastRun={name:run.name,result:reason,states:[...run.states],attacks:[...run.attacks],start:run.start,end:app.physics.position.toArray()};run=null;};
   const begin=(name,actions,seconds,mouse,leftSeconds=0)=>{
     release('중지');if(!app.isPlaying||app.isPaused||app.helpOpen||app.multiplayer?.spectating)return;
-    if(mouse!==undefined && seconds<1 && app.combat.mode!=='combat'){lastRun={name,result:'Q로 전투 모드를 켜세요'};return;}
+    if(((mouse!==undefined && seconds<1) || actions.includes('heavy')) && app.combat.mode!=='combat'){lastRun={name,result:'Q로 전투 모드를 켜세요'};return;}
     const keys=actions.map(action=>app.preferences.values.settings.bindings[action]);
     run={name,keys,mouse,until:performance.now()+seconds*1000,leftUntil:leftSeconds?performance.now()+leftSeconds*1000:0,
-      states:new Set(),start:app.physics.position.toArray(),mantled:false};
+      states:new Set(),attacks:new Set(),start:app.physics.position.toArray(),mantled:false};
     for(const code of keys)app.gamepad.key(code,true);
     if(mouse!==undefined)app.gamepad.mouse(mouse,true);
   };
@@ -28,6 +28,7 @@ export function createHongKongAudit(app) {
     ['좌클릭 1.5초',()=>begin('left-hold',[],1.5,0)],
     ['이동 잽',()=>begin('moving-jab',['forward'],.56,0)],
     ['이동 훅',()=>begin('moving-hook',['forward'],.68,2)],
+    ['이동 G 강타',()=>begin('moving-special',['forward','heavy'],1.2)],
     ['입력 중지',()=>release('중지')],
   ]){const button=document.createElement('button');button.type='button';button.textContent=label;button.addEventListener('click',action);controls.append(button);}
   panel.append(title,controls,output);document.body.append(panel);
@@ -44,6 +45,7 @@ export function createHongKongAudit(app) {
     const p=app.physics,c=app.city,a=app.character.activeAction?.getClip().name;
     if(run){
       run.states.add(p.state+'/'+a);run.mantled ||= p.state==='MANTLING';
+      if(app.combat.action)run.attacks.add(app.combat.action.key);
       if(!active()||app.helpOpen||app.multiplayer?.spectating)release('일시정지');
       else if(run.mantled&&['IDLE','RUNNING'].includes(p.state))release('옥상 착지');
       else if(performance.now()>=run.until)release('완료');
@@ -71,7 +73,8 @@ export function createHongKongAudit(app) {
       viewport:{width:innerWidth,height:innerHeight,dpr:devicePixelRatio},quality:app.preferences.values.quality,
       resources:{count:performance.getEntriesByType('resource').length,transferBytes:performance.getEntriesByType('resource').reduce((sum,r)=>sum+(r.transferSize||0),0)},
       position:p.position.toArray().map(n=>+n.toFixed(3)),velocity:p.velocity.toArray().map(n=>+n.toFixed(3)),state:p.state,motion:a,mode:app.combat.mode,feet,peers,
-      input:{forward:app.input.forward,wall:app.input.wallRun,left:app.input.left},auditRun:run?{name:run.name,states:[...run.states]}:lastRun,
+      attack:app.combat.action?{key:app.combat.action.key,phase:+(app.combat.action.time/app.combat.action.duration).toFixed(3)}:null,
+      input:{forward:app.input.forward,wall:app.input.wallRun,left:app.input.left},auditRun:run?{name:run.name,states:[...run.states],attacks:[...run.attacks]}:lastRun,
       map3D:!!app.minimap?.renderer,mapMeshes:app.minimap?.terrainCopies.size,
       facing:p.facingAngle,cameraYaw:app.tpsCamera.yaw,
       webs:p.webs.map(w=>({hand:w.hand,anchor:w.anchor.toArray().map(n=>+n.toFixed(2)),length:+w.length.toFixed(2),supported:p.anchorSupported?.(w)})),support:c.supportHeight?.(p.position),collision:c.collisionWorld?.meshes.size,pending:c.collisionWorld?.pending.length,history,decodedRGBTextures:c.decodedRGBTextures || 0,textureDiagnostics:c.textureDiagnostics},null,1);

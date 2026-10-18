@@ -5,7 +5,7 @@ export const ATTACKS={
   jab:{duration:0.56,from:0.14,to:0.22,damage:12,reach:1.8},
   cross:{duration:0.68,from:0.37,to:0.47,damage:17,reach:1.9},
   hook:{duration:0.9,from:0.342,to:0.432,damage:32,reach:2.1},
-  special:{duration:1.2,from:0.30,to:0.46,damage:48,reach:2.0},
+  special:{duration:1.2,from:0.54,to:0.66,damage:48,reach:2.0},
   heavy:{duration:0.9,from:0.342,to:0.432,damage:32,reach:2.1},
 };
 const grounded=p=>GROUNDED.includes(p.state);
@@ -78,6 +78,7 @@ export class CombatSystem {
   }
   guard(value) {this.blocking=value && this.mode==='combat' && !this.action && grounded(this.physics) && this.stamina>0;}
   before(delta,camera,input=null) {
+    this.character.combatStance=this.mode==='combat';
     delta=Math.max(0,Math.min(delta,0.1));this.elapsed+=delta;
     this.specialCooldown=Math.max(0,this.specialCooldown-delta);this.invulnerable=Math.max(0,this.invulnerable-delta);
     this.stamina=Math.min(100,this.stamina+delta*(this.blocking?3:this.action?0:18));

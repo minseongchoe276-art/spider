@@ -39,7 +39,7 @@ export function sanitizePose(pose) {
     landingSpeed:Number.isFinite(pose.landingSpeed)?THREE.MathUtils.clamp(pose.landingSpeed,0,100):0,
     airTrick: pose.tricking && Object.hasOwn(AIR_TRICKS, pose.airTrick?.key) && Number.isFinite(pose.airTrick.elapsed)
       ? { key: pose.airTrick.key, elapsed: THREE.MathUtils.clamp(pose.airTrick.elapsed, 0, AIR_TRICKS[pose.airTrick.key].duration) } : null,
-    pendingTurn:pose.pendingTurn==='left'?'left':'right',combat,tricking:!!pose.tricking};
+    pendingTurn:pose.pendingTurn==='left'?'left':'right',combat,combatStance:pose.combatStance===true,tricking:!!pose.tricking};
 }
 
 export function capturePose(physics,character) {
@@ -51,7 +51,7 @@ export function capturePose(physics,character) {
       remaining:character.webShotTimer,miss:character.webShotIsMiss} : null,
     anchor:physics.anchorPoint || physics.zipAnchor,wallNormal:physics.wallNormal,
     mantle:physics.mantle,wallDistance:character.wallDistance,landingSpeed:character.landingSpeed,
-    pendingTurn:character.pendingTurn,combat:character.combatAction,tricking:character.isTricking,airTrick:character.airTrick});
+    pendingTurn:character.pendingTurn,combat:character.combatAction,combatStance:character.combatStance,tricking:character.isTricking,airTrick:character.airTrick});
 }
 
 export class RemoteMotion {
@@ -117,6 +117,7 @@ export class RemoteMotion {
       elapsed:Math.min(this.pose.mantle.duration,this.pose.mantle.elapsed+(now-this.poseAt)/1000)} : null;
     c.landingSpeed=fresh?this.pose.landingSpeed:0;c.pendingTurn=fresh?this.pose.pendingTurn:null;
     c.combatAction=fresh && this.pose.combat ? {...this.pose.combat,time:this.pose.combat.time+(now-this.poseAt)/1000} : null;
+    c.combatStance=!!(fresh && this.pose.combatStance);
     // A ground pound waits in flight until an authoritative landing pose
     // arrives. Network interpolation must not finish it before contact.
     if(c.combatAction?.key==='slam' && c.combatAction.duration)

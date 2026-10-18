@@ -1,34 +1,24 @@
 import * as THREE from 'three';
 import {GROUNDED} from './MotionCatalog.js';
 import {Progression} from './Progression.js';
-import {StuntSystem} from './StuntSystem.js';
 import {RaceGhost} from './RaceGhost.js';
 import {PerformanceBudget} from './PerformanceBudget.js';
 import {keyLabel} from './PlayerSettings.js';
-import {AIR_TRICKS} from './AirTricks.js';
 export class PlayerExperience {
   constructor(game,storage) {
     this.game=game;game.progression=new Progression(storage);this.saveTime=0;this.previewTime=0;this.visitTime=0;
-    this.stunts=new StuntSystem({onBank:(points,variety)=>{
-      game.physics.stuntScore=this.stunts.total;
-      const unlocked=game.progression.bank(points);game.progression.save();this.refreshProgress();
-      game.showNotice(`착지 성공 +${points} · ${variety}종 연결${unlocked.length?' · '+unlocked.map(r=>r.label+' 해제').join(', '):''}`);
-    },onChange:(name,points)=>game.showStuntNotice(name,points)});
     this.ghost=new RaceGhost(game.scene);this.performance=new PerformanceBudget();this.performanceActive=false;
     const geometry=new THREE.BufferGeometry().setFromPoints(Array.from({length:17},()=>new THREE.Vector3()));
     this.trajectory=new THREE.Line(geometry,new THREE.LineDashedMaterial({color:0x94f7e0,dashSize:1,gapSize:.8,transparent:true,opacity:.65}));
     this.trajectory.frustumCulled=false;this.trajectory.visible=false;game.scene.add(this.trajectory);
     const previousLanding=game.physics.onLanding;
-    game.physics.onLanding=(position,impact,normal)=>{previousLanding?.(position,impact,normal);this.stunts.bank(impact);game.audio.playSurfaceStep?.('landing',Math.min(1,impact/30));};
+    game.physics.onLanding=(position,impact,normal)=>{previousLanding?.(position,impact,normal);game.audio.playSurfaceStep?.('landing',Math.min(1,impact/30));};
     const previousRecovery=game.physics.onRecovery;
-    game.physics.onRecovery=reason=>{game.progression.resetTravel();this.stunts.fail();this.ghost.stop();previousRecovery?.(reason);};
+    game.physics.onRecovery=reason=>{game.progression.resetTravel();this.ghost.stop();previousRecovery?.(reason);};
     const previousReset=game.physics.onReset;
     game.physics.onReset=()=>{game.progression.resetTravel();previousReset?.();};
-    game.physics.onStuntCallback=(name,points)=>this.stunts.add(name,points);
-    // The authored trick system reports completion. Banking owns game scores;
-    // do not also award its standalone physics score or apply two multipliers.
-    game.character.onAirTrickComplete=key=>{const trick=AIR_TRICKS[key];if(trick)this.stunts.add(trick.label,trick.points);};
-    game.physics.onCollision=()=>this.stunts.fail();
+    game.physics.onStuntCallback=(name,points)=>{if(!points)game.showNotice(name);};
+    game.character.onAirTrickComplete=()=>{};
     game.combat.onHit=damage=>{game.tpsCamera.triggerShake(damage>=24?.16:.08);};
     game.physics.onWebFailure=reason=>{if(performance.now()>(this.lastFailure||0)+800){game.showNotice(reason);game.audio.playWebFailure?.();this.lastFailure=performance.now();}};
     document.getElementById('btn-save-position')?.addEventListener('click',()=>this.savePosition());
@@ -56,14 +46,14 @@ export class PlayerExperience {
     const saved=g.progression.data.safe[this.city];if(!saved){if(explicit)g.showNotice('이 지도에 저장된 위치가 없습니다.');return false;}
     const position=new THREE.Vector3().fromArray(saved);
     if(!this.safe(position)){if(explicit)g.showNotice('저장 위치의 지형이 준비되지 않았거나 안전하지 않습니다. 현재 위치를 유지합니다.');return false;}
-    g.timeTrial.stop();this.ghost.stop();this.stunts.fail();g.updateTrialHUD();
+    g.timeTrial.stop();this.ghost.stop();g.updateTrialHUD();
     g.clearInput();g.physics.resetPosition();g.physics.position.copy(position);g.physics.previousFixedPosition.copy(position);g.physics.renderPosition.copy(position);g.physics.velocity.set(0,0,0);g.physics.state='IDLE';g.resetCamera();
     if(explicit)g.showNotice('저장 위치로 돌아왔습니다.');return true;}
   refreshProgress(){const g=this.game,d=g.progression.data,summary=document.getElementById('progress-summary');
-    if(summary)summary.textContent=`총 묘기 ${Math.round(d.score)} · 최고 연결 ${d.bestCombo} · 탐험 ${d.discoveries.length}구역 · 이동 ${(d.distance/1000).toFixed(1)}km · 레이스 메달 ${Object.keys(d.medals).length}개`;
+    if(summary)summary.textContent=`탐험 ${d.discoveries.length}구역 · 이동 ${(d.distance/1000).toFixed(1)}km`;
     const select=document.getElementById('web-theme');if(select){select.replaceChildren();for(const r of [{id:'white',label:'기본 흰색'},...g.progression.unlocked]){const option=document.createElement('option');option.value=r.id;option.textContent=r.label;select.append(option);}select.value=d.theme;}
   }
-  raceStarted(){const g=this.game;g.progression.resetTravel();this.stunts.fail();this.ghost.start(g.timeTrial.courseId,g.progression,g.physics.position,g.physics.facingAngle);}
+  raceStarted(){const g=this.game;g.progression.resetTravel();this.ghost.start(g.timeTrial.courseId,g.progression,g.physics.position,g.physics.facingAngle);}
   raceFinished(result){const g=this.game,trial=g.timeTrial;
     this.ghost.finish(trial,result.finishPosition || g.physics.position,g.physics.facingAngle);
     let distance=0;let previous=g.city.getRooftopSpawn(95);for(const cp of trial.checkpoints){distance+=previous.distanceTo(cp.position);previous=cp.position;}
@@ -79,11 +69,11 @@ export class PlayerExperience {
     const budget=active?this.performance.update(elapsed,s.autoQuality,ceiling):null;
     if(budget!==null)g.renderer.setPixelRatio(Math.min(window.devicePixelRatio,budget));
     if(!active){this.ghost.mesh.visible=false;this.trajectory.visible=false;const preview=document.getElementById('anchor-preview');if(preview)preview.style.display='none';return;}
-    this.stunts.update(delta,p.state,p.velocity.length());this.ghost.update(g.timeTrial,p.position,p.facingAngle,s.ghost);
+    this.ghost.update(g.timeTrial,p.position,p.facingAngle,s.ghost);
     this.visitTime+=delta;this.saveTime+=delta;
     if(this.visitTime>.5){this.visitTime=0;if(!g.multiplayer?.room){g.progression.visit(p.position,this.city,GROUNDED.includes(p.state)&&this.safe(p.position));}}
     if(this.saveTime>10){this.saveTime=0;if(!g.progression.save()&&!this.warnedStorage){this.warnedStorage=true;g.showNotice('탐험 기록을 저장할 수 없어 이번 실행에만 적용됩니다.');}this.refreshProgress();}
-    const combo=document.getElementById('combo-hud');if(combo)combo.textContent=this.stunts.pending?`${this.stunts.pending} · ×${this.stunts.multiplier.toFixed(1)}\n착지하면 확정`:'';
+
     const limit=g.multiplayer?.arena?.radius || g.city.playableHalfExtent || 2400;
     const center=g.multiplayer?.arena || {x:0,z:0},distance=g.multiplayer?.arena?Math.hypot(p.position.x-center.x,p.position.z-center.z):Math.max(Math.abs(p.position.x),Math.abs(p.position.z));
     const remaining=Math.min(limit-distance,(g.city.playableHalfExtent||2400)-Math.max(Math.abs(p.position.x),Math.abs(p.position.z))),warning=document.getElementById('boundary-warning');

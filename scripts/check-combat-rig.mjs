@@ -93,11 +93,12 @@ for(const key of ['hook','heavy'].filter(key=>available.has(key))) {
 {
  const c=actor(),clip=c.actions.special.getClip();c.fadeToAction('special',0);
  c.activeAction.time=0;c.mixer.update(0);c.group.updateMatrixWorld(true);
- const fistStart=position(c,'lefthand'),feetStart=['left','right'].map(side=>position(c,side+'foot'));
+ const fistStart=position(c,'righthand'),feetStart=['left','right'].map(side=>position(c,side+'foot'));
  c.activeAction.time=clip.duration*clip.userData.impactPhase;c.mixer.update(0);c.group.updateMatrixWorld(true);
- const fist=position(c,'lefthand');
- const jabDrive=fist.z-fistStart.z;
- assert(jabDrive>.25,`special: strong jab stopped short of the target (${jabDrive.toFixed(3)}m)`);
+ const fist=position(c,'righthand');
+ const drive=fist.z-fistStart.z;
+ assert(drive>.35,`special: rear overhand stopped short of the target (${drive.toFixed(3)}m)`);
+ assert.equal(clip.userData.choreography,'loaded rear overhand');
  assert(Math.min(position(c,'leftfoot').y,position(c,'rightfoot').y)<.35,'special: both feet lost the ground');
  assert(Math.min(...['left','right'].map((side,i)=>position(c,side+'foot').distanceTo(feetStart[i])))<.45,'special: no stable support foot');
  c.mixer.stopAllAction();
