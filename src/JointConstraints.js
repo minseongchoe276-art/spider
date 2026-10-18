@@ -4,7 +4,7 @@ import {boneId} from './MotionRetarget.js';
 
 // Limits are relative to the mesh's bind axes, not the world or a sampled
 // animation frame. An IK contact must never turn a wrist/ankle inside out.
-export const JOINT_LIMITS = Object.freeze({hand:70,foot:50,toebase:30});
+export const JOINT_LIMITS = Object.freeze({hand:70,foot:35,toebase:15});
 export function createJointConstraints(model,bones) {
   const bind=bindTransforms(model);
   return Object.values(bones || {}).flatMap(bone=>{

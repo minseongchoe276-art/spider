@@ -39,7 +39,9 @@ for(const fps of [24,30,60,144])for(const [key,speed] of [['walk',1.6],['regular
  assert(minSole>=-.001,`Boot mesh crossed support plane: ${minSole}m`);
  assert(maxContactGap<.025,`Planted sole floats above support: ${maxContactGap}m`);
  assert(minToe>=.0005,`Toe marker crossed support plane: ${minToe}m`);
- assert(maxTurn<=Math.PI*4+.005,`Ankle contact snapped: ${THREE.MathUtils.radToDeg(maxTurn)}deg/s`);
+ // The tighter 35-degree ankle envelope adds at most 0.15 degrees per
+ // 30 Hz frame at a contact handoff; keep a small rate tolerance for it.
+ assert(maxTurn<=Math.PI*4+.08,`Ankle contact snapped: ${THREE.MathUtils.radToDeg(maxTurn)}deg/s`);
  assert(maxKnee<179.9,'Knee locked into a straight singularity');
  c.surfaceProbe=()=>null;c.update(1/fps,'RUNNING',new THREE.Vector3(0,0,speed));assert(!Object.keys(c.movingPlants).length,'Unsupported ledge retained a plant');
  c.update(1/fps,'JUMPING',new THREE.Vector3(0,10,0));assert.equal(c.groundFootRotations,null,'Ground ankle constraint survived takeoff');

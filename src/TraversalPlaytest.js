@@ -27,6 +27,7 @@ export function startTraversalPlaytest(GameApp) {
     game.multiplayer.beginSolo();
     game.isPlaying = true; game.isPaused = false;
     game.clearInput(); game.physics.resetPosition();
+    if(game.combat.mode!=='web')tap('KeyQ');
     game.clickToPlayOverlay?.classList.add('hidden');
     const p = game.physics;
     // A real south-facing facade with its existing rendered roof parapet.
@@ -38,7 +39,7 @@ export function startTraversalPlaytest(GameApp) {
     p.wallBuilding = wall ? box : null; p.wallNormal.set(0,0,1); p.facingAngle = Math.PI;
     game.character.wallNormal = p.wallNormal.clone();
     setView(first);
-    game.tpsCamera.placeBehind(p.position, Math.PI);
+    game.tpsCamera.placeBehind(p.position, Math.PI+(wall && !first ? .35 : 0));
     game.tpsCamera.lockBehind = false;
     game.camera.position.copy(game.tpsCamera.currentPos);
     game.camera.lookAt(game.tpsCamera.lookAtTarget);
@@ -51,10 +52,18 @@ export function startTraversalPlaytest(GameApp) {
     const name = `${kind}/${first?'first':'third'}${switching?'/switch':''}`;
     try {
       const box = prepare(first, kind === 'climb');
+      if(kind==='combat'){
+        const p=game.physics;p.position.set(0,.1,0);p.previousFixedPosition.copy(p.position);p.renderPosition.copy(p.position);p.state='IDLE';p.facingAngle=0;
+        game.tpsCamera.placeBehind(p.position,0);game.tpsCamera.lockBehind=false;
+        game.camera.position.copy(game.tpsCamera.currentPos);game.camera.lookAt(game.tpsCamera.lookAtTarget);game.camera.updateMatrixWorld(true);
+        if(game.combat.mode!=='combat')tap('KeyQ');
+      }
       const p = game.physics, states = new Set();
       let frames=0, elapsed=0, maxStep=0, previous=p.position.clone(), switches=0, seenWeb=false, maxWristError=0;
+      const startPosition=p.position.clone(),attacks=new Set();let rightFired=false,maxAnkle=0;
       let nextSwitch=.6, released=false, leftReleased=false, independentRelease=false, peakWebs=0, reachedRoof=false, maxAimError=0;
-      if (kind === 'climb') { key('KeyW',true); key('KeyF',true); }
+      if(kind==='combat'){key('KeyW',true);game.gamepad.mouse(0,true);game.gamepad.mouse(0,false);}
+      else if (kind === 'climb') { key('KeyW',true); key('KeyF',true); }
       else {
         game.tpsCamera.pitch = first ? .45 : -.45;
         // Let the real camera update before firing through the center reticle.
@@ -65,7 +74,12 @@ export function startTraversalPlaytest(GameApp) {
       await new Promise(resolve => {
         function frame(now) {
           const dt=Math.min((now-last)/1000,.1);last=now;elapsed+=dt;frames++;
-          states.add(p.state);maxStep=Math.max(maxStep,p.position.distanceTo(previous));previous.copy(p.position);
+          states.add(p.state);
+          if(game.combat.action)attacks.add(game.combat.action.key);
+          for(const {bone,rest,kind:jointKind} of game.character.jointConstraints || [])if(jointKind==='foot')maxAnkle=Math.max(maxAnkle,rest.angleTo(bone.quaternion)*180/Math.PI);
+          if(kind==='combat' && elapsed>.85 && !rightFired){game.gamepad.mouse(2,true);game.gamepad.mouse(2,false);rightFired=true;}
+          if(kind==='combat' && elapsed>1.6)key('KeyW',false);
+          maxStep=Math.max(maxStep,p.position.distanceTo(previous));previous.copy(p.position);
           let switchedThisFrame=false;
           if (switching && elapsed>=nextSwitch && (kind==='web' ? elapsed<2 : !reachedRoof)) {
             const yaw=game.tpsCamera.yaw, pitch=game.tpsCamera.pitch;
@@ -93,14 +107,15 @@ export function startTraversalPlaytest(GameApp) {
         }
         requestAnimationFrame(frame);
       });
-      const detail={frames,states:[...states],switches,maxAimError,maxStep,maxWristError,seenWeb,peakWebs,independentRelease,reachedRoof,finalState:p.state,roof:box.maxY,position:p.position.toArray(),released:!game.character.webMesh.visible&&!game.character.webMeshOffhand.visible};
-      const pass=kind==='climb'?reachedRoof && maxStep<.8 && maxAimError<1e-8:seenWeb && peakWebs===2 && independentRelease && detail.released && maxWristError<.02 && maxAimError<1e-8;
+      const detail={maxAnkle,travel:p.position.distanceTo(startPosition),attacks:[...attacks],frames,states:[...states],switches,maxAimError,maxStep,maxWristError,seenWeb,peakWebs,independentRelease,reachedRoof,finalState:p.state,roof:box.maxY,position:p.position.toArray(),released:!game.character.webMesh.visible&&!game.character.webMeshOffhand.visible};
+      const pass=kind==='combat'?detail.travel>4 && attacks.has('jab') && attacks.has('cross') && maxAnkle<=35.001:kind==='climb'?reachedRoof && maxStep<.8 && maxAimError<1e-8:seenWeb && peakWebs===2 && independentRelease && detail.released && maxWristError<.02 && maxAimError<1e-8;
       report(name,detail,pass);
     } catch(error) { report(name,{error:error.message},false); }
     finally {game.clearInput();game.setPaused(true);game.clickToPlayOverlay?.classList.add('hidden');busy=false;}
   }
   const cases = [
     ['Climb third','climb',false,false],['Climb first','climb',true,false],['Climb switch','climb',false,true],
+    ['Combat third','combat',false,false],['Combat first','combat',true,false],
     ['Web third','web',false,false],['Web first','web',true,false],['Web switch','web',false,true],
   ];
   const all=document.createElement('button');all.textContent='Run all';

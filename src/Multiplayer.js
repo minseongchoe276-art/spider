@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import {CombatFeedback} from './CombatFeedback.js';
 import { MATCH, resolveMatchSpawn, teamOffset } from './MatchRules.js';
 import { SupabaseRooms } from './SupabaseRooms.js';
 import { RemoteMotion, capturePose, sanitizePose } from './RemoteMotion.js';
@@ -13,7 +14,7 @@ const make = (tag, className, value) => { const el=document.createElement(tag);e
 
 export class Multiplayer {
   constructor(game) {
-    this.game=game;this.ws=null;this.id=null;this.room=null;this.solo=false;this.players=[];this.avatars=new Map();this.lastSend=0;this.lastPhase=null;this.spectating=false;this.clockOffset=0;this.vulnerableAt=0;this.arena=null;this.pulseUntil=0;this.spectateIndex=0;
+    this.game=game;this.feedback=new CombatFeedback(game);this.ws=null;this.id=null;this.room=null;this.solo=false;this.players=[];this.avatars=new Map();this.lastSend=0;this.lastPhase=null;this.spectating=false;this.clockOffset=0;this.vulnerableAt=0;this.arena=null;this.pulseUntil=0;this.spectateIndex=0;
     this.downedMarkers=new Map();this.connect();this.bind();
     this.positionMarkers=new PlayerPositionMarkers(game);
   }
@@ -151,7 +152,10 @@ export class Multiplayer {
         this.game.showNotice(data.eliminated?'체력이 0입니다. 살아있는 플레이어를 관전합니다.':`${data.kind==='web'?'거미줄':'주먹'} 공격! 체력 ${data.health}`);
         if(data.eliminated){this.setSpectating(true);this.game.physics.clearWebAnchor();this.game.clearInput();this.game.combat?.cancel();this.pendingPunch=null;}
       }
-      else if(data.attacker===this.id)this.game.showNotice(`명중! 상대 체력 ${data.health}`);
+      else if(data.attacker===this.id){
+        this.feedback?.hit(data,player);
+        if(!this.feedback)this.game.showNotice(`명중! 상대 체력 ${data.health}`);
+      }
       this.renderHud();this.syncAvatars();
     }
   }
@@ -304,6 +308,7 @@ export class Multiplayer {
     this.beginSoloReady();
   }
   beginSoloReady() {
+    if(this.feedback)this.feedback.cooldowns={};
     if(!this.solo)return;
     const game=this.game;
     game.setHelpOpen?.(false,false);
@@ -318,7 +323,7 @@ export class Multiplayer {
   }
   finish(){this.pendingPunch=null;clearInterval(this.beginTimer);this.beginTimer=null;this.setSpectating(false);this.game.isPlaying=false;this.game.clearInput();this.game.setPaused(true);this.game.clickToPlayOverlay?.classList.add('hidden');this.clearAvatars();}
   leaveLocal(){this.game.character.group.visible=true;this.rescueStarted=null;this.rescueTarget=null;if(this.goalMarker)this.goalMarker.visible=false;$('pursuit-hud').textContent='';$('spectate-next')?.classList.add('hidden');try{sessionStorage.removeItem('web-runner-room-resume');}catch{}this.arena=null;this.pulseUntil=0;this.game.experience?.ghost.stop();this.game.practice?.stop();this.room=null;this.pendingPunch=null;clearInterval(this.beginTimer);this.beginTimer=null;this.spectating=false;this.solo=false;clearInterval(this.soloStartTimer);this.soloStartTimer=null;this.players=[];this.id=null;this.lastPhase=null;this.game.isPlaying=false;this.game.clearInput();this.game.setPaused(true);this.game.clickToPlayOverlay?.classList.add('hidden');this.game.timeTrial.stop();this.game.updateTrialHUD();this.clearAvatars();this.render();this.send({type:'list'});}
-  attack(kind){
+  attack(kind,hand='left'){
     const me=this.players.find(p=>p.id===this.id);
     if(this.spectating||me?.eliminated||this.room?.phase!=='playing'||me?.team!=='police')return;
     if(kind==='punch'){
@@ -330,11 +335,26 @@ export class Multiplayer {
     ray.setFromCamera(this.game.physics.webAimNdc || new THREE.Vector2(),this.game.camera);
     const direction=ray.ray.direction;
     const facing=Math.hypot(direction.x,direction.z)>.001?Math.atan2(direction.x,direction.z):this.game.physics.facingAngle;
-    this.sendAttack(kind,facing);
+    return this.sendAttack(kind,facing,hand);
   }
-  sendAttack(kind,facing){
+  attackPreview(kind='web') {
+    const rule=MATCH[kind],position=this.game.physics.position;
+    const direction=this.game.camera.getWorldDirection(new THREE.Vector3());
+    const facing=Math.atan2(direction.x,direction.z);
+    const target=this.players.filter(p=>p.team==='runner'&&!p.eliminated&&p.seen)
+      .map(p=>({p,d:Math.hypot(p.x-position.x,p.z-position.z)}))
+      .filter(({p,d})=>d<=rule.reach && Math.abs(p.y-position.y)<rule.vertical &&
+        (d<=.35 || Math.cos(Math.atan2(p.x-position.x,p.z-position.z)-facing)>=rule.cone))
+      .sort((a,b)=>a.d-b.d)[0];
+    if(!target)return null;
+    const from=position.clone().add(new THREE.Vector3(0,1,0)),line=new THREE.Vector3(target.p.x,target.p.y+1,target.p.z).sub(from);
+    if(this.game.city.raycast?.(from,line.clone().normalize(),Math.max(0,line.length()-.3)))return {blocked:true};
+    return {name:target.p.name || '상대',distance:target.d};
+  }
+  sendAttack(kind,facing,hand='left'){
     const me=this.players.find(p=>p.id===this.id);
     if(this.spectating||me?.eliminated||this.room?.phase!=='playing'||me?.team!=='police')return;
+    if(this.feedback && !this.feedback.canFire(kind,this))return;
     const origin=this.game.physics.position.clone().add(new THREE.Vector3(0,1,0)),rule=MATCH[kind];
     const targets=this.players.filter(p=>p.team==='runner'&&!p.eliminated&&p.seen)
       .map(p=>({p,dx:p.x-origin.x,dz:p.z-origin.z}))
@@ -344,9 +364,15 @@ export class Multiplayer {
       .sort((a,b)=>Math.hypot(a.dx,a.dz)-Math.hypot(b.dx,b.dz));
     if(targets.length){
       const target=targets[0].p,dir=new THREE.Vector3(target.x,target.y+1,target.z).sub(origin);
-      if(this.game.city.raycast?.(origin,dir.clone().normalize(),Math.max(0,dir.length()-.3)))return;
+      if(this.game.city.raycast?.(origin,dir.clone().normalize(),Math.max(0,dir.length()-.3))){this.feedback?.show('벽이나 건물이 상대를 가리고 있습니다');return;}
     }
     this.send({type:'attack',kind,facing});
+    this.feedback?.sent(kind,targets[0]?.p,hand);
+    if(kind==='web' && targets[0]){
+      const p=targets[0].p,screen=new THREE.Vector3(p.x,p.y+1,p.z).project(this.game.camera);
+      return Math.abs(screen.x)<.16 && Math.abs(screen.y)<.22 && screen.z>-1 && screen.z<1;
+    }
+    return false;
   }
   serverNow(){return Date.now()+this.clockOffset;}
   spectatePoint() {
@@ -359,7 +385,8 @@ export class Multiplayer {
     return avatar ? avatar.mesh.position : new THREE.Vector3(ally.x,ally.y,ally.z);
   }
   update(delta) {
-    if(this.room?.phase!=='playing'){this.positionMarkers?.update([],this.game.physics.position,false);return;}
+    this.feedback?.update(this);
+    if(this.room?.phase!=='playing'){if(this.feedback){this.feedback.pendingUntil=0;this.feedback.cooldowns={};if(this.feedback.marker)this.feedback.marker.hidden=true;}this.positionMarkers?.update([],this.game.physics.position,false);return;}
     const now=performance.now();
     if(!(this.ws instanceof SupabaseRooms)&&now-(this.lastPing||0)>5000){this.lastPing=now;this.send({type:'ping',stamp:now});}
     const me=this.players.find(p=>p.id===this.id);

@@ -31,13 +31,14 @@ for(const fps of [24,30,60,144])for(const angle of [0,Math.PI/2,Math.PI,Math.PI*
   if(first){const positions=c.firstPersonHands.map(hand=>hand.getWorldPosition(new THREE.Vector3()).applyMatrix4(camera.matrixWorldInverse));if(lastView)maxViewTravel=Math.max(maxViewTravel,...positions.map((p,i)=>p.distanceTo(lastView[i])));lastView=positions;
    for(const p of positions)assert(p.toArray().every(Number.isFinite)&&p.length()<1.2,'View hand escaped the camera');
    if(frame>fps*.5)for(const [i,side]of ['left','right'].entries()){
-    const height=point(c,side+'hand').y-c.group.getWorldPosition(new THREE.Vector3()).y,expected=THREE.MathUtils.clamp((height-1.6)*.4,-.1,.2);
+    const height=point(c,side+'hand').y-c.group.getWorldPosition(new THREE.Vector3()).y,expected=THREE.MathUtils.clamp((height-1.6)*.22,-.12,.08);
     assert(Math.abs(positions[i].y-expected)<.002,'First-person hand height diverges from the actual climbing hand');
    }
   }
  }
  assert(Object.values(contacts).every(n=>n>2),'A limb never established support '+JSON.stringify(contacts));assert(maxError<.025,`Contact target error ${maxError}m`);assert(maxSlip<.025,`Planted limb slides ${maxSlip}m per frame`);for(const {bone,rest,limit} of c.jointConstraints)assert(rest.angleTo(bone.quaternion)<=limit+1e-5,'Contact inverted a joint');
- assert(minPalm>.98,`Palm detached from facade normal: ${minPalm}`);assert(minSole>.92,`Sole detached from facade normal: ${minSole}`);
+ assert(minPalm>.98,`Palm detached from facade normal: ${minPalm}`);// Anatomical climbing permits a lifted heel (up to 35 degrees), rather than forcing the whole sole flat.
+ assert(minSole>Math.cos(35*Math.PI/180),`Sole detached from facade normal: ${minSole}`);
  if(first){assert(maxViewTravel>.005,'First-person climbing arms remain static');assert(maxViewTravel<.15,'First-person arms jump between frames');}
  c.update(1/fps,'FALLING',new THREE.Vector3(0,-5,0));assert.equal(c.wallContacts,null);
  for(let i=0;i<fps;i++)c.update(1/fps,'IDLE',new THREE.Vector3());if(first)assert(c.firstPersonRig.children.every(arm=>Math.abs(arm.rotation.x)<1e-5),'Climbing view pose survived release');

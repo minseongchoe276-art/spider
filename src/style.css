@@ -914,3 +914,9 @@ body.hud-quiet #hud-top-left { opacity:.35; }body.hud-combat #session-hud { opac
 .minimap-player-marker[data-bottom="true"] .minimap-player-label { top:auto; bottom:29px; }
 .minimap-player-marker.offscreen .minimap-player-icon { border-color:var(--marker-color); }
 .minimap-player-marker.last-known .minimap-player-label { border-style:dashed; }
+
+#combat-feedback { position:fixed; left:50%; top:58%; transform:translateX(-50%); max-width:80vw; padding:8px 12px; color:#e8f6ff; background:rgba(10,23,34,.82); border:1px solid #91b3c8; border-radius:6px; font:600 12px/1.5 system-ui; text-align:center; pointer-events:none; z-index:25; }
+#combat-feedback[hidden] { display:none; }
+#combat-feedback.confirmed { color:#fff; border-color:#56ffd6; box-shadow:0 0 16px #56ffd670; font-size:16px; }
+#combat-hitmarker { position:fixed; left:50%; top:50%; transform:translate(-50%,-50%); color:#70ffcf; font:700 44px/1 system-ui; text-shadow:0 0 5px #102632; pointer-events:none; z-index:50; }
+#combat-hitmarker[hidden] { display:none; }

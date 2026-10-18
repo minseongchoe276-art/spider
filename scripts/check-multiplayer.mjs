@@ -1,4 +1,6 @@
 import assert from 'node:assert/strict';
+import {Multiplayer} from '../src/Multiplayer.js';
+import {CombatFeedback} from '../src/CombatFeedback.js';
 import { createServer } from 'node:http';
 import WebSocket from 'ws';
 import { attachRooms } from './rooms.mjs';
@@ -98,6 +100,17 @@ try {
   send(police,{type:'attack',kind:'web',facing:0});
   const web=await wait(bystander,v=>v.type==='hit'&&v.kind==='web');
   assert.equal(web.health,85);
+  // Pass a real authoritative hit through the same client handler and
+  // feedback component used by both network transports.
+  let hitSounds=0,impacts=0;const messages=[];
+  const feedbackGame={showNotice:text=>messages.push(text),audio:{playCombatHit(){hitSounds++;}},vfx:{spawnWebImpact(){impacts++;}}};
+  const feedback=new CombatFeedback(feedbackGame),target={id:web.target,x:0,y:0,z:10,health:100};
+  const receiving={id:web.attacker,players:[target],game:feedbackGame,feedback,renderHud(){},syncAvatars(){}};
+  feedback.sent('web',target);assert.equal(hitSounds,0,'An aim prediction confirmed a hit');
+  Multiplayer.prototype.message.call(receiving,web);
+  assert.equal(target.health,85);assert.equal(hitSounds,1);assert.equal(impacts,1);
+  assert(messages.at(-1).includes('−15')&&messages.at(-1).includes('85'),'Authoritative hit lacked damage/HP feedback');
+  console.log('PASS actual WebSocket hit -> client HP, confirmed-only audio, impact and damage feedback');
   send(runner,{type:'move',x:0,y:0,z:2,facing:0});
   await wait(police,v=>v.type==='move'&&v.id===runnerIds[0]&&v.z===2);
   for(const health of [50,25,0]){

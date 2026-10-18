@@ -17,7 +17,7 @@ function controller() {
 function advance(p,i,seconds,dt=1/60) { for(let t=0;t<seconds-1e-8;t+=dt)p.update(dt,i,camera); }
 const p=controller(), i=input();
 advance(p,i,3); assert.equal(p.velocity.length(),0); assert.equal(p.state,'IDLE');
-i.forward=true; advance(p,i,2); assert.equal(p.state,'RUNNING'); assert(Math.abs(p.velocity.length()-2.8)<0.01);
+i.forward=true; advance(p,i,2); assert.equal(p.state,'RUNNING'); assert(Math.abs(p.velocity.length()-4.4)<0.01);
 i.sprint=true; advance(p,i,2); assert.equal(p.state,'SPRINTING'); assert(Math.abs(p.velocity.length()-6.5)<0.01);
 i.forward=false; advance(p,i,2); assert.equal(p.state,'IDLE'); assert.equal(p.velocity.length(),0);
 i.jump=true; p.update(1/60,i,camera); assert.equal(p.state,'JUMPING'); assert(p.velocity.y>0); assert.equal(p.velocity.z,0);
@@ -120,7 +120,7 @@ for(const dt of [1/30,1/60,1/144]) {
   const before=v.currentPos.clone();v.triggerShake(1);v.update(0,new THREE.Vector3(),new THREE.Vector3(),false,[]);
   assert(v.currentPos.equals(before),'Camera shake leaked into follow state');
 }
-for(const dt of [1/30,1/60,1/144]) { const a=controller();const ai=input();ai.forward=true;advance(a,ai,2,dt);assert(Math.abs(a.velocity.length()-2.8)<0.01); }
+for(const dt of [1/30,1/60,1/144]) { const a=controller();const ai=input();ai.forward=true;advance(a,ai,2,dt);assert(Math.abs(a.velocity.length()-4.4)<0.01); }
 const climber=controller();climber.city.checkCollision=City.prototype.checkCollision;
 climber.city.raycast=City.prototype.raycast;
 climber.city.colliders=[{minX:-4,maxX:4,minY:0,maxY:60,minZ:2,maxZ:8}];

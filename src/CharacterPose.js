@@ -19,7 +19,7 @@ function orientGroundFoot(c,side,foot,rotation,delta) {
   fitGroundAnkle(c,side,foot,next);c.groundFootRotations[side]=next;
 }
 
-function fitGroundAnkle(c,side,foot,rotation) {
+export function fitGroundAnkle(c,side,foot,rotation) {
   fitEndRotation(c,find(c,side+'upleg'),find(c,side+'leg'),foot,rotation);
 }
 function fitEndRotation(c,upper,lower,end,rotation) {

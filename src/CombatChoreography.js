@@ -20,9 +20,9 @@ export function choreographCombat(base,key,bones,boneId) {
   const soles=Object.fromEntries(['left','right'].map(side=>[side,find(side+'foot').getWorldQuaternion(new THREE.Quaternion())]));
   saved.forEach(({n,p,q})=>{n.position.copy(p);n.quaternion.copy(q);});root.updateMatrixWorld(true);
   const dodge=key.startsWith('dodge');
-  const duration={combatIdle:2,guard:2,jab:.42,cross:.65,hook:.85,heavy:.72,
+  const duration={combatIdle:2,guard:2,jab:.42,cross:.65,rightHook:.68,hook:.85,heavy:.72,
     dodgeLeft:.38,dodgeRight:.38,dodgeBack:.42,dodgeForward:.52}[key];
-  const impact={jab:.38,cross:.58,hook:.62,heavy:.56}[key] || .5;
+  const impact={jab:.38,cross:.58,rightHook:.58,hook:.62,heavy:.56}[key] || .5;
   const count=Math.ceil(duration*60),times=[],values=new Map(nodes.map(n=>[n,[]])),positions=[];
   const rotateWorld=(bone,rotation)=>{
     const world=rotation.clone().multiply(bone.getWorldQuaternion(new THREE.Quaternion()));
@@ -49,7 +49,7 @@ export function choreographCombat(base,key,bones,boneId) {
       const evade=dodge?smooth(THREE.MathUtils.clamp(t/.32,0,1))*(1-smooth(THREE.MathUtils.clamp((t-.48)/.48,0,1))):0;
       const wind=anticipate*(1-drive),breath=attack?0:Math.sin(t*Math.PI*2)*.009;
       const spin=key==='hook'?-Math.PI*2*smooth(THREE.MathUtils.clamp((t-.12)/.50,0,1)):0;
-      const yaw={jab:-.30,cross:.72,hook:0,heavy:.60}[key] || 0;
+      const yaw={jab:-.30,cross:.72,rightHook:.60,hook:0,heavy:.60}[key] || 0;
       const duck=key==='dodgeForward'?.18:key==='dodgeBack'?.06:dodge?.025:0;
       hips.position.copy(restHip).add(localOffset(v(0,-.08+breath-.025*wind-duck*evade,0)));
       root.updateMatrixWorld(true);
@@ -81,6 +81,12 @@ export function choreographCombat(base,key,bones,boneId) {
       let left=leftGuard.clone(),right=rightGuard.clone();
       if(key==='guard'){left=v(.18,1.49+breath,.30);right=v(-.18,1.51+breath,.30);}
       if(key==='jab')left.lerp(v(.09,1.57,1.32),drive).addScaledVector(v(.025,0,-.15),wind);
+      if(key==='rightHook'){
+        // Compact right hook: elbow travels outside, fist arcs across the
+        // opponent's jaw, and the left hand stays by the cheek.
+        const target=v(THREE.MathUtils.lerp(-.48,.10,drive),1.55,.28+.22*Math.sin(Math.PI*drive*.75));
+        right.lerp(target,Math.max(drive,.45*wind));
+      }
       if(key==='cross')right.lerp(v(-.04,1.58,1.45),drive).addScaledVector(v(-.06,0,-.22),wind);
       if(key==='hook'){left.add(v(.12,-.12,.05).multiplyScalar(drive));right.add(v(-.1,-.05,-.04).multiplyScalar(drive));left.applyAxisAngle(v(0,1,0),spin);right.applyAxisAngle(v(0,1,0),spin);}
       if(key==='heavy'){left.lerp(v(.17,1.65,.38),drive);right.lerp(v(-.04,1.55,1.6),drive);right.z-=.24*wind;}
@@ -99,5 +105,5 @@ export function choreographCombat(base,key,bones,boneId) {
   } finally {saved.forEach(({n,p,q})=>{n.position.copy(p);n.quaternion.copy(q);});root.updateMatrixWorld(true);}
   const tracks=nodes.map(n=>new THREE.QuaternionKeyframeTrack(n.name+'.quaternion',times,values.get(n)));
   tracks.push(new THREE.VectorKeyframeTrack(hips.name+'.position',times,positions));
-  const clip=new THREE.AnimationClip(key,duration,tracks);clip.userData={...base.userData,derivative:'coordinated target-rig fighting stance',impactPhase:impact,soleRotations:Object.fromEntries(Object.entries(soles).map(([side,q])=>[side,q.toArray()])),choreography:({jab:'stepping jab',cross:'pivot cross',hook:'spinning roundhouse',heavy:'grounded power straight',guard:'compact boxing guard',dodgeLeft:'left upper-body slip',dodgeRight:'right upper-body slip',dodgeBack:'short back lean',dodgeForward:'short forward duck'}[key] || key)};return clip;
+  const clip=new THREE.AnimationClip(key,duration,tracks);clip.userData={...base.userData,derivative:'coordinated target-rig fighting stance',impactPhase:impact,soleRotations:Object.fromEntries(Object.entries(soles).map(([side,q])=>[side,q.toArray()])),choreography:({jab:'stepping jab',cross:'pivot cross',rightHook:'compact right hook',hook:'spinning roundhouse',heavy:'grounded power straight',guard:'compact boxing guard',dodgeLeft:'left upper-body slip',dodgeRight:'right upper-body slip',dodgeBack:'short back lean',dodgeForward:'short forward duck'}[key] || key)};return clip;
 }

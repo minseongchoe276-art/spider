@@ -36,6 +36,7 @@ const imported = {
  airTrick:{file:'Front Flip',trim:[.5,1.43]},
  special:{file:'Boxing Lead Jab',impactPhase:.3},
 };
+MOTIONS.push({key:'rightHook',url:'/models/Boxing Stance.fbx',loop:false});
 for(const [key,{file,...settings}] of Object.entries(imported)){
  const motion={key,url:`/models/${file}.fbx`,authoredMixamo:true,loop:false,...settings};
  const index=MOTIONS.findIndex(m=>m.key===key);

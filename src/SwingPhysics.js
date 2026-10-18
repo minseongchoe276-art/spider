@@ -23,7 +23,7 @@ export class SwingPhysics {
 
     // Constants
     this.gravity = 28.0; // Superhero gravity (snappy and punchy)
-    this.walkSpeed = 2.8;
+    this.walkSpeed = 4.4;
     this.sprintSpeed = 6.5;
     this.groundAcceleration = 30.0;
     this.groundDeceleration = 24.0;
@@ -496,7 +496,7 @@ export class SwingPhysics {
     const key = typeof input === 'string' ? input : selectAirTrick(input);
     const trick = AIR_TRICKS[key];
     if (!Object.hasOwn(AIR_TRICKS, key) || this.character.isTricking) return false;
-    if (!['FALLING', 'JUMPING'].includes(this.state) || this.isSwinging) {
+    if (this.character.webShotTimer>0 || this.webs.length || !['FALLING', 'JUMPING'].includes(this.state) || this.isSwinging) {
       if (this.state === 'SWINGING') this.onStuntCallback?.('줄을 놓고 T로 공중 묘기를 연결하세요', 0);
       return false;
     }
@@ -956,7 +956,7 @@ export class SwingPhysics {
     if (input.left) moveDir.sub(camRight);
 
     const combat=this.combatMotion;
-    if(isGrounded && combat)moveDir.set(0,0,0);
+    if(isGrounded && combat?.direction)moveDir.set(0,0,0);
     if (moveDir.lengthSq() > 0.001) {
       moveDir.normalize();
       const nextFacingAngle = Math.atan2(moveDir.x, moveDir.z);
@@ -967,7 +967,7 @@ export class SwingPhysics {
       if (isGrounded && Math.abs(turnDelta) > 0.45 && this.velocity.length() > 0.5) {
         this.character.requestTurn(turnDelta > 0 ? 'right' : 'left');
       }
-      if(!combat){this.facingAngle = nextFacingAngle;this.character.targetFacingAngle = this.facingAngle;}
+      if(!combat || combat.key==='guard'){this.facingAngle = nextFacingAngle;this.character.targetFacingAngle = this.facingAngle;}
     }
 
     if (isGrounded) {

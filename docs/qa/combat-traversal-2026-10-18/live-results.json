@@ -1,0 +1,238 @@
+[
+  {
+    "name": "climb/third",
+    "pass": true,
+    "maxAnkle": 35.00000000000013,
+    "travel": 5.718289343824077,
+    "attacks": [],
+    "frames": 268,
+    "states": [
+      "WALL_RUNNING",
+      "MANTLING",
+      "RUNNING",
+      "IDLE"
+    ],
+    "switches": 0,
+    "maxAimError": 0,
+    "maxStep": 0.18666666666661058,
+    "maxWristError": 0,
+    "seenWeb": false,
+    "peakWebs": 0,
+    "independentRelease": false,
+    "reachedRoof": true,
+    "finalState": "IDLE",
+    "roof": 93.99197994705712,
+    "position": [
+      -90.01322775172035,
+      94.09197994705711,
+      -75.8862440036231
+    ],
+    "released": true
+  },
+  {
+    "name": "climb/first",
+    "pass": true,
+    "maxAnkle": 35.00000000000008,
+    "travel": 5.719332025367364,
+    "attacks": [],
+    "frames": 271,
+    "states": [
+      "WALL_RUNNING",
+      "MANTLING",
+      "RUNNING",
+      "IDLE"
+    ],
+    "switches": 0,
+    "maxAimError": 0,
+    "maxStep": 0.1474171554468171,
+    "maxWristError": 0,
+    "seenWeb": false,
+    "peakWebs": 0,
+    "independentRelease": false,
+    "reachedRoof": true,
+    "finalState": "IDLE",
+    "roof": 93.99197994705712,
+    "position": [
+      -90,
+      94.09197994705711,
+      -75.88858239513306
+    ],
+    "released": true
+  },
+  {
+    "name": "climb/third/switch",
+    "pass": true,
+    "maxAnkle": 35.000000000000036,
+    "travel": 5.718289307858092,
+    "attacks": [],
+    "frames": 271,
+    "states": [
+      "WALL_RUNNING",
+      "MANTLING",
+      "RUNNING",
+      "IDLE"
+    ],
+    "switches": 6,
+    "maxAimError": 0,
+    "maxStep": 0.1474171554468171,
+    "maxWristError": 0,
+    "seenWeb": false,
+    "peakWebs": 0,
+    "independentRelease": false,
+    "reachedRoof": true,
+    "finalState": "IDLE",
+    "roof": 93.99197994705712,
+    "position": [
+      -90.01322797270579,
+      94.09197994705711,
+      -75.88624392297059
+    ],
+    "released": true
+  },
+  {
+    "name": "combat/third",
+    "pass": true,
+    "maxAnkle": 34.97311272012766,
+    "travel": 7.1718511163229755,
+    "attacks": [
+      "jab",
+      "cross"
+    ],
+    "frames": 181,
+    "states": [
+      "RUNNING",
+      "IDLE"
+    ],
+    "switches": 0,
+    "maxAimError": 0,
+    "maxStep": 0.10999901477992235,
+    "maxWristError": 0,
+    "seenWeb": false,
+    "peakWebs": 0,
+    "independentRelease": false,
+    "reachedRoof": false,
+    "finalState": "IDLE",
+    "roof": 93.99197994705712,
+    "position": [
+      0,
+      0.1,
+      7.1718511163229755
+    ],
+    "released": true
+  },
+  {
+    "name": "combat/first",
+    "pass": true,
+    "maxAnkle": 34.96426976209436,
+    "travel": 7.1718511163229755,
+    "attacks": [
+      "jab",
+      "cross"
+    ],
+    "frames": 181,
+    "states": [
+      "RUNNING",
+      "IDLE"
+    ],
+    "switches": 0,
+    "maxAimError": 0,
+    "maxStep": 0.10999937179594266,
+    "maxWristError": 0,
+    "seenWeb": false,
+    "peakWebs": 0,
+    "independentRelease": false,
+    "reachedRoof": false,
+    "finalState": "IDLE",
+    "roof": 93.99197994705712,
+    "position": [
+      0,
+      0.1,
+      7.1718511163229755
+    ],
+    "released": true
+  },
+  {
+    "name": "web/third",
+    "pass": true,
+    "maxAnkle": 34.999985152585836,
+    "travel": 24.467413364226367,
+    "attacks": [],
+    "frames": 180,
+    "states": [
+      "SWINGING",
+      "FALLING"
+    ],
+    "switches": 0,
+    "maxAimError": 0,
+    "maxStep": 0.4548781601262964,
+    "maxWristError": 0,
+    "seenWeb": true,
+    "peakWebs": 2,
+    "independentRelease": true,
+    "reachedRoof": false,
+    "finalState": "FALLING",
+    "roof": 93.99197994705712,
+    "position": [
+      -102.724203837315,
+      61.41190732370367,
+      -73.3
+    ],
+    "released": true
+  },
+  {
+    "name": "web/first",
+    "pass": true,
+    "maxAnkle": 34.99997447478402,
+    "travel": 24.467413364226367,
+    "attacks": [],
+    "frames": 181,
+    "states": [
+      "SWINGING",
+      "FALLING"
+    ],
+    "switches": 0,
+    "maxAimError": 0,
+    "maxStep": 0.4548781601262964,
+    "maxWristError": 0.0000029431507075147297,
+    "seenWeb": true,
+    "peakWebs": 2,
+    "independentRelease": true,
+    "reachedRoof": false,
+    "finalState": "FALLING",
+    "roof": 93.99197994705712,
+    "position": [
+      -102.724203837315,
+      61.41190732370367,
+      -73.3
+    ],
+    "released": true
+  },
+  {
+    "name": "web/third/switch",
+    "pass": true,
+    "maxAnkle": 34.999947757173075,
+    "travel": 24.461049029665162,
+    "attacks": [],
+    "frames": 181,
+    "states": [
+      "SWINGING",
+      "FALLING"
+    ],
+    "switches": 4,
+    "maxAimError": 0,
+    "maxStep": 0.45488433579205423,
+    "maxWristError": 0.0000026381171063526094,
+    "seenWeb": true,
+    "peakWebs": 2,
+    "independentRelease": true,
+    "reachedRoof": false,
+    "finalState": "FALLING",
+    "roof": 93.99197994705712,
+    "position": [
+      -102.72170332821636,
+      61.41895561825897,
+      -73.3
+    ],
+    "released": true
+  }
+]

@@ -1,0 +1,27 @@
+
+> spiderman-web-swing@1.0.0 prebuild
+> node scripts/build-motions.mjs
+
+PASS: compiled motions match current model and FBX sources
+
+> spiderman-web-swing@1.0.0 build
+> vite build
+
+vite v7.3.7 building client environment for production...
+transforming...
+✓ 127 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                           19.50 kB │ gzip:     6.29 kB
+dist/assets/index-D0G6kHQG.css            36.31 kB │ gzip:     8.98 kB
+dist/assets/EffectsReview-DQz6IArE.js      3.41 kB │ gzip:     1.79 kB
+dist/assets/WebHandReview-Du0lEYg_.js      5.85 kB │ gzip:     2.63 kB
+dist/assets/CombatReview-Bai75bMK.js       5.94 kB │ gzip:     2.78 kB
+dist/assets/MotionReview-CgdzpPrb.js      14.21 kB │ gzip:     5.74 kB
+dist/assets/index-QkL0B8Ut.js          5,679.71 kB │ gzip: 2,027.36 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 5.71s

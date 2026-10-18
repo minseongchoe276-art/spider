@@ -68,11 +68,12 @@ for(const fps of [30,60,144])for(const mode of ['up','down','stairs']) {
   p.position.y=world.groundAt(p.position,8)+0.14;p.state='IDLE';
   const cam=new THREE.PerspectiveCamera();if(mode!=='down')cam.rotation.y=Math.PI;
   const i=input();i.forward=true;const before=p.position.clone();
-  for(let n=0;n<fps*3.5;n++)p.update(1/fps,i,cam);
+  let highest=p.position.y;
+  for(let n=0;n<fps*3.5;n++){p.update(1/fps,i,cam);highest=Math.max(highest,p.position.y);}
   const moved=Math.abs(p.position.z-before.z);
   if(moved<=4.6)console.log({mode,fps,moved,position:p.position.toArray(),velocity:p.velocity.toArray(),last:terrain.lastResolution});
   assert(moved>4.6,`${mode} ${fps}fps: terrain reduced travel to ${moved.toFixed(2)}m`);
-  if(mode==='stairs')assert(p.position.y>0.5,'Capsule failed to climb actual stair geometry');
+  if(mode==='stairs')assert(highest>1.15,'Capsule failed to climb all actual stair risers before walking off the far end');
   else assert(Math.hypot(p.velocity.x,p.velocity.z)>1.3,`${mode}: uphill capsule was repeatedly pushed into its support`);
   i.forward=false;for(let n=0;n<fps*2;n++)p.update(1/fps,i,cam);
   assert.equal(p.state,'IDLE');assert(Math.hypot(p.velocity.x,p.velocity.z)<0.02,'No-input slope drift');
