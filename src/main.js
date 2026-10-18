@@ -338,7 +338,7 @@ export class GameApp {
       if(k==='Escape' && this.helpOpen){e.preventDefault();if(!e.repeat)this.toggleHelp();return;}
       const gameplayKey = [
         'KeyW', 'KeyA', 'KeyS', 'KeyD', 'ArrowUp', 'ArrowDown',
-        'ArrowLeft', 'ArrowRight', 'ShiftLeft', 'ShiftRight', 'Space',
+        'ArrowLeft', 'ArrowRight', 'Home', 'End', 'PageUp', 'PageDown', 'ShiftLeft', 'ShiftRight', 'Space',
         'KeyG', 'KeyE', 'KeyT', 'KeyF', 'KeyC', 'KeyV', 'KeyR', 'KeyQ', 'KeyB', 'ControlLeft', 'ControlRight'
       ].includes(k);
       if (gameplayKey && document.getElementById?.('controls-guide') && !document.getElementById('controls-guide').classList.contains('hidden')) return;
@@ -914,6 +914,8 @@ export class GameApp {
     // Begin timing with the next frame in that case, including for quality QA.
     if(wasSuspended && this.isPlaying && !this.isPaused && !spectating && !this.gameplaySuspended)elapsed=delta=0;
     if (this.isPlaying && !this.isPaused && !spectating && !this.gameplaySuspended) {
+      if(!this.helpOpen && ['Home','End','PageUp','PageDown'].some(key=>this.heldKeys?.has(key)))
+        this.tpsCamera.handleKeyboardLook(this.heldKeys,delta);
       // 1. Update Physics and Character
       this.combat?.before(delta,this.camera,this.input);
       this.physics.update(delta, this.input, this.camera);

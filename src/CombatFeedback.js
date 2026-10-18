@@ -30,7 +30,7 @@ export class CombatFeedback {
     const remain=Math.max(0,(this.cooldowns.web||0)-now);
     if(now>(this.previewAt||0)){this.preview=online.attackPreview?.('web');this.previewAt=now+120;}
     const target=this.preview;
-    const aim=target?.blocked?'가림':target?`${target.name} ${target.distance.toFixed(1)}m · 범위 안`:'정면 대상 없음';
+    const aim=target?.blocked?'가림':target?`${target.name} ${target.distance.toFixed(1)}m · ${target.aimReady===false?'조준점을 상대에게 맞추세요':'조준 안 · 명중은 서버 확인'}`:'조준점에 상대 없음';
     out.textContent=`${aim} | 거미줄 · 정면 ${MATCH.web.reach}m / 높이 차 ${MATCH.web.vertical}m · ${remain?`${(remain/1000).toFixed(1)}초 대기`:'15 피해 · 발사 가능'} | 주먹 ${MATCH.punch.reach}m · 25 피해 · 벽 뒤에는 맞지 않음`;
   }
   canFire(kind,online){

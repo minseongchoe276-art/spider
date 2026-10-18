@@ -111,6 +111,12 @@ export class ThirdPersonCamera {
       : THREE.MathUtils.clamp(this.pitch, -0.52, 0.58);
   }
 
+  handleKeyboardLook(keys,delta) {
+    const x=Number(keys.has('End'))-Number(keys.has('Home'));
+    const y=Number(keys.has('PageDown'))-Number(keys.has('PageUp'));
+    if(x||y)this.handleMouseMove(x*1200*delta,y*900*delta);
+  }
+
   recenterBehind(facingAngle) {
     this.recenterYaw = facingAngle;
     this.isRecentering = true;

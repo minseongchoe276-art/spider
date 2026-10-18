@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import {CombatFeedback} from './CombatFeedback.js';
+import {webTargetInReticle} from './CombatAim.js';
 import { MATCH, resolveMatchSpawn, teamOffset } from './MatchRules.js';
 import { SupabaseRooms } from './SupabaseRooms.js';
 import { RemoteMotion, capturePose, sanitizePose } from './RemoteMotion.js';
@@ -345,34 +346,31 @@ export class Multiplayer {
       .map(p=>({p,d:Math.hypot(p.x-position.x,p.z-position.z)}))
       .filter(({p,d})=>d<=rule.reach && Math.abs(p.y-position.y)<rule.vertical &&
         (d<=.35 || Math.cos(Math.atan2(p.x-position.x,p.z-position.z)-facing)>=rule.cone))
-      .sort((a,b)=>a.d-b.d)[0];
+      .sort((a,b)=>(kind==='web' ? Number(webTargetInReticle(b.p,this.game.camera))-Number(webTargetInReticle(a.p,this.game.camera)):0) || a.d-b.d)[0];
     if(!target)return null;
     const from=position.clone().add(new THREE.Vector3(0,1,0)),line=new THREE.Vector3(target.p.x,target.p.y+1,target.p.z).sub(from);
     if(this.game.city.raycast?.(from,line.clone().normalize(),Math.max(0,line.length()-.3)))return {blocked:true};
-    return {name:target.p.name || '상대',distance:target.d};
+    return {name:target.p.name || '상대',distance:target.d,aimReady:kind!=='web'||webTargetInReticle(target.p,this.game.camera)};
   }
   sendAttack(kind,facing,hand='left'){
     const me=this.players.find(p=>p.id===this.id);
     if(this.spectating||me?.eliminated||this.room?.phase!=='playing'||me?.team!=='police')return;
-    if(this.feedback && !this.feedback.canFire(kind,this))return;
     const origin=this.game.physics.position.clone().add(new THREE.Vector3(0,1,0)),rule=MATCH[kind];
     const targets=this.players.filter(p=>p.team==='runner'&&!p.eliminated&&p.seen)
       .map(p=>({p,dx:p.x-origin.x,dz:p.z-origin.z}))
       .filter(t=>Math.abs(t.p.y-this.game.physics.position.y)<rule.vertical &&
-        Math.hypot(t.dx,t.dz)<=rule.reach && (Math.hypot(t.dx,t.dz)<=.35 ||
+        Math.hypot(t.dx,t.dz)<=rule.reach && (kind!=='web'||webTargetInReticle(t.p,this.game.camera)) && (Math.hypot(t.dx,t.dz)<=.35 ||
           Math.cos(Math.atan2(t.dx,t.dz)-facing)>=rule.cone))
       .sort((a,b)=>Math.hypot(a.dx,a.dz)-Math.hypot(b.dx,b.dz));
+    if(kind==='web' && !targets.length)return false;
     if(targets.length){
       const target=targets[0].p,dir=new THREE.Vector3(target.x,target.y+1,target.z).sub(origin);
-      if(this.game.city.raycast?.(origin,dir.clone().normalize(),Math.max(0,dir.length()-.3))){this.feedback?.show('벽이나 건물이 상대를 가리고 있습니다');return;}
+      if(this.game.city.raycast?.(origin,dir.clone().normalize(),Math.max(0,dir.length()-.3))){this.feedback?.show('벽이나 건물이 상대를 가리고 있습니다');return kind==='web';}
     }
+    if(this.feedback && !this.feedback.canFire(kind,this))return kind==='web';
     this.send({type:'attack',kind,facing});
     this.feedback?.sent(kind,targets[0]?.p,hand);
-    if(kind==='web' && targets[0]){
-      const p=targets[0].p,screen=new THREE.Vector3(p.x,p.y+1,p.z).project(this.game.camera);
-      return Math.abs(screen.x)<.16 && Math.abs(screen.y)<.22 && screen.z>-1 && screen.z<1;
-    }
-    return false;
+    return kind==='web';
   }
   serverNow(){return Date.now()+this.clockOffset;}
   spectatePoint() {
