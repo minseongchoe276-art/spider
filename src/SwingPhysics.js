@@ -1120,8 +1120,15 @@ export class SwingPhysics {
         // Wall interaction: Wall Run or slide
         this.wallNormal.copy(col.normal);
         this.character.wallNormal = this.wallNormal;
-        const face=this.city.raycast?.(this.position.clone().add(new THREE.Vector3(0,0.8,0)),col.normal.clone().negate(),1.2);
-        this.character.wallDistance=face?.distance ?? 0.7;
+        const face=this.city.raycast?.(this.position.clone().add(new THREE.Vector3(0,0.8,0)),col.normal.clone().negate(),1.2)
+          || this.city.raycast?.(this.position.clone().add(new THREE.Vector3(0,0.2,0)),col.normal.clone().negate(),1.2);
+        // Capsule edge contacts are rounded and can point diagonally away
+        // from a flat facade. Use its real surface normal for the grip and
+        // roof probe so a corner cannot turn the feet or miss the landing.
+        const alignment=face?.normal?.dot(col.normal);
+        const facade=face?.normal && Math.abs(face.normal.y)<.2 && alignment>.35;
+        if(facade)this.wallNormal.copy(face.normal).normalize();
+        this.character.wallDistance=face ? face.distance*(facade?alignment:1) : .7;
 
         // Wall running requires explicit F input, not ordinary forward input.
         if (input.wallRun && input.forward && this.wallAttachCooldown === 0 && this.velocity.dot(col.normal) <= 0 &&
