@@ -8,7 +8,7 @@ import {setAppearance,updateAppearance,disposeAppearance} from '../src/Character
 import {CombatSystem} from '../src/Combat.js';
 import {soleSamples} from '../src/CharacterPose.js';
 const {actor,clips}=await loadMotionRig(),assets={},results=[];
-for(const [mode,name] of [['web','변신모습'],['combat','사람모습']]){
+for(const [mode,name] of [['web','사람모습'],['combat','변신모습']]){
  const b=fs.readFileSync(`public/models/appearance-${mode}.glb`),length=b.readUInt32LE(12),j=JSON.parse(b.subarray(20,20+length));
  assert.equal(j.asset.extras.sourceSha256,crypto.createHash('sha256').update(fs.readFileSync(`artifacts/${name}.glb`)).digest('hex'));
  assert(j.images.length>=1,'Authored textures must remain embedded');

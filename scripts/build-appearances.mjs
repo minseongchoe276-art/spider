@@ -24,7 +24,10 @@ const refArm=Array.from({length:mesh.geometry.attributes.position.count},(_,i)=>
 const grid=new Map(),cell=.08,key=(x,y,z)=>`${x},${y},${z}`,samples=[];
 for(let i=0;i<refPos.count;i++){const p=mesh.applyBoneTransform(i,new T.Vector3().fromBufferAttribute(refPos,i)).applyMatrix4(mesh.matrixWorld);samples.push(p);const k=key(Math.floor(p.x/cell),Math.floor(p.y/cell),Math.floor(p.z/cell));if(!grid.has(k))grid.set(k,[]);grid.get(k).push(i);}
 const report=[];
-for(const [mode,name] of [['combat','사람모습'],['web','변신모습']]){
+// The uploaded filenames were semantically reversed: 변신모습.glb renders as
+// the civilian human, while 사람모습.glb renders as the transformed suit.
+// Keep the in-game mode appearance aligned with what the player sees.
+for(const [mode,name] of [['combat','변신모습'],['web','사람모습']]){
  const asset=read(`artifacts/${name}.glb`),original=await parse(asset);let source;original.scene.traverse(n=>{if(n.isMesh)source=n;});const g=source.geometry,p=g.attributes.position,n=g.attributes.normal;g.computeBoundingBox();const bounds=g.boundingBox,scale=2.0527/(bounds.max.y-bounds.min.y);
  const positions=new Float32Array(p.count*3),normals=new Float32Array(p.count*3),joints=new Uint16Array(p.count*4),weights=new Float32Array(p.count*4);let maxDistance=0,maxReconstruction=0;
  for(let i=0;i<p.count;i++){

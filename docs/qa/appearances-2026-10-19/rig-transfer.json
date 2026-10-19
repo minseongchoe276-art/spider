@@ -1,18 +1,18 @@
 [
   {
     "mode": "combat",
-    "source": "사람모습",
-    "vertices": 29133,
-    "bones": 65,
-    "maxNearestSurfaceDistance": 0.09276482841935997,
-    "maxAPoseReconstructionError": 1.1381108123376159e-15
-  },
-  {
-    "mode": "web",
     "source": "변신모습",
     "vertices": 67491,
     "bones": 65,
     "maxNearestSurfaceDistance": 0.16646519177184974,
     "maxAPoseReconstructionError": 1.1165368122018449e-15
+  },
+  {
+    "mode": "web",
+    "source": "사람모습",
+    "vertices": 29133,
+    "bones": 65,
+    "maxNearestSurfaceDistance": 0.09276482841935997,
+    "maxAPoseReconstructionError": 1.1381108123376159e-15
   }
 ]

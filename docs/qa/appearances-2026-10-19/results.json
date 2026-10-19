@@ -1,18 +1,18 @@
 [
   {
     "case": "web source, textures and normalized weights",
-    "vertices": 67491,
-    "pass": true
-  },
-  {
-    "case": "combat source, textures and normalized weights",
     "vertices": 29133,
     "pass": true
   },
   {
+    "case": "combat source, textures and normalized weights",
+    "vertices": 67491,
+    "pass": true
+  },
+  {
     "case": "appearance changes invalidate cached foot-contact vertices",
-    "webSoleSamples": 2191,
-    "combatSoleSamples": 1530,
+    "webSoleSamples": 1530,
+    "combatSoleSamples": 2191,
     "pass": true
   },
   {
@@ -27,14 +27,14 @@
     "case": "web all catalog motions skin finite and bounded",
     "motionCount": 34,
     "samples": 170,
-    "maxExtent": 2.9424393142274834,
+    "maxExtent": 2.9306460602006865,
     "pass": true
   },
   {
     "case": "combat all catalog motions skin finite and bounded",
     "motionCount": 34,
     "samples": 170,
-    "maxExtent": 2.9306460602006865,
+    "maxExtent": 2.9424393142274834,
     "pass": true
   }
 ]
