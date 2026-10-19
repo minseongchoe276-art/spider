@@ -100,7 +100,7 @@ check('Mouse movement keeps the aim at the fixed center and E uses that aim',()=
   });assert(actual?.equals(new THREE.Vector2()));
 });
 check('Jumping during a grounded attack cancels it before landing',()=>{
-  const p=player();p.state='IDLE';const c=new CombatSystem(new THREE.Scene(),p,p.character);
+  const p=player();p.state='IDLE';const c=new CombatSystem(new THREE.Scene(),p,p.character);c.toggle();
   assert(c.heavy(camera));p.state='JUMPING';c.before(1/60,camera);
   assert.equal(c.action,null);assert.equal(p.combatMotion,null);assert.equal(p.character.combatAction,null);
 });

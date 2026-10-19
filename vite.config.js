@@ -7,6 +7,12 @@ const urbanTilesProxy = {
     changeOrigin: true,
     secure: true,
     rewrite: (path) => path.replace(/^\/urban-tiles/, ''),
+    configure(proxy) {
+      proxy.on('proxyRes', (res, req) => {
+        if (res.statusCode === 200) res.headers['cache-control'] =
+          req.url?.split('?')[0].endsWith('.json') ? 'public, max-age=300' : 'public, max-age=86400';
+      });
+    },
   },
 };
 

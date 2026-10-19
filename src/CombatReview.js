@@ -26,6 +26,7 @@ export function startCombatReview() {
   const audio=new Proxy({}, {get:()=>()=>{}}),physics=new SwingPhysics(scene,city,character,audio),vfx=new VFXManager(scene);
   physics.position.set(0,.1,0);physics.previousFixedPosition.copy(physics.position);physics.renderPosition.copy(physics.position);physics.state='IDLE';physics.facingAngle=Math.PI;character.targetFacingAngle=Math.PI;
   const combat=new CombatSystem(scene,physics,character,{vfx,audio,onNotice:message=>{output.textContent=message;}});
+  combat.toggle();
   const input={forward:false,backward:false,left:false,right:false,strafe:0,webHold:false};
   const control=()=>{pose=false;history=[];lastMotion=null;character.combatAction=null;combat.cancel();combat.mode='combat';physics.webEnabled=false;combat.stamina=100;};
   panel.querySelector('#combat-jab').onclick=()=>{if(!ready)return;control();combat.attack(camera);};

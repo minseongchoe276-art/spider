@@ -1,0 +1,17 @@
+import assert from 'node:assert/strict';
+import * as THREE from 'three';
+import { SwingPhysics } from '../src/SwingPhysics.js';
+const camera=new THREE.PerspectiveCamera(60,1,.1,500);
+camera.position.set(0,1.3,0);camera.lookAt(0,1.3,-1);camera.updateMatrixWorld(true);
+const wall=new THREE.Mesh(new THREE.BoxGeometry(40,80,2));wall.position.set(0,25,-30);wall.updateMatrixWorld(true);
+const silent=new Proxy({}, {get:()=>()=>{}});
+const character={group:new THREE.Group(),fireWeb(){},update(){},stopAnimation(){}};
+const city={buildingMeshes:[wall],colliders:[],checkCollision:()=>({collided:false}),getRooftopSpawn:()=>new THREE.Vector3(0,.1,0)};
+const p=new SwingPhysics(new THREE.Scene(),city,character,silent);p.position.set(0,.1,0);p.state='IDLE';p.aimAssist=true;
+const hit=p.findBestAnchor(camera);assert(hit);assert(Math.abs(hit.x)<1e-6);assert(Math.abs(hit.y-1.3)<1e-6,'Low target was replaced with a higher anchor');
+const velocity=p.velocity.clone();assert(p.startSwing(camera));assert(p.velocity.equals(velocity),'Ground attachment added launch energy');assert.equal(p.webs[0].launchPending,false);
+p.releaseSwing(false);camera.lookAt(0,100,0);camera.updateMatrixWorld(true);
+assert.equal(p.findBestAnchor(camera),null,'Saved aim assist retargeted a sky miss');
+const before=p.velocity.clone();assert.equal(p.startSwing(camera),false);assert(p.velocity.equals(before));assert.equal(p.webs.length,0);
+p.state='FALLING';assert.equal(p.performAirJump(camera),false,'Zip selected an off-reticle building');assert(p.velocity.equals(before));
+console.log('PASS: low reticle target, no auto launch, sky miss, saved assist ignored, zip miss preserves momentum');

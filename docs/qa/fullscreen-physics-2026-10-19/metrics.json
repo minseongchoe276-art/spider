@@ -1,0 +1,199 @@
+{
+  "rates": [
+    24,
+    30,
+    60,
+    90,
+    120,
+    144,
+    240
+  ],
+  "parameters": {
+    "gravity": 28,
+    "jumpImpulse": 26,
+    "speedCap": 48,
+    "fixedStep": 0.008333333333333333
+  },
+  "ballistics": [
+    {
+      "fps": 24,
+      "verticalError": 0.1166666666666174,
+      "dragError": 0.0020306834997700918,
+      "jumpHeightError": 0.10496031746027157,
+      "landings": 1
+    },
+    {
+      "fps": 30,
+      "verticalError": 0.1166666666666174,
+      "dragError": 0.0020306834997700918,
+      "jumpHeightError": 0.10857142857138236,
+      "landings": 1
+    },
+    {
+      "fps": 60,
+      "verticalError": 0.1166666666666174,
+      "dragError": 0.0020306834997700918,
+      "jumpHeightError": 0.10857142857138236,
+      "landings": 1
+    },
+    {
+      "fps": 90,
+      "verticalError": 0.1166666666666174,
+      "dragError": 0.0020306834997700918,
+      "jumpHeightError": 0.10857142857138236,
+      "landings": 1
+    },
+    {
+      "fps": 120,
+      "verticalError": 0.1166666666666174,
+      "dragError": 0.0020306834997700918,
+      "jumpHeightError": 0.10857142857138236,
+      "landings": 1
+    },
+    {
+      "fps": 144,
+      "verticalError": 0.1166666666666174,
+      "dragError": 0.0020306834997700918,
+      "jumpHeightError": 0.10857142857138236,
+      "landings": 1
+    },
+    {
+      "fps": 240,
+      "verticalError": 0.1166666666666174,
+      "dragError": 0.0020306834997700918,
+      "jumpHeightError": 0.10857142857138236,
+      "landings": 1
+    }
+  ],
+  "pendulum": [
+    {
+      "fps": 24,
+      "maxEnergyGain": 0.04160239273494426,
+      "energyLossFraction": 0.012088571359378686,
+      "maxStretch": 6.766593685370026e-8,
+      "positionDivergence": 0
+    },
+    {
+      "fps": 30,
+      "maxEnergyGain": 0.04152883206016611,
+      "energyLossFraction": 0.012088571359378686,
+      "maxStretch": 6.794792639652769e-8,
+      "positionDivergence": 0
+    },
+    {
+      "fps": 60,
+      "maxEnergyGain": 0.04152883206016611,
+      "energyLossFraction": 0.012088571359378686,
+      "maxStretch": 6.794792639652769e-8,
+      "positionDivergence": 0
+    },
+    {
+      "fps": 90,
+      "maxEnergyGain": 0.04152883206016611,
+      "energyLossFraction": 0.012088571359378686,
+      "maxStretch": 6.794792639652769e-8,
+      "positionDivergence": 0
+    },
+    {
+      "fps": 120,
+      "maxEnergyGain": 0.04160239273494426,
+      "energyLossFraction": 0.012088571359378686,
+      "maxStretch": 6.794792639652769e-8,
+      "positionDivergence": 0
+    },
+    {
+      "fps": 144,
+      "maxEnergyGain": 0.04160239273494426,
+      "energyLossFraction": 0.012088571359378686,
+      "maxStretch": 6.794792639652769e-8,
+      "positionDivergence": 0
+    },
+    {
+      "fps": 240,
+      "maxEnergyGain": 0.04160239273494426,
+      "energyLossFraction": 0.012088571359378686,
+      "maxStretch": 6.794792639652769e-8,
+      "positionDivergence": 0
+    }
+  ],
+  "randomDualConstraints": {
+    "samples": 10000,
+    "maxStretch": 3.1530333899354446e-14,
+    "maxOutwardSpeed": 1.687538997430238e-14,
+    "maxKineticGain": 0
+  },
+  "groundContact": [
+    {
+      "fps": 24,
+      "maxUncommandedRise": 0
+    },
+    {
+      "fps": 30,
+      "maxUncommandedRise": 0
+    },
+    {
+      "fps": 60,
+      "maxUncommandedRise": 0
+    },
+    {
+      "fps": 90,
+      "maxUncommandedRise": 0
+    },
+    {
+      "fps": 120,
+      "maxUncommandedRise": 0
+    },
+    {
+      "fps": 144,
+      "maxUncommandedRise": 0
+    },
+    {
+      "fps": 240,
+      "maxUncommandedRise": 0
+    }
+  ],
+  "collisions": [
+    {
+      "fps": 24,
+      "maxForwardPosition": 1.3,
+      "wallFront": 2,
+      "bodyRadius": 0.7
+    },
+    {
+      "fps": 30,
+      "maxForwardPosition": 1.3,
+      "wallFront": 2,
+      "bodyRadius": 0.7
+    },
+    {
+      "fps": 60,
+      "maxForwardPosition": 1.3,
+      "wallFront": 2,
+      "bodyRadius": 0.7
+    },
+    {
+      "fps": 90,
+      "maxForwardPosition": 1.3,
+      "wallFront": 2,
+      "bodyRadius": 0.7
+    },
+    {
+      "fps": 120,
+      "maxForwardPosition": 1.3,
+      "wallFront": 2,
+      "bodyRadius": 0.7
+    },
+    {
+      "fps": 144,
+      "maxForwardPosition": 1.3,
+      "wallFront": 2,
+      "bodyRadius": 0.7
+    },
+    {
+      "fps": 240,
+      "maxForwardPosition": 1.3,
+      "wallFront": 2,
+      "bodyRadius": 0.7
+    }
+  ]
+}

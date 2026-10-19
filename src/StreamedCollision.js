@@ -80,16 +80,24 @@ export class StreamedCollision {
     }
     if (this.activeMeshes) {
       const now = performance.now();
+      // Query support once, rather than once for every inactive tile.
+      const support=this.world.castRay(new RAPIER.Ray(
+        {x:center.x,y:center.y+1,z:center.z},{x:0,y:-1,z:0}),2,false,undefined,undefined,this.body);
       for (const [id, entry] of this.meshes) {
         if (!entry) continue;
         if (this.activeMeshes.has(id)) entry.inactiveSince = null;
         else {
           entry.inactiveSince ??= now;
-          const bakingReplacement=this.pending.length>0 || !!this.job;
-          const support=bakingReplacement?this.world.castRay(new RAPIER.Ray(
-            {x:center.x,y:center.y+1,z:center.z},{x:0,y:-1,z:0}),2,false,undefined,undefined,this.body):null;
           const holdsPlayer=support?.collider.handle===entry.collider.handle;
-          if (now-entry.inactiveSince>2000 && !this.tetherColliders?.has(entry.collider.handle) && !(bakingReplacement && holdsPlayer)) {
+          // Release an obsolete supporting LOD only once an active baked
+          // replacement supports the same feet height, even if queues are idle.
+          const activeHandles = holdsPlayer ? new Set([...this.meshes.values()]
+            .filter(e => e && this.activeMeshes.has(e.mesh.uuid)).map(e => e.collider.handle)) : null;
+          const replacement = holdsPlayer ? this.world.castRay(new RAPIER.Ray(
+            {x:center.x,y:center.y+1,z:center.z},{x:0,y:-1,z:0}),2,false,
+            undefined,undefined,this.body,undefined,c => activeHandles.has(c.handle)) : null;
+          const replaced = replacement && Math.abs(replacement.timeOfImpact-support.timeOfImpact)<0.25;
+          if (now-entry.inactiveSince>2000 && !this.tetherColliders?.has(entry.collider.handle) && (!holdsPlayer || replaced)) {
             this.world.removeCollider(entry.collider,true); this.meshes.delete(id);
           }
         }

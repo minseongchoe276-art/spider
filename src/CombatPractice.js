@@ -19,7 +19,7 @@ export class CombatPractice {
     }
     if(!index)return g.showNotice('상대를 놓을 안전한 공간이 부족합니다. 넓은 옥상이나 거리에서 시작하세요.');
     this.active=true;this.origin=origin;g.combat.cancel();g.combat.health=g.combat.stamina=100;
-    if(g.combat.mode!=='combat')g.combat.toggle(g.input);g.timeTrial.stop();g.experience.ghost.stop();g.clearInput();g.setPaused(false);
+    if(g.combat.mode!=='combat')g.combat.toggle(g.input);g.clearInput();g.setPaused(false);
     g.canvas?.focus();
     g.showNotice('전투 연습 · 붉은 예고는 회피, 근접 공격은 정면 방어 · 방패에는 훅 / 강공격');
   }

@@ -4,7 +4,7 @@ import {GameApp} from '../src/main.js';
 import {cleanSettings,canonicalKey,rebind} from '../src/PlayerSettings.js';
 import {SwingPhysics} from '../src/SwingPhysics.js';
 import {Character} from '../src/Character.js';
-import {CombatSystem} from '../src/Combat.js';
+import {ATTACKS,CombatSystem} from '../src/Combat.js';
 import {CombatPractice} from '../src/CombatPractice.js';
 import {Multiplayer} from '../src/Multiplayer.js';
 import {capturePose} from '../src/RemoteMotion.js';
@@ -56,15 +56,15 @@ check('Ascending contact time rejects unfinished tricks while a high jump allows
   assert(p.character.contactTime<.7);assert(!p.performAirTrick('front'));
   p.position.y=12;p.velocity.y=12;p.update(0,{},camera);assert(p.performAirTrick('front'));
 });
-check('Remote and local takeoff use the same jumping pose and preserve the same web',()=>{
+check('Grounded web attachment preserves the swing pose without automatic takeoff',()=>{
   const p=body();p.findBestAnchor=()=>new THREE.Vector3(0,30,30);assert(p.startSwing(camera));
-  const pose=capturePose(p,p.character);assert.equal(pose.state,'JUMPING');assert.equal(pose.webs.length,1);
+  const pose=capturePose(p,p.character);assert.equal(pose.state,'SWINGING');assert.equal(pose.webs.length,1);assert.equal(p.webs[0].launchPending,false);
   p.webs[0].launchPending=false;assert.equal(capturePose(p,p.character).state,'SWINGING');
 });
 check('Holding guard buffers through a punch and releases immediately',()=>{
-  const p=body(),c=new CombatSystem(new THREE.Scene(),p,p.character);assert(c.attack(camera));
+  const p=body(),c=new CombatSystem(new THREE.Scene(),p,p.character);c.toggle();assert(c.attack(camera));
   c.guard(true);assert(!c.blocking);
-  for(let n=0;n<70;n++)c.before(1/120,camera,{guard:true});
+  for(let n=0;n<Math.ceil(ATTACKS.jab.duration*120)+2;n++)c.before(1/120,camera,{guard:true});
   assert(c.blocking);c.before(1/120,camera,{guard:false});assert(!c.blocking);
 });
 check('Fallback character actually rotates, completes once, and cancels on landing',()=>{
@@ -92,14 +92,7 @@ check('Disabling adaptive quality restores the selected manual resolution immedi
     appliedQuality:'balanced',appliedAutoQuality:true,renderer:{setPixelRatio(v){ratio=v;},shadowMap:{}},tpsCamera:{},physics:{},city:{},timeTrial:{},audio:{isMuted:false},applyWebTheme(){}});
   g.applyPreferences();assert.equal(ratio,1.5);
 }));
-check('Remapped race keys are shown in both local HUDs',()=>withDOM(()=>{
-  const g=Object.create(GameApp.prototype),settings=cleanSettings();rebind(settings,'trial','KeyL');
-  const nodes=Object.fromEntries(['trial-status','match-timer','match-role','match-health','match-count','pursuit-hud'].map(id=>[id,{textContent:''}]));
-  document.getElementById=id=>nodes[id]||null;
-  Object.assign(g,{preferences:{values:{settings,bestTimes:{}}},timeTrial:{isActive:false},physics:body()});
-  g.updateTrialHUD();assert.match(nodes['trial-status'].textContent,/^L /);
-  const mp=Object.create(Multiplayer.prototype);Object.assign(mp,{game:g,solo:true});mp.renderHud();assert.match(nodes['match-timer'].textContent,/^L /);
-}));
+
 check('A fatal projectile retires all old shots before the next can damage a respawn',()=>{
   const scene=new THREE.Scene(),p=body(),g={scene,physics:p,camera,city:{raycast:()=>null}};
   const enemy={health:100,type:'dummy',position:new THREE.Vector3(0,.1,0),mesh:new THREE.Group(),body:{material:{emissive:{setHex(){}}}},bar:{scale:{},quaternion:new THREE.Quaternion()},ring:{},flash:0,stagger:0,cooldown:1,windup:0};

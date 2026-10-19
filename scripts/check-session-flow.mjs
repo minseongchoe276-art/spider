@@ -3,7 +3,6 @@ import * as THREE from 'three';
 import { GameApp } from '../src/main.js';
 import { GamepadInput } from '../src/GamepadInput.js';
 import { Multiplayer } from '../src/Multiplayer.js';
-import { TimeTrialSystem } from '../src/TimeTrial.js';
 import { CombatPractice } from '../src/CombatPractice.js';
 import { cleanSettings } from '../src/PlayerSettings.js';
 
@@ -25,8 +24,7 @@ function element(hidden = false) {
 function dom(run) {
   const names = ['window', 'document', 'navigator', 'KeyboardEvent', 'MouseEvent', 'setTimeout'];
   const descriptors = new Map(names.map(name => [name, Object.getOwnPropertyDescriptor(globalThis, name)]));
-  const nodes = new Map(['controls-guide', 'btn-close-guide', 'btn-start-game', 'btn-time-trial',
-    'btn-menu-time-trial', 'trial-status'].map(id => [id, element(id === 'controls-guide')]));
+  const nodes = new Map(['controls-guide', 'btn-close-guide', 'btn-start-game'].map(id => [id, element(id === 'controls-guide')]));
   const document = new EventTarget();
   Object.assign(document, { getElementById: id => nodes.get(id) || null, querySelector: () => null,
     body: element(), pointerLockElement: null, exitPointerLock() { this.pointerLockElement = null; this.dispatchEvent(new Event('pointerlockchange')); } });
@@ -47,8 +45,7 @@ function app() {
       resetPosition() { game.resets++; this.position.copy(city.getRooftopSpawn()); } },
     combat: { mode: 'web', enemies: [], toggle() { this.mode = this.mode === 'web' ? 'combat' : 'web'; }, clearHeld() {}, cancel() { game.cancels++; }, clearEnemies() { this.enemies = []; } },
     tpsCamera: { handleMouseMove() { game.cameraMoves++; } },
-    timeTrial: new TimeTrialSystem(scene, city, audio),
-    experience: { ghost: { stop() {} }, raceStarted() { game.races++; } },
+    experience: {},
     resets: 0, cancels: 0, races: 0, cameraMoves: 0, resetCamera() {}, showNotice(message) { this.notice = message; },
   });
   const practice = Object.create(CombatPractice.prototype);
@@ -94,44 +91,9 @@ check('Repeated Escape closes help only once before opening the pause menu', () 
   const repeat = new Event('keydown', { cancelable: true }); Object.defineProperties(repeat, { code: { value: 'Escape' }, repeat: { value: true } });
   window.dispatchEvent(repeat); assert(!game.helpOpen); assert(!game.isPaused);
 }));
-check('Starting a race retires practice enemies, projectiles and the current strike', () => dom(() => {
-  const game = app(), mesh = new THREE.Mesh(new THREE.SphereGeometry(.1), new THREE.MeshBasicMaterial()); game.scene.add(mesh);
-  game.combat.mode = 'combat';
-  game.combat.enemies.push({ health: 100 }); game.practice.projectiles.push({ mesh });
-  game.toggleTimeTrial(); assert(game.timeTrial.isActive); assert.equal(game.races, 1);
-  assert(!game.practice.active, 'Practice AI still runs during the race'); assert.equal(game.combat.enemies.length, 0);
-  assert.equal(game.practice.projectiles.length, 0); assert(!game.scene.children.includes(mesh)); assert.equal(game.cancels, 1);
-  assert.equal(game.combat.mode, 'web', 'The race starts with ground clicks still assigned to punching');
-}));
-check('A menu race start resumes play with fresh time and focus; menu stop stays paused', () => dom(nodes => {
-  const game = app(); game.isPaused = true;
-  let drains = 0; game.clock = { getDelta() { drains++; return 90; } };
-  game.initUIListeners(); nodes.get('btn-menu-time-trial').dispatchEvent(new Event('click'));
-  assert(game.timeTrial.isActive); assert(!game.isPaused); assert.equal(game.races, 1);
-  assert(drains > 0); assert.equal(document.activeElement, game.canvas);
-  assert.equal(nodes.get('btn-menu-time-trial').textContent, '레이스 종료');
-  game.setPaused(true); nodes.get('btn-menu-time-trial').dispatchEvent(new Event('click')); assert(!game.timeTrial.isActive); assert(game.isPaused);
-  assert.equal(nodes.get('btn-menu-time-trial').textContent, '레이스 시작');
-}));
-check('Unavailable race terrain preserves position, pause and practice', () => dom(() => {
-  const game = app(); game.isPaused = true; game.timeTrial.createCourse = () => false;
-  const before = game.physics.position.clone(); game.toggleTimeTrial(true);
-  assert.match(game.notice || '', /지형/); assert(game.isPaused); assert(game.practice.active);
-  assert(game.physics.position.equals(before)); assert.equal(game.resets, 0);
-}));
-check('A failed keyboard race start also preserves the current solo activity', () => dom(() => {
-  const game = app(); game.timeTrial.createCourse = () => false;
-  const before = game.physics.position.clone(); key('keydown', 'KeyR');
-  assert.match(game.notice || '', /지형/); assert(game.practice.active); assert.equal(game.resets, 0);
-  assert(game.physics.position.equals(before)); assert(!game.isPaused);
-}));
-check('Menu race controls respect online and lost graphics restrictions', () => dom(nodes => {
-  const game = app(); game.isPaused = true; game.contextLost = true; game.toggleTimeTrial(true);
-  assert(!game.timeTrial.isActive); assert.equal(game.resets, 0);
-  game.contextLost = false; game.multiplayer = { room: { phase: 'playing' } }; game.updateTrialHUD();
-  assert(nodes.get('btn-menu-time-trial').classList.contains('hidden'), 'Solo action is shown in an online menu');
-  game.toggleTimeTrial(true); assert(!game.timeTrial.isActive);
-}));
+
+
+
 check('Pad Start does not reintroduce stick movement or camera look in the pause frame', () => dom(() => {
   const game = app(), pad = new GamepadInput(game);
   navigator.getGamepads = () => [{ index: 0, mapping: 'standard', axes: [1, -1, 1, 1],

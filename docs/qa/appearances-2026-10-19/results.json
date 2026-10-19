@@ -1,0 +1,34 @@
+[
+  {
+    "case": "web source, textures and normalized weights",
+    "vertices": 67491,
+    "pass": true
+  },
+  {
+    "case": "combat source, textures and normalized weights",
+    "vertices": 29133,
+    "pass": true
+  },
+  {
+    "case": "40 mode changes preserve pose, mixer, root and momentum; effect expires",
+    "pass": true
+  },
+  {
+    "case": "First-person appearance rebuild preserves view mode",
+    "pass": true
+  },
+  {
+    "case": "web all catalog motions skin finite and bounded",
+    "motionCount": 34,
+    "samples": 170,
+    "maxExtent": 2.9424393142274834,
+    "pass": true
+  },
+  {
+    "case": "combat all catalog motions skin finite and bounded",
+    "motionCount": 34,
+    "samples": 170,
+    "maxExtent": 2.9306460602006865,
+    "pass": true
+  }
+]

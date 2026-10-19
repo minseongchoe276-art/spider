@@ -28,8 +28,8 @@ function app(){const g=Object.create(GameApp.prototype),scene=new THREE.Scene();
     vfx:{update(){}},renderer:{render(){}},showNotice(){},updateHUD(){},updateTrialHUD(){}});
   g.canvas.getBoundingClientRect=()=>({left:0,top:0,width:800,height:600});g.initInputListeners();return g;
 }
-function key(type,code,pad=false){const event=new Event(type,{cancelable:true});Object.defineProperties(event,{code:{value:code},gamepadInput:{value:pad},repeat:{value:false}});window.dispatchEvent(event);}
-function mouse(g,type,button,pad=false){const event=new Event(type,{cancelable:true});Object.defineProperties(event,{button:{value:button},target:{value:g.canvas},gamepadInput:{value:pad},clientX:{value:400},clientY:{value:300}});window.dispatchEvent(event);}
+function key(type,code,pad=false,touch=false){const event=new Event(type,{cancelable:true});Object.defineProperties(event,{code:{value:code},gamepadInput:{value:pad},touchInput:{value:touch},repeat:{value:false}});window.dispatchEvent(event);}
+function mouse(g,type,button,pad=false,touch=false){const event=new Event(type,{cancelable:true});Object.defineProperties(event,{button:{value:button},target:{value:g.canvas},gamepadInput:{value:pad},touchInput:{value:touch},clientX:{value:400},clientY:{value:300}});window.dispatchEvent(event);}
 function fakeClock(g){let now=0,last=0;g.clock={elapsedTime:0,getDelta(){const d=now-last;last=now;this.elapsedTime+=d;return d;}};return seconds=>{now+=seconds;};}
 
 check('Keyboard and pad mode presses share one action until every source releases',()=>dom(()=>{
@@ -43,10 +43,10 @@ check('Remapped left/right modifiers do not double-toggle modes',()=>dom(()=>{
   key('keydown','ShiftLeft');key('keydown','ShiftRight');assert.equal(calls,1);
   key('keyup','ShiftLeft');assert(g.heldKeys.has('KeyQ'));key('keyup','ShiftRight');assert(!g.heldKeys.has('KeyQ'));
 }));
-check('Concurrent race/trick presses fire once and can rearm after all releases',()=>dom(()=>{
+check('Removed race key stays inactive while concurrent trick presses rearm correctly',()=>dom(()=>{
   const g=app();let races=0,tricks=0;g.toggleTimeTrial=()=>races++;g.physics.performAirTrick=()=>tricks++;
   for(const code of ['KeyR','KeyT']){key('keydown',code);key('keydown',code,true);key('keyup',code);key('keyup',code,true);key('keydown',code);key('keyup',code);}
-  assert.equal(races,2);assert.equal(tricks,2);
+  assert.equal(races,0);assert.equal(tricks,2);
 }));
 check('Two devices cannot toggle off the same held web button',()=>dom(()=>{
   const g=app();g.preferences.values.settings.webToggle=true;g.physics.state='FALLING';
@@ -63,13 +63,13 @@ check('Toggle on then off between physics frames cancels both pending launches',
   g.physics.update(1/60,g.input,g.camera);assert.equal(shots,0,'A cancelled toggle still fired a pending web');
 }));
 check('Resume drops time without animation frames while active stalls still count',()=>dom(()=>{
-  const g=app(),advance=fakeClock(g);let timed=0;g.timeTrial.update=(_p,elapsed)=>{timed+=elapsed;};
+  const g=app(),advance=fakeClock(g);let timed=0;g.experience={update(_dt,elapsed){if(!g.isPaused)timed+=elapsed;}};
   g.setPaused(true);advance(90);g.setPaused(false);advance(1/60);g.animate();assert(Math.abs(timed-1/60)<1e-9);
-  advance(.8);g.animate();assert(Math.abs(timed-(.8+1/60))<1e-9,'Active frame stalls must remain in race time');
+  advance(.8);g.animate();assert(Math.abs(timed-(.8+1/60))<1e-9,'Active frame stalls must remain in elapsed frame time');
 }));
 check('A pad resume within the animation callback also excludes suspended time',()=>dom(()=>{
   const g=app(),advance=fakeClock(g);let timed=0;
-  g.isPaused=true;g.timeTrial.update=(_p,elapsed)=>{timed+=elapsed;};
+  g.isPaused=true;g.experience={update(_dt,elapsed){if(!g.isPaused)timed+=elapsed;}};
   g.gamepad={update(){if(g.isPaused)g.setPaused(false);}};
   advance(60);g.animate();assert.equal(timed,0);
   advance(1/60);g.animate();assert(Math.abs(timed-1/60)<1e-9);
@@ -83,6 +83,35 @@ check('Resuming cancels hidden key capture, but context-loss rejection leaves it
   const g=app();g.settingsPanel={pending:'forward',cancel(){this.pending=null;}};g.isPaused=true;
   g.contextLost=true;g.setPaused(false);assert.equal(g.settingsPanel.pending,'forward');assert(g.isPaused);
   g.contextLost=false;g.setPaused(false);assert.equal(g.settingsPanel.pending,null);assert(!g.isPaused);
+}));
+check('Touch movement coexists with keyboard and pad, clearing only its own stick',()=>dom(()=>{
+  const g=app();key('keydown','KeyW');g.gamepadDirections={right:true};g.touchDirections={left:true,sprint:true};g.syncHeldInput();
+  assert(g.input.forward&&g.input.right&&g.input.left&&g.input.sprint);
+  g.touchDirections={};g.syncHeldInput();assert(g.input.forward&&g.input.right&&!g.input.left&&!g.input.sprint);
+}));
+check('Touch releases its web with desktop toggle enabled and preserves the opposite hand',()=>dom(()=>{
+  const g=app();g.preferences.values.settings.webToggle=true;g.physics.state='FALLING';
+  mouse(g,'mousedown',0,false,true);mouse(g,'mousedown',2,false,true);
+  assert(g.input.webHold&&g.input.webHoldRight);
+  mouse(g,'mouseup',0,false,true);assert(!g.input.webHold&&g.input.webHoldRight);
+  mouse(g,'mouseup',2,false,true);assert(!g.input.webHoldRight);
+}));
+check('Keyboard-held guard survives a touch release of the same action',()=>dom(()=>{
+  const g=app();let guarded=false;g.combat.guard=value=>guarded=value;
+  key('keydown','KeyB');key('keydown','KeyB',false,true);key('keyup','KeyB',false,true);
+  assert(guarded&&g.input.guard);key('keyup','KeyB');assert(!guarded&&!g.input.guard);
+}));
+check('Pause clears touch-owned keyboard, webs, and joystick',()=>dom(()=>{
+  const g=app();key('keydown','KeyF',false,true);mouse(g,'mousedown',0,false,true);g.touchDirections={forward:true};g.syncHeldInput();
+  g.setPaused(true);assert.equal(g.touchHeldKeys.size,0);assert.equal(g.touchMouseButtons.size,0);
+  assert(!g.input.forward&&!g.input.wallRun&&!g.input.webHold);
+}));
+check('Space explicitly jumps from a grounded held strand without an automatic launch',()=>dom(()=>{
+  const g=app();g.physics.position.set(0,.1,0);g.physics.state='IDLE';g.physics.findBestAnchor=()=>new THREE.Vector3(0,30,30);
+  assert(g.physics.startSwing(g.camera));g.input.webHold=true;g.input.webFireHeld=true;
+  g.physics.update(1/60,g.input,g.camera);assert.equal(g.physics.velocity.y,0);assert.equal(g.physics.position.y,.1);
+  key('keydown','Space');assert(!g.physics.isSwinging&&g.input.jump);
+  g.physics.update(1/60,g.input,g.camera);assert(g.physics.velocity.y>0);
 }));
 check('Pause preserves adaptive resolution and clears stale frame samples',()=>dom(()=>{
   const g=app(),e=Object.create(PlayerExperience.prototype),budget=new PerformanceBudget();budget.reset(.9);budget.samples=[70,90];budget.bad=1;

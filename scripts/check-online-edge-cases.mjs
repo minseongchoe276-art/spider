@@ -3,7 +3,6 @@ import * as THREE from 'three';
 import {Multiplayer} from '../src/Multiplayer.js';
 import {RemoteMotion,sanitizePose} from '../src/RemoteMotion.js';
 import {GameApp} from '../src/main.js';
-import {RaceGhost} from '../src/RaceGhost.js';
 import {PlayerExperience} from '../src/PlayerExperience.js';
 const results=[];
 function check(name,run){try{run();results.push({name,status:'PASS'});}catch(e){results.push({name,status:'FAIL',error:e.message});}}
@@ -52,18 +51,7 @@ check('Solo play restores a previously hidden spectator character',()=>{
  const state=match({id:'me'});state.mp.solo=true;state.group.visible=false;state.mp.render=()=>{};
  state.mp.beginSoloReady();assert.equal(state.group.visible,true);
 });
-check('Race completion records the finish sample and final split',()=>{
- const scene=new THREE.Scene(),ghost=new RaceGhost(scene),position=new THREE.Vector3();
- let saved;const progression={data:{ghosts:{}},recordGhost(_id,time,samples,splits){saved={time,samples,splits};}};
- ghost.start('course',progression,position,0);
- const trial={courseId:'course',isActive:true,elapsedTime:.5,currentIndex:1,splitTimes:[.5],checkpoints:[{position:new THREE.Vector3(1,0,0)},{position:new THREE.Vector3(2,0,0)}]};
- ghost.update(trial,position,0,false);
- Object.assign(trial,{isActive:false,elapsedTime:1,currentIndex:2,splitTimes:[.5,1]});
- const experience=Object.create(PlayerExperience.prototype);
- Object.assign(experience,{ghost,refreshProgress(){},game:{physics:{position,facingAngle:0},progression,timeTrial:trial,city:{getRooftopSpawn:()=>new THREE.Vector3()}}});
- experience.raceFinished({totalTime:1});
- assert.equal(saved.samples.at(-1)[0],1);assert.deepEqual(saved.splits,[.5,1]);
-});
+
 check('A late leave acknowledgement does not stop subsequent solo play',()=>{
  const mp=Object.create(Multiplayer.prototype);Object.assign(mp,{room:null,id:null,solo:true,leaveLocal(){this.solo=false;}});
  mp.message({type:'left'});assert.equal(mp.solo,true);

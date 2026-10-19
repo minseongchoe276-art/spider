@@ -62,14 +62,14 @@ check('Zip-to-swing transition retains inward momentum on a slackening strand',(
   const before=p.velocity.clone();assert(p.enterSwingFromPull(camera));
   assert(p.velocity.equals(before),'Transition discarded allowed inward momentum');
 });
-check('Fallback targeting chooses a reachable facade when the highest-scoring facade is blocked',()=>{
+check('A reticle miss never falls back to a different reachable facade',()=>{
   const p=player();p.findBestAnchor=SwingPhysics.prototype.findBestAnchor;
   const hit=(y,z)=>({distance:z,point:new THREE.Vector3(0,y,z),
     face:{normal:new THREE.Vector3(0,0,-1)},object:new THREE.Mesh()});
   const blocked=hit(51,30),clear=hit(29,20);let rays=0;
   p.raycaster.intersectObjects=()=>++rays===1?[]:rays<=4?[blocked]:[clear];
   p.webObstructed=w=>w.anchor.y>40;
-  assert(p.findBestAnchor(camera)?.equals(clear.point),'Blocked best candidate hid usable alternatives');
+  assert.equal(p.findBestAnchor(camera),null,'A miss selected a facade away from the reticle');assert.equal(rays,1,'Targeting scanned for off-reticle alternatives');
 });
 check('A new obstacle across a live zip severs the tether before continuing the pull',()=>{
   const p=player();p.state='WEB_ZIP';p.zipTime=3;

@@ -8,20 +8,22 @@ import { SwingPhysics } from './SwingPhysics.js';
 import { ThirdPersonCamera } from './Camera.js';
 import { SoundController } from './Audio.js';
 import { SpeedLinesEffect } from './SpeedLines.js';
-import { TimeTrialSystem } from './TimeTrial.js';
+import { WorldMap } from './WorldMap.js';
+import { DisplayMode } from './DisplayMode.js';
 import { VFXManager } from './VFX.js';
 import { UrbanGroundCity } from './UrbanGroundCity.js';
 import { Preferences } from './Preferences.js';
 import { HongKongMinimap } from './Minimap.js';
 import { Multiplayer } from './Multiplayer.js';
 import { GROUNDED } from './MotionCatalog.js';
-import {canonicalKey,keyLabel} from './PlayerSettings.js';
+import {canonicalKey} from './PlayerSettings.js';
 import {SettingsPanel} from './SettingsPanel.js';
 import {GamepadInput} from './GamepadInput.js';
+import {TouchControls} from './TouchControls.js';
 import {PlayerExperience} from './PlayerExperience.js';
 import {CombatPractice} from './CombatPractice.js';
 
-const ONE_SHOT_KEYS = new Set(['Space','KeyG','KeyE','KeyT','KeyC','KeyV','KeyQ','KeyR','ControlLeft','ControlRight']);
+const ONE_SHOT_KEYS = new Set(['Space','KeyG','KeyE','KeyT','KeyC','KeyV','KeyQ','ControlLeft','ControlRight']);
 
 export class GameApp {
   constructor() {
@@ -98,8 +100,10 @@ export class GameApp {
     this.gamepad=new GamepadInput(this);
     this.initInputListeners();
     this.initUIListeners();
+    this.touchControls=new TouchControls(this);
     this.applyPreferences();
     this.multiplayer = new Multiplayer(this);
+    this.displayMode = new DisplayMode(this);
 
     this.canvas.addEventListener('webglcontextlost', event => {
       event.preventDefault();
@@ -127,7 +131,7 @@ export class GameApp {
       antialias: true,
       powerPreference: 'high-performance'
     });
-    this.renderer.setSize(window.innerWidth, window.innerHeight);
+    this.renderer.setSize(window.innerWidth, window.innerHeight, false);
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     this.renderer.shadowMap.enabled = true;
     this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
@@ -178,11 +182,18 @@ export class GameApp {
     const sky = new THREE.Mesh(skyGeom, skyMat);
     this.scene.add(sky);
 
-    window.addEventListener('resize', () => {
-      this.camera.aspect = window.innerWidth / window.innerHeight;
-      this.camera.updateProjectionMatrix();
-      this.renderer.setSize(window.innerWidth, window.innerHeight);
-    });
+    window.addEventListener('resize', () => this.resizeViewport());
+  }
+
+  resizeViewport() {
+    const bounds=this.canvas.parentElement?.getBoundingClientRect();
+    const width=Math.max(1,Math.round(bounds?.width || window.innerWidth || 1));
+    const height=Math.max(1,Math.round(bounds?.height || window.innerHeight || 1));
+    if(this.viewportWidth===width && this.viewportHeight===height)return;
+    this.viewportWidth=width;this.viewportHeight=height;
+    this.camera.aspect=width/height;this.camera.updateProjectionMatrix();
+    this.renderer.setSize(width,height,false);
+    this.speedLines?.resize(width,height);this.minimap?.resize();
   }
 
   initSystems() {
@@ -248,7 +259,7 @@ export class GameApp {
     };
     this.tpsCamera = new ThirdPersonCamera(this.camera, this.canvas);
     this.character.setFirstPersonCamera(this.camera);
-    this.timeTrial = new TimeTrialSystem(this.scene, this.city, this.audio);
+    this.worldMap = new WorldMap(this);
     this.hongKongAudit=createHongKongAudit(this);
     this.minimap = new HongKongMinimap({
       canvas: document.getElementById('minimap-canvas'),
@@ -269,7 +280,6 @@ export class GameApp {
       this.input.webFireHeld = false;
       this.input.webHoldRight = false;
       this.input.webFireHeldRight = false;
-      if (this.timeTrial.isActive) { this.timeTrial.stop(); this.updateTrialHUD(); }
       this.resetCamera();
       this.showNotice(reason === 'boundary' ? `플레이 구역(±${this.city.playableHalfExtent || 2400}m)을 벗어나 시작점으로 돌아왔습니다.` : '안전한 시작점으로 돌아왔습니다.');
     };
@@ -335,11 +345,13 @@ export class GameApp {
       if (e.target?.closest?.('input, select, textarea, [contenteditable="true"]') && k !== 'Escape') return;
       if (!this.isPlaying && e.target?.closest?.('button, a') && k !== 'Escape') return;
       if (k === 'Escape' && performance.now() < (this.ignoreEscapeUntil || 0)) return;
+      if(k==='Escape' && this.worldMap?.isOpen){e.preventDefault();this.worldMap.close();return;}
+      if(this.worldMap?.isOpen && k!=='KeyM')return;
       if(k==='Escape' && this.helpOpen){e.preventDefault();if(!e.repeat)this.toggleHelp();return;}
       const gameplayKey = [
         'KeyW', 'KeyA', 'KeyS', 'KeyD', 'ArrowUp', 'ArrowDown',
         'ArrowLeft', 'ArrowRight', 'Home', 'End', 'PageUp', 'PageDown', 'ShiftLeft', 'ShiftRight', 'Space',
-        'KeyG', 'KeyE', 'KeyT', 'KeyF', 'KeyC', 'KeyV', 'KeyR', 'KeyQ', 'KeyB', 'ControlLeft', 'ControlRight'
+        'KeyG', 'KeyE', 'KeyT', 'KeyF', 'KeyC', 'KeyV', 'KeyQ', 'KeyB', 'ControlLeft', 'ControlRight'
       ].includes(k);
       if (gameplayKey && document.getElementById?.('controls-guide') && !document.getElementById('controls-guide').classList.contains('hidden')) return;
       if (gameplayKey && (!this.isPlaying || this.isPaused || this.multiplayer?.spectating)) return;
@@ -347,9 +359,9 @@ export class GameApp {
       if (gameplayKey && e.repeat && ONE_SHOT_KEYS.has(k)) return;
 
       if (gameplayKey) {
-        const keys=e.gamepadInput?(this.gamepadHeldKeys??=new Set()):this.heldKeys;
-        const sources=e.gamepadInput?(this.gamepadKeySources??=new Map()):(this.keyboardKeySources??=new Map());
-        const wasHeld=this.heldKeys.has(k) || this.gamepadHeldKeys?.has(k);
+        const keys=e.touchInput?(this.touchHeldKeys??=new Set()):e.gamepadInput?(this.gamepadHeldKeys??=new Set()):this.heldKeys;
+        const sources=e.touchInput?(this.touchKeySources??=new Map()):e.gamepadInput?(this.gamepadKeySources??=new Map()):(this.keyboardKeySources??=new Map());
+        const wasHeld=this.heldKeys.has(k) || this.gamepadHeldKeys?.has(k) || this.touchHeldKeys?.has(k);
         sources.set(e.code,k);
         keys.add(k);
         if(k==='ShiftLeft' && !wasHeld && !e.repeat && this.preferences?.values.settings?.sprintToggle)this.sprintLatched=!this.sprintLatched;
@@ -365,7 +377,6 @@ export class GameApp {
         this.combat.toggle(this.input);return;
       }
       if(k==='ControlLeft'||k==='ControlRight'){this.combat.dodge(this.input,this.camera);return;}
-      if (k === 'KeyR' && !e.repeat && !this.multiplayer?.room) this.toggleTimeTrial();
       if (!e.repeat && k === 'KeyC') {
         if (this.tpsCamera.mode === 'first') {
           this.tpsCamera.setMode('follow');
@@ -384,6 +395,7 @@ export class GameApp {
         const swinging = this.physics.isSwinging;
         const onWeb = swinging || this.physics.state === 'WEB_ZIP';
         if (onWeb) {
+          const groundedWeb=swinging && this.physics.supportHeight(this.physics.position)!==null;
           this.input.webHold = false;
           this.input.webFireHeld = false;
           this.input.webTap = false;
@@ -392,8 +404,8 @@ export class GameApp {
           this.input.webTapRight = false;
           if (swinging) this.physics.releaseSwing(false);
           else this.physics.clearWebAnchor();
-          this.physics.state = this.physics.velocity.y > 0 ? 'JUMPING' : 'FALLING';
-          this.input.jump = false;
+          this.physics.state = groundedWeb?'IDLE':this.physics.velocity.y > 0 ? 'JUMPING' : 'FALLING';
+          this.input.jump = groundedWeb;
           this.physics.clearPendingInput();
         }
       }
@@ -405,18 +417,18 @@ export class GameApp {
         } else this.physics.performAirJump(this.camera, this.physics.webAimNdc);
       }
       if (k === 'KeyT') this.physics.performAirTrick(this.input);
-      if (k === 'KeyM' && !e.repeat) this.toggleMute();
+      if (k === 'KeyM' && !e.repeat && this.isPlaying) { e.preventDefault(); this.worldMap.toggle(); return; }
       if (k === 'KeyH' && !e.repeat) this.toggleHelp();
       if (k === 'Escape' && !e.repeat) this.togglePause();
     });
 
     window.addEventListener('keyup', (e) => {
-      const sources=e.gamepadInput?this.gamepadKeySources:this.keyboardKeySources;
+      const sources=e.touchInput?(this.touchKeySources??=new Map()):e.gamepadInput?this.gamepadKeySources:this.keyboardKeySources;
       const k = sources?.get(e.code) || canonicalKey(e.code,this.preferences?.values.settings);
       sources?.delete(e.code);
       if(!sources || ![...sources.values()].includes(k))
-        (e.gamepadInput?this.gamepadHeldKeys:this.heldKeys)?.delete(k);
-      if(k==='KeyB' && !this.heldKeys.has(k) && !this.gamepadHeldKeys?.has(k))this.combat?.guard(false);
+        (e.touchInput?this.touchHeldKeys:e.gamepadInput?this.gamepadHeldKeys:this.heldKeys)?.delete(k);
+      if(k==='KeyB' && !this.heldKeys.has(k) && !this.gamepadHeldKeys?.has(k) && !this.touchHeldKeys?.has(k))this.combat?.guard(false);
       this.syncHeldInput();
       // Jump is a one-shot request consumed by physics, not a held button.
       // Clearing it on keyup loses taps completed between two render frames.
@@ -424,11 +436,12 @@ export class GameApp {
 
     // Mouse Buttons
     window.addEventListener('mousedown', (e) => {
+      if (e.sourceCapabilities?.firesTouchEvents) return;
       if (!this.isPlaying || this.isPaused || this.multiplayer?.spectating) return;
       if (document.getElementById?.('controls-guide') && !document.getElementById('controls-guide').classList.contains('hidden')) return;
       if (e.target !== this.canvas) return;
-      const buttons=e.gamepadInput?(this.gamepadMouseButtons??=new Set()):(this.mouseButtons??=new Set());
-      const wasHeld=this.mouseButtons?.has(e.button) || this.gamepadMouseButtons?.has(e.button);
+      const buttons=e.touchInput?(this.touchMouseButtons??=new Set()):e.gamepadInput?(this.gamepadMouseButtons??=new Set()):(this.mouseButtons??=new Set());
+      const wasHeld=this.mouseButtons?.has(e.button) || this.gamepadMouseButtons?.has(e.button) || this.touchMouseButtons?.has(e.button);
       buttons.add(e.button);
       if(wasHeld)return;
       this.audio.ensureContext();
@@ -440,7 +453,7 @@ export class GameApp {
         return;
       }
       if (e.button === 0) {
-        if(this.preferences?.values.settings?.webToggle && this.input.webHold){this.input.webTap=this.input.webHold=this.input.webFireHeld=false;this.physics.releaseWebButton(0);return;}
+        if(!e.touchInput && this.preferences?.values.settings?.webToggle && this.input.webHold){this.input.webTap=this.input.webHold=this.input.webFireHeld=false;this.physics.releaseWebButton(0);return;}
         // Holding the left button keeps one rope. Releasing lets it go.
         this.physics.setWebAimPoint(
           e.clientX,
@@ -454,7 +467,7 @@ export class GameApp {
         this.input.webHold = true;
       }
       if (e.button === 2) {
-        if(this.preferences?.values.settings?.webToggle && this.input.webHoldRight){this.input.webTapRight=this.input.webHoldRight=this.input.webFireHeldRight=false;this.physics.releaseWebButton(2);return;}
+        if(!e.touchInput && this.preferences?.values.settings?.webToggle && this.input.webHoldRight){this.input.webTapRight=this.input.webHoldRight=this.input.webFireHeldRight=false;this.physics.releaseWebButton(2);return;}
         // The opposite hand uses the same held pendulum as the left button.
         this.physics.setWebAimPoint(
           e.clientX,
@@ -475,15 +488,15 @@ export class GameApp {
     });
 
     window.addEventListener('mouseup', (e) => {
-      (e.gamepadInput?this.gamepadMouseButtons:this.mouseButtons)?.delete(e.button);
+      (e.touchInput?this.touchMouseButtons:e.gamepadInput?this.gamepadMouseButtons:this.mouseButtons)?.delete(e.button);
       if(e.button===1){this.cameraDragActive = false;this.lastMousePosition = null;}
-      if(this.mouseButtons?.has(e.button) || this.gamepadMouseButtons?.has(e.button))return;
-      if (e.button === 0 && !this.preferences?.values.settings?.webToggle) {
+      if(this.mouseButtons?.has(e.button) || this.gamepadMouseButtons?.has(e.button) || this.touchMouseButtons?.has(e.button))return;
+      if (e.button === 0 && (e.touchInput || !this.preferences?.values.settings?.webToggle)) {
         this.input.webFireHeld = false;
         this.input.webHold = false;
         this.physics?.releaseWebButton?.(0);
       }
-      if (e.button === 2 && !this.preferences?.values.settings?.webToggle) {
+      if (e.button === 2 && (e.touchInput || !this.preferences?.values.settings?.webToggle)) {
         this.input.webFireHeldRight = false;
         this.input.webHoldRight = false;
         this.physics?.releaseWebButton?.(2);
@@ -518,7 +531,7 @@ export class GameApp {
 
     document.addEventListener('pointerlockchange', () => {
       const locked = document.pointerLockElement === this.canvas;
-      if (this.hadPointerLock && !locked && this.isPlaying && !this.isPaused && !this.helpOpen) {
+      if (this.hadPointerLock && !locked && this.isPlaying && !this.isPaused && !this.helpOpen && !this.displayTransition) {
         this.setPaused(true);
         this.ignoreEscapeUntil = performance.now() + 100;
       }
@@ -527,6 +540,7 @@ export class GameApp {
 
     // Canvas click to resume / lock pointer
     this.canvas.addEventListener('click', () => {
+      if(this.touchControls?.enabled)return;
       if (this.isPlaying && document.pointerLockElement !== this.canvas) {
         if (this.pointerLockWanted) {
         Promise.resolve(this.canvas.requestPointerLock?.()).catch(() => {});
@@ -549,9 +563,9 @@ export class GameApp {
       if (this.clickToPlayOverlay) this.clickToPlayOverlay.classList.add('hidden');
       this.isPlaying = true;
       this.canvas.focus();
-      this.pointerLockWanted = lock;
+      this.pointerLockWanted = lock && !this.touchControls?.enabled;
       this.setPaused(false);
-      if (lock) Promise.resolve(this.canvas.requestPointerLock?.()).catch(() => {});
+      if (this.pointerLockWanted) Promise.resolve(this.canvas.requestPointerLock?.()).catch(() => {});
     };
 
     if (btnStart) btnStart.addEventListener('click', () => startAction(true));
@@ -564,8 +578,6 @@ export class GameApp {
 
     document.getElementById('btn-retry-load')?.addEventListener('click', () => location.reload());
     document.getElementById('btn-restart')?.addEventListener('click', () => this.restartGame());
-    document.getElementById('btn-time-trial')?.addEventListener('click', () => this.toggleTimeTrial());
-    document.getElementById('btn-menu-time-trial')?.addEventListener('click', () => this.toggleTimeTrial(true));
     document.getElementById('btn-close-guide')?.addEventListener('click', () => this.toggleHelp());
     document.getElementById('reduced-motion')?.addEventListener('click', () => {
       this.preferences.values.reducedMotion = !this.preferences.values.reducedMotion;
@@ -636,6 +648,7 @@ export class GameApp {
   }
 
   async toggleFullscreen() {
+    if(this.displayMode)return this.displayMode.toggle();
     try {
       if (document.fullscreenElement) await document.exitFullscreen();
       else if (document.documentElement.requestFullscreen) await document.documentElement.requestFullscreen();
@@ -648,7 +661,7 @@ export class GameApp {
     this.setHelpOpen(false,false);
     if(!paused){
       // A background tab may receive no animation frames for minutes. Drain
-      // that interval before resuming the simulation and active race clock.
+      // that interval before resuming the simulation.
       if(this.isPaused)this.clock?.getDelta();
       this.settingsPanel?.cancel();
     }
@@ -669,9 +682,6 @@ export class GameApp {
     if (dragButton) dragButton.textContent = resume ? '마우스 잠금 없이 계속하기' : '마우스 잠금 없이 시작 · 휠 버튼 드래그';
     document.getElementById('btn-restart')?.classList.toggle('hidden', !resume || !!this.multiplayer?.room);
     if (paused) setTimeout(() => {if(this.isPaused && this.isPlaying)document.getElementById('btn-start-game')?.focus();}, 0);
-    const menuTrial=document.getElementById('btn-menu-time-trial');
-    menuTrial?.classList.toggle('hidden',!resume || !!this.multiplayer?.room);
-    if(menuTrial)menuTrial.disabled=!!this.contextLost;
     if (paused) this.audio.setWindSpeed(0);
     if (this.clickToPlayOverlay) {
       if (this.isPaused) {
@@ -683,6 +693,8 @@ export class GameApp {
   }
 
   clearInput() {
+    this.touchControls?.release();
+    this.touchHeldKeys?.clear();this.touchKeySources?.clear();this.touchMouseButtons?.clear();this.touchDirections={};
     this.combat?.clearHeld();
     this.heldKeys.clear();
     this.gamepadHeldKeys?.clear();
@@ -695,13 +707,13 @@ export class GameApp {
   }
 
   syncHeldInput() {
-    const held = (...keys) => keys.some(key => this.heldKeys.has(key) || this.gamepadHeldKeys?.has(key));
-    const pad=this.gamepadDirections||{};
-    this.input.forward = !!pad.forward || held('KeyW','ArrowUp');
-    this.input.backward = !!pad.backward || held('KeyS','ArrowDown');
-    this.input.left = !!pad.left || held('KeyA','ArrowLeft');
-    this.input.right = !!pad.right || held('KeyD','ArrowRight');
-    this.input.sprint = this.preferences?.values.settings.sprintToggle?!!this.sprintLatched:held('ShiftLeft','ShiftRight');
+    const held = (...keys) => keys.some(key => this.heldKeys.has(key) || this.gamepadHeldKeys?.has(key) || this.touchHeldKeys?.has(key));
+    const pad=this.gamepadDirections||{},touch=this.touchDirections||{};
+    this.input.forward = !!pad.forward || !!touch.forward || held('KeyW','ArrowUp');
+    this.input.backward = !!pad.backward || !!touch.backward || held('KeyS','ArrowDown');
+    this.input.left = !!pad.left || !!touch.left || held('KeyA','ArrowLeft');
+    this.input.right = !!pad.right || !!touch.right || held('KeyD','ArrowRight');
+    this.input.sprint = !!touch.sprint || (this.preferences?.values.settings.sprintToggle?!!this.sprintLatched:held('ShiftLeft','ShiftRight'));
     this.input.wallRun = held('KeyF');
     this.input.guard = held('KeyB');
     this.input.webZipHeld = held('KeyE') && this.combat?.mode !== 'combat';
@@ -732,7 +744,7 @@ export class GameApp {
     const { muted, reducedMotion, quality,settings } = this.preferences.values;
     if(this.appliedFov!==settings.fov){this.tpsCamera.firstPersonFov=settings.fov;this.appliedFov=settings.fov;}
     Object.assign(this.tpsCamera,{sensitivity:settings.sensitivity,invertY:settings.invertY,baseFov:settings.fov,maxFov:Math.min(95,settings.fov+12),shakeStrength:settings.shake,speedFov:settings.speedFov,followStrength:settings.follow});
-    this.physics.aimAssist=this.multiplayer?.room?true:settings.aimAssist;
+    this.physics.aimAssist=false;
     this.physics.softBoundary=true;
     this.audio.configure?.(settings);
     for(const id of ['hud-top-left','minimap-panel','session-hud']){const el=document.getElementById(id);if(el)el.style.scale=String(settings.hudScale);}
@@ -744,7 +756,6 @@ export class GameApp {
     document.getElementById('graphics-quality').value = quality;
     this.tpsCamera.reducedMotion = reducedMotion;
     this.city.reducedMotion = reducedMotion;
-    this.timeTrial.reducedMotion = reducedMotion;
     document.body.classList.toggle('reduced-motion', reducedMotion);
     if(this.appliedQuality!==quality || this.appliedAutoQuality!==settings.autoQuality){
       const ceiling={ low: 1, balanced: 1.5, high: 2 }[quality] || 1.5;
@@ -774,74 +785,8 @@ export class GameApp {
     if (this.multiplayer?.room) return;
     this.clearInput();
     this.physics.resetPosition();
-    this.physics.stuntScore = 0;
-    this.experience?.ghost.stop();
-    this.timeTrial.stop();
-    this.updateTrialHUD();
     this.resetCamera();
     this.showNotice('시작점으로 돌아왔습니다. 계속하기를 눌러 플레이하세요.');
-  }
-
-  toggleTimeTrial(fromMenu = false) {
-    if (this.multiplayer?.room) return;
-    if (!this.isPlaying || this.contextLost || (this.isPaused && !fromMenu) || this.helpOpen) return;
-    if (this.timeTrial.isActive && !this.timeTrial.isCompleted) {this.timeTrial.stop();this.experience?.ghost.stop();}
-    else {
-      if (!this.timeTrial.start()) this.showNotice('코스 지형이 아직 준비되지 않았거나 링을 놓을 공간이 부족합니다. 로컬 도시를 이용하거나 잠시 후 다시 시도하세요.');
-      else {
-        this.practice?.stop();this.combat?.cancel();this.clearInput();
-        if(this.combat?.mode==='combat')this.combat.toggle(this.input);
-        this.physics.resetPosition();this.resetCamera();this.experience?.raceStarted();
-        if(fromMenu){
-          this.setPaused(false);this.canvas.focus?.();
-          if(this.pointerLockWanted)Promise.resolve(this.canvas.requestPointerLock?.()).catch(()=>{});
-        }
-        this.showNotice('타임트라이얼 시작! 금색 링을 순서대로 통과하세요. 레이스 키로 종료합니다.');
-      }
-    }
-    this.updateTrialHUD();
-  }
-
-  updateTrialHUD(result = null) {
-    const status = document.getElementById('trial-status');
-    const course = this.timeTrial.courseId;
-    const trialKey=keyLabel(this.preferences.values.settings?.bindings?.trial || 'KeyR');
-    const best = this.preferences.values.bestTimes[course];
-    if (result?.completed) {
-      const race=this.experience?.raceFinished(result);
-      const newBest = this.preferences.recordTime(course, result.totalTime);
-      const saveWarning = newBest && !this.preferences.lastSaveSucceeded
-        ? ' · 저장할 수 없어 최고 기록은 이번 실행에만 적용됩니다.' : '';
-      this.showNotice(`완주 ${result.totalTime.toFixed(2)}초${newBest ? ' · 최고 기록!' : ''}${race?' · '+race.medal+'메달':''}${saveWarning}`);
-    }
-    if (status) status.textContent = this.timeTrial.isActive
-      ? this.timeTrial.isCompleted ? `완주 ${this.timeTrial.elapsedTime.toFixed(2)}초 · ${trialKey} 재도전`
-        : `링 ${this.timeTrial.currentIndex + 1}/${this.timeTrial.checkpoints.length} · ${this.timeTrial.elapsedTime.toFixed(2)}초`
-      : `${trialKey} 타임트라이얼${best ? ` · 최고 ${best.toFixed(2)}초` : ''}`;
-    const target = document.getElementById('trial-target');
-    const checkpoint = this.timeTrial.isActive && !this.timeTrial.isCompleted
-      ? this.timeTrial.checkpoints[this.timeTrial.currentIndex] : null;
-    if (target) {
-      target.textContent = '';
-      if (checkpoint) {
-        const offset = checkpoint.position.clone().sub(this.physics.position);
-        const forward = new THREE.Vector3(); this.camera.getWorldDirection(forward); forward.y=0; forward.normalize();
-        const right = new THREE.Vector3().crossVectors(forward,new THREE.Vector3(0,1,0));
-        const angle = Math.atan2(offset.dot(right),offset.dot(forward));
-        const arrows = ['↑','↗','→','↘','↓','↙','←','↖'];
-        const arrow = arrows[(Math.round(angle/(Math.PI/4))+8)%8];
-        target.textContent = `다음 링 ${Math.round(offset.length())}m ${arrow} · 높이 ${offset.y>=0?'+':''}${Math.round(offset.y)}m`;
-        const split=this.experience?.ghost.splitDelta;if(Number.isFinite(split))target.textContent+=` · 구간 ${split>=0?'+':''}${split.toFixed(2)}초`;
-      }
-    }
-    for(const id of ['btn-time-trial','btn-menu-time-trial']){
-      const button=document.getElementById(id);
-      if(button){
-        button.textContent=this.timeTrial.isActive && !this.timeTrial.isCompleted?'레이스 종료':'레이스 시작';
-        button.disabled=!!this.contextLost;
-        if(id==='btn-menu-time-trial')button.classList.toggle('hidden',!this.isPlaying || !!this.multiplayer?.room);
-      }
-    }
   }
 
   updateHUD(speedKmh, altitude, state) {
@@ -907,6 +852,7 @@ export class GameApp {
 
     const spectating = !!this.multiplayer?.spectating;
     const wasSuspended=!this.isPlaying || this.isPaused || spectating || this.gameplaySuspended;
+    this.touchControls?.update();
     this.gamepad?.update(delta);
     // Start can resume from inside this callback after elapsed was read.
     // Begin timing with the next frame in that case, including for quality QA.
@@ -944,9 +890,6 @@ export class GameApp {
         this.speedLines.setSpeed(this.preferences.values.reducedMotion ? 0 : speedKmh*this.preferences.values.settings.speedLines, delta);
       }
       this.vfx.update(delta);
-      // Simulation steps stay bounded, but active race time includes frame stalls.
-      const trialResult = this.timeTrial.update(this.physics.position, elapsed);
-      this.updateTrialHUD(trialResult);
       // 4. Update HUD
       this.updateHUD(speedKmh, this.physics.position.y, this.physics.state);
     }
@@ -956,6 +899,7 @@ export class GameApp {
     if (this.assetsReady) this.minimap?.update((spectating && this.multiplayer.spectatePoint()) || this.physics.renderPosition,
       this.physics.facingAngle, this.clock.elapsedTime);
 
+    this.worldMap?.update();
     this.hongKongAudit?.update(this.clock.elapsedTime);
 
     // Render 3D Scene

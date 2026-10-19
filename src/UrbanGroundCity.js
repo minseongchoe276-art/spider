@@ -83,7 +83,7 @@ export class UrbanGroundCity {
     const { url, reorientation } = tilesetConfig;
     const tiles = new TilesRenderer(url);
     tiles.errorTarget = index === 0 ? 48 : 32;
-    tiles.downloadQueue.maxJobsPerOrigin = 3;
+    tiles.downloadQueue.maxJobsPerOrigin = 6;
     tiles.parseQueue.maxJobs = 1;
     if (!this.tileCache.unloadPriorityCallback) {
       this.tileCache.unloadPriorityCallback = tiles.lruCache.unloadPriorityCallback;
@@ -172,7 +172,11 @@ export class UrbanGroundCity {
       }
     }
     this.root.updateMatrixWorld(true);
-    this.refreshBuildingMeshes();
+    // Visibility traversal and bounds checks need not run at render frequency.
+    if (performance.now() - (this.lastMeshRefresh || 0) >= 100) {
+      this.lastMeshRefresh = performance.now();
+      this.refreshBuildingMeshes();
+    }
     this.collisionWorld.setActiveMeshes(this.buildingMeshes);
     this.collisionWorld.update(this.playerPosition, this.isReady
       ? undefined : { budgetMs: 8, maxIndices: 24000 });

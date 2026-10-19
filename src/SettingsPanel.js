@@ -1,7 +1,7 @@
 import { BINDINGS, SETTING_LIMITS, keyLabel, rebind } from './PlayerSettings.js';
-const labels={forward:'앞으로',backward:'뒤로',left:'왼쪽',right:'오른쪽',sprint:'질주',jump:'점프',wall:'벽 이동',zip:'웹 집 / 훅',trick:'공중 묘기',mode:'전투 / 거미줄',guard:'방어',heavy:'강공격',dodge:'회피',recenter:'카메라 정렬',camera:'시점',trial:'기존 레이스'};
+const labels={forward:'앞으로',backward:'뒤로',left:'왼쪽',right:'오른쪽',sprint:'질주',jump:'점프',wall:'벽 이동',zip:'웹 집 / 훅',trick:'공중 묘기',mode:'전투 / 거미줄',guard:'방어',heavy:'강공격',dodge:'회피',recenter:'카메라 정렬',camera:'시점'};
 const ranges={sensitivity:'마우스 / 스틱 감도',fov:'시야각',shake:'카메라 흔들림',speedFov:'속도 시야각 변화',follow:'자동 추적',speedLines:'속도선',effectsVolume:'효과음',environmentVolume:'환경음',musicVolume:'음악',hudScale:'HUD 크기'};
-const switches={invertY:'세로축 반전',webToggle:'거미줄 클릭으로 유지 / 해제',sprintToggle:'질주 키로 유지 / 해제',aimAssist:'거미줄 부착점 보조',autoQuality:'성능에 맞춰 해상도 조절',trajectory:'비행 방향 미리 보기',ghost:'기존 레이스 고스트'};
+const switches={invertY:'세로축 반전',webToggle:'거미줄 클릭으로 유지 / 해제',sprintToggle:'질주 키로 유지 / 해제',autoQuality:'성능에 맞춰 해상도 조절',trajectory:'비행 방향 미리 보기'};
 export class SettingsPanel {
   constructor(game) {
     this.game=game;const root=document.getElementById('extended-settings');if(!root)return;
@@ -30,7 +30,7 @@ export class SettingsPanel {
       if(!this.pending)return;event.preventDefault();event.stopImmediatePropagation();
       if(event.code==='Escape')return this.cancel();
       if(!rebind(game.preferences.values.settings,this.pending,event.code)){
-        this.buttons[this.pending].textContent='사용할 수 없는 키 · H 도움말 / M 음소거';return;
+        this.buttons[this.pending].textContent='사용할 수 없는 키 · H 도움말 / M 전체 지도';return;
       }
       game.clearInput();this.cancel();this.save();
     },true);
@@ -43,11 +43,11 @@ export class SettingsPanel {
     document.querySelectorAll('[data-action-key]').forEach(el=>{
       el.textContent=keyLabel(this.game.preferences.values.settings.bindings[el.dataset.actionKey]);
     });
-    if(this.game.isPlaying){this.game.updateTrialHUD?.();this.game.multiplayer?.renderHud?.();}
+    if(this.game.isPlaying){this.game.multiplayer?.renderHud?.();}
     document.querySelectorAll('#controls-guide .key-badge, #gameplay-quickbar kbd').forEach(el=>{
       el.dataset.originalKey??=el.textContent;
       const original=el.dataset.originalKey;
-      const names={Q:'mode',G:'heavy',Shift:'sprint',Space:'jump',E:'zip',T:'trick',C:'recenter',V:'camera',R:'trial',B:'guard'};
+      const names={Q:'mode',G:'heavy',Shift:'sprint',Space:'jump',E:'zip',T:'trick',C:'recenter',V:'camera',B:'guard'};
       if(names[original])el.textContent=keyLabel(this.game.preferences.values.settings.bindings[names[original]]);
       if(original==='W A S D')el.textContent=['forward','left','backward','right'].map(a=>keyLabel(this.game.preferences.values.settings.bindings[a])).join(' ');
       if(original==='SPACE')el.textContent=keyLabel(this.game.preferences.values.settings.bindings.jump).toUpperCase();

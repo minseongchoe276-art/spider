@@ -1,3 +1,4 @@
+import {updateAppearance} from './CharacterAppearance.js';
 import * as THREE from 'three';
 import { Character } from './Character.js';
 import { SwingPhysics } from './SwingPhysics.js';
@@ -27,6 +28,7 @@ export function startMotionReview() {
   const panel = document.createElement('section');
   panel.style.cssText = 'position:fixed;top:16px;left:16px;background:#ffffffed;padding:16px;border-radius:12px;max-width:340px;z-index:2';
   panel.innerHTML = `<h2 style="margin:0 0 12px">스파이더맨 모션 검증</h2>
+    <label>외형 <select id="review-appearance"><option value="web">변신 · 거미줄 (기본)</option><option value="combat">사람 · 전투</option></select></label><br>
     <label>모션 <select id="motion"><option>로딩 중</option></select></label>
     <p><button id="pause">재생 / 정지</button> <button id="front">정면 / 측면</button>
     <label>시점 <select id="review-view"><option value="third">3인칭</option><option value="first">1인칭</option></select></label>
@@ -69,7 +71,7 @@ export function startMotionReview() {
   const floor = new THREE.Mesh(new THREE.PlaneGeometry(200,200),new THREE.MeshStandardMaterial({color:0xd8dfe5}));
   floor.rotation.x = -Math.PI / 2; floor.position.y = -0.01;floor.receiveShadow=true; scene.add(floor);
   const camera = new THREE.PerspectiveCamera(42, innerWidth / innerHeight, 0.01, 200);
-  const status = panel.querySelector('output'), select = panel.querySelector('select'), slider = panel.querySelector('input');
+  const status = panel.querySelector('output'), select = panel.querySelector('#motion'), slider = panel.querySelector('input');
   let playing = true, side = false, mode = 'clip', elapsed = 0, history = [], scenario = 'movement', actionHistory = [], breakOn = '';
   const character = new Character(scene, (n, s) => { status.textContent = `${n}% ${s}`; }, async () => {
     // These retained candidates are review-only and never selected by gameplay.
@@ -84,6 +86,8 @@ export function startMotionReview() {
     select.value = 'idle'; choose();
   });
   scene.add(camera);character.setFirstPersonCamera(camera);
+  panel.querySelector('#review-appearance').onchange=()=>{character.combatStance=panel.querySelector('#review-appearance').value==='combat';updateAppearance(character,0);};
+  window.addEventListener('keydown',event=>{if(event.code==='KeyQ'&&!event.repeat){const selector=panel.querySelector('#review-appearance');selector.value=selector.value==='web'?'combat':'web';selector.onchange();}});
   const silent = new Proxy({}, { get: () => () => {} });
   const city = { buildingMeshes: [], colliders: [], checkCollision: City.prototype.checkCollision,raycast:City.prototype.raycast,
     getRooftopSpawn:()=>new THREE.Vector3(0,.1,0) };
@@ -250,6 +254,7 @@ export function startMotionReview() {
     const dt = Math.min(clock.getDelta(),0.05);
     if (character.isLoaded) {
       if (playing && mode === 'clip') character.mixer.update(dt);
+      if(mode==='clip')updateAppearance(character,dt);
       if (playing && mode === 'scenario') {
         advanceScenario(dt);
       }

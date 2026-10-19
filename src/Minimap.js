@@ -123,13 +123,8 @@ export class HongKongMinimap {
     this.mapCamera = new THREE.OrthographicCamera();
     configureTerrainCamera(this.mapCamera,this.city?.playerPosition || new THREE.Vector3(),this.range);
     this.tileCulling = new Map();
-    for (const tiles of this.city?.tilesets || []) {
-      this.tileCulling.set(tiles,tiles.autoDisableRendererCulling);
-      // Multiple selection cameras need per-view mesh culling; otherwise
-      // map-only tiles are needlessly drawn in the full-screen main view.
-      tiles.autoDisableRendererCulling=false;
-      tiles.setCamera(this.mapCamera);
-    }
+    // Reuse the main view's loaded geometry. A second selection camera
+    // used to double streaming demand and evict the player's nearby tiles.
     this.mapScene.add(new THREE.HemisphereLight(0xd5faff,0x17374a,2));
     const sun = new THREE.DirectionalLight(0xffffff,2.4); sun.position.set(-1,3,-2); this.mapScene.add(sun);
     this.terrainMaterial = new THREE.MeshLambertMaterial({color:0x428da0,side:THREE.DoubleSide});
@@ -213,7 +208,6 @@ export class HongKongMinimap {
     const size = Math.max(120, Math.round(this.canvas.getBoundingClientRect().width || 220));
     if (this.renderer) {
       this.size=size; this.renderer.setSize(size,size,false);
-      for (const tiles of this.city?.tilesets || []) tiles.setResolutionFromRenderer(this.mapCamera,this.renderer);
       return;
     }
     const dpr = Math.min(window.devicePixelRatio || 1, 2);

@@ -7,7 +7,6 @@ import { ThirdPersonCamera } from '../src/Camera.js';
 import { StreamedCollision } from '../src/StreamedCollision.js';
 import { UrbanGroundCity } from '../src/UrbanGroundCity.js';
 import { City } from '../src/City.js';
-import { TimeTrialSystem } from '../src/TimeTrial.js';
 import { Preferences } from '../src/Preferences.js';
 import { VFXManager } from '../src/VFX.js';
 import { SpeedLinesEffect } from '../src/SpeedLines.js';
@@ -160,57 +159,13 @@ await check('Large triangle conversion is incremental and unload cancels pending
 await check('Disposal before Rapier init settles safely',async()=>{
   const world=new StreamedCollision();world.dispose();await world.initialized;assert(!world.ready);
 });
-await check('Time trial rejects an unloaded course without throwing',()=>{
-  const trial=new TimeTrialSystem(new THREE.Scene(),{getRooftopSpawn:()=>new THREE.Vector3(),collisionWorld:{groundAt:()=>null}},silent);
-  assert.equal(trial.start(),false);assert(!trial.isActive);trial.dispose();
-});
-await check('Time trial rings are placed clear of procedural rooftops',()=>{
-  const trial=new TimeTrialSystem(new THREE.Scene(),{getRooftopSpawn:()=>new THREE.Vector3(0,95,0),colliders:[{minX:-10,maxX:10,minZ:30,maxZ:50,maxY:120}]},silent);
-  assert(trial.start());assert.equal(trial.checkpoints[0].position.y,124);trial.dispose();
-});
-await check('A loaded but obstructed checkpoint moves to a nearby clear location',()=>{
-  const trial=new TimeTrialSystem(new THREE.Scene(),{
-    getRooftopSpawn:()=>new THREE.Vector3(),collisionWorld:{groundAt:()=>20},
-    raycast:pos=>Math.abs(pos.x)<4 ? {distance:1} : null},silent);
-  assert(trial.start());assert.equal(trial.checkpoints[0].position.x,8);
-  assert.equal(trial.checkpoints.length,8);trial.dispose();
-});
-await check('Changed checkpoint layouts never share a best-time key',()=>{
-  let height=20;
-  const trial=new TimeTrialSystem(new THREE.Scene(),{isStreamed:true,
-    getRooftopSpawn:()=>new THREE.Vector3(),collisionWorld:{groundAt:()=>height}},silent);
-  assert(trial.start());const first=trial.courseId;
-  assert(trial.start());assert.equal(trial.courseId,first);
-  height=30;assert(trial.start());assert.notEqual(trial.courseId,first);
-  const preferences=new Preferences();assert(preferences.recordTime(first,10));
-  assert.equal(preferences.values.bestTimes[trial.courseId],undefined);trial.dispose();
-});
-await check('Race uses active simulation time and catches a fast ring crossing',()=>{
-  const trial=new TimeTrialSystem(new THREE.Scene(),{},silent);
-  trial.isActive=true;trial.startTime=performance.now()-100000;
-  trial.checkpoints=[{position:new THREE.Vector3(0,5,10),normal:new THREE.Vector3(0,0,1),radius:3.2,mesh:new THREE.Mesh()}];
-  trial.previousPosition=new THREE.Vector3(0,5,0);
-  const result=trial.update(new THREE.Vector3(0,5,20),.1);
-  assert(result.completed);assert.equal(result.totalTime,.05);
-  assert.equal(trial.update(new THREE.Vector3(),5),null);assert.equal(trial.elapsedTime,.05);trial.dispose();
-});
-await check('Being beside the ring does not count as passing its aperture',()=>{
-  const trial=new TimeTrialSystem(new THREE.Scene(),{},silent);trial.isActive=true;
-  trial.checkpoints=[{position:new THREE.Vector3(),normal:new THREE.Vector3(0,0,1),radius:3.2,mesh:new THREE.Mesh()}];
-  trial.previousPosition=new THREE.Vector3(4,0,-1);trial.update(new THREE.Vector3(4,0,1),.1);
-  assert.equal(trial.currentIndex,0);trial.dispose();
-});
-await check('Corrupt, invalid and inaccessible storage cannot break play',()=>{
-  for(const storage of [{getItem:()=>'{broken'}, {getItem(){throw new Error('denied');}},
-      {getItem:()=>JSON.stringify({muted:'yes',quality:'ultra',bestTimes:{'hong-kong-v2':-1}})}]) {
-    const p=new Preferences(storage);assert.equal(p.values.muted,false);assert.equal(p.values.quality,'balanced');
-    assert.deepEqual(p.values.bestTimes,{});
-  }
-  const p=new Preferences({getItem:()=>null,setItem(){throw new Error('quota');}});
-  assert.equal(p.save(),false);assert(p.recordTime('procedural-v2',10));
-  assert(!p.recordTime('procedural-v2',12));assert(!p.recordTime('procedural-v2',NaN));
-  assert(p.recordTime('procedural-v2',8));assert.equal(p.values.bestTimes['procedural-v2'],8);
-});
+
+
+
+
+
+
+
 await check('Particles remain visible away from the original cached bounds',()=>{
   const vfx=new VFXManager(new THREE.Scene());assert.equal(vfx.pointsMesh.frustumCulled,false);
   assert.equal(vfx.positions[1],-9999);vfx.spawnWebImpact(new THREE.Vector3(1000,30,1000));vfx.update(1/60);

@@ -60,16 +60,7 @@ export class SwingPhysics {
     this.onStuntCallback = null;
     this.airTrickChain = new Set();
     this.airTrickRepeats = new Map();
-    this.character.onAirTrickComplete = key => {
-      const trick = AIR_TRICKS[key];
-      const repeats = this.airTrickRepeats.get(key) || 0;
-      this.airTrickRepeats.set(key, repeats + 1);
-      this.airTrickChain.add(key);
-      const multiplier = Math.min(2.5, 1 + (this.airTrickChain.size - 1) * .3);
-      const points = Math.round(trick.points * multiplier / (2 ** Math.min(repeats, 3)));
-      this.stuntScore += points;
-      this.onStuntCallback?.(`${trick.label} · ${this.airTrickChain.size}종 연결 ×${multiplier.toFixed(1)}`, points);
-    };
+    this.character.onAirTrickComplete = () => {};
 
     // Character rotation
     this.facingAngle = 0;
@@ -125,60 +116,10 @@ export class SwingPhysics {
       return this.bestAnchorCandidate;
     };
 
-    // A deliberate screen point wins. Pointer lock uses the view center.
+    // The visible reticle is the only targeting authority. A miss stays a miss.
     this.raycaster.far = 130;
     this.raycaster.setFromCamera(this.webAimNdc, camera);
-    const aimed = accept(this.castWebSurface(this.raycaster.ray.origin,this.raycaster.ray.direction,130));
-    this.raycaster.far = 140;
-    // Only a clearly rideable point skips the search. A lower hit stays in
-    // the running so a downward look can still catch a higher real surface.
-    if (aimed && (this.aimAssist === false || aimed.y >= eye.y + 11)) return aimed;
-    if(this.aimAssist===false)return null;
-
-    // Search ahead and above the travel direction. Height is a preference,
-    // not a narrow band, so a usable facade just under the old cutoff still counts.
-    const look = new THREE.Vector3();
-    camera.getWorldDirection(look);
-    const travel = this.velocity.clone();
-    travel.y = 0;
-    const ahead = look.clone();
-    ahead.y = 0;
-    if (ahead.lengthSq() < 1e-6) {
-      if (travel.lengthSq() > 1) ahead.copy(travel);
-      else ahead.set(0, 0, 1);
-    }
-    ahead.normalize();
-    if (travel.lengthSq() > 4) ahead.lerp(travel.clone().normalize(), 0.35).normalize();
-    const yaw0 = Math.atan2(ahead.x, ahead.z);
-    let best = null;
-    let bestScore = -Infinity;
-    for (const pitch of [0.35, 0.6, 0.85, 1.1]) {
-      for (const yaw of [0, 0.2, -0.2, 0.4, -0.4]) {
-        const direction = new THREE.Vector3(
-          Math.sin(yaw0 + yaw) * Math.cos(pitch),
-          Math.sin(pitch),
-          Math.cos(yaw0 + yaw) * Math.cos(pitch)
-        );
-        this.raycaster.set(eye, direction);
-        this.raycaster.far = 130;
-        const hit = this.castWebSurface(eye,direction,130);
-        this.raycaster.far = 140;
-        if (!hit || hit.distance < 4 || hit.distance > 130 || hit.point.distanceTo(eye)>130) continue;
-        // Rank only reachable surfaces, otherwise a blocked high facade
-        // masks every usable alternative in the search cone.
-        const normal=hit.face ? surfaceNormal(hit) : hit.normal?.clone().normalize() || new THREE.Vector3(0,1,0);
-        if(this.webObstructed({anchor:hit.point,normal}))continue;
-        const height = hit.point.y - eye.y;
-        if (height < 4.5) continue;
-        let score = 90 - hit.distance * 0.28 + Math.min(Math.max(height, 0), 36) * 1.35;
-        if (height >= 8 && height <= 50) score += 16;
-        if (look.y < -0.08) score += Math.min(height, 24) * 0.35;
-        if (score > bestScore) { bestScore = score; best = hit; }
-      }
-    }
-    // A deliberate point that can already be ridden wins over a barely higher search hit.
-    if (best && aimed && aimed.y >= eye.y + 4 && best.point.y < aimed.y + 2.5) return aimed;
-    return best ? accept(best) : aimed;
+    return accept(this.castWebSurface(this.raycaster.ray.origin,this.raycaster.ray.direction,130));
   }
 
   castWebSurface(origin,direction,distance) {
@@ -243,30 +184,11 @@ export class SwingPhysics {
     this.webs=this.webs.filter(web=>web.hand!==hand && (!shot || (web.button??0)!==button));
     this.webs.push({hand,button,anchor:anchor.clone(),normal:this.lastWebNormal.clone(),
       object:this.anchorObject,length:this.ropeLength,supportCollider:attachment.supportCollider,
-      launchPending:(this.launchAssistAvailable && (grounded || this.velocity.y > 0)) || this.webs.some(web=>web.launchPending)});
+      launchPending:false});
     this.character.fireWeb?.(this.anchorPoint,hand);
     this.syncWebHands();
     if(shot?.advance!==false)this.nextWebHand=hand==='left'?'right':'left';
 
-    // Only the first grounded shot launches the player. Airborne reattachments
-    // keep momentum, so alternating hands cannot manufacture repeated boosts.
-    if (grounded && this.launchAssistAvailable) {
-      this.velocity.y = Math.max(this.velocity.y, this.jumpForce);
-      // Launch toward the anchor in the world. Camera forward can point the
-      // opposite way and spends the jump pulling against the new rope.
-      const toward = anchor.clone().sub(this.position);
-      toward.y = 0;
-      if (toward.lengthSq() < 1e-4) {
-        camera.getWorldDirection(toward);
-        toward.y = 0;
-      }
-      if (toward.lengthSq() < 1e-6) toward.set(Math.sin(this.facingAngle), 0, Math.cos(this.facingAngle));
-      toward.normalize();
-      const speed = this.velocity.dot(toward);
-      if (speed < 14) this.velocity.addScaledVector(toward, 14 - speed);
-      this.audio.playJump();
-      this.jumpBuffer = 0; this.coyoteTime = 0;
-    }
     this.launchAssistAvailable = false;
 
     this.audio.playWebShoot();
@@ -443,19 +365,14 @@ export class SwingPhysics {
     let anchor = hit && hit.distance >= 4 && (hit.face || hit.normal) && hit.point.distanceTo(this.position)<=80 ? hit.point.clone() : null;
     let normal = anchor ? hit.face ? surfaceNormal(hit) : hit.normal.clone().normalize() : null;
     let object = anchor ? hit.object : null;
-    if (!anchor && this.aimAssist !== false) {
-      anchor = this.findBestAnchor(camera)?.clone();
-      normal = this.bestAnchorNormal?.clone(); object = this.bestAnchorObject;
-    }
     if (!anchor || anchor.distanceTo(this.position)>80) return false;
     normal ||= new THREE.Vector3(0,1,0);
     if(!this.anchorSupported({anchor,normal}))return false;
     const target = anchor.clone().addScaledVector(normal, 1.05);
     // Keep the player's feet above street level when the clicked surface is
     // near the ground; otherwise the zip immediately collides with the floor.
-    target.y = Math.max(this.position.y + 3, target.y - 0.8);
+    target.y -= 0.8;
     const offset = target.clone().sub(this.position);
-    offset.y = Math.min(offset.y, 7);
     const travel = offset.clampLength(0, this.zipMaxDistance);
     target.copy(this.position).add(travel);
     if (sweepBody(this.position, target, this.city.colliders)) return false;
@@ -538,8 +455,7 @@ export class SwingPhysics {
     const showMiss=(hand)=>{
       this.raycaster.setFromCamera(this.webAimNdc,camera);
       const direction=this.raycaster.ray.direction.clone();
-      // A downward camera angle would bury the missed strand in the roof.
-      direction.y=Math.max(direction.y,0.1);direction.normalize();
+      direction.normalize();
       const target=this.position.clone().add(new THREE.Vector3(0,1.3,0)).addScaledVector(direction,28);
       this.character.fireWebMiss?.(target,hand);
       this.audio.playWebShoot?.();
@@ -671,7 +587,11 @@ export class SwingPhysics {
     this.syncWebHands();
     this.anchorPoint=latest.anchor;this.anchorObject=latest.object;this.ropeLength=latest.length;
     this.lastWebAnchor=latest.anchor.clone();this.lastWebNormal=latest.normal?.clone() || this.lastWebNormal;
-    this.velocity.y-=this.gravity*delta;
+    // A supported body receives the floor's normal force. Applying gravity
+    // through a taut diagonal rope before resolving the floor pumped sideways
+    // speed into a player standing still with a held strand.
+    const supportedRest=Math.abs(this.velocity.y)<1e-6 && this.supportHeight(this.position)!==null;
+    if(!supportedRest)this.velocity.y-=this.gravity*delta;
     // The takeoff is ballistic. Catch the strand near the jump apex at its
     // current distance, then keep that length for the entire swing. This
     // transfers weight without pulling or snapping the body to a smaller radius.
@@ -1053,10 +973,11 @@ export class SwingPhysics {
       const supportY=(floor ?? support)+.1;
       if(this.isSwinging && (input.webHold || input.webFireHeld || input.webHoldRight || input.webFireHeldRight) &&
         this.webs.some(web=>web.anchor.y>supportY+4)){
-        // A grazing floor contact keeps the held pivot and returns to its arc.
+        // Ground contact dissipates motion; a held strand must never create
+        // an automatic jump or pump energy back into the pendulum.
         this.position.y=this.city.resolveMovement?Math.max(supportY,resolved.position.y):supportY;
-        this.velocity.y=Math.max(this.velocity.y,this.jumpForce);
-        for(const web of this.webs)web.launchPending=true;
+        this.velocity.y=0;
+        const friction=Math.exp(-3*delta);this.velocity.x*=friction;this.velocity.z*=friction;
         this.recoveryTime=0;this.state='SWINGING';return;
       }
       const airborne = !GROUNDED.includes(this.state);

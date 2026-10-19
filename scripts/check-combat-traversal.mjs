@@ -10,7 +10,7 @@ const {actor}=await loadMotionRig(),results=[];
 for(const fps of [24,60,144])for(const key of ['jab','cross']){
  const c=actor(),p=new SwingPhysics(c.scene,{colliders:[],buildingMeshes:[],raycast:City.prototype.raycast,checkCollision:City.prototype.checkCollision},c,new Proxy({},{get:()=>()=>{}}));
  p.position.set(0,.1,0);p.previousFixedPosition.copy(p.position);p.renderPosition.copy(p.position);p.state='IDLE';
- const combat=new CombatSystem(c.scene,p,c),camera=new THREE.PerspectiveCamera();camera.lookAt(0,0,1);camera.updateMatrixWorld(true);
+ const combat=new CombatSystem(c.scene,p,c),camera=new THREE.PerspectiveCamera();camera.lookAt(0,0,1);camera.updateMatrixWorld(true);combat.toggle();
  try{
   const duration=ATTACKS[key].duration;let ankle=0,activeFrames=0;
   (key==='jab'?combat.attack(camera):combat.straight(camera));

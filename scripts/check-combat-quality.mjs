@@ -37,7 +37,7 @@ const c=actor();try{
 }finally{disposeRig(c);}
 for(const fps of [24,60,144])for(const key of ['jab','cross','special'])for(const sprint of [false,true]){
  const c=actor(),city={colliders:[],buildingMeshes:[],raycast:City.prototype.raycast,checkCollision:City.prototype.checkCollision};
- const p=new SwingPhysics(c.scene,city,c,new Proxy({},{get:()=>()=>{}})),combat=new CombatSystem(c.scene,p,c),camera=new THREE.PerspectiveCamera();camera.lookAt(0,0,1);camera.updateMatrixWorld(true);
+ const p=new SwingPhysics(c.scene,city,c,new Proxy({},{get:()=>()=>{}})),combat=new CombatSystem(c.scene,p,c),camera=new THREE.PerspectiveCamera();camera.lookAt(0,0,1);camera.updateMatrixWorld(true);combat.toggle();
  p.position.set(0,.1,0);p.previousFixedPosition.copy(p.position);p.renderPosition.copy(p.position);p.state='IDLE';
  try{
   // Establish a moving guard before entering the strike, as during real play.
@@ -89,10 +89,10 @@ const {PlayerExperience}=await import('../src/PlayerExperience.js');
 const oldDocument=globalThis.document,oldWindow=globalThis.window;
 try{
  globalThis.document={getElementById:()=>null};globalThis.window={addEventListener(){}};
- const notices=[],game={scene:new THREE.Scene(),physics:{},character:{},combat:{},city:{},audio:{playSurfaceStep(){}},showNotice:m=>notices.push(m)};
+ const notices=[],game={scene:new THREE.Scene(),physics:{},character:{},combat:{},city:{},audio:{playSurfaceStep(){}},showNotice:m=>notices.push(m),showStuntNotice:m=>notices.push(m)};
  const experience=new PlayerExperience(game,{getItem:()=>null,setItem(){}});
  game.physics.onStuntCallback('스윙 연결',80);game.character.onAirTrickComplete('front');game.physics.onLanding(new THREE.Vector3(),10);
- assert.equal(game.progression.data.score,0);assert.equal(experience.stunts,undefined);assert.equal(notices.length,0);
+ assert(!Object.hasOwn(game.progression.data,'score'));assert.equal(experience.stunts,undefined);assert.equal(notices.length,0);
  game.physics.onStuntCallback('이동 안내',0);assert.deepEqual(notices,['이동 안내']);
  results.push({case:'swing, trick and landing callbacks cannot score or show combo notices',pass:true});
 }finally{globalThis.document=oldDocument;globalThis.window=oldWindow;}

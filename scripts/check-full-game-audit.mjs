@@ -50,15 +50,8 @@ check('Changing quality synchronizes the adaptive controller with manual resolut
     experience:{performance:budget},renderer:{setPixelRatio(){},shadowMap:{}},tpsCamera:{},physics:{},city:{},timeTrial:{},audio:{isMuted:false},applyWebTheme(){}});
   g.applyPreferences();assert.equal(budget.level,2);assert.equal(budget.bad,0);assert.equal(budget.samples.length,0);
 }));
-check('Medals remain bounded during a long session and preserve an improved record',()=>{
-  const p=new Progression();for(let i=0;i<100;i++)p.recordGhost(`procedural-v5-${i.toString(16).padStart(8,'0')}`,5,[[0,0,.1,0,0],[5,1,.1,0,0]],[5],'bronze');
-  assert.equal(Object.keys(p.data.medals).length,64);assert.equal(Object.keys(p.data.ghosts).length,6);
-  p.recordGhost('procedural-v5-00000063',4,[[0,0,.1,0,0],[4,1,.1,0,0]],[4],'gold');assert.equal(p.data.medals['procedural-v5-00000063'],'gold');
-});
-check('Stored ghost splits must be strictly ordered to compare checkpoint deltas',()=>{
-  const saved={ghosts:{'procedural-v5-12345678':{time:5,samples:[[0,0,.1,0,0],[5,1,.1,0,0]],splits:[3,2,4]}}};
-  const p=new Progression({getItem:()=>JSON.stringify(saved)});assert.deepEqual(p.data.ghosts['procedural-v5-12345678'].splits,[]);
-});
+
+
 check('Small city warnings stay quiet at spawn and appear near the actual boundary',()=>dom(nodes=>{
   const g={physics:{position:new THREE.Vector3(99.6,95,90),velocity:new THREE.Vector3(),state:'IDLE'},city:{playableHalfExtent:160},
     isPlaying:true,isPaused:false,preferences:{values:{quality:'balanced',settings:cleanSettings({trajectory:false})}},progression:new Progression(),
@@ -73,11 +66,7 @@ check('Context loss exposes retry controls and blocks gameplay until recovery',(
   g.showLoadingError('복구 대기');assert(!screen.classList.contains('hidden'));assert(!nodes.get('loading-recovery').classList.contains('hidden'));
   g.setPaused(false);assert(g.isPaused);
 }));
-check('Race start forgets prior travel samples so reset distance is not earned',()=>{
-  const progression=new Progression();progression.visit(new THREE.Vector3(0,.1,0),'procedural');
-  const e=Object.create(PlayerExperience.prototype);e.game={progression,physics:{position:new THREE.Vector3(50,.1,0),facingAngle:0},timeTrial:{courseId:'procedural-v5-12345678'}};
-  e.stunts={fail(){}};e.ghost={start(){}};e.raceStarted();progression.visit(new THREE.Vector3(50,.1,0),'procedural');assert.equal(progression.data.distance,0);
-});
+
 check('Preview searches stay at 10Hz at 30/60/144fps while actual shots search immediately',()=>{
   for(const fps of [30,60,144]){
     const p=new SwingPhysics(new THREE.Scene(),{buildingMeshes:[],colliders:[],checkCollision:()=>({collided:false})},{group:new THREE.Group(),update(){},fireWeb(){}},silent);

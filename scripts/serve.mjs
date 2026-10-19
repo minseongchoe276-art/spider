@@ -10,7 +10,7 @@ import { attachRooms } from './rooms.mjs';
 // Production assets and an allowlisted, read-only Hong Kong tile proxy.
 const root=fileURLToPath(new URL('../dist/',import.meta.url));
 const types={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8',
-  '.css':'text/css; charset=utf-8','.json':'application/json','.wasm':'application/wasm',
+  '.css':'text/css; charset=utf-8','.json':'application/json','.webmanifest':'application/manifest+json','.wasm':'application/wasm',
   '.glb':'model/gltf-binary','.png':'image/png','.jpg':'image/jpeg','.svg':'image/svg+xml','.fbx':'application/octet-stream'};
 const server=createServer(async(req,res)=>{
   const fail=(code,message)=>{if(!res.headersSent){res.writeHead(code,{'Content-Type':'text/plain; charset=utf-8'});res.end(message);}else res.destroy();};
@@ -25,7 +25,7 @@ const server=createServer(async(req,res)=>{
     try {
       const response=await fetch(new URL(upstreamPath,'https://data.map.gov.hk'),{method:req.method,signal:controller.signal});
       res.writeHead(response.status,{'Content-Type':response.headers.get('content-type')||'application/octet-stream',
-        'X-Content-Type-Options':'nosniff','Cache-Control':response.ok?'public, max-age=300':'no-store'});
+        'X-Content-Type-Options':'nosniff','Cache-Control':response.ok?(upstreamPath.endsWith('.json')?'public, max-age=300':'public, max-age=86400'):'no-store'});
       if(req.method==='HEAD'||!response.body) res.end();
       else await pipeline(Readable.fromWeb(response.body),res);
     } catch {fail(502,'City data unavailable. Retry or choose the local city.');}

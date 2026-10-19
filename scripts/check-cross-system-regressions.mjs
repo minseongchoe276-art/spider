@@ -7,7 +7,6 @@ import {SupabaseRooms} from '../src/SupabaseRooms.js';
 import {CombatSystem} from '../src/Combat.js';
 import {GamepadInput} from '../src/GamepadInput.js';
 import {cleanSettings,deadzone} from '../src/PlayerSettings.js';
-import {TimeTrialSystem} from '../src/TimeTrial.js';
 import {Preferences} from '../src/Preferences.js';
 import {Progression} from '../src/Progression.js';
 import {PlayerExperience} from '../src/PlayerExperience.js';
@@ -93,30 +92,9 @@ await check('Old Supabase broadcasts cannot restore a departed or replaced room'
   rooms.roomCode=null;channels[1].handlers.state({payload:{type:'room'}});assert.equal(events.length,2);
 });
 
-await check('Finish timing and final ghost position use the actual gate crossing at every FPS',()=>{
-  for(const fps of [30,60,144]){
-    const trial=new TimeTrialSystem(new THREE.Scene(),{},silent);trial.isActive=true;trial.previousPosition=new THREE.Vector3();
-    trial.checkpoints=[{position:new THREE.Vector3(0,0,10),normal:new THREE.Vector3(0,0,1),radius:3,mesh:new THREE.Mesh()}];
-    let result;for(let n=1;n<=fps && !result?.completed;n++)result=trial.update(new THREE.Vector3(0,0,20*n/fps),1/fps);
-    assert(Math.abs(result.totalTime-.5)<1e-8);assert.equal(result.finishPosition.z,10);
-    assert.equal(trial.splitTimes.at(-1),result.totalTime);trial.dispose();
-  }
-});
-await check('Malformed frame duration never corrupts checkpoint times',()=>{
-  for(const dt of [NaN,Infinity,-1]){
-    const trial=new TimeTrialSystem(new THREE.Scene(),{},silent);trial.isActive=true;trial.previousPosition=new THREE.Vector3();
-    trial.checkpoints=[{position:new THREE.Vector3(0,0,10),normal:new THREE.Vector3(0,0,1),radius:3,mesh:new THREE.Mesh()}];
-    assert.equal(trial.update(new THREE.Vector3(0,0,20),dt).totalTime,0);assert.equal(trial.splitTimes[0],0);trial.dispose();
-  }
-});
-await check('New timing records persist without comparing against older timing rules',()=>{
-  let saved;const storage={getItem:()=>saved,setItem:(_key,value)=>{saved=value;}};
-  const prefs=new Preferences(storage);prefs.recordTime('procedural-v4-12345678',1);prefs.recordTime('procedural-v5-12345678',2);
-  assert.equal(new Preferences(storage).values.bestTimes['procedural-v5-12345678'],2);
-  const progress=new Progression(storage);progress.recordGhost('procedural-v5-12345678',1,[[0,0,0,0,0],[1,1,0,0,0]],[1],'gold');
-  assert(new Progression(storage).data.ghosts['procedural-v5-12345678']);
-  progress.bank(NaN);assert(Number.isFinite(progress.data.score));
-});
+
+
+
 await check('Audio changes preserve first-person zoom and adaptive resolution; FOV stays bounded',()=>withDOM(()=>{
   document.getElementById=id=>id==='graphics-quality'?{}:null;
   const app=Object.create(GameApp.prototype),settings=cleanSettings();let ratio=0;

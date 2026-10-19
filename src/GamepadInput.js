@@ -10,7 +10,7 @@ export class GamepadInput {
   release(){for(const b of this.buttons)this.action(b,false);this.buttons.clear();this.axes={};this.game.gamepadDirections={};this.game.syncHeldInput();}
   action(button,down){const g=this.game,bindings=g.preferences.values.settings.bindings;
     if([6,7].includes(button))this.mouse(button===7?0:2,down);
-    else {const map={0:'jump',1:'dodge',2:'zip',3:'mode',4:'guard',5:'trick',10:'sprint',11:'recenter',12:'wall',13:'heavy',14:'camera',15:'trial'};
+    else {const map={0:'jump',1:'dodge',2:'zip',3:'mode',4:'guard',5:'trick',10:'sprint',11:'recenter',12:'wall',13:'heavy',14:'camera'};
       const code=button===9?'Escape':bindings[map[button]];if(code)this.key(code,down);}}
   update(delta) {
     const pad=Array.from(navigator.getGamepads?.()||[]).find(p=>p?.mapping==='standard');

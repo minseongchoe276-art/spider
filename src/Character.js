@@ -1,3 +1,4 @@
+import {loadAppearances,updateAppearance,disposeAppearance} from './CharacterAppearance.js';
 import {createJointConstraints,constrainJoints} from './JointConstraints.js';
 import { AIR_TRICKS, trickRotation } from './AirTricks.js';
 import { createWebStrand, updateWebStrand } from './WebStrand.js';
@@ -71,6 +72,7 @@ export class Character {
     // Wait for the actual actor instead of permanently cloning a loading proxy.
     if (!source.model || !source.mixer || source.isLoaded === false) return false;
     if (this.model) return true;
+    this.appearances = source.appearances;
     this.model = cloneSkeleton(source.model);
     this.model.visible = true;
     this.model.position.set(0,0,0); this.model.rotation.set(0,0,0);
@@ -96,6 +98,7 @@ export class Character {
   }
 
   disposeCopy() {
+    disposeAppearance(this);
     disposeFirstPersonRig(this.firstPersonRig);
     this.copySource = null;
     this.mixer?.stopAllAction(); if (this.model) this.mixer?.uncacheRoot(this.model);
@@ -163,6 +166,9 @@ export class Character {
       this.model.scale.setScalar(1);
       this.model.position.y = 0;
 
+      this.onProgress?.(45, '두 캐릭터의 공통 뼈대와 외형 준비 중...');
+      this.appearances = await loadAppearances();
+
       // Enable shadows and find bones
       this.model.traverse((child) => {
         if (child.isMesh) {
@@ -192,6 +198,7 @@ export class Character {
       this.webFingerRig=null;
       if(this.firstPersonRig?.parent)this.setFirstPersonCamera(this.firstPersonRig.parent);
 
+      updateAppearance(this,0);
       this.mixer = new THREE.AnimationMixer(this.model);
 
       // Embedded animation if available
@@ -554,6 +561,7 @@ export class Character {
   }
 
   update(delta, state, velocity, anchorPos) {
+    updateAppearance(this,delta);
     this.poseState=state;this.wallViewWeight=THREE.MathUtils.damp(this.wallViewWeight || 0,['WALL_RUNNING','MANTLING'].includes(state)?1:0,14,delta);
     this.webMotionSpeed=velocity.length();
     this.viewMoveSpeed=Math.hypot(velocity.x,velocity.z);

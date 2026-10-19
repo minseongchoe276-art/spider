@@ -7,7 +7,6 @@ import { RemoteMotion, capturePose, sanitizePose } from './RemoteMotion.js';
 import { ATTACKS } from './Combat.js';
 import {PURSUIT,arenaContains} from './PursuitRules.js';
 import {PlayerPositionMarkers} from './PlayerPositionMarkers.js';
-import {keyLabel} from './PlayerSettings.js';
 
 const $ = id => document.getElementById(id);
 const label = mode => mode === 'tag' ? '경찰과 도망자' : '자유 플레이';
@@ -222,7 +221,7 @@ export class Multiplayer {
       $('pursuit-hud').textContent='';$('spectate-next')?.classList.add('hidden');
       $('match-role').textContent='혼자 플레이';
       $('match-health').textContent='자유 탐험';
-      $('match-timer').textContent=`${keyLabel(this.game.preferences?.values.settings?.bindings?.trial || 'KeyR')} · 타임트라이얼`;
+      $('match-timer').textContent='M · 전체 지도';
       $('match-count').textContent='1명';
       return;
     }
@@ -261,7 +260,7 @@ export class Multiplayer {
       game.character.targetFacingAngle=me.facing;
       game.character.visualYaw=me.facing;
     }else this.placeMatchSpawn();
-    game.resetCamera();game.timeTrial.stop();game.combat.cancel();game.combat.clearEnemies();
+    game.resetCamera();game.combat.cancel();game.combat.clearEnemies();
     const desiredMode=me?.team==='police'?'combat':'web';
     game.applyPreferences();
     if(game.combat.mode!==desiredMode)game.combat.toggle(game.input);
@@ -316,14 +315,14 @@ export class Multiplayer {
     this.setSpectating(false);
     game.clickToPlayOverlay?.classList.add('hidden');
     game.isPlaying=true;game.isPaused=false;game.clearInput();game.audio.ensureContext();game.pointerLockWanted=true;
-    game.physics.resetPosition();game.resetCamera();game.timeTrial.stop();game.combat.cancel();game.combat.clearEnemies();
+    game.physics.resetPosition();game.resetCamera();game.combat.cancel();game.combat.clearEnemies();
     if(game.combat.mode!=='web')game.combat.toggle(game.input);
     game.experience?.restorePosition();game.applyPreferences();
     this.render();
-    game.showNotice('혼자 플레이 시작! 화면을 클릭해 카메라를 조작하세요. 레이스 키로 타임트라이얼을 시작할 수 있습니다.');
+    game.showNotice('혼자 플레이 시작! 화면을 클릭해 카메라를 조작하세요. M 키로 전체 지도를 확인하세요.');
   }
   finish(){this.pendingPunch=null;clearInterval(this.beginTimer);this.beginTimer=null;this.setSpectating(false);this.game.isPlaying=false;this.game.clearInput();this.game.setPaused(true);this.game.clickToPlayOverlay?.classList.add('hidden');this.clearAvatars();}
-  leaveLocal(){this.game.character.group.visible=true;this.rescueStarted=null;this.rescueTarget=null;if(this.goalMarker)this.goalMarker.visible=false;$('pursuit-hud').textContent='';$('spectate-next')?.classList.add('hidden');try{sessionStorage.removeItem('web-runner-room-resume');}catch{}this.arena=null;this.pulseUntil=0;this.game.experience?.ghost.stop();this.game.practice?.stop();this.room=null;this.pendingPunch=null;clearInterval(this.beginTimer);this.beginTimer=null;this.spectating=false;this.solo=false;clearInterval(this.soloStartTimer);this.soloStartTimer=null;this.players=[];this.id=null;this.lastPhase=null;this.game.isPlaying=false;this.game.clearInput();this.game.setPaused(true);this.game.clickToPlayOverlay?.classList.add('hidden');this.game.timeTrial.stop();this.game.updateTrialHUD();this.clearAvatars();this.render();this.send({type:'list'});}
+  leaveLocal(){this.game.character.group.visible=true;this.rescueStarted=null;this.rescueTarget=null;if(this.goalMarker)this.goalMarker.visible=false;$('pursuit-hud').textContent='';$('spectate-next')?.classList.add('hidden');try{sessionStorage.removeItem('web-runner-room-resume');}catch{}this.arena=null;this.pulseUntil=0;this.game.practice?.stop();this.room=null;this.pendingPunch=null;clearInterval(this.beginTimer);this.beginTimer=null;this.spectating=false;this.solo=false;clearInterval(this.soloStartTimer);this.soloStartTimer=null;this.players=[];this.id=null;this.lastPhase=null;this.game.isPlaying=false;this.game.clearInput();this.game.setPaused(true);this.game.clickToPlayOverlay?.classList.add('hidden');this.clearAvatars();this.render();this.send({type:'list'});}
   attack(kind,hand='left'){
     const me=this.players.find(p=>p.id===this.id);
     if(this.spectating||me?.eliminated||this.room?.phase!=='playing'||me?.team!=='police')return;

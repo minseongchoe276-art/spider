@@ -18,50 +18,32 @@ function player() {
 const wall = new THREE.Mesh(new THREE.BoxGeometry(24, 60, 2));
 wall.position.set(0, 30, 30); wall.updateMatrixWorld(true);
 const aimed = player(); aimed.city.buildingMeshes = [wall];
-assert(aimed.findBestAnchor(camera).y > 8, 'Downward view selected a street-level pivot');
+assert(aimed.findBestAnchor(camera).y < 4, 'Downward reticle was redirected to a higher facade');
 aimed.aimAssist = false;
 assert(aimed.findBestAnchor(camera).y < 4, 'Manual aim was overridden with assistance disabled');
-console.log('PASS downward view selects a higher real surface; manual aim remains exact');
+console.log('PASS downward view stays on the exact reticle with either saved assist setting');
 
 let reference;
-for (const fps of [30, 60, 144]) {
-  const p = player(); p.findBestAnchor = () => new THREE.Vector3(0, 30, 30);
-  assert(p.startSwing(camera)); assert(p.velocity.y >= p.jumpForce);
-  const held = {webHold:true, webFireHeld:true, forward:true};
-  let peak = 0, maxStep = 0, caughtLength;
-  const launchLength=p.ropeLength;
-  for (let n = 0; n < fps * 4; n++) {
-    const before = p.position.clone(); p.update(1/fps, held, camera);
-    if(p.webs[0]?.launchPending) {
-      assert.equal(p.ropeLength,launchLength,'Takeoff reeled the rope before catching');
-      const t=(n+1)/fps-p.accumulator;
-      assert(Math.abs(p.position.y-(.1+26*t-14*t*t-14*p.fixedStep*t))<1e-6,`Takeoff arc mismatch fps=${fps} frame=${n} time=${t} y=${p.position.y} expected=${.1+26*t-14*t*t-14*p.fixedStep*t}`);
-    } else {
-      caughtLength ??= p.ropeLength;
-      assert.equal(p.ropeLength,caughtLength,'Caught rope length changed');
-    }
-    assert(p.isSwinging, 'Ground launch immediately dropped the rope');
-    assert(p.position.y >= .1, 'Swing arc entered the street');
-    assert(p.position.distanceTo(p.anchorPoint) <= p.ropeLength + 1e-6);
-    maxStep = Math.max(maxStep, before.distanceTo(p.position)); peak = Math.max(peak, p.position.y);
-    if (n / fps >= 0.6) assert(p.position.y > 4, 'Arc settled too close to the street');
+for (const fps of [30,60,144]) {
+  const p=player();p.findBestAnchor=()=>new THREE.Vector3(0,30,30);assert(p.startSwing(camera));
+  const anchor=p.anchorPoint.clone(),length=p.ropeLength;
+  for(let n=0;n<fps*4;n++){
+    p.update(1/fps,{webHold:true,webFireHeld:true},camera);
+    assert(p.isSwinging&&p.anchorPoint.equals(anchor));assert.equal(p.ropeLength,length);
+    assert(Math.abs(p.position.y-.1)<1e-7);assert(p.velocity.length()<1e-7,'Held ground web manufactured movement');
   }
-  assert(peak > 10, 'Ground launch did not climb into a useful arc');
-  assert(maxStep < 2, 'Launch teleported the player');
-  if(reference) assert(p.position.distanceTo(reference) < 1e-7);
-  reference = p.position.clone();
-  const velocity = p.velocity.clone(); p.releaseSwing(false); assert(p.velocity.equals(velocity));
-  console.log(`PASS grounded launch, clear arc, ballistic takeoff, fixed caught rope and momentum release at ${fps}fps`);
+  if(reference)assert(p.position.distanceTo(reference)<1e-7);reference=p.position.clone();
+  console.log(`PASS grounded web stays attached without automatic jump or drift at ${fps}fps`);
 }
 
-// A manually initiated jump also catches at its apex, with no second impulse.
+// An explicit jump and attachment preserve momentum without a second impulse.
 const manual = player();
 manual.update(1/120,{jump:true},camera);
 manual.findBestAnchor=()=>new THREE.Vector3(0,30,30);
 const jumpVelocity=manual.velocity.clone();
 assert(manual.startSwing(camera));
 assert(manual.velocity.equals(jumpVelocity),'Shooting during a jump injected another launch');
-assert(manual.webs[0].launchPending,'A manual jump caught the rope before gaining height');
+assert.equal(manual.webs[0].launchPending,false,'The rope length should apply immediately after a deliberate shot');
 const earlyRelease=manual.velocity.clone();manual.releaseSwing(true);
 assert(manual.velocity.equals(earlyRelease),'Space release added speed during takeoff');
 console.log('PASS Space then web shares the ballistic takeoff, and early release preserves velocity');
@@ -69,8 +51,8 @@ console.log('PASS Space then web shares the ballistic takeoff, and early release
 const away = new THREE.PerspectiveCamera();
 const launch = player(); launch.findBestAnchor = () => new THREE.Vector3(0, 30, 30);
 assert(launch.startSwing(away));
-assert(launch.velocity.z > 0, 'Ground launch moved away from the anchor');
-console.log('PASS ground launch jumps toward the anchor, not the camera');
+assert.equal(launch.velocity.length(),0,'Ground attachment injected directional speed');
+console.log('PASS attachment creates no camera-dependent launch impulse');
 
 const groundZip=player();groundZip.city.buildingMeshes=[wall];
 assert(!groundZip.performAirJump(camera),'E must not pull the player off the ground');
@@ -88,7 +70,7 @@ const again = player();again.state='FALLING';again.position.y=8;again.city.build
 assert(again.performAirJump(camera));
 for(let n=0;n<180 && again.state==='WEB_ZIP';n++) again.update(1/120, {}, camera);
 assert.notEqual(again.state, 'WEB_ZIP');
-assert(again.performAirJump(camera), 'E stayed locked after one hop');
+again.position.y=8;again.state='FALLING';assert(again.performAirJump(camera), 'E stayed locked on a later airborne press');
 console.log('PASS E is airborne only, never repeats while held, and remains usable on a new press');
 
 const blocked = player();blocked.state='FALLING';blocked.position.y=8;blocked.city.buildingMeshes = [wall];
@@ -107,8 +89,10 @@ try {
     raycast:(...args)=>world.raycast(...args), resolveMovement:(...args)=>world.resolve(...args),
     supportHeight:pos=>{const h=world.groundAt(pos,.5);return h!==null && Math.abs(pos.y-h-.1)<.25 ? h : null;}});
   p.position.y=.14;
-  assert(p.startSwing(camera), 'Actual streamed facade rejected ground launch');
-  for(let n=0;n<90;n++)p.update(1/120,{webHold:true,webFireHeld:true,forward:true},camera);
+  const aimedCamera=camera.clone();aimedCamera.lookAt(0,20,30);aimedCamera.updateMatrixWorld(true);
+  assert(p.startSwing(aimedCamera),'Actual streamed facade rejected the aimed attachment');
+  p.releaseSwing(false);p.state='IDLE';p.update(1/120,{jump:true},aimedCamera);assert(p.startSwing(aimedCamera));
+  for(let n=0;n<90;n++)p.update(1/120,{webHold:true,webFireHeld:true,forward:true},aimedCamera);
   assert(p.isSwinging && p.position.y>3, 'Rapier floor snapped the launch back to ground');
   assert(p.performAirJump(camera), 'E could not chain from a streamed swing');
   assert(p.zipTarget.distanceTo(p.position)<=12+1e-8);

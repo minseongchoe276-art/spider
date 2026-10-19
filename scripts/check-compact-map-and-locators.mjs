@@ -6,7 +6,6 @@ import {proceduralCollision} from './city-collision.mjs';
 import {Multiplayer} from '../src/Multiplayer.js';
 import {edgeMinimapMarker,terrainMarkerPoint,configureTerrainCamera} from '../src/Minimap.js';
 import {positionMarker,PlayerPositionMarkers} from '../src/PlayerPositionMarkers.js';
-import {TimeTrialSystem} from '../src/TimeTrial.js';
 import {PlayerExperience} from '../src/PlayerExperience.js';
 import {arenaFrom} from '../src/PursuitRules.js';
 
@@ -17,9 +16,7 @@ assert(city.colliders.length<250);assert(city.buildings.every(b=>Math.abs(b.x)+b
 const spawn=city.getRooftopSpawn(95),roofs=city.rooftopSpawns;
 const arena=arenaFrom(spawn,'procedural',roofs);assert(arena && arena.points.length>=3);
 assert(arena.points.every(p=>Math.abs(p.x)<160 && Math.abs(p.z)<160));
-const trial=new TimeTrialSystem(new THREE.Scene(),city,silent);assert(trial.start());
-assert.equal(trial.checkpoints.length,8);assert(trial.checkpoints.every(cp=>Math.abs(cp.position.x)<155 && Math.abs(cp.position.z)<155));trial.dispose();
-console.log('PASS compact city: 16 buildings, 320m play width, usable spawn/objectives and all 8 race gates within bounds');
+console.log('PASS compact city: 16 buildings, 320m play width, usable spawn/objectives within bounds');
 
 const oldDocument=globalThis.document;
 globalThis.document={createElement:()=>({width:0,height:0,getContext:()=>silent})};

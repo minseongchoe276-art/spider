@@ -2,7 +2,6 @@ import assert from 'node:assert/strict';
 import * as THREE from 'three';
 import { SwingPhysics } from '../src/SwingPhysics.js';
 import { ThirdPersonCamera } from '../src/Camera.js';
-import { TimeTrialSystem } from '../src/TimeTrial.js';
 import { Preferences } from '../src/Preferences.js';
 import { GameApp } from '../src/main.js';
 import { City } from '../src/City.js';
@@ -40,18 +39,7 @@ await check('Resuming does not latch an unheld swing after a reel reaches the ta
   assert.equal(p.state,'WEB_ZIP','Resume retargeted a reel before reaching its target');
   assert.equal(p.zipTarget.z,100);
 }));
-await check('Race clock measures a delayed active frame, while physics stays bounded',()=>withDOM(()=>{
-  const original=globalThis.requestAnimationFrame;globalThis.requestAnimationFrame=()=>{};
-  try {
-    let physicsDelta=0,trialDelta=0;
-    const app=Object.create(GameApp.prototype);Object.assign(app,{clock:{getDelta:()=>.5,elapsedTime:.5},city:{update(){},buildingMeshes:[]},
-      assetsReady:true,isPlaying:true,isPaused:false,physics:{update:dt=>{physicsDelta=dt;},position:new THREE.Vector3(),velocity:new THREE.Vector3()},
-      input:{},camera,tpsCamera:{update(){}},preferences:{values:{}},vfx:{update(){}},timeTrial:{update:(_pos,dt)=>{trialDelta=dt;}},
-      updateTrialHUD(){},updateHUD(){},renderer:{render(){}},scene:new THREE.Scene()});
-    app.animate();assert.equal(physicsDelta,.1);assert.equal(trialDelta,.5);
-    app.isPaused=true;trialDelta=0;app.animate();assert.equal(trialDelta,0);
-  } finally {globalThis.requestAnimationFrame=original;}
-}));
+
 await check('Facade normal matches the world-space triangle after unequal scaling',()=>{
   const geometry=new THREE.PlaneGeometry(20,20).rotateY(Math.PI/4);
   const mesh=new THREE.Mesh(geometry,new THREE.MeshBasicMaterial({side:THREE.DoubleSide}));
@@ -61,60 +49,20 @@ await check('Facade normal matches the world-space triangle after unequal scalin
   const expected=new THREE.Vector3().crossVectors(points[1].clone().sub(points[0]),points[2].clone().sub(points[0])).normalize();
   assert(p.bestAnchorNormal.dot(expected)>.999,`Wrong normal ${p.bestAnchorNormal.toArray()}`);
 });
-await check('Best-time quota failure is visible to the player',()=>withDOM(()=>{
-  const preferences=new Preferences({getItem:()=>null,setItem:()=>{throw new Error('quota');}});
-  const app=Object.create(GameApp.prototype);let notice='';Object.assign(app,{preferences,
-    timeTrial:{courseId:'procedural-v3-12345678',isActive:true,isCompleted:true,elapsedTime:10},showNotice:text=>{notice=text;}});
-  app.updateTrialHUD({completed:true,totalTime:10});assert.match(notice,/저장/);assert.match(notice,/이번 실행/);
-}));
-function course(gates) {
-  const trial=new TimeTrialSystem(new THREE.Scene(),{},silent);trial.isActive=true;trial.previousPosition=new THREE.Vector3();
-  trial.checkpoints=gates.map(z=>({position:new THREE.Vector3(0,0,z),normal:new THREE.Vector3(0,0,1),radius:3.2,mesh:new THREE.Mesh(trial.ringGeom,trial.activeMat)}));
-  return trial;
-}
-await check('A single movement segment can cross two gates in course order',()=>{
-  const trial=course([1,2]);const result=trial.update(new THREE.Vector3(0,0,3),.1);
-  assert(result.completed);assert.equal(trial.currentIndex,2);trial.dispose();
-});
-await check('Crossing a later gate before the current gate never completes a race',()=>{
-  const trial=course([2,1]);const result=trial.update(new THREE.Vector3(0,0,3),.1);
-  assert(!result.completed);assert.equal(trial.currentIndex,1);trial.dispose();
-});
+
 await check('Enabling reduced motion immediately cancels a shake already in progress',()=>{
   const c=new ThirdPersonCamera(new THREE.PerspectiveCamera(),{});c.triggerShake(1);c.reducedMotion=true;
   c.update(1/60,new THREE.Vector3(),new THREE.Vector3(),false);
   assert.equal(c.shakeIntensity,0);assert.equal(c.shakeOffset.length(),0);
 });
-await check('Saving, reloading, and limiting layout records preserves the fastest valid time',()=>{
-  let saved=null;const storage={getItem:()=>saved,setItem:(_key,value)=>{saved=value;}};const prefs=new Preferences(storage);
-  for(let i=0;i<80;i++)prefs.recordTime(`procedural-v3-${i.toString(16).padStart(8,'0')}`,i+1);
-  const last='procedural-v3-0000004f';assert(!prefs.recordTime(last,100));assert(prefs.recordTime(last,10));
-  assert(!prefs.recordTime(last,-1));const reloaded=new Preferences(storage);assert.equal(Object.keys(reloaded.values.bestTimes).length,64);
-  assert.equal(reloaded.values.bestTimes[last],10);assert.equal(reloaded.values.bestTimes['procedural-v3-00000000'],undefined);
-});
+
 await check('An unavailable fullscreen API gives feedback rather than doing nothing',()=>withDOM(async()=>{
   document.documentElement={};const app=Object.create(GameApp.prototype);let notice='';app.showNotice=text=>{notice=text;};
   await app.toggleFullscreen();assert.match(notice,/전체화면을 사용할 수 없습니다/);
   document.documentElement.requestFullscreen=async()=>{throw new Error('denied');};notice='';
   await app.toggleFullscreen();assert.match(notice,/전체화면을 사용할 수 없습니다/);
 }));
-await check('A generated local course completes all eight ordered gates and can restart',()=>withDOM(()=>{
-  document.createElement=()=>({width:0,height:0,getContext:()=>silent});
-  const city=new City(new THREE.Scene());const trial=new TimeTrialSystem(new THREE.Scene(),city,silent);
-  assert(trial.start());assert.equal(trial.checkpoints.length,8);const id=trial.courseId;
-  trial.checkpoints.forEach((cp,index)=>assert.equal(cp.mesh.visible,index<=1));
-  assert.match(id,/^procedural-v5-/);
-  const prefs=new Preferences();prefs.recordTime(id.replace('-v5-','-v4-'),1);
-  assert.equal(prefs.values.bestTimes[id],undefined);assert(prefs.recordTime(id,4));
-  for(let i=0;i<8;i++){
-    const cp=trial.checkpoints[i];trial.previousPosition=cp.position.clone().addScaledVector(cp.normal,-1);
-    const result=trial.update(cp.position.clone().addScaledVector(cp.normal,1),.5);
-    assert.equal(trial.currentIndex,i+1);assert.equal(result.completed,i===7);
-    trial.checkpoints.forEach((gate,index)=>assert.equal(gate.mesh.visible,index===i+1||index===i+2));
-  }
-  assert.equal(trial.elapsedTime,3.75);trial.stop();assert(trial.start());assert.equal(trial.courseId,id);
-  assert.equal(trial.currentIndex,0);assert.equal(trial.elapsedTime,0);trial.dispose();
-}));
+
 await check('Seeded mixed movement stays finite and speed-bounded over twelve simulated minutes',()=>{
   let seed=0x12345678;const random=()=>{seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296;};
   for(const fps of [30,60,144]){

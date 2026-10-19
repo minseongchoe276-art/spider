@@ -21,9 +21,9 @@ export class SpeedLinesEffect {
     }
   }
 
-  resize() {
-    this.width = this.canvas.width = window.innerWidth;
-    this.height = this.canvas.height = window.innerHeight;
+  resize(width = this.canvas.parentElement?.clientWidth || window.innerWidth, height = this.canvas.parentElement?.clientHeight || window.innerHeight) {
+    this.width = this.canvas.width = width;
+    this.height = this.canvas.height = height;
     this.cx = this.width / 2;
     this.cy = this.height / 2;
   }

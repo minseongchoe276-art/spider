@@ -56,7 +56,7 @@ skyCam.position.set(0,10,0);skyCam.lookAt(0,40,8);skyCam.updateMatrixWorld(true)
 const skyRay=new THREE.Raycaster();skyRay.setFromCamera(new THREE.Vector2(0,0),skyCam);
 assert.equal(skyRay.intersectObject(skyBox,false).length,0,'The sky fixture center ray already hits the wall');
 const skyAnchor=sky.findBestAnchor(skyCam);
-assert(skyAnchor && skyAnchor.z>15 && skyAnchor.y>sky.position.y,'A center ray into the sky found no wall ahead and above');
+assert.equal(skyAnchor,null,'Sky aim must not attach to an off-reticle wall');
 const combatWeb=player();combatWeb.webEnabled=false;combatWeb.state='IDLE';combatWeb.position.set(0,1,0);
 const combatWall=new THREE.Mesh(new THREE.BoxGeometry(8,10,2));
 combatWall.position.set(0,5,15);combatWall.updateMatrixWorld(true);combatWeb.city.buildingMeshes=[combatWall];
@@ -140,6 +140,6 @@ const cameraSafe=cameraCheck.safeDistance(new THREE.Vector3(),new THREE.Vector3(
 assert(cameraSafe<2.8 && cameraSafe>2.5,'Camera ignored streamed collision geometry');
 world.setActiveMeshes([]);
 for (const entry of world.meshes.values()) if(entry) entry.inactiveSince=performance.now()-3000;
-world.update(new THREE.Vector3());
-assert.equal(world.groundAt(new THREE.Vector3(0,2,0),3),null,'Inactive LOD retained a ghost floor');
+world.update(new THREE.Vector3(100,2,100));
+assert.equal(world.groundAt(new THREE.Vector3(0,2,0),3),null,'Inactive LOD retained a floor after the player left');
 console.log('PASS: fixed physics at 30/60/120/144 FPS, streamed wall/roof transitions, camera collision, thin walls, ceiling, input buffer, swing energy, recovery, triangle/capsule collision');

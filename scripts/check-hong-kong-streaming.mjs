@@ -35,7 +35,7 @@ check('Landing from a web pull removes its rope instead of leaving ghost webs',(
  pullPhysics.handleCollisions(1/60,input());assert.equal(pullPhysics.zipAnchor,null);assert.equal(pullCharacter.persistentWebAnchor,null);assert.deepEqual(pullCharacter.webAttachments,[]);
 });
 check('Ground movement, sprint, jump and dodge share streamed collision',()=>{
- const c=new CombatSystem(new THREE.Scene(),p,character);p.position.set(0,20.1,0);p.state='IDLE';camera.position.set(0,22,-5);camera.lookAt(0,22,5);camera.updateMatrixWorld(true);
+ const c=new CombatSystem(new THREE.Scene(),p,character);c.toggle();p.position.set(0,20.1,0);p.state='IDLE';camera.position.set(0,22,-5);camera.lookAt(0,22,5);camera.updateMatrixWorld(true);
  const planted=p.position.clone();assert(c.attack(camera));for(let i=0;i<30;i++){c.before(1/60,camera);p.update(1/60,input(),camera);c.after(1/60);}assert(Math.hypot(p.position.x-planted.x,p.position.z-planted.z)<.04,'Planted punch skated across the roof');c.cancel();
  for(let i=0;i<60;i++){c.before(1/60,camera);p.update(1/60,{...input(),forward:true},camera);c.after(1/60);}assert(p.position.z>1&&p.position.y>20);
  c.cancel();c.stamina=100;const beforeDodge=p.position.clone();assert(c.dodge({right:true},camera));for(let i=0;i<35;i++){c.before(1/60,camera);p.update(1/60,input(),camera);c.after(1/60);}
@@ -50,6 +50,15 @@ check('A vanished LOD anchor gets a bounded grace and releases without launch en
  assert.equal(p.isSwinging,false);assert.equal(p.webs.length,0);assert(p.velocity.length()<=Math.hypot(3,p.gravity*.4)+.01);
 });
 check('A vanished zip target clears its persistent web and exits the pull',()=>{p.zipAnchor=anchor.anchor;p.lastWebNormal=anchor.normal;p.zipTarget=anchor.anchor;p.state='WEB_ZIP';p.updateFreePhysics(1/60,input(),camera);assert.notEqual(p.state,'WEB_ZIP');assert.equal(p.zipTarget,null);assert.equal(character.persistentWebAnchor,null);});
+check('An idle streaming gap never deletes the surface beneath the player',()=>{
+ const savedPerformance=globalThis.performance;let now=0;globalThis.performance={now:()=>now};
+ try {
+  world.setActiveMeshes([]);world.update(new THREE.Vector3(0,20.1,0));now=5000;
+  world.update(new THREE.Vector3(0,20.1,0));
+  assert(world.meshes.has(roof.uuid),'Idle LOD transition removed the supporting roof');
+  assert(Math.abs(world.groundAt(new THREE.Vector3(0,20.1,0),1)-20)<.01);
+ } finally {globalThis.performance=savedPerformance;}
+});
 check('Collision baking keeps the old support while a replacement is pending',()=>{
  const originalPerformance=globalThis.performance;let now=0;globalThis.performance={now:()=>now};
  try {
