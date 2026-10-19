@@ -2,9 +2,13 @@ import * as THREE from 'three';
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
 import {fetchAsset} from './AssetLoader.js';
 
+// The model files keep stable public paths. Bump this revision whenever their
+// baked geometry is regenerated so browsers and edge caches cannot reuse the old rigs.
+const APPEARANCE_REVISION='ce6c794';
+
 export async function loadAppearances() {
   const entries=await Promise.all(['web','combat'].map(async mode=>{
-    const gltf=await new GLTFLoader().parseAsync(await fetchAsset(`/models/appearance-${mode}.glb`),'/models/');
+    const gltf=await new GLTFLoader().parseAsync(await fetchAsset(`/models/appearance-${mode}.glb?v=${APPEARANCE_REVISION}`),'/models/');
     const mesh=gltf.scene.getObjectByProperty('isSkinnedMesh',true);
     if(!mesh || mesh.skeleton.bones.length!==65)throw new Error(`Invalid ${mode} appearance rig`);
     mesh.geometry.computeBoundingBox();mesh.geometry.computeBoundingSphere();
