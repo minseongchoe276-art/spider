@@ -1,5 +1,9 @@
 import assert from 'node:assert/strict';
-import { TouchControls, stickState } from '../src/TouchControls.js';
+import { TouchControls, stickState, isTouchDevice } from '../src/TouchControls.js';
+
+assert.equal(isTouchDevice({coarsePointer:false,mobileUserAgent:false}),false,'Touchscreen laptop with a mouse must keep desktop controls');
+assert.equal(isTouchDevice({coarsePointer:true}),true,'Primary touch input must enable mobile controls');
+assert.equal(isTouchDevice({mobileUserAgent:true}),true,'Mobile UA must cover browsers without pointer media support');
 
 assert(!stickState(0,0).forward);
 assert(!stickState(5,-5).forward,'Central deadzone must reject thumb jitter');

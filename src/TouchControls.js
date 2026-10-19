@@ -6,12 +6,18 @@ export function stickState(dx, dy, radius = 52) {
   return {x:x*radius,y:y*radius,forward:y<-dead,backward:y>dead,left:x<-dead,right:x>dead,sprint:length/radius>.85};
 }
 
+export function isTouchDevice({coarsePointer=false,mobileUserAgent=false,review=false}={}) {
+  return coarsePointer || mobileUserAgent || review;
+}
+
 // Touch owns its pointers and held inputs independently of keyboard/gamepad.
 export class TouchControls {
   constructor(game) {
     this.game=game;this.pointers=new Map();this.enabled=false;
     this.review=!!import.meta.env?.DEV && new URLSearchParams(location.search).has('touchReview');
-    this.media=window.matchMedia('(any-pointer: coarse)');
+    // `any-pointer` and maxTouchPoints also match many touchscreen laptops.
+    // Use the primary pointer, with a mobile-UA fallback for older browsers.
+    this.media=window.matchMedia('(pointer: coarse)');
     this.root=document.createElement('div');this.root.id='touch-controls';
     this.root.setAttribute('aria-label','모바일 게임 조작');
     this.root.innerHTML=`<nav class="touch-toolbar" aria-label="게임 메뉴"><button data-ui="fullscreen" aria-label="전체화면으로 플레이" aria-pressed="false">전체화면</button><button data-ui="map" aria-label="전체 지도 열기">지도</button><button data-ui="menu" aria-label="게임 메뉴 열기">메뉴</button></nav>
@@ -39,7 +45,7 @@ export class TouchControls {
     window.addEventListener('orientationchange',()=>this.release());
     this.detect();
   }
-  detect(){this.enabled=this.media.matches || navigator.maxTouchPoints>0 || this.review;document.body.classList.toggle('touch-device',this.enabled);this.update();}
+  detect(){this.enabled=isTouchDevice({coarsePointer:this.media.matches,mobileUserAgent:navigator.userAgentData?.mobile ?? /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent),review:this.review});document.body.classList.toggle('touch-device',this.enabled);this.update();}
   active(){const g=this.game;return this.enabled&&g.isPlaying&&!g.isPaused&&!g.helpOpen&&!g.multiplayer?.spectating&&!g.contextLost;}
   key(action,down){
     const code=this.game.preferences.values.settings.bindings[action];if(!code)return;
