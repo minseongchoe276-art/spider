@@ -10,6 +10,12 @@
     "pass": true
   },
   {
+    "case": "appearance changes invalidate cached foot-contact vertices",
+    "webSoleSamples": 2191,
+    "combatSoleSamples": 1530,
+    "pass": true
+  },
+  {
     "case": "40 mode changes preserve pose, mixer, root and momentum; effect expires",
     "pass": true
   },

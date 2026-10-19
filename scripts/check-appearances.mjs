@@ -6,6 +6,7 @@ import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
 import {loadMotionRig,disposeRig} from './lib/motion-rig.mjs';
 import {setAppearance,updateAppearance,disposeAppearance} from '../src/CharacterAppearance.js';
 import {CombatSystem} from '../src/Combat.js';
+import {soleSamples} from '../src/CharacterPose.js';
 const {actor,clips}=await loadMotionRig(),assets={},results=[];
 for(const [mode,name] of [['web','변신모습'],['combat','사람모습']]){
  const b=fs.readFileSync(`public/models/appearance-${mode}.glb`),length=b.readUInt32LE(12),j=JSON.parse(b.subarray(20,20+length));
@@ -18,6 +19,13 @@ for(const [mode,name] of [['web','변신모습'],['combat','사람모습']]){
  assets[mode]={geometry:mesh.geometry,material:new T.MeshStandardMaterial()};results.push({case:mode+' source, textures and normalized weights',vertices:p.count,pass:true});
 }
 const c=actor();c.appearances=assets;updateAppearance(c,0);assert.equal(c.appearanceMode,'web');
+const webSoles=soleSamples(c,'left');assert(webSoles.length>0);
+setAppearance(c,'combat',false);const combatSoles=soleSamples(c,'left');
+assert.notEqual(combatSoles,webSoles,'Each appearance needs sole samples for its own geometry');
+assert(combatSoles.every(({vertex})=>vertex<c.model.getObjectByProperty('isSkinnedMesh',true).geometry.attributes.position.count),
+ 'Combat sole cache contains vertex indices from the larger web model');
+setAppearance(c,'web',false);
+results.push({case:'appearance changes invalidate cached foot-contact vertices',webSoleSamples:webSoles.length,combatSoleSamples:combatSoles.length,pass:true});
 const root=c.group.position.clone(),mixer=c.mixer,skeleton=c.model.getObjectByProperty('isSkinnedMesh',true).skeleton;
 c.fadeToAction('run',0);c.mixer.update(.23);const time=c.activeAction.time,pose=Object.values(c.bones).map(b=>b.quaternion.clone());
 const physics={state:'IDLE',velocity:new T.Vector3(3,2,1),clearPendingInput(){},clearWebAnchor(){}};

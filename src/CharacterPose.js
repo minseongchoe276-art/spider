@@ -36,8 +36,12 @@ function fitEndRotation(c,upper,lower,end,rotation) {
   worldRotation(end,rotation);
 }
 
-function soleSamples(c,side) {
-  if(c.soleSampleModel!==c.model){c.soleSampleModel=c.model;c.soleSamples={};}
+export function soleSamples(c,side) {
+  const mesh=c.model?.getObjectByProperty('isSkinnedMesh',true);
+  const geometry=mesh?.geometry;
+  if(c.soleSampleModel!==c.model || c.soleSampleGeometry!==geometry){
+    c.soleSampleModel=c.model;c.soleSampleGeometry=geometry;c.soleSamples={};
+  }
   if(c.soleSamples[side])return c.soleSamples[side];
   const candidates=[];
   c.model.traverse(mesh=>{
