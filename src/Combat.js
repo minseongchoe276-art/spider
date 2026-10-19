@@ -2,10 +2,10 @@ import * as THREE from 'three';
 import {GROUNDED} from './MotionCatalog.js';
 
 export const ATTACKS={
-  jab:{duration:0.56,from:0.14,to:0.22,damage:12,reach:1.8},
-  cross:{duration:0.68,from:0.37,to:0.47,damage:17,reach:1.9},
+  jab:{duration:0.72,from:0.14,to:0.22,damage:12,reach:1.8},
+  cross:{duration:0.82,from:0.42,to:0.52,damage:17,reach:1.9},
   hook:{duration:0.9,from:0.342,to:0.432,damage:32,reach:2.1},
-  special:{duration:1.2,from:0.54,to:0.66,damage:48,reach:2.0},
+  special:{duration:1.2,from:0.62,to:0.74,damage:48,reach:2.0},
   heavy:{duration:0.9,from:0.342,to:0.432,damage:32,reach:2.1},
 };
 const grounded=p=>GROUNDED.includes(p.state);
@@ -26,7 +26,7 @@ export class CombatSystem {
     input.webZipHeld=false;
     this.physics.webEnabled=this.mode==='web';this.physics.clearPendingInput?.();
     if(this.mode==='combat')this.physics.clearWebAnchor?.();
-    this.onNotice(this.mode==='web'?'거미줄 ON · 좌클릭 꾹: 도약 후 스윙 / 우클릭: 반대 손 스윙 / 떼기: 관성 비행 / 공중 집: 한 번씩 짧게 이동':'전투 모드 · 땅에서는 왼손 잽·오른손 훅 / 공중 좌·우클릭은 거미줄 / 방어·회피 키는 조작 가이드에서 확인하세요');
+    this.onNotice(this.mode==='web'?'거미줄 ON · 좌클릭 꾹: 도약 후 스윙 / 우클릭: 반대 손 스윙 / 떼기: 관성 비행 / 공중 집: 한 번씩 짧게 이동':'전투 모드 · 땅에서는 왼손 잽·오른손 스트레이트 / 공중 좌·우클릭은 거미줄 / 방어·회피 키는 조작 가이드에서 확인하세요');
     return this.mode;
   }
   face(camera) {

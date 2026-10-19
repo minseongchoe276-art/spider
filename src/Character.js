@@ -371,6 +371,7 @@ export class Character {
     if(this.model && this.jointConstraintModel!==this.model){
       this.jointConstraintModel=this.model;this.jointConstraints=createJointConstraints(this.model,this.bones);
     }this.webGestures={};
+    this.animationPose=null;
     this.mantleArmPose=null;this.mantleArmRelease=0;
     this.mantleExitFeet=null;this.mantleFootRelease=0;
     this.mantleStartFeet=null;
@@ -481,13 +482,13 @@ export class Character {
   updateFirstPersonPose(combat=this.combatAction) {
     if(this.isFirstPerson && this.firstPersonRig)for(const [i,arm] of this.firstPersonRig.children.entries()){
       const t=THREE.MathUtils.clamp(combat?.duration?combat.time/combat.duration:0,0,1);
-      const viewClip=combat?.key==='cross'?'rightHook':combat?.key;
+      const viewClip=combat?.key;
       const impact=this.actions?.[viewClip]?.getClip().userData?.impactPhase || .3;
       const pulse=t<=impact?THREE.MathUtils.smoothstep(t/impact,0,1):1-THREE.MathUtils.smoothstep((t-impact)/(1-impact),0,1);
       const striking=combat && ['jab','cross','hook','heavy','special'].includes(combat.key) && i===(['cross','special'].includes(combat.key)?1:0);
       const reach=striking?Math.max(0,pulse):0;
       const gesture=this.webGestures?.[i===0?'left':'right'] || {shoot:0,grip:0};
-      const rightHook=combat?.key==='cross' && i===1;
+      const rightHook=combat?.key==='rightHook' && i===1;
       arm.position.set(rightHook ? .10*Math.sin(Math.PI*reach)-.10*reach : ['hook','heavy'].includes(combat?.key) && i===0 ? .26*reach : 0,
         combat?.key==='guard' ? .14 : .045*gesture.shoot,
         striking?(['hook','heavy'].includes(combat.key)?-0.25:-0.38)*reach:-.12*gesture.shoot);
@@ -500,11 +501,12 @@ export class Character {
         arm.position.y=.025*reach;
       }
       if(combat?.key==='special' && i===1){
-        const keys=[[0,0,0,0],[.28,.12,-.10,.14],[.4,.07,.14,-.02],
-          [.5,-.10,.02,-.42],[.64,-.16,-.08,-.25],[1,0,0,0]];
-        const index=Math.max(1,keys.findIndex(k=>k[0]>=t)),a=keys[index-1],b=keys[index];
-        arm.position.set(...a.slice(1));arm.position.lerp(new THREE.Vector3(...b.slice(1)),THREE.MathUtils.smoothstep((t-a[0])/(b[0]-a[0]),0,1));
-        arm.rotation.y=.12*reach;arm.rotation.z=-.18*reach;
+        // Use the same compact rear-hand line as the imported power cross.
+        // The longer preparation belongs to the source take, not a high arc.
+        const load=Math.sin(Math.PI*THREE.MathUtils.clamp(t/impact,0,1))*(1-reach);
+        arm.position.x=.035*load-.035*reach;
+        arm.position.y=-.025*load;
+        arm.position.z=.10*load-.44*reach;
       }
       if(striking){
         // Turn the knuckles into the punch. Translating the upright guard
@@ -557,6 +559,12 @@ export class Character {
     this.viewMoveSpeed=Math.hypot(velocity.x,velocity.z);
     if (this.copySource) this.copyLoadedCharacter(this.copySource);
     restoreHandPose(this.webFingerRig);
+    // PropertyMixer skips writes when the sampled value has not changed.
+    // Restore the previous animation sample before reapplying IK, otherwise
+    // held poses repeatedly solve an already corrected leg and drift upward.
+    if(GROUNDED.includes(state) && GROUNDED.includes(this.lastState) && !(this.mantleFootRelease>0) && this.animationPoseModel===this.model)for(const {bone,p,q} of this.animationPose || []){
+      bone.position.copy(p);bone.quaternion.copy(q);
+    }
     if(this.model && this.jointConstraintModel!==this.model){
       this.jointConstraintModel=this.model;this.jointConstraints=createJointConstraints(this.model,this.bones);
     }
@@ -622,7 +630,7 @@ export class Character {
     } else name = state === 'SPRINTING' ? 'run' :
       horizontalSpeed > 3.1 ? 'regularRun' : 'walk';
     const combat=this.combatAction;
-    const combatClip= combat?.key==='cross'?'rightHook':combat?.key==='hit'?'hitHead':combat?.key?.startsWith('dodge')?'combatIdle':combat?.key;
+    const combatClip= combat?.key==='hit'?'hitHead':combat?.key?.startsWith('dodge')?'combatIdle':combat?.key;
     const movingStrike=grounded && horizontalSpeed>.25 && combat?.duration && ['jab','cross','hook','heavy','special'].includes(combat.key);
     if(combat && !movingStrike && this.actions[combatClip] && (grounded || combat.key==='slam') && !['ROLLING','TURNING'].includes(state))name=combatClip;
     if (this.airTrick) name = this.airTrick.key === 'front' && this.actions.airTrick
@@ -648,6 +656,10 @@ export class Character {
       this.activeAction.getClip().duration / AIR_TRICKS.front.duration);
     if(name==='wall')this.activeAction?.setEffectiveTimeScale(state==='MANTLING'?0:THREE.MathUtils.clamp(velocity.length()/(this.activeAction.getClip().userData.climbSpeed || 3),0,6));
     this.mixer.update(delta);
+    if(this.animationPoseModel!==this.model || !this.animationPose){
+      this.animationPoseModel=this.model;
+      this.animationPose=Object.values(this.bones).map(bone=>({bone,p:bone.position.clone(),q:bone.quaternion.clone()}));
+    }else for(const sample of this.animationPose){sample.p.copy(sample.bone.position);sample.q.copy(sample.bone.quaternion);}
     this.movingGuardWeight=THREE.MathUtils.damp(this.movingGuardWeight || 0,
       grounded && horizontalSpeed>.25 && (this.combatStance || movingStrike)?1:0,18,delta);
     if(movingStrike || this.movingGuardWeight>.001) {

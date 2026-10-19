@@ -49,11 +49,11 @@ check('Every directional dodge uses its own take and stamina blocks spam',()=>{
  }
  c.cancel();c.stamina=0;assert(!c.dodge({},camera));assert(!c.heavy(camera));
 });
-check('Rear overhand loads before contact, respects cooldown and deals one heavy hit',()=>{
+check('Rear power cross loads before contact, respects cooldown and deals one heavy hit',()=>{
  c.cancel();c.stamina=100;c.specialCooldown=0;physics.state='IDLE';const e=enemy(0,1.8);e.health=100;c.enemies=[e];
  assert(c.special(camera));assert.equal(c.action.key,'special');assert.equal(c.stamina,65);assert.equal(c.specialCooldown,4);
  c.action.previous=0;c.action.time=.3;c.after(0);assert.equal(e.health,100,'Wind-up must not deal damage');
- c.action.previous=.3;c.action.time=.6;c.after(0);assert.equal(e.health,52);c.after(0);assert.equal(e.health,52);
+ c.action.previous=.3;c.action.time=(ATTACKS.special.from+ATTACKS.special.to)/2;c.after(0);assert.equal(e.health,52);c.after(0);assert.equal(e.health,52);
  c.cancel();assert(!c.special(camera));for(let i=0;i<40;i++)c.before(.1,camera);assert(c.special(camera));c.cancel();
 });
 check('E hook is grounded and does not force an airborne dive',()=>{

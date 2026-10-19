@@ -8,6 +8,14 @@ import {City} from '../src/City.js';
 const {actor}=await loadMotionRig(),results=[];
 const sample=(c,key,phase)=>{c.stopAnimation();c.fadeToAction(key,0);c.activeAction.time=c.activeAction.getClip().duration*phase;c.mixer.update(0);c.group.updateMatrixWorld(true);return {left:point(c,'lefthand'),right:point(c,'righthand'),elbow:point(c,'rightforearm')};};
 const c=actor();try{
+ for(const [key,file] of [['jab','Lead Jab'],['cross','Cross Punch'],['special','Cross Punch']]){
+  const clip=c.actions[key].getClip();
+  assert.equal(clip.userData.source,`/models/${file}.fbx`);
+  assert.equal(clip.userData.authoredMixamo,true);
+  assert.equal(clip.userData.choreography,undefined,'Basic punches must retain imported body motion');
+  const impact=clip.userData.impactPhase*ATTACKS[key].duration;
+  assert(impact>=ATTACKS[key].from && impact<=ATTACKS[key].to,'Imported punch must match damage timing');
+ }
  const guard=sample(c,'rightHook',0),load=sample(c,'rightHook',.28),contact=sample(c,'rightHook',.58),follow=sample(c,'rightHook',.73),recover=sample(c,'rightHook',.999999);
  const elbow=point(c,'rightarm');sample(c,'rightHook',.58);
  const bend=point(c,'rightarm').sub(contact.elbow).angleTo(contact.right.clone().sub(contact.elbow))*180/Math.PI;
@@ -16,14 +24,16 @@ const c=actor();try{
  assert(follow.right.x>contact.right.x+.08,'Hook must follow through instead of retracing the approach');
  assert(contact.left.distanceTo(guard.left)<.03,'Opposite hand must protect the cheek');
  assert(recover.right.distanceTo(guard.right)<.01,'Hook must return to guard');
- const ready=sample(c,'special',0),wind=sample(c,'special',.28),high=sample(c,'special',.4),hit=sample(c,'special',.5),finish=sample(c,'special',.64);
- assert(wind.right.y<ready.right.y-.12 && wind.right.z<ready.right.z-.08,'G must visibly load low and back');
- assert(high.right.y>hit.right.y+.08 && finish.right.y<hit.right.y-.08,'Overhand must travel over and down through contact');
- assert(hit.right.z>ready.right.z+.4 && hit.left.distanceTo(ready.left)<.15,'G must strike with the rear hand and retain the lead guard');
- assert(ATTACKS.special.from<=.5*ATTACKS.special.duration && ATTACKS.special.to>=.5*ATTACKS.special.duration);
+ const impact=c.actions.special.getClip().userData.impactPhase;
+ const ready=sample(c,'special',0),wind=sample(c,'special',.3),hit=sample(c,'special',impact),recoverPower=sample(c,'special',.999999);
+ assert(wind.right.z<ready.right.z-.15,'G must visibly load the rear hand before contact');
+ assert(hit.right.z>ready.right.z+.5 && hit.left.y>1.4,'G must drive a rear straight while retaining the lead guard');
+ assert(hit.right.y<1.75,'G must not throw the old high overhand arc');
+ assert(recoverPower.right.distanceTo(ready.right)<.02,'G must recover to its starting guard');
+ assert(ATTACKS.special.from<=impact*ATTACKS.special.duration && ATTACKS.special.to>=impact*ATTACKS.special.duration);
  assert(ATTACKS.special.from>.4,'G wind-up must not deal damage');
  assert(ATTACKS.special.damage>ATTACKS.cross.damage && ATTACKS.special.damage>ATTACKS.jab.damage);
- results.push({case:'distinct hook and overhand trajectories',hookElbowDegrees:bend,pass:true});
+ results.push({case:'imported rear power cross and retained hook',hookElbowDegrees:bend,pass:true});
 }finally{disposeRig(c);}
 for(const fps of [24,60,144])for(const key of ['jab','cross','special'])for(const sprint of [false,true]){
  const c=actor(),city={colliders:[],buildingMeshes:[],raycast:City.prototype.raycast,checkCollision:City.prototype.checkCollision};
@@ -48,15 +58,16 @@ for(const fps of [24,60,144])for(const key of ['jab','cross','special'])for(cons
 }
 for(const key of ['jab','cross','special']){
  const c=actor();try{
-  const clip=c.actions[key==='cross'?'rightHook':key].getClip();
+  const clip=c.actions[key].getClip();
   c.combatAction={id:1,key,time:ATTACKS[key].duration*clip.userData.impactPhase,duration:ATTACKS[key].duration};
   for(let i=0;i<30;i++)c.update(1/60,'IDLE',new THREE.Vector3());
   const tilt={};for(const side of ['left','right']){
    const level=c.model.getWorldQuaternion(new THREE.Quaternion()).multiply(new THREE.Quaternion().fromArray(c.actions.wall.getClip().userData.soleRotations[side]));
-   tilt[side]=level.angleTo(joint(c,side+'foot').getWorldQuaternion(new THREE.Quaternion()))*180/Math.PI;
-   assert(tilt[side]<5,`${key}: ${side} supporting boot points down (${tilt[side]} degrees)`);
+   const normal=new THREE.Vector3(0,1,0).applyQuaternion(level.clone().invert()).applyQuaternion(joint(c,side+'foot').getWorldQuaternion(new THREE.Quaternion()));
+   tilt[side]=normal.angleTo(new THREE.Vector3(0,1,0))*180/Math.PI;
+   assert(tilt[side]<(clip.userData.authoredMixamo?35:5),`${key}: ${side} supporting boot points down (${tilt[side]} degrees)`);
   }
-  results.push({case:key+' contact boots remain level',tiltDegrees:tilt,pass:true});
+  results.push({case:key+' contact boots retain bounded authored pivot',tiltDegrees:tilt,pass:true});
  }finally{disposeRig(c);}
 }
 // Moving between attacks must retain the same closed guard as combat idle.
@@ -86,4 +97,4 @@ try{
  results.push({case:'swing, trick and landing callbacks cannot score or show combo notices',pass:true});
 }finally{globalThis.document=oldDocument;globalThis.window=oldWindow;}
 const folder='docs/qa/combat-quality-2026-10-18';fs.mkdirSync(folder,{recursive:true});fs.writeFileSync(folder+'/results.json',JSON.stringify(results,null,2)+'\n');
-console.log(`PASS ${results.length} combat quality cases: curved right hook, loaded rear overhand, contact timing, running/sprinting at 24/60/144 FPS, bounded rendered joints`);
+console.log(`PASS ${results.length} combat quality cases: curved right hook, imported rear power cross, contact timing, running/sprinting at 24/60/144 FPS, bounded rendered joints`);

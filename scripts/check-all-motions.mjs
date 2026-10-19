@@ -15,7 +15,7 @@ for(const fps of fpsList){
     const c=actor();try{const camera=new THREE.PerspectiveCamera();c.setFirstPersonCamera(camera);c.setFirstPersonMode(true);c.update(1/fps,'IDLE',new THREE.Vector3());
       const start=c.firstPersonHands.map(hand=>hand.getWorldPosition(new THREE.Vector3()));
       for(const key of ['jab','cross','hook','heavy','special']){
-        const phase=c.actions[key==='cross'?'rightHook':key].getClip().userData.impactPhase;c.combatAction={id:key,key,time:phase,duration:1};c.update(1/fps,'IDLE',new THREE.Vector3());
+        const phase=c.actions[key].getClip().userData.impactPhase;c.combatAction={id:key,key,time:phase,duration:1};c.update(1/fps,'IDLE',new THREE.Vector3());
         const side=['cross','special'].includes(key)?1:0;
         const extension=start[side].z-c.firstPersonHands[side].getWorldPosition(new THREE.Vector3()).z;
         assert(extension>(['hook','heavy'].includes(key)?.2:.3),`${key}: contact lacks forward reach (${extension.toFixed(3)}m)`);
@@ -59,7 +59,7 @@ for(const fps of fpsList){
     const c=actor();try{const camera=new THREE.PerspectiveCamera();c.setFirstPersonCamera(camera);c.setFirstPersonMode(true);
       c.update(1/fps,'IDLE',new THREE.Vector3());camera.updateMatrixWorld(true);
       const start=c.firstPersonHands.map(hand=>hand.getWorldPosition(new THREE.Vector3()));
-      c.combatAction={id:1,key,time:c.actions[key==='cross'?'rightHook':key].getClip().userData.impactPhase,duration:1};c.update(1/fps,'IDLE',new THREE.Vector3());camera.updateMatrixWorld(true);
+      c.combatAction={id:1,key,time:c.actions[key].getClip().userData.impactPhase,duration:1};c.update(1/fps,'IDLE',new THREE.Vector3());camera.updateMatrixWorld(true);
       const side=['cross','special'].includes(key)?1:0,hand=c.firstPersonHands[side],wrist=hand.getWorldPosition(new THREE.Vector3());
       const arm=hand.parent,glove=c.firstPersonGloves[side];
       assert(glove,`${key}: wrist anchor is outside its visible arm`);

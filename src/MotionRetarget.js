@@ -73,7 +73,7 @@ export function prepareMotion(clip, key, bones, item={}) {
       position.toArray(positionTrack.values,i);
     }
   }
-  if((!item.authoredMixamo || key==='cross') && ['combatIdle','jab','cross','rightHook','special','hook','heavy','guard','dodgeLeft','dodgeRight','dodgeBack','dodgeForward'].includes(key)) {
+  if(!item.authoredMixamo && ['combatIdle','jab','cross','rightHook','special','hook','heavy','guard','dodgeLeft','dodgeRight','dodgeBack','dodgeForward'].includes(key)) {
     const base=combatBases.get(Object.values(bones).find(b=>boneId(b.name)==='hips'));
     if(base)clip=choreographCombat(base,key,bones,boneId);
   }

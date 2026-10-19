@@ -11,9 +11,11 @@ import {sanitizePose} from '../src/RemoteMotion.js';
 const folder='docs/qa/motion-cleanup-2026-10-15';fs.mkdirSync(folder,{recursive:true});
 const {actor,clips}=await loadMotionRig(),results=[];
 function check(name,run){try{results.push({name,status:'PASS',detail:run()});console.log('PASS',name);}catch(error){results.push({name,status:'FAIL',error:error.message});console.error('FAIL',name,error.message);}}
-const removed=['cross','hit','dodgeBack','dodgeLeft','dodgeRight','dodgeForward','femaleStop','jog'];
+const removed=['hit','dodgeBack','dodgeLeft','dodgeRight','dodgeForward','femaleStop','jog'];
 check('Requested motions are absent from catalog, generated assets and loaded actors',()=>{
  const c=actor();try{for(const key of removed){assert(!MOTIONS.some(m=>m.key===key));assert(!fs.existsSync(`public/motions/${key}.json`));assert(!c.actions[key]);}
+ assert.equal(c.actions.cross.getClip().userData.source,'/models/Cross Punch.fbx');
+ assert.equal(c.actions.cross.getClip().userData.authoredMixamo,true);
  assert.deepEqual(Object.keys(AIR_TRICKS),['front']);
  for(const key of ['back','left','right','spin','cork']){assert(!c.triggerAirTrick(key));assert.equal(sanitizePose({state:'FALLING',velocity:{x:0,y:-2,z:0},tricking:true,airTrick:{key,elapsed:0}}).airTrick,null);}
  assert.equal(selectAirTrick({sprint:true,left:true}),'front');return {removed,retainedAirTricks:Object.keys(AIR_TRICKS)};}finally{disposeRig(c);}
@@ -39,7 +41,7 @@ for(const fps of [24,30,60,144]){
  c.update(1/fps,speed===0?'IDLE':speed>5?'SPRINTING':'RUNNING',v);measure(c,max);assert(!removed.includes(c.activeAction.getClip().name));frames++;
  }}
  c.surfaceProbe=()=>({height:0,normal:new THREE.Vector3(0,1,0)});c.group.position.set(0,.1,0);
- for(const key of ['combatIdle','jab','hook','heavy','guard','slamLand','special','hitHead',...removed.filter(k=>/cross|hit|dodge/.test(k))])for(let i=0;i<fps/2;i++){
+ for(const key of ['combatIdle','jab','cross','hook','heavy','guard','slamLand','special','hitHead',...removed.filter(k=>/cross|hit|dodge/.test(k))])for(let i=0;i<fps/2;i++){
  c.combatAction={id:key,key,time:2*i/fps,duration:1};c.update(1/fps,'IDLE',new THREE.Vector3());measure(c,max);assert(!removed.includes(c.activeAction.getClip().name));frames++;
  }return {frames,maxDegrees:max};}finally{disposeRig(c);}
  });

@@ -104,15 +104,24 @@ export function footSupport(c,position,anticipateStep=false) {
   return {height,normal};
 }
 
-export function soleRotation(c,side,normal) {
+// A source's first frame can already lift a heel. It is a heading reference,
+// not a flat sole calibration. Use the neutral rig for the sole's local up.
+export function groundSoleNormal(c,side,rotation) {
+  const raw=c.actions.wall?.getClip().userData?.soleRotations?.[side];
+  if(!raw)return null;
+  const localUp=up.clone().applyQuaternion(new THREE.Quaternion().fromArray(raw).invert());
+  return localUp.applyQuaternion(rotation).normalize();
+}
+
+export function soleRotation(c,side,normal,authoredRotation) {
   const raw=c.activeAction?.getClip().userData?.soleRotations?.[side] ||
     c.actions.wall?.getClip().userData?.soleRotations?.[side];
   if(!raw)return null;
-  const neutral=c.model.getWorldQuaternion(new THREE.Quaternion()).multiply(new THREE.Quaternion().fromArray(raw));
-  // The Mixamo foot bone's local Y runs toward the toes, not out of the sole.
-  // The captured flat-foot pose is already correct on level ground; only tilt
-  // that pose by the difference between world up and the support normal.
-  return new THREE.Quaternion().setFromUnitVectors(up,normal).multiply(neutral);
+  const authored=authoredRotation?.clone() || c.model.getWorldQuaternion(new THREE.Quaternion()).multiply(new THREE.Quaternion().fromArray(raw));
+  const sole=groundSoleNormal(c,side,authored);
+  if(!sole)return authored;
+  // Remove pitch and roll while retaining the authored toe heading/pivot.
+  return new THREE.Quaternion().setFromUnitVectors(sole,normal).multiply(authored);
 }
 
 export function adaptPelvisToTerrain(c,delta,grounded) {
@@ -170,7 +179,11 @@ export function plantMovingFeet(c,delta) {
     const surface=support?.height,supported=!!support;
     let plant=c.movingPlants[side];
     const length=worldPosition(hip).distanceTo(worldPosition(knee))+worldPosition(knee).distanceTo(current);
-    const reachable=!plant || worldPosition(hip).distanceTo(plant.position)<=length*0.995;
+    // Test a new floor anchor as well as an existing one. Acquiring an
+    // unreachable anchor on one frame and releasing it on the next made
+    // almost-straight boxing legs alternate between two ankle poses.
+    const candidate=plant?.position || current.clone().setY((surface ?? current.y)+.11);
+    const reachable=worldPosition(hip).distanceTo(candidate)<=length*0.995;
     const stance=sample[side] && supported && action.getEffectiveWeight()>=0.8 && reachable;
     if(!stance) {
       support=footSupport(c,current,true) || support;
@@ -201,7 +214,7 @@ export function plantMovingFeet(c,delta) {
       continue;
     }
     if(!plant || plant.action!==action) {
-      plant=c.movingPlants[side]={action,position:current.clone(),rotation:soleRotation(c,side,support.normal) || foot.getWorldQuaternion(new THREE.Quaternion()),age:0,normal:support.normal};
+      plant=c.movingPlants[side]={action,position:current.clone(),rotation:soleRotation(c,side,support.normal,authored) || foot.getWorldQuaternion(new THREE.Quaternion()),age:0,normal:support.normal};
       plant.position.y=surface+0.11;
     }
     // Keep a stance anchored to the actual support, including a changed LOD.
