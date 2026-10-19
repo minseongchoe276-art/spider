@@ -4,7 +4,7 @@ import {fetchAsset} from './AssetLoader.js';
 
 // The model files keep stable public paths. Bump this revision whenever their
 // baked geometry is regenerated so browsers and edge caches cannot reuse the old rigs.
-const APPEARANCE_REVISION='ce6c794';
+const APPEARANCE_REVISION='shadow-pulse-1';
 
 export async function loadAppearances() {
   const entries=await Promise.all(['web','combat'].map(async mode=>{
@@ -31,7 +31,6 @@ export function setAppearance(character,mode,animate=true) {
   character.appearanceMode=mode;
   character.appearanceBaseGlow=materials.map(m=>({color:m.emissive.clone(),intensity:m.emissiveIntensity}));
   // The mixer, skeleton, IK, root and physics stay alive throughout the swap.
-  if(character.firstPersonRig?.parent)character.setFirstPersonCamera(character.firstPersonRig.parent);
   if(animate) {
     if(!character.transformEffect){
       const group=new THREE.Group();group.name='SuitTransformation';
@@ -39,7 +38,7 @@ export function setAppearance(character,mode,animate=true) {
       for(let i=0;i<2;i++){const ring=new THREE.Mesh(new THREE.TorusGeometry(.54,.018,6,64),material);ring.rotation.x=Math.PI/2;group.add(ring);}
       character.group.add(group);character.transformEffect=group;
     }
-    character.transformEffect.visible=!character.isFirstPerson;character.transformTime=0;
+    character.transformEffect.visible=true;character.transformTime=0;
   }
   return true;
 }
@@ -53,7 +52,7 @@ export function updateAppearance(character,delta) {
     const m=character.appearanceMaterials[i],base=character.appearanceBaseGlow[i];
     m.emissive.copy(base.color).lerp(new THREE.Color(0x277fba),pulse*.65);m.emissiveIntensity=base.intensity+pulse*.9;
   }
-  const effect=character.transformEffect;if(effect){effect.visible=t<1&&!character.isFirstPerson;effect.children.forEach((ring,i)=>{ring.position.y=i?2.1*(1-t):2.1*t;ring.scale.setScalar(.8+.35*pulse);ring.material.opacity=.65*pulse;});}
+  const effect=character.transformEffect;if(effect){effect.visible=t<1;effect.children.forEach((ring,i)=>{ring.position.y=i?2.1*(1-t):2.1*t;ring.scale.setScalar(.8+.35*pulse);ring.material.opacity=.65*pulse;});}
   if(t>=1)character.transformTime=null;
 }
 

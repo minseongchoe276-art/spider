@@ -59,7 +59,7 @@ check('Historical attachment cannot grant repeated Space jumps in the air',()=>{
 });
 check('Jumping off a live web consumes the jump and the old attachment cannot jump again',()=>{
   const p=player();p.findBestAnchor=()=>new THREE.Vector3(0,32,0);p.startSwing(camera);
-  withInput(p,(app,key)=>{const velocity=p.velocity.clone();key('Space');assert(!p.isSwinging);assert(p.velocity.equals(velocity));
+  withInput(p,(app,key)=>{const velocity=p.velocity.clone();key('Space');assert(!p.isSwinging);assert.equal(p.velocity.y,p.jumpForce);assert.equal(p.velocity.x,velocity.x);assert.equal(p.velocity.z,velocity.z);
     p.velocity.y=-2;key('Space');assert.equal(p.velocity.y,-2);});
 });
 check('Zip arrival without left mouse held releases immediately without generated tangent speed',()=>{
@@ -103,13 +103,6 @@ check('Jumping during a grounded attack cancels it before landing',()=>{
   const p=player();p.state='IDLE';const c=new CombatSystem(new THREE.Scene(),p,p.character);c.toggle();
   assert(c.heavy(camera));p.state='JUMPING';c.before(1/60,camera);
   assert.equal(c.action,null);assert.equal(p.combatMotion,null);assert.equal(p.character.combatAction,null);
-});
-check('First-person camera stays at the head during fast travel and view changes',()=>{
-  const view=new THREE.PerspectiveCamera(),follow=new ThirdPersonCamera(view,{});
-  follow.currentPos.set(0,2,-8);follow.mode='first';
-  const root=new THREE.Vector3(35,40,20);follow.update(1/144,root,new THREE.Vector3(30,0,0),true);
-  assert(view.position.distanceTo(root.clone().add(new THREE.Vector3(0,1.58,0)))<1e-6,
-    'First-person view trailed many metres behind its character');
 });
 check('High downward speed is capped before movement rather than after crossing a roof',()=>{
   const p=player();p.position.y=100;p.velocity.y=-1000;const before=p.position.clone();

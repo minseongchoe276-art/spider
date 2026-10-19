@@ -6,27 +6,11 @@ import {AIR_TRICKS} from '../src/AirTricks.js';
 import {MOTIONS} from '../src/MotionCatalog.js';
 import {RemoteMotion} from '../src/RemoteMotion.js';
 
-const {actor,clips}=await loadMotionRig(),folder='docs/qa/all-motions-2026-10-15';
+const {actor,clips,embeddedCount}=await loadMotionRig(),folder='docs/qa/all-motions-2026-10-15';
 fs.mkdirSync(folder,{recursive:true});const results=[];
 function check(name,run){try{const detail=run();results.push({name,status:'PASS',detail});console.log('PASS '+name);}catch(error){results.push({name,status:'FAIL',error:error.message});console.error('FAIL '+name+': '+error.message);}}
 const fpsList=[24,30,60,144];
 for(const fps of fpsList){
-  check(`${fps}fps first-person strikes peak inside their authored impact phase`,()=>{
-    const c=actor();try{const camera=new THREE.PerspectiveCamera();c.setFirstPersonCamera(camera);c.setFirstPersonMode(true);c.update(1/fps,'IDLE',new THREE.Vector3());
-      const start=c.firstPersonHands.map(hand=>hand.getWorldPosition(new THREE.Vector3()));
-      for(const key of ['jab','cross','hook','heavy','special']){
-        const phase=c.actions[key].getClip().userData.impactPhase;c.combatAction={id:key,key,time:phase,duration:1};c.update(1/fps,'IDLE',new THREE.Vector3());
-        const side=['cross','special'].includes(key)?1:0;
-        const extension=start[side].z-c.firstPersonHands[side].getWorldPosition(new THREE.Vector3()).z;
-        assert(extension>(['hook','heavy'].includes(key)?.2:.3),`${key}: contact lacks forward reach (${extension.toFixed(3)}m)`);
-        for(const offset of [-.15,.15]){
-          c.combatAction.time=THREE.MathUtils.clamp(phase+offset,0,1);c.update(1/fps,'IDLE',new THREE.Vector3());
-          const adjacent=start[side].z-c.firstPersonHands[side].getWorldPosition(new THREE.Vector3()).z;
-          assert(extension>adjacent+.015,`${key}: maximum reach is not synchronized with contact`);
-        }
-      }
-    }finally{disposeRig(c);}
-  });
   for(const key of ['hitHead'])check(`${fps}fps ${key} keeps a supported foot during the full hit reaction`,()=>{
     const c=actor();try{let maxError=0;for(let i=0;i<=fps;i++){c.combatAction={id:1,key,time:i/fps,duration:1};c.update(1/fps,'IDLE',new THREE.Vector3());
       if(i/fps>.12)maxError=Math.max(maxError,Math.abs(Math.min(point(c,'leftfoot').y,point(c,'rightfoot').y)-.11));}
@@ -55,28 +39,12 @@ for(const fps of fpsList){
       c.mixer.update(.25);assert(c.activeAction.isRunning());return {maxDiscontinuity:error};
     }finally{disposeRig(c);}
   });
-  for(const key of ['jab','cross','hook','heavy','special'])check(`${fps}fps first-person ${key} moves the correct arm and its wrist together`,()=>{
-    const c=actor();try{const camera=new THREE.PerspectiveCamera();c.setFirstPersonCamera(camera);c.setFirstPersonMode(true);
-      c.update(1/fps,'IDLE',new THREE.Vector3());camera.updateMatrixWorld(true);
-      const start=c.firstPersonHands.map(hand=>hand.getWorldPosition(new THREE.Vector3()));
-      c.combatAction={id:1,key,time:c.actions[key].getClip().userData.impactPhase,duration:1};c.update(1/fps,'IDLE',new THREE.Vector3());camera.updateMatrixWorld(true);
-      const side=['cross','special'].includes(key)?1:0,hand=c.firstPersonHands[side],wrist=hand.getWorldPosition(new THREE.Vector3());
-      const arm=hand.parent,glove=c.firstPersonGloves[side];
-      assert(glove,`${key}: wrist anchor is outside its visible arm`);
-      assert.equal(glove.parent,arm,'Glove is outside its striking arm');
-      assert(wrist.distanceTo(glove.getWorldPosition(new THREE.Vector3()))<1e-6,`${key}: shooter and glove separated`);
-      assert(wrist.z<start[side].z-.1,`${key}: the striking arm did not move forward`);
-      assert(c.firstPersonHands[1-side].getWorldPosition(new THREE.Vector3()).distanceTo(start[1-side])<1e-6,'The guarding arm moved with the wrong punch');
-      c.combatAction=null;c.update(1/fps,'IDLE',new THREE.Vector3());camera.updateMatrixWorld(true);
-      assert(c.firstPersonHands[side].getWorldPosition(new THREE.Vector3()).distanceTo(start[side])<1e-6,'The viewmodel did not recover');
-    }finally{disposeRig(c);}
-  });
 }
 if(!process.argv.includes('--regressions-only')){
   check('Every registered clip and embedded fallback has explicit coverage',()=>{
     assert.equal(new Set(MOTIONS.map(m=>m.key)).size,MOTIONS.length);
     for(const m of MOTIONS)assert(fs.existsSync('public'+m.url),m.url);
-    assert(clips.some(c=>c.key==='default'),'Embedded fallback omitted');
+    assert.equal(clips.filter(c=>c.key==='default').length,embeddedCount?1:0,'Embedded fallback coverage differs from the current rig asset');
     return {registered:MOTIONS.length,embedded:clips.filter(c=>c.key==='default').length,archivedCompiled:clips.filter(c=>c.archived).map(c=>c.key)};
   });
   const coverage=[];

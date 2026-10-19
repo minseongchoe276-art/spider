@@ -13,7 +13,7 @@ export class WebSwinger {
     this.ropeLength = 0;
     this.targetAnchor = null; // Currently aimed target
 
-    // Visual Web Line (Glowing white spider-silk cylinder/line)
+    // Visual energy tether rendered as a glowing line.
     this.createWebVisuals();
 
     // Visual Web Target Reticle (Holographic targeting reticle in 3D)
@@ -245,7 +245,7 @@ export class WebSwinger {
       char.velocity.z += camRight.z * 18 * delta;
     }
 
-    // Aerodynamic forward assist (Spider-Man slices through the air)
+    // Aerodynamic forward assist for high-speed movement.
     char.velocity.x *= (1 - delta * 0.1);
     char.velocity.z *= (1 - delta * 0.1);
 
@@ -303,7 +303,7 @@ export class WebSwinger {
 
     // Update web visual line
     const positions = this.webLine.geometry.attributes.position.array;
-    // Spider-man's hand / chest pos
+    // Character hand / chest position.
     const handPos = char.position.clone().add(new THREE.Vector3(0, 1.2, 0));
     positions[0] = handPos.x;
     positions[1] = handPos.y;

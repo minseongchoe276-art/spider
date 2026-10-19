@@ -149,7 +149,7 @@ export class Multiplayer {
     if(data.type==='hit') {
       const player=this.players.find(p=>p.id===data.target);if(player){player.health=data.health;player.eliminated=data.eliminated;}
       if(data.target===this.id){
-        this.game.showNotice(data.eliminated?'체력이 0입니다. 살아있는 플레이어를 관전합니다.':`${data.kind==='web'?'거미줄':'주먹'} 공격! 체력 ${data.health}`);
+        this.game.showNotice(data.eliminated?'체력이 0입니다. 살아있는 플레이어를 관전합니다.':`${data.kind==='web'?'에너지 와이어':'주먹'} 공격! 체력 ${data.health}`);
         if(data.eliminated){this.setSpectating(true);this.game.physics.clearWebAnchor();this.game.clearInput();this.game.combat?.cancel();this.pendingPunch=null;}
       }
       else if(data.attacker===this.id){
@@ -161,13 +161,7 @@ export class Multiplayer {
   }
   setSpectating(value) {
     const game=this.game;
-    if(value && !this.spectating && game.tpsCamera?.mode==='first'){
-      this.spectateCameraMode='first';game.tpsCamera.setMode('follow');game.character.setFirstPersonMode?.(false);
-    }
     this.spectating=!!value;game.character.group.visible=!value;
-    if(!value && this.spectateCameraMode){
-      game.tpsCamera.setMode(this.spectateCameraMode);game.character.setFirstPersonMode?.(this.spectateCameraMode==='first');this.spectateCameraMode=null;
-    }
   }
   applyServerPosition(data) {
     if(![data.x,data.y,data.z].every(Number.isFinite))return false;
@@ -265,7 +259,7 @@ export class Multiplayer {
     game.applyPreferences();
     if(game.combat.mode!==desiredMode)game.combat.toggle(game.input);
     this.game.showNotice(this.room.mode==='tag'
-      ? (this.arena?'경찰은 추격, 도망자는 이동 목표 3개를 완료하거나 제한 시간 생존. 쓰러진 팀원 곁에서 3초 유지하면 구조합니다. 시작 8초는 공격이 없습니다.':'경찰은 주먹 25, 거미줄 15로 추격합니다. 도망자는 5분 생존하면 승리합니다.')
+      ? (this.arena?'경찰은 추격, 도망자는 이동 목표 3개를 완료하거나 제한 시간 생존. 쓰러진 팀원 곁에서 3초 유지하면 구조합니다. 시작 8초는 공격이 없습니다.':'경찰은 주먹 25, 에너지 와이어 15로 추격합니다. 도망자는 5분 생존하면 승리합니다.')
       : '자유 플레이 시작! 도시를 함께 탐험하세요.');
   }
   locksCombatToggle() {

@@ -6,7 +6,7 @@ import {retargetMotion,prepareMotion,boneId} from '../src/MotionRetarget.js';
 globalThis.ProgressEvent=class{};
 globalThis.document={createElementNS:()=>({addEventListener(){},removeEventListener(){},set src(v){}})};
 globalThis.window={URL:globalThis.URL};
-const d=fs.readFileSync('public/models/spiderman.glb'),len=d.readUInt32LE(12);
+const d=fs.readFileSync('public/models/shadow-pulse-rig.glb'),len=d.readUInt32LE(12);
 const j=JSON.parse(d.subarray(20,20+len));
 j.buffers[0].uri=`data:application/octet-stream;base64,${d.subarray(28+len).toString('base64')}`;
 delete j.images;delete j.textures;j.materials=[];j.meshes.forEach(m=>m.primitives.forEach(p=>delete p.material));

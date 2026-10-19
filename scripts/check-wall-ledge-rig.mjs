@@ -9,7 +9,7 @@ import { boneId } from '../src/MotionRetarget.js';
 import { SwingPhysics } from '../src/SwingPhysics.js';
 import { City } from '../src/City.js';
 globalThis.ProgressEvent=class {constructor(type,values){Object.assign(this,values);}};
-const raw=fs.readFileSync('public/models/spiderman.glb'),length=raw.readUInt32LE(12),json=JSON.parse(raw.subarray(20,20+length));
+const raw=fs.readFileSync('public/models/shadow-pulse-rig.glb'),length=raw.readUInt32LE(12),json=JSON.parse(raw.subarray(20,20+length));
 json.buffers[0].uri=`data:application/octet-stream;base64,${raw.subarray(28+length).toString('base64')}`;
 delete json.images;delete json.textures;json.materials=[];json.meshes.forEach(m=>m.primitives.forEach(p=>delete p.material));
 const template=(await new GLTFLoader().parseAsync(JSON.stringify(json),'')).scene;

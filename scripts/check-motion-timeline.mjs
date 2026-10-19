@@ -10,7 +10,7 @@ import { SwingPhysics } from '../src/SwingPhysics.js';
 import { StreamedCollision } from '../src/StreamedCollision.js';
 
 globalThis.ProgressEvent=class {constructor(type,values){Object.assign(this,values);}};
-const data=fs.readFileSync('public/models/spiderman.glb'),length=data.readUInt32LE(12);
+const data=fs.readFileSync('public/models/shadow-pulse-rig.glb'),length=data.readUInt32LE(12);
 const json=JSON.parse(data.subarray(20,20+length));
 json.buffers[0].uri=`data:application/octet-stream;base64,${data.subarray(28+length).toString('base64')}`;
 delete json.images;delete json.textures;json.materials=[];

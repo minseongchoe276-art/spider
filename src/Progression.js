@@ -1,7 +1,7 @@
 const KEY='web-runner-progress-v1';
-const rewards=[{id:'cyan',label:'청록 거미줄',color:0x72f1ff},
-  {id:'gold',label:'황금 거미줄',color:0xffd47a},
-  {id:'violet',label:'보라 거미줄',color:0xcda2ff}];
+const rewards=[{id:'cyan',label:'청록 에너지 와이어',color:0x72f1ff},
+  {id:'gold',label:'황금 에너지 와이어',color:0xffd47a},
+  {id:'violet',label:'보라 에너지 와이어',color:0xcda2ff}];
 const finitePosition=p=>Array.isArray(p)&&p.length===3&&p.every(Number.isFinite)&&Math.abs(p[0])<2500&&Math.abs(p[2])<2500&&p[1]>-40&&p[1]<1000;
 export class Progression {
   constructor(storage=null) {

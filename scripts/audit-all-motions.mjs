@@ -8,7 +8,7 @@ import { retargetMotion, boneId } from '../src/MotionRetarget.js';
 globalThis.ProgressEvent = class { constructor(type, values) { Object.assign(this, values); } };
 globalThis.document = { createElementNS() { return {addEventListener(){},removeEventListener(){},set src(v){}}; } };
 globalThis.window = { URL: globalThis.URL };
-const data = fs.readFileSync('public/models/spiderman.glb');
+const data = fs.readFileSync('public/models/shadow-pulse-rig.glb');
 const jsonLength = data.readUInt32LE(12);
 const json = JSON.parse(data.subarray(20,20+jsonLength).toString());
 json.buffers[0].uri = `data:application/octet-stream;base64,${data.subarray(28+jsonLength).toString('base64')}`;

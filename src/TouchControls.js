@@ -22,8 +22,8 @@ export class TouchControls {
     this.root.setAttribute('aria-label','모바일 게임 조작');
     this.root.innerHTML=`<nav class="touch-toolbar" aria-label="게임 메뉴"><button data-ui="fullscreen" aria-label="전체화면으로 플레이" aria-pressed="false">전체화면</button><button data-ui="map" aria-label="전체 지도 열기">지도</button><button data-ui="menu" aria-label="게임 메뉴 열기">메뉴</button></nav>
       <div class="touch-stick" role="group" aria-label="이동 스틱 · 끝까지 밀면 질주"><span class="touch-stick-knob"></span><span class="touch-stick-caption">이동 · 질주</span></div>
-      <div class="touch-actions"><button data-mouse="0" class="touch-web" aria-label="왼손 거미줄 · 누르고 유지"><span>왼손 웹</span></button><button data-mouse="2" class="touch-web" aria-label="오른손 거미줄 · 누르고 유지"><span>오른손 웹</span></button><button data-key="jump" class="touch-jump">점프</button><button data-key="zip">웹 집</button><button data-key="wall">벽 이동</button><button data-ui="more" aria-expanded="false" aria-controls="touch-extra">더보기</button></div>
-      <div id="touch-extra" class="touch-extra" hidden><button data-key="mode" aria-label="외형 변신 · 전투와 거미줄 모드 전환">변신</button><button data-key="guard">방어</button><button data-key="dodge">회피</button><button data-key="heavy">강공격</button><button data-key="trick">묘기</button><button data-key="camera">시점</button><button data-key="recenter">시점 정렬</button><button data-ui="help">조작 안내</button></div>`;
+      <div class="touch-actions"><button data-mouse="0" class="touch-web" aria-label="왼손 에너지 와이어 · 누르고 유지"><span>왼손 와이어</span></button><button data-mouse="2" class="touch-web" aria-label="오른손 에너지 와이어 · 누르고 유지"><span>오른손 와이어</span></button><button data-key="jump" class="touch-jump">점프</button><button data-key="zip">와이어 당기기</button><button data-key="wall">벽 이동</button><button data-ui="more" aria-expanded="false" aria-controls="touch-extra">더보기</button></div>
+      <div id="touch-extra" class="touch-extra" hidden><button data-key="mode" aria-label="외형 변신 · 전투와 에너지 와이어 모드 전환">변신</button><button data-key="guard">방어</button><button data-key="dodge">회피</button><button data-key="heavy">강공격</button><button data-key="trick">묘기</button><button data-key="camera">시점</button><button data-key="recenter">시점 정렬</button><button data-ui="help">조작 안내</button></div>`;
     document.getElementById('game-container').append(this.root);
     this.stick=this.root.querySelector('.touch-stick');this.knob=this.root.querySelector('.touch-stick-knob');
     this.extra=this.root.querySelector('#touch-extra');
@@ -103,12 +103,12 @@ export class TouchControls {
     this.root.dataset.spectating=String(!!g.multiplayer?.spectating);
     document.body.classList.toggle('touch-solo',this.enabled&&!!g.multiplayer?.solo);
     document.body.classList.toggle('touch-extra-open',!this.root.hidden&&!this.extra.hidden);
-    if(active&&!this.announced){this.announced=true;g.showNotice('왼쪽 스틱 이동 · 오른쪽 화면을 밀어 조준 · 거미줄은 누르고 유지');}
+    if(active&&!this.announced){this.announced=true;g.showNotice('왼쪽 스틱 이동 · 오른쪽 화면을 밀어 조준 · 에너지 와이어는 누르고 유지');}
     if(this.enabled)this.game.pointerLockWanted=false;
     if(!active&&this.pointers.size)this.release();
     const combat=this.game.combat?.mode==='combat'&&GROUNDED.includes(this.game.physics.state);
     for(const button of this.root.querySelectorAll('[data-mouse]')){
-      const right=button.dataset.mouse==='2';const label=combat?(right?'오른손 공격':'왼손 공격'):(right?'오른손 웹':'왼손 웹');
+      const right=button.dataset.mouse==='2';const label=combat?(right?'오른손 공격':'왼손 공격'):(right?'오른손 와이어':'왼손 와이어');
       if(button.firstElementChild.textContent!==label){button.firstElementChild.textContent=label;button.setAttribute('aria-label',`${label} · 누르고 유지`);}
     }
   }

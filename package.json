@@ -1,5 +1,5 @@
 {
-  "name": "spiderman-web-swing",
+  "name": "shadow-pulse",
   "version": "1.0.0",
   "private": true,
   "type": "module",
@@ -34,6 +34,9 @@
     "test:wall-crawl": "node scripts/check-wall-crawl.mjs",
     "test:motion-cleanup": "node scripts/build-motions.mjs && node scripts/check-motion-cleanup.mjs",
     "test:combat-feet": "node scripts/check-combat-feet.mjs",
+    "test:moving-combat": "node scripts/check-moving-combat-skin.mjs && node scripts/check-combat-quality.mjs && node scripts/check-combat-traversal.mjs",
+    "test:complete-motion": "node scripts/build-motions.mjs && node scripts/run-motion-audit.mjs",
+    "test:third-person": "node scripts/check-third-person-only.mjs && node scripts/check-camera-motion-web.mjs",
     "test:combat-quality": "node scripts/build-motions.mjs && node scripts/check-combat-quality.mjs && node scripts/check-combat-feet.mjs",
     "test:combat-traversal": "node scripts/build-motions.mjs && node scripts/check-combat-traversal.mjs",
     "test:reticle": "node scripts/check-reticle-only.mjs",
@@ -42,7 +45,8 @@
     "test:display": "node scripts/check-display-mode.mjs",
     "test:physics": "node scripts/check-physics-invariants.mjs && node scripts/check-pendulum.mjs && node scripts/check-dual-web.mjs && node scripts/check-gameplay.mjs && node scripts/check-hong-kong-streaming.mjs && node scripts/check-web-continuity.mjs && node scripts/check-wall-ledge.mjs",
     "test:appearances": "node scripts/check-appearances.mjs",
-    "build:appearances": "node scripts/build-appearances.mjs"
+    "build:appearances": "node scripts/build-appearances.mjs",
+    "test:comprehensive": "node scripts/build-motions.mjs && node scripts/check-comprehensive-audit.mjs"
   },
   "dependencies": {
     "@dimforge/rapier3d-compat": "^0.21.0",

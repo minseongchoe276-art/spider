@@ -32,7 +32,6 @@ const physics={state:'IDLE',velocity:new T.Vector3(3,2,1),clearPendingInput(){},
 const combat=new CombatSystem(c.scene,physics,c);assert.equal(combat.mode,'web');
 for(let i=0;i<40;i++){combat.toggle({});updateAppearance(c,1/60);assert.equal(c.appearanceMode,combat.mode);assert.equal(c.mixer,mixer);assert.equal(c.activeAction.time,time);assert(c.group.position.equals(root));assert.deepEqual(physics.velocity.toArray(),[3,2,1]);assert.equal(c.model.getObjectByProperty('isSkinnedMesh',true).skeleton,skeleton);Object.values(c.bones).forEach((b,k)=>assert(b.quaternion.equals(pose[k])));}
 updateAppearance(c,1);assert.equal(c.transformTime,null);assert.equal(c.transformEffect.visible,false);results.push({case:'40 mode changes preserve pose, mixer, root and momentum; effect expires',pass:true});
-const camera=new T.PerspectiveCamera();c.setFirstPersonCamera(camera);c.setFirstPersonMode(true);combat.toggle();updateAppearance(c,0);assert(c.firstPersonRig.visible);assert.equal(c.model.visible,false);assert(c.firstPersonGloves.every(g=>g));assert.equal(c.transformEffect.visible,false);c.setFirstPersonMode(false);results.push({case:'First-person appearance rebuild preserves view mode',pass:true});
 for(const mode of ['web','combat']){
  setAppearance(c,mode,false);const mesh=c.model.getObjectByProperty('isSkinnedMesh',true),p=mesh.geometry.attributes.position;
  let samples=0,maxExtent=0;

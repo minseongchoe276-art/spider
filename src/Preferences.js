@@ -1,5 +1,6 @@
 import {cleanSettings} from './PlayerSettings.js';
-const KEY = 'spiderman-preferences-v1';
+const KEY = 'shadow-pulse-preferences-v1';
+const LEGACY_KEY = 'spiderman-preferences-v1';
 
 export class Preferences {
   constructor(storage = null, reducedMotion = false) {
@@ -7,7 +8,7 @@ export class Preferences {
     this.lastSaveSucceeded = false;
     this.values = { muted: false, reducedMotion, quality: 'balanced', settings:cleanSettings() };
     try {
-      const saved = JSON.parse(storage?.getItem(KEY) || 'null');
+      const saved = JSON.parse(storage?.getItem(KEY) || storage?.getItem(LEGACY_KEY) || 'null');
       if (saved && typeof saved === 'object') {
         this.values.settings=cleanSettings(saved.settings);
         for (const key of ['muted', 'reducedMotion']) {
@@ -19,7 +20,7 @@ export class Preferences {
   }
 
   save() {
-    try { this.storage?.setItem(KEY, JSON.stringify(this.values)); this.lastSaveSucceeded = !!this.storage; }
+    try { this.storage?.setItem(KEY, JSON.stringify(this.values)); this.storage?.removeItem?.(LEGACY_KEY); this.lastSaveSucceeded = !!this.storage; }
     catch { this.lastSaveSucceeded = false; }
     return this.lastSaveSucceeded;
   }

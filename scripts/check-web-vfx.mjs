@@ -17,7 +17,7 @@ for(const launch of [0.04,0.5,1]) {
 updateWebStrand(line,mesh,wrist,wrist);assert(!line.visible && !mesh.visible);
 const miss=Object.create(Character.prototype);
 miss.group=new THREE.Group();miss.scene=scene;miss.webAttachments=[];miss.webLaunchTimers={};miss.webShotTimer=0;
-miss.currentHand='left';miss.isFirstPerson=false;miss.firstPersonHands=[];
+miss.currentHand='left';
 miss.webLine=line;miss.webMesh=mesh;
 const offhand=createWebStrand(scene);miss.webLineOffhand=offhand.line;miss.webMeshOffhand=offhand.mesh;
 miss.fireWebMiss(new THREE.Vector3(0,2,28),'left');

@@ -67,7 +67,7 @@ await check('Failed GLB remains startable, reports degradation, keeps attached w
   character.fireWeb(new THREE.Vector3(5,20,5),'right');
   character.update(.5,'SWINGING',new THREE.Vector3(),new THREE.Vector3(5,20,5));
   assert(character.webLine.visible && character.webLineOffhand.visible);
-  character.setFirstPersonMode(true); assert(!character.placeholder.visible);
+  assert(character.placeholder.visible);
 });
 await check('Asset HTTP failures and network timeout settle rather than wait forever', async () => {
   const original=globalThis.fetch;
@@ -123,13 +123,6 @@ await check('Blocked camera holds its chosen shoulder through small clearance ch
   const b=c.findCameraBoom(new THREE.Vector3(),0,.16,5.8,[],null);
   assert(a.distance>5 && b.distance>5);
   assert(a.direction.distanceTo(b.direction)<1e-10,'Camera jumped to the other shoulder');
-});
-await check('Mouse vertical direction stays consistent between third and first person',()=>{
-  const c=new ThirdPersonCamera(new THREE.PerspectiveCamera(),{});c.mode='first';c.pitch=0;
-  c.handleMouseMove(0,-120);c.update(1,new THREE.Vector3(),new THREE.Vector3(),false);
-  const direction=new THREE.Vector3();c.camera.getWorldDirection(direction);assert(direction.y>0);
-  c.handleMouseMove(0,240);c.update(1,new THREE.Vector3(),new THREE.Vector3(),false);
-  c.camera.getWorldDirection(direction);assert(direction.y<0);
 });
 await check('Reduced motion disables camera shake and speed FOV',()=>{
   const c=new ThirdPersonCamera(new THREE.PerspectiveCamera(),{});c.reducedMotion=true;
@@ -268,7 +261,7 @@ await check('Grounded combat clicks punch, airborne clicks web, and Space jumps 
     let clears=0,boost=null;
     const physics={state:'IDLE',isSwinging:false,webAimNdc:new THREE.Vector2(),webLatch:false,jumpForce:17,
       velocity:new THREE.Vector3(),lastWebAnchor:null,
-      setWebAimPoint(){},findBestAnchor(){},
+      setWebAimPoint(){},findBestAnchor(){},supportHeight(){return null;},
       clearPendingInput(){},
       performWebPull(){pulls.push(this.state);this.state='WEB_ZIP';this.zipAnchor=new THREE.Vector3();return true;},
       performAirJump(){airs.push(this.state);return true;},
@@ -302,9 +295,9 @@ await check('Grounded combat clicks punch, airborne clicks web, and Space jumps 
     app.input.webHold=true;app.input.webFireHeld=true;app.input.webTap=true;
     key('Space');
     assert.equal(boost,false);assert.equal(clears,0);assert.equal(physics.state,'JUMPING');
-    assert.equal(physics.velocity.y,1);assert.equal(app.input.webHold,false);assert.equal(app.input.webTap,false);
+    assert.equal(physics.velocity.y,physics.jumpForce);assert.equal(app.input.webHold,false);assert.equal(app.input.webTap,false);
     physics.isSwinging=false;physics.state='WEB_ZIP';physics.velocity.set(0,2,0);physics.lastWebAnchor=new THREE.Vector3(0,10,0);
-    key('Space');assert.equal(clears,1);assert.equal(physics.state,'JUMPING');assert.equal(physics.velocity.y,2);
+    key('Space');assert.equal(clears,1);assert.equal(physics.state,'JUMPING');assert.equal(physics.velocity.y,physics.jumpForce);
   } finally {globalThis.window=previousWindow;globalThis.document=previousDocument;}
 });
 await check('A complete Space down/up between frames still triggers a jump',()=>{

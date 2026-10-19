@@ -6,11 +6,11 @@
   <meta name="theme-color" content="#07121d">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="WEB RUNNER">
+  <meta name="apple-mobile-web-app-title" content="SHADOW PULSE">
   <link rel="manifest" href="/manifest.webmanifest">
   <link rel="icon" href="/app-icon.svg" type="image/svg+xml">
-  <title>스파이더맨: 3D 웹 스윙 (Spider-Man 3D Web Swing)</title>
-  <meta name="description" content="스파이더맨 도시 웹 스윙 3D 웹게임. 자유 이동, 웹 집, 벽 달리기, 도시 탐험.">
+  <title>SHADOW PULSE — 3D 도시 액션</title>
+  <meta name="description" content="SHADOW PULSE에서 빌딩 사이를 질주하고, 와이어를 연결해 도시를 누비세요.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800;900&family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
@@ -26,7 +26,7 @@
 
     <!-- Center Aim Reticle / Crosshair -->
     <div id="player-markers" class="hidden" aria-label="플레이어 위치"></div>
-    <div id="anchor-preview" aria-hidden="true"></div><div id="hand-status" aria-label="양손 거미줄 상태"></div><div id="boundary-warning" role="status"></div><div id="pursuit-hud" role="status"></div><button id="spectate-next" class="hidden" type="button">다음 플레이어 관전</button>
+    <div id="anchor-preview" aria-hidden="true"></div><div id="hand-status" aria-label="양손 에너지 와이어 상태"></div><div id="boundary-warning" role="status"></div><div id="pursuit-hud" role="status"></div><button id="spectate-next" class="hidden" type="button">다음 플레이어 관전</button>
     <div id="crosshair">
       <div class="crosshair-dot"></div>
       <div class="crosshair-ring"></div>
@@ -34,16 +34,14 @@
 
     <!-- HUD Top-Left: Badge & Telemetry -->
     <header id="hud-top-left" class="glass-panel">
-      <div class="spider-badge">
-        <svg viewBox="0 0 100 100" class="spider-icon">
-          <path d="M50 15 C55 25, 55 25, 50 35 C45 25, 45 25, 50 15 Z" fill="#ff2a5f"/>
-          <path d="M50 35 C62 48, 62 65, 50 82 C38 65, 38 48, 50 35 Z" fill="#ff2a5f"/>
-          <path d="M46 38 Q25 25 10 32 M46 44 Q20 38 8 52 M46 50 Q18 56 12 70 M46 56 Q24 72 18 85" stroke="#ff2a5f" stroke-width="3.5" fill="none" stroke-linecap="round"/>
-          <path d="M54 38 Q75 25 90 32 M54 44 Q80 38 92 52 M54 50 Q82 56 88 70 M54 56 Q76 72 82 85" stroke="#ff2a5f" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+      <div class="brand-lockup">
+        <svg viewBox="0 0 100 100" class="pulse-mark" aria-hidden="true">
+          <path d="M12 53h19l9-25 15 48 11-31 8 8h14" fill="none" stroke="#9d8aff" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="50" cy="50" r="43" fill="none" stroke="#4edcf2" stroke-width="3" opacity=".72"/>
         </svg>
         <div class="badge-text">
-          <span class="badge-title">SPIDER-MAN</span>
-          <span class="badge-sub">HONG KONG WEB RUNNER</span>
+          <span class="badge-title">SHADOW PULSE</span>
+          <span class="badge-sub">KINETIC CITY ADVENTURE</span>
         </div>
       </div>
       
@@ -90,11 +88,11 @@
     <!-- Web Status Pill -->
     <div id="web-status-pill" class="glass-panel">
       <div id="web-status-dot" class="status-dot"></div>
-      <span id="web-status-text">WEB READY</span>
+      <span id="web-status-text">PULSE READY</span>
     </div>
 
     <!-- Instructions / Controls Card (Bottom-Left) -->
-    <div id="combat-status" role="status" style="position:fixed;bottom:20px;left:50%;transform:translateX(-50%);max-width:90vw;text-align:center;padding:10px 16px;border-radius:12px;background:#14202de8;color:white;z-index:8;font:14px system-ui">전투 모드 · Q 거미줄 전환</div>
+    <div id="combat-status" role="status" style="position:fixed;bottom:20px;left:50%;transform:translateX(-50%);max-width:90vw;text-align:center;padding:10px 16px;border-radius:12px;background:#14202de8;color:white;z-index:8;font:14px system-ui">전투 모드 · Q 에너지 와이어 전환</div>
     <aside id="controls-guide" class="glass-panel hidden" role="dialog" aria-label="조작 가이드">
       <div class="guide-header">
         <h3>🎮 조작 가이드</h3>
@@ -102,9 +100,9 @@
         <button id="btn-close-guide" type="button" aria-label="조작 가이드 닫기">닫기</button>
       </div>
       <div class="guide-list">
-        <div class="guide-row touch-guide-row"><span class="key-badge">터치 조작</span><span class="guide-desc">왼쪽 스틱 이동 · 끝까지 밀면 질주. 오른쪽 화면 드래그로 조준. 왼손·오른손 웹은 누르고 유지, 손을 떼면 해제합니다. 웹 버튼을 누른 채 드래그해도 시점 조절이 가능합니다. 점프·웹 집·벽 이동은 오른쪽 버튼, 전투·방어·회피·묘기는 더보기에 있습니다. 상단 지도·메뉴 버튼을 사용하세요.</span></div>
-        <div class="guide-row"><span class="key-badge">경찰과 도망자</span><span class="guide-desc">2~8명. 6명 이하는 경찰 1명, 7~8명은 경찰 2명. 시작 8초는 공격 없음. 경찰 주먹 25, 거미줄 15. 도망자는 공격할 수 없습니다. 도망자가 모두 쓰러지면 경찰 승리. 이동 목표 3개를 완료하거나 3~5분 생존하면 도망자 승리. 쓰러진 팀원 곁에 3초 유지하면 구조합니다. 탈락하면 관전합니다.</span></div>
-        <div class="guide-row"><span class="key-badge">Q</span><span class="guide-desc">전투 / 거미줄 전환. 도망자는 경기 중 거미줄로 고정됩니다.</span></div>
+        <div class="guide-row touch-guide-row"><span class="key-badge">터치 조작</span><span class="guide-desc">왼쪽 스틱 이동 · 끝까지 밀면 질주. 오른쪽 화면 드래그로 조준. 왼손·오른손 와이어은 누르고 유지, 손을 떼면 해제합니다. 웹 버튼을 누른 채 드래그해도 시점 조절이 가능합니다. 점프·와이어 당기기·벽 이동은 오른쪽 버튼, 전투·방어·회피·묘기는 더보기에 있습니다. 상단 지도·메뉴 버튼을 사용하세요.</span></div>
+        <div class="guide-row"><span class="key-badge">경찰과 도망자</span><span class="guide-desc">2~8명. 6명 이하는 경찰 1명, 7~8명은 경찰 2명. 시작 8초는 공격 없음. 경찰 주먹 25, 에너지 와이어 15. 도망자는 공격할 수 없습니다. 도망자가 모두 쓰러지면 경찰 승리. 이동 목표 3개를 완료하거나 3~5분 생존하면 도망자 승리. 쓰러진 팀원 곁에 3초 유지하면 구조합니다. 탈락하면 관전합니다.</span></div>
+        <div class="guide-row"><span class="key-badge">Q</span><span class="guide-desc">전투 / 에너지 와이어 전환. 도망자는 경기 중 에너지 와이어로 고정됩니다.</span></div>
         <div class="guide-row"><span class="key-badge">G</span><span class="guide-desc">강한 잽 · 기력 35 · 재사용 4초</span></div>
         <div class="guide-row"><span class="key-badge">Ctrl + 방향</span><span class="guide-desc">짧은 회피 · 전방 숙이기</span></div>
 
@@ -119,7 +117,7 @@
         </div>
         <div class="guide-row">
           <span class="key-badge">좌클릭</span>
-          <span class="guide-desc key-accent">조준점이 가리키는 표면에 거미줄 부착 · Space로 점프 · 떼면 관성 비행 · 땅의 전투는 잽</span>
+          <span class="guide-desc key-accent">조준점이 가리키는 표면에 에너지 와이어 부착 · Space로 점프 · 떼면 관성 비행 · 땅의 전투는 잽</span>
         </div>
         <div class="guide-row">
           <span class="key-badge">우클릭</span>
@@ -141,7 +139,7 @@
         <div class="guide-row"><span class="key-badge">F + W</span><span class="guide-desc">벽 기어가기</span></div>
         <div class="guide-row"><span class="key-badge">C</span><span class="guide-desc">카메라를 등 뒤로 정렬</span></div>
         <div class="guide-row"><span class="key-badge">Home · End / PgUp · PgDn</span><span class="guide-desc">키보드로 좌우 / 위아래 조준</span></div>
-        <div class="guide-row"><span class="key-badge">V</span><span class="guide-desc">근접 · 기본 · 원거리 · 1인칭 시점 전환</span></div>
+        <div class="guide-row"><span class="key-badge">V</span><span class="guide-desc">근접 · 기본 · 원거리 시점 전환</span></div>
         <div class="guide-row"><span class="key-badge">M</span><span class="guide-desc">전체 지도 열기 · 닫기</span></div>
         <div class="guide-row">
           <span class="key-badge">마우스 휠</span>
@@ -209,24 +207,24 @@
         </section>
           </div>
         </div>
-        <div class="lobby-footer"><span>WEB RUNNER <b>©</b> HONG KONG</span><span>WASD 이동 &nbsp;·&nbsp; 마우스 조준 &nbsp;·&nbsp; SPACE 점프</span></div>
+        <div class="lobby-footer"><span>SHADOW PULSE <b>·</b> HONG KONG</span><span>WASD 이동 &nbsp;·&nbsp; 마우스 조준 &nbsp;·&nbsp; SPACE 점프</span></div>
       </div>
     </div>
 
     <!-- Start / Click to Play Overlay -->
     <div id="overlay-click-to-play" class="overlay hidden" role="dialog" aria-modal="true" aria-labelledby="game-title">
       <div class="overlay-card">
-        <span class="pause-eyebrow">WEB RUNNER / SYSTEM MENU</span>
+        <span class="pause-eyebrow">SHADOW PULSE / SYSTEM MENU</span>
         <h1 id="game-title">잠시 <em>멈춤</em></h1>
         <h2>도시는 기다리고 있습니다.</h2>
         <p class="overlay-tagline">다시 뛰어들 준비가 되면 계속하세요.</p>
         
         <div class="start-instruction">
           <div class="mouse-icon">🖱️</div>
-          <span><span data-action-key="mode">Q</span> 전투/거미줄 · 좌클릭 꾹: 조준한 표면에 거미줄 · 우클릭 꾹: 반대 손 스윙 · 떼기: 관성 비행 · <span data-action-key="zip">E</span>: 공중 집 1회 (12m) · <span data-action-key="guard">B</span> 방어 · <span data-action-key="dodge">Ctrl</span> 회피<br>Esc 메뉴 · M 전체 지도 · <span id="world-limit">구역 원점 기준 ±2.4km</span></span>
+          <span><span data-action-key="mode">Q</span> 전투/에너지 와이어 · 좌클릭 꾹: 조준한 표면에 에너지 와이어 · 우클릭 꾹: 반대 손 스윙 · 떼기: 관성 비행 · <span data-action-key="zip">E</span>: 공중 집 1회 (12m) · <span data-action-key="guard">B</span> 방어 · <span data-action-key="dodge">Ctrl</span> 회피<br>Esc 메뉴 · M 전체 지도 · <span id="world-limit">구역 원점 기준 ±2.4km</span></span>
         </div>
 
-        <p class="touch-menu-hint">왼쪽 스틱으로 이동 · 오른쪽 화면을 밀어 조준<br>거미줄은 누르고 유지 · 점프 버튼으로 도약</p>
+        <p class="touch-menu-hint">왼쪽 스틱으로 이동 · 오른쪽 화면을 밀어 조준<br>에너지 와이어는 누르고 유지 · 점프 버튼으로 도약</p>
         <button id="btn-start-game" class="start-btn"><span>계속 플레이</span><b>↗</b></button>
         <button id="btn-start-drag" type="button">마우스 잠금 없이 계속</button>
         <div class="pause-secondary"><button type="button" data-fullscreen aria-pressed="false">전체화면</button><button id="btn-restart" class="hidden" type="button">시작점 복귀</button><button id="btn-leave-match" type="button">로비로 돌아가기</button></div>
@@ -235,7 +233,7 @@
           <select id="graphics-quality" aria-label="그래픽 품질"><option value="low">낮음</option><option value="balanced" selected>기본</option><option value="high">높음</option></select>
         </label></div>
         <div id="extended-settings" class="pause-settings"></div>
-        <details class="player-progress"><summary>위치 · 거미줄</summary><label for="web-theme">거미줄 색상</label><select id="web-theme"><option value="white">기본 흰색</option></select><button id="btn-save-position" type="button">안전 위치 저장</button><button id="btn-restore-position" type="button">저장 위치로 복귀</button></details>
+        <details class="player-progress"><summary>위치 · 에너지 와이어</summary><label for="web-theme">에너지 와이어 색상</label><select id="web-theme"><option value="white">기본 흰색</option></select><button id="btn-save-position" type="button">안전 위치 저장</button><button id="btn-restore-position" type="button">저장 위치로 복귀</button></details>
         <details class="player-progress"><summary>전투 연습</summary><p>현재 위치의 안전한 바닥에서 시작합니다. 온라인 경기에서는 사용할 수 없습니다.</p><select id="practice-type" aria-label="전투 연습 종류"><option value="dummy">훈련 표적</option><option value="melee">근접 상대</option><option value="ranged">원거리 상대</option><option value="shield">방패 상대</option><option value="mixed">혼합 상대</option></select><button id="btn-practice" type="button">연습 시작</button><button id="btn-practice-stop" type="button">연습 종료</button></details>
         <p class="data-credit">도시 데이터: 홍콩 Lands Department<br><a href="?city=procedural">로컬 도시로 플레이</a></p>
       </div>
@@ -245,8 +243,8 @@
     <div id="loading-screen" class="overlay">
       <div class="loading-box glass-panel">
         <div class="loading-spinner"></div>
-        <h2 id="loading-title">SPIDER-MAN 3D 로딩 중...</h2>
-        <p id="loading-desc">스파이더맨 3D 모델 및 애니메이션 준비 중...</p>
+        <h2 id="loading-title">SHADOW PULSE 로딩 중...</h2>
+        <p id="loading-desc">캐릭터와 도시 환경을 준비 중...</p>
         <div class="loading-bar-wrap">
           <div id="loading-bar-fill"></div>
         </div>

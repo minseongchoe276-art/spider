@@ -15,15 +15,15 @@ export function startTraversalPlaytest(GameApp) {
   let busy = false;
   const key = (code, down) => game.gamepad.key(code, down);
   const tap = code => { key(code, true); key(code, false); };
-  const setView = first => {
-    for (let n = 0; n < 4 && (game.tpsCamera.mode === 'first') !== first; n++) tap('KeyV');
+  const setView = view => {
+    for (let n = 0; n < 3 && game.tpsCamera.mode !== view; n++) tap('KeyV');
   };
   const report = (name, detail, pass) => {
     results.push({name, pass, ...detail});
     status.textContent = `${name}: ${pass?'PASS':'FAIL'}\n${JSON.stringify(detail, null, 2)}`;
     panel.dataset.results = JSON.stringify(results);
   };
-  function prepare(first, wall) {
+  function prepare(view, wall) {
     game.multiplayer.beginSolo();
     game.isPlaying = true; game.isPaused = false;
     game.clearInput(); game.physics.resetPosition();
@@ -38,20 +38,20 @@ export function startTraversalPlaytest(GameApp) {
     p.velocity.set(0, 0, 0); p.state = wall ? 'WALL_RUNNING' : 'FALLING';
     p.wallBuilding = wall ? box : null; p.wallNormal.set(0,0,1); p.facingAngle = Math.PI;
     game.character.wallNormal = p.wallNormal.clone();
-    setView(first);
-    game.tpsCamera.placeBehind(p.position, Math.PI+(wall && !first ? .35 : 0));
+    setView(view);
+    game.tpsCamera.placeBehind(p.position, Math.PI+(wall ? .35 : 0));
     game.tpsCamera.lockBehind = false;
     game.camera.position.copy(game.tpsCamera.currentPos);
     game.camera.lookAt(game.tpsCamera.lookAtTarget);
     game.camera.updateMatrixWorld(true);
     return box;
   }
-  async function run(kind, first, switching) {
+  async function run(kind, view, switching) {
     if (busy || !game.assetsReady) return;
     busy = true;
-    const name = `${kind}/${first?'first':'third'}${switching?'/switch':''}`;
+    const name = `${kind}/${view}${switching?'/switch':''}`;
     try {
-      const box = prepare(first, kind === 'climb');
+      const box = prepare(view, kind === 'climb');
       if(kind==='combat'){
         const p=game.physics;p.position.set(0,.1,0);p.previousFixedPosition.copy(p.position);p.renderPosition.copy(p.position);p.state='IDLE';p.facingAngle=0;
         game.tpsCamera.placeBehind(p.position,0);game.tpsCamera.lockBehind=false;
@@ -62,10 +62,11 @@ export function startTraversalPlaytest(GameApp) {
       let frames=0, elapsed=0, maxStep=0, previous=p.position.clone(), switches=0, seenWeb=false, maxWristError=0;
       const startPosition=p.position.clone(),attacks=new Set();let rightFired=false,maxAnkle=0;
       let nextSwitch=.6, released=false, leftReleased=false, independentRelease=false, peakWebs=0, reachedRoof=false, maxAimError=0;
+      let jumpResult=null,maxJumpRise=0;
       if(kind==='combat'){key('KeyW',true);game.gamepad.mouse(0,true);game.gamepad.mouse(0,false);}
       else if (kind === 'climb') { key('KeyW',true); key('KeyF',true); }
       else {
-        game.tpsCamera.pitch = first ? .45 : -.45;
+        game.tpsCamera.pitch = -.45;
         // Let the real camera update before firing through the center reticle.
         await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
         game.gamepad.mouse(0,true); game.gamepad.mouse(2,true);
@@ -83,16 +84,24 @@ export function startTraversalPlaytest(GameApp) {
           let switchedThisFrame=false;
           if (switching && elapsed>=nextSwitch && (kind==='web' ? elapsed<2 : !reachedRoof)) {
             const yaw=game.tpsCamera.yaw, pitch=game.tpsCamera.pitch;
-            setView(game.tpsCamera.mode!=='first');
-            maxAimError=Math.max(maxAimError,Math.abs(game.tpsCamera.yaw-yaw),Math.abs(game.tpsCamera.pitch+pitch));
+            tap('KeyV');
+            maxAimError=Math.max(maxAimError,Math.abs(game.tpsCamera.yaw-yaw),Math.abs(game.tpsCamera.pitch-pitch));
             switches++;nextSwitch+=.45;switchedThisFrame=true;
           }
           seenWeb ||= p.webs.length>0;peakWebs=Math.max(peakWebs,p.webs.length);
+          if(kind==='jump' && elapsed>.5 && !jumpResult){
+            const attached=p.isSwinging && p.webs.length>0;
+            p.velocity.set(0,0,0); // Reproduce a stationary hang, then use the real jump input.
+            const height=p.position.y;
+            tap('Space');
+            jumpResult={attached,height,velocityY:p.velocity.y,detached:!p.isSwinging && p.webs.length===0};
+          }
+          if(jumpResult)maxJumpRise=Math.max(maxJumpRise,p.position.y-jumpResult.height);
           independentRelease ||= leftReleased && !released && p.webs.length===1;
           // A mode selected here is rendered by GameApp on the next RAF.
-          if(game.character.isFirstPerson && !switchedThisFrame)for(const [hand,mesh] of [['right',game.character.webMesh],['left',game.character.webMeshOffhand]]) {
+          if(!switchedThisFrame)for(const [hand,mesh] of [['right',game.character.webMesh],['left',game.character.webMeshOffhand]]) {
             if(!mesh.visible)continue;
-            const wrist=game.character.firstPersonHands[hand==='left'?0:1].getWorldPosition(new THREE.Vector3());
+            const wrist=game.character[hand==='left'?'leftHand':'rightHand'].getWorldPosition(new THREE.Vector3());
             const positions=mesh.geometry.attributes.position;
             const center=new THREE.Vector3();for(let i=0;i<6;i++)center.add(new THREE.Vector3().fromBufferAttribute(positions,i));center.divideScalar(6);
             maxWristError=Math.max(maxWristError,center.distanceTo(wrist));
@@ -107,22 +116,19 @@ export function startTraversalPlaytest(GameApp) {
         }
         requestAnimationFrame(frame);
       });
-      const detail={maxAnkle,travel:p.position.distanceTo(startPosition),attacks:[...attacks],frames,states:[...states],switches,maxAimError,maxStep,maxWristError,seenWeb,peakWebs,independentRelease,reachedRoof,finalState:p.state,roof:box.maxY,position:p.position.toArray(),released:!game.character.webMesh.visible&&!game.character.webMeshOffhand.visible};
-      const pass=kind==='combat'?detail.travel>4 && attacks.has('jab') && attacks.has('cross') && maxAnkle<=35.001:kind==='climb'?reachedRoof && maxStep<.8 && maxAimError<1e-8:seenWeb && peakWebs===2 && independentRelease && detail.released && maxWristError<.02 && maxAimError<1e-8;
+      const detail={jumpResult,maxJumpRise,maxAnkle,travel:p.position.distanceTo(startPosition),attacks:[...attacks],frames,states:[...states],switches,maxAimError,maxStep,maxWristError,seenWeb,peakWebs,independentRelease,reachedRoof,finalState:p.state,roof:box.maxY,position:p.position.toArray(),released:!game.character.webMesh.visible&&!game.character.webMeshOffhand.visible};
+      const pass=kind==='jump'?jumpResult?.attached && jumpResult.detached && jumpResult.velocityY===p.jumpForce && maxJumpRise>1:kind==='combat'?detail.travel>4 && attacks.has('jab') && attacks.has('cross') && maxAnkle<=35.001:kind==='climb'?reachedRoof && maxStep<.8 && maxAimError<1e-8:seenWeb && peakWebs===2 && independentRelease && detail.released && maxWristError<.02 && maxAimError<1e-8;
       report(name,detail,pass);
     } catch(error) { report(name,{error:error.message},false); }
     finally {game.clearInput();game.setPaused(true);game.clickToPlayOverlay?.classList.add('hidden');busy=false;}
   }
-  const cases = [
-    ['Climb third','climb',false,false],['Climb first','climb',true,false],['Climb switch','climb',false,true],
-    ['Combat third','combat',false,false],['Combat first','combat',true,false],
-    ['Web third','web',false,false],['Web first','web',true,false],['Web switch','web',false,true],
-  ];
+  const cases=['climb','combat','jump','web'].flatMap(kind=>['close','follow','swing'].map(view=>[`${kind} ${view}`,kind,view,false]));
+  cases.push(['Web switch','web','follow',true],['Climb switch','climb','follow',true]);
   const all=document.createElement('button');all.textContent='Run all';
-  all.onclick=async()=>{if(busy)return;for(const [,kind,first,switching] of cases)await run(kind,first,switching);};panel.append(all);
-  for(const [label,kind,first,switching] of cases) {
+  all.onclick=async()=>{if(busy)return;for(const [,kind,view,switching] of cases)await run(kind,view,switching);};panel.append(all);
+  for(const [label,kind,view,switching] of cases) {
     const button=document.createElement('button');button.textContent=label;
-    button.onclick=()=>run(kind,first,switching);panel.append(button);
+    button.onclick=()=>run(kind,view,switching);panel.append(button);
   }
   const ready=setInterval(()=>{if(game.assetsReady){clearInterval(ready);status.textContent='Ready: real GameApp traversal playtest';}},100);
 }

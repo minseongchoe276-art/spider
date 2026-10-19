@@ -40,21 +40,10 @@ const c=actor();try{
  c.webShotTimer=0;p.webs=[];c.webAttachments=[];
  assert(p.performAirTrick('front'),'Released airborne player could not use T');
 }finally{disposeRig(c);}
-for(const key of ['cross','special']){
- const fp=actor();try{
-  const camera=new THREE.PerspectiveCamera();fp.scene.add(camera);fp.setFirstPersonCamera(camera);fp.setFirstPersonMode(true);
-  const duration=ATTACKS[key].duration,impact=fp.actions[key].getClip().userData.impactPhase;
-  fp.combatAction={id:key+'-peak',key,time:duration*impact,duration};fp.update(1/60,'IDLE',new THREE.Vector3());
-  assert(fp.firstPersonRig.children[1].position.z<-.36,'First-person rear straight contact must match the imported impact');
-  const hand=fp.firstPersonHands[1].getWorldPosition(new THREE.Vector3());
-  assert(Math.abs(hand.x)<.25 && hand.z<-.85,'Rear straight must extend within the central target area');
-  assert(fp.firstPersonRig.children[0].position.z>-.02,'Left guard lunged with the rear straight');
- }finally{disposeRig(fp);}
-}
 let hits=0;const notices=[];const feedback=new CombatFeedback({showNotice:m=>notices.push(m),audio:{playCombatHit(){hits++;}}});
 const online={vulnerableAt:Date.now()+1000,serverNow:()=>Date.now()};
 assert(!feedback.canFire('web',online));online.vulnerableAt=0;assert(feedback.canFire('web',online));assert(!feedback.canFire('web',online));
 feedback.sent('web',{name:'runner'});assert.equal(hits,0,'Prediction played confirmed-hit audio');
 feedback.hit({kind:'web',health:85});assert.equal(hits,1);assert(feedback.message.includes('−15')&&feedback.message.includes('85'));
 fs.writeFileSync('docs/qa/combat-traversal-2026-10-18/regression-results.json',JSON.stringify(results,null,2)+'\n');
-console.log('PASS movement strikes at 24/60/144 FPS, rear straights in first person, retained hook, final ankle limits, web/flip exclusion, grace/cooldown, confirmed-hit-only feedback');
+console.log('PASS movement strikes at 24/60/144 FPS, imported rear straights, retained hook, final ankle limits, web/flip exclusion, grace/cooldown, confirmed-hit-only feedback');

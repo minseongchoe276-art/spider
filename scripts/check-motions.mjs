@@ -13,7 +13,7 @@ globalThis.document = { createElementNS() { return {
   addEventListener() {}, removeEventListener() {}, set src(value) {},
 }; } };
 globalThis.window = { URL: globalThis.URL };
-const data = fs.readFileSync('public/models/spiderman.glb');
+const data = fs.readFileSync('public/models/shadow-pulse-rig.glb');
 const jsonLength = data.readUInt32LE(12);
 const json = JSON.parse(data.subarray(20, 20 + jsonLength).toString());
 const bin = data.subarray(28 + jsonLength);

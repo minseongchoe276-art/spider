@@ -25,16 +25,16 @@ for(const file of files){
     const usedBy=MOTIONS.filter(item=>'public'+item.url===file && (!item.take || item.take===take.name)).map(item=>item.key);
     if(!(take.duration>0&&take.tracks.length)){results.push({file,take:take.name,status:'EMPTY',duration:take.duration,tracks:take.tracks.length});continue;}
     const target=clone(template);let mixer;
-    try{const clip=file==='public/models/spiderman.glb'?take.clone():retargetMotion(target,source,take),bones=[];target.traverse(node=>{if(node.isBone)bones.push(node);});
+    try{const clip=file==='public/models/shadow-pulse-rig.glb'?take.clone():retargetMotion(target,source,take),bones=[];target.traverse(node=>{if(node.isBone)bones.push(node);});
       const lengths=bones.map(b=>b.position.length());mixer=new THREE.AnimationMixer(target);const action=mixer.clipAction(clip);action.setLoop(THREE.LoopOnce,1);action.clampWhenFinished=true;action.play();
       assert(clip.tracks.every(track=>track.values.every(Number.isFinite)&&track.times.every(Number.isFinite)));
-      if(file!=='public/models/spiderman.glb')assert(clip.userData.matchedBones>=50,'Incomplete bone mapping');
+      if(file!=='public/models/shadow-pulse-rig.glb')assert(clip.userData.matchedBones>=50,'Incomplete bone mapping');
       const frames=Math.ceil(clip.duration*60);let minHip=Infinity,maxHip=-Infinity;
       for(let frame=0;frame<=frames;frame++){action.time=Math.min(clip.duration-1e-6,clip.duration*frame/frames);mixer.update(0);target.updateMatrixWorld(true);
         for(const [i,bone] of bones.entries()){assert(bone.position.toArray().every(Number.isFinite));assert(Math.abs(bone.quaternion.length()-1)<1e-4);if(boneId(bone.name)!=='hips')assert(Math.abs(bone.position.length()-lengths[i])<1e-4);}
         const hips=bones.find(b=>boneId(b.name)==='hips').getWorldPosition(new THREE.Vector3());minHip=Math.min(minHip,hips.y);maxHip=Math.max(maxHip,hips.y);
       }
-      results.push({file,take:take.name,status:'PASS',usedBy,archived:usedBy.length===0&&file!=='public/models/spiderman.glb',duration:clip.duration,frames:frames+1,bones:bones.length,hipRange:[minHip,maxHip]});
+      results.push({file,take:take.name,status:'PASS',usedBy,archived:usedBy.length===0&&file!=='public/models/shadow-pulse-rig.glb',duration:clip.duration,frames:frames+1,bones:bones.length,hipRange:[minHip,maxHip]});
       console.log(`PASS ${file}: ${take.name} / ${frames+1} source frames / ${usedBy.length?'runtime '+usedBy.join(','):'preserved source or embedded fallback'}`);
     }catch(error){results.push({file,take:take.name,status:'FAIL',error:error.message});console.error(`FAIL ${file}: ${take.name}: ${error.message}`);}
     finally{mixer?.stopAllAction();mixer?.uncacheRoot(target);target.traverse(node=>node.skeleton?.dispose());}

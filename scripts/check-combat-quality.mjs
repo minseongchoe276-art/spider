@@ -73,15 +73,15 @@ for(const key of ['jab','cross','special']){
 // Moving between attacks must retain the same closed guard as combat idle.
 {
  const c=actor();try{
-  const camera=new THREE.PerspectiveCamera();c.setFirstPersonCamera(camera);c.setFirstPersonMode(true);c.combatStance=true;
+  c.combatStance=true;
   c.update(1/60,'RUNNING',new THREE.Vector3(0,0,4.4));
-  const fingers=c.firstPersonRig.children.flatMap(arm=>arm.userData.hand.rig[arm.userData.side].map(item=>item.bone));
+  const fingers=['left','right'].flatMap(side=>c.webFingerRig[side].map(item=>item.bone));
   const moving=fingers.map(bone=>bone.quaternion.clone());
   c.combatAction={key:'combatIdle'};c.update(1/60,'RUNNING',new THREE.Vector3(0,0,4.4));
   assert(fingers.every((bone,i)=>moving[i].angleTo(bone.quaternion)<1e-5),'Moving guard opened between punches');
   c.combatAction=null;c.combatStance=false;c.update(1/60,'RUNNING',new THREE.Vector3(0,0,4.4));
   assert(fingers.some((bone,i)=>moving[i].angleTo(bone.quaternion)>.1),'Leaving combat did not release the finger guard');
-  results.push({case:'first-person moving guard stays closed between attacks',pass:true});
+  results.push({case:'third-person moving guard stays closed between attacks',pass:true});
  }finally{disposeRig(c);}
 }
 // Exercise the live callback wiring: swing/flip/landing must never bank points.

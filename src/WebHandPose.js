@@ -1,11 +1,12 @@
 import * as THREE from 'three';
 import {boneId} from './MotionRetarget.js';
+import {GROUNDED} from './MotionCatalog.js';
 
 const fingers=['thumb','index','middle','ring','pinky'];
 const axis=new THREE.Vector3(1,0,0);
 
 // Use inverse bind matrices, never whichever animated pose happens to be
-// visible when a first-person hand or remote character is created.
+// visible when a remote character is created.
 export function bindTransforms(model) {
   const world=new Map(),local=new Map();
   model?.traverse(node=>{if(node.isSkinnedMesh)node.skeleton.bones.forEach((bone,i)=>{
@@ -61,7 +62,8 @@ export function applyHandPose(rig,side,shoot=0,grip=0,{absolute=false,relaxed=0}
 export function updateWebHandPose(c,delta,state) {
   c.webFingerRig ||= createHandPoseRig(c.model,c.bones);
   c.webGestures ||= {};
-  const blocked=['WALL_RUNNING','MANTLING'].includes(state) || !!c.combatAction;
+  const combatKey=c.combatAction?.key || (c.combatStance && GROUNDED.includes(state)?'combatIdle':null);
+  const blocked=['WALL_RUNNING','MANTLING'].includes(state) || !!combatKey;
   for(const side of ['left','right']){
     const attached=c.webAttachments?.some(web=>web.hand===side);
     const shooting=!blocked && ((c.webLaunchTimers?.[side] || 0)>0 || (c.currentHand===side && c.webShotTimer>0));
@@ -73,6 +75,6 @@ export function updateWebHandPose(c,delta,state) {
     if(total>1){pose.shoot/=total;pose.grip/=total;}
     if(!blocked)applyHandPose(c.webFingerRig,side,pose.shoot,pose.grip);
     else if(['WALL_RUNNING','MANTLING'].includes(state))applyHandPose(c.webFingerRig,side,0,0,{absolute:true,relaxed:.12});
-    else if(c.combatAction && ['jab','cross','hook','heavy','special','guard','combatIdle'].includes(c.combatAction.key))applyHandPose(c.webFingerRig,side,0,1,{absolute:true});
+    else if(['jab','cross','hook','heavy','special','guard','combatIdle'].includes(combatKey))applyHandPose(c.webFingerRig,side,0,1,{absolute:true});
   }
 }

@@ -87,7 +87,7 @@ export class SoundController {
     this.windFilter.frequency.setTargetAtTime(targetFreq, t, 0.08);
   }
 
-  // Classic Spider-Man "THWIP!" web shooter sound
+  // Short, bright energy-tether launch sound.
   playWebShoot() {
     if (!this.initialized || this.isMuted) return;
     this.ensureContext();

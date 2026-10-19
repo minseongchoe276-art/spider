@@ -8,7 +8,7 @@ import { SupabaseRooms, roomAuthOptions } from '../src/SupabaseRooms.js';
 import { Multiplayer } from '../src/Multiplayer.js';
 
 globalThis.ProgressEvent=class {constructor(type,values){Object.assign(this,values);}};
-const raw=fs.readFileSync('public/models/spiderman.glb'),length=raw.readUInt32LE(12);
+const raw=fs.readFileSync('public/models/shadow-pulse-rig.glb'),length=raw.readUInt32LE(12);
 const json=JSON.parse(raw.subarray(20,20+length));
 json.buffers[0].uri=`data:application/octet-stream;base64,${raw.subarray(28+length).toString('base64')}`;
 delete json.images;delete json.textures;json.materials=[];
@@ -45,7 +45,7 @@ assert.equal(pending.marker.visible,true);
 assert.equal(Object.keys(pending.character.actions).length,MOTIONS.length);
 const localSkin=source.model.getObjectByProperty('isSkinnedMesh',true);
 const remoteSkin=pending.character.model.getObjectByProperty('isSkinnedMesh',true);
-assert.equal(remoteSkin.material,localSkin.material,'Opponent lost the Spider-Man suit material');
+assert.equal(remoteSkin.material,localSkin.material,'Opponent lost the SHADOW PULSE suit material');
 assert.notEqual(remoteSkin.skeleton,localSkin.skeleton,'Opponent reused the local skeleton');
 pending.dispose();assert.equal(loadingScene.children.length,0);
 console.log('PASS remote appearance: no capsule, deferred full rig, shared suit material, independent skeleton');

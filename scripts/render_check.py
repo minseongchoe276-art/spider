@@ -27,6 +27,6 @@ scene.collection.objects.link(light)
 light.location = (3, -4, 5)
 light.rotation_euler = (0.35, 0.0, 0.5)
 
-scene.render.filepath = '/tmp/spiderman_blend_check.png'
+scene.render.filepath = '/tmp/shadow-pulse-blend-check.png'
 bpy.ops.render.render(write_still=True)
 print('RENDERED', scene.render.filepath)

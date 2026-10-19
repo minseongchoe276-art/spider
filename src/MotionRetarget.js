@@ -113,7 +113,7 @@ export function prepareMotion(clip, key, bones, item={}) {
   if(['slamLand','hit','hitHead'].includes(key)){
     const nodes=Object.values(bones),saved=nodes.map(n=>({n,p:n.position.clone(),q:n.quaternion.clone()}));
     const hips=nodes.find(n=>boneId(n.name)==='hips'),feet=['left','right'].map(side=>nodes.find(n=>boneId(n.name)===side+'foot'));
-    let root=hips;while(root.parent && !root.parent.name?.includes('SpiderManGroup'))root=root.parent;
+    let root=hips;while(root.parent && !root.parent.name?.includes('ShadowPulseCharacterGroup'))root=root.parent;
     const position=clip.tracks.find(track=>track.name===hips.name+'.position');
     // Preserve the authored bend relative to the legs while keeping the
     // support ankle on the floor. Bind-pose pelvis height floated hit poses.
@@ -140,7 +140,7 @@ export function prepareMotion(clip, key, bones, item={}) {
     // Contact windows measured on this character, not guessed from the
     // clip name. Preserve the compiler's bind pose after sampling.
     const nodes=Object.values(bones), saved=nodes.map(n=>({n,p:n.position.clone(),q:n.quaternion.clone()}));
-    let root=nodes[0]; while(root.parent && !root.parent.name?.includes('SpiderManGroup')) root=root.parent;
+    let root=nodes[0]; while(root.parent && !root.parent.name?.includes('ShadowPulseCharacterGroup')) root=root.parent;
     const mixer=new THREE.AnimationMixer(root);const action=mixer.clipAction(clip);
     action.setLoop(THREE.LoopOnce);action.clampWhenFinished=true;action.play();
     const feet=['left','right'].map(side=>nodes.find(n=>boneId(n.name)===side+'foot'));

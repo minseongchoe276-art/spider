@@ -211,7 +211,7 @@ export class GameApp {
 
     if (!useUrbanGround) {
       const subtitle = document.querySelector('.badge-sub');
-      if (subtitle) subtitle.textContent = 'LOCAL CITY WEB RUNNER';
+      if (subtitle) subtitle.textContent = 'LOCAL CITY · SHADOW PULSE';
       const lobbyEdition = document.querySelector('.lobby-edition');
       if (lobbyEdition) lobbyEdition.textContent = 'LOCAL CITY · OPEN WORLD';
       const district = document.querySelector('.hud-district');
@@ -221,7 +221,7 @@ export class GameApp {
       const heading = document.querySelector('#overlay-click-to-play h2');
       if (heading) heading.textContent = '로컬 도시가 기다리고 있습니다.';
       const footer = document.querySelector('.lobby-footer span:first-child');
-      if (footer) footer.innerHTML = 'WEB RUNNER <b>©</b> LOCAL CITY';
+      if (footer) footer.innerHTML = 'SHADOW PULSE <b>·</b> LOCAL CITY';
       const credit = document.querySelector('.data-credit');
       if (credit) {
         credit.replaceChildren(document.createTextNode('도시 데이터: 절차 생성 로컬 도시'),document.createElement('br'));
@@ -258,7 +258,6 @@ export class GameApp {
       // Random camera offsets on every landing made ordinary movement jitter.
     };
     this.tpsCamera = new ThirdPersonCamera(this.camera, this.canvas);
-    this.character.setFirstPersonCamera(this.camera);
     this.worldMap = new WorldMap(this);
     this.hongKongAudit=createHongKongAudit(this);
     this.minimap = new HongKongMinimap({
@@ -345,6 +344,8 @@ export class GameApp {
       if (e.target?.closest?.('input, select, textarea, [contenteditable="true"]') && k !== 'Escape') return;
       if (!this.isPlaying && e.target?.closest?.('button, a') && k !== 'Escape') return;
       if (k === 'Escape' && performance.now() < (this.ignoreEscapeUntil || 0)) return;
+      // Native dialogs own Escape and focus until they close.
+      if(document.getElementById('fullscreen-help')?.open)return;
       if(k==='Escape' && this.worldMap?.isOpen){e.preventDefault();this.worldMap.close();return;}
       if(this.worldMap?.isOpen && k!=='KeyM')return;
       if(k==='Escape' && this.helpOpen){e.preventDefault();if(!e.repeat)this.toggleHelp();return;}
@@ -373,21 +374,15 @@ export class GameApp {
       if(k==='KeyB'){this.combat.guard(true);return;}
       if(k==='KeyG'){if(GROUNDED.includes(this.physics.state)){if(this.combat.special(this.camera))this.multiplayer?.attack('punch');}else this.combat.airStrike?.(this.camera);return;}
       if(k==='KeyQ'){
-        if(this.multiplayer?.locksCombatToggle()){this.showNotice('도망자는 거미줄로만 이동합니다.');return;}
+        if(this.multiplayer?.locksCombatToggle()){this.showNotice('도망자는 에너지 와이어로만 이동합니다.');return;}
         this.combat.toggle(this.input);return;
       }
       if(k==='ControlLeft'||k==='ControlRight'){this.combat.dodge(this.input,this.camera);return;}
       if (!e.repeat && k === 'KeyC') {
-        if (this.tpsCamera.mode === 'first') {
-          this.tpsCamera.setMode('follow');
-          this.character.setFirstPersonMode(false);
-          this.showCameraMode('follow');
-        }
         this.tpsCamera.recenterBehind(this.physics.facingAngle);
       }
       if (!e.repeat && k === 'KeyV') {
         const mode = this.tpsCamera.cycleMode();
-        this.character.setFirstPersonMode(mode === 'first');
         this.showCameraMode(mode);
       }
       if (k === 'Space') {
@@ -404,6 +399,12 @@ export class GameApp {
           this.input.webTapRight = false;
           if (swinging) this.physics.releaseSwing(false);
           else this.physics.clearWebAnchor();
+          // Space is a deliberate jump off the strand, including a stationary
+          // hang. Mouse release alone continues to preserve swing momentum.
+          if (!groundedWeb) {
+            this.physics.velocity.y = Math.max(this.physics.velocity.y, this.physics.jumpForce);
+            this.audio.playJump?.();
+          }
           this.physics.state = groundedWeb?'IDLE':this.physics.velocity.y > 0 ? 'JUMPING' : 'FALLING';
           this.input.jump = groundedWeb;
           this.physics.clearPendingInput();
@@ -595,7 +596,7 @@ export class GameApp {
   showCameraMode(mode) {
     const toast = document.getElementById('camera-mode-toast');
     if (!toast) return;
-    const labels = { close: '근접 추적 시점', follow: '기본 3인칭 시점', swing: '원거리 스윙 시점', first: '1인칭 시점' };
+    const labels = { close: '근접 추적 시점', follow: '기본 3인칭 시점', swing: '원거리 스윙 시점' };
     toast.textContent = labels[mode] || labels.follow;
     toast.classList.add('visible');
     clearTimeout(this.cameraModeToastTimer);
@@ -641,6 +642,7 @@ export class GameApp {
 
   togglePause() {
     if (!this.isPlaying) return;
+    if(this.worldMap?.isOpen || document.getElementById('fullscreen-help')?.open)return;
     this.setPaused(!this.isPaused);
     if (!this.isPaused && this.pointerLockWanted) {
       Promise.resolve(this.canvas.requestPointerLock?.()).catch(() => {});
@@ -658,6 +660,9 @@ export class GameApp {
 
   setPaused(paused) {
     if(!paused && this.contextLost){this.showNotice('그래픽 연결을 복구한 뒤 계속할 수 있습니다.');return;}
+    // An interruption after a dialog opens must survive closing that dialog.
+    if(paused && this.worldMap?.isOpen)this.worldMap.wasPaused=true;
+    if(paused && document.getElementById('fullscreen-help')?.open && this.displayMode)this.displayMode.resumeAfterHelp=false;
     this.setHelpOpen(false,false);
     if(!paused){
       // A background tab may receive no animation frames for minutes. Drain
@@ -742,7 +747,7 @@ export class GameApp {
 
   applyPreferences() {
     const { muted, reducedMotion, quality,settings } = this.preferences.values;
-    if(this.appliedFov!==settings.fov){this.tpsCamera.firstPersonFov=settings.fov;this.appliedFov=settings.fov;}
+    this.appliedFov=settings.fov;
     Object.assign(this.tpsCamera,{sensitivity:settings.sensitivity,invertY:settings.invertY,baseFov:settings.fov,maxFov:Math.min(95,settings.fov+12),shakeStrength:settings.shake,speedFov:settings.speedFov,followStrength:settings.follow});
     this.physics.aimAssist=false;
     this.physics.softBoundary=true;
@@ -791,7 +796,7 @@ export class GameApp {
 
   updateHUD(speedKmh, altitude, state) {
     const combatHud=document.getElementById('combat-status');
-    if(combatHud && this.combat){const airborne=!GROUNDED.includes(state);combatHud.textContent=this.multiplayer?.room?'':`${airborne?'공중 · 양손 거미줄':this.combat.mode==='web'?'거미줄 이동':'전투'} · HP ${Math.ceil(this.combat.health)} · 기력 ${Math.ceil(this.combat.stamina)} · ${this.combat.enemies.some(e=>e.windup>0)?'공격 예고! · 방어 / 회피':'모드 '+this.preferences.values.settings.bindings.mode.replace('Key','')}`;combatHud.classList.toggle('hidden',!!this.multiplayer?.room);}
+    if(combatHud && this.combat){const airborne=!GROUNDED.includes(state);combatHud.textContent=this.multiplayer?.room?'':`${airborne?'공중 · 양손 에너지 와이어':this.combat.mode==='web'?'에너지 와이어 이동':'전투'} · HP ${Math.ceil(this.combat.health)} · 기력 ${Math.ceil(this.combat.stamina)} · ${this.combat.enemies.some(e=>e.windup>0)?'공격 예고! · 방어 / 회피':'모드 '+this.preferences.values.settings.bindings.mode.replace('Key','')}`;combatHud.classList.toggle('hidden',!!this.multiplayer?.room);}
     // 1. Speedometer
     if (this.speedDisplay) {
       this.speedDisplay.textContent = Math.round(speedKmh);
@@ -813,7 +818,7 @@ export class GameApp {
     // 3. Web Status Pill
     if (this.webStatusText && !this.webStatusText.textContent.includes('★')) {
       if (state === 'SWINGING') {
-        this.webStatusText.textContent = this.physics.webs?.length===2 ? 'DUAL WEB SWING' : 'SWINGING';
+        this.webStatusText.textContent = this.physics.webs?.length===2 ? 'DUAL TETHER SWING' : 'SWINGING';
         if (this.webStatusDot) this.webStatusDot.className = 'status-dot swinging';
       } else if (state === 'WALL_RUNNING') {
         this.webStatusText.textContent = 'WALL RUN';
@@ -825,7 +830,7 @@ export class GameApp {
         this.webStatusText.textContent = state.replace('_',' ');
         if (this.webStatusDot) this.webStatusDot.className = 'status-dot';
       } else {
-        this.webStatusText.textContent = this.combat?.mode==='combat'?'COMBAT READY':'WEB READY';
+        this.webStatusText.textContent = this.combat?.mode==='combat'?'COMBAT READY':'PULSE READY';
         if (this.webStatusDot) this.webStatusDot.className = 'status-dot';
       }
     }
@@ -877,13 +882,6 @@ export class GameApp {
         this.city.raycast?.bind(this.city),
         this.physics.facingAngle
       );
-      // The first-person wrists are camera children. Refresh endpoints after
-      // moving the camera so fast traversal cannot leave the rope a frame behind.
-      if (this.character?.isFirstPerson) {
-        const anchor=this.character.persistentWebAnchor || this.character.webShotAnchor;
-        this.character.updateWeb(!!anchor,anchor);
-      }
-
       // 3. Update Visuals & FX
       const speedKmh = this.physics.velocity.length() * 3.6;
       if (this.speedLines) {
@@ -914,7 +912,9 @@ export class GameApp {
 
 // Bootstrap application on DOM ready or immediately if document is already ready
 function bootstrap() {
-  if (import.meta.env?.DEV && new URLSearchParams(location.search).has('traversalPlaytest')) {
+  if (import.meta.env?.DEV && new URLSearchParams(location.search).has('motionAuditReview')) {
+    import('./MotionAuditReview.js').then(m => m.startMotionAuditReview());
+  } else if (import.meta.env?.DEV && new URLSearchParams(location.search).has('traversalPlaytest')) {
     import('./TraversalPlaytest.js').then(m => m.startTraversalPlaytest(GameApp));
   } else if (new URLSearchParams(location.search).has('webHandReview')) {
     import('./WebHandReview.js').then(m => m.startWebHandReview());

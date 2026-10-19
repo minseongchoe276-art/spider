@@ -1,4 +1,4 @@
-# Spider-Man motion review — 2026-10-10
+# SHADOW PULSE motion review — 2026-10-10
 
 Latest full inventory and regression review: [2026-10-15 all motions](docs/qa/all-motions-2026-10-15/REPORT.md), including all 39 registered clips, the embedded fallback, two preserved candidates, six procedural tricks, and first-person combat.
 
@@ -40,7 +40,7 @@ landing, roof edge departure, fast roof crossing, nonboosted release, 30/60/144
 FPS operation, animation transitions, air-flip recovery and camera zoom.
 
 `npm run build` passes. Existing FBX TGA/weight warnings refer to discarded source
-meshes, not the Spider-Man GLB's texture. Bundle-size warning remains.
+meshes, not the SHADOW PULSE GLB's texture. Bundle-size warning remains.
 
 Visual reviewer: http://localhost:5173/?motionReview
 It uses the game's actual Character, prepared actions and SwingPhysics. Inspect
@@ -51,6 +51,6 @@ each clip, scrub, switch viewpoint, or play the integrated locomotion scenario.
 This is a corrected, tested animation/controller baseline, not a claim of
 photorealistic or universally perfect motion. No terrain foot-plant IK,
 full-body contact solver, character-to-prop collision, motion matching or
-bespoke Spider-Man mocap was added. Smooth blends cannot make every generic
-Mixamo performance a Spider-Man-specific performance. Whole-city camera/contact
+bespoke character-specific mocap was added. Smooth blends cannot make every generic
+Mixamo performance a character-specific performance. Whole-city camera/contact
 edge cases still need broader gameplay testing.

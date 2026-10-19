@@ -2,14 +2,14 @@ import bpy
 from pathlib import Path
 
 project = Path('/Users/choeminseong/Desktop/게임')
-glb = project / 'public/models/spiderman.glb'
-blend = project / 'spiderman_animated.blend'
+glb = project / 'public/models/shadow-pulse-rig.glb'
+blend = project / 'shadow-pulse-animated.blend'
 
 # Start from a clean scene, including hidden leftovers from previous attempts.
 for obj in list(bpy.data.objects):
     bpy.data.objects.remove(obj, do_unlink=True)
 
-# Import the verified Spider-Man GLB.
+# Import the verified SHADOW PULSE GLB.
 bpy.ops.import_scene.gltf(filepath=str(glb))
 
 # Make sure imported collections are visible in the viewport and renders.

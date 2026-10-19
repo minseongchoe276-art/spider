@@ -9,9 +9,8 @@ import { retargetMotion, prepareMotion, boneId } from './MotionRetarget.js';
 import { MOTIONS, STRIDES, GROUNDED } from './MotionCatalog.js';
 import { fetchAsset, forEachConcurrent } from './AssetLoader.js';
 import { clone as cloneSkeleton } from 'three/addons/utils/SkeletonUtils.js';
-import { plantMovingFeet, poseWall, poseZipLegs, poseMantle, adaptPelvisToTerrain, footSupport, soleRotation, clearGroundSoles, fitGroundAnkle } from './CharacterPose.js';
+import { plantMovingFeet, poseWall, poseZipLegs, poseMantle, adaptPelvisToTerrain, footSupport, soleRotation, clearGroundSoles, fitGroundAnkle, alignCombatWrists } from './CharacterPose.js';
 import {createHandPoseRig,restoreHandPose,updateWebHandPose} from './WebHandPose.js';
-import {createFirstPersonArm,poseFirstPersonFingers,disposeFirstPersonRig,prepareFirstPersonDepth} from './FirstPersonArms.js';
 
 export class Character {
   constructor(scene, onProgress, onLoaded, source = null) {
@@ -19,7 +18,7 @@ export class Character {
     this.onProgress = onProgress;
     this.onLoaded = onLoaded;
     this.group = new THREE.Group();
-    this.group.name = 'SpiderManGroup';
+    this.group.name = 'ShadowPulseCharacterGroup';
     this.scene.add(this.group);
 
     this.model = null;
@@ -40,9 +39,6 @@ export class Character {
     this.webShotTimer = 0;
     this.webShotAnchor = null;
     this.persistentWebAnchor = null;
-    this.firstPersonRig = null;
-    this.firstPersonHands = [];
-    this.isFirstPerson = false;
 
     // Procedural swing / trick tilt
     this.bodyRoll = 0;
@@ -99,7 +95,6 @@ export class Character {
 
   disposeCopy() {
     disposeAppearance(this);
-    disposeFirstPersonRig(this.firstPersonRig);
     this.copySource = null;
     this.mixer?.stopAllAction(); if (this.model) this.mixer?.uncacheRoot(this.model);
     this.model?.traverse(mesh => mesh.skeleton?.dispose());
@@ -118,27 +113,6 @@ export class Character {
     this.webVisualTime=0;
   }
 
-  setFirstPersonCamera(camera) {
-    disposeFirstPersonRig(this.firstPersonRig);
-    this.firstPersonRig = new THREE.Group();
-    this.firstPersonRig.name = 'SpiderManFirstPersonArms';
-    camera.add(this.firstPersonRig);
-    this.firstPersonHands=[];this.firstPersonGloves=[];
-    for (const side of ['left','right']) {
-      const {arm,anchor,glove}=createFirstPersonArm(side,this.model);
-      this.firstPersonRig.add(arm);this.firstPersonHands.push(anchor);this.firstPersonGloves.push(glove);
-    }
-    prepareFirstPersonDepth(this.firstPersonRig);
-    this.firstPersonRig.visible = !!this.isFirstPerson;
-  }
-
-  setFirstPersonMode(enabled) {
-    this.isFirstPerson = !!enabled;
-    if (this.firstPersonRig) this.firstPersonRig.visible = this.isFirstPerson;
-    if (this.model) this.model.visible = !this.isFirstPerson;
-    if (this.placeholder) this.placeholder.visible = !this.isFirstPerson;
-  }
-
   async loadCharacter() {
     // 1. Placeholder while loading so player has instant visual feedback
     const placeholderGeom = new THREE.CapsuleGeometry(0.35, 1.1, 8, 16);
@@ -155,9 +129,9 @@ export class Character {
     const fbxLoader = new FBXLoader();
 
     try {
-      this.onProgress?.(30, '스파이더맨 3D 모델 불러오는 중...');
-      // Load Spider-Man GLB
-      const gltf = await gltfLoader.parseAsync(await fetchAsset('/models/spiderman.glb'), '/models/');
+      this.onProgress?.(30, 'SHADOW PULSE 캐릭터 불러오는 중...');
+      // Load the shared character rig
+      const gltf = await gltfLoader.parseAsync(await fetchAsset('/models/shadow-pulse-rig.glb'), '/models/');
 
       this.model = gltf.scene;
       // The exported GLB is already roughly human-sized (about 2 world units tall).
@@ -196,7 +170,6 @@ export class Character {
       this.placeholder.material.dispose();
       this.group.add(this.model);
       this.webFingerRig=null;
-      if(this.firstPersonRig?.parent)this.setFirstPersonCamera(this.firstPersonRig.parent);
 
       updateAppearance(this,0);
       this.mixer = new THREE.AnimationMixer(this.model);
@@ -221,7 +194,7 @@ export class Character {
       this.isLoaded = true;
       this.onProgress?.(100, '준비 완료!');
       this.onLoaded?.();
-      console.log('Spider-Man character and animations successfully loaded!');
+      console.log('SHADOW PULSE character and animations successfully loaded!');
     } catch (err) {
       console.warn('Failed loading GLTF/FBX models, keeping high-poly proxy:', err);
       this.loadWarning = '캐릭터 리소스를 불러오지 못해 대체 캐릭터로 실행합니다.';
@@ -454,9 +427,7 @@ export class Character {
     }
 
     const fallback = this.group.position;
-    const wrists = this.isFirstPerson && this.firstPersonHands.length === 2
-      ? [this.firstPersonHands[1],this.firstPersonHands[0]].map(hand => hand.getWorldPosition(new THREE.Vector3()))
-      : [
+    const wrists = [
         this.rightHand?.getWorldPosition(new THREE.Vector3()) || fallback.clone().add(new THREE.Vector3(0.22, 1.2, 0)),
         this.leftHand?.getWorldPosition(new THREE.Vector3()) || fallback.clone().add(new THREE.Vector3(-0.22, 1.2, 0))
       ];
@@ -484,65 +455,6 @@ export class Character {
       tension:miss?0:THREE.MathUtils.smoothstep(ratio,.82,.995),speed:this.webMotionSpeed || 0,
       opacity:miss?THREE.MathUtils.smoothstep(this.webShotTimer,0,.16):1,
     });
-  }
-
-  updateFirstPersonPose(combat=this.combatAction) {
-    if(this.isFirstPerson && this.firstPersonRig)for(const [i,arm] of this.firstPersonRig.children.entries()){
-      const t=THREE.MathUtils.clamp(combat?.duration?combat.time/combat.duration:0,0,1);
-      const viewClip=combat?.key;
-      const impact=this.actions?.[viewClip]?.getClip().userData?.impactPhase || .3;
-      const pulse=t<=impact?THREE.MathUtils.smoothstep(t/impact,0,1):1-THREE.MathUtils.smoothstep((t-impact)/(1-impact),0,1);
-      const striking=combat && ['jab','cross','hook','heavy','special'].includes(combat.key) && i===(['cross','special'].includes(combat.key)?1:0);
-      const reach=striking?Math.max(0,pulse):0;
-      const gesture=this.webGestures?.[i===0?'left':'right'] || {shoot:0,grip:0};
-      const rightHook=combat?.key==='rightHook' && i===1;
-      arm.position.set(rightHook ? .10*Math.sin(Math.PI*reach)-.10*reach : ['hook','heavy'].includes(combat?.key) && i===0 ? .26*reach : 0,
-        combat?.key==='guard' ? .14 : .045*gesture.shoot,
-        striking?(['hook','heavy'].includes(combat.key)?-0.25:-0.38)*reach:-.12*gesture.shoot);
-      const wall=this.wallViewWeight || 0,sign=i===0?-1:1;
-      const phase=(this.wallPhase || 0)*Math.PI*2+(i===0?0:Math.PI);
-      arm.rotation.set(.28*wall,sign*.08*wall+(rightHook?.16*reach:0),sign*.10*wall+(rightHook?-.15*reach:0));
-      if(rightHook){
-        const wind=Math.sin(Math.PI*THREE.MathUtils.clamp(t/impact,0,1))*(1-reach);
-        arm.position.x=.10*wind-.10*reach;
-        arm.position.y=.025*reach;
-      }
-      if(combat?.key==='special' && i===1){
-        // Use the same compact rear-hand line as the imported power cross.
-        // The longer preparation belongs to the source take, not a high arc.
-        const load=Math.sin(Math.PI*THREE.MathUtils.clamp(t/impact,0,1))*(1-reach);
-        arm.position.x=.035*load-.035*reach;
-        arm.position.y=-.025*load;
-        arm.position.z=.10*load-.44*reach;
-      }
-      if(striking){
-        // Turn the knuckles into the punch. Translating the upright guard
-        // alone made first-person attacks look like a raised forearm.
-        const wrist=this.firstPersonHands[i].position;
-        const before=wrist.clone().applyQuaternion(arm.quaternion);
-        arm.rotation.x-=(rightHook?.40:.70)*reach;
-        arm.position.add(before.sub(wrist.clone().applyQuaternion(arm.quaternion)));
-      }
-      if(wall>1e-5){
-        const mantle=this.poseState==='MANTLING'?THREE.MathUtils.smoothstep(this.mantle?.elapsed/this.mantle?.duration || 0,.3,1):0;
-        const source=i===0?this.leftHand:this.rightHand;
-        const height=source?source.getWorldPosition(new THREE.Vector3()).y-this.group.getWorldPosition(new THREE.Vector3()).y:1.6+.2*Math.sin(phase);
-        const handY=THREE.MathUtils.clamp((height-1.6)*.22,-.12,.08);
-        const baseY=this.firstPersonHands[i].position.clone().applyQuaternion(arm.quaternion).y;
-        const lift=Math.sin(Math.PI*(this.wallContacts?.[(i===0?'left':'right')+'hand']?.swing || 0));
-        arm.position.add(new THREE.Vector3(sign*.018*Math.cos(phase),handY-baseY-.20*mantle,-.10+.045*lift).multiplyScalar(wall));
-      }
-      // Hands follow the actual stride cadence, with a small bounded sway.
-      // The camera stays stable for aiming; only the viewmodel moves.
-      const stride=GROUNDED.includes(this.poseState)?Math.min(1,(this.viewMoveSpeed || 0)/4.4):0;
-      const clip=this.activeAction?.getClip();
-      const gait=clip?this.activeAction.time/clip.duration*Math.PI*2:0;
-      arm.position.x+=sign*.008*Math.sin(gait)*stride;
-      arm.position.y+=.009*Math.cos(gait*2)*stride;
-      arm.rotation.z+=sign*.012*Math.sin(gait)*stride;
-      const guard=combat || (this.combatStance && GROUNDED.includes(this.poseState)?{key:'combatIdle'}:null);
-      poseFirstPersonFingers(arm,gesture.shoot,gesture.grip,guard,wall);
-    }
   }
 
   triggerAirTrick(key = 'front') {
@@ -598,7 +510,7 @@ export class Character {
       }
     }
     if (!this.mixer || !this.model) {
-      updateWebHandPose(this,delta,state);this.updateFirstPersonPose();
+      updateWebHandPose(this,delta,state);
       const shotAnchor = this.webShotTimer > 0 ? this.webShotAnchor : null;
       const attached = ['SWINGING', 'WEB_ZIP'].includes(state) && !!anchorPos;
       const visibleAnchor = attached ? anchorPos : (this.persistentWebAnchor || shotAnchor);
@@ -688,14 +600,33 @@ export class Character {
         if(hipTrack && movingStrike){
           const sample=hipTrack.createInterpolant(),guard=new THREE.Quaternion().fromArray(sample.evaluate(0));
           const pose=new THREE.Quaternion().fromArray(sample.evaluate(phase*clip.duration));
-          const twist=new THREE.Quaternion().slerpQuaternions(new THREE.Quaternion(),guard.invert().multiply(pose),weight);
+          const localUp=new THREE.Vector3(0,1,0).applyQuaternion(hip.parent.getWorldQuaternion(new THREE.Quaternion()).multiply(guard).invert());
+          const relative=guard.clone().invert().multiply(pose);
+          const yaw=THREE.MathUtils.clamp(2*Math.atan2(new THREE.Vector3(relative.x,relative.y,relative.z).dot(localUp),relative.w),-.38,.38);
+          const twist=new THREE.Quaternion().setFromAxisAngle(localUp,yaw*weight);
           hip.quaternion.multiply(twist);
           // Preserve running foot placement while the pelvis drives the punch.
-          for(const child of hip.children)if(['leftupleg','rightupleg'].includes(boneId(child.name)))child.quaternion.premultiply(twist.clone().invert());
+          for(const child of hip.children)if(['leftupleg','rightupleg'].includes(boneId(child.name))){
+            const inverse=twist.clone().invert();
+            child.position.applyQuaternion(inverse);child.quaternion.premultiply(inverse);
+          }
         }
-        for(const {bone,sample} of this.strikeLayers.get(clip))bone.quaternion.slerp(new THREE.Quaternion().fromArray(sample.evaluate(phase*clip.duration)),weight);
+        const layers=this.strikeLayers.get(clip);
+        const token=movingStrike?combat.id || combat.key:'guard';
+        if(this.movingStrikeToken!==token){
+          this.movingStrikeToken=token;this.movingStrikeBlend=0;
+          this.movingStrikeFrom=this.movingStrikePose;
+        }
+        this.movingStrikeBlend=Math.min(.1,(this.movingStrikeBlend || 0)+delta);
+        const blend=THREE.MathUtils.smoothstep(this.movingStrikeBlend,0,.1);
+        for(const {bone,sample} of layers){
+          bone.quaternion.slerp(new THREE.Quaternion().fromArray(sample.evaluate(phase*clip.duration)),weight);
+          const from=this.movingStrikeFrom?.get(bone);
+          if(from && blend<1)bone.quaternion.slerpQuaternions(from,bone.quaternion.clone(),blend);
+        }
+        this.movingStrikePose=new Map(layers.map(({bone})=>[bone,bone.quaternion.clone()]));
       }
-    }
+    }else{this.movingStrikeToken=null;this.movingStrikePose=null;this.movingStrikeFrom=null;}
     if (state !== 'LANDING') this.landingSpeed = 0;
     this.lastState = state;
     if(state !== 'LANDING')this.landingAction=null;
@@ -853,6 +784,9 @@ export class Character {
       this.group.updateMatrixWorld(true);
     }
     constrainJoints(this.jointConstraints);
+    this.combatWristWeight=THREE.MathUtils.damp(this.combatWristWeight || 0,
+      this.combatStance && grounded?1:0,24,delta);
+    alignCombatWrists(this,this.combatWristWeight);
     if(grounded && state!=='ROLLING')clearGroundSoles(this);
     // Contact clearance can solve the shin again; validate the final ankle
     // and toe output after that pass, including the roof-exit handoff.
@@ -868,7 +802,6 @@ export class Character {
     }
     this.mantleExitFeet=state==='MANTLING' || (grounded && this.mantleFootRelease>0)
       ?Object.fromEntries(['left','right'].map(side=>[side,Object.values(this.bones || {}).find(b=>boneId(b.name)===side+'foot')?.getWorldPosition(new THREE.Vector3())])):null;
-    this.updateFirstPersonPose(combat);
     const attached = ['SWINGING','WEB_ZIP'].includes(state) && !!anchorPos;
     const visibleAnchor = attached ? anchorPos : (this.persistentWebAnchor || firingAnchor);
     this.updateWeb(!!visibleAnchor, visibleAnchor);

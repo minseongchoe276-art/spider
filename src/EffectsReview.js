@@ -16,7 +16,7 @@ export function startEffectsReview() {
   const camera=new THREE.PerspectiveCamera(45,innerWidth/innerHeight,0.05,100);camera.position.set(8,7,15);camera.lookAt(0,4,0);
   const vfx=new VFXManager(scene),panel=document.createElement('section');
   panel.style.cssText='position:fixed;left:16px;top:16px;background:#fffffff2;border-radius:10px;padding:16px;color:#17232d;max-width:290px';
-  panel.innerHTML='<strong>거미줄 · 이펙트 · 벽 타기 검증</strong><p><button id="fx-web">양손 거미줄 발사</button> <button id="fx-dust">착지 먼지</button></p><p><button id="fx-super-land">슈퍼히어로 착지 충격파</button></p><p><button id="fx-wall">벽 기어가기</button> <button id="fx-reset">초기화</button></p><output id="fx-status">모델 로딩 중</output><p><a href="/">홍콩 게임으로 돌아가기</a></p>';
+  panel.innerHTML='<strong>에너지 와이어 · 이펙트 · 벽 타기 검증</strong><p><button id="fx-web">양손 에너지 와이어 발사</button> <button id="fx-dust">착지 먼지</button></p><p><button id="fx-super-land">슈퍼히어로 착지 충격파</button></p><p><button id="fx-wall">벽 기어가기</button> <button id="fx-reset">초기화</button></p><output id="fx-status">모델 로딩 중</output><p><a href="/">홍콩 게임으로 돌아가기</a></p>';
   document.body.append(panel);let mode='idle',age=0;
   const status=panel.querySelector('output');
   const character=new Character(scene,()=>{},()=>{status.textContent='준비 완료 · 다운로드한 Climb Wall / Kenney 텍스처';});

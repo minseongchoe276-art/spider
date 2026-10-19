@@ -9,7 +9,7 @@ import {createJointConstraints} from '../src/JointConstraints.js';
 import { MOTIONS } from '../src/MotionCatalog.js';
 
 // Keep original FBXs for authoring, but ship lightweight retargeted tracks.
-const files=['public/models/spiderman.glb','src/MotionCatalog.js','src/MotionRetarget.js','src/CombatChoreography.js','src/MixamoMotion.js','src/JointConstraints.js','src/WebHandPose.js',
+const files=['public/models/shadow-pulse-rig.glb','src/MotionCatalog.js','src/MotionRetarget.js','src/CombatChoreography.js','src/MixamoMotion.js','src/JointConstraints.js','src/WebHandPose.js',
   ...new Set(MOTIONS.map(item=>'public'+item.url))];
 const hash=crypto.createHash('sha256');
 for(const file of files) hash.update(fs.readFileSync(file));
@@ -25,7 +25,7 @@ if(fs.existsSync(manifestPath)) {
 globalThis.ProgressEvent=class {constructor(type,values){Object.assign(this,values);}};
 globalThis.document={createElementNS(){return {addEventListener(){},removeEventListener(){},set src(value){}};}};
 globalThis.window={URL:globalThis.URL};
-const data=fs.readFileSync('public/models/spiderman.glb'),length=data.readUInt32LE(12);
+const data=fs.readFileSync('public/models/shadow-pulse-rig.glb'),length=data.readUInt32LE(12);
 const json=JSON.parse(data.subarray(20,20+length));
 json.buffers[0].uri=`data:application/octet-stream;base64,${data.subarray(28+length).toString('base64')}`;
 delete json.images;delete json.textures;json.materials=[];

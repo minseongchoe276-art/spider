@@ -12,7 +12,7 @@ const values=new Map([
  ['spiderman-preferences-v1',JSON.stringify({muted:true,quality:'low',bestTimes:{'procedural-v5-12345678':12},settings:{sensitivity:1.4,ghost:true}})],
  ['web-runner-progress-v1',JSON.stringify({score:2000,bestCombo:100,ghosts:{old:{}},medals:{old:'gold'},distance:140,safe:{'hong-kong':[2,20,3]},theme:'cyan',discoveries:['hong-kong:0:0']})],
 ]);
-const storage={getItem:key=>values.get(key),setItem:(key,value)=>values.set(key,value)};
+const storage={getItem:key=>values.get(key),setItem:(key,value)=>values.set(key,value),removeItem:key=>values.delete(key)};
 const prefs=new Preferences(storage),progress=new Progression(storage);
 assert.equal(prefs.values.muted,true);assert.equal(prefs.values.quality,'low');assert.equal(prefs.values.settings.sensitivity,1.4);
 assert(!Object.hasOwn(prefs.values,'bestTimes'));assert.equal(prefs.recordTime,undefined);

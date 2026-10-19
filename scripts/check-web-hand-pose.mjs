@@ -5,7 +5,6 @@ import {loadMotionRig,disposeRig,joint} from './lib/motion-rig.mjs';
 import {boneId} from '../src/MotionRetarget.js';
 import {Character} from '../src/Character.js';
 import {RemoteMotion,capturePose,sanitizePose} from '../src/RemoteMotion.js';
-import {disposeFirstPersonRig} from '../src/FirstPersonArms.js';
 
 const folder='docs/qa/web-hand-pose-2026-10-15';fs.mkdirSync(folder,{recursive:true});
 const {actor}=await loadMotionRig(),results=[],fpsList=[24,30,60,144],target=new THREE.Vector3(-2,5,-10);
@@ -16,7 +15,7 @@ function extension(bones,side,finger){const p=[1,2,3,4].map(i=>find(bones,side+'
   return p[0].distanceTo(p[3])/p.slice(1).reduce((sum,v,i)=>sum+v.distanceTo(p[i]),0);}
 function thwip(bones,side){const ratios=Object.fromEntries(['thumb','index','middle','ring','pinky'].map(f=>[f,extension(bones,side,f)]));
   assert(ratios.index>.97 && ratios.pinky>.97,'Index/little finger did not extend');assert(ratios.middle<.62 && ratios.ring<.62,'Middle/ring finger did not fold');assert(ratios.thumb>.9,'Thumb folded into a fist');return ratios;}
-function tick(c,fps,seconds,state='IDLE'){for(let i=0;i<Math.ceil(seconds*fps);i++)c.update(1/fps,state,new THREE.Vector3(),c.persistentWebAnchor);c.group.updateMatrixWorld(true);c.firstPersonRig?.updateMatrixWorld(true);}
+function tick(c,fps,seconds,state='IDLE'){for(let i=0;i<Math.ceil(seconds*fps);i++)c.update(1/fps,state,new THREE.Vector3(),c.persistentWebAnchor);c.group.updateMatrixWorld(true);}
 function release(c){c.webAttachments=[];c.webLaunchTimers={};c.webShotTimer=0;c.webShotAnchor=null;c.persistentWebAnchor=null;}
 function valid(c){for(const b of Object.values(c.bones)){assert(b.quaternion.toArray().every(Number.isFinite));assert(Math.abs(b.quaternion.length()-1)<1e-4);}}
 function handBounds(arm){const box=new THREE.Box3();arm.userData.hand.object.traverse(mesh=>{if(!mesh.isSkinnedMesh)return;mesh.skeleton.update();
@@ -38,14 +37,6 @@ for(const fps of fpsList)for(const side of ['left','right']){
     assert((c.webGestures[side]?.shoot || 0)<1e-6);for(const [name,b] of Object.entries(c.bones))if(/hand/i.test(name))assert(angle(b.quaternion,control.bones[name].quaternion)<1e-4,'Released pose contaminated subsequent animation');
     return firing;
   }finally{disposeRig(c);disposeRig(control);}});
-  check(`${fps}fps ${side}: actual first-person suit hand has the same five-digit gesture`,()=>{const c=actor();try{
-    const camera=new THREE.PerspectiveCamera(45,16/9,.01,200);c.setFirstPersonCamera(camera);c.setFirstPersonMode(true);c.fireWeb(target,side);tick(c,fps,.16);
-    const arm=c.firstPersonRig.children[side==='left'?0:1],hand=arm.userData.hand;assert(hand.triangles>500,'Viewmodel is not the actual articulated suit mesh');
-    const ratios=thwip(hand.bones,side),box=handBounds(arm),size=box.getSize(new THREE.Vector3());assert(Math.max(...size.toArray())<.3 && size.length()>.1,'Import scale enlarged or shrank the visible skin');
-    assert(c.firstPersonHands[side==='left'?0:1].getWorldPosition(new THREE.Vector3()).distanceTo(c.firstPersonGloves[side==='left'?0:1].getWorldPosition(new THREE.Vector3()))<1e-7);
-    const before=Object.values(c.bones).map(b=>b.quaternion.clone());for(let i=0;i<4;i++){c.setFirstPersonMode(false);c.setFirstPersonMode(true);}assert(Object.values(c.bones).every((b,i)=>b.quaternion.equals(before[i])),'View switch changed body pose');
-    return {ratios,skinSize:size.toArray(),triangles:hand.triangles};
-  }finally{disposeRig(c);}});
   check(`${fps}fps ${side}: a missed shot articulates, expires and never attaches`,()=>{const c=actor();try{
     c.fireWebMiss(target,side);tick(c,fps,.16);thwip(c.bones,side);assert.equal(c.webAttachments.length,0);tick(c,fps,1);assert.equal(c.webShotTimer,0);assert(c.webGestures[side].shoot<1e-6);assert(!c.webMesh.visible && !c.webMeshOffhand.visible);valid(c);
   }finally{disposeRig(c);}});
@@ -83,26 +74,9 @@ check('Remote shot capture validates handedness, expiry, target and payload size
     for(const shot of [{hand:'wrong',target,remaining:.3},{hand:'left',target:{x:NaN,y:0,z:0},remaining:.3},{hand:'left',target,remaining:Infinity},{hand:'left',target,remaining:-1}])assert.equal(sanitizePose({...pose,webShot:shot}).webShot,null);
     assert.equal(sanitizePose({...pose,webShot:{hand:'left',target,remaining:100}}).webShot.remaining,.55);
   }finally{disposeRig(c);}});
-check('First-person creation/replacement/disposal preserves shared suit resources',()=>{const c=actor(),camera=new THREE.PerspectiveCamera();try{
-  const sourceSkin=c.model.getObjectByProperty('isSkinnedMesh',true),sourceFinger=joint(c,'lefthandmiddle1').quaternion.clone();let disposed=0;
-  sourceSkin.material.addEventListener('dispose',()=>disposed++);sourceSkin.geometry.addEventListener('dispose',()=>disposed++);
-  c.setFirstPersonCamera(camera);const oldRig=c.firstPersonRig;c.setFirstPersonCamera(camera);assert(!oldRig.parent);assert.equal(camera.children.length,1);assert.equal(disposed,0);
-  const viewSkin=c.firstPersonRig.getObjectByProperty('isSkinnedMesh',true);assert.notEqual(viewSkin.material,sourceSkin.material);assert(viewSkin.material.depthTest && sourceSkin.material.depthTest,'Fingers lost their own depth ordering');
-  c.setFirstPersonMode(true);c.fireWeb(target,'left');tick(c,60,.16);assert(!joint(c,'lefthandmiddle1').quaternion.equals(sourceFinger));
-  disposeFirstPersonRig(c.firstPersonRig);assert.equal(disposed,0);assert.equal(camera.children.length,0);
- }finally{disposeRig(c);}});
 check('A new remote character never inherits the local firing fingers',()=>{const c=actor();let remote;try{
   c.fireWeb(target,'left');tick(c,60,.16);const before=joint(c,'lefthandmiddle1').quaternion.clone();
   remote=new RemoteMotion(new THREE.Scene(),c,{id:'late-join',x:0,y:0,z:0,facing:0},{colliders:[]});remote.mesh.updateMatrixWorld(true);
   assert(extension(remote.character.bones,'left','middle')>.9,'New opponent inherited the local web gesture');assert(joint(c,'lefthandmiddle1').quaternion.equals(before));
  }finally{remote?.dispose();disposeRig(c);}});
-check('Close walls cannot hide the hands, while folded fingers retain depth ordering',()=>{const c=actor();try{
-  c.setFirstPersonCamera(new THREE.PerspectiveCamera());const meshes=[];c.firstPersonRig.traverse(n=>{if(n.isMesh)meshes.push(n);});
-  let clears=0;const renderer={info:{render:{frame:1}},clearDepth(){clears++;}};
-  for(const m of meshes){assert.equal(m.renderOrder,100);assert(m.material.depthTest);m.onBeforeRender(renderer);}assert.equal(clears,1,'Depth was cleared separately for overlapping fingers');
-  renderer.info.render.frame++;meshes[0].onBeforeRender(renderer);assert.equal(clears,2);
- }finally{disposeRig(c);}});
-check('Missing downloaded skin keeps an articulated fallback that can shoot',()=>{const c=Object.create(Character.prototype);Object.assign(c,{group:new THREE.Group(),model:null,bones:{},webAttachments:[],webLaunchTimers:{},webShotTimer:0,currentHand:'left',updateWeb(){}});
-  try{c.setFirstPersonCamera(new THREE.PerspectiveCamera());c.setFirstPersonMode(true);c.fireWebMiss(target,'left');for(let i=0;i<12;i++)c.update(1/60,'IDLE',new THREE.Vector3());const hand=c.firstPersonRig.children[0].userData.hand;c.firstPersonRig.updateMatrixWorld(true);thwip(hand.bones,'left');}
-  finally{disposeFirstPersonRig(c.firstPersonRig);}});
 const failures=results.filter(r=>r.status==='FAIL');fs.writeFileSync(folder+'/results.json',JSON.stringify({fps:fpsList,results},null,2)+'\n');console.log(`Web hand pose: ${results.length-failures.length} passed, ${failures.length} failed.`);if(failures.length)process.exitCode=1;

@@ -18,8 +18,8 @@ function dom(run){const saved={document:globalThis.document,window:globalThis.wi
   const nodes=new Map();globalThis.document={getElementById:id=>{if(!nodes.has(id))nodes.set(id,node());return nodes.get(id);},querySelector:()=>null,body:node()};globalThis.window={devicePixelRatio:2};
   try{run(nodes);}finally{Object.assign(globalThis,saved);}}
 function multiplayer(){const mp=Object.create(Multiplayer.prototype);
-  const character={group:{visible:true},isFirstPerson:true,setFirstPersonMode(value){this.isFirstPerson=value;this.firstPersonRig.visible=value;},firstPersonRig:{visible:true}};
-  const game={character,tpsCamera:{mode:'first',setMode(mode){this.mode=mode;}},physics:{clearWebAnchor(){},position:new THREE.Vector3(),renderPosition:new THREE.Vector3()},clearInput(){},setPaused(){},showNotice(){},combat:{cancel(){}}};
+  const character={group:{visible:true}};
+  const game={character,tpsCamera:{mode:'swing',setMode(mode){this.mode=mode;}},physics:{clearWebAnchor(){},position:new THREE.Vector3(),renderPosition:new THREE.Vector3()},clearInput(){},setPaused(){},showNotice(){},combat:{cancel(){}}};
   Object.assign(mp,{game,id:'me',room:{phase:'playing',mode:'tag'},solo:false,lastPhase:'playing',players:[],avatars:new Map(),spectating:false,render(){},renderHud(){},syncAvatars(){}});return mp;}
 
 check('Local pursuit rejects off-map origins and excludes off-map objectives',()=>{
@@ -34,10 +34,10 @@ check('Late room and identity messages cannot replace an explicit solo session',
 });
 check('First-person elimination hides local arms and follows a third-person spectator',()=>{
   const mp=multiplayer();mp.message({type:'hit',target:'me',health:0,eliminated:true});
-  assert(mp.spectating);assert(!mp.game.character.group.visible);assert(!mp.game.character.firstPersonRig.visible);assert.equal(mp.game.tpsCamera.mode,'follow');
+  assert(mp.spectating);assert(!mp.game.character.group.visible);assert.equal(mp.game.tpsCamera.mode,'swing');
   mp.applyServerPosition=()=>{};mp.game.resetCamera=()=>{};
   mp.message({type:'room',room:{phase:'playing'},players:[{id:'me',eliminated:false}],arena:null});
-  assert(!mp.spectating);assert(mp.game.character.group.visible);assert(mp.game.character.firstPersonRig.visible);assert.equal(mp.game.tpsCamera.mode,'first');
+  assert(!mp.spectating);assert(mp.game.character.group.visible);assert.equal(mp.game.tpsCamera.mode,'swing');
 });
 check('Match finish retires goal and rescue markers and restores player visibility',()=>{
   const mp=multiplayer();mp.goalMarker={visible:true};mp.rescueStarted=50;mp.rescueTarget='ally';

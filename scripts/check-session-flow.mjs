@@ -99,7 +99,7 @@ check('Pad Start does not reintroduce stick movement or camera look in the pause
   navigator.getGamepads = () => [{ index: 0, mapping: 'standard', axes: [1, -1, 1, 1],
     buttons: Array.from({ length: 16 }, (_, i) => ({ pressed: i === 9 || i === 14 })) }];
   let cameraCycles = 0; game.tpsCamera.cycleMode = () => { cameraCycles++; return 'follow'; };
-  game.character = { setFirstPersonMode() {} };
+  game.character = {};
   pad.update(1 / 60); assert(game.isPaused); assert(!game.input.forward && !game.input.right);
   assert.equal(game.cameraMoves, 0); assert.equal(cameraCycles, 0, 'A button after Start changed the paused view');
 }));

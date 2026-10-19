@@ -58,7 +58,7 @@ export class RemoteMotion {
   constructor(scene, source, player, city) {
     this.character = new Character(scene,null,null,source);
     this.mesh = this.character.group;
-    this.mesh.name = `OnlineSpiderMan-${player.id}`;
+    this.mesh.name = `OnlineShadowPulseCharacter-${player.id}`;
     this.target = new THREE.Vector3(player.x,player.y,player.z);
     this.mesh.position.copy(this.target);
     this.previous = this.target.clone(); this.velocity = new THREE.Vector3();

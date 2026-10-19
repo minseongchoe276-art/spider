@@ -95,14 +95,14 @@ await check('Old Supabase broadcasts cannot restore a departed or replaced room'
 
 
 
-await check('Audio changes preserve first-person zoom and adaptive resolution; FOV stays bounded',()=>withDOM(()=>{
+await check('Audio changes preserve third-person zoom and adaptive resolution; FOV stays bounded',()=>withDOM(()=>{
   document.getElementById=id=>id==='graphics-quality'?{}:null;
   const app=Object.create(GameApp.prototype),settings=cleanSettings();let ratio=0;
   Object.assign(app,{preferences:{values:{muted:false,reducedMotion:false,quality:'balanced',settings}},tpsCamera:{},
     physics:{},audio:{isMuted:false,configure(){}},city:{},timeTrial:{},renderer:{setPixelRatio:value=>{ratio=value;},shadowMap:{}},applyWebTheme(){}});
-  app.applyPreferences();app.tpsCamera.firstPersonFov=55;ratio=.7;settings.effectsVolume=.1;app.applyPreferences();
-  assert.equal(app.tpsCamera.firstPersonFov,55);assert.equal(ratio,.7);
-  settings.fov=95;app.applyPreferences();assert.equal(app.tpsCamera.maxFov,95);assert.equal(app.tpsCamera.firstPersonFov,95);
+  app.applyPreferences();app.tpsCamera.targetDistance=5.5;ratio=.7;settings.effectsVolume=.1;app.applyPreferences();
+  assert.equal(app.tpsCamera.targetDistance,5.5);assert.equal(ratio,.7);
+  settings.fov=95;app.applyPreferences();assert.equal(app.tpsCamera.maxFov,95);assert.equal(app.tpsCamera.baseFov,95);
   app.preferences.values.quality='low';app.applyPreferences();assert.equal(ratio,1);
 }));
 await check('Zip HUD reports movement and cooldown rather than false readiness',()=>withDOM(()=>{

@@ -113,6 +113,28 @@ check('Space explicitly jumps from a grounded held strand without an automatic l
   key('keydown','Space');assert(!g.physics.isSwinging&&g.input.jump);
   g.physics.update(1/60,g.input,g.camera);assert(g.physics.velocity.y>0);
 }));
+check('Keyboard, pad, and touch jump off a hanging web once and clear both hands',()=>{
+  for(const [pad,touch] of [[false,false],[true,false],[false,true]]){
+    for(const verticalSpeed of [0,-18,35])dom(()=>{
+      const g=app(),p=g.physics;
+      p.position.set(0,20,0);p.state='FALLING';
+      p.findBestAnchor=()=>new THREE.Vector3(0,45,10);
+      assert(p.startSwing(g.camera));
+      p.velocity.set(8,verticalSpeed,3);
+      Object.assign(g.input,{webHold:true,webFireHeld:true,webTap:true,
+        webHoldRight:true,webFireHeldRight:true,webTapRight:true});
+      key('keydown','Space',pad,touch);key('keyup','Space',pad,touch);
+      assert(!p.isSwinging);assert.equal(p.state,'JUMPING');assert.equal(p.webs.length,0);
+      assert.equal(p.velocity.y,Math.max(verticalSpeed,p.jumpForce));
+      assert.equal(p.velocity.x,8);assert.equal(p.velocity.z,3);
+      for(const name of ['webHold','webFireHeld','webTap','webHoldRight','webFireHeldRight','webTapRight'])assert.equal(g.input[name],false);
+      const height=p.position.y;p.update(1/60,g.input,g.camera);assert(p.position.y>height);
+      p.velocity.y=-2;
+      key('keydown','Space',pad,touch);key('keyup','Space',pad,touch);
+      p.update(1/60,g.input,g.camera);assert(p.velocity.y< -2,'Released web granted another air jump');
+    });
+  }
+});
 check('Pause preserves adaptive resolution and clears stale frame samples',()=>dom(()=>{
   const g=app(),e=Object.create(PlayerExperience.prototype),budget=new PerformanceBudget();budget.reset(.9);budget.samples=[70,90];budget.bad=1;
   Object.assign(e,{game:g,performance:budget,performanceActive:true,ghost:{mesh:{},update(){}},trajectory:{},stunts:{update(){}},safe:()=>false,visitTime:0,saveTime:0,previewTime:0});

@@ -18,7 +18,7 @@ function fixture() {
   return {c,p};
 }
 for (const fps of [30,60,144]) for(const key of Object.keys(AIR_TRICKS)) {
-  const {c,p}=fixture();let rewards=0;p.onStuntCallback=(_name,points)=>{if(points>0)rewards++;};
+  const {c,p}=fixture();let rewards=0,completed=0;p.onStuntCallback=(_name,points)=>{if(points>0)rewards++;};c.onAirTrickComplete=()=>completed++;
   const before=p.velocity.clone();assert(p.performAirTrick(key));assert.equal(p.stuntScore,0);
   assert(!p.performAirTrick(key),'Cannot spam a running trick');
   for(let frame=0;frame<Math.ceil(AIR_TRICKS[key].duration*fps)+2;frame++) {
@@ -26,7 +26,7 @@ for (const fps of [30,60,144]) for(const key of Object.keys(AIR_TRICKS)) {
     assert(c.model.quaternion.toArray().every(Number.isFinite));
     assert(Math.abs(c.model.quaternion.length()-1)<1e-6);
   }
-  assert.equal(rewards,1);assert.equal(p.stuntScore,AIR_TRICKS[key].points);
+  assert.equal(completed,1);assert.equal(rewards,0);assert.equal(p.stuntScore,0);
   assert.equal(c.isTricking,false);assert(Math.abs(c.model.rotation.x)<1e-6);assert(Math.abs(c.model.rotation.z)<1e-6);
   assert(p.velocity.equals(before),'A visual trick cannot change momentum');
   const angles=trickRotation(key,AIR_TRICKS[key].duration);
@@ -40,11 +40,11 @@ c.contactTime=10;assert(!p.performAirTrick('toString'));
 assert(p.performAirTrick('front'));c.update(.2,'FALLING',p.velocity);c.update(.1,'LANDING',p.velocity);assert.equal(p.stuntScore,0);assert.equal(c.airTrick,null);
 assert(p.performAirTrick('front'));c.update(.2,'FALLING',p.velocity);c.update(.1,'SWINGING',p.velocity);assert.equal(p.stuntScore,0);
 function finish(key){assert(p.performAirTrick(key));c.update(AIR_TRICKS[key].duration+.01,'FALLING',p.velocity);}
-finish('front');let score=p.stuntScore;finish('front');assert.equal(p.stuntScore-score,125);
+finish('front');let score=p.stuntScore;finish('front');assert.equal(p.stuntScore-score,0);
 for(const key of ['back','left','right','spin','cork'])assert(!p.performAirTrick(key));
 assert(p.performAirTrick('front'));
 const pose=capturePose(p,c);assert.equal(pose.airTrick.key,'front');
 assert.equal(sanitizePose({...pose,airTrick:{key:'toString',elapsed:0}}).airTrick,null);
 assert.equal(sanitizePose({...pose,airTrick:{key:'front',elapsed:NaN}}).airTrick,null);
 p.resetPosition();assert.equal(c.airTrick,null);assert.equal(p.airTrickChain.size,0);
-console.log('Air tricks: Retained front animation at 30/60/144 FPS, completion rewards, interruptions, selection, combos and pose validation passed.');
+console.log('Air tricks: Retained front animation at 30/60/144 FPS, exactly-once completion without points, interruptions, selection, repeats and pose validation passed.');

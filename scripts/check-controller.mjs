@@ -160,13 +160,6 @@ bothHands.reachWebAnchor=()=>reachedHands.push(bothHands.currentHand);
 bothHands.reachBothWebAnchors(new THREE.Vector3(0,10,0));
 assert.deepEqual(reachedHands,['left','right'],'Swing pose did not reach with both hands');
 assert.equal(bothHands.currentHand,'right','Dual-hand pose changed the alternating lead hand');
-const firstPersonArms=Object.create(Character.prototype);firstPersonArms.model=new THREE.Group();
-firstPersonArms.firstPersonHands=[];firstPersonArms.setFirstPersonCamera(new THREE.PerspectiveCamera());
-firstPersonArms.setFirstPersonMode(true);
-assert.equal(firstPersonArms.firstPersonHands.length,2,'First-person web shooters are missing a hand anchor');
-assert(firstPersonArms.firstPersonRig.visible&&!firstPersonArms.model.visible,'First-person arms/body visibility did not switch together');
-firstPersonArms.setFirstPersonMode(false);
-assert(!firstPersonArms.firstPersonRig.visible&&firstPersonArms.model.visible,'Third-person model was not restored');
 const dualWeb=Object.create(Character.prototype);dualWeb.group=new THREE.Group();
 dualWeb.rightHand=new THREE.Group();dualWeb.leftHand=new THREE.Group();
 dualWeb.rightHand.position.set(0.2,1,0);dualWeb.leftHand.position.set(-0.2,1,0);dualWeb.group.add(dualWeb.rightHand,dualWeb.leftHand);dualWeb.group.updateMatrixWorld(true);
@@ -194,15 +187,9 @@ const launchedEndpoint=new THREE.Vector3().fromBufferAttribute(dualWeb.webLine.g
 assert(leftEndpoint.distanceTo(retainedEndpoint)<1e-5,'Same-point right shot restarted the left strand launch');
 assert(leftEndpoint.distanceTo(launchedEndpoint)>1,'New right strand skipped its own launch animation');
 dualWeb.update(0.15,'SWINGING',new THREE.Vector3(),leftEndpoint);
-dualWeb.firstPersonHands=[];dualWeb.setFirstPersonCamera(new THREE.PerspectiveCamera());
-dualWeb.setFirstPersonMode(true);dualWeb.updateWeb(true,dualWeb.persistentWebAnchor);
-for(const [line,hand] of [[dualWeb.webLine,dualWeb.firstPersonHands[1]],[dualWeb.webLineOffhand,dualWeb.firstPersonHands[0]]]) {
-  const first=new THREE.Vector3().fromBufferAttribute(line.geometry.attributes.position,0);
-  assert(first.distanceTo(hand.getWorldPosition(new THREE.Vector3()))<1e-6,'First-person wrist sides were reversed');
-}
 dualWeb.persistentWebAnchor=null;dualWeb.updateWeb(false,null);
 assert(!dualWeb.webLine.visible&&!dualWeb.webLineOffhand.visible,'Released web did not clean up');
-c.mixer=new THREE.AnimationMixer(c.model);
+c.bones ||= {};c.mixer=new THREE.AnimationMixer(c.model);
 for(const n of ['idle','walk','jog','regularRun','run','stop','runStop','jump','drop','land','turnLeft','turnRight','fall','roll','swing']) {
   const clip=new THREE.AnimationClip(n,0.5,[new THREE.NumberKeyframeTrack('.position[x]',[0,0.5],[0,0])]);
   clip.userData={nominalSpeed:0.0000001};
@@ -267,18 +254,6 @@ blocked=false;
 springCamera.update(1/60,playerTarget,new THREE.Vector3(),false,[],springRay,0);
 assert(springCamera.collisionDistance>retracted&&springCamera.collisionDistance<springCamera.distance,
   'Camera arm did not ease back after the obstruction cleared');
-assert.deepEqual(follower.modeOrder,['close','follow','swing','first'],'Camera mode cycle is missing first person');
-follower.mode='first';follower.yaw=0.7;follower.pitch=0.2;follower.currentPos.set(0,0,0);
-const firstPersonFov=follower.firstPersonFov;follower.handleWheel(-1);
-assert(follower.firstPersonFov<firstPersonFov,'First-person mouse-wheel zoom did not change the view');
-for(let n=0;n<60;n++)follower.update(1/60,playerTarget,new THREE.Vector3(),false,[],null,0);
-assert(Math.abs(follower.currentPos.y-1.58)<0.02,'First-person camera is not at a natural eye height');
-const firstForward=new THREE.Vector3();followerCamera.getWorldDirection(firstForward);
-assert(firstForward.x>0.5&&firstForward.z>0.7,'First-person camera orientation does not follow mouse yaw/pitch');
-follower.handleMouseMove(100,-100);const firstYaw=follower.yaw,firstPitch=follower.pitch;
-for(let n=0;n<300;n++)follower.update(1/60,playerTarget,new THREE.Vector3(),false,[],null,0);
-assert.equal(follower.yaw,firstYaw,'First-person view auto-snapped behind the player');
-assert.equal(follower.pitch,firstPitch,'First-person pitch changed without input');
 camera.updateMatrixWorld(true);
 const screenRight=new THREE.Vector3().setFromMatrixColumn(camera.matrixWorld,0);screenRight.y=0;screenRight.normalize();
 const lookFlat=new THREE.Vector3();camera.getWorldDirection(lookFlat);lookFlat.y=0;lookFlat.normalize();
@@ -306,9 +281,4 @@ behindFacing.camera.position.copy(behindFacing.currentPos);behindFacing.camera.l
 const placedLook=new THREE.Vector3();behindFacing.camera.getWorldDirection(placedLook);
 assert(behindFacing.currentPos.x<10 && Math.abs(behindFacing.currentPos.z)<1,'Camera boom is not behind a character facing +X');
 assert(placedLook.x>0.9,'Camera boom does not look along the character facing');
-const blockedEye=new ThirdPersonCamera(new THREE.PerspectiveCamera(),{});
-blockedEye.mode='first';blockedEye.yaw=0;blockedEye.pitch=0;blockedEye.currentPos.set(0,1.58,0);
-const eyeWall=new THREE.Mesh(new THREE.BoxGeometry(4,4,0.2));eyeWall.position.set(0,1.58,0.35);eyeWall.updateMatrixWorld(true);
-for(let n=0;n<20;n++)blockedEye.update(1/60,new THREE.Vector3(),new THREE.Vector3(),false,[eyeWall]);
-assert(blockedEye.camera.position.z<0,'First-person view stayed inside the wall it is looking at');
 console.log('PASS: idle, walking/jogging/running/sprint, stop, jump, chained web retargeting and held fire, pull-to-swing transition, web zip, roof edge, swept roof, release, frame rates, animation transitions, flip recovery, camera zoom');

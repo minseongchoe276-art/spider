@@ -22,7 +22,6 @@ export class ThirdPersonCamera {
     // FOV Dynamics
     this.baseFov = 64;
     this.maxFov = 76;
-    this.firstPersonFov = 72;
 
     // Camera roll (banking)
     this.roll = 0;
@@ -34,7 +33,7 @@ export class ThirdPersonCamera {
     // Aim Mode
     this.isAiming = false;
     this.mode = 'follow';
-    this.modeOrder = ['close', 'follow', 'swing', 'first'];
+    this.modeOrder = ['close', 'follow', 'swing'];
     this.isRecentering = false;
     this.recenterYaw = 0;
     this.lockBehind = true;
@@ -102,13 +101,10 @@ export class ThirdPersonCamera {
     // makes the view drift unexpectedly; C is the deliberate recenter action.
     this.orbitReturnTime = Infinity;
     this.yaw -= deltaX * sensitivity * this.sensitivity;
-    // Boom height and first-person look pitch use opposite sign conventions.
-    this.pitch += deltaY * sensitivity * this.sensitivity * (this.invertY?-1:1) * (this.mode === 'first' ? -1 : 1);
+    this.pitch += deltaY * sensitivity * this.sensitivity * (this.invertY?-1:1);
 
     // Clamp pitch so camera doesn't flip
-    this.pitch = this.mode === 'first'
-      ? THREE.MathUtils.clamp(this.pitch, -1.25, 1.25)
-      : THREE.MathUtils.clamp(this.pitch, -0.52, 0.58);
+    this.pitch = THREE.MathUtils.clamp(this.pitch, -0.52, 0.58);
   }
 
   handleKeyboardLook(keys,delta) {
@@ -128,23 +124,20 @@ export class ThirdPersonCamera {
   // leaves the first frame on -Z even when the character faces another way.
   placeBehind(playerPos, facing) {
     this.yaw = facing;
-    this.pitch = this.mode === 'first' ? 0 : 0.16;
-    this.lockBehind = this.mode !== 'first';
+    this.pitch = 0.16;
+    this.lockBehind = true;
     this.isRecentering = false;
     this.orbitReturnTime = 0;
     this.boomSide = 0;
-    const eye = this.mode === 'first' ? 1.58 : 1.7;
+    const eye = 1.7;
     const center = playerPos.clone().add(new THREE.Vector3(0, eye, 0));
     const direction = new THREE.Vector3(
       -Math.sin(facing) * Math.cos(this.pitch),
       Math.sin(this.pitch),
       -Math.cos(facing) * Math.cos(this.pitch)
     );
-    this.currentPos.copy(center).addScaledVector(direction, this.mode === 'first' ? 0 : this.distance);
+    this.currentPos.copy(center).addScaledVector(direction, this.distance);
     this.lookAtTarget.copy(center);
-    if (this.mode === 'first') {
-      this.lookAtTarget.add(new THREE.Vector3(Math.sin(facing), 0, Math.cos(facing)));
-    }
     this.collisionDistance = this.distance;
   }
 
@@ -154,31 +147,18 @@ export class ThirdPersonCamera {
   }
 
   setMode(mode) {
-    const previous = this.mode;
+    if (!this.modeOrder.includes(mode)) return this.mode;
     this.mode = mode;
-    if ((previous === 'first') !== (this.mode === 'first')) {
-      this.pitch = -this.pitch;
-      // V changes the viewing distance, while C explicitly recenters. Keep
-      // the aimed facade/anchor even when the body faces somewhere else.
-      this.lockBehind = false;
-      this.isRecentering = false;
-      this.orbitReturnTime = Infinity;
-      this.modeChanged = true;
-    }
-    this.pitch = this.mode === 'first' ? THREE.MathUtils.clamp(this.pitch,-1.25,1.25) : THREE.MathUtils.clamp(this.pitch,-0.52,0.58);
+    this.pitch = THREE.MathUtils.clamp(this.pitch,-0.52,0.58);
     return this.mode;
   }
 
   handleWheel(deltaY) {
-    if (this.mode === 'first') {
-      this.firstPersonFov = THREE.MathUtils.clamp(this.firstPersonFov + Math.sign(deltaY) * 4, 55, 95);
-    } else {
-      this.targetDistance = THREE.MathUtils.clamp(
+    this.targetDistance = THREE.MathUtils.clamp(
         this.targetDistance + Math.sign(deltaY) * 0.55,
         this.minDistance,
         this.maxDistance
       );
-    }
   }
 
   triggerShake(intensity = 0.5) {
@@ -197,7 +177,7 @@ export class ThirdPersonCamera {
     }
     // Keep the boom offset relative to the character, like a conventional
     // third-person follow camera. Mouse input temporarily unlocks this orbit.
-    if (this.mode !== 'first' && this.lockBehind && facingAngle !== null) {
+    if (this.lockBehind && facingAngle !== null) {
       const difference = Math.atan2(Math.sin(facingAngle - this.yaw), Math.cos(facingAngle - this.yaw));
       this.yaw += difference * (1 - Math.exp(-10 * this.followStrength * delta));
     }
@@ -206,36 +186,9 @@ export class ThirdPersonCamera {
 
     // 1. Dynamic FOV based on speed
     const fovRatio = this.reducedMotion ? 0 : Math.min(Math.max((speedKmh - 20) / 70, 0), 1);
-    const targetFov = this.isAiming ? 50 : this.mode === 'first'
-      ? this.firstPersonFov : this.baseFov + fovRatio * (this.maxFov - this.baseFov) * this.speedFov;
+    const targetFov = this.isAiming ? 50 : this.baseFov + fovRatio * (this.maxFov - this.baseFov) * this.speedFov;
     this.camera.fov = THREE.MathUtils.damp(this.camera.fov, targetFov, 6, delta);
     this.camera.updateProjectionMatrix();
-
-    if (this.mode === 'first') {
-      const eye = playerPos.clone().add(new THREE.Vector3(0, 1.58, 0));
-      const forward = new THREE.Vector3(
-        Math.sin(this.yaw) * Math.cos(this.pitch),
-        Math.sin(this.pitch),
-        Math.cos(this.yaw) * Math.cos(this.pitch)
-      ).normalize();
-      // A first-person view is attached to the head; a spring boom here can
-      // trail metres behind a fast character and cross walls on mode changes.
-      this.currentPos.copy(eye);
-      // The near plane must not enter the wall the player is looking at.
-      let view = this.currentPos.clone();
-      if ((cityMeshes.length || cityRaycast) && forward.lengthSq() > 0) {
-        const clearance = this.safeDistance(view, forward, 0.55, cityMeshes, cityRaycast);
-        if (clearance < 0.5) view.addScaledVector(forward, clearance - 0.5);
-      }
-      this.camera.position.copy(view);
-      this.camera.up.set(0, 1, 0);
-      this.camera.lookAt(view.clone().add(forward));
-      this.lookAtTarget.copy(view).add(forward);
-      this.roll = 0;
-      this.shakeIntensity = THREE.MathUtils.damp(this.shakeIntensity, 0, 10, delta);
-      this.camera.updateMatrixWorld(true);
-      return;
-    }
 
     // 2. Camera distance & height offset
     const heightOffset = this.isAiming ? 1.4 : 1.7;

@@ -16,10 +16,11 @@ export class GamepadInput {
     const pad=Array.from(navigator.getGamepads?.()||[]).find(p=>p?.mapping==='standard');
     if(!pad){if(this.lastPad!==null){this.release();this.game.showNotice('게임패드 연결이 끊겼습니다.');}this.lastPad=null;return;}
     if(this.lastPad!==pad.index){if(this.lastPad!==null)this.release();this.lastPad=pad.index;this.game.showNotice('게임패드 연결됨');}
-    const isActive=()=>this.game.isPlaying&&!this.game.isPaused&&!this.game.multiplayer?.spectating&&!document.querySelector('#controls-guide:not(.hidden)');
+    const modalOpen=()=>this.game.worldMap?.isOpen || !!document.querySelector('dialog[open]');
+    const isActive=()=>this.game.isPlaying&&!this.game.isPaused&&!this.game.contextLost&&!modalOpen()&&!this.game.multiplayer?.spectating&&!document.querySelector('#controls-guide:not(.hidden)');
     const wasActive=isActive();
     const next=new Set(pad.buttons.map((b,i)=>b.pressed?i:-1).filter(i=>i>=0));
-    for(const b of next)if(!this.buttons.has(b)&&((wasActive&&isActive())||b===9))this.action(b,true);
+    for(const b of next)if(!this.buttons.has(b)&&((wasActive&&isActive())||(b===9&&!modalOpen())))this.action(b,true);
     for(const b of this.buttons)if(!next.has(b))this.action(b,false);
     this.buttons=next;
     // Start can pause inside action(). Do not restore cleared movement or

@@ -10,7 +10,7 @@ function actor(scene=new THREE.Scene()) {
   const c=Object.create(Character.prototype),primary=createWebStrand(scene),secondary=createWebStrand(scene);
   Object.assign(c,{group:new THREE.Group(),model:new THREE.Group(),actions:{},bones:{},activeAction:null,
     currentHand:'left',webShotTimer:0,webAttachments:[],webLaunchTimers:{},webHandWeights:{},webHandTargets:{},
-    firstPersonHands:[],isFirstPerson:false,targetFacingAngle:0,idleTime:0,trickRotation:0,
+    targetFacingAngle:0,idleTime:0,trickRotation:0,
     webLine:primary.line,webMesh:primary.mesh,webLineOffhand:secondary.line,webMeshOffhand:secondary.mesh});
   c.group.add(c.model);scene.add(c.group);c.mixer=new THREE.AnimationMixer(c.model);
   for(const name of ['idle','walk','jump','swing']) {
@@ -61,54 +61,16 @@ for(const fps of [30,60,144]) {
   console.log(`PASS ${fps}fps: interrupted blend, real offhand miss lifetime, sever cleanup, takeoff reach`);
 }
 
-for(const facing of [0,Math.PI/2,Math.PI,-Math.PI/2]) {
-  const view=new ThirdPersonCamera(new THREE.PerspectiveCamera(),{});view.mode='first';
-  view.placeBehind(new THREE.Vector3(12,20,34),facing);
-  view.camera.position.copy(view.currentPos);view.camera.lookAt(view.lookAtTarget);
-  assert(view.camera.getWorldDirection(new THREE.Vector3()).dot(new THREE.Vector3(Math.sin(facing),0,Math.cos(facing)))>.999);
-  view.triggerShake(1);view.update(1,new THREE.Vector3(),new THREE.Vector3(),false);
-  assert(view.shakeIntensity<.001,'First-person mode froze an old impact for later replay');
-}
-console.log('PASS first-person reset follows all four headings and impact shake expires');
-const returning=new ThirdPersonCamera(new THREE.PerspectiveCamera(),{});
-returning.mode='first';returning.pitch=1.2;returning.setMode('follow');
-assert.equal(returning.pitch,-.52,'Recenter from first person retained an invalid boom pitch');
-returning.setMode('first');const samePitch=returning.pitch;returning.setMode('first');
-assert.equal(returning.pitch,samePitch,'Selecting the same mode flipped pitch');
-console.log('PASS direct recenter mode switch converts and bounds first-person pitch');
-
-const oldDocument=globalThis.document,oldRAF=globalThis.requestAnimationFrame;
-globalThis.document={getElementById:()=>null};globalThis.requestAnimationFrame=()=>{};
-try {
-  const camera=new THREE.PerspectiveCamera(),scene=new THREE.Scene(),c=actor(scene);
-  c.isFirstPerson=true;c.firstPersonHands=[new THREE.Object3D(),new THREE.Object3D()];
-  for(const [i,hand] of c.firstPersonHands.entries()){hand.position.set(i?-.2:.2,-.3,-.6);camera.add(hand);}
-  const view=new ThirdPersonCamera(camera,{});view.mode='first';
-  c.webAttachments=[{hand:'left',anchor:new THREE.Vector3(0,40,20)}];c.persistentWebAnchor=c.webAttachments[0].anchor;
-  const app=Object.create(GameApp.prototype);
-  Object.assign(app,{clock:{getDelta:()=>1/60,elapsedTime:1},city:{update(){},buildingMeshes:[]},assetsReady:true,
-    isPlaying:true,isPaused:false,character:c,camera,tpsCamera:view,scene,input:{},preferences:{values:{}},
-    physics:{position:new THREE.Vector3(100,20,0),renderPosition:new THREE.Vector3(100,20,0),
-      velocity:new THREE.Vector3(48,0,0),facingAngle:Math.PI/2,isSwinging:true,
-      update(){c.updateWeb(true,c.persistentWebAnchor);}},vfx:{update(){}},timeTrial:{update(){}},
-    updateTrialHUD(){},updateHUD(){},renderer:{render(){
-      assert(ringCenter(c.webMeshOffhand).distanceTo(c.firstPersonHands[0].getWorldPosition(new THREE.Vector3()))<1e-4,
-        'Rendered first-person strand lagged behind its camera wrist');
-    }}});
-  app.animate();
-} finally {globalThis.document=oldDocument;globalThis.requestAnimationFrame=oldRAF;}
-console.log('PASS actual render loop updates first-person web endpoints after camera movement');
-
 for(const fps of [24,60,144])for(const yaw of [0,1.4,-2.3]) {
   const camera=new THREE.PerspectiveCamera(),view=new ThirdPersonCamera(camera,{});
   const pos=new THREE.Vector3(20,30,40),velocity=new THREE.Vector3();
   view.yaw=yaw;view.pitch=-.3;view.lockBehind=false;
   for(let n=0;n<fps;n++)view.update(1/fps,pos,velocity,false,[],null,yaw+1);
   const before=camera.getWorldDirection(new THREE.Vector3());
-  view.setMode('first');view.update(1/fps,pos,velocity,false,[],null,yaw+1);
-  assert(before.angleTo(camera.getWorldDirection(new THREE.Vector3()))<1e-6,'Entering first person lost the aimed facade');
+  view.setMode('swing');view.update(1/fps,pos,velocity,false,[],null,yaw+1);
+  assert(before.angleTo(camera.getWorldDirection(new THREE.Vector3()))<1e-6,'Changing follow distance lost the aimed facade');
   view.setMode('close');view.update(1/fps,pos,velocity,false,[],null,yaw+1);
-  assert(before.angleTo(camera.getWorldDirection(new THREE.Vector3()))<1e-6,'Returning to third person swung the aim at the body');
+  assert(before.angleTo(camera.getWorldDirection(new THREE.Vector3()))<1e-6,'Returning to close view swung the aim at the body');
   for(let n=0;n<fps;n++)view.update(1/fps,pos,velocity,false,[],null,yaw+1);
   assert.equal(view.yaw,yaw,'A mode change silently recentered behind a differently facing body');
   view.recenterBehind(yaw+1);

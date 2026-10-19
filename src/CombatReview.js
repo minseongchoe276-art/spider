@@ -15,13 +15,13 @@ export function startCombatReview() {
   const panel=document.createElement('section');panel.style.cssText='position:fixed;top:16px;left:16px;padding:16px;border-radius:12px;background:#ffffffed;color:#17232d;max-width:330px';
   panel.innerHTML='<strong>전투 모드 · 모션 검증</strong><p><button id="combat-jab">잽</button> <button id="combat-cross">오른손 스트레이트</button> <button id="combat-hook">훅</button> <button id="combat-special">오른손 강타</button></p><p><button id="combat-guard">방어 전환</button> <button id="combat-left">좌 회피</button> <button id="combat-right">우 회피</button> <button id="combat-back">뒤 회피</button> <button id="combat-forward">앞 회피</button></p><p><button id="combat-mode">Q 모드 전환</button></p><p>모션 <select id="combat-clip"></select> <button id="combat-pose">중간 자세 보기</button></p><p>자세 구간 <input id="combat-phase" type="number" min="0" max="1" step="0.05" value="0.5" style="width:65px"> <button id="combat-sample">구간 보기</button></p><p>재생 속도 <select id="combat-speed"><option value="1">실제 속도</option><option value="0.35">느리게 확인</option></select></p><output id="combat-output">모션 로딩 중</output><p><a href="/">홍콩 게임으로 돌아가기</a></p>';
   document.body.append(panel);const output=panel.querySelector('output');
+  const movement=document.createElement('select');movement.id='combat-movement';movement.setAttribute('aria-label','이동 속도');
+  movement.innerHTML='<option value="0">제자리</option><option value="4.4">달리며 공격</option><option value="6.5">질주하며 공격</option>';
+  panel.append(movement);
   const labels={combatIdle:'복싱 대기 자세',jab:'리드 잽',cross:'오른손 스트레이트',rightHook:'이전 오른손 훅',hook:'훅',special:'오른손 강타',guard:'단단한 가드',dodgeLeft:'좌측 상체 회피',dodgeRight:'우측 상체 회피',dodgeBack:'짧은 뒤 회피',dodgeForward:'낮은 앞 회피'};
-  const viewButton=document.createElement('button');viewButton.id='combat-view';viewButton.textContent='1인칭 팔 보기';viewButton.type='button';panel.append(viewButton);
-  let firstPerson=false;
   let ready=false,pose=false,history=[],lastMotion;
   const character=new Character(scene,()=>{},()=>{ready=true;output.textContent='준비 완료';panel.querySelector('select').replaceChildren(...['combatIdle','jab','cross','rightHook','hook','heavy','special','guard','slam','slamLand','hitHead'].map(key=>{const o=document.createElement('option');o.value=key;o.textContent=labels[key] || key;return o;}));});
-  scene.add(camera);character.setFirstPersonCamera(camera);
-  viewButton.onclick=()=>{firstPerson=!firstPerson;character.setFirstPersonMode(firstPerson);viewButton.textContent=firstPerson?'3인칭 몸 보기':'1인칭 팔 보기';if(pose)showPose(Number(panel.querySelector('#combat-phase').value));};
+  scene.add(camera);
   const city={buildingMeshes:[],colliders:[],checkCollision:City.prototype.checkCollision,raycast:City.prototype.raycast,getRooftopSpawn:()=>new THREE.Vector3(0,.1,0)};
   const audio=new Proxy({}, {get:()=>()=>{}}),physics=new SwingPhysics(scene,city,character,audio),vfx=new VFXManager(scene);
   physics.position.set(0,.1,0);physics.previousFixedPosition.copy(physics.position);physics.renderPosition.copy(physics.position);physics.state='IDLE';physics.facingAngle=Math.PI;character.targetFacingAngle=Math.PI;
@@ -36,19 +36,19 @@ export function startCombatReview() {
   panel.querySelector('#combat-guard').onclick=()=>{pose=false;combat.guard(!combat.blocking);};
   for(const dir of ['left','right','back','forward'])panel.querySelector('#combat-'+dir).onclick=()=>{control();combat.dodge({[dir]:true},camera);};
   panel.querySelector('#combat-mode').onclick=()=>{pose=false;combat.toggle(input);};
-  const showPose=(phase)=>{if(!ready)return;combat.cancel();pose=true;physics.position.set(0,.1,0);character.group.position.copy(physics.position);character.model.rotation.set(0,Math.PI,0);character.model.position.set(0,-.1,0);character.stopAnimation();const key=panel.querySelector('select').value;character.fadeToAction(key,0);const fraction=phase ?? character.actions[key].getClip().userData.impactPhase ?? .45;character.mixer.setTime(character.actions[key].getClip().duration*fraction);{const duration=ATTACKS[key==='rightHook'?'cross':key]?.duration || 1;character.targetFacingAngle=character.visualYaw=Math.PI;character.combatAction={id:++combat.serial,key:key==='rightHook'?'cross':key,duration,time:fraction*duration};character.update(0,key==='slam'?'FALLING':'IDLE',new THREE.Vector3());}output.textContent='전투 동작: '+(labels[key] || key);};
+  const showPose=(phase)=>{if(!ready)return;combat.cancel();pose=true;physics.position.set(0,.1,0);character.group.position.copy(physics.position);character.model.rotation.set(0,Math.PI,0);character.model.position.set(0,-.1,0);character.stopAnimation();const key=panel.querySelector('select').value;character.fadeToAction(key,0);const fraction=phase ?? character.actions[key].getClip().userData.impactPhase ?? .45;character.mixer.setTime(character.actions[key].getClip().duration*fraction);{const duration=ATTACKS[key==='rightHook'?'cross':key]?.duration || 1;character.targetFacingAngle=character.visualYaw=Math.PI;const speed=Number(movement.value),velocity=new THREE.Vector3(0,0,-speed),state=speed>5?'SPRINTING':speed?'RUNNING':key==='slam'?'FALLING':'IDLE';character.combatAction={id:++combat.serial,key:key==='rightHook'?'cross':key,duration,time:fraction*duration};for(let i=0;i<(speed?45:1);i++){character.group.position.addScaledVector(velocity,1/60);character.update(speed?1/60:0,state,velocity);}}output.textContent='전투 동작: '+(labels[key] || key);};
   panel.querySelector('#combat-pose').onclick=()=>showPose();
   panel.querySelector('#combat-sample').onclick=()=>showPose(THREE.MathUtils.clamp(Number(panel.querySelector('#combat-phase').value),0,1));
   const clock=new THREE.Clock();renderer.setAnimationLoop(()=>{
     const dt=Math.min(clock.getDelta(),.05)*Number(panel.querySelector('#combat-speed').value);
     if(ready && !pose) {
+      input.forward=Number(movement.value)>0;input.sprint=Number(movement.value)>5;
       combat.before(dt,camera);physics.update(dt,input,camera);combat.after(dt);vfx.update(dt);
       const motion=character.activeAction?.getClip().name;if(motion!==lastMotion){history.push(motion);history=history.slice(-12);lastMotion=motion;}
-      output.textContent=`${combat.mode==='web'?'거미줄 ON':'전투 모드'} · ${labels[character.activeAction?.getClip().name] || character.activeAction?.getClip().name}\nHP ${combat.health} / 기력 ${Math.ceil(combat.stamina)} / 명중 ${combat.hits}\n최근 동작: ${history.map(key=>labels[key] || key).join(' → ')}`;output.style.whiteSpace='pre-line';
+      output.textContent=`${combat.mode==='web'?'에너지 와이어 ON':'전투 모드'} · ${labels[character.activeAction?.getClip().name] || character.activeAction?.getClip().name}\nHP ${combat.health} / 기력 ${Math.ceil(combat.stamina)} / 명중 ${combat.hits}\n최근 동작: ${history.map(key=>labels[key] || key).join(' → ')}`;output.style.whiteSpace='pre-line';
     }
     const center=character.group.position.clone().add(new THREE.Vector3(0,1,0));
-    if(firstPerson){camera.clearViewOffset();camera.position.copy(character.group.position).add(new THREE.Vector3(0,1.65,0));camera.lookAt(camera.position.clone().add(new THREE.Vector3(0,0,-1)));}
-    else{camera.position.copy(center).add(new THREE.Vector3(2.5,1.1,-3.9));camera.lookAt(center);camera.setViewOffset(innerWidth,innerHeight,-panel.offsetWidth/2,0,innerWidth,innerHeight);}
+    camera.position.copy(center).add(new THREE.Vector3(2.5,1.1,-3.9));camera.lookAt(center);camera.setViewOffset(innerWidth,innerHeight,-panel.offsetWidth/2,0,innerWidth,innerHeight);
     renderer.render(scene,camera);
   });
   window.addEventListener('resize',()=>{renderer.setSize(innerWidth,innerHeight);camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();});

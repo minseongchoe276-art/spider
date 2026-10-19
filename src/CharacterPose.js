@@ -10,6 +10,23 @@ function worldRotation(bone,q) {
   bone.updateMatrixWorld(true);
 }
 
+// A closed fist should continue the forearm's line. Imported wrist rotations
+// can be valid for an open hand but fold the knuckles when fingers close.
+export function alignCombatWrists(c,weight=1) {
+  if(weight<=0)return;
+  for(const side of ['left','right']){
+    const lower=find(c,side+'forearm'),hand=find(c,side+'hand'),middle=find(c,side+'handmiddle1');
+    if(!lower || !hand || !middle)continue;
+    const wrist=worldPosition(hand),forearm=wrist.clone().sub(worldPosition(lower)).normalize();
+    const knuckles=worldPosition(middle).sub(wrist).normalize();
+    const bend=knuckles.angleTo(forearm),limit=THREE.MathUtils.degToRad(12);
+    if(bend<=limit)continue;
+    const correction=new THREE.Quaternion().setFromUnitVectors(knuckles,forearm);
+    correction.slerpQuaternions(new THREE.Quaternion(),correction.clone(),(1-limit/bend)*weight);
+    worldRotation(hand,correction.multiply(hand.getWorldQuaternion(new THREE.Quaternion())));
+  }
+}
+
 function orientGroundFoot(c,side,foot,rotation,delta) {
   c.groundFootRotations ||= {};
   const previous=c.groundFootRotations[side];
@@ -86,7 +103,15 @@ export function clearGroundSoles(c) {
       c.solveLimb(hip,knee,foot,ankle.addScaledVector(up,lift),.995);fitGroundAnkle(c,side,foot,rotation);
       constrainJoints(c.jointConstraints?.filter(item=>item.bone===foot));
     }
-    if(c.plantLastFeet)c.plantLastFeet[side]=worldPosition(foot);
+    const actual=worldPosition(foot),plant=c.movingPlants?.[side];
+    // A boot can span two support heights at a ramp/step exit. Sole clearance
+    // takes priority; once it moves the ankle off its anchor, release that
+    // contact instead of reporting a planted foot and pulling it down again.
+    if(plant && actual.distanceTo(plant.position)>.025){
+      delete c.movingPlants[side];
+      if(c.movingReleases)delete c.movingReleases[side];
+    }
+    if(c.plantLastFeet)c.plantLastFeet[side]=actual;
   }
 }
 

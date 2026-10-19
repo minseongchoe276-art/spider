@@ -109,7 +109,7 @@ export class SwingPhysics {
       if(!hit)return null;
       if(hit.distance<1 || hit.distance>130 || hit.point.distanceTo(eye)>130){this.webFailureReason='거리가 맞지 않습니다 · 부착 범위 1~130m';return null;}
       const normal=hit.face ? surfaceNormal(hit) : hit.normal?.clone().normalize() || new THREE.Vector3(0,1,0);
-      if(this.webObstructed({anchor:hit.point,normal})){this.webFailureReason='장애물이 거미줄 경로를 가립니다.';return null;}
+      if(this.webObstructed({anchor:hit.point,normal})){this.webFailureReason='장애물이 에너지 와이어 경로를 가립니다.';return null;}
       this.bestAnchorObject = hit.object;
       this.bestAnchorNormal = normal;
       this.bestAnchorCandidate = hit.point.clone();

@@ -1,14 +1,14 @@
 :root {
-  --spider-red: #ff2a5f;
-  --spider-red-glow: rgba(255, 42, 95, 0.45);
-  --spider-blue: #0088ff;
-  --spider-cyan: #00e5ff;
-  --spider-cyan-glow: rgba(0, 229, 255, 0.45);
-  --spider-gold: #ffbe00;
+  --pulse-violet: #9d8aff;
+  --pulse-violet-glow: rgba(157, 138, 255, 0.45);
+  --pulse-blue: #5f8dff;
+  --pulse-cyan: #4edcf2;
+  --pulse-cyan-glow: rgba(78, 220, 242, 0.45);
+  --pulse-gold: #ffbe00;
   
   --bg-glass: rgba(12, 16, 28, 0.65);
   --border-glass: rgba(255, 255, 255, 0.12);
-  --border-glass-glow: rgba(0, 229, 255, 0.3);
+  --border-glass-glow: rgba(78, 220, 242, 0.3);
   
   --text-main: #f0f4fc;
   --text-dim: #94a3b8;
@@ -107,8 +107,8 @@ canvas {
 #crosshair.aiming .crosshair-ring {
   width: 28px;
   height: 28px;
-  border-color: var(--spider-cyan);
-  box-shadow: 0 0 14px var(--spider-cyan-glow);
+  border-color: var(--pulse-cyan);
+  box-shadow: 0 0 14px var(--pulse-cyan-glow);
   transform: rotate(45deg);
 }
 
@@ -124,16 +124,16 @@ canvas {
   z-index: 20;
 }
 
-.spider-badge {
+.brand-lockup {
   display: flex;
   align-items: center;
   gap: 12px;
 }
 
-.spider-icon {
+.pulse-mark {
   width: 38px;
   height: 38px;
-  filter: drop-shadow(0 0 8px var(--spider-red-glow));
+  filter: drop-shadow(0 0 8px var(--pulse-violet-glow));
 }
 
 .badge-text {
@@ -154,7 +154,7 @@ canvas {
   font-size: 0.65rem;
   font-weight: 700;
   letter-spacing: 2.5px;
-  color: var(--spider-cyan);
+  color: var(--pulse-cyan);
   opacity: 0.85;
 }
 
@@ -194,7 +194,7 @@ canvas {
 .tele-unit {
   font-size: 0.7rem;
   font-weight: 700;
-  color: var(--spider-cyan);
+  color: var(--pulse-cyan);
 }
 
 .tele-bar {
@@ -208,7 +208,7 @@ canvas {
 .tele-fill {
   width: 0%;
   height: 100%;
-  background: linear-gradient(90deg, var(--spider-cyan), var(--spider-red));
+  background: linear-gradient(90deg, var(--pulse-cyan), var(--pulse-violet));
   border-radius: 2px;
   transition: width 0.1s linear;
 }
@@ -236,8 +236,8 @@ canvas {
 }
 
 .status-dot.swinging {
-  background: var(--spider-red);
-  box-shadow: 0 0 12px var(--spider-red);
+  background: var(--pulse-violet);
+  box-shadow: 0 0 12px var(--pulse-violet);
   animation: pulse-red 0.6s infinite alternate;
 }
 
@@ -313,7 +313,7 @@ canvas {
 }
 
 .key-accent {
-  color: var(--spider-cyan);
+  color: var(--pulse-cyan);
   font-weight: 700;
 }
 
@@ -328,7 +328,7 @@ canvas {
 }
 
 .guide-setting input {
-  accent-color: var(--spider-cyan);
+  accent-color: var(--pulse-cyan);
 }
 
 #camera-mode-toast {
@@ -414,7 +414,7 @@ canvas {
   font-size: 1.05rem;
   font-weight: 800;
   letter-spacing: 6px;
-  color: var(--spider-cyan);
+  color: var(--pulse-cyan);
   margin-bottom: 12px;
 }
 
@@ -447,7 +447,7 @@ canvas {
   font-weight: 800;
   letter-spacing: 1.5px;
   cursor: pointer;
-  box-shadow: 0 4px 20px var(--spider-red-glow);
+  box-shadow: 0 4px 20px var(--pulse-violet-glow);
   transition: all 0.25s ease;
 }
 
@@ -474,8 +474,8 @@ canvas {
   width: 48px;
   height: 48px;
   border: 4px solid rgba(255, 255, 255, 0.1);
-  border-top-color: var(--spider-red);
-  border-left-color: var(--spider-cyan);
+  border-top-color: var(--pulse-violet);
+  border-left-color: var(--pulse-cyan);
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
   margin-bottom: 18px;
@@ -509,7 +509,7 @@ canvas {
 #loading-bar-fill {
   width: 0%;
   height: 100%;
-  background: linear-gradient(90deg, var(--spider-cyan), var(--spider-red));
+  background: linear-gradient(90deg, var(--pulse-cyan), var(--pulse-violet));
   border-radius: 3px;
   transition: width 0.2s ease;
 }
@@ -517,7 +517,7 @@ canvas {
 #loading-pct {
   font-size: 0.85rem;
   font-weight: 800;
-  color: var(--spider-cyan);
+  color: var(--pulse-cyan);
 }
 
 /* Menus stay operable on compact windows; gameplay requires keyboard/mouse. */
@@ -527,7 +527,7 @@ canvas {
 .loading-box { width: min(360px, 100%); }
 button, select { font: inherit; }
 button:focus-visible, select:focus-visible, a:focus-visible, input:focus-visible {
-  outline: 3px solid var(--spider-cyan); outline-offset: 3px;
+  outline: 3px solid var(--pulse-cyan); outline-offset: 3px;
 }
 #btn-start-drag, #btn-restart, #btn-leave-match, #btn-retry-load, select {
   background: #1c293d; color: var(--text-main); border: 1px solid #64748b;
@@ -546,7 +546,7 @@ a { color: #7deeff; }
 .minimap-header { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 0 3px 9px; }
 .minimap-header > div { display: grid; gap: 1px; }
 .minimap-header strong { color: #fff; font: 900 .82rem/1 Outfit, sans-serif; letter-spacing: 1.7px; }
-.minimap-header div span { color: var(--spider-cyan); font: 800 .52rem/1.2 Outfit, sans-serif; letter-spacing: 1.4px; }
+.minimap-header div span { color: var(--pulse-cyan); font: 800 .52rem/1.2 Outfit, sans-serif; letter-spacing: 1.4px; }
 #minimap-status {
   color: #06121b; background: #1ff2a4; border-radius: 999px; padding: 4px 7px;
   font: 900 .54rem/1 Outfit, sans-serif; letter-spacing: .7px; box-shadow: 0 0 12px rgba(31,242,164,.42);
@@ -589,7 +589,7 @@ a { color: #7deeff; }
   #hud-top-left { top: 10px; left: 10px; padding: 10px; gap: 8px; }
   .badge-title { font-size: .9rem; }
   .badge-sub { font-size: .52rem; letter-spacing: 1px; }
-  .spider-icon { width: 26px; height: 26px; }
+  .pulse-mark { width: 26px; height: 26px; }
   .telemetry-item { min-width: 70px; }
   .tele-val { font-size: 1.35rem; }
   #web-status-pill { top: 115px; font-size: .7rem; }
@@ -664,8 +664,8 @@ a { color: #7deeff; }
 
 /* Game presentation */
 :root {
-  --spider-red: #ed3155;
-  --spider-cyan: #75e7ec;
+  --pulse-violet: #9d8aff;
+  --pulse-cyan: #4edcf2;
   --text-main: #f5f4f0;
   --text-dim: #9baabd;
 }
@@ -756,7 +756,7 @@ a { color: #7deeff; }
 /* In-game information stays at the screen edges. */
 #hud-top-left, #session-hud, #web-status-pill, #combat-status { display: none !important; }
 body.in-game #hud-top-left { display: block !important; top: auto; bottom: 26px; left: 24px; width: 264px; padding: 0; border: 0; border-radius: 0; background: none; box-shadow: none; backdrop-filter: none; }
-body.in-game #hud-top-left .spider-badge { display: none; }
+body.in-game #hud-top-left .brand-lockup { display: none; }
 .telemetry-grid { display: grid; gap: 11px; }
 .telemetry-item { min-width: 0; }
 .tele-label { color: #e6e8ec; font: 800 10px Outfit,sans-serif; letter-spacing: .16em; text-shadow: 0 2px 6px #000; }

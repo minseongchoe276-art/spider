@@ -20,7 +20,7 @@ export class WorldMap {
   }
   toggle(){if(this.isOpen)this.close();else this.open();}
   open(){
-    if(!this.game.isPlaying)return;
+    if(this.isOpen || !this.game.isPlaying || this.game.contextLost)return;
     this.wasPaused=this.game.isPaused;this.game.clearInput();
     this.game.setPaused(true);
     this.root.showModal();this.isOpen=true;this.lastDraw=0;this.update();
@@ -28,7 +28,7 @@ export class WorldMap {
   close(){
     if(!this.isOpen)return;
     this.isOpen=false;this.root.close();this.game.clearInput();
-    if(!this.wasPaused){this.game.setPaused(false);this.game.canvas.focus?.();
+    if(!this.wasPaused && this.game.isPlaying && !this.game.contextLost && !document.hidden){this.game.setPaused(false);this.game.canvas.focus?.();
       if(this.game.pointerLockWanted)Promise.resolve(this.game.canvas.requestPointerLock?.()).catch(()=>{});}
   }
   drawHongKongBase(ctx, extent, pad, radius) {
