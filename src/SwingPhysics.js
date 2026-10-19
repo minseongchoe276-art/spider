@@ -184,10 +184,29 @@ export class SwingPhysics {
     this.webs=this.webs.filter(web=>web.hand!==hand && (!shot || (web.button??0)!==button));
     this.webs.push({hand,button,anchor:anchor.clone(),normal:this.lastWebNormal.clone(),
       object:this.anchorObject,length:this.ropeLength,supportCollider:attachment.supportCollider,
-      launchPending:false});
+      launchPending:(this.launchAssistAvailable && (grounded || this.velocity.y > 0)) || this.webs.some(web=>web.launchPending)});
     this.character.fireWeb?.(this.anchorPoint,hand);
     this.syncWebHands();
     if(shot?.advance!==false)this.nextWebHand=hand==='left'?'right':'left';
+
+    // Restore the Oct 18 grounded web-launch feel. This runs only after the
+    // reticle ray has attached to a valid, supported surface; a miss cannot
+    // create either a rope or launch impulse.
+    if (grounded && this.launchAssistAvailable) {
+      this.velocity.y = Math.max(this.velocity.y, this.jumpForce);
+      const toward = anchor.clone().sub(this.position);
+      toward.y = 0;
+      if (toward.lengthSq() < 1e-4) {
+        camera.getWorldDirection(toward);
+        toward.y = 0;
+      }
+      if (toward.lengthSq() < 1e-6) toward.set(Math.sin(this.facingAngle), 0, Math.cos(this.facingAngle));
+      toward.normalize();
+      const speed = this.velocity.dot(toward);
+      if (speed < 14) this.velocity.addScaledVector(toward, 14 - speed);
+      this.audio.playJump();
+      this.jumpBuffer = 0; this.coyoteTime = 0;
+    }
 
     this.launchAssistAvailable = false;
 
@@ -973,11 +992,11 @@ export class SwingPhysics {
       const supportY=(floor ?? support)+.1;
       if(this.isSwinging && (input.webHold || input.webFireHeld || input.webHoldRight || input.webFireHeldRight) &&
         this.webs.some(web=>web.anchor.y>supportY+4)){
-        // Ground contact dissipates motion; a held strand must never create
-        // an automatic jump or pump energy back into the pendulum.
+        // A taut held strand catches a grazing floor contact and returns the
+        // player to its arc, matching the established swing rhythm.
         this.position.y=this.city.resolveMovement?Math.max(supportY,resolved.position.y):supportY;
-        this.velocity.y=0;
-        const friction=Math.exp(-3*delta);this.velocity.x*=friction;this.velocity.z*=friction;
+        this.velocity.y=Math.max(this.velocity.y,this.jumpForce);
+        for(const web of this.webs)web.launchPending=true;
         this.recoveryTime=0;this.state='SWINGING';return;
       }
       const airborne = !GROUNDED.includes(this.state);

@@ -58,9 +58,9 @@ try{
 const graze=player();graze.position.set(0,.11,0);graze.findBestAnchor=()=>new THREE.Vector3(0,30,30);
 graze.state='FALLING';graze.launchAssistAvailable=false;graze.velocity.set(0,-5,10);graze.startSwing(camera);const grazeInput=held();
 graze.update(1/60,grazeInput,camera);assert(graze.isSwinging,'Street contact automatically cut the held rope');
-const pivot=graze.anchorPoint.clone();for(let n=0;n<180;n++)graze.update(1/60,grazeInput,camera);
-assert(graze.isSwinging && graze.anchorPoint.equals(pivot));assert(graze.position.y>=.1&&graze.position.y<.12);assert(graze.velocity.y<=0);
-console.log('PASS ground contact keeps the pivot without automatic bounce or extra energy');
+const pivot=graze.anchorPoint.clone();let grazeRise=0;for(let n=0;n<180;n++){graze.update(1/60,grazeInput,camera);grazeRise=Math.max(grazeRise,graze.position.y-.1);}
+assert(graze.isSwinging && graze.anchorPoint.equals(pivot));assert(grazeRise>0.1,'A taut held rope failed to return a grazing contact to its swing arc');assert(graze.velocity.length()<=graze.maxSpeed+1e-6);
+console.log('PASS ground contact keeps the valid pivot and returns to a bounded swing arc');
 
 const world=new StreamedCollision();await world.initialized;
 try{

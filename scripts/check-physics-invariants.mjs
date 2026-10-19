@@ -28,8 +28,8 @@ for(const fps of report.rates){
   const before=swing.velocity.clone();swing.releaseSwing(false);assert(swing.velocity.equals(before));
   report.pendulum.push({fps,maxEnergyGain:maxGain,energyLossFraction:loss,maxStretch,positionDivergence:divergence});
   const grounded=player();grounded.position.set(0,.1,0);grounded.state='IDLE';grounded.findBestAnchor=()=>new THREE.Vector3(0,30,30);grounded.startSwing(camera);
-  let maxRise=0;for(let i=0;i<fps*2;i++){grounded.update(1/fps,{webHold:true},camera);maxRise=Math.max(maxRise,grounded.position.y-.1);assert(grounded.velocity.length()<1e-7);}
-  assert(maxRise<1e-7);report.groundContact.push({fps,maxUncommandedRise:maxRise});
+  let maxRise=0;for(let i=0;i<fps*2;i++){grounded.update(1/fps,{webHold:true},camera);maxRise=Math.max(maxRise,grounded.position.y-.1);assert(grounded.velocity.length()<=grounded.maxSpeed+1e-6);}
+  assert(maxRise>0.1,'A valid grounded web attachment did not enter the swing arc');report.groundContact.push({fps,groundedLaunchRise:maxRise});
   const wall=player();wall.position.set(0,5,0);wall.velocity.set(0,0,48);wall.city.colliders=[{minX:-10,maxX:10,minY:0,maxY:20,minZ:2,maxZ:2.01}];
   for(let i=0;i<fps;i++){wall.update(1/fps,{},camera);assert(wall.position.z<=1.300001,'Crossed a 1cm wall');assert(wall.velocity.length()<=48.000001);}
   report.collisions.push({fps,maxForwardPosition:wall.position.z,wallFront:2,bodyRadius:.7});
@@ -49,4 +49,4 @@ for(let i=0;i<10000;i++){
   }
 }
 const directory='docs/qa/fullscreen-physics-2026-10-19';fs.mkdirSync(directory,{recursive:true});fs.writeFileSync(`${directory}/metrics.json`,JSON.stringify(report,null,2)+'\n');
-console.log(`PASS: 7 frame rates, analytical freefall/drag/jump, one landing per jump, 8s unpowered pendulum, release momentum, no automatic ground bounce, 1cm walls, 10,000 random two-web constraints. Max stretch ${report.randomDualConstraints.maxStretch}m; 8s energy loss ${(report.pendulum[0].energyLossFraction*100).toFixed(3)}%.`);
+console.log(`PASS: 7 frame rates, analytical freefall/drag/jump, one landing per jump, 8s unpowered pendulum, release momentum, grounded web launch, 1cm walls, 10,000 random two-web constraints. Max stretch ${report.randomDualConstraints.maxStretch}m; 8s energy loss ${(report.pendulum[0].energyLossFraction*100).toFixed(3)}%.`);
