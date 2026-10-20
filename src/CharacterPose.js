@@ -1,10 +1,40 @@
 import * as THREE from 'three';
 import { boneId } from './MotionRetarget.js';
 import {constrainJoints} from './JointConstraints.js';
+import {bindTransforms} from './WebHandPose.js';
 
 const up=new THREE.Vector3(0,1,0);
+export const GROUND_SOLE_SPEED=240;
 const worldPosition=n=>n.getWorldPosition(new THREE.Vector3());
 const find=(c,id)=>Object.values(c.bones || {}).find(b=>boneId(b.name)===id);
+
+export function reuseHeldGroundPose(c,delta,grounded) {
+  const eligible=grounded && c.poseState==='IDLE' && (c.groundMotionVelocity?.lengthSq() || 0)<.0025 && !(c.mantleFootRelease>0);
+  if(!eligible){c.groundPoseInput=null;c.groundPoseStillTime=0;return false;}
+  const geometry=c.model.getObjectByProperty('isSkinnedMesh',true)?.geometry;
+  if(c.groundPoseModel!==c.model || c.groundPoseGeometry!==geometry){
+    c.groundPoseModel=c.model;c.groundPoseGeometry=geometry;c.groundPoseInput=null;c.solvedGroundPose=null;
+    c.groundPoseBones=Object.values(c.bones).filter(b=>/^(hips|(?:left|right)(?:upleg|leg|foot|toebase))$/.test(boneId(b.name)));
+  }
+  const input=[...c.group.position.toArray(),...c.model.position.toArray(),...c.model.quaternion.toArray()];
+  for(const b of c.groundPoseBones)input.push(...b.position.toArray(),...b.quaternion.toArray());
+  for(const side of ['left','right']){
+    const foot=find(c,side+'foot'),sample=foot && footSupport(c,worldPosition(foot));
+    input.push(sample?.height ?? null,...(sample?.normal.toArray() || [null,null,null]));
+  }
+  const same=c.groundPoseInput?.length===input.length && input.every((v,i)=>v===null?c.groundPoseInput[i]===null:Math.abs(v-c.groundPoseInput[i])<1e-8);
+  c.groundPoseInput=input;c.groundPoseStillTime=same?(c.groundPoseStillTime || 0)+delta:0;
+  if(!same || !c.solvedGroundPose || Object.values(c.groundSoleSettling || {}).some(Boolean) || (delta>0 && c.groundPoseStillTime<.3))return false;
+  // An unchanged authored sample, root and support have one solved pose.
+  // Re-running a stateful contact solve must not make a held boot creep.
+  for(const {bone,p,q} of c.solvedGroundPose){bone.position.copy(p);bone.quaternion.copy(q);}
+  c.group.updateMatrixWorld(true);return true;
+}
+
+export function cacheGroundPose(c,grounded) {
+  c.solvedGroundPose=grounded && c.poseState==='IDLE' && c.groundPoseBones
+    ?c.groundPoseBones.map(bone=>({bone,p:bone.position.clone(),q:bone.quaternion.clone()})):null;
+}
 function worldRotation(bone,q) {
   bone.quaternion.copy(bone.parent.getWorldQuaternion(new THREE.Quaternion()).invert().multiply(q)).normalize();
   bone.updateMatrixWorld(true);
@@ -29,11 +59,22 @@ export function alignCombatWrists(c,weight=1) {
 
 function orientGroundFoot(c,side,foot,rotation,delta) {
   c.groundFootRotations ||= {};
-  const previous=c.groundFootRotations[side];
-  // Contact acquisition/release changes the IK chain, not the ankle's
-  // authored world orientation. Bound the remaining contact tilt in time.
-  const next=previous?previous.clone().rotateTowards(rotation,Math.PI*4*delta):rotation.clone();
-  fitGroundAnkle(c,side,foot,next);c.groundFootRotations[side]=next;
+  // A planted foot keeps its world heading while the torso turns. Releasing
+  // that plant must not instantly rotate the shin to the new body heading.
+  // Filter the requested support frame, never the constrained rendered boot:
+  // feeding the latter back into IK made frozen poses drift.
+  if(c.groundSoleTargetModel!==c.model){
+    c.groundSoleTargetModel=c.model;c.groundSoleTargets=null;c.groundSoleSettling=null;
+  }
+  c.groundSoleTargets ||= {};c.groundSoleSettling ||= {};
+  const desired=rotation.clone().normalize();
+  const previous=c.groundSoleTargets[side];
+  const target=previous && delta>0
+    ?previous.clone().rotateTowards(desired,THREE.MathUtils.degToRad(GROUND_SOLE_SPEED)*delta).normalize()
+    :desired.clone();
+  c.groundSoleTargets[side]=target;
+  c.groundSoleSettling[side]=target.angleTo(desired)>1e-5;
+  fitGroundAnkle(c,side,foot,target);c.groundFootRotations[side]=target.clone();
 }
 
 export function fitGroundAnkle(c,side,foot,rotation) {
@@ -43,11 +84,19 @@ function fitEndRotation(c,upper,lower,end,rotation) {
   const constraint=c.jointConstraints?.find(item=>item.bone===end);
   if(constraint){
     const local=end.parent.getWorldQuaternion(new THREE.Quaternion()).invert().multiply(rotation);
-    if(constraint.rest.angleTo(local)>constraint.limit){
+    if(constraint.kind==='foot' || constraint.rest.angleTo(local)>constraint.limit){
       const anchor=worldPosition(end);
       const idealParent=rotation.clone().multiply(constraint.rest.clone().invert());
-      const pole=anchor.clone().sub(end.position.clone().applyQuaternion(idealParent)).sub(worldPosition(upper));
-      c.solveLimb(upper,lower,end,anchor,.995,pole);
+      const pole=constraint.kind==='foot'
+        ?new THREE.Vector3(0,0,1).applyQuaternion(c.model.getWorldQuaternion(new THREE.Quaternion()))
+        :anchor.clone().sub(end.position.clone().applyQuaternion(idealParent)).sub(worldPosition(upper));
+      c.solveLimb(upper,lower,end,anchor,constraint.kind==='foot'?.985:.995,pole);
+      // The position solve leaves the shin/forearm's axial roll arbitrary.
+      // Fit that roll to the requested end orientation without moving its
+      // endpoint. Repeatedly adding twist after IK caused held poses to drift.
+      const desiredAxis=end.position.clone().normalize().applyQuaternion(idealParent);
+      const actualAxis=worldPosition(end).sub(worldPosition(lower)).normalize();
+      worldRotation(lower,new THREE.Quaternion().setFromUnitVectors(desiredAxis,actualAxis).multiply(idealParent));
     }
   }
   worldRotation(end,rotation);
@@ -76,11 +125,12 @@ export function soleSamples(c,side) {
   return c.soleSamples[side]=candidates;
 }
 
-export function clearGroundSoles(c) {
+export function clearGroundSoles(c,{preserveLocal=false}={}) {
   for(const side of ['left','right']){
     const hip=find(c,side+'upleg'),knee=find(c,side+'leg'),foot=find(c,side+'foot');if(!hip||!knee||!foot)continue;
     const samples=soleSamples(c,side);if(!samples.length)continue;
     const rotation=foot.getWorldQuaternion(new THREE.Quaternion());
+    const local=foot.quaternion.clone();
     for(let pass=0;pass<4;pass++){
       const ankle=worldPosition(foot);
       const points=samples.map(({mesh,vertex})=>mesh.localToWorld(mesh.applyBoneTransform(vertex,new THREE.Vector3().fromBufferAttribute(mesh.geometry.attributes.position,vertex))));
@@ -121,14 +171,31 @@ export function clearGroundSoles(c) {
         if(height-expected>.08)delete c.movingPlants?.[side];
       }
       if(lift<.0001)break;
-      c.solveLimb(hip,knee,foot,ankle.addScaledVector(up,lift),.995);fitGroundAnkle(c,side,foot,rotation);
+      c.solveLimb(hip,knee,foot,ankle.addScaledVector(up,lift),.98);
+      if(preserveLocal){foot.quaternion.copy(local);foot.updateMatrixWorld(true);}
+      else fitGroundAnkle(c,side,foot,rotation);
       constrainJoints(c.jointConstraints?.filter(item=>item.bone===foot));
     }
     const actual=worldPosition(foot),plant=c.movingPlants?.[side];
+    if(plant){
+      const support=footSupport(c,actual);
+      if(support){
+        let clearance=Infinity;
+        for(const {mesh,vertex} of samples){
+          const p=mesh.localToWorld(mesh.applyBoneTransform(vertex,new THREE.Vector3().fromBufferAttribute(mesh.geometry.attributes.position,vertex)));
+          const height=support.height-(support.normal.x*(p.x-actual.x)+support.normal.z*(p.z-actual.z))/support.normal.y;
+          clearance=Math.min(clearance,p.y-height);
+        }
+        if(clearance>=-.005 && clearance<.06){
+          plant.offset=actual.y-support.height+THREE.MathUtils.clamp(.003-clearance,-.012,.012);
+          plant.position.y=support.height+plant.offset;
+        }
+      }
+    }
     // A boot can span two support heights at a ramp/step exit. Sole clearance
     // takes priority; once it moves the ankle off its anchor, release that
     // contact instead of reporting a planted foot and pulling it down again.
-    if(plant && plant.age>.08 && Math.abs(actual.y-plant.position.y)>.03){
+    if(plant && plant.age>.08 && actual.distanceTo(plant.position)>.03){
       delete c.movingPlants[side];
       if(c.movingReleases)delete c.movingReleases[side];
     }
@@ -201,13 +268,55 @@ function alignPalm(c,side,end,normal,tangent) {
   worldRotation(end,new THREE.Quaternion().setFromAxisAngle(normal,angle).multiply(align).multiply(end.getWorldQuaternion(new THREE.Quaternion())));
 }
 
+function alignStraightPalm(c,side,hand,normal,previousPalm,delta) {
+  const constraint=c.jointConstraints?.find(item=>item.bone===hand);
+  if(constraint)hand.quaternion.copy(constraint.rest);
+  hand.updateMatrixWorld(true);
+  const wrist=worldPosition(hand),index=find(c,side+'handindex1'),pinky=find(c,side+'handpinky1');
+  if(!index || !pinky)return;
+  const axis=wrist.clone().sub(worldPosition(hand.parent)).normalize();
+  const palm=new THREE.Vector3().crossVectors(worldPosition(index).sub(wrist),worldPosition(pinky).sub(wrist)).normalize().multiplyScalar(side==='left'?1:-1);
+  const from=palm.addScaledVector(axis,-palm.dot(axis));
+  const to=normal.clone().negate();to.addScaledVector(axis,-to.dot(axis));
+  // Near a straight reach into the facade, the projected wall normal has
+  // no stable direction. Normalizing it first turned numerical noise into
+  // a 180-degree pronation flip. Keep the last palm in that singular region.
+  const previous=previousPalm?.clone().addScaledVector(axis,-previousPalm.dot(axis));
+  if(from.lengthSq()<.0001)return;from.normalize();
+  if(previous && previous.lengthSq()>.0001){
+    previous.normalize();
+    const strength=palmAlignmentWeight(to.length());
+    if(to.lengthSq()>.0001){
+      to.normalize();
+      const turn=Math.atan2(axis.dot(new THREE.Vector3().crossVectors(previous,to)),previous.dot(to));
+      to.copy(previous).applyAxisAngle(axis,THREE.MathUtils.clamp(turn*strength,-Math.PI*2*delta,Math.PI*2*delta));
+    }else to.copy(previous);
+  }else {if(to.lengthSq()<.01)return;to.normalize();}
+  const angle=Math.atan2(axis.dot(new THREE.Vector3().crossVectors(from,to)),from.dot(to));
+  // Aim the palm by pronating the forearm, keeping the wrist straight.
+  hand.parent.rotateOnAxis(hand.position.clone().normalize(),angle);hand.parent.updateMatrixWorld(true);
+}
+
+function palmAlignmentWeight(projection){return THREE.MathUtils.smoothstep(projection,.12,.4);}
+
 // Only the authored stance window is planted. Swinging feet and unsupported
 // ledges must remain free; an unreachable plant is released, never stretched.
 export function plantMovingFeet(c,delta) {
   const action=c.activeAction,clip=action?.getClip(),contacts=clip?.userData?.footContacts;
-  if (!contacts?.length) { c.movingPlants=null;c.movingReleases=null;c.plantLastFeet=null;c.groundFootRotations=null;return; }
+  if (!contacts?.length) {
+    c.movingPlants=null;c.movingReleases=null;c.plantLastFeet=null;c.groundFootRotations=null;
+    // Idle has no authored contact windows. Keep resolving the same support
+    // frame through its crossfade: dropping it here instantly restored the
+    // animated shin roll on the first frame after a turn or a running stop.
+    if(c.groundSoleTargets)for(const side of ['left','right']){
+      const foot=find(c,side+'foot'),support=foot && footSupport(c,worldPosition(foot));
+      const rotation=support && soleRotation(c,side,support.normal);
+      if(rotation)orientGroundFoot(c,side,foot,rotation,delta);
+    }
+    return;
+  }
   const root=worldPosition(c.group);
-  if(c.plantRoot && c.plantRoot.distanceTo(root)>0.8) {c.movingPlants=null;c.movingReleases=null;c.plantLastFeet=null;c.groundFootRotations=null;}
+  if(c.plantRoot && c.plantRoot.distanceTo(root)>0.8) {c.movingPlants=null;c.movingReleases=null;c.plantLastFeet=null;c.groundFootRotations=null;c.groundSoleTargets=null;c.groundSoleSettling=null;}
   c.plantRoot=root.clone();c.movingPlants ||= {};
   c.movingReleases ||= {};c.plantLastFeet ||= {};
   const time=action.time%clip.duration;
@@ -233,7 +342,7 @@ export function plantMovingFeet(c,delta) {
     // unreachable anchor on one frame and releasing it on the next made
     // almost-straight boxing legs alternate between two ankle poses.
     const candidate=plant?.position || current.clone().setY((surface ?? current.y)+.11);
-    const reachable=worldPosition(hip).distanceTo(candidate)<=length*0.995;
+    const reachable=worldPosition(hip).distanceTo(candidate)<=length*0.975;
     const stance=sample[side] && supported && action.getEffectiveWeight()>=0.8 && reachable;
     if(!stance) {
       support=footSupport(c,current,true) || support;
@@ -256,20 +365,21 @@ export function plantMovingFeet(c,delta) {
         const target=current.clone();if(supported)target.y=Math.max(swingSurface+0.11,target.y);
         c.solveLimb(hip,knee,foot,bounded(side,target),0.995);
       }
-      const rotation=release && supported?authored.slerp(release.rotation,Math.exp(-release.age/0.075)):authored;
+      const neutral=supported?soleRotation(c,side,support.normal):null;
+      const rotation=neutral || (release && supported?authored.slerp(release.rotation,Math.exp(-release.age/0.075)):authored);
       orientGroundFoot(c,side,foot,rotation,delta);
       c.plantLastFeet[side]=worldPosition(foot);
       continue;
     }
     if(!plant || plant.action!==action) {
-      plant=c.movingPlants[side]={action,position:current.clone(),rotation:soleRotation(c,side,support.normal,authored) || foot.getWorldQuaternion(new THREE.Quaternion()),age:0,normal:support.normal};
+      plant=c.movingPlants[side]={action,position:current.clone(),rotation:soleRotation(c,side,support.normal) || foot.getWorldQuaternion(new THREE.Quaternion()),age:0,normal:support.normal,offset:.11};
       plant.position.y=surface+0.11;
     }
     // Keep a stance anchored to the actual support, including a changed LOD.
-    if(Math.abs(plant.position.y-surface-0.11)>0.12) {
+    if(Math.abs(plant.position.y-surface-(plant.offset ?? .11))>0.12) {
       delete c.movingPlants[side];delete c.movingReleases[side];continue;
     }
-    plant.position.y=THREE.MathUtils.damp(plant.position.y,surface+0.11,20,delta);
+    plant.position.y=THREE.MathUtils.damp(plant.position.y,surface+(plant.offset ?? .11),20,delta);
     if(plant.normal.dot(support.normal)<0.9999) {
       const nextNormal=plant.normal.clone().lerp(support.normal,1-Math.exp(-16*delta)).normalize();
       plant.rotation.premultiply(new THREE.Quaternion().setFromUnitVectors(plant.normal,nextNormal));
@@ -281,144 +391,162 @@ export function plantMovingFeet(c,delta) {
     const target=bounded(side,current.clone().lerp(plant.position,weight));
     // Fade the horizontal plant, but never fade up from below a ramp.
     target.y=Math.max(target.y,surface+.11);
-    const rotation=foot.getWorldQuaternion(new THREE.Quaternion()).slerp(plant.rotation,weight);
+    // Keep one support frame while acquiring the plant. Blending the raw
+    // imported boot orientation here changed the shin's axial frame every
+    // time reachability reacquired a contact, producing a visible calf snap.
+    // The final local ankle stage already owns temporal easing.
+    const rotation=plant.rotation;
     c.solveLimb(hip,knee,foot,target,0.995);
     orientGroundFoot(c,side,foot,rotation,delta);
     c.plantLastFeet[side]=worldPosition(foot);
   }
 }
 
-function authoredWallContact(c,id,target,normal,plane,phase,delta,speed) {
-  const windows={lefthand:[.22,.78],righthand:[.86,.64],leftfoot:[.87,.63],rightfoot:[.42,.08]};
-  const [start,end]=windows[id],cycle=(phase-start+1)%1,span=(end-start+1)%1,wanted=cycle<span;
-  c.wallContacts ||= {};let contact=c.wallContacts[id];
-  if(!contact)contact=c.wallContacts[id]={wanted:false,last:target.clone(),age:0};
-  const side=id.startsWith('left')?'left':'right',hand=id.endsWith('hand');
-  const upper=find(c,side+(hand?'arm':'upleg')),lower=find(c,side+(hand?'forearm':'leg')),endBone=find(c,id);
-  const reach=worldPosition(upper).distanceTo(worldPosition(lower))+worldPosition(lower).distanceTo(worldPosition(endBone));
-  if(wanted && !contact.wanted){
-    const origin=worldPosition(upper),offset=target.clone().sub(origin),depth=offset.dot(normal),tangent=offset.addScaledVector(normal,-depth);
-    const maxTangent=Math.sqrt(Math.max(0,(reach*.965)**2-depth**2));
-    if(tangent.length()>maxTangent)tangent.setLength(maxTangent);
-    contact.position=origin.addScaledVector(normal,depth).add(tangent);contact.stance=true;contact.released=false;contact.age=0;
+// Distance, rather than the source take's clock, owns the crawl. Diagonal
+// supports overlap; a released limb follows an arc with zero endpoint speed.
+const crawlStride=1.05;
+const smooth=t=>t*t*(3-2*t);
+function crawlBootDepth(c,side,normal,right) {
+  const geometry=c.model.getObjectByProperty('isSkinnedMesh',true)?.geometry;
+  if(c.wallBootGeometry!==geometry){c.wallBootGeometry=geometry;c.wallBootDepth={};}
+  if(c.wallBootDepth?.[side])return c.wallBootDepth[side];
+  const foot=find(c,side+'foot'),flat=c.wallSoleRotations?.[side];
+  if(!foot || !flat)return .23;
+  const scale=foot.getWorldScale(new THREE.Vector3());let depth=.18;
+  // Measure the real boot in bind coordinates; the two appearances have
+  // different toe/sole thicknesses even though they share the same bones.
+  for(const {mesh,vertex} of soleSamples(c,side)){
+    const index=mesh.skeleton.bones.indexOf(foot);if(index<0)continue;
+    const local=new THREE.Vector3().fromBufferAttribute(mesh.geometry.attributes.position,vertex)
+      .applyMatrix4(mesh.bindMatrix).applyMatrix4(mesh.skeleton.boneInverses[index]).multiply(scale);
+    for(const pitch of [-.8,-.9]){
+      const rotation=new THREE.Quaternion().setFromAxisAngle(right,pitch)
+        .multiply(flat);
+      depth=Math.max(depth,-local.clone().applyQuaternion(rotation).dot(normal)+.045);
+    }
   }
-  contact.wanted=wanted;contact.swing=wanted?0:(cycle-span)/(1-span);
-  if(contact.stance && (!wanted || worldPosition(upper).distanceTo(contact.position)>reach*.98)){
-    contact.stance=false;contact.released=true;contact.release=contact.last.clone().sub(target);contact.releaseAge=0;
+  c.wallBootDepth ||= {};return c.wallBootDepth[side]=depth;
+}
+function crawlContact(c,id,base,normal,direction,phase,delta,speed) {
+  const crawlStance=id.endsWith('hand')?.58:.46;
+  let contact=c.wallContacts[id];
+  const stance=phase<crawlStance;
+  if(!contact)contact=c.wallContacts[id]={stance,age:0,last:base.clone(),
+    position:base.clone().addScaledVector(direction,(crawlStance/2-phase)*crawlStride)};
+  if(stance && !contact.stance){
+    contact.position=base.clone().addScaledVector(direction,(crawlStance/2-phase)*crawlStride);
+    contact.age=0;contact.from=null;contact.to=null;
   }
-  if(contact.stance){
-    contact.position.addScaledVector(normal,-contact.position.clone().sub(plane).dot(normal));
-    target.copy(contact.position);contact.age+=delta;
-  }else{
-    if(contact.release){contact.releaseAge+=delta;target.addScaledVector(contact.release,Math.exp(-contact.releaseAge/.075));if(contact.releaseAge>.4)contact.release=null;}
-    target.addScaledVector(normal,Math.sin(Math.PI*contact.swing)*(hand?.04:.025));
+  if(!stance && (contact.stance || !contact.from)){
+    contact.from=contact.last.clone();contact.age=0;
   }
-  const move=target.clone().sub(contact.last),limit=(6+speed)*delta;
+  contact.stance=stance;
+  let target;
+  if(stance){target=contact.position.clone();contact.age+=delta;contact.swing=0;}
+  else{
+    const t=(phase-crawlStance)/(1-crawlStance);contact.swing=t;
+    // Predict the next hold in world space. Recompute it when steering so
+    // reversing direction never sends a hand through the opposite arm.
+    const destination=base.clone().addScaledVector(direction,(1-phase+crawlStance/2)*crawlStride);
+    contact.to=destination;
+    target=contact.from.clone().lerp(destination,smooth(t));
+    target.addScaledVector(normal,Math.sin(Math.PI*t)**2*(id.endsWith('hand')?.085:.11)*c.wallLiftWeight);
+  }
+  // Acquisition and steering use a time-based bound at every frame rate.
+  const move=target.clone().sub(contact.last),limit=(7+2*speed)*delta;
   if(delta>0 && move.length()>limit)target.copy(contact.last).add(move.setLength(limit));
-  // Reaching a new hold is not yet a planted support frame.
-  if(contact.stance && target.distanceTo(contact.position)>.005)contact.age=0;
-  contact.last.copy(target);return contact;
+  if(stance && target.distanceTo(contact.position)>.005)contact.age=0;
+  contact.last.copy(target);return {contact,target};
 }
 
-// An alternating diagonal contact gait in the facade plane. Stance anchors
-// stay in world coordinates while the root travels upward/sideways.
 export function poseWall(c,delta,velocity) {
-  const normal=c.wallNormal.clone().normalize();
-  if(c.actions.wall?.getClip().userData.authoredMixamo) {
-    // Keep the authored torso and reach timing, and lock the support part
-    // of each limb to the facade rather than dragging it with the root.
-    const root=worldPosition(c.group),speed=velocity.length();
-    if(c.wallPoseRoot && root.distanceTo(c.wallPoseRoot)>.8)c.wallContacts=null;
-    c.wallPoseRoot=root.clone();
-    const clip=c.actions.wall.getClip();c.wallPhase=(c.actions.wall.time/clip.duration)%1;
-    const right=new THREE.Vector3().crossVectors(up,normal.clone().negate()).normalize();
-    for(const side of ['left','right'])for(const limb of ['hand','foot']) {
-      const upper=find(c,side+(limb==='hand'?'arm':'upleg'));
-      const lower=find(c,side+(limb==='hand'?'forearm':'leg')),end=find(c,side+limb);
-      if(!upper || !lower || !end)continue;
-      const plane=root.clone().addScaledVector(normal,-(c.wallDistance ?? .7)+(limb==='hand'?.075:.13));
-      const authored=end.getWorldQuaternion(new THREE.Quaternion());
-      const target=worldPosition(end);target.addScaledVector(normal,-target.clone().sub(plane).dot(normal));
-      const contact=authoredWallContact(c,side+limb,target,normal,plane,c.wallPhase,delta,speed);
-      let grip=0;
-      if(limb==='hand'){
-        c.wallGripHeights ||= {};c.wallGripTargets ||= {};
-        const probe=target.clone().addScaledVector(normal,-.3);probe.y=root.y+1.8;
-        let sample=c.surfaceProbe?.(probe);
-        const cached=c.wallGripHeights[side];
-        if(!sample && Number.isFinite(cached)){probe.y=cached+.4;sample=c.surfaceProbe?.(probe);}
-        const ledge=sample && sample.normal.y>.85 && sample.height>=root.y-.2 && sample.height<=root.y+1.8;
-        c.wallGripWeights ||= {};
-        grip=c.wallGripWeights[side]=THREE.MathUtils.damp(c.wallGripWeights[side] || 0,ledge?1:0,18,delta);
-        if(ledge)c.wallGripHeights[side]=sample.height;
-        const height=c.wallGripHeights[side];
-        if(Number.isFinite(height) && grip>.001){
-          const roofGrip=target.clone().addScaledVector(normal,-.24);roofGrip.y=height+.06;
-          c.wallGripTargets[side] ||= target.clone();c.wallGripTargets[side].lerp(roofGrip,1-Math.exp(-8*delta));
-          target.lerp(c.wallGripTargets[side],grip);
-        }
-      }
-      const pole=normal.clone().multiplyScalar(limb==='foot'?1:.35).addScaledVector(right,(side==='left'?1:-1)*(limb==='foot'?.25:.55));
-      c.solveLimb(upper,lower,end,target,.995,pole);
-      if(limb==='hand'){
-        const palmNormal=normal.clone().lerp(up,grip).normalize();
-        const reach=worldPosition(end).sub(worldPosition(upper));
-        const tangent=reach.addScaledVector(palmNormal,-reach.dot(palmNormal)).normalize();
-        if(tangent.lengthSq()<.01)tangent.copy(up);
-        alignPalm(c,side,end,palmNormal,tangent);
-      }
-      else{
-        contact.soleWeight=THREE.MathUtils.damp(contact.soleWeight || 0,1,18,delta);
-        const flat=c.wallSoleRotations?.[side];
-        const wallRotation=flat?new THREE.Quaternion().setFromAxisAngle(right,-.12*Math.sin(Math.PI*contact.swing)).multiply(new THREE.Quaternion().setFromUnitVectors(up,normal)).multiply(flat):authored;
-        const rotation=authored.slerp(wallRotation,contact.soleWeight);
-        if(contact.rotation)rotation.copy(contact.rotation.clone().rotateTowards(rotation,12*delta));
-        worldRotation(end,rotation);contact.rotation=rotation.clone();
-      }
-      fitEndRotation(c,upper,lower,end,end.getWorldQuaternion(new THREE.Quaternion()));
-    }
-    return;
-  }
-  const root=worldPosition(c.group),right=new THREE.Vector3().crossVectors(up,normal.clone().negate()).normalize();
+  const normal=c.wallNormal.clone().normalize(),root=worldPosition(c.group);
+  const right=new THREE.Vector3().crossVectors(up,normal.clone().negate()).normalize();
   const travel=velocity.clone().addScaledVector(normal,-velocity.dot(normal));
-  const speed=travel.length();const direction=speed>0.01?travel.normalize():up.clone();
-  const moved=c.wallPoseRoot?root.distanceTo(c.wallPoseRoot):0;
-  if(moved>0.8) {c.wallContacts=null;c.wallPhase=0;}
-  c.wallPoseRoot=root.clone();c.wallPhase=(c.wallPhase || 0)+Math.min(moved,0.8)/1.25;
+  const speed=travel.length(),moved=c.wallPoseRoot?root.distanceTo(c.wallPoseRoot):0;
+  if(moved>.8){c.wallContacts=null;c.wallPhase=0;c.wallPoseWeight=0;c.wallTravelDirection=null;c.wallLiftWeight=0;c.wallPalmDirections=null;}
+  c.wallPoseRoot=root.clone();c.wallPhase=((c.wallPhase || 0)+(moved>.8?0:moved)/crawlStride)%1;
   c.wallContacts ||= {};
-  c.wallPoseWeight=THREE.MathUtils.damp(c.wallPoseWeight || 0,1,16,delta);
-  for(const side of ['left','right']) for(const limb of ['hand','foot']) {
-    const sign=side==='left'?1:-1;
-    const id=side+limb,upper=find(c,side+(limb==='hand'?'arm':'upleg'));
-    const lower=find(c,side+(limb==='hand'?'forearm':'leg')),end=find(c,id);
-    if(!upper || !lower || !end) continue;
-    const phase=(c.wallPhase+(side==='left'?0:0.5)+(limb==='foot'?0.5:0))%1;
-    const stance=phase<0.48;
-    const base=root.clone().addScaledVector(normal,-(c.wallDistance ?? 0.7)+0.09)
-      .addScaledVector(up,limb==='hand'?1.48:0.51).addScaledVector(right,sign*(limb==='hand'?0.3:0.22));
-    let contact=c.wallContacts[id];
-    if(stance) {
-      if(!contact?.stance) contact=c.wallContacts[id]={stance:true,target:base.clone().addScaledVector(direction,limb==='hand'?0.22:0.3)};
-    } else {
-      const t=(phase-0.48)/0.52;
-      const goal=base.clone().addScaledVector(direction,THREE.MathUtils.lerp(-0.3,0.3,t))
-        .addScaledVector(normal,Math.sin(t*Math.PI)*0.22);
-      contact=c.wallContacts[id]={stance:false,target:goal};
+  c.wallLiftWeight=THREE.MathUtils.damp(c.wallLiftWeight ?? 0,Math.min(1,speed/.3),18,delta);
+  c.wallPoseWeight=THREE.MathUtils.damp(c.wallPoseWeight || 0,1,18,delta);
+  if(speed>.01)c.wallTravelDirection=travel.normalize();
+  const direction=c.wallTravelDirection || up;
+  if(c.wallBindModel!==c.model){c.wallBindModel=c.model;c.wallBind=bindTransforms(c.model);c.wallPalmDirections=null;}
+  c.wallPalmDirections ||= {};
+  // Replace the exaggerated source pelvis/limbs, including the outward knee
+  // kicks, with a quiet spine and deliberate reaches on this rig's bind axes.
+  for(const [bone,rest] of c.wallBind){
+    if(/^(hips|spine\d*|neck|head|(?:left|right)(?:shoulder|arm|forearm|hand|upleg|leg|foot|toebase))$/.test(boneId(bone.name))){
+      bone.quaternion.slerp(rest.quaternion,c.wallPoseWeight);
+      if(boneId(bone.name)==='hips')bone.position.lerp(rest.position,c.wallPoseWeight);
     }
-    // Release a plant when the imported torso animation or root movement
-    // makes it unreachable; do not stretch the arm or drag its planted hand.
-    const reach=worldPosition(upper).distanceTo(worldPosition(lower))+worldPosition(lower).distanceTo(worldPosition(end));
-    if(contact.stance && worldPosition(upper).distanceTo(contact.target)>reach*0.99)contact.stance=false;
-    const target=worldPosition(end).lerp(contact.target,c.wallPoseWeight);
-    // Knees point away from the facade, elbows out to each side.
-    const pole=normal.clone().multiplyScalar(limb==='foot'?1:0.35).addScaledVector(right,sign*0.55);
-    c.solveLimb(upper,lower,end,target,0.995,pole);
-    if(limb==='hand')alignPalm(c,side,end,normal,up);
-    if(limb==='foot') {
-      // A standing sole's +Y normal becomes the wall normal.
-      const q=c.wallSoleRotations?.[side];
-      if(q) worldRotation(end,new THREE.Quaternion().setFromUnitVectors(up,normal).multiply(q));
+  }
+  c.group.updateMatrixWorld(true);
+  const hips=find(c,'hips'),spine=find(c,'spine');
+  const transfer=Math.sin(c.wallPhase*Math.PI*2)*c.wallPoseWeight;
+  if(hips){
+    hips.position.copy(hips.parent.worldToLocal(worldPosition(hips).addScaledVector(right,.018*transfer).addScaledVector(normal,.25*c.wallPoseWeight)));
+    worldRotation(hips,new THREE.Quaternion().setFromAxisAngle(right,.42*c.wallPoseWeight)
+      .multiply(new THREE.Quaternion().setFromAxisAngle(up,.025*transfer)).multiply(hips.getWorldQuaternion(new THREE.Quaternion())));
+  }
+  if(spine)worldRotation(spine,new THREE.Quaternion().setFromAxisAngle(up,-.045*transfer).multiply(spine.getWorldQuaternion(new THREE.Quaternion())));
+  for(const side of ['left','right'])for(const limb of ['hand','foot']){
+    const hand=limb==='hand',sign=side==='left'?1:-1,id=side+limb;
+    const upper=find(c,side+(hand?'arm':'upleg')),lower=find(c,side+(hand?'forearm':'leg')),end=find(c,id);
+    if(!upper || !lower || !end)continue;
+    const phase=(c.wallPhase+(side==='left'?0:.5)+(hand?.04:0))%1;
+    const base=root.clone().addScaledVector(normal,-(c.wallDistance ?? .7)+(hand?.03:crawlBootDepth(c,side,normal,right)))
+      .addScaledVector(up,hand?1.73:.44).addScaledVector(right,sign*(hand?.28:.235));
+    const {contact,target}=crawlContact(c,id,base,normal,direction,phase,delta,speed);
+    const effector=hand?(find(c,side+'handmiddle4') || end):end;
+    contact.effectorId=boneId(effector.name);
+    if(hand){const constraint=c.jointConstraints?.find(item=>item.bone===end);if(constraint){end.quaternion.copy(constraint.rest);end.updateMatrixWorld(true);}}
+    let grip=0;
+    if(hand){
+      c.wallGripHeights ||= {};c.wallGripTargets ||= {};c.wallGripWeights ||= {};
+      const probe=target.clone().addScaledVector(normal,-.3);probe.y=root.y+1.8;
+      let sample=c.surfaceProbe?.(probe);const cached=c.wallGripHeights[side];
+      if(!sample && Number.isFinite(cached)){probe.y=cached+.4;sample=c.surfaceProbe?.(probe);}
+      const ledge=sample && sample.normal.y>.85 && sample.height>=root.y-.2 && sample.height<=root.y+1.8;
+      grip=c.wallGripWeights[side]=THREE.MathUtils.damp(c.wallGripWeights[side] || 0,ledge?1:0,18,delta);
+      if(ledge)c.wallGripHeights[side]=sample.height;
+      const height=c.wallGripHeights[side];
+      if(Number.isFinite(height) && grip>.001){
+        const roofGrip=target.clone().addScaledVector(normal,-.24);roofGrip.y=height+.06;
+        c.wallGripTargets[side] ||= target.clone();c.wallGripTargets[side].lerp(roofGrip,1-Math.exp(-8*delta));
+        target.lerp(c.wallGripTargets[side],grip);
+      }
     }
+    const start=worldPosition(effector),pole=normal.clone().multiplyScalar(hand?.4:-1)
+      .addScaledVector(right,sign*(hand?.5:.18)).addScaledVector(up,hand?-.45:0);
+    c.solveLimb(upper,lower,effector,start.lerp(target,c.wallPoseWeight),.985,pole);
+    if(hand){
+      const palmNormal=normal.clone().lerp(up,grip).normalize();
+      const previousPalm=c.wallPalmDirections[side];
+      alignStraightPalm(c,side,end,palmNormal,previousPalm,delta);
+      // The open middle fingertip is the effector. Its rigid extension of
+      // the forearm permits a stable wall contact with a straight wrist.
+      // Pronation can move the slightly relaxed tip by a few millimetres.
+      for(let pass=0;pass<2;pass++){
+        c.solveLimb(upper,lower,effector,target,.985,pole);
+        alignStraightPalm(c,side,end,palmNormal,previousPalm,delta);
+      }
+      const wrist=worldPosition(end),index=find(c,side+'handindex1'),pinky=find(c,side+'handpinky1');
+      c.wallPalmDirections[side]=new THREE.Vector3().crossVectors(worldPosition(index).sub(wrist),worldPosition(pinky).sub(wrist)).normalize().multiplyScalar(side==='left'?1:-1);
+    }else{
+      const flat=c.wallSoleRotations?.[side];
+      if(flat){
+        // Forefoot purchase with a raised heel avoids forcing the ankle into
+        // a flat 90-degree wall bend. The shin participates in this rotation.
+        const rotation=new THREE.Quaternion().setFromAxisAngle(right,-.8-.1*Math.sin(Math.PI*contact.swing)**2)
+          .multiply(flat);
+        worldRotation(end,rotation);
+      }
+    }
+    // Preserve the forward knee pole. Re-solving a leg from the desired
+    // sole orientation can put its knee on the opposite side of the hip.
+    // Report a support only when the final chain can actually reach its hold.
+    if(contact.stance && worldPosition(effector).distanceTo(contact.position)>.025)contact.age=0;
   }
 }
 
@@ -448,6 +576,7 @@ export function poseMantle(c,delta) {
     if(!hip || !knee || !foot)continue;
     const lift=steppingDown?ease(side==='left'?.16:.30,side==='left'?.40:.54):ease(side==='left'?.2:.43,side==='left'?.5:.65);
     const target=worldPosition(foot);
+    if(c.mantleStartFeet?.[side])target.lerpVectors(c.mantleStartFeet[side],target,ease(.12,.4));
     const roofFoot=plan.edge.clone().addScaledVector(plan.normal,-0.35).addScaledVector(right,sign*0.22);
     roofFoot.y=plan.height+0.11;
     if(steppingDown){

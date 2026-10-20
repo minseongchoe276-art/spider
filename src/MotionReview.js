@@ -32,7 +32,7 @@ export function startMotionReview() {
     <label>모션 <select id="motion"><option>로딩 중</option></select></label>
     <p><button id="pause">재생 / 정지</button> <button id="front">정면 / 측면</button>
     <label>시점 <select id="review-view"><option value="third">3인칭</option></select></label>
-    <label>확대 <select id="review-framing"><option value="body">전신</option><option value="feet">발·발목</option></select></label></p>
+    <label>확대 <select id="review-framing"><option value="body">전신</option><option value="feet">발·발목</option><option value="hands">손·손목</option></select></label></p>
     <label>구간 <input id="frame" type="range" min="0" max="100" value="0"></label>
     <p><input id="frame-percent" aria-label="검사할 모션 구간 퍼센트" type="number" min="0" max="100" value="45" style="width:55px">% <button id="pose-sample">자세 검사</button></p>
     <p><label>동작 연결 <select id="test-kind">
@@ -202,8 +202,10 @@ export function startMotionReview() {
     character.idleFootAnchors=null;character.idlePlantDelay=0;character.movingPlants=null;character.plantRoot=null;
     character.movingReleases=null;character.plantLastFeet=null;character.plantVelocityRoot=null;
     character.groundFootRotations=null;
+    character.groundSoleTargets=null;character.groundSoleSettling=null;
     character.wallPoseRoot=null;character.wallContacts=null;character.wallPhase=0;character.wallPoseWeight=0;character.wallSoleRotations=null;
     character.wallDistance=0.7;character.wallViewWeight=0;character.wallPhase=0;
+    character.wallTravelDirection=null;character.wallLiftWeight=0;character.wallPalmDirections=null;character.mantleStartPose=null;
     character.zipPoseWeight=0;character.persistentWebAnchor=null;character.webShotAnchor=null;character.webShotTimer=0;
     character.webArmWeight=0;character.webPoseAnchor=null;character.wallPoseNormal=null;
     character.terrainPelvis=0;
@@ -274,6 +276,11 @@ export function startMotionReview() {
       const feet=['left','right'].map(side=>Object.values(character.bones).find(b=>boneId(b.name)===side+'foot'));
       if(feet.every(Boolean))center.copy(feet[0].getWorldPosition(new THREE.Vector3())).add(feet[1].getWorldPosition(new THREE.Vector3())).multiplyScalar(.5).add(new THREE.Vector3(0,.2,0));
       camera.position.copy(center).add(new THREE.Vector3(side?2:1.1,.6,side?.2:2));
+    }
+    if(panel.querySelector('#review-framing').value==='hands') {
+      const hands=['left','right'].map(side=>Object.values(character.bones).find(b=>boneId(b.name)===side+'hand'));
+      if(hands.every(Boolean))center.copy(hands[0].getWorldPosition(new THREE.Vector3())).add(hands[1].getWorldPosition(new THREE.Vector3())).multiplyScalar(.5);
+      camera.position.copy(center).add(new THREE.Vector3(side?2:1.1,.35,side?.3:2));
     }
     camera.fov=42;camera.updateProjectionMatrix();camera.setViewOffset(innerWidth,innerHeight,-panel.offsetWidth/2,0,innerWidth,innerHeight);camera.lookAt(center);
     camera.updateMatrixWorld(true);

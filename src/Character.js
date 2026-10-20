@@ -1,5 +1,5 @@
 import {loadAppearances,updateAppearance,disposeAppearance} from './CharacterAppearance.js';
-import {createJointConstraints,constrainJoints} from './JointConstraints.js';
+import {createJointConstraints,constrainJoints,stabilizeEndJoints} from './JointConstraints.js';
 import { AIR_TRICKS, trickRotation } from './AirTricks.js';
 import { createWebStrand, updateWebStrand } from './WebStrand.js';
 import * as THREE from 'three';
@@ -9,7 +9,7 @@ import { retargetMotion, prepareMotion, boneId } from './MotionRetarget.js';
 import { MOTIONS, STRIDES, GROUNDED } from './MotionCatalog.js';
 import { fetchAsset, forEachConcurrent } from './AssetLoader.js';
 import { clone as cloneSkeleton } from 'three/addons/utils/SkeletonUtils.js';
-import { plantMovingFeet, poseWall, poseZipLegs, poseMantle, adaptPelvisToTerrain, footSupport, soleRotation, clearGroundSoles, fitGroundAnkle, alignCombatWrists } from './CharacterPose.js';
+import { plantMovingFeet, poseWall, poseZipLegs, poseMantle, adaptPelvisToTerrain, footSupport, soleRotation, clearGroundSoles, fitGroundAnkle, alignCombatWrists, reuseHeldGroundPose, cacheGroundPose } from './CharacterPose.js';
 import {createHandPoseRig,restoreHandPose,updateWebHandPose} from './WebHandPose.js';
 
 export class Character {
@@ -351,11 +351,12 @@ export class Character {
     if(this.model && this.jointConstraintModel!==this.model){
       this.jointConstraintModel=this.model;this.jointConstraints=createJointConstraints(this.model,this.bones);
     }this.webGestures={};
-    this.animationPose=null;
+    this.animationPose=null;this.groundPoseInput=null;this.solvedGroundPose=null;this.groundPoseStillTime=0;
+    this.groundSoleTargets=null;this.groundSoleSettling=null;
     this.mantleArmPose=null;this.mantleArmRelease=0;
     this.mantleExitFeet=null;this.mantleFootRelease=0;
     this.mantleStartFeet=null;
-    this.wallGripWeights=null;this.wallGripHeights=null;this.wallGripTargets=null;
+    this.wallGripWeights=null;this.wallGripHeights=null;this.wallGripTargets=null;this.wallPalmDirections=null;
     // Reset/respawn can interrupt a crossfade; every outgoing action must
     // release its pose as well as the action currently selected.
     if (this.mixer) {
@@ -480,19 +481,20 @@ export class Character {
     this.viewMoveSpeed=Math.hypot(velocity.x,velocity.z);
     if (this.copySource) this.copyLoadedCharacter(this.copySource);
     restoreHandPose(this.webFingerRig);
-    // PropertyMixer skips writes when the sampled value has not changed.
-    // Restore the previous animation sample before reapplying IK, otherwise
-    // held poses repeatedly solve an already corrected leg and drift upward.
-    if(GROUNDED.includes(state) && GROUNDED.includes(this.lastState) && !(this.mantleFootRelease>0) && this.animationPoseModel===this.model)for(const {bone,p,q} of this.animationPose || []){
-      bone.position.copy(p);bone.quaternion.copy(q);
-    }
     if(this.model && this.jointConstraintModel!==this.model){
       this.jointConstraintModel=this.model;this.jointConstraints=createJointConstraints(this.model,this.bones);
     }
     if(state==='MANTLING' && this.lastState!=='MANTLING' && this.model){
       this.group.updateMatrixWorld(true);
+      this.mantleStartPose=new Map(Object.values(this.bones).map(bone=>[bone,{p:bone.position.clone(),q:bone.quaternion.clone()}]));
       this.mantleStartFeet=Object.fromEntries(['left','right'].map(side=>[side,Object.values(this.bones || {}).find(b=>boneId(b.name)===side+'foot')?.getWorldPosition(new THREE.Vector3())]));
-    }else if(state!=='MANTLING')this.mantleStartFeet=null;
+    }else if(state!=='MANTLING'){this.mantleStartFeet=null;this.mantleStartPose=null;}
+    // PropertyMixer skips writes when the sampled value has not changed.
+    // Restore the previous animation sample before reapplying IK, otherwise
+    // held poses repeatedly solve an already corrected leg and drift upward.
+    if(((GROUNDED.includes(state) && GROUNDED.includes(this.lastState) && !(this.mantleFootRelease>0)) || ['WALL_RUNNING','MANTLING'].includes(state)) && this.animationPoseModel===this.model)for(const {bone,p,q} of this.animationPose || []){
+      bone.position.copy(p);bone.quaternion.copy(q);
+    }
     for(const hand of ['left','right'])if(this.webLaunchTimers?.[hand]>0)
       this.webLaunchTimers[hand]=Math.max(0,this.webLaunchTimers[hand]-delta);
     this.webVisualTime=(this.webVisualTime || 0)+delta;
@@ -594,6 +596,12 @@ export class Character {
       this.animationPoseModel=this.model;
       this.animationPose=Object.values(this.bones).map(bone=>({bone,p:bone.position.clone(),q:bone.quaternion.clone()}));
     }else for(const sample of this.animationPose){sample.p.copy(sample.bone.position);sample.q.copy(sample.bone.quaternion);}
+    if(state==='MANTLING' && this.mantleStartPose && this.mantle){
+      const weight=1-THREE.MathUtils.smoothstep(this.mantle.elapsed/this.mantle.duration,.5,.92);
+      for(const [bone,pose] of this.mantleStartPose){
+        bone.position.lerp(pose.p,weight);bone.quaternion.slerp(pose.q,weight).normalize();
+      }
+    }
     this.movingGuardWeight=THREE.MathUtils.damp(this.movingGuardWeight || 0,
       grounded && horizontalSpeed>.25 && (this.combatStance || movingStrike)?1:0,18,delta);
     if(movingStrike || this.movingGuardWeight>.001) {
@@ -719,13 +727,14 @@ export class Character {
     updateWebHandPose(this,delta,state);
     this.group.updateMatrixWorld(true);
     adaptPelvisToTerrain(this,delta,grounded && state!=='ROLLING');
-    if (name === 'idle' && state === 'IDLE' && horizontalSpeed < 0.05) {
+    const heldGround=reuseHeldGroundPose(this,delta,grounded);
+    if (!heldGround && name === 'idle' && state === 'IDLE' && horizontalSpeed < 0.05) {
       this.plantIdleFeet(delta);
     } else {
-      this.idlePlantDelay=0; this.idleFootAnchors=null;
+      if(!heldGround){this.idlePlantDelay=0;this.idleFootAnchors=null;}
     }
-    if(grounded && state!=='ROLLING') plantMovingFeet(this,delta);
-    else {this.movingPlants=null;this.movingReleases=null;this.plantLastFeet=null;this.plantVelocityRoot=null;this.groundFootRotations=null;}
+    if(grounded && state!=='ROLLING'){if(!heldGround)plantMovingFeet(this,delta);}
+    else {this.movingPlants=null;this.movingReleases=null;this.plantLastFeet=null;this.plantVelocityRoot=null;this.groundFootRotations=null;this.groundSoleTargets=null;this.groundSoleSettling=null;}
     if(state==='WEB_ZIP') poseZipLegs(this,delta);
     else this.zipPoseWeight=0;
     const firingAnchor = this.webShotTimer > 0 ? this.webShotAnchor : null;
@@ -754,7 +763,7 @@ export class Character {
     else if(!reachingAnchor)this.webPoseAnchor=null;
     if (state === 'WALL_RUNNING' && this.wallNormal) {
       if(this.wallPoseNormal && this.wallPoseNormal.dot(this.wallNormal)<0.98) {
-        this.wallContacts=null;this.wallPoseRoot=null;this.wallPhase=0;this.wallSoleRotations=null;this.wallPoseWeight=0;
+        this.wallContacts=null;this.wallPoseRoot=null;this.wallPhase=0;this.wallTravelDirection=null;this.wallLiftWeight=0;this.wallPalmDirections=null;this.wallSoleRotations=null;this.wallPoseWeight=0;
         this.wallGripWeights=null;this.wallGripHeights=null;this.wallGripTargets=null;
       }
       this.wallPoseNormal=this.wallNormal.clone();
@@ -763,7 +772,7 @@ export class Character {
           ? this.model.quaternion.clone().multiply(new THREE.Quaternion().fromArray(this.actions.wall.getClip().userData.soleRotations[side]))
           : Object.values(this.bones || {}).find(b=>boneId(b.name)===side+'foot')?.getWorldQuaternion(new THREE.Quaternion())]));
       poseWall(this,delta,velocity);
-    } else {this.wallContacts=null;this.wallPoseRoot=null;this.wallPoseWeight=0;this.wallSoleRotations=null;this.wallPoseNormal=null;this.wallGripWeights=null;this.wallGripHeights=null;this.wallGripTargets=null;}
+    } else {this.wallContacts=null;this.wallPoseRoot=null;this.wallPoseWeight=0;this.wallPhase=0;this.wallTravelDirection=null;this.wallLiftWeight=0;this.wallPalmDirections=null;this.wallSoleRotations=null;this.wallPoseNormal=null;this.wallGripWeights=null;this.wallGripHeights=null;this.wallGripTargets=null;}
     if(state==='MANTLING')poseMantle(this,delta);
     else this.mantleHandTargets=null;
     // The frozen climb take and standing take have very different arm poses.
@@ -778,8 +787,6 @@ export class Character {
       for(const b of armBones){const previousPose=this.mantleArmPose[b.name];if(previousPose)b.quaternion.slerpQuaternions(previousPose,b.quaternion.clone(),weight).normalize();}
       this.group.updateMatrixWorld(true);
     }
-    this.mantleArmPose=['WALL_RUNNING','MANTLING'].includes(state) || this.mantleArmRelease>0
-      ?Object.fromEntries(armBones.map(b=>[b.name,b.quaternion.clone()])):null;
     if(previous==='MANTLING' && grounded)this.mantleFootRelease=.3;
     else this.mantleFootRelease=Math.max(0,(this.mantleFootRelease || 0)-delta);
     if(grounded && this.mantleFootRelease>0 && this.mantleExitFeet){
@@ -819,19 +826,12 @@ export class Character {
     this.combatWristWeight=THREE.MathUtils.damp(this.combatWristWeight || 0,
       this.combatStance && grounded?1:0,24,delta);
     alignCombatWrists(this,this.combatWristWeight);
-    if(grounded && state!=='ROLLING')clearGroundSoles(this);
+    if(!heldGround && grounded && state!=='ROLLING')clearGroundSoles(this);
     // Contact clearance can solve the shin again; validate the final ankle
     // and toe output after that pass, including the roof-exit handoff.
     constrainJoints(this.jointConstraints?.filter(item=>item.kind==='foot' || item.kind==='toebase'));
-    if(this.jointConstraints){
-      this.lastAnklePose ||= new Map();
-      for(const {bone,kind} of this.jointConstraints){
-        if(kind!=='foot' && kind!=='toebase')continue;
-        const last=this.lastAnklePose.get(bone);
-        if(last && delta>0 && !grounded)bone.quaternion.copy(last.rotateTowards(bone.quaternion,8*delta));
-        this.lastAnklePose.set(bone,bone.quaternion.clone());bone.updateMatrixWorld(true);
-      }
-    }
+    const changedSoles=stabilizeEndJoints(this,delta);
+    if(!heldGround && changedSoles && grounded && state!=='ROLLING')clearGroundSoles(this,{preserveLocal:true});
     // The next contact step starts from the rendered ankle, after the
     // anatomical clamp and sole clearance have both adjusted the IK result.
     if(grounded && this.groundFootRotations){
@@ -842,6 +842,12 @@ export class Character {
     }
     this.mantleExitFeet=state==='MANTLING' || (grounded && this.mantleFootRelease>0)
       ?Object.fromEntries(['left','right'].map(side=>[side,Object.values(this.bones || {}).find(b=>boneId(b.name)===side+'foot')?.getWorldPosition(new THREE.Vector3())])):null;
+    // Blend from the pose actually rendered after joint/twist correction.
+    // Saving the unconstrained IK result reintroduced a wrist/arm jump at
+    // the roof handoff when the standing action started to fade in.
+    this.mantleArmPose=['WALL_RUNNING','MANTLING'].includes(state) || this.mantleArmRelease>0
+      ?Object.fromEntries(armBones.map(b=>[b.name,b.quaternion.clone()])):null;
+    cacheGroundPose(this,grounded);
     this.finalFeetModel=this.model;
     this.finalFeet=Object.fromEntries(['left','right'].map(side=>{
       const foot=Object.values(this.bones || {}).find(b=>boneId(b.name)===side+'foot');
@@ -858,7 +864,11 @@ export class Character {
     const arm = find('arm'), forearm = find('forearm'), hand = find('hand');
     if (!arm || !forearm || !hand) return;
     const upper=arm.quaternion.clone(),lower=forearm.quaternion.clone();
-    this.solveLimb(arm,forearm,hand,anchor,0.95);
+    const shoulder=arm.getWorldPosition(new THREE.Vector3()),shot=anchor.clone().sub(shoulder);
+    const lift=new THREE.Vector3(0,1,0).addScaledVector(shot,-shot.y/Math.max(shot.lengthSq(),1e-8)).normalize();
+    const firing=(this.webLaunchTimers?.[side] || 0)>0 || (this.currentHand===side && this.webShotTimer>0);
+    const reach=firing?anchor.clone().addScaledVector(lift,shot.length()*.9):anchor;
+    this.solveLimb(arm,forearm,hand,reach,0.95);
     arm.quaternion.slerpQuaternions(upper,arm.quaternion.clone(),weight);
     forearm.quaternion.slerpQuaternions(lower,forearm.quaternion.clone(),weight);
     arm.updateMatrixWorld(true);

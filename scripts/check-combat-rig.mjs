@@ -1,3 +1,4 @@
+import {groundSoleNormal} from '../src/CharacterPose.js';
 import fs from 'node:fs';
 import assert from 'node:assert/strict';
 import * as THREE from 'three';
@@ -200,7 +201,8 @@ console.log('PASS: heavy landing keeps its chosen recovery clip until the landin
    const foot=bone(c,side+'foot');
    const expected=c.model.getWorldQuaternion(new THREE.Quaternion()).multiply(new THREE.Quaternion().fromArray(neutral[side]));
    const actual=foot.getWorldQuaternion(new THREE.Quaternion());
-   assert(actual.angleTo(expected)<.35,`${side}: stance sole folded away from flat authored foot`);
+   const normal=groundSoleNormal(c,side,actual);
+   assert(normal.angleTo(new THREE.Vector3(0,1,0))<THREE.MathUtils.degToRad(35),`${side}: stance sole folded away from the actual support normal`);
  }
  c.mixer.stopAllAction();
 }

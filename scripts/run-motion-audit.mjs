@@ -10,13 +10,13 @@ const suites=[
  'combat','combat-rig','motion-timeline','motion-transitions','remote-motion',
  'swing-accessibility','cross-system-regressions','web-continuity','expert-audit',
  'camera-motion-web','full-game-audit','input-lifecycle','wall-ledge','wall-ledge-rig',
- 'all-motions','motion-sources','web-hand-pose','silk-gait','wall-crawl','motion-cleanup',
+ 'all-motions','motion-sources','web-hand-pose','silk-gait','wall-crawl','natural-wall-motion','end-joint-stability','limb-continuity','turn-joint-stability','motion-cleanup',
  'combat-traversal','combat-aim','combat-quality','combat-feet','moving-combat-skin','appearances','full-appearance-motions',
 ];
-const folder='docs/qa/complete-motion-2026-10-19';fs.mkdirSync(folder,{recursive:true});
+const folder=process.env.MOTION_AUDIT_DIR || 'docs/qa/complete-motion-2026-10-19';fs.mkdirSync(folder,{recursive:true});
 const model=fs.readFileSync('public/models/shadow-pulse-rig.glb');
 const modelJson=JSON.parse(model.subarray(20,20+model.readUInt32LE(12)));
-const manifest={date:'2026-10-19',motions:MOTIONS.map(({key,url,loop})=>({key,source:url,loop:!!loop})),
+const manifest={date:process.env.MOTION_AUDIT_DATE || '2026-10-19',motions:MOTIONS.map(({key,url,loop})=>({key,source:url,loop:!!loop})),
  embedded:modelJson.animations?.length?['default']:[],airTricks:Object.keys(AIR_TRICKS),appearances:['web','combat'],cameraModes:['close','follow','swing'],
  frameRates:[24,30,60,144],suiteCount:suites.length,
  limits:'Finite, explicitly enumerated automated matrix plus visual contact-sheet review. Passing does not prove all possible inputs, terrain or subjective artistic perfection.'};

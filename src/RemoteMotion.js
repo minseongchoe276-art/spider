@@ -9,6 +9,11 @@ const COMBAT = new Set(['combatIdle','jab','cross','hook','heavy','guard','dodge
   'dodgeLeft','dodgeRight','dodgeBack','dodgeForward','slam','slamLand','special','hit','hitHead']);
 const vector = v => v && [v.x,v.y,v.z].every(n => Number.isFinite(n) && Math.abs(n)<=10000)
   ? {x:v.x,y:v.y,z:v.z} : null;
+const normal = value => {
+  const v=vector(value);if(!v)return null;
+  const length=Math.hypot(v.x,v.y,v.z);
+  return length>1e-6?{x:v.x/length,y:v.y/length,z:v.z/length}:null;
+};
 const cleanShot=shot=>{
   const target=vector(shot?.target);
   return target && ['left','right'].includes(shot?.hand) && Number.isFinite(shot.remaining) && shot.remaining>0
@@ -20,7 +25,8 @@ export function sanitizePose(pose) {
   const velocity = vector(pose.velocity);
   if (!velocity || Math.hypot(velocity.x,velocity.y,velocity.z)>150) return null;
   const webs = (Array.isArray(pose.webs)?pose.webs:[]).slice(0,2)
-    .map(w => ({hand:w?.hand==='right'?'right':'left',anchor:vector(w?.anchor)})).filter(w => w.anchor);
+    .map(w => ({hand:w?.hand==='right'?'right':'left',anchor:vector(w?.anchor)})).filter(w => w.anchor)
+    .filter((web,i,all)=>all.findIndex(other=>other.hand===web.hand)===i);
   let combat = null;
   const webShot=cleanShot(pose.webShot);
   const webShots=(Array.isArray(pose.webShots)?pose.webShots:[]).slice(0,2).map(cleanShot).filter(Boolean)
@@ -30,11 +36,11 @@ export function sanitizePose(pose) {
       time:THREE.MathUtils.clamp(pose.combat.time ?? 0,0,10),duration:THREE.MathUtils.clamp(pose.combat.duration ?? 0,0,10)};
   const m=pose.mantle;
   const mantle=m && [m.elapsed,m.duration,m.gap,m.height].every(Number.isFinite)
-    && m.duration>0 && vector(m.normal) && vector(m.edge) && vector(m.start) && vector(m.end)
-    ? {...Object.fromEntries(['normal','edge','start','end'].map(k=>[k,vector(m[k])])),
+    && m.duration>0 && Math.abs(m.height)<=10000 && normal(m.normal) && vector(m.edge) && vector(m.start) && vector(m.end)
+    ? {normal:normal(m.normal),...Object.fromEntries(['edge','start','end'].map(k=>[k,vector(m[k])])),
       elapsed:THREE.MathUtils.clamp(m.elapsed,0,2),duration:THREE.MathUtils.clamp(m.duration,.1,2),
       gap:THREE.MathUtils.clamp(m.gap,0,2),height:m.height} : null;
-  return {state:pose.state,velocity,webs,webShot,webShots,anchor:vector(pose.anchor),wallNormal:vector(pose.wallNormal),
+  return {state:pose.state,velocity,webs,webShot,webShots,anchor:vector(pose.anchor),wallNormal:normal(pose.wallNormal),
     mantle,wallDistance:Number.isFinite(pose.wallDistance)?THREE.MathUtils.clamp(pose.wallDistance,0,2):.7,
     landingSpeed:Number.isFinite(pose.landingSpeed)?THREE.MathUtils.clamp(pose.landingSpeed,0,100):0,
     airTrick: pose.tricking && Object.hasOwn(AIR_TRICKS, pose.airTrick?.key) && Number.isFinite(pose.airTrick.elapsed)

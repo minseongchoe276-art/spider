@@ -1,0 +1,6 @@
+PASS APPEARANCE: {"case":"web source, textures and normalized weights","vertices":29133,"pass":true}
+PASS APPEARANCE: {"case":"combat source, textures and normalized weights","vertices":67491,"pass":true}
+PASS APPEARANCE: {"case":"appearance changes invalidate cached foot-contact vertices","webSoleSamples":1551,"combatSoleSamples":2183,"pass":true}
+PASS APPEARANCE: {"case":"40 mode changes preserve pose, mixer, root and momentum; effect expires","pass":true}
+PASS APPEARANCE: {"case":"web all catalog motions skin finite and bounded","motionCount":33,"samples":165,"maxExtent":2.9179320347358724,"pass":true}
+PASS APPEARANCE: {"case":"combat all catalog motions skin finite and bounded","motionCount":33,"samples":165,"maxExtent":2.9133930698986688,"pass":true}

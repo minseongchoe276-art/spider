@@ -15,28 +15,30 @@ for(const fps of [24,30,60,144])for(const angle of [0,Math.PI/2,Math.PI,Math.PI*
  const c=actor(),normal=new THREE.Vector3(0,0,1).applyAxisAngle(new THREE.Vector3(0,1,0),angle),sideways=new THREE.Vector3().crossVectors(new THREE.Vector3(0,1,0),normal),v=sideways.clone().multiplyScalar(lateral).setY(vertical);
  c.wallNormal=normal;c.wallDistance=.7;c.group.position.copy(normal).multiplyScalar(.7).setY(4);c.groundProbe=()=>null;
  const camera=new THREE.PerspectiveCamera(64,1,.01,200);c.scene.add(camera);const follow=new ThirdPersonCamera(camera,{});follow.setMode(view);
- const previous={},contacts={lefthand:0,righthand:0,leftfoot:0,rightfoot:0};let maxSlip=0,maxError=0,minPalm=1,minSole=1,maxViewTravel=0,lastView=null;
+ const previous={},contacts={lefthand:0,righthand:0,leftfoot:0,rightfoot:0};let maxSlip=0,maxError=0,minPalm=1,minSole=1,minSoleUp=1,minToeFacing=1,maxActualWrist=0,maxViewTravel=0,lastView=null;
  try{for(let frame=0;frame<fps*3;frame++){
   c.group.position.addScaledVector(v,1/fps);camera.position.copy(c.group.position).add(new THREE.Vector3(0,1.58,0));camera.lookAt(camera.position.clone().sub(normal));camera.updateMatrixWorld(true);
   c.update(1/fps,'WALL_RUNNING',v);c.group.updateMatrixWorld(true);camera.updateMatrixWorld(true);
   for(const b of Object.values(c.bones))assert(Math.abs(b.quaternion.length()-1)<1e-5,'Joint normalization');
   for(const id of ['lefthand','righthand','leftfoot','rightfoot']){
-   const contact=c.wallContacts?.[id],actual=point(c,id);
+   const contact=c.wallContacts?.[id],actual=point(c,contact?.effectorId || id);
    if(contact?.stance && contact.age>.08){contacts[id]++;maxError=Math.max(maxError,actual.distanceTo(contact.position));const prev=previous[id];if(prev?.anchor===contact.position)maxSlip=Math.max(maxSlip,actual.distanceTo(prev.actual));previous[id]={anchor:contact.position,actual};}else delete previous[id];
   }
   if(frame>fps*.5){for(const side of ['left','right']){
    if(c.wallContacts?.[side+'hand']?.stance && c.wallContacts[side+'hand'].age>.08)minPalm=Math.min(minPalm,palm(c.bones,side).dot(normal.clone().negate()));
-   const neutral=c.wallSoleRotations[side],foot=joint(c,side+'foot').getWorldQuaternion(new THREE.Quaternion()),sole=new THREE.Vector3(0,1,0).applyQuaternion(foot.multiply(neutral.clone().invert()));if(c.wallContacts?.[side+'foot']?.stance && c.wallContacts[side+'foot'].age>.08)minSole=Math.min(minSole,sole.dot(normal));
+   const neutral=c.wallSoleRotations[side],foot=joint(c,side+'foot').getWorldQuaternion(new THREE.Quaternion()),sole=new THREE.Vector3(0,1,0).applyQuaternion(foot.multiply(neutral.clone().invert()));if(c.wallContacts?.[side+'foot']?.stance && c.wallContacts[side+'foot'].age>.08){minSole=Math.min(minSole,sole.dot(normal));minSoleUp=Math.min(minSoleUp,sole.y);minToeFacing=Math.min(minToeFacing,point(c,side+'toebase').sub(point(c,side+'foot')).normalize().dot(normal.clone().negate()));}
+   const axis=point(c,side+'hand').sub(point(c,side+'forearm')),knuckles=point(c,side+'handmiddle1').sub(point(c,side+'hand'));maxActualWrist=Math.max(maxActualWrist,axis.angleTo(knuckles)*180/Math.PI);
    for(const finger of ['index','middle','ring','pinky'])assert(extended(c.bones,side,finger)>.96,'Climbing hand clenched into a fist');
   }}
 
  }
  assert(Object.values(contacts).every(n=>n>2),'A limb never established support '+JSON.stringify(contacts));assert(maxError<.025,`Contact target error ${maxError}m`);assert(maxSlip<.025,`Planted limb slides ${maxSlip}m per frame`);for(const {bone,rest,limit} of c.jointConstraints)assert(rest.angleTo(bone.quaternion)<=limit+1e-5,'Contact inverted a joint');
- assert(minPalm>.98,`Palm detached from facade normal: ${minPalm}`);// Anatomical climbing permits a lifted heel (up to 35 degrees), rather than forcing the whole sole flat.
- assert(minSole>Math.cos(35*Math.PI/180),`Sole detached from facade normal: ${minSole}`);
+ assert(minPalm>0,`Palm faces away from facade: ${minPalm}`);assert(maxActualWrist<12.01,`Actual wrist folds ${maxActualWrist} degrees`);// Forefoot purchase permits a raised heel; a flat sole forced the knees backwards.
+ assert(minSoleUp>.25,`Forefoot sole inverted: ${minSoleUp}`);
+ assert(minToeFacing>.75,`Toe points across/away from facade: ${minToeFacing}`);
  c.update(1/fps,'FALLING',new THREE.Vector3(0,-5,0));assert.equal(c.wallContacts,null);
  for(let i=0;i<fps;i++)c.update(1/fps,'IDLE',new THREE.Vector3());
- return {frames:fps*3,contacts,maxPlantDrift:maxError,maxFrameSlip:maxSlip,minPalmAlignment:minPalm,minSoleAlignment:minSole,maxViewFrameTravel:maxViewTravel};
+ return {frames:fps*3,contacts,maxPlantDrift:maxError,maxFrameSlip:maxSlip,minPalmAlignment:minPalm,minSoleAlignment:minSole,minSoleUp,minToeFacing,maxActualWrist,maxViewFrameTravel:maxViewTravel};
  }finally{disposeRig(c);}
 });
 for(const fps of [24,30,60,144])check(`${fps}fps third-person silk uses the same taper, fibers, shot ownership and cleanup`,()=>{

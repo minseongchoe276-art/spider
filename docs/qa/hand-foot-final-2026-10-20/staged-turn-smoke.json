@@ -1,0 +1,60 @@
+{
+  "passed": 4,
+  "failed": 0,
+  "frames": 400,
+  "results": [
+    {
+      "mode": "web",
+      "fps": 60,
+      "heading": 0,
+      "direction": "left",
+      "pass": true,
+      "maxCalfAxialSpeed": 268.7133037376454,
+      "maxSupportSpeed": 240.00000000001555,
+      "minBootClearance": 0.0023853857359792128,
+      "maxWristBend": 11.968767247477837,
+      "frames": 100
+    },
+    {
+      "mode": "web",
+      "fps": 60,
+      "heading": 0,
+      "direction": "right",
+      "pass": true,
+      "maxCalfAxialSpeed": 273.4391949561293,
+      "maxSupportSpeed": 240.00000000001555,
+      "minBootClearance": 0.0023831429484623984,
+      "maxWristBend": 9.828699806089706,
+      "frames": 100
+    },
+    {
+      "mode": "combat",
+      "fps": 60,
+      "heading": 0,
+      "direction": "left",
+      "pass": true,
+      "maxCalfAxialSpeed": 263.15152648151764,
+      "maxSupportSpeed": 240.00000000003743,
+      "minBootClearance": 0.001590811308953648,
+      "maxWristBend": 11.968767247477837,
+      "frames": 100
+    },
+    {
+      "mode": "combat",
+      "fps": 60,
+      "heading": 0,
+      "direction": "right",
+      "pass": true,
+      "maxCalfAxialSpeed": 276.694541013561,
+      "maxSupportSpeed": 240.00000000001555,
+      "minBootClearance": 0.0015856654900562434,
+      "maxWristBend": 9.828699806089706,
+      "frames": 100
+    }
+  ],
+  "sourceHashes": {
+    "src/Character.js": "5858302ef1ec69dd745bc486cad763f46c7376e794e1a726d3e48c9a2d8b9a33",
+    "src/CharacterPose.js": "79b68a2f29e636b9bef934457dc82c5baf2c25bed9203d0ed03987adc51ef2aa",
+    "src/JointConstraints.js": "2a2fc25a8e6bf9e9ea3fb590dda576393db66db6c14961d5fc1c92a4526141a0"
+  }
+}

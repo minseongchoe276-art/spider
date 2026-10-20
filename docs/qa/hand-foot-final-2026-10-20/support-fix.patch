@@ -1,0 +1,34 @@
+--- a/src/CharacterPose.js
++++ b/src/CharacterPose.js
+@@ -62 +62,16 @@
+-  fitGroundAnkle(c,side,foot,rotation);c.groundFootRotations[side]=rotation.clone();
++  // A planted foot keeps its world heading while the torso turns. Releasing
++  // that plant must not instantly rotate the shin to the new body heading.
++  // Filter the requested support frame, never the constrained rendered boot:
++  // feeding the latter back into IK made frozen poses drift.
++  if(c.groundSoleTargetModel!==c.model){
++    c.groundSoleTargetModel=c.model;c.groundSoleTargets=null;c.groundSoleSettling=null;
++  }
++  c.groundSoleTargets ||= {};c.groundSoleSettling ||= {};
++  const desired=rotation.clone().normalize();
++  const previous=c.groundSoleTargets[side];
++  const target=previous && delta>0
++    ?previous.clone().rotateTowards(desired,THREE.MathUtils.degToRad(GROUND_SOLE_SPEED)*delta).normalize()
++    :desired.clone();
++  c.groundSoleTargets[side]=target;
++  c.groundSoleSettling[side]=target.angleTo(desired)>1e-5;
++  fitGroundAnkle(c,side,foot,target);c.groundFootRotations[side]=target.clone();
+@@ -291 +306,12 @@
+-  if (!contacts?.length) { c.movingPlants=null;c.movingReleases=null;c.plantLastFeet=null;c.groundFootRotations=null;return; }
++  if (!contacts?.length) {
++    c.movingPlants=null;c.movingReleases=null;c.plantLastFeet=null;c.groundFootRotations=null;
++    // Idle has no authored contact windows. Keep resolving the same support
++    // frame through its crossfade: dropping it here instantly restored the
++    // animated shin roll on the first frame after a turn or a running stop.
++    if(c.groundSoleTargets)for(const side of ['left','right']){
++      const foot=find(c,side+'foot'),support=foot && footSupport(c,worldPosition(foot));
++      const rotation=support && soleRotation(c,side,support.normal);
++      if(rotation)orientGroundFoot(c,side,foot,rotation,delta);
++    }
++    return;
++  }
