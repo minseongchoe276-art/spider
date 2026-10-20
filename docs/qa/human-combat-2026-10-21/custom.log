@@ -1,0 +1,6 @@
+
+> shadow-pulse@1.0.0 test:custom
+> node scripts/check-custom-matches.mjs && node scripts/check-combat-aim.mjs
+
+PASS custom: 8-player cap, teams, ready reset, friendly fire, exact named target, mutual combat, HP, elimination, victory, rematch, FFA, 1v1, empty-team guard, miss reasons, disconnect win, inclusive boundaries
+PASS shared reticle gate, no off-aim damage/cooldown, no traversal during aimed cooldown/occlusion, frame-independent keyboard aim

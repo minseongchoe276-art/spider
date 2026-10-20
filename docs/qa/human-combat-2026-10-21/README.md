@@ -16,3 +16,18 @@
 - 전체 검사에 새 사용자 설정 및 인간 모드 회귀 검사를 추가했다. `npm run test:human`으로 집중 재현할 수 있다.
 
 배포 및 공개 검증 정보는 `../custom-release-2026-10-20/` 기록과 후속 공개 검수 기록을 함께 참조한다.
+
+추가 검증: `check-combat-feet`의 연속 동작 45개 + 타격/가드 복귀 고정 구간 75개(24/60/144 FPS, 제자리/달리기/질주) 모두 통과했다.
+
+## 최종 공개 배포
+
+- 운영 코드 커밋: `cc8b676eaa3cfcd6ff0de04723a2e9bf9acd670f`.
+- 프런트: https://minogame.site/ — GitHub Vercel success 및 `frontend.json`에서 공개 JS와 로컬 빌드 바이트 일치 확인.
+- 방 서버: `dep-dbbvfo3l550s73a86v10` live, `/healthz`의 revision 동일, 공식 지형 seed CLEAR, 배포 후 오류 로그 없음.
+- 최종 서버에 공개 8명 4대4 및 3인 개인전 재검사 통과. `public-custom.json` / `public-custom.log` 참고.
+- 공개 게임에서 인간 모드로 점프한 직후 클릭·E를 입력해도 JUMPING과 인간 모드 표시를 유지하고 줄/집으로 전환하지 않는 것을 확인했다. `public-air-human.png` 참고.
+- 공개 모션 검수 화면에서도 수정된 방어 보행을 렌더링했다. `public-guard-walk.png` 참고.
+- 실제 B+W를 CombatSystem과 SwingPhysics에 함께 입력한 24/60/144 FPS 3개 사례도 추가했다. 방어 유지, 35% 보행 속도 및 walk 다리 모션을 확인했다.
+- 변경 후 추가 회귀 12종은 `post-change-suite.json`에 모두 PASS로 기록됐다.
+
+공개 서버 검사는 임시 방만 사용했다. 기존 무료 Render 인스턴스를 유지했다. 잠든 무료 인스턴스의 최초 접속 지연과 인터넷 환경별 지연을 없앤다는 보장은 하지 않는다.

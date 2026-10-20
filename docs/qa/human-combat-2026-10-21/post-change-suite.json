@@ -1,0 +1,53 @@
+{
+  "status": "PASS",
+  "results": [
+    {
+      "suite": "combat",
+      "pass": true
+    },
+    {
+      "suite": "combat-rig",
+      "pass": true
+    },
+    {
+      "suite": "motion-transitions",
+      "pass": true
+    },
+    {
+      "suite": "full-game-audit",
+      "pass": true
+    },
+    {
+      "suite": "controller",
+      "pass": true
+    },
+    {
+      "suite": "upgrade",
+      "pass": true
+    },
+    {
+      "suite": "upgrade-online",
+      "pass": true
+    },
+    {
+      "suite": "release-audit",
+      "pass": true
+    },
+    {
+      "suite": "web-hand-pose",
+      "pass": true
+    },
+    {
+      "suite": "online-edge-cases",
+      "pass": true
+    },
+    {
+      "suite": "compact-map-and-locators",
+      "pass": true
+    },
+    {
+      "suite": "loading-performance",
+      "pass": true
+    }
+  ]
+}

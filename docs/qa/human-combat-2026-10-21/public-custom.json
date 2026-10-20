@@ -1,0 +1,44 @@
+{
+  "status": "PASS",
+  "checkedAt": "2026-10-20T23:26:22.345Z",
+  "service": "https://minogame-room-authority.onrender.com",
+  "revision": "cc8b676eaa3cfcd6ff0de04723a2e9bf9acd670f",
+  "attackRoundTripMs": [
+    138.94674999999916,
+    131.61429100000169,
+    128.744625000003,
+    130.52625000000262,
+    131.8187910000015,
+    133.57916699999987,
+    127.35679100000198,
+    133.07508299999972,
+    131.89329200000066,
+    131.09362500000134,
+    126.96462499999689,
+    128.29004200000054,
+    140.88958300000013,
+    126.50091600000087,
+    126.3102919999983,
+    133.3258330000026,
+    128.52787499999977,
+    132.11537500000122,
+    303.8310410000049,
+    127.54191700000229,
+    120.20191599999816,
+    129.20904200000223,
+    130.7296669999996,
+    129.99829199999658,
+    128.27479199999652,
+    134.1571660000045
+  ],
+  "results": [
+    {
+      "name": "Eight real internet clients: capacity, 4v4, grace, named non-nearest target, friendly-fire rejection, mutual attacks, cooldown, elimination, team win and rematch",
+      "status": "PASS"
+    },
+    {
+      "name": "Three-player FFA: each participant is an opponent; last survivor wins",
+      "status": "PASS"
+    }
+  ]
+}

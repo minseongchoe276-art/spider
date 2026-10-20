@@ -1,0 +1,677 @@
+RUN node scripts/check-compact-map-and-locators.mjs
+PASS compact city: 16 buildings, 320m play width, usable spawn/objectives within bounds
+PASS rendered city and authoritative Node server use exactly matching collision geometry
+PASS all finite participant locations stay visible outside pulse windows, including pending and downed players; invalid coordinates are excluded
+PASS on-screen, behind-camera, distant and high-altitude markers stay inside both HUD and minimap bounds
+PASS labels refresh distance/height/direction and clean up on leaving or pausing
+PASS old saved positions outside the compact map are rejected
+RUN node scripts/check-expert-audit.mjs
+PASS Aliases obey modifier remaps; help and mute cannot be swallowed
+PASS Releasing one of W/Up or two Shift keys leaves the other held
+PASS Mouse and gamepad release preserve the other device tether; middle drag survives a left release
+PASS Ascending contact time rejects unfinished tricks while a high jump allows them
+PASS Grounded launch uses takeoff pose until the rope becomes taut
+PASS Holding guard buffers through a punch and releases immediately
+PASS Fallback character actually rotates, completes once, and cancels on landing
+PASS Help suspends solo simulation and race clock, Escape closes it, and online continues
+PASS Disabling adaptive quality restores the selected manual resolution immediately
+PASS A fatal projectile retires all old shots before the next can damage a respawn
+PASS 10 expert audit regressions
+RUN node scripts/check-connection-lifecycle.mjs
+PASS closing during authentication cannot resurrect a transport or background timers
+PASS a late join response cannot restore a closed room
+PASS queued room commands are cancelled when their transport closes
+PASS closing during channel removal prevents a replacement subscription
+RUN node scripts/check-camera-motion-web.mjs
+PASS 30fps: interrupted blend, real offhand miss lifetime, sever cleanup, takeoff reach
+PASS 60fps: interrupted blend, real offhand miss lifetime, sever cleanup, takeoff reach
+PASS 144fps: interrupted blend, real offhand miss lifetime, sever cleanup, takeoff reach
+PASS 24/60/144fps view round trips preserve facade aim and C still recenters
+RUN node scripts/check-full-game-audit.mjs
+PASS Local pursuit rejects off-map origins and excludes off-map objectives
+PASS Late room and identity messages cannot replace an explicit solo session
+PASS First-person elimination hides local arms and follows a third-person spectator
+PASS Match finish retires goal and rescue markers and restores player visibility
+PASS Changing quality synchronizes the adaptive controller with manual resolution
+PASS Small city warnings stay quiet at spawn and appear near the actual boundary
+PASS Context loss exposes retry controls and blocks gameplay until recovery
+PASS Preview searches stay at 10Hz at 30/60/144fps while actual shots search immediately
+PASS real Rapier swing/zip/pull use indexed streamed surfaces and correct normals without visual triangle scans
+Full game audit: 9 passed, 0 failed.
+RUN node scripts/check-input-lifecycle.mjs
+PASS Keyboard and pad mode presses share one action until every source releases
+PASS Remapped left/right modifiers do not double-toggle modes
+PASS Removed race key stays inactive while concurrent trick presses rearm correctly
+PASS Two devices cannot toggle off the same held web button
+PASS Toggle on then off between physics frames cancels both pending launches
+PASS Resume drops time without animation frames while active stalls still count
+PASS A pad resume within the animation callback also excludes suspended time
+PASS Closing solo help drops suspended time while online help preserves active time
+PASS Resuming cancels hidden key capture, but context-loss rejection leaves it available
+PASS Touch movement coexists with keyboard and pad, clearing only its own stick
+PASS Touch releases its web with desktop toggle enabled and preserves the opposite hand
+PASS Keyboard-held guard survives a touch release of the same action
+PASS Pause clears touch-owned keyboard, webs, and joystick
+PASS Space explicitly jumps from a grounded attached strand
+PASS Keyboard, pad, and touch jump off a hanging web once and clear both hands
+PASS Pause preserves adaptive resolution and clears stale frame samples
+Input lifecycle review: 16 passed, 0 failed.
+RUN node scripts/check-race-removal.mjs
+PASS: no race modules/UI/bindings; old records removed while settings, saved positions and web colors survive; corrupt/unavailable storage remains safe
+RUN node scripts/check-session-flow.mjs
+PASS Help cannot remain hidden beneath the lobby or pause menu
+PASS Background pause closes solo help so resume really restores gameplay
+PASS Solo and online session entry retire a help dialog from the previous activity
+PASS Opening help unlocks the cursor without pausing; closing restores game focus
+PASS Repeated Escape closes help only once before opening the pause menu
+PASS Pad Start does not reintroduce stick movement or camera look in the pause frame
+PASS Pad resume defers sticks until the next frame and does not use paused look time
+Session flow review: 7 passed, 0 failed.
+RUN node scripts/check-visibility.mjs
+PASS participant markers retain pending, eliminated, disconnected and distant positions; invalid interpolation falls back to server coordinates
+PASS 3D and fallback projections keep far/high/behind-map markers inside large and narrow map bounds
+PASS overlay labels show name/distance/status and remove stale room participants
+PASS brighter daytime materials use sRGB textures and preserve every authoritative city collider
+RUN node scripts/check-loading-performance.mjs
+PASS: bounded parallel loading overlaps requests and processes every item once
+PASS: streaming starts locally, preserves nearby detail, and restores the full camera range
+PASS: loading and gameplay collision budgets produce identical rooftop support
+PASS: RGB pixels, alpha, color space and all authored mip levels are preserved
+RUN node scripts/check-wall-ledge.mjs
+PASS actual Rapier capsule enters a 1.5m balcony using its measured facade gap; narrow/low-ceiling balconies remain rejected
+PASS rounded edge contact uses the actual facade normal and enters the supported roof instead of twisting the grip
+PASS open railing uses a reachable higher grip and lands on the supported lower roof
+PASS 30fps real rig over open railing: grip 6.6mm, ankle 18.00deg, supported idle
+PASS 60fps real rig over open railing: grip 11.1mm, ankle 18.00deg, supported idle
+PASS 144fps real rig over open railing: grip 14.3mm, ankle 18.00deg, supported idle
+PASS Four facade directions and three frame rates climb over the actual 1.2m parapet and stay on its roof
+PASS Parapet plan distinguishes the hand-grip height from the lower supported landing
+PASS Blocked headroom retains the wall grip without passing through the roof
+PASS A blocked grip can move sideways to a clear, supported roof entry
+PASS Holding a climb past 25 seconds does not impose an unexplained fall
+  Actual city: 79 safe arrivals, 1 blocked grips, 80 facades.
+PASS Real local-city building facades complete a supported arrival or retain the blocked grip
+PASS Real Rapier terrain supports crossing the lip onto its lower roof at 30/60/144 FPS
+Wall ledge review: 7 passed, 0 failed.
+PASS 24/30/60/144fps real floating-point parapet seam completes a roof arrival
+RUN node scripts/check-wall-ledge-rig.mjs
+PASS 30fps actual rig: grip 58.9mm, max extremity speed 13.20m/s, no foot penetration or stretched limb
+PASS 60fps actual rig: grip 42.1mm, max extremity speed 13.20m/s, no foot penetration or stretched limb
+PASS 144fps actual rig: grip 30.3mm, max extremity speed 14.58m/s, no foot penetration or stretched limb
+RUN node scripts/check-all-motions.mjs
+PASS 24fps hitHead keeps a supported foot during the full hit reaction
+PASS 24fps three-point landing stays grounded throughout its recovery
+PASS 24fps long-running mixer starts a fade without a precision jump
+PASS 24fps reversal keeps the current blended rig pose
+PASS 30fps hitHead keeps a supported foot during the full hit reaction
+PASS 30fps three-point landing stays grounded throughout its recovery
+PASS 30fps long-running mixer starts a fade without a precision jump
+PASS 30fps reversal keeps the current blended rig pose
+PASS 60fps hitHead keeps a supported foot during the full hit reaction
+PASS 60fps three-point landing stays grounded throughout its recovery
+PASS 60fps long-running mixer starts a fade without a precision jump
+PASS 60fps reversal keeps the current blended rig pose
+PASS 144fps hitHead keeps a supported foot during the full hit reaction
+PASS 144fps three-point landing stays grounded throughout its recovery
+PASS 144fps long-running mixer starts a fade without a precision jump
+PASS 144fps reversal keeps the current blended rig pose
+PASS Every registered clip and embedded fallback has explicit coverage
+PASS idle: entire timeline at 24fps
+PASS idle: entire timeline at 30fps
+PASS idle: entire timeline at 60fps
+PASS idle: entire timeline at 144fps
+PASS walk: entire timeline at 24fps
+PASS walk: entire timeline at 30fps
+PASS walk: entire timeline at 60fps
+PASS walk: entire timeline at 144fps
+PASS regularRun: entire timeline at 24fps
+PASS regularRun: entire timeline at 30fps
+PASS regularRun: entire timeline at 60fps
+PASS regularRun: entire timeline at 144fps
+PASS run: entire timeline at 24fps
+PASS run: entire timeline at 30fps
+PASS run: entire timeline at 60fps
+PASS run: entire timeline at 144fps
+PASS stop: entire timeline at 24fps
+PASS stop: entire timeline at 30fps
+PASS stop: entire timeline at 60fps
+PASS stop: entire timeline at 144fps
+PASS runStop: entire timeline at 24fps
+PASS runStop: entire timeline at 30fps
+PASS runStop: entire timeline at 60fps
+PASS runStop: entire timeline at 144fps
+PASS zip: entire timeline at 24fps
+PASS zip: entire timeline at 30fps
+PASS zip: entire timeline at 60fps
+PASS zip: entire timeline at 144fps
+PASS turnLeft: entire timeline at 24fps
+PASS turnLeft: entire timeline at 30fps
+PASS turnLeft: entire timeline at 60fps
+PASS turnLeft: entire timeline at 144fps
+PASS turnRight: entire timeline at 24fps
+PASS turnRight: entire timeline at 30fps
+PASS turnRight: entire timeline at 60fps
+PASS turnRight: entire timeline at 144fps
+PASS jump: entire timeline at 24fps
+PASS jump: entire timeline at 30fps
+PASS jump: entire timeline at 60fps
+PASS jump: entire timeline at 144fps
+PASS land: entire timeline at 24fps
+PASS land: entire timeline at 30fps
+PASS land: entire timeline at 60fps
+PASS land: entire timeline at 144fps
+PASS jumpDown: entire timeline at 24fps
+PASS jumpDown: entire timeline at 30fps
+PASS jumpDown: entire timeline at 60fps
+PASS jumpDown: entire timeline at 144fps
+PASS drop: entire timeline at 24fps
+PASS drop: entire timeline at 30fps
+PASS drop: entire timeline at 60fps
+PASS drop: entire timeline at 144fps
+PASS jumpDownVariant: entire timeline at 24fps
+PASS jumpDownVariant: entire timeline at 30fps
+PASS jumpDownVariant: entire timeline at 60fps
+PASS jumpDownVariant: entire timeline at 144fps
+PASS swing: entire timeline at 24fps
+PASS swing: entire timeline at 30fps
+PASS swing: entire timeline at 60fps
+PASS swing: entire timeline at 144fps
+PASS fall: entire timeline at 24fps
+PASS fall: entire timeline at 30fps
+PASS fall: entire timeline at 60fps
+PASS fall: entire timeline at 144fps
+PASS fallVariant: entire timeline at 24fps
+PASS fallVariant: entire timeline at 30fps
+PASS fallVariant: entire timeline at 60fps
+PASS fallVariant: entire timeline at 144fps
+PASS fallIdle: entire timeline at 24fps
+PASS fallIdle: entire timeline at 30fps
+PASS fallIdle: entire timeline at 60fps
+PASS fallIdle: entire timeline at 144fps
+PASS roll: entire timeline at 24fps
+PASS roll: entire timeline at 30fps
+PASS roll: entire timeline at 60fps
+PASS roll: entire timeline at 144fps
+PASS injuredIdle: entire timeline at 24fps
+PASS injuredIdle: entire timeline at 30fps
+PASS injuredIdle: entire timeline at 60fps
+PASS injuredIdle: entire timeline at 144fps
+PASS wall: entire timeline at 24fps
+PASS wall: entire timeline at 30fps
+PASS wall: entire timeline at 60fps
+PASS wall: entire timeline at 144fps
+PASS combatIdle: entire timeline at 24fps
+PASS combatIdle: entire timeline at 30fps
+PASS combatIdle: entire timeline at 60fps
+PASS combatIdle: entire timeline at 144fps
+PASS jab: entire timeline at 24fps
+PASS jab: entire timeline at 30fps
+PASS jab: entire timeline at 60fps
+PASS jab: entire timeline at 144fps
+PASS guard: entire timeline at 24fps
+PASS guard: entire timeline at 30fps
+PASS guard: entire timeline at 60fps
+PASS guard: entire timeline at 144fps
+PASS slam: entire timeline at 24fps
+PASS slam: entire timeline at 30fps
+PASS slam: entire timeline at 60fps
+PASS slam: entire timeline at 144fps
+PASS slamLand: entire timeline at 24fps
+PASS slamLand: entire timeline at 30fps
+PASS slamLand: entire timeline at 60fps
+PASS slamLand: entire timeline at 144fps
+PASS hook: entire timeline at 24fps
+PASS hook: entire timeline at 30fps
+PASS hook: entire timeline at 60fps
+PASS hook: entire timeline at 144fps
+PASS heavy: entire timeline at 24fps
+PASS heavy: entire timeline at 30fps
+PASS heavy: entire timeline at 60fps
+PASS heavy: entire timeline at 144fps
+PASS hitHead: entire timeline at 24fps
+PASS hitHead: entire timeline at 30fps
+PASS hitHead: entire timeline at 60fps
+PASS hitHead: entire timeline at 144fps
+PASS rightHook: entire timeline at 24fps
+PASS rightHook: entire timeline at 30fps
+PASS rightHook: entire timeline at 60fps
+PASS rightHook: entire timeline at 144fps
+PASS cross: entire timeline at 24fps
+PASS cross: entire timeline at 30fps
+PASS cross: entire timeline at 60fps
+PASS cross: entire timeline at 144fps
+PASS airTrick: entire timeline at 24fps
+PASS airTrick: entire timeline at 30fps
+PASS airTrick: entire timeline at 60fps
+PASS airTrick: entire timeline at 144fps
+PASS special: entire timeline at 24fps
+PASS special: entire timeline at 30fps
+PASS special: entire timeline at 60fps
+PASS special: entire timeline at 144fps
+PASS candidateFront: entire timeline at 24fps
+PASS candidateFront: entire timeline at 30fps
+PASS candidateFront: entire timeline at 60fps
+PASS candidateFront: entire timeline at 144fps
+PASS candidateStylish: entire timeline at 24fps
+PASS candidateStylish: entire timeline at 30fps
+PASS candidateStylish: entire timeline at 60fps
+PASS candidateStylish: entire timeline at 144fps
+PASS 24fps complete procedural front trick, interruption and repeat
+PASS 30fps complete procedural front trick, interruption and repeat
+PASS 60fps complete procedural front trick, interruption and repeat
+PASS 144fps complete procedural front trick, interruption and repeat
+PASS 24fps remote rig plays every combat motion without modifying the source rig
+PASS 24fps remote rig reproduces and completes remaining airborne trick
+PASS 30fps remote rig plays every combat motion without modifying the source rig
+PASS 30fps remote rig reproduces and completes remaining airborne trick
+PASS 60fps remote rig plays every combat motion without modifying the source rig
+PASS 60fps remote rig reproduces and completes remaining airborne trick
+PASS 144fps remote rig plays every combat motion without modifying the source rig
+PASS 144fps remote rig reproduces and completes remaining airborne trick
+PASS 24fps every directed clip pair can reverse mid-blend without a pose snap
+PASS 30fps every directed clip pair can reverse mid-blend without a pose snap
+PASS 60fps every directed clip pair can reverse mid-blend without a pose snap
+PASS 144fps every directed clip pair can reverse mid-blend without a pose snap
+Complete motion review: 173 passed, 0 failed.
+RUN node scripts/check-motion-sources.mjs
+PASS public/models/Boxing Hook.fbx: mixamo.com / 121 source frames / runtime hook,heavy
+PASS public/models/Boxing Idle.fbx: mixamo.com / 134 source frames / preserved source or embedded fallback
+PASS public/models/Boxing Lead Jab.fbx: mixamo.com / 74 source frames / preserved source or embedded fallback
+PASS public/models/Boxing Stance.fbx: mixamo.com / 266 source frames / runtime combatIdle,rightHook
+PASS public/models/Climbing Up Wall.fbx: mixamo.com / 121 source frames / runtime wall
+PASS public/models/Cross Punch.fbx: mixamo.com / 121 source frames / runtime cross,special
+PASS public/models/Falling (2).fbx: mixamo.com / 271 source frames / runtime fall
+FBXLoader: TGA loader not found, skipping  ../../../../home/app/mixamo-mini/tmp/skins_5d7a3c57-f50e-41dd-a23f-7d0152a9df5c.fbm/RED CLASSIC.tga
+FBXLoader: TGA loader not found, creating placeholder texture for ../../../../home/app/mixamo-mini/tmp/skins_5d7a3c57-f50e-41dd-a23f-7d0152a9df5c.fbm/RED CLASSIC.tga
+THREE.FBXLoader: Vertex has more than 4 skinning weights assigned to vertex. Deleting additional weights.
+PASS public/models/Falling Idle.fbx: mixamo.com / 271 source frames / runtime fallIdle
+PASS public/models/Falling To Roll.fbx: mixamo.com / 130 source frames / runtime roll
+PASS public/models/Falling.fbx: mixamo.com / 271 source frames / runtime fallVariant
+PASS public/models/Fast Run.fbx: mixamo.com / 34 source frames / runtime run
+PASS public/models/Female Stop Walking.fbx: mixamo.com / 93 source frames / preserved source or embedded fallback
+PASS public/models/Front Flip.fbx: mixamo.com / 101 source frames / runtime airTrick
+FBXLoader: TGA loader not found, skipping  ../../../../home/app/mixamo-mini/tmp/skins_e57a88ac-3622-472c-96c7-e4a65b4e1321.fbm/RED CLASSIC.tga
+FBXLoader: TGA loader not found, creating placeholder texture for ../../../../home/app/mixamo-mini/tmp/skins_e57a88ac-3622-472c-96c7-e4a65b4e1321.fbm/RED CLASSIC.tga
+THREE.FBXLoader: Vertex has more than 4 skinning weights assigned to vertex. Deleting additional weights.
+PASS public/models/Idle.fbx: mixamo.com / 241 source frames / runtime idle
+PASS public/models/Injured Idle.fbx: mixamo.com / 561 source frames / runtime injuredIdle
+FBXLoader: TGA loader not found, skipping  ../../../../home/app/mixamo-mini/tmp/skins_34a61806-ed24-4a07-bd84-1318719d713e.fbm/RED CLASSIC.tga
+FBXLoader: TGA loader not found, creating placeholder texture for ../../../../home/app/mixamo-mini/tmp/skins_34a61806-ed24-4a07-bd84-1318719d713e.fbm/RED CLASSIC.tga
+THREE.FBXLoader: Vertex has more than 4 skinning weights assigned to vertex. Deleting additional weights.
+PASS public/models/Jogging.fbx: mixamo.com / 155 source frames / preserved source or embedded fallback
+PASS public/models/Jumping Down (1).fbx: mixamo.com / 139 source frames / runtime jumpDown,drop
+FBXLoader: TGA loader not found, skipping  ../../../../home/app/mixamo-mini/tmp/skins_0c50cb7a-75c3-48f2-bd97-2a4fff958284.fbm/RED CLASSIC.tga
+FBXLoader: TGA loader not found, creating placeholder texture for ../../../../home/app/mixamo-mini/tmp/skins_0c50cb7a-75c3-48f2-bd97-2a4fff958284.fbm/RED CLASSIC.tga
+THREE.FBXLoader: Vertex has more than 4 skinning weights assigned to vertex. Deleting additional weights.
+PASS public/models/Jumping Down.fbx: mixamo.com / 160 source frames / runtime jumpDownVariant
+PASS public/models/Lead Jab.fbx: mixamo.com / 82 source frames / runtime jab
+PASS public/models/Left Turn.fbx: mixamo.com / 58 source frames / runtime turnLeft
+PASS public/models/Mma Kick.fbx: mixamo.com / 98 source frames / preserved source or embedded fallback
+PASS public/models/Right Turn.fbx: mixamo.com / 58 source frames / runtime turnRight
+FBXLoader: TGA loader not found, skipping  ../../../../home/app/mixamo-mini/tmp/skins_883db11c-af78-4b49-a12b-ee4b2630fae0.fbm/RED CLASSIC.tga
+FBXLoader: TGA loader not found, creating placeholder texture for ../../../../home/app/mixamo-mini/tmp/skins_883db11c-af78-4b49-a12b-ee4b2630fae0.fbm/RED CLASSIC.tga
+THREE.FBXLoader: Vertex has more than 4 skinning weights assigned to vertex. Deleting additional weights.
+PASS public/models/Rope Swinging.fbx: mixamo.com / 268 source frames / runtime zip,swing
+PASS public/models/Run To Stop.fbx: mixamo.com / 55 source frames / runtime stop,runStop
+FBXLoader: TGA loader not found, skipping  ../../../../home/app/mixamo-mini/tmp/skins_cc1b17f1-7dd0-4c24-92bf-417033ef4f5d.fbm/RED CLASSIC.tga
+FBXLoader: TGA loader not found, creating placeholder texture for ../../../../home/app/mixamo-mini/tmp/skins_cc1b17f1-7dd0-4c24-92bf-417033ef4f5d.fbm/RED CLASSIC.tga
+THREE.FBXLoader: Vertex has more than 4 skinning weights assigned to vertex. Deleting additional weights.
+PASS public/models/Running.fbx: mixamo.com / 43 source frames / runtime regularRun
+FBXLoader: TGA loader not found, skipping  ../../../../home/app/mixamo-mini/tmp/skins_32bddd07-d28a-412d-ad28-a157f3dc5106.fbm/RED CLASSIC.tga
+FBXLoader: TGA loader not found, creating placeholder texture for ../../../../home/app/mixamo-mini/tmp/skins_32bddd07-d28a-412d-ad28-a157f3dc5106.fbm/RED CLASSIC.tga
+THREE.FBXLoader: Vertex has more than 4 skinning weights assigned to vertex. Deleting additional weights.
+PASS public/models/Standing Jump.fbx: mixamo.com / 143 source frames / runtime jump,land
+PASS public/models/Surprise Uppercut.fbx: mixamo.com / 211 source frames / preserved source or embedded fallback
+PASS public/models/Walking.fbx: mixamo.com / 59 source frames / runtime walk
+PASS public/models/sources/combat-addon.glb: Attack_Ground_Pound / 164 source frames / runtime slam
+PASS public/models/sources/combat-addon.glb: Defend / 59 source frames / runtime guard
+PASS public/models/sources/combat-addon.glb: Dodge_back / 61 source frames / preserved source or embedded fallback
+PASS public/models/sources/combat-addon.glb: Dodge_left / 51 source frames / preserved source or embedded fallback
+PASS public/models/sources/combat-addon.glb: Dodge_right / 51 source frames / preserved source or embedded fallback
+PASS public/models/sources/combat-addon.glb: Fighting Idle / 104 source frames / preserved source or embedded fallback
+PASS public/models/sources/combat-addon.glb: Fighting Left Jab / 57 source frames / preserved source or embedded fallback
+PASS public/models/sources/combat-addon.glb: Fighting Right Jab / 57 source frames / preserved source or embedded fallback
+PASS public/models/sources/combat-addon.glb: Land_Three_Point / 84 source frames / runtime slamLand
+PASS public/models/sources/combat-base.glb: Hit_Chest / 26 source frames / preserved source or embedded fallback
+PASS public/models/sources/combat-base.glb: Hit_Head / 34 source frames / runtime hitHead
+PASS public/models/sources/combat-base.glb: Melee_Hook / 29 source frames / preserved source or embedded fallback
+PASS public/models/sources/combat-base.glb: Punch_Cross / 76 source frames / preserved source or embedded fallback
+PASS public/models/sources/combat-base.glb: Roll / 112 source frames / preserved source or embedded fallback
+PASS public/models/sources/mesh2motion-climb.glb: Climb Wall / 126 source frames / preserved source or embedded fallback
+Source review: 34 files / 43 animated takes / 5430 frames / 0 failures.
+RUN node scripts/check-web-hand-pose.mjs
+PASS 24fps left: anatomical third-person shooting, held grip and clean release
+PASS 24fps left: a missed shot articulates, expires and never attaches
+PASS 24fps right: anatomical third-person shooting, held grip and clean release
+PASS 24fps right: a missed shot articulates, expires and never attaches
+PASS 30fps left: anatomical third-person shooting, held grip and clean release
+PASS 30fps left: a missed shot articulates, expires and never attaches
+PASS 30fps right: anatomical third-person shooting, held grip and clean release
+PASS 30fps right: a missed shot articulates, expires and never attaches
+PASS 60fps left: anatomical third-person shooting, held grip and clean release
+PASS 60fps left: a missed shot articulates, expires and never attaches
+PASS 60fps right: anatomical third-person shooting, held grip and clean release
+PASS 60fps right: a missed shot articulates, expires and never attaches
+PASS 144fps left: anatomical third-person shooting, held grip and clean release
+PASS 144fps left: a missed shot articulates, expires and never attaches
+PASS 144fps right: anatomical third-person shooting, held grip and clean release
+PASS 144fps right: a missed shot articulates, expires and never attaches
+PASS 24fps: both hands can shoot and release independently
+PASS 24fps: web fingers cannot overwrite combat or wall contact fingers
+PASS 24fps: remote hit/miss/dual hand gestures and stale cleanup use independent skin
+PASS 30fps: both hands can shoot and release independently
+PASS 30fps: web fingers cannot overwrite combat or wall contact fingers
+PASS 30fps: remote hit/miss/dual hand gestures and stale cleanup use independent skin
+PASS 60fps: both hands can shoot and release independently
+PASS 60fps: web fingers cannot overwrite combat or wall contact fingers
+PASS 60fps: remote hit/miss/dual hand gestures and stale cleanup use independent skin
+PASS 144fps: both hands can shoot and release independently
+PASS 144fps: web fingers cannot overwrite combat or wall contact fingers
+PASS 144fps: remote hit/miss/dual hand gestures and stale cleanup use independent skin
+PASS Remote shot capture validates handedness, expiry, target and payload size
+PASS A new remote character never inherits the local firing fingers
+Web hand pose: 30 passed, 0 failed.
+RUN node scripts/check-silk-gait.mjs
+PASS 24fps walk: slope 0/0, ankle continuity and toe clearance
+PASS 24fps walk: slope 0/0.3, ankle continuity and toe clearance
+PASS 24fps walk: slope 0/-0.3, ankle continuity and toe clearance
+PASS 24fps walk: slope 0.3/0, ankle continuity and toe clearance
+PASS 24fps walk: slope 0.4/0.2, ankle continuity and toe clearance
+PASS 24fps regularRun: slope 0/0, ankle continuity and toe clearance
+PASS 24fps regularRun: slope 0/0.3, ankle continuity and toe clearance
+PASS 24fps regularRun: slope 0/-0.3, ankle continuity and toe clearance
+PASS 24fps regularRun: slope 0.3/0, ankle continuity and toe clearance
+PASS 24fps regularRun: slope 0.4/0.2, ankle continuity and toe clearance
+PASS 24fps run: slope 0/0, ankle continuity and toe clearance
+PASS 24fps run: slope 0/0.3, ankle continuity and toe clearance
+PASS 24fps run: slope 0/-0.3, ankle continuity and toe clearance
+PASS 24fps run: slope 0.3/0, ankle continuity and toe clearance
+PASS 24fps run: slope 0.4/0.2, ankle continuity and toe clearance
+PASS 30fps walk: slope 0/0, ankle continuity and toe clearance
+PASS 30fps walk: slope 0/0.3, ankle continuity and toe clearance
+PASS 30fps walk: slope 0/-0.3, ankle continuity and toe clearance
+PASS 30fps walk: slope 0.3/0, ankle continuity and toe clearance
+PASS 30fps walk: slope 0.4/0.2, ankle continuity and toe clearance
+PASS 30fps regularRun: slope 0/0, ankle continuity and toe clearance
+PASS 30fps regularRun: slope 0/0.3, ankle continuity and toe clearance
+PASS 30fps regularRun: slope 0/-0.3, ankle continuity and toe clearance
+PASS 30fps regularRun: slope 0.3/0, ankle continuity and toe clearance
+PASS 30fps regularRun: slope 0.4/0.2, ankle continuity and toe clearance
+PASS 30fps run: slope 0/0, ankle continuity and toe clearance
+PASS 30fps run: slope 0/0.3, ankle continuity and toe clearance
+PASS 30fps run: slope 0/-0.3, ankle continuity and toe clearance
+PASS 30fps run: slope 0.3/0, ankle continuity and toe clearance
+PASS 30fps run: slope 0.4/0.2, ankle continuity and toe clearance
+PASS 60fps walk: slope 0/0, ankle continuity and toe clearance
+PASS 60fps walk: slope 0/0.3, ankle continuity and toe clearance
+PASS 60fps walk: slope 0/-0.3, ankle continuity and toe clearance
+PASS 60fps walk: slope 0.3/0, ankle continuity and toe clearance
+PASS 60fps walk: slope 0.4/0.2, ankle continuity and toe clearance
+PASS 60fps regularRun: slope 0/0, ankle continuity and toe clearance
+PASS 60fps regularRun: slope 0/0.3, ankle continuity and toe clearance
+PASS 60fps regularRun: slope 0/-0.3, ankle continuity and toe clearance
+PASS 60fps regularRun: slope 0.3/0, ankle continuity and toe clearance
+PASS 60fps regularRun: slope 0.4/0.2, ankle continuity and toe clearance
+PASS 60fps run: slope 0/0, ankle continuity and toe clearance
+PASS 60fps run: slope 0/0.3, ankle continuity and toe clearance
+PASS 60fps run: slope 0/-0.3, ankle continuity and toe clearance
+PASS 60fps run: slope 0.3/0, ankle continuity and toe clearance
+PASS 60fps run: slope 0.4/0.2, ankle continuity and toe clearance
+PASS 144fps walk: slope 0/0, ankle continuity and toe clearance
+PASS 144fps walk: slope 0/0.3, ankle continuity and toe clearance
+PASS 144fps walk: slope 0/-0.3, ankle continuity and toe clearance
+PASS 144fps walk: slope 0.3/0, ankle continuity and toe clearance
+PASS 144fps walk: slope 0.4/0.2, ankle continuity and toe clearance
+PASS 144fps regularRun: slope 0/0, ankle continuity and toe clearance
+PASS 144fps regularRun: slope 0/0.3, ankle continuity and toe clearance
+PASS 144fps regularRun: slope 0/-0.3, ankle continuity and toe clearance
+PASS 144fps regularRun: slope 0.3/0, ankle continuity and toe clearance
+PASS 144fps regularRun: slope 0.4/0.2, ankle continuity and toe clearance
+PASS 144fps run: slope 0/0, ankle continuity and toe clearance
+PASS 144fps run: slope 0/0.3, ankle continuity and toe clearance
+PASS 144fps run: slope 0/-0.3, ankle continuity and toe clearance
+PASS 144fps run: slope 0.3/0, ankle continuity and toe clearance
+PASS 144fps run: slope 0.4/0.2, ankle continuity and toe clearance
+PASS 24fps walk/jog/run/sprint, stop, turn and jump sequence
+PASS 30fps walk/jog/run/sprint, stop, turn and jump sequence
+PASS 60fps walk/jog/run/sprint, stop, turn and jump sequence
+PASS 144fps walk/jog/run/sprint, stop, turn and jump sequence
+PASS 24fps roof handoff preserves ankle orientation and final boot clearance
+PASS 30fps roof handoff preserves ankle orientation and final boot clearance
+PASS 60fps roof handoff preserves ankle orientation and final boot clearance
+PASS 144fps roof handoff preserves ankle orientation and final boot clearance
+PASS Silk geometry: tapered ends, exposed fibers, tangent normals and reusable buffers
+PASS Silk frame remains continuous when a swinging anchor crosses vertical
+PASS Slack silk sags, a taut strand settles, missed shots fade without a ghost attachment
+Silk/gait: 71 passed, 0 failed.
+RUN node scripts/check-wall-crawl.mjs
+PASS 24fps climb / facade 0 / close
+PASS 24fps climb / facade 0 / follow
+PASS 24fps climb / facade 0 / swing
+PASS 24fps sprint / facade 0 / close
+PASS 24fps sprint / facade 0 / follow
+PASS 24fps sprint / facade 0 / swing
+PASS 24fps diagonal / facade 0 / close
+PASS 24fps diagonal / facade 0 / follow
+PASS 24fps diagonal / facade 0 / swing
+PASS 24fps climb / facade 90 / close
+PASS 24fps climb / facade 90 / follow
+PASS 24fps climb / facade 90 / swing
+PASS 24fps sprint / facade 90 / close
+PASS 24fps sprint / facade 90 / follow
+PASS 24fps sprint / facade 90 / swing
+PASS 24fps diagonal / facade 90 / close
+PASS 24fps diagonal / facade 90 / follow
+PASS 24fps diagonal / facade 90 / swing
+PASS 24fps climb / facade 180 / close
+PASS 24fps climb / facade 180 / follow
+PASS 24fps climb / facade 180 / swing
+PASS 24fps sprint / facade 180 / close
+PASS 24fps sprint / facade 180 / follow
+PASS 24fps sprint / facade 180 / swing
+PASS 24fps diagonal / facade 180 / close
+PASS 24fps diagonal / facade 180 / follow
+PASS 24fps diagonal / facade 180 / swing
+PASS 24fps climb / facade 270 / close
+PASS 24fps climb / facade 270 / follow
+PASS 24fps climb / facade 270 / swing
+PASS 24fps sprint / facade 270 / close
+PASS 24fps sprint / facade 270 / follow
+PASS 24fps sprint / facade 270 / swing
+PASS 24fps diagonal / facade 270 / close
+PASS 24fps diagonal / facade 270 / follow
+PASS 24fps diagonal / facade 270 / swing
+PASS 30fps climb / facade 0 / close
+PASS 30fps climb / facade 0 / follow
+PASS 30fps climb / facade 0 / swing
+PASS 30fps sprint / facade 0 / close
+PASS 30fps sprint / facade 0 / follow
+PASS 30fps sprint / facade 0 / swing
+PASS 30fps diagonal / facade 0 / close
+PASS 30fps diagonal / facade 0 / follow
+PASS 30fps diagonal / facade 0 / swing
+PASS 30fps climb / facade 90 / close
+PASS 30fps climb / facade 90 / follow
+PASS 30fps climb / facade 90 / swing
+PASS 30fps sprint / facade 90 / close
+PASS 30fps sprint / facade 90 / follow
+PASS 30fps sprint / facade 90 / swing
+PASS 30fps diagonal / facade 90 / close
+PASS 30fps diagonal / facade 90 / follow
+PASS 30fps diagonal / facade 90 / swing
+PASS 30fps climb / facade 180 / close
+PASS 30fps climb / facade 180 / follow
+PASS 30fps climb / facade 180 / swing
+PASS 30fps sprint / facade 180 / close
+PASS 30fps sprint / facade 180 / follow
+PASS 30fps sprint / facade 180 / swing
+PASS 30fps diagonal / facade 180 / close
+PASS 30fps diagonal / facade 180 / follow
+PASS 30fps diagonal / facade 180 / swing
+PASS 30fps climb / facade 270 / close
+PASS 30fps climb / facade 270 / follow
+PASS 30fps climb / facade 270 / swing
+PASS 30fps sprint / facade 270 / close
+PASS 30fps sprint / facade 270 / follow
+PASS 30fps sprint / facade 270 / swing
+PASS 30fps diagonal / facade 270 / close
+PASS 30fps diagonal / facade 270 / follow
+PASS 30fps diagonal / facade 270 / swing
+PASS 60fps climb / facade 0 / close
+PASS 60fps climb / facade 0 / follow
+PASS 60fps climb / facade 0 / swing
+PASS 60fps sprint / facade 0 / close
+PASS 60fps sprint / facade 0 / follow
+PASS 60fps sprint / facade 0 / swing
+PASS 60fps diagonal / facade 0 / close
+PASS 60fps diagonal / facade 0 / follow
+PASS 60fps diagonal / facade 0 / swing
+PASS 60fps climb / facade 90 / close
+PASS 60fps climb / facade 90 / follow
+PASS 60fps climb / facade 90 / swing
+PASS 60fps sprint / facade 90 / close
+PASS 60fps sprint / facade 90 / follow
+PASS 60fps sprint / facade 90 / swing
+PASS 60fps diagonal / facade 90 / close
+PASS 60fps diagonal / facade 90 / follow
+PASS 60fps diagonal / facade 90 / swing
+PASS 60fps climb / facade 180 / close
+PASS 60fps climb / facade 180 / follow
+PASS 60fps climb / facade 180 / swing
+PASS 60fps sprint / facade 180 / close
+PASS 60fps sprint / facade 180 / follow
+PASS 60fps sprint / facade 180 / swing
+PASS 60fps diagonal / facade 180 / close
+PASS 60fps diagonal / facade 180 / follow
+PASS 60fps diagonal / facade 180 / swing
+PASS 60fps climb / facade 270 / close
+PASS 60fps climb / facade 270 / follow
+PASS 60fps climb / facade 270 / swing
+PASS 60fps sprint / facade 270 / close
+PASS 60fps sprint / facade 270 / follow
+PASS 60fps sprint / facade 270 / swing
+PASS 60fps diagonal / facade 270 / close
+PASS 60fps diagonal / facade 270 / follow
+PASS 60fps diagonal / facade 270 / swing
+PASS 144fps climb / facade 0 / close
+PASS 144fps climb / facade 0 / follow
+PASS 144fps climb / facade 0 / swing
+PASS 144fps sprint / facade 0 / close
+PASS 144fps sprint / facade 0 / follow
+PASS 144fps sprint / facade 0 / swing
+PASS 144fps diagonal / facade 0 / close
+PASS 144fps diagonal / facade 0 / follow
+PASS 144fps diagonal / facade 0 / swing
+PASS 144fps climb / facade 90 / close
+PASS 144fps climb / facade 90 / follow
+PASS 144fps climb / facade 90 / swing
+PASS 144fps sprint / facade 90 / close
+PASS 144fps sprint / facade 90 / follow
+PASS 144fps sprint / facade 90 / swing
+PASS 144fps diagonal / facade 90 / close
+PASS 144fps diagonal / facade 90 / follow
+PASS 144fps diagonal / facade 90 / swing
+PASS 144fps climb / facade 180 / close
+PASS 144fps climb / facade 180 / follow
+PASS 144fps climb / facade 180 / swing
+PASS 144fps sprint / facade 180 / close
+PASS 144fps sprint / facade 180 / follow
+PASS 144fps sprint / facade 180 / swing
+PASS 144fps diagonal / facade 180 / close
+PASS 144fps diagonal / facade 180 / follow
+PASS 144fps diagonal / facade 180 / swing
+PASS 144fps climb / facade 270 / close
+PASS 144fps climb / facade 270 / follow
+PASS 144fps climb / facade 270 / swing
+PASS 144fps sprint / facade 270 / close
+PASS 144fps sprint / facade 270 / follow
+PASS 144fps sprint / facade 270 / swing
+PASS 144fps diagonal / facade 270 / close
+PASS 144fps diagonal / facade 270 / follow
+PASS 144fps diagonal / facade 270 / swing
+PASS 24fps third-person silk uses the same taper, fibers, shot ownership and cleanup
+PASS 30fps third-person silk uses the same taper, fibers, shot ownership and cleanup
+PASS 60fps third-person silk uses the same taper, fibers, shot ownership and cleanup
+PASS 144fps third-person silk uses the same taper, fibers, shot ownership and cleanup
+PASS Actual facade physics selects a crawl cadence and a separate held sprint
+Wall crawl/views: 149 passed, 0 failed.
+RUN node scripts/check-natural-wall-motion.mjs
+Natural crawl: 36/36 appearance/frame-rate/facade and skin cases passed
+RUN node scripts/check-end-joint-stability.mjs
+Completed final joint timelines and transitions for web
+Completed final joint timelines and transitions for combat
+End-joint final-output audit: 272/272 passed; 41632 frames; 33 registered motions
+RUN node scripts/check-limb-continuity.mjs
+PASS web 24 runStop 33.5deg/s
+PASS web 24 slamLand 113.1deg/s
+PASS web 24 hook 16.1deg/s
+PASS web 24 wall-steering 477.1deg/s
+PASS web 30 runStop 49.9deg/s
+PASS web 30 slamLand 103.6deg/s
+PASS web 30 hook 20.4deg/s
+PASS web 30 wall-steering 392.6deg/s
+PASS web 60 runStop 78.7deg/s
+PASS web 60 slamLand 175.0deg/s
+PASS web 60 hook 35.0deg/s
+PASS web 60 wall-steering 399.6deg/s
+PASS web 144 runStop 93.3deg/s
+PASS web 144 slamLand 334.0deg/s
+PASS web 144 hook 91.1deg/s
+PASS web 144 wall-steering 408.2deg/s
+PASS combat 24 runStop 35.2deg/s
+PASS combat 24 slamLand 113.9deg/s
+PASS combat 24 hook 17.6deg/s
+PASS combat 24 wall-steering 477.1deg/s
+PASS combat 30 runStop 51.0deg/s
+PASS combat 30 slamLand 104.9deg/s
+PASS combat 30 hook 21.4deg/s
+PASS combat 30 wall-steering 392.6deg/s
+PASS combat 60 runStop 80.6deg/s
+PASS combat 60 slamLand 176.5deg/s
+PASS combat 60 hook 53.2deg/s
+PASS combat 60 wall-steering 399.6deg/s
+PASS combat 144 runStop 94.6deg/s
+PASS combat 144 slamLand 337.2deg/s
+PASS combat 144 hook 107.7deg/s
+PASS combat 144 wall-steering 408.2deg/s
+RUN node scripts/check-turn-joint-stability.mjs
+Completed turn/contact/recovery matrix: web
+Completed turn/contact/recovery matrix: combat
+Turn final-joint audit: 64/64; 6864 frames
+RUN node scripts/check-motion-cleanup.mjs
+PASS Requested motions are absent from catalog, generated assets and loaded actors
+PASS Every retained compiled motion respects ankle, wrist and toe limits between keyframes
+PASS 24fps walk, run, sprint, stop, slope and all retained combat poses
+PASS 24fps climb, diagonal and sprint on facade 0
+PASS 24fps climb, diagonal and sprint on facade 90
+PASS 24fps climb, diagonal and sprint on facade 180
+PASS 24fps climb, diagonal and sprint on facade 270
+PASS 24fps actual wall → parapet → roof: joint bounds, grip, clearance and continuity
+PASS 30fps walk, run, sprint, stop, slope and all retained combat poses
+PASS 30fps climb, diagonal and sprint on facade 0
+PASS 30fps climb, diagonal and sprint on facade 90
+PASS 30fps climb, diagonal and sprint on facade 180
+PASS 30fps climb, diagonal and sprint on facade 270
+PASS 30fps actual wall → parapet → roof: joint bounds, grip, clearance and continuity
+PASS 60fps walk, run, sprint, stop, slope and all retained combat poses
+PASS 60fps climb, diagonal and sprint on facade 0
+PASS 60fps climb, diagonal and sprint on facade 90
+PASS 60fps climb, diagonal and sprint on facade 180
+PASS 60fps climb, diagonal and sprint on facade 270
+PASS 60fps actual wall → parapet → roof: joint bounds, grip, clearance and continuity
+PASS 144fps walk, run, sprint, stop, slope and all retained combat poses
+PASS 144fps climb, diagonal and sprint on facade 0
+PASS 144fps climb, diagonal and sprint on facade 90
+PASS 144fps climb, diagonal and sprint on facade 180
+PASS 144fps climb, diagonal and sprint on facade 270
+PASS 144fps actual wall → parapet → roof: joint bounds, grip, clearance and continuity
+Motion cleanup: 26 passed, 0 failed
+RUN node scripts/check-combat-traversal.mjs
+PASS movement strikes at 24/60/144 FPS, imported rear straights, retained hook, final ankle limits, web/flip exclusion, grace/cooldown, confirmed-hit-only feedback
+RUN node scripts/check-combat-aim.mjs
+PASS shared reticle gate, no off-aim damage/cooldown, no traversal during aimed cooldown/occlusion, frame-independent keyboard aim
+RUN node scripts/check-combat-quality.mjs
+PASS 24 combat quality cases: curved right hook, imported rear power cross, contact timing, running/sprinting at 24/60/144 FPS, bounded rendered joints
+RUN node scripts/check-combat-feet.mjs
+PASS: 45 continuous and 75 held combat/return-to-guard foot cases at 24/60/144 FPS, standing/running/sprinting
+PASS remaining suites 26
