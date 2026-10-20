@@ -7,7 +7,7 @@ const camera=new THREE.PerspectiveCamera(65,16/9,.2,1000);
 camera.position.set(0,1,0);camera.lookAt(0,1,10);camera.updateMatrixWorld(true);
 let sends=0,charges=0,shots=0,available=true,blocked=false;
 const runner={id:'runner',team:'runner',name:'Runner',seen:true,x:3,y:0,z:10};
-const online={id:'cop',players:[{id:'cop',team:'police'},runner],room:{phase:'playing'},
+const online={id:'cop',players:[{id:'cop',team:'police'},runner],room:{phase:'playing',mode:'tag'},
  game:{camera,physics:{position:new THREE.Vector3()},city:{raycast:()=>blocked?{}:null}},
  send(){sends++;},feedback:{canFire(){charges++;return available;},sent(){shots++;},show(){}},
 };

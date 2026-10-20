@@ -11,7 +11,7 @@ export function createRoomServer({terrain=new HongKongTerrain(),origins=['https:
   const path=new URL(req.url,'http://localhost').pathname;
   if(path!=='/healthz'){res.writeHead(404);res.end('Not found');return;}
   if(!['GET','HEAD'].includes(req.method)){res.writeHead(405,{Allow:'GET, HEAD'});res.end();return;}
-  const data=JSON.stringify({status:stopping?'stopping':'ready',transport:'websocket',authority:'server-owned-rooms',uptimeSeconds:Math.floor((Date.now()-started)/1000),terrainSeedWarm:warm,terrainSeedStatus:warmStatus});
+  const data=JSON.stringify({status:stopping?'stopping':'ready',transport:'websocket',authority:'server-owned-rooms',protocol:2,features:['custom-matches','named-targets','attack-results'],revision:process.env.RENDER_GIT_COMMIT||null,uptimeSeconds:Math.floor((Date.now()-started)/1000),terrainSeedWarm:warm,terrainSeedStatus:warmStatus});
   res.writeHead(stopping?503:200,{'Content-Type':'application/json','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'});res.end(req.method==='HEAD'?undefined:data);
  });
  server.maxConnections=256;

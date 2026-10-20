@@ -3,7 +3,10 @@ import {createServer} from 'node:http';
 import WebSocket from 'ws';
 import {attachRooms} from './rooms.mjs';
 import {MATCH} from '../src/MatchRules.js';
-const server=createServer((q,r)=>r.end('ok'));const api=attachRooms(server);await new Promise(r=>server.listen(0,'127.0.0.1',r));
+// This suite checks match flow, not upstream geometry availability. Actual
+// official tiles are verified separately by check-hong-kong-terrain.mjs.
+let visibility='CLEAR';
+const server=createServer((q,r)=>r.end('ok'));const api=attachRooms(server,{terrain:{visibility:async()=>({status:visibility,version:'online-flow-fixture'})}});await new Promise(r=>server.listen(0,'127.0.0.1',r));
 const sockets=[];const open=()=>new Promise((resolve,reject)=>{const ws=new WebSocket(`ws://127.0.0.1:${server.address().port}/ws`);ws.events=[];ws.on('message',b=>ws.events.push(JSON.parse(b)));ws.once('error',reject);ws.once('open',()=>{sockets.push(ws);resolve(ws);});});
 const send=(ws,d)=>ws.send(JSON.stringify(d));const sleep=ms=>new Promise(r=>setTimeout(r,ms));const wait=async(ws,p)=>{for(let i=0;i<1000;i++){const index=ws.events.findIndex(p);if(index>=0)return ws.events.splice(index,1)[0];await sleep(10);}throw Error('Missing event '+JSON.stringify(ws.events));};
 try {
@@ -15,6 +18,7 @@ try {
  send(police,{type:'move',x:0,y:50,z:0,facing:0});send(runner,{type:'move',x:0,y:50,z:2,facing:0});await wait(police,e=>e.type==='move'&&e.z===2);
  send(police,{type:'attack',kind:'punch',facing:0});send(runner,{type:'hit-confirm',hitId:'forged',clear:false});const hit=await wait(runner,e=>e.type==='hit');assert.equal(hit.health,75);
  send(runner,{type:'hit-confirm',hitId:'forged',clear:true});await sleep(40);assert(!runner.events.some(e=>e.type==='hit'));
+ visibility='BLOCKED';await sleep(MATCH.punch.cooldown+20);send(police,{type:'move',x:0,y:50,z:0,facing:0});await sleep(50);send(police,{type:'attack',kind:'punch',facing:0});await sleep(60);assert(!runner.events.some(e=>e.type==='hit'),'Blocked terrain allowed damage');visibility='CLEAR';
 
  send(runner,{type:'move',x:1000,y:50,z:0,facing:0});await wait(runner,e=>e.type==='correction');
  const closedId=runner===a?joinedA:joinedB;runner.close();await sleep(50);assert.equal(api.rooms.get(code).players.size,2);const resumed=await open();send(resumed,{type:'resume',code,token:closedId.resumeToken});const restored=await wait(resumed,e=>e.type==='joined');assert.equal(restored.id,closedId.id);

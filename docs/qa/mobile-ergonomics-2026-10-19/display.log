@@ -1,0 +1,5 @@
+
+> shadow-pulse@1.0.0 test:display
+> node scripts/check-display-mode.mjs
+
+PASS 9 display cases: native enter/exit, browser Escape, WebKit, denied/unsupported fallback, standalone, rapid presses, portrait/landscape renderer sizing

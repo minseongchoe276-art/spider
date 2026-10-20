@@ -49,7 +49,7 @@ try {
   const graceIds=await Promise.all(players.map(ws=>wait(ws,v=>v.type==='joined').then(v=>v.id)));
   const gracePolice=players[graceIds.indexOf(graceStart.players.find(p=>p.team==='police').id)];
   const graceRunner=players[graceIds.indexOf(graceStart.players.find(p=>p.team==='runner').id)];
-  send(gracePolice,{type:'move',x:0,y:0,z:0,facing:0});send(graceRunner,{type:'move',x:0,y:0,z:2,facing:0});
+  send(gracePolice,{type:'move',x:0,y:200,z:0,facing:0});send(graceRunner,{type:'move',x:0,y:200,z:2,facing:0});
   await wait(gracePolice,v=>v.type==='move');
   send(gracePolice,{type:'attack',kind:'punch',facing:0});
   assert(!(await quiet(graceRunner)).some(v=>v.type==='hit'),'A punch landed during the opening grace');
@@ -80,7 +80,7 @@ try {
   const bystander=players[ids.indexOf(runnerIds[1])];
   send(police,{type:'attack',kind:'punch',facing:0});
   assert(!(await quiet(runner,200)).some(v=>v.type==='hit'),'An unseen police punch hit a stacked origin');
-  send(police,{type:'move',x:0,y:0,z:0,facing:0});send(runner,{type:'move',x:0,y:0,z:2,facing:0});
+  send(police,{type:'move',x:0,y:200,z:0,facing:0});send(runner,{type:'move',x:0,y:200,z:2,facing:0});
   await wait(police,v=>v.type==='move'&&v.id===runnerIds[0]);
   send(runner,{type:'attack',kind:'punch',facing:0});
   assert(!(await quiet(police,200)).some(v=>v.type==='hit'),'A runner attack dealt damage');
@@ -90,13 +90,15 @@ try {
   send(police,{type:'attack',kind:'punch',facing:0});
   assert(!(await quiet(runner,200)).some(v=>v.type==='hit'),'A second punch ignored its cooldown');
   await sleep(580);
-  send(runner,{type:'move',x:2,y:0,z:0.5,facing:0});
+  send(runner,{type:'move',x:2,y:200,z:0.5,facing:0});
   await wait(police,v=>v.type==='move'&&v.x===2);
   send(police,{type:'attack',kind:'punch',facing:0});
   assert(!(await quiet(runner,200)).some(v=>v.type==='hit'),'A punch outside the facing cone still hit');
   await sleep(580);
-  send(bystander,{type:'move',x:0,y:0,z:10,facing:0});
+  send(bystander,{type:'move',x:0,y:200,z:10,facing:0});
   await wait(police,v=>v.type==='move'&&v.id===runnerIds[1]);
+  send(police,{type:'move',x:0,y:200,z:0,facing:0});
+  await wait(police,v=>v.type==='move'&&v.id===policeId);
   send(police,{type:'attack',kind:'web',facing:0});
   const web=await wait(bystander,v=>v.type==='hit'&&v.kind==='web');
   assert.equal(web.health,85);
@@ -104,22 +106,24 @@ try {
   // feedback component used by both network transports.
   let hitSounds=0,impacts=0;const messages=[];
   const feedbackGame={showNotice:text=>messages.push(text),audio:{playCombatHit(){hitSounds++;}},vfx:{spawnWebImpact(){impacts++;}}};
-  const feedback=new CombatFeedback(feedbackGame),target={id:web.target,x:0,y:0,z:10,health:100};
+  const feedback=new CombatFeedback(feedbackGame),target={id:web.target,x:0,y:200,z:10,health:100};
   const receiving={id:web.attacker,players:[target],game:feedbackGame,feedback,renderHud(){},syncAvatars(){}};
   feedback.sent('web',target);assert.equal(hitSounds,0,'An aim prediction confirmed a hit');
   Multiplayer.prototype.message.call(receiving,web);
   assert.equal(target.health,85);assert.equal(hitSounds,1);assert.equal(impacts,1);
   assert(messages.at(-1).includes('−15')&&messages.at(-1).includes('85'),'Authoritative hit lacked damage/HP feedback');
   console.log('PASS actual WebSocket hit -> client HP, confirmed-only audio, impact and damage feedback');
-  send(runner,{type:'move',x:0,y:0,z:2,facing:0});
+  send(runner,{type:'move',x:0,y:200,z:2,facing:0});
   await wait(police,v=>v.type==='move'&&v.id===runnerIds[0]&&v.z===2);
   for(const health of [50,25,0]){
     await sleep(580);
+    send(police,{type:'move',x:0,y:200,z:0,facing:0});send(runner,{type:'move',x:0,y:200,z:2,facing:0});
+    await wait(police,v=>v.type==='move'&&v.id===runnerIds[0]);
     send(police,{type:'attack',kind:'punch',facing:0});
     const next=await wait(runner,v=>v.type==='hit'&&v.kind==='punch'&&v.target===runnerIds[0]);
     assert.equal(next.health,health);
   }
-  send(runner,{type:'move',x:3,y:0,z:2,facing:0});
+  send(runner,{type:'move',x:3,y:200,z:2,facing:0});
   send(runner,{type:'attack',kind:'punch',facing:0});
   const afterOut=await quiet(police,250);
   assert(!afterOut.some(v=>v.type==='move'&&v.id===runnerIds[0]&&v.x===3),'An eliminated runner still published a move');

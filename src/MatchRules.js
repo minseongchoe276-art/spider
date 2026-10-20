@@ -16,8 +16,8 @@ export const policeCount = players => players >= 7 ? 2 : 1;
 // farther apart than a web shot. Free play spreads around a circle.
 export function teamOffset(index, team, count) {
   const column = index - (Math.max(count, 1) - 1) / 2;
-  if (team === 'police') return { x: column * 4, z: -28 };
-  if (team === 'runner') return { x: column * 4, z: 28 };
+  if ((team === 'police'||team==='red')) return { x: column * 4, z: -28 };
+  if ((team === 'runner'||team==='blue')) return { x: column * 4, z: 28 };
   const angle = (index / Math.max(count, 1)) * Math.PI * 2;
   return { x: Math.cos(angle) * 10, z: Math.sin(angle) * 10 };
 }

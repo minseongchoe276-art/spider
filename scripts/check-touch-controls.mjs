@@ -31,3 +31,39 @@ assert(calls.some(c=>c[0]===0&&c[1]===false)&&calls.some(c=>c[0]===2&&c[1]===fal
 const jump=target({key:'jump'});controls.down(event(4,jump));game.isPaused=true;controls.move(event(4,jump,70,70));
 assert.equal(controls.pointers.size,0);assert(calls.some(c=>c[0]==='jump'&&c[1]===false));
 console.log('PASS: stick deadzone/directions/sprint/clamp, three simultaneous touches, held-web look, independent release, cancel and pause cleanup');
+
+game.isPaused=false;stick.style={};
+controls.moveZone={getBoundingClientRect:()=>({x:10,y:100,width:180,height:400})};
+controls.down(event(10,movement,66,220));
+assert(!game.touchDirections.forward&&!game.touchDirections.left,'Floating stick must start neutral even near the screen edge');
+controls.move(event(10,movement,66,160));assert(game.touchDirections.forward&&game.touchDirections.sprint);
+assert.equal(stick.style.left,'10px','Floating stick coordinates must include the movement zone offset');
+controls.down(event(11,right));controls.up({pointerId:10});
+assert(controls.pointers.has(11),'Releasing movement cancelled the held offhand');
+assert.equal(controls.stickOrigin,null);assert.equal(stick.style.top,'');controls.release();
+const lookCalls=()=>calls.filter(c=>c[0]==='look').length;
+const before=lookCalls();controls.down(event(12,jump,100,100));
+controls.move(event(12,jump,103,101));assert.equal(lookCalls(),before,'Button jitter moved the camera');
+controls.move(event(12,jump,120,100));assert.equal(lookCalls(),before+1,'Held jump cannot drag to aim');
+controls.up({pointerId:12});assert.equal(controls.pointers.size,0);
+console.log('PASS: floating stick neutral acquisition, screen-edge origin, sprint drag, offhand independence, rest-position reset, jump drag aiming and jitter rejection');
+
+const oldDocument=globalThis.document;
+try{
+ globalThis.document={body:{classList:cls}};let writes=0;
+ const caption=()=>({textContent:''});
+ const button=()=>{const span=caption();return {hidden:false,dataset:{},querySelector:s=>s==='span'?span:{setAttribute(){writes++;}},setAttribute(){writes++;}};};
+ const mode=button(),zip=caption(),buttons=Object.fromEntries(['wall','guard','trick','heavy'].map(k=>[k,button()]));
+ const webButtons=[0,2].map(n=>Object.assign(button(),{dataset:{mouse:String(n)}}));
+ controls.root={dataset:{},querySelector:s=>s==='.touch-mode'?mode:s==='.touch-zip span'?zip:buttons[s.match(/data-key="(\w+)"/)?.[1]],querySelectorAll:()=>webButtons};
+ controls.extra={hidden:true};controls.announced=true;game.combat={mode:'web'};game.physics.state='IDLE';
+ controls.update();assert(buttons.guard.hidden&&buttons.heavy.hidden&&!buttons.wall.hidden&&!buttons.trick.hidden);
+ const steady=writes;controls.update();assert.equal(writes,steady,'Unchanged HUD rewrote icons/labels every animation frame');
+ game.combat.mode='combat';controls.update();assert(!buttons.guard.hidden&&!buttons.heavy.hidden&&buttons.wall.hidden&&buttons.trick.hidden);
+ assert.equal(zip.textContent,'훅');
+ const guard=target({key:'guard'});controls.down(event(20,guard));controls.down(event(21,left));
+ game.physics.state='FALLING';controls.update();assert(!controls.pointers.has(20),'A hidden guard retained its held key');assert(controls.pointers.has(21),'Changing context cancelled an independent strand');
+ assert(calls.some(c=>c[0]==='guard'&&c[1]===false));assert.equal(zip.textContent,'집');
+ controls.up({pointerId:21});
+ console.log('PASS: contextual combat HUD, cached DOM updates, airborne guard cleanup and independent held strand');
+}finally{if(oldDocument===undefined)delete globalThis.document;else globalThis.document=oldDocument;}

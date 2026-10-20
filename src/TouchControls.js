@@ -10,6 +10,10 @@ export function isTouchDevice({coarsePointer=false,mobileUserAgent=false,review=
   return coarsePointer || mobileUserAgent || review;
 }
 
+const icons={wire:'M4 19 17 6m-8 0h9v9M4 12v7h7',offhand:'m5 6 14 13M5 15V6h9',jump:'m7 10 5-6 5 6M12 4v16M5 20h14',zip:'m4 14 8-10v7h8L9 21v-7H4',wall:'M17 3v18M5 17l4-5 4 3M9 12V7l5-2',trick:'M5 8a8 8 0 1 1-1 7M5 3v5h5',dodge:'m5 8 5-4 5 4-3 4 6 7M12 12l-5 7M3 12h5',guard:'m12 3 8 4v6c0 4-8 8-8 8s-8-4-8-8V7l8-4',heavy:'m5 15 2-7 3 1 2-4 3 2 1 5 3 1-2 7H8l-3-5',mode:'m12 2 8 5v10l-8 5-8-5V7l8-5M4 7l8 5 8-5M12 12v10'};
+const icon=name=>`<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="${icons[name]}"/></svg>`;
+const action=(attributes,name,label)=>`<button ${attributes}>${icon(name)}<span>${label}</span></button>`;
+
 // Touch owns its pointers and held inputs independently of keyboard/gamepad.
 export class TouchControls {
   constructor(game) {
@@ -21,11 +25,23 @@ export class TouchControls {
     this.root=document.createElement('div');this.root.id='touch-controls';
     this.root.setAttribute('aria-label','모바일 게임 조작');
     this.root.innerHTML=`<nav class="touch-toolbar" aria-label="게임 메뉴"><button data-ui="fullscreen" aria-label="전체화면으로 플레이" aria-pressed="false">전체화면</button><button data-ui="map" aria-label="전체 지도 열기">지도</button><button data-ui="menu" aria-label="게임 메뉴 열기">메뉴</button></nav>
-      <div class="touch-stick" role="group" aria-label="이동 스틱 · 끝까지 밀면 질주"><span class="touch-stick-knob"></span><span class="touch-stick-caption">이동 · 질주</span></div>
-      <div class="touch-actions"><button data-mouse="0" class="touch-web" aria-label="왼손 에너지 와이어 · 누르고 유지"><span>왼손 와이어</span></button><button data-mouse="2" class="touch-web" aria-label="오른손 에너지 와이어 · 누르고 유지"><span>오른손 와이어</span></button><button data-key="jump" class="touch-jump">점프</button><button data-key="zip">와이어 당기기</button><button data-key="wall">벽 이동</button><button data-ui="more" aria-expanded="false" aria-controls="touch-extra">더보기</button></div>
-      <div id="touch-extra" class="touch-extra" hidden><button data-key="mode" aria-label="외형 변신 · 전투와 에너지 와이어 모드 전환">변신</button><button data-key="guard">방어</button><button data-key="dodge">회피</button><button data-key="heavy">강공격</button><button data-key="trick">묘기</button><button data-key="camera">시점</button><button data-key="recenter">시점 정렬</button><button data-ui="help">조작 안내</button></div>`;
+      <div class="touch-move-zone" aria-label="왼쪽 이동 영역"><div class="touch-stick" role="group" aria-label="이동 스틱 · 끝까지 밀면 질주"><span class="touch-sprint-mark">질주 ↑</span><span class="touch-stick-knob"></span><span class="touch-stick-caption">이동</span></div></div>
+      ${action('data-key="mode" class="touch-mode" aria-label="전투와 에너지 와이어 모드 전환" aria-pressed="false"','mode','전투')}
+      <div class="touch-actions" role="group" aria-label="오른쪽 동작 · 누른 채 드래그로 조준">
+      ${action('data-mouse="0" class="touch-web touch-primary" aria-label="왼손 와이어 · 누른 채 드래그로 조준"','wire','왼손 와이어')}
+      ${action('data-mouse="2" class="touch-web touch-offhand" aria-label="오른손 와이어 · 누른 채 드래그로 조준"','offhand','오른손')}
+      ${action('data-key="jump" class="touch-jump" aria-label="점프 / 줄에서 뛰어내리기"','jump','점프')}
+      ${action('data-key="zip" class="touch-zip" aria-label="와이어 집 / 전투 훅"','zip','집')}
+      ${action('data-key="wall" class="touch-wall" aria-label="벽 이동 · 이동 스틱을 앞으로 유지"','wall','벽 이동')}
+      ${action('data-key="guard" class="touch-guard" aria-label="방어 · 누르고 유지" hidden','guard','방어')}
+      ${action('data-key="trick" class="touch-trick" aria-label="공중 묘기"','trick','묘기')}
+      ${action('data-key="heavy" class="touch-heavy" aria-label="강공격" hidden','heavy','강공격')}
+      ${action('data-key="dodge" class="touch-dodge" aria-label="회피 · 이동 스틱으로 방향 선택"','dodge','회피')}
+      <button data-ui="more" class="touch-more" aria-label="시점과 조작 안내" aria-expanded="false" aria-controls="touch-extra">···</button></div>
+      <div id="touch-extra" class="touch-extra" hidden><button data-key="camera">시점</button><button data-key="recenter">시점 정렬</button><button data-ui="help">조작 안내</button></div>`;
     document.getElementById('game-container').append(this.root);
     this.stick=this.root.querySelector('.touch-stick');this.knob=this.root.querySelector('.touch-stick-knob');
+    this.moveZone=this.root.querySelector('.touch-move-zone');
     this.extra=this.root.querySelector('#touch-extra');
     this.root.addEventListener('contextmenu',e=>e.preventDefault());
     this.root.addEventListener('pointerdown',e=>this.down(e));
@@ -60,38 +76,52 @@ export class TouchControls {
     if((e.pointerType==='mouse'&&!this.review)||!this.active())return;
     const button=e.target.closest('button');if(button?.dataset.ui)return;
     let kind,action;
-    if(e.target.closest('.touch-stick'))kind='stick';
+    if(e.target.closest('.touch-stick') || e.target.closest('.touch-move-zone'))kind='stick';
     else if(button?.dataset.key){kind='key';action=button.dataset.key;}
     else if(button?.dataset.mouse!==undefined){kind='mouse';action=Number(button.dataset.mouse);}
     else if(e.target===this.game.canvas&&e.clientX>innerWidth*.3)kind='look';
     else return;
     if([...this.pointers.values()].some(p=>p.kind===kind&&(kind==='stick'||kind==='look'||p.action===action)))return;
     e.preventDefault();e.target.setPointerCapture?.(e.pointerId);
-    const pointer={kind,action,x:e.clientX,y:e.clientY,target:e.target};this.pointers.set(e.pointerId,pointer);
+    const pointer={kind,action,x:e.clientX,y:e.clientY,startX:e.clientX,startY:e.clientY,target:e.target};this.pointers.set(e.pointerId,pointer);
     button?.classList.add('pressed');
     this.game.audio.ensureContext();
     if(kind==='key')this.key(action,true);
     if(kind==='mouse')this.mouse(action,true);
-    if(kind==='stick')this.moveStick(e);
+    if(kind==='stick'){
+      if(this.moveZone){
+        const zone=this.moveZone.getBoundingClientRect(),radius=this.stick.getBoundingClientRect().width/2;
+        const x=Math.max(radius,Math.min(zone.width-radius,e.clientX-zone.x)),y=Math.max(radius,Math.min(zone.height-radius,e.clientY-zone.y));
+        this.stick.style.left=`${zone.x+x-radius}px`;this.stick.style.top=`${zone.y+y-radius}px`;this.stick.style.bottom='auto';
+        this.stickOrigin={x:e.clientX,y:e.clientY};
+      }
+      this.moveStick(e);
+    }
   }
-  moveStick(e){const r=this.stick.getBoundingClientRect();const s=stickState(e.clientX-r.x-r.width/2,e.clientY-r.y-r.height/2,r.width*.32);
+  moveStick(e){const r=this.stick.getBoundingClientRect(),origin=this.stickOrigin || {x:r.x+r.width/2,y:r.y+r.height/2};const s=stickState(e.clientX-origin.x,e.clientY-origin.y,Math.max(1,(r.width-54)/2));
     this.knob.style.transform=`translate(${s.x}px,${s.y}px)`;this.game.touchDirections=s;this.game.syncHeldInput();this.stick.classList.toggle('sprinting',s.sprint);}
   move(e){const p=this.pointers.get(e.pointerId);if(!p)return;
     e.preventDefault();if(!this.active()){this.release();return;}
     if(p.kind==='stick')this.moveStick(e);
-    if(p.kind==='look'||p.kind==='mouse'){
+    if(p.kind==='look'||p.kind==='mouse'||(p.kind==='key'&&p.action!=='mode')){
+      // Ignore tiny thumb jitter on an action button, then keep aiming while
+      // jumping, dodging or holding a strand with the same thumb.
+      p.looking ||= p.kind==='look'||Math.hypot(e.clientX-p.startX,e.clientY-p.startY)>=6;
+      if(p.looking){
       this.game.tpsCamera.handleMouseMove(e.clientX-p.x,e.clientY-p.y,.0035);
       this.game.physics.setWebAimPoint(0,0,null,true);
+      }
     }
     p.x=e.clientX;p.y=e.clientY;
   }
   up(e){const p=this.pointers.get(e.pointerId);if(!p)return;this.pointers.delete(e.pointerId);
     p.target.closest('button')?.classList.remove('pressed');
+    if(p.target.hasPointerCapture?.(e.pointerId))p.target.releasePointerCapture?.(e.pointerId);
     if(p.kind==='key')this.key(p.action,false);
     if(p.kind==='mouse')this.mouse(p.action,false);
     if(p.kind==='stick'){this.game.touchDirections={};this.resetStick();this.game.syncHeldInput();}
   }
-  resetStick(){this.knob.style.transform='translate(0px,0px)';this.stick.classList.remove('sprinting');}
+  resetStick(){this.stickOrigin=null;this.knob.style.transform='translate(0px,0px)';this.stick.classList.remove('sprinting');if(this.moveZone){this.stick.style.left='';this.stick.style.top='';this.stick.style.bottom='';}}
   release(){
     for(const id of [...this.pointers.keys()])this.up({pointerId:id});
     this.game.touchDirections={};this.resetStick();this.game.syncHeldInput();
@@ -103,13 +133,30 @@ export class TouchControls {
     this.root.dataset.spectating=String(!!g.multiplayer?.spectating);
     document.body.classList.toggle('touch-solo',this.enabled&&!!g.multiplayer?.solo);
     document.body.classList.toggle('touch-extra-open',!this.root.hidden&&!this.extra.hidden);
-    if(active&&!this.announced){this.announced=true;g.showNotice('왼쪽 스틱 이동 · 오른쪽 화면을 밀어 조준 · 에너지 와이어는 누르고 유지');}
+    if(active&&!this.announced){this.announced=true;g.showNotice('왼쪽은 이동 · 오른쪽은 조준 · 와이어 버튼을 누른 채 밀어도 조준할 수 있습니다.');}
     if(this.enabled)this.game.pointerLockWanted=false;
     if(!active&&this.pointers.size)this.release();
     const combat=this.game.combat?.mode==='combat'&&GROUNDED.includes(this.game.physics.state);
+    const layoutKey=`${g.combat?.mode}:${combat}`;
+    if(this.layoutKey===layoutKey)return;
+    this.layoutKey=layoutKey;
+    this.root.dataset.combat=String(combat);
+    for(const [action,visible]of [['wall',!combat],['guard',combat],['trick',!combat],['heavy',combat]]){
+      const button=this.root.querySelector(`[data-key="${action}"]`);
+      if(button && button.hidden===visible){
+        if(!visible)for(const [id,p]of this.pointers)if(p.kind==='key'&&p.action===action)this.up({pointerId:id});
+        button.hidden=!visible;
+      }
+    }
+    const modeButton=this.root.querySelector('.touch-mode');
+    modeButton.setAttribute('aria-pressed',String(g.combat?.mode==='combat'));
+    modeButton.querySelector('span').textContent=g.combat?.mode==='combat'?'와이어':'전투';
+    this.root.querySelector('.touch-zip span').textContent=combat?'훅':'집';
     for(const button of this.root.querySelectorAll('[data-mouse]')){
-      const right=button.dataset.mouse==='2';const label=combat?(right?'오른손 공격':'왼손 공격'):(right?'오른손 와이어':'왼손 와이어');
-      if(button.firstElementChild.textContent!==label){button.firstElementChild.textContent=label;button.setAttribute('aria-label',`${label} · 누르고 유지`);}
+      const right=button.dataset.mouse==='2';const label=combat?(right?'스트레이트':'잽'):(right?'오른손':'왼손 와이어');
+      const caption=button.querySelector('span');
+      button.querySelector('path').setAttribute('d',icons[combat?'heavy':right?'offhand':'wire']);
+      if(caption.textContent!==label){caption.textContent=label;button.setAttribute('aria-label',`${right?'오른손':'왼손'} ${combat?'공격':'와이어'} · 누른 채 드래그로 조준`);}
     }
   }
 }

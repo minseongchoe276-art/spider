@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import {CombatFeedback} from './CombatFeedback.js';
+import {attackGate,canAttack,opponents,teamName,ATTACK_REASONS,isCombatMode} from './AttackRules.js';
 import {webTargetInReticle} from './CombatAim.js';
 import { MATCH, resolveMatchSpawn, teamOffset } from './MatchRules.js';
 import { SupabaseRooms } from './SupabaseRooms.js';
@@ -9,7 +10,7 @@ import {PURSUIT,arenaContains} from './PursuitRules.js';
 import {PlayerPositionMarkers} from './PlayerPositionMarkers.js';
 
 const $ = id => document.getElementById(id);
-const label = mode => mode === 'tag' ? '경찰과 도망자' : '자유 플레이';
+const label = mode => mode === 'tag' ? '경찰과 도망자' : mode==='custom'?'사용자 설정 경기':'자유 플레이';
 const make = (tag, className, value) => { const el=document.createElement(tag);el.className=className;el.textContent=value;return el; };
 
 export class Multiplayer {
@@ -19,6 +20,8 @@ export class Multiplayer {
     this.positionMarkers=new PlayerPositionMarkers(game);
   }
   send(data) {
+    if(this.ws instanceof SupabaseRooms && data.type==='create'&&data.mode==='custom'){this.game.showNotice('사용자 설정 경기는 전용 방 서버 연결이 필요합니다.');return false;}
+    if(data.type==='create'&&data.mode==='custom'&&!(this.ws instanceof SupabaseRooms)&&!this.serverCapabilities?.includes('custom-matches')){this.game.showNotice('방 서버 업데이트 또는 연결을 기다리는 중입니다. 잠시 후 다시 시도하세요.');return false;}
     if(this.ws?.readyState===WebSocket.OPEN){this.ws.send(JSON.stringify(data));return true;}
     if(['create','join'].includes(data.type))this.game.showNotice('방 서버에 연결되지 않았습니다. 서버 주소와 실행 상태를 확인하세요.');
     return false;
@@ -34,6 +37,7 @@ export class Multiplayer {
       return;
     }
     $('online-status').textContent='서버 연결 중…';
+    this.serverCapabilities=null;
     const socket=this.ws;
     this.ws.onopen=()=>{
       if(this.ws!==socket)return;
@@ -63,13 +67,14 @@ export class Multiplayer {
     $('play-solo').addEventListener('click',()=>this.beginSolo());
     document.querySelectorAll('.mode-option').forEach(button=>button.addEventListener('click',()=>{
       $('room-mode').value=button.dataset.mode;
+      $('custom-options').classList.toggle('hidden',button.dataset.mode!=='custom');
       document.querySelectorAll('.mode-option').forEach(option=>{
         const selected=option===button;
         option.classList.toggle('selected',selected);
         option.setAttribute('aria-selected',String(selected));
       });
     }));
-    $('create-room').addEventListener('click',()=>this.send({type:'create',name:$('room-name').value,playerName:$('player-name').value,capacity:Number($('room-capacity').value),mode:$('room-mode').value,city:this.city,enhanced:$('room-mode').value==='tag'}));
+    $('create-room').addEventListener('click',()=>this.send({type:'create',name:$('room-name').value,playerName:$('player-name').value,capacity:Number($('room-capacity').value),mode:$('room-mode').value,format:$('custom-format').value,city:this.city,enhanced:$('room-mode').value==='tag'}));
     $('join-code').addEventListener('click',()=>this.join($('room-code').value));
     $('room-code').addEventListener('keydown',e=>{if(e.key==='Enter')$('join-code').click();});
     $('room-ready').addEventListener('click',()=>{const me=this.players.find(p=>p.id===this.id);const spawn=this.game.city.getRooftopSpawn(95);this.send({type:'ready',ready:!me?.ready,terrainReady:!!this.game.assetsReady,spawn:{x:spawn.x,y:spawn.y,z:spawn.z},roofs:this.pursuitPoints(spawn)});});
@@ -78,6 +83,7 @@ export class Multiplayer {
     $('room-leave').addEventListener('click',()=>{this.send({type:'leave'});this.leaveLocal();});
     $('btn-leave-match').addEventListener('click',()=>{if(this.room)this.send({type:'leave'});this.leaveLocal();});
     $('room-copy').addEventListener('click',async()=>{try{await navigator.clipboard.writeText(this.room?.code||'');this.game.showNotice('방 코드를 복사했습니다.');}catch{this.game.showNotice(`방 코드: ${this.room?.code||''}`);}});
+    $('room-invite').addEventListener('click',async()=>{const url=new URL(location.href);url.searchParams.set('join',this.room.code);url.searchParams.set('city',this.room.city);try{await navigator.clipboard.writeText(url.href);this.game.showNotice('초대 링크를 복사했습니다. 친구에게 보내세요.');}catch{this.game.showNotice(`초대 코드: ${this.room.code}`);}});
     $('spectate-next')?.addEventListener('click',()=>{this.spectateIndex++;});
     $('match-help').addEventListener('click',()=>this.game.toggleHelp());
   }
@@ -93,6 +99,7 @@ export class Multiplayer {
     return points;
   }
   message(data) {
+    if(data.type==='welcome'){this.serverCapabilities=Array.isArray(data.features)?data.features:[];return;}
     // An explicit solo choice wins over a delayed resume or room response.
     if(this.solo && !['error','rooms','pong','left'].includes(data.type))return;
     if(data.type==='error')return this.game.showNotice(data.message);
@@ -104,6 +111,7 @@ export class Multiplayer {
       if(this.room?.phase==='playing' && !this.solo && !this.spectating)this.applyServerPosition(data);
       return;
     }
+    if(data.type==='attack-result'){this.feedback.pendingUntil=0;this.feedback.show(`빗나감 · ${ATTACK_REASONS[data.reason]||'서버에서 명중하지 않음'}`);return;}
     if(data.type==='hit-check')return; // Legacy defender claims never authorize damage.
 
     // Explicit leave already resets the local room. Its asynchronous reply
@@ -117,7 +125,7 @@ export class Multiplayer {
     if(data.type==='room') {
       const phaseChanged=data.room.phase!==this.lastPhase;
       this.room=data.room;this.players=data.players;this.host=data.host;this.endsAt=data.endsAt;this.winner=data.winner;
-      this.vulnerableAt=data.vulnerableAt || 0;this.arena=data.arena||null;this.pulseUntil=data.pulseUntil||0;
+      this.spawnAnchor=data.spawnAnchor||null;this.vulnerableAt=data.vulnerableAt || 0;this.arena=data.arena||null;this.pulseUntil=data.pulseUntil||0;
       if(Number.isFinite(data.serverNow))this.clockOffset=data.serverNow-Date.now();
       this.lastPhase=data.room.phase;
       if(data.room.phase!=='playing')this.setSpectating(false);
@@ -149,7 +157,9 @@ export class Multiplayer {
     if(data.type==='hit') {
       const player=this.players.find(p=>p.id===data.target);if(player){player.health=data.health;player.eliminated=data.eliminated;}
       if(data.target===this.id){
-        this.game.showNotice(data.eliminated?'체력이 0입니다. 살아있는 플레이어를 관전합니다.':`${data.kind==='web'?'에너지 와이어':'주먹'} 공격! 체력 ${data.health}`);
+        const attacker=this.players.find(p=>p.id===data.attacker);
+        this.feedback?.show(`${attacker?.name||'상대'}의 ${data.kind==='web'?'거미줄':'주먹'} 명중 −${MATCH[data.kind]?.damage||0} · 내 HP ${data.health}${data.eliminated?' · 탈락 / 관전':''}`);
+        this.game.tpsCamera?.triggerShake?.(.18);
         if(data.eliminated){this.setSpectating(true);this.game.physics.clearWebAnchor();this.game.clearInput();this.game.combat?.cancel();this.pendingPunch=null;}
       }
       else if(data.attacker===this.id){
@@ -195,18 +205,29 @@ export class Multiplayer {
     $('room-details').textContent=`${label(this.room.mode)} · ${this.room.count}/${this.room.capacity}명 · 정원 ${this.room.capacity}명`;
     $('room-code-display').textContent=this.room.code;
     const list=$('player-list');list.replaceChildren();
-    for(const player of this.players){const row=make('div','player-row','');row.append(make('span','',`${player.id===this.host?'★ ':''}${player.name}${player.id===this.id?' (나)':''}`),make('strong',player.ready?'준비 완료':'대기 중'));list.append(row);}
+    for(const player of this.players){
+      const row=make('div','player-row','');
+      row.append(make('span','',`${player.id===this.host?'★ ':''}${player.name}${player.id===this.id?' (나)':''}${this.room.mode==='custom'?' · '+teamName(player.team):''}`),make('strong',player.ready?'준비 완료':'대기 중'));
+      if(this.room.mode==='custom'&&this.room.format==='teams'&&this.room.phase==='waiting'&&player.id===this.id){
+        const select=make('select','','');select.setAttribute('aria-label','내 팀 선택');
+        for(const team of ['red','blue']){const option=make('option','',teamName(team));option.value=team;select.append(option);}
+        select.value=player.team;select.addEventListener('change',()=>this.send({type:'team',team:select.value}));row.append(select);
+      }
+      list.append(row);
+    }
     const waiting=this.room.phase==='waiting',finished=this.room.phase==='finished';
     $('room-ready').classList.toggle('hidden',!waiting);
     $('room-start').classList.toggle('hidden',!waiting||this.host!==this.id);
     $('room-rematch').classList.toggle('hidden',!finished||this.host!==this.id);
     const me=this.players.find(p=>p.id===this.id);
     $('room-ready').textContent=me?.ready?'준비 취소':'준비하기';
-    $('room-start').disabled=this.players.length<MATCH.minPlayers||this.players.some(p=>!p.ready);
-    const waitingText=this.room.mode==='tag'
+    $('room-start').disabled=this.players.length<MATCH.minPlayers||this.players.some(p=>!p.ready)||(this.room.mode==='custom'&&this.room.format==='teams'&&(!this.players.some(p=>p.team==='red')||!this.players.some(p=>p.team==='blue')));
+    const waitingText=this.room.mode==='custom'
+      ? `${this.room.format==='ffa'?'개인전 · 마지막 1명 생존 시 승리':'팀전 · 상대 팀 전원 탈락 시 승리 · 팀 변경 시 전원 준비 초기화'} · 2~8명 · HP 100 · 주먹 25 / 거미줄 15 · 시작 보호 8초 · 부활 없음. Q로 전투/거미줄 전환.`
+      : this.room.mode==='tag'
       ? `최소 ${MATCH.minPlayers}명 · 모두 지형 로딩 후 준비. 6명 이하는 경찰 1명, 7명 이상은 경찰 2명. ${this.room.enhanced?'인원별 3~5분 · 목표 3개로 탈출 · 다음 경기 역할 순환':'5분 생존'}. 시작 ${MATCH.graceMs/1000}초는 공격 불가.`
       : `최소 ${MATCH.minPlayers}명 · 모두 준비하면 방장이 시작할 수 있습니다.`;
-    const winnerText=this.winner==='police'?'경찰 팀 승리':this.winner==='runner'?'도망자 팀 승리':'경기 종료';
+    const winnerText=this.room.mode==='custom'?(this.winner==='draw'?'무승부':this.room.format==='ffa'?`${this.players.find(p=>p.id===this.winner)?.name||'마지막 생존자'} 승리`:`${teamName(this.winner)} 승리`):this.winner==='police'?'경찰 팀 승리':this.winner==='runner'?'도망자 팀 승리':'경기 종료';
     $('room-message').textContent=finished?`${winnerText}. 방장이 다시 대기실을 열 수 있습니다.`:waiting?waitingText:'';
     this.renderHud();
   }
@@ -220,15 +241,16 @@ export class Multiplayer {
       return;
     }
     const me=this.players.find(p=>p.id===this.id);if(!me||!this.room)return;
-    $('match-role').textContent=this.room.mode==='free'?'자유 플레이':me.team==='police'?'경찰 · 추격':'도망자 · 생존';
-    $('match-health').textContent=this.room.mode==='tag'?`HP ${me.health}/100${me.eliminated?' · 관전 중':''}`:'피해 없음';
+    const district=document.querySelector('.hud-district');if(district)district.textContent=`${this.room.city==='procedural'?'LOCAL CITY':'HONG KONG'} · ${label(this.room.mode)}`;
+    $('match-role').textContent=this.room.mode==='custom'?teamName(me.team):this.room.mode==='free'?'자유 플레이':me.team==='police'?'경찰 · 추격':'도망자 · 생존';
+    $('match-health').textContent=isCombatMode(this.room.mode)?`HP ${me.health}/100${me.eliminated?' · 관전 중':''}`:'피해 없음';
     $('match-count').textContent=`${this.players.length}명${Number.isFinite(this.ws?.lastRpcMs??this.latency)?' · '+Math.round(this.ws?.lastRpcMs??this.latency)+'ms':''}`;
     $('spectate-next')?.classList.toggle('hidden',!this.spectating);
     this.renderPursuit();
     const now=Date.now()+this.clockOffset;
-    if(this.room.mode==='tag'&&this.vulnerableAt>now)$('match-timer').textContent=`시작 여유 ${Math.max(0,Math.ceil((this.vulnerableAt-now)/1000))}초`;
+    if(isCombatMode(this.room.mode)&&this.vulnerableAt>now)$('match-timer').textContent=`시작 여유 ${Math.max(0,Math.ceil((this.vulnerableAt-now)/1000))}초`;
     else if(this.room.mode==='tag'&&this.endsAt)$('match-timer').textContent=`남은 시간 ${Math.max(0,Math.ceil((this.endsAt-now)/1000))}초`;
-    else $('match-timer').textContent='자유 플레이';
+    else $('match-timer').textContent=this.room.mode==='custom'?`생존 ${this.players.filter(p=>!p.eliminated).length}/${this.players.length}명`:'자유 플레이';
   }
   begin() {
     const game=this.game;
@@ -238,7 +260,7 @@ export class Multiplayer {
       },300);
       return;
     }
-    clearInterval(this.beginTimer);this.beginTimer=null;this.pendingPunch=null;
+    clearInterval(this.beginTimer);this.beginTimer=null;this.pendingPunch=null;if(this.feedback){this.feedback.cooldowns={};this.feedback.pendingUntil=0;this.feedback.previewAt=0;}
     game.setHelpOpen?.(false,false);
     const me=this.players.find(p=>p.id===this.id);
     this.solo=false;
@@ -255,10 +277,10 @@ export class Multiplayer {
       game.character.visualYaw=me.facing;
     }else this.placeMatchSpawn();
     game.resetCamera();game.combat.cancel();game.combat.clearEnemies();
-    const desiredMode=me?.team==='police'?'combat':'web';
+    const desiredMode=(this.room.mode==='custom'||me?.team==='police')?'combat':'web';
     game.applyPreferences();
     if(game.combat.mode!==desiredMode)game.combat.toggle(game.input);
-    this.game.showNotice(this.room.mode==='tag'
+    this.game.showNotice(this.room.mode==='custom'?'사용자 설정 경기 · HP 100 · 상대 전원 제압! Q로 전투/거미줄 전환 · 주먹 25 / 거미줄 15 · 시작 보호 8초':this.room.mode==='tag'
       ? (this.arena?'경찰은 추격, 도망자는 이동 목표 3개를 완료하거나 제한 시간 생존. 쓰러진 팀원 곁에서 3초 유지하면 구조합니다. 시작 8초는 공격이 없습니다.':'경찰은 주먹 25, 에너지 와이어 15로 추격합니다. 도망자는 5분 생존하면 승리합니다.')
       : '자유 플레이 시작! 도시를 함께 탐험하세요.');
   }
@@ -268,9 +290,10 @@ export class Multiplayer {
   placeMatchSpawn() {
     const me=this.players.find(p=>p.id===this.id);if(!me)return;
     const physics=this.game.physics;
-    const anchor=this.arena?new THREE.Vector3(this.arena.x,this.arena.y,this.arena.z):physics.position.clone();
-    const team=me.team || 'free';
-    const mates=this.players.filter(p=>(p.team||'free')===team).sort((a,b)=>a.id<b.id?-1:1);
+    const sharedAnchor=this.arena||this.spawnAnchor;
+    const anchor=sharedAnchor?new THREE.Vector3(sharedAnchor.x,sharedAnchor.y,sharedAnchor.z):physics.position.clone();
+    const team=this.room.mode==='custom'&&this.room.format==='ffa'?'free':me.team || 'free';
+    const mates=this.players.filter(p=>team==='free'||(p.team||'free')===team).sort((a,b)=>a.id<b.id?-1:1);
     const index=Math.max(0,mates.findIndex(p=>p.id===me.id));
     const roofs=this.game.city.rooftopSpawns || [];
     const placed=resolveMatchSpawn(anchor, teamOffset(index, team, mates.length), pos=>physics.supportHeight(new THREE.Vector3(pos.x,pos.y,pos.z)), roofs);
@@ -278,7 +301,7 @@ export class Multiplayer {
     physics.previousFixedPosition.copy(physics.position);
     physics.renderPosition.copy(physics.position);
     const facing=team==='free' && Math.hypot(anchor.x-placed.x,anchor.z-placed.z)>.1
-      ? Math.atan2(anchor.x-placed.x,anchor.z-placed.z) : team==='runner'?Math.PI:0;
+      ? Math.atan2(anchor.x-placed.x,anchor.z-placed.z) : (team==='runner'||team==='blue')?Math.PI:0;
     physics.facingAngle=facing;
     physics.character.targetFacingAngle=facing;
     if('visualYaw' in physics.character)physics.character.visualYaw=facing;
@@ -319,7 +342,7 @@ export class Multiplayer {
   leaveLocal(){this.game.character.group.visible=true;this.rescueStarted=null;this.rescueTarget=null;if(this.goalMarker)this.goalMarker.visible=false;$('pursuit-hud').textContent='';$('spectate-next')?.classList.add('hidden');try{sessionStorage.removeItem('web-runner-room-resume');}catch{}this.arena=null;this.pulseUntil=0;this.game.practice?.stop();this.room=null;this.pendingPunch=null;clearInterval(this.beginTimer);this.beginTimer=null;this.spectating=false;this.solo=false;clearInterval(this.soloStartTimer);this.soloStartTimer=null;this.players=[];this.id=null;this.lastPhase=null;this.game.isPlaying=false;this.game.clearInput();this.game.setPaused(true);this.game.clickToPlayOverlay?.classList.add('hidden');this.clearAvatars();this.render();this.send({type:'list'});}
   attack(kind,hand='left'){
     const me=this.players.find(p=>p.id===this.id);
-    if(this.spectating||me?.eliminated||this.room?.phase!=='playing'||me?.team!=='police')return;
+    if(this.spectating||!canAttack(this.room,me))return;
     if(kind==='punch'){
       const action=this.game.combat.action;
       if(action && ATTACKS[action.key])this.pendingPunch=action.id;
@@ -332,37 +355,34 @@ export class Multiplayer {
     return this.sendAttack(kind,facing,hand);
   }
   attackPreview(kind='web') {
-    const rule=MATCH[kind],position=this.game.physics.position;
+    const position=this.game.physics.position;
+    const me=this.players.find(p=>p.id===this.id);
     const direction=this.game.camera.getWorldDirection(new THREE.Vector3());
-    const facing=Math.atan2(direction.x,direction.z);
-    const target=this.players.filter(p=>p.team==='runner'&&!p.eliminated&&p.seen)
+    const facing=kind==='punch'?(this.game.physics.facingAngle||0):Math.atan2(direction.x,direction.z);
+    const target=this.players.filter(p=>opponents(this.room,me,p)&&!p.eliminated&&p.seen)
       .map(p=>({p,d:Math.hypot(p.x-position.x,p.z-position.z)}))
-      .filter(({p,d})=>d<=rule.reach && Math.abs(p.y-position.y)<rule.vertical &&
-        (d<=.35 || Math.cos(Math.atan2(p.x-position.x,p.z-position.z)-facing)>=rule.cone))
-      .sort((a,b)=>(kind==='web' ? Number(webTargetInReticle(b.p,this.game.camera))-Number(webTargetInReticle(a.p,this.game.camera)):0) || a.d-b.d)[0];
+      .filter(({p})=>!attackGate(position,p,kind,facing))
+      .sort((a,b)=>(kind==='web'?Number(webTargetInReticle(b.p,this.game.camera))-Number(webTargetInReticle(a.p,this.game.camera)):0)||a.d-b.d)[0];
     if(!target)return null;
     const from=position.clone().add(new THREE.Vector3(0,1,0)),line=new THREE.Vector3(target.p.x,target.p.y+1,target.p.z).sub(from);
-    if(this.game.city.raycast?.(from,line.clone().normalize(),Math.max(0,line.length()-.3)))return {blocked:true};
-    return {name:target.p.name || '상대',distance:target.d,aimReady:kind!=='web'||webTargetInReticle(target.p,this.game.camera)};
+    const blocked=!!this.game.city.raycast?.(from,line.clone().normalize(),Math.max(0,line.length()-.3));
+    return {player:target.p,name:target.p.name||'상대',distance:target.d,blocked,aimReady:kind!=='web'||webTargetInReticle(target.p,this.game.camera)};
   }
   sendAttack(kind,facing,hand='left'){
     const me=this.players.find(p=>p.id===this.id);
-    if(this.spectating||me?.eliminated||this.room?.phase!=='playing'||me?.team!=='police')return;
-    const origin=this.game.physics.position.clone().add(new THREE.Vector3(0,1,0)),rule=MATCH[kind];
-    const targets=this.players.filter(p=>p.team==='runner'&&!p.eliminated&&p.seen)
-      .map(p=>({p,dx:p.x-origin.x,dz:p.z-origin.z}))
-      .filter(t=>Math.abs(t.p.y-this.game.physics.position.y)<rule.vertical &&
-        Math.hypot(t.dx,t.dz)<=rule.reach && (kind!=='web'||webTargetInReticle(t.p,this.game.camera)) && (Math.hypot(t.dx,t.dz)<=.35 ||
-          Math.cos(Math.atan2(t.dx,t.dz)-facing)>=rule.cone))
-      .sort((a,b)=>Math.hypot(a.dx,a.dz)-Math.hypot(b.dx,b.dz));
-    if(kind==='web' && !targets.length)return false;
+    if(this.spectating||!canAttack(this.room,me))return;
+    const origin=this.game.physics.position.clone().add(new THREE.Vector3(0,1,0));
+    const targets=this.players.filter(p=>opponents(this.room,me,p)&&!p.eliminated&&p.seen)
+      .filter(p=>!attackGate(this.game.physics.position,p,kind,facing)&&(kind!=='web'||webTargetInReticle(p,this.game.camera)))
+      .sort((a,b)=>Math.hypot(a.x-origin.x,a.z-origin.z)-Math.hypot(b.x-origin.x,b.z-origin.z));
+    if(kind==='web'&&!targets.length)return false;
     if(targets.length){
-      const target=targets[0].p,dir=new THREE.Vector3(target.x,target.y+1,target.z).sub(origin);
+      const target=targets[0],dir=new THREE.Vector3(target.x,target.y+1,target.z).sub(origin);
       if(this.game.city.raycast?.(origin,dir.clone().normalize(),Math.max(0,dir.length()-.3))){this.feedback?.show('벽이나 건물이 상대를 가리고 있습니다');return kind==='web';}
     }
-    if(this.feedback && !this.feedback.canFire(kind,this))return kind==='web';
-    this.send({type:'attack',kind,facing});
-    this.feedback?.sent(kind,targets[0]?.p,hand);
+    if(this.feedback&&!this.feedback.canFire(kind,this))return kind==='web';
+    this.send({type:'attack',kind,facing,targetId:targets[0]?.id||null});
+    this.feedback?.sent(kind,targets[0],hand);
     return kind==='web';
   }
   serverNow(){return Date.now()+this.clockOffset;}
@@ -442,9 +462,9 @@ export class Multiplayer {
     return this.players.filter(p=>p.id!==this.id && [p.x,p.y,p.z].every(Number.isFinite)).map(p=>{
         const rendered=this.avatars.get(p.id)?.mesh.position;
         const validRendered=rendered && [rendered.x,rendered.y,rendered.z].every(Number.isFinite);
-        return {...p,x:validRendered?rendered.x:p.x,y:validRendered?rendered.y:p.y,z:validRendered?rendered.z:p.z,
+        return {...p,targeted:this.feedback?.preview?.player?.id===p.id&&this.feedback.preview.aimReady&&!this.feedback.preview.blocked,x:validRendered?rendered.x:p.x,y:validRendered?rendered.y:p.y,z:validRendered?rendered.z:p.z,
           seen:true,lastKnown:!p.seen || p.connected===false,downed:!!p.eliminated,
-          eliminated:false,rescue:!!p.eliminated && p.team===me?.team,ally:me?.team!=='free' && p.team===me?.team};
+          eliminated:false,rescue:this.room.mode==='tag'&&!!p.eliminated && p.team===me?.team,ally:me?.team!=='free' && p.team===me?.team};
       });
   }
   syncAvatars() {

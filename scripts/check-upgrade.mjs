@@ -21,7 +21,7 @@ assert(blockedSegment({x:c.minX-2,y,z:(c.minZ+c.maxZ)/2},{x:c.maxX+2,y,z:(c.minZ
 const client=Object.create(City.prototype);Object.assign(client,{randomState:0x5f3759df});const expected=45+Math.max(0,1-Math.hypot(-1.5,-1.5)/2.8)*70+client.random()*40;assert(Math.abs(city.buildings[0].height-expected)<1e-10);
 const scene=new THREE.Scene(),character={group:new THREE.Group()},physics={position:new THREE.Vector3(),velocity:new THREE.Vector3(),state:'IDLE',facingAngle:0,city:{raycast:()=>null},clearWebAnchor(){},clearPendingInput(){}};
 const combat=new CombatSystem(scene,physics,character);const enemy={type:'shield',position:new THREE.Vector3(0,0,1),health:140,mesh:new THREE.Group()};combat.enemies=[enemy];combat.strike({key:'jab',hits:new Set()},{damage:12,reach:2});assert.equal(enemy.health,140);combat.strike({key:'hook',hits:new Set()},{damage:32,reach:2});assert.equal(enemy.health,108);
-physics.state='FALLING';assert(combat.airStrike(new THREE.PerspectiveCamera()));assert.equal(combat.action.key,'slam');assert(physics.velocity.y<=-14);
+physics.state='FALLING';assert.equal(combat.airStrike(new THREE.PerspectiveCamera()),false,'Web mode must reject combat air strikes');combat.toggle();assert(combat.airStrike(new THREE.PerspectiveCamera()));assert.equal(combat.action.key,'slam');assert(physics.velocity.y<=-14);
 console.log('PASS upgrade: key remaps, corrupt settings, combo banking/failure, persistent rewards, safe saves, quota failure, adaptive quality, identical server terrain, shield and air strike');
 // Exercise the real browser input handler, including release behavior and remaps.
 const {GameApp}=await import('../src/main.js');const previousWindow=globalThis.window,previousDocument=globalThis.document;

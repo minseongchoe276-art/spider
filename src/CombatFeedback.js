@@ -1,4 +1,6 @@
 import * as THREE from 'three';
+import {canAttack,isCombatMode} from './AttackRules.js';
+import {GROUNDED} from './MotionCatalog.js';
 import {MATCH} from './MatchRules.js';
 
 // Predictions explain availability. Only a server hit event confirms damage.
@@ -13,6 +15,7 @@ export class CombatFeedback {
     if(!this.output && typeof document!=='undefined' && document.body?.append){
       this.output=document.createElement('output');this.output.id='combat-feedback';this.output.setAttribute('role','status');
       document.body.append(this.output);
+      this.aimZone=document.createElement('div');this.aimZone.id='combat-aim-zone';this.aimZone.hidden=true;this.aimZone.setAttribute('aria-hidden','true');document.body.append(this.aimZone);
       this.marker=document.createElement('span');this.marker.id='combat-hitmarker';this.marker.textContent='×';this.marker.hidden=true;this.marker.setAttribute('aria-hidden','true');document.body.append(this.marker);
     }
     return this.output;
@@ -20,18 +23,21 @@ export class CombatFeedback {
   update(online){
     const out=this.element();if(!out)return;
     const me=online.players.find(p=>p.id===online.id);
-    const active=online.room?.phase==='playing' && online.room.mode==='tag' && me?.team==='police' && !online.spectating;
-    out.hidden=!active;if(!active)return;
+    const active=online.room?.phase==='playing' && isCombatMode(online.room.mode) && !online.spectating;
+    const kind=this.game.combat?.mode==='combat'&&GROUNDED.includes(this.game.physics?.state)?'punch':'web';
+    out.hidden=!active;if(this.aimZone)this.aimZone.hidden=!active||kind!=='web'||!canAttack(online.room,me);if(!active)return;
     const now=performance.now();
     if(this.pendingUntil && now>this.pendingUntil){this.pendingUntil=0;this.show('아직 명중 확인 없음 · 거리·높이·가림·연결 상태를 확인하세요');}
     const grace=Math.max(0,(online.vulnerableAt||0)-online.serverNow());
+    if(now>(this.previewAt||0)){this.preview=canAttack(online.room,me)?online.attackPreview?.(kind):null;this.previewAt=now+100;}
+    if(this.aimZone)this.aimZone.dataset.ready=String(!!this.preview?.aimReady&&!this.preview?.blocked&&!grace);
     if(now<this.until){out.textContent=this.message;return;}
+    if(!canAttack(online.room,me)){out.textContent=`내 HP ${me.health}/100 · 경찰의 주먹 25 / 거미줄 15 · 벽 뒤에서는 피해 없음`;return;}
     if(grace){out.textContent=`시작 보호 ${Math.ceil(grace/1000)}초 · 아직 피해 없음`;return;}
-    const remain=Math.max(0,(this.cooldowns.web||0)-now);
-    if(now>(this.previewAt||0)){this.preview=online.attackPreview?.('web');this.previewAt=now+120;}
+    const remain=Math.max(0,(this.cooldowns[kind]||0)-now);
     const target=this.preview;
-    const aim=target?.blocked?'가림':target?`${target.name} ${target.distance.toFixed(1)}m · ${target.aimReady===false?'조준점을 상대에게 맞추세요':'조준 안 · 명중은 서버 확인'}`:'조준점에 상대 없음';
-    out.textContent=`${aim} | 에너지 와이어 · 정면 ${MATCH.web.reach}m / 높이 차 ${MATCH.web.vertical}m · ${remain?`${(remain/1000).toFixed(1)}초 대기`:'15 피해 · 발사 가능'} | 주먹 ${MATCH.punch.reach}m · 25 피해 · 벽 뒤에는 맞지 않음`;
+    const aim=target?.blocked?'가림':target?`${target.name} · HP ${target.player?.health??'?'} · ${target.distance.toFixed(1)}m · ${target.aimReady===false?'표시 영역에 상대 몸 중심을 넣으세요':'조준 가능 · 서버 확인 전'}`:'조준점에 상대 없음';
+    out.textContent=`${kind==='web'?'거미줄':'주먹'} ${remain?`${(remain/1000).toFixed(1)}초 대기`:'준비'} · ${aim} | 에너지 와이어 · 수평 ≤${MATCH.web.reach}m / 높이 차 ≤${MATCH.web.vertical}m / 좌우 33° · 15 피해 · 간격 1.6초 | 주먹 ≤${MATCH.punch.reach}m / 높이 ≤${MATCH.punch.vertical}m / 좌우 49° · 25 피해 · 0.56초 · 벽 뒤에는 맞지 않음`;
   }
   canFire(kind,online){
     if((online.vulnerableAt||0)>online.serverNow()){this.show('시작 보호 중 · 보호 시간이 끝난 뒤 공격하세요');return false;}

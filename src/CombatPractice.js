@@ -53,9 +53,16 @@ export class CombatPractice {
     for(let i=this.projectiles.length-1;i>=0;i--){const shot=this.projectiles[i],previous=shot.mesh.position.clone();shot.life-=delta;shot.mesh.position.addScaledVector(shot.velocity,delta);
       const movement=shot.mesh.position.clone().sub(previous),length=movement.length();
       const blocked=length>0&&g.city.raycast?.(previous,movement.clone().normalize(),length);
-      const closest=previous.clone().addScaledVector(movement,length?THREE.MathUtils.clamp(g.physics.position.clone().add(new THREE.Vector3(0,1,0)).sub(previous).dot(movement)/(length*length),0,1):0);
-      const hit=closest.distanceTo(g.physics.position.clone().add(new THREE.Vector3(0,1,0)))<.6;
-      if(!blocked&&hit){
+      const offset=g.physics.position.clone().add(new THREE.Vector3(0,1,0)).sub(previous);
+      const along=length?offset.dot(movement)/length:0;
+      const perpendicularSq=Math.max(0,offset.lengthSq()-along*along);
+      const halfChord=Math.sqrt(Math.max(0,.36-perpendicularSq));
+      const hitDistance=Math.max(0,along-halfChord);
+      const hit=perpendicularSq<.36 && along+halfChord>=0 && hitDistance<=length;
+      // The first surface along the segment wins. A wall beyond the player
+      // must not cancel an earlier hit on a long/slow frame.
+      const playerFirst=hit && (!blocked || (Number.isFinite(blocked.distance)&&hitDistance<blocked.distance));
+      if(playerFirst){
         g.combat.receiveDamage(10,shot.enemy);
         // Defeat respawns the player and clears enemies. Retire every shot
         // before another projectile can damage the new life in this frame.

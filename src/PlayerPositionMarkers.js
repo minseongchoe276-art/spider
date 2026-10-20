@@ -28,11 +28,12 @@ export class PlayerPositionMarkers {
       const placed=positionMarker(point,this.game.camera,rect.width,rect.height,padding);
       const distance=Math.round(origin.distanceTo(new THREE.Vector3(player.x,player.y,player.z)));
       const altitude=Math.round(player.y-origin.y);
-      const role=player.team==='police'?'경찰':player.team==='runner'?'도망자':'플레이어';
+      const role=player.team==='red'?'레드 팀':player.team==='blue'?'블루 팀':player.team==='police'?'경찰':player.team==='runner'?'도망자':'플레이어';
       const arrow=placed.offscreen?['→','↘','↓','↙','←','↖','↑','↗'][(Math.round(placed.angle/(Math.PI/4))+8)%8]+' ':'';
       const name=String(player.name || role).slice(0,12);
-      el.textContent=`${arrow}${name} · ${distance}m${Math.abs(altitude)>=3?' · '+(altitude>0?'↑':'↓')+Math.abs(altitude)+'m':''}${player.rescue?' · 구조':player.downed?' · 탈락':''}${player.connected===false?' · 마지막 위치':''}`;
+      el.textContent=`${arrow}${name}${Number.isFinite(player.health)?' · HP '+player.health:''} · ${distance}m${Math.abs(altitude)>=3?' · '+(altitude>0?'↑':'↓')+Math.abs(altitude)+'m':''}${player.targeted?' · 조준 대상':''}${player.rescue?' · 구조':player.downed?' · 탈락':''}${player.connected===false?' · 마지막 위치':''}`;
       el.setAttribute('aria-label',`${role} ${player.name}, 거리 ${distance}미터, 높이 차 ${altitude}미터`);
+      el.classList.toggle('targeted',!!player.targeted);el.style.setProperty('--hp-value',`${Math.max(0,Math.min(100,player.health??100))}%`);
       el.dataset.team=player.ally?'ally':player.team;el.classList.toggle('offscreen',placed.offscreen);
       el.style.left=`${placed.x}px`;el.style.top=`${placed.y}px`;
     }

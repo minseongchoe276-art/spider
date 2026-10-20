@@ -100,10 +100,10 @@
         <button id="btn-close-guide" type="button" aria-label="조작 가이드 닫기">닫기</button>
       </div>
       <div class="guide-list">
-        <div class="guide-row touch-guide-row"><span class="key-badge">터치 조작</span><span class="guide-desc">왼쪽 스틱 이동 · 끝까지 밀면 질주. 오른쪽 화면 드래그로 조준. 왼손·오른손 와이어은 누르고 유지, 손을 떼면 해제합니다. 웹 버튼을 누른 채 드래그해도 시점 조절이 가능합니다. 점프·와이어 당기기·벽 이동은 오른쪽 버튼, 전투·방어·회피·묘기는 더보기에 있습니다. 상단 지도·메뉴 버튼을 사용하세요.</span></div>
+        <div class="guide-row touch-guide-row"><span class="key-badge">터치 조작</span><span class="guide-desc">왼쪽 이동 영역은 처음 손댄 곳을 중심으로 움직이며 끝까지 밀면 질주합니다. 오른쪽 큰 버튼은 왼손 와이어, 위쪽은 오른손 와이어입니다. 점프·집·벽 이동·묘기·회피를 바로 누를 수 있고, 동작 버튼을 누른 채 밀어도 조준할 수 있습니다. 왼쪽 전투 버튼으로 모드를 바꾸면 방어·훅·강공격이 표시됩니다. ···에서 시점과 조작 안내를 엽니다.</span></div>
         <div class="guide-row"><span class="key-badge">경찰과 도망자</span><span class="guide-desc">2~8명. 6명 이하는 경찰 1명, 7~8명은 경찰 2명. 시작 8초는 공격 없음. 경찰 주먹 25, 에너지 와이어 15. 도망자는 공격할 수 없습니다. 도망자가 모두 쓰러지면 경찰 승리. 이동 목표 3개를 완료하거나 3~5분 생존하면 도망자 승리. 쓰러진 팀원 곁에 3초 유지하면 구조합니다. 탈락하면 관전합니다.</span></div>
         <div class="guide-row"><span class="key-badge">Q</span><span class="guide-desc">전투 / 에너지 와이어 전환. 도망자는 경기 중 에너지 와이어로 고정됩니다.</span></div>
-        <div class="guide-row"><span class="key-badge">G</span><span class="guide-desc">강한 잽 · 기력 35 · 재사용 4초</span></div>
+        <div class="guide-row"><span class="key-badge">G</span><span class="guide-desc">강한 스트레이트 · 기력 35 · 재사용 4초</span></div>
         <div class="guide-row"><span class="key-badge">Ctrl + 방향</span><span class="guide-desc">짧은 회피 · 전방 숙이기</span></div>
 
         <div class="guide-row">
@@ -187,11 +187,14 @@
           <div class="mode-heading">게임 모드 <span>선택</span></div>
           <div class="mode-picker" role="tablist" aria-label="게임 모드">
             <button class="mode-option selected" type="button" role="tab" data-mode="tag" aria-selected="true"><span class="mode-icon">⌖</span><b>경찰과 도망자</b><small>인원별 3~5분 추격전</small></button>
+            <button class="mode-option" type="button" role="tab" data-mode="custom" aria-selected="false"><span class="mode-icon">⚔</span><b>사용자 설정</b><small>1대1 · 팀전 · 개인전 / 최대 8명</small></button>
             <button class="mode-option" type="button" role="tab" data-mode="free" aria-selected="false"><span class="mode-icon">↗</span><b>자유 플레이</b><small>함께 도시 탐험</small></button>
           </div>
-          <select id="room-mode" class="visually-hidden" aria-label="게임 모드"><option value="tag">경찰과 도망자 · 목표 탈출 / 생존</option><option value="free">자유 플레이 · 제한 없음</option></select>
+          <select id="room-mode" class="visually-hidden" aria-label="게임 모드"><option value="tag">경찰과 도망자 · 목표 탈출 / 생존</option><option value="custom">사용자 설정 경기</option><option value="free">자유 플레이 · 제한 없음</option></select>
           <div class="online-grid"><label class="online-field">방 이름<input id="room-name" maxlength="24" value="새로운 도시 여행"></label><label class="online-field">정원<select id="room-capacity"><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option selected>8</option></select></label></div>
 
+          <label id="custom-options" class="online-field hidden">경기 방식<select id="custom-format"><option value="teams">팀전 · 1대1 / 다수 대 다수</option><option value="ffa">개인전 · 마지막 1명 생존</option></select></label>
+          <details class="attack-guide"><summary>공통 공격 판정 · 주먹 / 거미줄</summary><p>HP 100. 주먹: 수평 2.6m 이내 · 높이 차 2.2m 이내 · 정면 좌우 약 49° · 피해 25 · 간격 0.56초. 거미줄: 수평 22m 이내 · 높이 차 8m 이내 · 정면 좌우 약 33°와 화면 조준 영역 모두 충족 · 피해 15 · 간격 1.6초.</p><p>벽·건물 뒤, 같은 팀, 탈락자는 공격할 수 없습니다. 경찰과 도망자에서는 경찰만 공격합니다. 주먹은 실제 타격 순간, 거미줄은 발사 요청 순간의 서버 수신 위치로 판정합니다. 공격 한 번에 표시된 상대 한 명만 피격됩니다. 서버 명중 확인 후에만 HP가 감소합니다. Q로 전투/거미줄 모드를 전환하세요.</p></details>
           <button id="create-room" class="online-primary" type="button">새 방 만들기 <span>↗</span></button>
           <div class="online-divider"><span>또는 바로 합류</span></div>
           <div class="online-inline"><input id="room-code" maxlength="6" placeholder="초대 코드 6자리" aria-label="방 코드"><button id="join-code" type="button">코드 입장</button></div>
@@ -200,7 +203,7 @@
         <section id="room-panel" class="hidden">
           <span class="room-kicker">YOUR SQUAD / 대기실</span>
           <h2 id="room-title"></h2><p id="room-details"></p>
-          <div class="room-code-line">초대 코드 <strong id="room-code-display"></strong><button id="room-copy" type="button">복사</button></div>
+          <div class="room-code-line">초대 코드 <strong id="room-code-display"></strong><button id="room-copy" type="button">복사</button><button id="room-invite" type="button">초대 링크 복사</button></div>
           <div id="player-list" class="player-list"></div>
           <p id="room-message"></p>
           <div class="room-actions"><button id="room-ready" class="online-primary" type="button">준비하기</button><button id="room-start" class="online-primary" type="button">시작</button><button id="room-rematch" class="online-primary hidden" type="button">다시 대기실로</button><button id="room-leave" type="button">방 나가기</button></div>
