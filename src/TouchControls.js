@@ -136,12 +136,12 @@ export class TouchControls {
     if(active&&!this.announced){this.announced=true;g.showNotice('왼쪽은 이동 · 오른쪽은 조준 · 와이어 버튼을 누른 채 밀어도 조준할 수 있습니다.');}
     if(this.enabled)this.game.pointerLockWanted=false;
     if(!active&&this.pointers.size)this.release();
-    const combat=this.game.combat?.mode==='combat'&&GROUNDED.includes(this.game.physics.state);
-    const layoutKey=`${g.combat?.mode}:${combat}`;
+    const combat=this.game.combat?.mode==='combat',grounded=GROUNDED.includes(this.game.physics.state);
+    const layoutKey=`${g.combat?.mode}:${grounded}`;
     if(this.layoutKey===layoutKey)return;
     this.layoutKey=layoutKey;
     this.root.dataset.combat=String(combat);
-    for(const [action,visible]of [['wall',!combat],['guard',combat],['trick',!combat],['heavy',combat]]){
+    for(const [action,visible]of [['wall',!combat],['guard',combat&&grounded],['trick',!combat],['heavy',combat&&grounded]]){
       const button=this.root.querySelector(`[data-key="${action}"]`);
       if(button && button.hidden===visible){
         if(!visible)for(const [id,p]of this.pointers)if(p.kind==='key'&&p.action===action)this.up({pointerId:id});
@@ -151,9 +151,11 @@ export class TouchControls {
     const modeButton=this.root.querySelector('.touch-mode');
     modeButton.setAttribute('aria-pressed',String(g.combat?.mode==='combat'));
     modeButton.querySelector('span').textContent=g.combat?.mode==='combat'?'와이어':'전투';
-    this.root.querySelector('.touch-zip span').textContent=combat?'훅':'집';
+    this.root.querySelector('.touch-zip span').textContent=combat?(grounded?'훅':'착지 후 훅'):'집';
+    const zipButton=this.root.querySelector('.touch-zip');if(zipButton)zipButton.disabled=combat&&!grounded;
     for(const button of this.root.querySelectorAll('[data-mouse]')){
-      const right=button.dataset.mouse==='2';const label=combat?(right?'스트레이트':'잽'):(right?'오른손':'왼손 와이어');
+      button.disabled=combat&&!grounded;
+      const right=button.dataset.mouse==='2';const label=combat?(!grounded?'착지 후 공격':right?'스트레이트':'잽'):(right?'오른손':'왼손 와이어');
       const caption=button.querySelector('span');
       button.querySelector('path').setAttribute('d',icons[combat?'heavy':right?'offhand':'wire']);
       if(caption.textContent!==label){caption.textContent=label;button.setAttribute('aria-label',`${right?'오른손':'왼손'} ${combat?'공격':'와이어'} · 누른 채 드래그로 조준`);}

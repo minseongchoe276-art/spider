@@ -149,7 +149,7 @@ export class SwingPhysics {
   }
 
   startSwing(camera,allowSame=true,shot=null) {
-    if(this.webEnabled===false && GROUNDED.includes(this.state))return false;
+    if(this.webEnabled===false)return false;
     const anchor = this.findBestAnchor(camera);
     if (!anchor) {this.onWebFailure?.(this.webFailureReason);return false;}
     const hand=shot?.hand || this.nextWebHand;
@@ -312,7 +312,7 @@ export class SwingPhysics {
   // Reels the player toward the most recently attached web. If no web has
   // been fired yet, the right-click ray creates an anchor and pulls to it.
   performWebPull(camera, aimNdc = this.webAimNdc) {
-    if(this.webEnabled===false && GROUNDED.includes(this.state))return false;
+    if(this.webEnabled===false)return false;
     camera.updateMatrixWorld(true);
     this.raycaster.setFromCamera(aimNdc, camera);
     this.raycaster.far = 130;
@@ -369,7 +369,7 @@ export class SwingPhysics {
   }
 
   performAirJump(camera, aimNdc = new THREE.Vector2(0, 0)) {
-    if(this.webEnabled===false && GROUNDED.includes(this.state))return false;
+    if(this.webEnabled===false)return false;
     // E is an optional airborne zip, never a repeated ground launch.
     if (GROUNDED.includes(this.state)) return false;
     // A zip already in flight cannot be retargeted.
@@ -451,8 +451,10 @@ export class SwingPhysics {
     // Landing impact is reported for exactly one character update.
     this.character.landingSpeed = 0;
 
-    const websLocked=this.webEnabled===false && GROUNDED.includes(this.state);
+    const websLocked=this.webEnabled===false;
     if(websLocked){
+      if(this.webs.length || this.zipAnchor || this.character.webShotTimer>0)this.clearWebAnchor();
+      input.webZipHeld=false;
       input.webTap=input.webFireHeld=input.webHold=false;
       input.webTapRight=input.webFireHeldRight=input.webHoldRight=false;
     }

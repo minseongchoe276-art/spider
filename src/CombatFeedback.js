@@ -24,7 +24,7 @@ export class CombatFeedback {
     const out=this.element();if(!out)return;
     const me=online.players.find(p=>p.id===online.id);
     const active=online.room?.phase==='playing' && isCombatMode(online.room.mode) && !online.spectating;
-    const kind=this.game.combat?.mode==='combat'&&GROUNDED.includes(this.game.physics?.state)?'punch':'web';
+    const kind=this.game.combat?.mode==='combat'?'punch':'web';
     out.hidden=!active;if(this.aimZone)this.aimZone.hidden=!active||kind!=='web'||!canAttack(online.room,me);if(!active)return;
     const now=performance.now();
     if(this.pendingUntil && now>this.pendingUntil){this.pendingUntil=0;this.show('아직 명중 확인 없음 · 거리·높이·가림·연결 상태를 확인하세요');}
@@ -33,6 +33,7 @@ export class CombatFeedback {
     if(this.aimZone)this.aimZone.dataset.ready=String(!!this.preview?.aimReady&&!this.preview?.blocked&&!grace);
     if(now<this.until){out.textContent=this.message;return;}
     if(!canAttack(online.room,me)){out.textContent=`내 HP ${me.health}/100 · 경찰의 주먹 25 / 거미줄 15 · 벽 뒤에서는 피해 없음`;return;}
+    if(kind==='punch'&&!GROUNDED.includes(this.game.physics?.state)){out.textContent='인간 모드 · 착지 후 주먹 공격 · 거미줄은 Q로 변신 후 사용';return;}
     if(grace){out.textContent=`시작 보호 ${Math.ceil(grace/1000)}초 · 아직 피해 없음`;return;}
     const remain=Math.max(0,(this.cooldowns[kind]||0)-now);
     const target=this.preview;

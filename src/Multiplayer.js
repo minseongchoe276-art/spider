@@ -341,6 +341,7 @@ export class Multiplayer {
   finish(){this.pendingPunch=null;clearInterval(this.beginTimer);this.beginTimer=null;this.setSpectating(false);this.game.isPlaying=false;this.game.clearInput();this.game.setPaused(true);this.game.clickToPlayOverlay?.classList.add('hidden');this.clearAvatars();}
   leaveLocal(){this.game.character.group.visible=true;this.rescueStarted=null;this.rescueTarget=null;if(this.goalMarker)this.goalMarker.visible=false;$('pursuit-hud').textContent='';$('spectate-next')?.classList.add('hidden');try{sessionStorage.removeItem('web-runner-room-resume');}catch{}this.arena=null;this.pulseUntil=0;this.game.practice?.stop();this.room=null;this.pendingPunch=null;clearInterval(this.beginTimer);this.beginTimer=null;this.spectating=false;this.solo=false;clearInterval(this.soloStartTimer);this.soloStartTimer=null;this.players=[];this.id=null;this.lastPhase=null;this.game.isPlaying=false;this.game.clearInput();this.game.setPaused(true);this.game.clickToPlayOverlay?.classList.add('hidden');this.clearAvatars();this.render();this.send({type:'list'});}
   attack(kind,hand='left'){
+    if(kind==='web'&&this.game.combat?.mode==='combat')return false;
     const me=this.players.find(p=>p.id===this.id);
     if(this.spectating||!canAttack(this.room,me))return;
     if(kind==='punch'){
@@ -369,6 +370,7 @@ export class Multiplayer {
     return {player:target.p,name:target.p.name||'상대',distance:target.d,blocked,aimReady:kind!=='web'||webTargetInReticle(target.p,this.game.camera)};
   }
   sendAttack(kind,facing,hand='left'){
+    if(kind==='web'&&this.game.combat?.mode==='combat')return false;
     const me=this.players.find(p=>p.id===this.id);
     if(this.spectating||!canAttack(this.room,me))return;
     const origin=this.game.physics.position.clone().add(new THREE.Vector3(0,1,0));

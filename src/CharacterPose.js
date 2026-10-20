@@ -622,3 +622,27 @@ export function poseZipLegs(c,delta) {
     c.solveLimb(hip,knee,foot,worldPosition(foot).lerp(goal,c.zipPoseWeight),0.97,pole);
   }
 }
+
+// Read the anatomical forward axis from the skin bind pose rather than
+// assuming that a Mixamo head's local +Z points through the face.
+export function alignCombatGaze(c,delta,active) {
+  c.combatGazeWeight=THREE.MathUtils.damp(c.combatGazeWeight||0,active?1:0,14,delta);
+  if(c.combatGazeWeight<.001)return;
+  const head=find(c,'head'),neck=find(c,'neck');if(!head)return;
+  if(c.combatGazeModel!==c.model){
+    const mesh=c.model.getObjectByProperty('isSkinnedMesh',true),index=mesh?.skeleton.bones.indexOf(head);
+    if(!(index>=0))return;
+    const bind=new THREE.Quaternion();mesh.skeleton.boneInverses[index].clone().invert().decompose(new THREE.Vector3(),bind,new THREE.Vector3());
+    c.combatGazeForward=new THREE.Vector3(0,0,1).applyQuaternion(bind.invert());c.combatGazeModel=c.model;
+  }
+  c.group.updateMatrixWorld(true);
+  const from=c.combatGazeForward.clone().applyQuaternion(head.getWorldQuaternion(new THREE.Quaternion())).normalize();
+  const to=new THREE.Vector3(0,-.08,1).normalize().applyQuaternion(c.model.getWorldQuaternion(new THREE.Quaternion()));
+  const correction=new THREE.Quaternion().setFromUnitVectors(from,to);
+  for(const [bone,share]of [[neck,.55],[head,neck ? .45 : 1]]){
+    if(!bone)continue;
+    const turn=new THREE.Quaternion().slerp(correction,share*c.combatGazeWeight);
+    const world=turn.multiply(bone.getWorldQuaternion(new THREE.Quaternion()));
+    bone.quaternion.copy(bone.parent.getWorldQuaternion(new THREE.Quaternion()).invert().multiply(world)).normalize();bone.updateMatrixWorld(true);
+  }
+}

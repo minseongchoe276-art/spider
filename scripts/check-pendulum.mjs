@@ -129,5 +129,6 @@ assert.equal(locked.isSwinging,false);assert.equal(denied.webTapRight,false);
 locked.state='FALLING';locked.position.set(0,6,0);
 denied.webTapRight=denied.webFireHeldRight=denied.webHoldRight=true;
 locked.update(1/60,denied,camera);
-assert.equal(locked.isSwinging,true);assert.equal(locked.webs[0].hand,'right');
-console.log('PASS PENDULUM: grounded combat blocks a right-click web and airborne combat allows it');
+assert.equal(locked.isSwinging,false);assert.equal(locked.webs.length,0);
+locked.webEnabled=true;denied.webTapRight=denied.webFireHeldRight=denied.webHoldRight=true;locked.update(1/60,denied,camera);assert.equal(locked.isSwinging,true);assert.equal(locked.webs[0].hand,'right');
+console.log('PASS PENDULUM: human mode blocks ground and air webs; transformation restores the opposite-hand web');

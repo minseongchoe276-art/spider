@@ -65,8 +65,9 @@ combatCam.position.set(0,2.3,0);combatCam.lookAt(0,5,15);combatCam.updateMatrixW
 assert.equal(combatWeb.startSwing(combatCam),false,'Grounded combat fired a web');
 assert.equal(combatWeb.performWebPull(combatCam),false,'Grounded combat zipped');
 combatWeb.state='FALLING';combatWeb.position.set(0,6,0);
-assert.equal(combatWeb.startSwing(combatCam),true,'Airborne combat left click did not shoot a web');
-assert.equal(combatWeb.webs.length,1);
+assert.equal(combatWeb.startSwing(combatCam),false,'Human mode fired an airborne web');
+assert.equal(combatWeb.webs.length,0);
+combatWeb.webEnabled=true;assert.equal(combatWeb.startSwing(combatCam),true,'Transformation did not restore airborne webs');
 const wall = { minX:-4, maxX:4, minY:0, maxY:10, minZ:3, maxZ:3.01 };
 assert(sweepBody(new THREE.Vector3(0,1,0),new THREE.Vector3(0,1,20),[wall]));
 const ceiling = { minX:-4,maxX:4,minZ:-4,maxZ:4,minY:2,maxY:2.1 };

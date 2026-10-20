@@ -24,12 +24,12 @@ export function sanitizePose(pose) {
   if (!pose || !STATES.has(pose.state)) return null;
   const velocity = vector(pose.velocity);
   if (!velocity || Math.hypot(velocity.x,velocity.y,velocity.z)>150) return null;
-  const webs = (Array.isArray(pose.webs)?pose.webs:[]).slice(0,2)
+  const webs = (pose.combatStance===true?[]:Array.isArray(pose.webs)?pose.webs:[]).slice(0,2)
     .map(w => ({hand:w?.hand==='right'?'right':'left',anchor:vector(w?.anchor)})).filter(w => w.anchor)
     .filter((web,i,all)=>all.findIndex(other=>other.hand===web.hand)===i);
   let combat = null;
-  const webShot=cleanShot(pose.webShot);
-  const webShots=(Array.isArray(pose.webShots)?pose.webShots:[]).slice(0,2).map(cleanShot).filter(Boolean)
+  const webShot=pose.combatStance===true?null:cleanShot(pose.webShot);
+  const webShots=(pose.combatStance===true?[]:Array.isArray(pose.webShots)?pose.webShots:[]).slice(0,2).map(cleanShot).filter(Boolean)
     .filter((shot,i,shots)=>shots.findIndex(other=>other.hand===shot.hand)===i);
   if (COMBAT.has(pose.combat?.key) && [pose.combat.time ?? 0,pose.combat.duration ?? 0].every(Number.isFinite))
     combat = {key:pose.combat.key,id:String(pose.combat.id || '').slice(0,40),
@@ -40,7 +40,7 @@ export function sanitizePose(pose) {
     ? {normal:normal(m.normal),...Object.fromEntries(['edge','start','end'].map(k=>[k,vector(m[k])])),
       elapsed:THREE.MathUtils.clamp(m.elapsed,0,2),duration:THREE.MathUtils.clamp(m.duration,.1,2),
       gap:THREE.MathUtils.clamp(m.gap,0,2),height:m.height} : null;
-  return {state:pose.state,velocity,webs,webShot,webShots,anchor:vector(pose.anchor),wallNormal:normal(pose.wallNormal),
+  return {state:pose.state,velocity,webs,webShot,webShots,anchor:pose.combatStance===true?null:vector(pose.anchor),wallNormal:normal(pose.wallNormal),
     mantle,wallDistance:Number.isFinite(pose.wallDistance)?THREE.MathUtils.clamp(pose.wallDistance,0,2):.7,
     landingSpeed:Number.isFinite(pose.landingSpeed)?THREE.MathUtils.clamp(pose.landingSpeed,0,100):0,
     airTrick: pose.tricking && Object.hasOwn(AIR_TRICKS, pose.airTrick?.key) && Number.isFinite(pose.airTrick.elapsed)

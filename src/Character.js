@@ -9,7 +9,7 @@ import { retargetMotion, prepareMotion, boneId } from './MotionRetarget.js';
 import { MOTIONS, STRIDES, GROUNDED } from './MotionCatalog.js';
 import { fetchAsset, forEachConcurrent } from './AssetLoader.js';
 import { clone as cloneSkeleton } from 'three/addons/utils/SkeletonUtils.js';
-import { plantMovingFeet, poseWall, poseZipLegs, poseMantle, adaptPelvisToTerrain, footSupport, soleRotation, clearGroundSoles, fitGroundAnkle, alignCombatWrists, reuseHeldGroundPose, cacheGroundPose } from './CharacterPose.js';
+import { plantMovingFeet, poseWall, poseZipLegs, poseMantle, adaptPelvisToTerrain, footSupport, soleRotation, clearGroundSoles, fitGroundAnkle, alignCombatWrists, alignCombatGaze, reuseHeldGroundPose, cacheGroundPose } from './CharacterPose.js';
 import {createHandPoseRig,restoreHandPose,updateWebHandPose} from './WebHandPose.js';
 
 export class Character {
@@ -567,8 +567,9 @@ export class Character {
     }
     const combat=this.combatAction;
     const combatClip= combat?.key==='hit'?'hitHead':combat?.key?.startsWith('dodge')?'combatIdle':combat?.key;
+    const movingGuard=grounded && horizontalSpeed>.25 && combat?.key==='guard';
     const movingStrike=grounded && horizontalSpeed>.25 && combat?.duration && ['jab','cross','hook','heavy','special'].includes(combat.key);
-    if(combat && !movingStrike && this.actions[combatClip] && (grounded || combat.key==='slam') && !['ROLLING','TURNING'].includes(state))name=combatClip;
+    if(combat && !movingStrike && !movingGuard && this.actions[combatClip] && (grounded || combat.key==='slam') && !['ROLLING','TURNING'].includes(state))name=combatClip;
     if (this.airTrick) name = this.airTrick.key === 'front' && this.actions.airTrick
       ? 'airTrick' : this.actions.fallIdle ? 'fallIdle' : 'fall';
     else if(this.isTricking && !grounded && !['WALL_RUNNING','MANTLING','WEB_ZIP'].includes(state) && this.actions.airTrick)name='airTrick';
@@ -605,7 +606,7 @@ export class Character {
     this.movingGuardWeight=THREE.MathUtils.damp(this.movingGuardWeight || 0,
       grounded && horizontalSpeed>.25 && (this.combatStance || movingStrike)?1:0,18,delta);
     if(movingStrike || this.movingGuardWeight>.001) {
-      const clip=this.actions[movingStrike?combatClip:'combatIdle']?.getClip();
+      const clip=this.actions[movingStrike?combatClip:movingGuard?'guard':'combatIdle']?.getClip();
       if(clip) {
         this.strikeLayers ||= new WeakMap();
         if(!this.strikeLayers.has(clip))this.strikeLayers.set(clip,clip.tracks.flatMap(track=>{
@@ -618,6 +619,7 @@ export class Character {
         // arm swing. Contact stays fully weighted; recovery returns to guard.
         const weight=this.movingGuardWeight;
         const hip=Object.values(this.bones).find(b=>boneId(b.name)==='hips');
+        const locomotionHip=hip?.quaternion.clone();
         const hipTrack=clip.tracks.find(t=>t.name===hip?.name+'.quaternion');
         if(hipTrack && movingStrike){
           const sample=hipTrack.createInterpolant(),guard=new THREE.Quaternion().fromArray(sample.evaluate(0));
@@ -634,15 +636,20 @@ export class Character {
           }
         }
         const layers=this.strikeLayers.get(clip);
-        const token=movingStrike?combat.id || combat.key:'guard';
+        const token=movingStrike?combat.id || combat.key:movingGuard?'movingGuard':'guard';
         if(this.movingStrikeToken!==token){
           this.movingStrikeToken=token;this.movingStrikeBlend=0;
           this.movingStrikeFrom=this.movingStrikePose;
         }
         this.movingStrikeBlend=Math.min(.1,(this.movingStrikeBlend || 0)+delta);
         const blend=THREE.MathUtils.smoothstep(this.movingStrikeBlend,0,.1);
+        const basis=hipTrack&&locomotionHip?locomotionHip.invert().multiply(new THREE.Quaternion().fromArray(hipTrack.createInterpolant().evaluate(0))):null;
         for(const {bone,sample} of layers){
-          bone.quaternion.slerp(new THREE.Quaternion().fromArray(sample.evaluate(phase*clip.duration)),weight);
+          const pose=new THREE.Quaternion().fromArray(sample.evaluate(phase*clip.duration));
+          // Upper-body tracks are local to the fighting pelvis, which turns
+          // relative to the running pelvis. Rebase only the spine root.
+          if(basis && bone.parent===hip)pose.premultiply(basis);
+          bone.quaternion.slerp(pose,weight);
           const from=this.movingStrikeFrom?.get(bone);
           if(from && blend<1)bone.quaternion.slerpQuaternions(from,bone.quaternion.clone(),blend);
         }
@@ -674,6 +681,7 @@ export class Character {
       state === 'WEB_ZIP' ? THREE.MathUtils.clamp(Math.atan2(horizontalSpeed,Math.max(2,velocity.y))*0.65,0,1)
         : state === 'SWINGING' ? THREE.MathUtils.clamp(-velocity.y * 0.015, -0.45, 0.45) : 0, 10, delta);
     this.model.rotation.set(this.bodyPitch + this.trickRotation, this.visualYaw, 0, 'YXZ');
+    alignCombatGaze(this,delta,grounded&&this.combatStance&&(!combat||['combatIdle','guard'].includes(combat.key)));
     if ((state === 'WALL_RUNNING' || state==='MANTLING') && this.wallNormal) {
       // A humanoid's local Y is its spine, not the sole normal. Swapping
       // Y with the wall normal laid the entire character across the wall.

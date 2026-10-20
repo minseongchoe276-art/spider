@@ -63,7 +63,7 @@ try{
  assert.equal(zip.textContent,'훅');
  const guard=target({key:'guard'});controls.down(event(20,guard));controls.down(event(21,left));
  game.physics.state='FALLING';controls.update();assert(!controls.pointers.has(20),'A hidden guard retained its held key');assert(controls.pointers.has(21),'Changing context cancelled an independent strand');
- assert(calls.some(c=>c[0]==='guard'&&c[1]===false));assert.equal(zip.textContent,'집');
+ assert(calls.some(c=>c[0]==='guard'&&c[1]===false));assert.equal(zip.textContent,'착지 후 훅');assert(webButtons.every(b=>b.disabled));
  controls.up({pointerId:21});
  console.log('PASS: contextual combat HUD, cached DOM updates, airborne guard cleanup and independent held strand');
 }finally{if(oldDocument===undefined)delete globalThis.document;else globalThis.document=oldDocument;}

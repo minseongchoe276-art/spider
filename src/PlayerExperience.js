@@ -85,9 +85,9 @@ export class PlayerExperience {
     g.audio.updateMusic?.(delta,!!g.multiplayer?.room);
   }
   previewAnchor(){const g=this.game,p=g.physics,marker=document.getElementById('anchor-preview'),hands=document.getElementById('hand-status');
-    const inCombat=GROUNDED.includes(p.state)&&g.combat.mode==='combat';
+    const inCombat=g.combat.mode==='combat';
     const zipStatus=GROUNDED.includes(p.state)?'집: 공중 전용':p.state==='WEB_ZIP'?'집 이동 중':p.zipCooldown>0?'집 대기':'집 준비';
-    if(hands)hands.textContent=inCombat?`지상 전투 · ${keyLabel(g.preferences.values.settings.bindings.guard)} 방어`:
+    if(hands)hands.textContent=inCombat?(GROUNDED.includes(p.state)?`인간 모드 · ${keyLabel(g.preferences.values.settings.bindings.guard)} 방어`:'공중 · 인간 모드 · 변신 후 거미줄 사용'):
       `${p.webs.some(w=>w.button===0)?'좌클릭 연결':'좌클릭 준비'} · ${p.webs.some(w=>w.button===2)?'우클릭 연결':'우클릭 준비'} · ${zipStatus}`;
     // Availability belongs on the fixed reticle, not a moving world marker.
     g.crosshair?.classList.toggle('aiming',!inCombat && !!p.bestAnchorCandidate);

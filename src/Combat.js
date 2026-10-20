@@ -28,7 +28,7 @@ export class CombatSystem {
     input.webZipHeld=false;
     this.physics.webEnabled=this.mode==='web';this.physics.clearPendingInput?.();
     if(this.mode==='combat')this.physics.clearWebAnchor?.();
-    this.onNotice(this.mode==='web'?'변신 · 에너지 와이어 모드 · 조준한 표면에 좌·우클릭으로 연결 / 점프는 Space / 떼면 관성 비행':'전투 모드 · 땅에서는 왼손 잽·오른손 스트레이트 / 공중 좌·우클릭은 에너지 와이어 / 방어·회피 키는 조작 가이드에서 확인하세요');
+    this.onNotice(this.mode==='web'?'변신 · 에너지 와이어 모드 · 조준한 표면에 좌·우클릭으로 연결 / 점프는 Space / 떼면 관성 비행':'인간 모드 · 지상 좌클릭 잽 / 우클릭 스트레이트 · B 방어 · 거미줄은 Q로 변신 후 사용');
     return this.mode;
   }
   face(camera) {
