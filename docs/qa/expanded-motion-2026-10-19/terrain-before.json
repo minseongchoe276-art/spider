@@ -1,0 +1,853 @@
+{
+  "cases": 64,
+  "failed": 19,
+  "results": [
+    {
+      "terrain": "flat",
+      "fps": 24,
+      "variant": "reverse-diagonal",
+      "pass": true,
+      "frames": 63,
+      "maxFootStep": 0.6845626006546854,
+      "minToe": 0.005889117717742948,
+      "jumpSeen": false,
+      "attacks": [],
+      "maxJoint": 1.2217269678136844,
+      "finalState": "RUNNING"
+    },
+    {
+      "terrain": "flat",
+      "fps": 24,
+      "variant": "sprint-attack-jump",
+      "pass": false,
+      "error": "A foot teleported during reversal/attack/jump",
+      "frames": 63,
+      "maxFootStep": 1.444475964572778,
+      "minToe": 0.0029999613761901855
+    },
+    {
+      "terrain": "flat",
+      "fps": 30,
+      "variant": "reverse-diagonal",
+      "pass": true,
+      "frames": 78,
+      "maxFootStep": 0.5660662366219583,
+      "minToe": 0.005921453237533597,
+      "jumpSeen": false,
+      "attacks": [],
+      "maxJoint": 1.2215003833494595,
+      "finalState": "RUNNING"
+    },
+    {
+      "terrain": "flat",
+      "fps": 30,
+      "variant": "sprint-attack-jump",
+      "pass": true,
+      "frames": 78,
+      "maxFootStep": 1.2166673097826453,
+      "minToe": 0.0029999911785125732,
+      "jumpSeen": true,
+      "attacks": [
+        "combatIdle",
+        "jab",
+        "cross"
+      ],
+      "maxJoint": 1.216021543757264,
+      "finalState": "JUMPING"
+    },
+    {
+      "terrain": "flat",
+      "fps": 60,
+      "variant": "reverse-diagonal",
+      "pass": true,
+      "frames": 156,
+      "maxFootStep": 0.30268970099068143,
+      "minToe": 0.004776567220687866,
+      "jumpSeen": false,
+      "attacks": [],
+      "maxJoint": 1.2212047096216756,
+      "finalState": "RUNNING"
+    },
+    {
+      "terrain": "flat",
+      "fps": 60,
+      "variant": "sprint-attack-jump",
+      "pass": true,
+      "frames": 156,
+      "maxFootStep": 0.6174927224285286,
+      "minToe": 0.004036992788314819,
+      "jumpSeen": true,
+      "attacks": [
+        "combatIdle",
+        "jab",
+        "cross"
+      ],
+      "maxJoint": 1.2217246080048059,
+      "finalState": "JUMPING"
+    },
+    {
+      "terrain": "flat",
+      "fps": 144,
+      "variant": "reverse-diagonal",
+      "pass": true,
+      "frames": 375,
+      "maxFootStep": 0.12701976970159978,
+      "minToe": 0.0057540535926819125,
+      "jumpSeen": false,
+      "attacks": [],
+      "maxJoint": 1.2215605297562957,
+      "finalState": "RUNNING"
+    },
+    {
+      "terrain": "flat",
+      "fps": 144,
+      "variant": "sprint-attack-jump",
+      "pass": true,
+      "frames": 375,
+      "maxFootStep": 0.2819201671583862,
+      "minToe": 0.0037090480327605924,
+      "jumpSeen": true,
+      "attacks": [
+        "combatIdle",
+        "jab",
+        "cross"
+      ],
+      "maxJoint": 1.221728522119684,
+      "finalState": "JUMPING"
+    },
+    {
+      "terrain": "diagonal-ramp",
+      "fps": 24,
+      "variant": "reverse-diagonal",
+      "pass": true,
+      "frames": 63,
+      "maxFootStep": 0.6847172867899238,
+      "minToe": 0.005960136651992798,
+      "jumpSeen": false,
+      "attacks": [],
+      "maxJoint": 1.2215179555673816,
+      "finalState": "RUNNING"
+    },
+    {
+      "terrain": "diagonal-ramp",
+      "fps": 24,
+      "variant": "sprint-attack-jump",
+      "pass": false,
+      "error": "A foot teleported during reversal/attack/jump",
+      "frames": 63,
+      "maxFootStep": 1.29931482773844,
+      "minToe": 0.0030000507831573486
+    },
+    {
+      "terrain": "diagonal-ramp",
+      "fps": 30,
+      "variant": "reverse-diagonal",
+      "pass": true,
+      "frames": 78,
+      "maxFootStep": 0.566065490115089,
+      "minToe": 0.005169093608856201,
+      "jumpSeen": false,
+      "attacks": [],
+      "maxJoint": 1.2213309544558975,
+      "finalState": "RUNNING"
+    },
+    {
+      "terrain": "diagonal-ramp",
+      "fps": 30,
+      "variant": "sprint-attack-jump",
+      "pass": true,
+      "frames": 78,
+      "maxFootStep": 1.128899852601362,
+      "minToe": 0.0029999911785125732,
+      "jumpSeen": true,
+      "attacks": [
+        "combatIdle",
+        "jab",
+        "cross"
+      ],
+      "maxJoint": 1.2217264506492622,
+      "finalState": "SPRINTING"
+    },
+    {
+      "terrain": "diagonal-ramp",
+      "fps": 60,
+      "variant": "reverse-diagonal",
+      "pass": true,
+      "frames": 156,
+      "maxFootStep": 0.3027258526390254,
+      "minToe": 0.0055356621742248535,
+      "jumpSeen": false,
+      "attacks": [],
+      "maxJoint": 1.2215663041169549,
+      "finalState": "RUNNING"
+    },
+    {
+      "terrain": "diagonal-ramp",
+      "fps": 60,
+      "variant": "sprint-attack-jump",
+      "pass": true,
+      "frames": 156,
+      "maxFootStep": 0.6125321826659686,
+      "minToe": 0.003742992877960233,
+      "jumpSeen": true,
+      "attacks": [
+        "combatIdle",
+        "jab",
+        "cross"
+      ],
+      "maxJoint": 1.22172645113069,
+      "finalState": "SPRINTING"
+    },
+    {
+      "terrain": "diagonal-ramp",
+      "fps": 144,
+      "variant": "reverse-diagonal",
+      "pass": true,
+      "frames": 375,
+      "maxFootStep": 0.12701976987561503,
+      "minToe": 0.005754053592681885,
+      "jumpSeen": false,
+      "attacks": [],
+      "maxJoint": 1.2215605297562955,
+      "finalState": "RUNNING"
+    },
+    {
+      "terrain": "diagonal-ramp",
+      "fps": 144,
+      "variant": "sprint-attack-jump",
+      "pass": true,
+      "frames": 375,
+      "maxFootStep": 0.3005379766359491,
+      "minToe": 0.0036960542201996127,
+      "jumpSeen": true,
+      "attacks": [
+        "combatIdle",
+        "jab",
+        "cross"
+      ],
+      "maxJoint": 1.2214650222036554,
+      "finalState": "SPRINTING"
+    },
+    {
+      "terrain": "ramp-edge",
+      "fps": 24,
+      "variant": "reverse-diagonal",
+      "pass": true,
+      "frames": 63,
+      "maxFootStep": 0.6845626006546854,
+      "minToe": 0.005889117717742948,
+      "jumpSeen": false,
+      "attacks": [],
+      "maxJoint": 1.2217269678136844,
+      "finalState": "RUNNING"
+    },
+    {
+      "terrain": "ramp-edge",
+      "fps": 24,
+      "variant": "sprint-attack-jump",
+      "pass": true,
+      "frames": 63,
+      "maxFootStep": 0.9952686071949297,
+      "minToe": 0.0029999613761901855,
+      "jumpSeen": true,
+      "attacks": [
+        "combatIdle",
+        "jab",
+        "cross"
+      ],
+      "maxJoint": 1.218347513308363,
+      "finalState": "SPRINTING"
+    },
+    {
+      "terrain": "ramp-edge",
+      "fps": 30,
+      "variant": "reverse-diagonal",
+      "pass": true,
+      "frames": 78,
+      "maxFootStep": 0.5660662366219583,
+      "minToe": 0.005921453237533597,
+      "jumpSeen": false,
+      "attacks": [],
+      "maxJoint": 1.2215003833494595,
+      "finalState": "RUNNING"
+    },
+    {
+      "terrain": "ramp-edge",
+      "fps": 30,
+      "variant": "sprint-attack-jump",
+      "pass": true,
+      "frames": 78,
+      "maxFootStep": 0.9129993882500145,
+      "minToe": 0.0029999911785125732,
+      "jumpSeen": true,
+      "attacks": [
+        "combatIdle",
+        "jab",
+        "cross"
+      ],
+      "maxJoint": 1.220882110220277,
+      "finalState": "SPRINTING"
+    },
+    {
+      "terrain": "ramp-edge",
+      "fps": 60,
+      "variant": "reverse-diagonal",
+      "pass": true,
+      "frames": 156,
+      "maxFootStep": 0.30268970099068143,
+      "minToe": 0.004776567220687866,
+      "jumpSeen": false,
+      "attacks": [],
+      "maxJoint": 1.2212047096216756,
+      "finalState": "RUNNING"
+    },
+    {
+      "terrain": "ramp-edge",
+      "fps": 60,
+      "variant": "sprint-attack-jump",
+      "pass": true,
+      "frames": 156,
+      "maxFootStep": 0.5418428686081789,
+      "minToe": 0.004036992788314819,
+      "jumpSeen": true,
+      "attacks": [
+        "combatIdle",
+        "jab",
+        "cross"
+      ],
+      "maxJoint": 1.2208821104491043,
+      "finalState": "SPRINTING"
+    },
+    {
+      "terrain": "ramp-edge",
+      "fps": 144,
+      "variant": "reverse-diagonal",
+      "pass": true,
+      "frames": 375,
+      "maxFootStep": 0.12701976970159978,
+      "minToe": 0.0057540535926819125,
+      "jumpSeen": false,
+      "attacks": [],
+      "maxJoint": 1.2215605297562957,
+      "finalState": "RUNNING"
+    },
+    {
+      "terrain": "ramp-edge",
+      "fps": 144,
+      "variant": "sprint-attack-jump",
+      "pass": true,
+      "frames": 375,
+      "maxFootStep": 0.38928099322795834,
+      "minToe": 0.0037090480327605924,
+      "jumpSeen": true,
+      "attacks": [
+        "combatIdle",
+        "jab",
+        "cross"
+      ],
+      "maxJoint": 1.220260254713156,
+      "finalState": "SPRINTING"
+    },
+    {
+      "terrain": "stairs-up",
+      "fps": 24,
+      "variant": "reverse-diagonal",
+      "pass": false,
+      "error": "Toe penetrated the sampled support",
+      "frames": 63,
+      "maxFootStep": 0.6487625119990539,
+      "minToe": -0.17315655946731567
+    },
+    {
+      "terrain": "stairs-up",
+      "fps": 24,
+      "variant": "sprint-attack-jump",
+      "pass": false,
+      "error": "A foot teleported during reversal/attack/jump",
+      "frames": 63,
+      "maxFootStep": 1.444475964572778,
+      "minToe": 0.002999931573867798
+    },
+    {
+      "terrain": "stairs-up",
+      "fps": 30,
+      "variant": "reverse-diagonal",
+      "pass": false,
+      "error": "Toe penetrated the sampled support",
+      "frames": 78,
+      "maxFootStep": 0.5406544368159586,
+      "minToe": -0.13195001333951956
+    },
+    {
+      "terrain": "stairs-up",
+      "fps": 30,
+      "variant": "sprint-attack-jump",
+      "pass": true,
+      "frames": 78,
+      "maxFootStep": 1.218061025831393,
+      "minToe": 0.002999931573867798,
+      "jumpSeen": true,
+      "attacks": [
+        "combatIdle",
+        "jab",
+        "cross"
+      ],
+      "maxJoint": 1.216021543757264,
+      "finalState": "JUMPING"
+    },
+    {
+      "terrain": "stairs-up",
+      "fps": 60,
+      "variant": "reverse-diagonal",
+      "pass": true,
+      "frames": 156,
+      "maxFootStep": 0.3189166695739193,
+      "minToe": 0.0029999613761901855,
+      "jumpSeen": false,
+      "attacks": [],
+      "maxJoint": 1.2216648545887283,
+      "finalState": "RUNNING"
+    },
+    {
+      "terrain": "stairs-up",
+      "fps": 60,
+      "variant": "sprint-attack-jump",
+      "pass": false,
+      "error": "Toe penetrated the sampled support",
+      "frames": 156,
+      "maxFootStep": 0.6367033198198475,
+      "minToe": -0.06898133456706995
+    },
+    {
+      "terrain": "stairs-up",
+      "fps": 144,
+      "variant": "reverse-diagonal",
+      "pass": true,
+      "frames": 375,
+      "maxFootStep": 0.2910883704072441,
+      "minToe": 0.002999931573867798,
+      "jumpSeen": false,
+      "attacks": [],
+      "maxJoint": 1.2215768377436933,
+      "finalState": "RUNNING"
+    },
+    {
+      "terrain": "stairs-up",
+      "fps": 144,
+      "variant": "sprint-attack-jump",
+      "pass": true,
+      "frames": 375,
+      "maxFootStep": 0.6291202515528421,
+      "minToe": 0.0029987096786499023,
+      "jumpSeen": true,
+      "attacks": [
+        "combatIdle",
+        "jab",
+        "cross"
+      ],
+      "maxJoint": 1.2217285221196832,
+      "finalState": "JUMPING"
+    },
+    {
+      "terrain": "stairs-down",
+      "fps": 24,
+      "variant": "reverse-diagonal",
+      "pass": true,
+      "frames": 63,
+      "maxFootStep": 0.7146948641666543,
+      "minToe": 0.004515171051025391,
+      "jumpSeen": false,
+      "attacks": [],
+      "maxJoint": 1.2217304565936844,
+      "finalState": "RUNNING"
+    },
+    {
+      "terrain": "stairs-down",
+      "fps": 24,
+      "variant": "sprint-attack-jump",
+      "pass": false,
+      "error": "A foot teleported during reversal/attack/jump",
+      "frames": 63,
+      "maxFootStep": 1.3730363238164693,
+      "minToe": 0.0029996633529663086
+    },
+    {
+      "terrain": "stairs-down",
+      "fps": 30,
+      "variant": "reverse-diagonal",
+      "pass": false,
+      "error": "Toe penetrated the sampled support",
+      "frames": 78,
+      "maxFootStep": 0.6006504163414106,
+      "minToe": -0.034193024039268494
+    },
+    {
+      "terrain": "stairs-down",
+      "fps": 30,
+      "variant": "sprint-attack-jump",
+      "pass": false,
+      "error": "A foot teleported during reversal/attack/jump",
+      "frames": 78,
+      "maxFootStep": 1.3787847741656933,
+      "minToe": -0.010112032294273376
+    },
+    {
+      "terrain": "stairs-down",
+      "fps": 60,
+      "variant": "reverse-diagonal",
+      "pass": true,
+      "frames": 156,
+      "maxFootStep": 0.30701515246162564,
+      "minToe": 0.005222320556640625,
+      "jumpSeen": false,
+      "attacks": [],
+      "maxJoint": 1.2217304565936844,
+      "finalState": "RUNNING"
+    },
+    {
+      "terrain": "stairs-down",
+      "fps": 60,
+      "variant": "sprint-attack-jump",
+      "pass": false,
+      "error": "Toe penetrated the sampled support",
+      "frames": 156,
+      "maxFootStep": 0.6771155536760778,
+      "minToe": -0.004017099738121033
+    },
+    {
+      "terrain": "stairs-down",
+      "fps": 144,
+      "variant": "reverse-diagonal",
+      "pass": true,
+      "frames": 375,
+      "maxFootStep": 0.18543761556608776,
+      "minToe": 0.002999931573867798,
+      "jumpSeen": false,
+      "attacks": [],
+      "maxJoint": 1.2217304565936842,
+      "finalState": "RUNNING"
+    },
+    {
+      "terrain": "stairs-down",
+      "fps": 144,
+      "variant": "sprint-attack-jump",
+      "pass": false,
+      "error": "A foot teleported during reversal/attack/jump",
+      "frames": 375,
+      "maxFootStep": 1.315596108862399,
+      "minToe": 0.002999544143676758
+    },
+    {
+      "terrain": "low-ceiling",
+      "fps": 24,
+      "variant": "reverse-diagonal",
+      "pass": true,
+      "frames": 63,
+      "maxFootStep": 0.6847171015378773,
+      "minToe": 0.005960226058959961,
+      "jumpSeen": false,
+      "attacks": [],
+      "maxJoint": 1.2215179555673812,
+      "finalState": "RUNNING"
+    },
+    {
+      "terrain": "low-ceiling",
+      "fps": 24,
+      "variant": "sprint-attack-jump",
+      "pass": false,
+      "error": "A foot teleported during reversal/attack/jump",
+      "frames": 63,
+      "maxFootStep": 1.4416067800240207,
+      "minToe": 0.003000020980834961
+    },
+    {
+      "terrain": "low-ceiling",
+      "fps": 30,
+      "variant": "reverse-diagonal",
+      "pass": true,
+      "frames": 78,
+      "maxFootStep": 0.5660654884517347,
+      "minToe": 0.005009651184082031,
+      "jumpSeen": false,
+      "attacks": [],
+      "maxJoint": 1.2213309544558975,
+      "finalState": "RUNNING"
+    },
+    {
+      "terrain": "low-ceiling",
+      "fps": 30,
+      "variant": "sprint-attack-jump",
+      "pass": true,
+      "frames": 78,
+      "maxFootStep": 1.213531776957316,
+      "minToe": 0.003000020980834961,
+      "jumpSeen": true,
+      "attacks": [
+        "combatIdle",
+        "jab",
+        "cross"
+      ],
+      "maxJoint": 1.216021543757264,
+      "finalState": "JUMPING"
+    },
+    {
+      "terrain": "low-ceiling",
+      "fps": 60,
+      "variant": "reverse-diagonal",
+      "pass": true,
+      "frames": 156,
+      "maxFootStep": 0.30272570766294693,
+      "minToe": 0.005535602569580078,
+      "jumpSeen": false,
+      "attacks": [],
+      "maxJoint": 1.2215663041169549,
+      "finalState": "RUNNING"
+    },
+    {
+      "terrain": "low-ceiling",
+      "fps": 60,
+      "variant": "sprint-attack-jump",
+      "pass": true,
+      "frames": 156,
+      "maxFootStep": 0.6353779023637934,
+      "minToe": 0.0037431716918945312,
+      "jumpSeen": true,
+      "attacks": [
+        "combatIdle",
+        "jab",
+        "cross"
+      ],
+      "maxJoint": 1.2217246080047868,
+      "finalState": "JUMPING"
+    },
+    {
+      "terrain": "low-ceiling",
+      "fps": 144,
+      "variant": "reverse-diagonal",
+      "pass": true,
+      "frames": 375,
+      "maxFootStep": 0.12701832431370272,
+      "minToe": 0.005753993988037109,
+      "jumpSeen": false,
+      "attacks": [],
+      "maxJoint": 1.2215626438969311,
+      "finalState": "RUNNING"
+    },
+    {
+      "terrain": "low-ceiling",
+      "fps": 144,
+      "variant": "sprint-attack-jump",
+      "pass": true,
+      "frames": 375,
+      "maxFootStep": 0.281920167158386,
+      "minToe": 0.003709077835083008,
+      "jumpSeen": true,
+      "attacks": [
+        "combatIdle",
+        "jab",
+        "cross"
+      ],
+      "maxJoint": 1.221728522119684,
+      "finalState": "JUMPING"
+    },
+    {
+      "terrain": "narrow-corner",
+      "fps": 24,
+      "variant": "reverse-diagonal",
+      "pass": true,
+      "frames": 63,
+      "maxFootStep": 0.5127256387231277,
+      "minToe": 0.005889117717742948,
+      "jumpSeen": false,
+      "attacks": [],
+      "maxJoint": 1.2217199259991618,
+      "finalState": "RUNNING"
+    },
+    {
+      "terrain": "narrow-corner",
+      "fps": 24,
+      "variant": "sprint-attack-jump",
+      "pass": false,
+      "error": "A foot teleported during reversal/attack/jump",
+      "frames": 63,
+      "maxFootStep": 1.311365547238007,
+      "minToe": 0.0029999613761901855
+    },
+    {
+      "terrain": "narrow-corner",
+      "fps": 30,
+      "variant": "reverse-diagonal",
+      "pass": true,
+      "frames": 78,
+      "maxFootStep": 0.49972087029195067,
+      "minToe": 0.005921453237533597,
+      "jumpSeen": false,
+      "attacks": [],
+      "maxJoint": 1.2212193871753214,
+      "finalState": "RUNNING"
+    },
+    {
+      "terrain": "narrow-corner",
+      "fps": 30,
+      "variant": "sprint-attack-jump",
+      "pass": true,
+      "frames": 78,
+      "maxFootStep": 1.0596493485743,
+      "minToe": 0.0029999911785125732,
+      "jumpSeen": true,
+      "attacks": [
+        "combatIdle",
+        "jab",
+        "cross"
+      ],
+      "maxJoint": 1.2160215437572586,
+      "finalState": "JUMPING"
+    },
+    {
+      "terrain": "narrow-corner",
+      "fps": 60,
+      "variant": "reverse-diagonal",
+      "pass": true,
+      "frames": 156,
+      "maxFootStep": 0.26281589475959444,
+      "minToe": 0.005614489316940308,
+      "jumpSeen": false,
+      "attacks": [],
+      "maxJoint": 1.221703441356328,
+      "finalState": "RUNNING"
+    },
+    {
+      "terrain": "narrow-corner",
+      "fps": 60,
+      "variant": "sprint-attack-jump",
+      "pass": true,
+      "frames": 156,
+      "maxFootStep": 0.5408934362952904,
+      "minToe": 0.0030000805854797086,
+      "jumpSeen": true,
+      "attacks": [
+        "combatIdle",
+        "jab",
+        "cross"
+      ],
+      "maxJoint": 1.2217246079309076,
+      "finalState": "JUMPING"
+    },
+    {
+      "terrain": "narrow-corner",
+      "fps": 144,
+      "variant": "reverse-diagonal",
+      "pass": true,
+      "frames": 375,
+      "maxFootStep": 0.11027699266857947,
+      "minToe": 0.0029999911785125455,
+      "jumpSeen": false,
+      "attacks": [],
+      "maxJoint": 1.2216366456705858,
+      "finalState": "RUNNING"
+    },
+    {
+      "terrain": "narrow-corner",
+      "fps": 144,
+      "variant": "sprint-attack-jump",
+      "pass": true,
+      "frames": 375,
+      "maxFootStep": 0.41881909136512013,
+      "minToe": 0.0029999911785125455,
+      "jumpSeen": true,
+      "attacks": [
+        "combatIdle",
+        "jab",
+        "cross"
+      ],
+      "maxJoint": 1.2217285221196752,
+      "finalState": "JUMPING"
+    },
+    {
+      "terrain": "roof-edge",
+      "fps": 24,
+      "variant": "reverse-diagonal",
+      "pass": false,
+      "error": "A foot teleported during reversal/attack/jump",
+      "frames": 63,
+      "maxFootStep": 2.013381390759991,
+      "minToe": 0.005960226058959961
+    },
+    {
+      "terrain": "roof-edge",
+      "fps": 24,
+      "variant": "sprint-attack-jump",
+      "pass": false,
+      "error": "A foot teleported during reversal/attack/jump",
+      "frames": 63,
+      "maxFootStep": 41.74954992680538,
+      "minToe": 0.003000020980834961
+    },
+    {
+      "terrain": "roof-edge",
+      "fps": 30,
+      "variant": "reverse-diagonal",
+      "pass": false,
+      "error": "A foot teleported during reversal/attack/jump",
+      "frames": 78,
+      "maxFootStep": 1.6101429599617423,
+      "minToe": 0.005969047546386719
+    },
+    {
+      "terrain": "roof-edge",
+      "fps": 30,
+      "variant": "sprint-attack-jump",
+      "pass": false,
+      "error": "A foot teleported during reversal/attack/jump",
+      "frames": 78,
+      "maxFootStep": 42.93969449663785,
+      "minToe": 0.003000020980834961
+    },
+    {
+      "terrain": "roof-edge",
+      "fps": 60,
+      "variant": "reverse-diagonal",
+      "pass": true,
+      "frames": 156,
+      "maxFootStep": 0.807902403351619,
+      "minToe": 0.005618095397949219,
+      "jumpSeen": false,
+      "attacks": [],
+      "maxJoint": 1.2217304565936844,
+      "finalState": "FALLING"
+    },
+    {
+      "terrain": "roof-edge",
+      "fps": 60,
+      "variant": "sprint-attack-jump",
+      "pass": false,
+      "error": "A foot teleported during reversal/attack/jump",
+      "frames": 156,
+      "maxFootStep": 43.3437571388873,
+      "minToe": 0.003742694854736328
+    },
+    {
+      "terrain": "roof-edge",
+      "fps": 144,
+      "variant": "reverse-diagonal",
+      "pass": true,
+      "frames": 375,
+      "maxFootStep": 0.3366335252032786,
+      "minToe": 0.005753993988037109,
+      "jumpSeen": false,
+      "attacks": [],
+      "maxJoint": 1.2217304565936842,
+      "finalState": "FALLING"
+    },
+    {
+      "terrain": "roof-edge",
+      "fps": 144,
+      "variant": "sprint-attack-jump",
+      "pass": false,
+      "error": "A foot teleported during reversal/attack/jump",
+      "frames": 375,
+      "maxFootStep": 43.84489421426585,
+      "minToe": 0.003709077835083008
+    }
+  ]
+}

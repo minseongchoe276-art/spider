@@ -1,0 +1,666 @@
+{
+  "cases": 66,
+  "failed": 0,
+  "results": [
+    {
+      "mode": "combat",
+      "key": "idle",
+      "samples": 13,
+      "finite": true,
+      "maxExtent": 2.4070293002128182,
+      "maxEdgeGrowth": 0.04816126474862065,
+      "worstPhase": 0.5,
+      "pass": true
+    },
+    {
+      "mode": "combat",
+      "key": "walk",
+      "samples": 13,
+      "finite": true,
+      "maxExtent": 2.487291591195298,
+      "maxEdgeGrowth": 0.055471359338291754,
+      "worstPhase": 0.25,
+      "pass": true
+    },
+    {
+      "mode": "combat",
+      "key": "regularRun",
+      "samples": 13,
+      "finite": true,
+      "maxExtent": 2.6451069268569944,
+      "maxEdgeGrowth": 0.0658034245614309,
+      "worstPhase": 0.6666666666666666,
+      "pass": true
+    },
+    {
+      "mode": "combat",
+      "key": "run",
+      "samples": 13,
+      "finite": true,
+      "maxExtent": 2.593427999429192,
+      "maxEdgeGrowth": 0.11153735560025649,
+      "worstPhase": 0.16666666666666666,
+      "pass": true
+    },
+    {
+      "mode": "combat",
+      "key": "stop",
+      "samples": 13,
+      "finite": true,
+      "maxExtent": 2.3672155784558933,
+      "maxEdgeGrowth": 0.04798315027585087,
+      "worstPhase": 0.75,
+      "pass": true
+    },
+    {
+      "mode": "combat",
+      "key": "runStop",
+      "samples": 13,
+      "finite": true,
+      "maxExtent": 2.3664572595871043,
+      "maxEdgeGrowth": 0.06556278692277803,
+      "worstPhase": 0.08333333333333333,
+      "pass": true
+    },
+    {
+      "mode": "combat",
+      "key": "zip",
+      "samples": 13,
+      "finite": true,
+      "maxExtent": 2.0654445060892104,
+      "maxEdgeGrowth": 0.06642616461601607,
+      "worstPhase": 0,
+      "pass": true
+    },
+    {
+      "mode": "combat",
+      "key": "turnLeft",
+      "samples": 13,
+      "finite": true,
+      "maxExtent": 2.241043751066642,
+      "maxEdgeGrowth": 0.062351299567311586,
+      "worstPhase": 0.5833333333333334,
+      "pass": true
+    },
+    {
+      "mode": "combat",
+      "key": "turnRight",
+      "samples": 13,
+      "finite": true,
+      "maxExtent": 2.253908012023424,
+      "maxEdgeGrowth": 0.060286134833289845,
+      "worstPhase": 0.5833333333333334,
+      "pass": true
+    },
+    {
+      "mode": "combat",
+      "key": "jump",
+      "samples": 13,
+      "finite": true,
+      "maxExtent": 2.5175302869550715,
+      "maxEdgeGrowth": 0.04898227448253574,
+      "worstPhase": 0.25,
+      "pass": true
+    },
+    {
+      "mode": "combat",
+      "key": "land",
+      "samples": 13,
+      "finite": true,
+      "maxExtent": 2.443817787822567,
+      "maxEdgeGrowth": 0.06572912737332025,
+      "worstPhase": 1,
+      "pass": true
+    },
+    {
+      "mode": "combat",
+      "key": "jumpDown",
+      "samples": 13,
+      "finite": true,
+      "maxExtent": 2.7820323816809216,
+      "maxEdgeGrowth": 0.10469967666318558,
+      "worstPhase": 0.8333333333333334,
+      "pass": true
+    },
+    {
+      "mode": "combat",
+      "key": "drop",
+      "samples": 13,
+      "finite": true,
+      "maxExtent": 2.5599247514885937,
+      "maxEdgeGrowth": 0.10820901705529604,
+      "worstPhase": 0.8333333333333334,
+      "pass": true
+    },
+    {
+      "mode": "combat",
+      "key": "jumpDownVariant",
+      "samples": 13,
+      "finite": true,
+      "maxExtent": 2.7040076867431586,
+      "maxEdgeGrowth": 0.10213410205110018,
+      "worstPhase": 0.5,
+      "pass": true
+    },
+    {
+      "mode": "combat",
+      "key": "swing",
+      "samples": 13,
+      "finite": true,
+      "maxExtent": 2.6933336294985204,
+      "maxEdgeGrowth": 0.08369624194910152,
+      "worstPhase": 0.8333333333333334,
+      "pass": true
+    },
+    {
+      "mode": "combat",
+      "key": "fall",
+      "samples": 13,
+      "finite": true,
+      "maxExtent": 2.787647963856766,
+      "maxEdgeGrowth": 0.12177110409949687,
+      "worstPhase": 0.75,
+      "pass": true
+    },
+    {
+      "mode": "combat",
+      "key": "fallVariant",
+      "samples": 13,
+      "finite": true,
+      "maxExtent": 2.787647963856766,
+      "maxEdgeGrowth": 0.12177110409949687,
+      "worstPhase": 0.75,
+      "pass": true
+    },
+    {
+      "mode": "combat",
+      "key": "fallIdle",
+      "samples": 13,
+      "finite": true,
+      "maxExtent": 2.787648490393593,
+      "maxEdgeGrowth": 0.12177117184631206,
+      "worstPhase": 0.75,
+      "pass": true
+    },
+    {
+      "mode": "combat",
+      "key": "roll",
+      "samples": 13,
+      "finite": true,
+      "maxExtent": 2.308005843071232,
+      "maxEdgeGrowth": 0.09158836757757177,
+      "worstPhase": 0.5,
+      "pass": true
+    },
+    {
+      "mode": "combat",
+      "key": "injuredIdle",
+      "samples": 13,
+      "finite": true,
+      "maxExtent": 2.2033209593969536,
+      "maxEdgeGrowth": 0.03099804058156476,
+      "worstPhase": 0.6666666666666666,
+      "pass": true
+    },
+    {
+      "mode": "combat",
+      "key": "wall",
+      "samples": 13,
+      "finite": true,
+      "maxExtent": 2.752372051729992,
+      "maxEdgeGrowth": 0.12317495389180072,
+      "worstPhase": 0.16666666666666666,
+      "pass": true
+    },
+    {
+      "mode": "combat",
+      "key": "combatIdle",
+      "samples": 13,
+      "finite": true,
+      "maxExtent": 2.3750652684177846,
+      "maxEdgeGrowth": 0.06567699335896718,
+      "worstPhase": 0.9166666666666666,
+      "pass": true
+    },
+    {
+      "mode": "combat",
+      "key": "jab",
+      "samples": 13,
+      "finite": true,
+      "maxExtent": 2.599636202027777,
+      "maxEdgeGrowth": 0.08712693925238366,
+      "worstPhase": 0.6666666666666666,
+      "pass": true
+    },
+    {
+      "mode": "combat",
+      "key": "guard",
+      "samples": 13,
+      "finite": true,
+      "maxExtent": 2.2342089697020175,
+      "maxEdgeGrowth": 0.050841005862601873,
+      "worstPhase": 0.75,
+      "pass": true
+    },
+    {
+      "mode": "combat",
+      "key": "slam",
+      "samples": 13,
+      "finite": true,
+      "maxExtent": 2.53340002450497,
+      "maxEdgeGrowth": 0.12019049925497843,
+      "worstPhase": 0.08333333333333333,
+      "pass": true
+    },
+    {
+      "mode": "combat",
+      "key": "slamLand",
+      "samples": 13,
+      "finite": true,
+      "maxExtent": 2.579061663717779,
+      "maxEdgeGrowth": 0.12637223591239408,
+      "worstPhase": 0.25,
+      "pass": true
+    },
+    {
+      "mode": "combat",
+      "key": "hook",
+      "samples": 13,
+      "finite": true,
+      "maxExtent": 2.645242539753269,
+      "maxEdgeGrowth": 0.09002195385697916,
+      "worstPhase": 0.6666666666666666,
+      "pass": true
+    },
+    {
+      "mode": "combat",
+      "key": "heavy",
+      "samples": 13,
+      "finite": true,
+      "maxExtent": 2.645242539753269,
+      "maxEdgeGrowth": 0.09002195385697916,
+      "worstPhase": 0.6666666666666666,
+      "pass": true
+    },
+    {
+      "mode": "combat",
+      "key": "hitHead",
+      "samples": 13,
+      "finite": true,
+      "maxExtent": 2.4076336979129405,
+      "maxEdgeGrowth": 0.05348274617824832,
+      "worstPhase": 0.5833333333333334,
+      "pass": true
+    },
+    {
+      "mode": "combat",
+      "key": "rightHook",
+      "samples": 13,
+      "finite": true,
+      "maxExtent": 2.2668062678145446,
+      "maxEdgeGrowth": 0.08035691704689484,
+      "worstPhase": 0.5833333333333334,
+      "pass": true
+    },
+    {
+      "mode": "combat",
+      "key": "cross",
+      "samples": 13,
+      "finite": true,
+      "maxExtent": 2.6549504447530863,
+      "maxEdgeGrowth": 0.07900849279029244,
+      "worstPhase": 0.5833333333333334,
+      "pass": true
+    },
+    {
+      "mode": "combat",
+      "key": "airTrick",
+      "samples": 13,
+      "finite": true,
+      "maxExtent": 3.171806712822694,
+      "maxEdgeGrowth": 0.08889443433397176,
+      "worstPhase": 0,
+      "pass": true
+    },
+    {
+      "mode": "combat",
+      "key": "special",
+      "samples": 13,
+      "finite": true,
+      "maxExtent": 2.646458414274625,
+      "maxEdgeGrowth": 0.07712993499616619,
+      "worstPhase": 0.5,
+      "pass": true
+    },
+    {
+      "mode": "web",
+      "key": "idle",
+      "samples": 13,
+      "finite": true,
+      "maxExtent": 2.4132061678907837,
+      "maxEdgeGrowth": 0.021350486150951205,
+      "worstPhase": 0.8333333333333334,
+      "pass": true
+    },
+    {
+      "mode": "web",
+      "key": "walk",
+      "samples": 13,
+      "finite": true,
+      "maxExtent": 2.4599941013453406,
+      "maxEdgeGrowth": 0.0246872305118592,
+      "worstPhase": 0.25,
+      "pass": true
+    },
+    {
+      "mode": "web",
+      "key": "regularRun",
+      "samples": 13,
+      "finite": true,
+      "maxExtent": 2.6302926858211713,
+      "maxEdgeGrowth": 0.03363535207396849,
+      "worstPhase": 0.75,
+      "pass": true
+    },
+    {
+      "mode": "web",
+      "key": "run",
+      "samples": 13,
+      "finite": true,
+      "maxExtent": 2.5598998273398834,
+      "maxEdgeGrowth": 0.048750067130558364,
+      "worstPhase": 0.16666666666666666,
+      "pass": true
+    },
+    {
+      "mode": "web",
+      "key": "stop",
+      "samples": 13,
+      "finite": true,
+      "maxExtent": 2.3773396726963294,
+      "maxEdgeGrowth": 0.021309581547164804,
+      "worstPhase": 0.75,
+      "pass": true
+    },
+    {
+      "mode": "web",
+      "key": "runStop",
+      "samples": 13,
+      "finite": true,
+      "maxExtent": 2.3766068882653153,
+      "maxEdgeGrowth": 0.02932325071345973,
+      "worstPhase": 0.08333333333333333,
+      "pass": true
+    },
+    {
+      "mode": "web",
+      "key": "zip",
+      "samples": 13,
+      "finite": true,
+      "maxExtent": 2.053018365620383,
+      "maxEdgeGrowth": 0.04773514639914896,
+      "worstPhase": 0,
+      "pass": true
+    },
+    {
+      "mode": "web",
+      "key": "turnLeft",
+      "samples": 13,
+      "finite": true,
+      "maxExtent": 2.232477928023025,
+      "maxEdgeGrowth": 0.03059253609402867,
+      "worstPhase": 0.5833333333333334,
+      "pass": true
+    },
+    {
+      "mode": "web",
+      "key": "turnRight",
+      "samples": 13,
+      "finite": true,
+      "maxExtent": 2.2455082681944143,
+      "maxEdgeGrowth": 0.029248809262125385,
+      "worstPhase": 0.5833333333333334,
+      "pass": true
+    },
+    {
+      "mode": "web",
+      "key": "jump",
+      "samples": 13,
+      "finite": true,
+      "maxExtent": 2.5124559318051016,
+      "maxEdgeGrowth": 0.03068060627500587,
+      "worstPhase": 0.9166666666666666,
+      "pass": true
+    },
+    {
+      "mode": "web",
+      "key": "land",
+      "samples": 13,
+      "finite": true,
+      "maxExtent": 2.4617982289460403,
+      "maxEdgeGrowth": 0.030366040383109822,
+      "worstPhase": 1,
+      "pass": true
+    },
+    {
+      "mode": "web",
+      "key": "jumpDown",
+      "samples": 13,
+      "finite": true,
+      "maxExtent": 2.7922718132360673,
+      "maxEdgeGrowth": 0.07754674556918145,
+      "worstPhase": 0.16666666666666666,
+      "pass": true
+    },
+    {
+      "mode": "web",
+      "key": "drop",
+      "samples": 13,
+      "finite": true,
+      "maxExtent": 2.5754340323088427,
+      "maxEdgeGrowth": 0.07945338694179373,
+      "worstPhase": 0.8333333333333334,
+      "pass": true
+    },
+    {
+      "mode": "web",
+      "key": "jumpDownVariant",
+      "samples": 13,
+      "finite": true,
+      "maxExtent": 2.706172508225627,
+      "maxEdgeGrowth": 0.06958511859452662,
+      "worstPhase": 0.4166666666666667,
+      "pass": true
+    },
+    {
+      "mode": "web",
+      "key": "swing",
+      "samples": 13,
+      "finite": true,
+      "maxExtent": 2.719058947379184,
+      "maxEdgeGrowth": 0.07140300011218526,
+      "worstPhase": 0,
+      "pass": true
+    },
+    {
+      "mode": "web",
+      "key": "fall",
+      "samples": 13,
+      "finite": true,
+      "maxExtent": 2.8157810012705697,
+      "maxEdgeGrowth": 0.05565686441232583,
+      "worstPhase": 0.75,
+      "pass": true
+    },
+    {
+      "mode": "web",
+      "key": "fallVariant",
+      "samples": 13,
+      "finite": true,
+      "maxExtent": 2.8157810012705697,
+      "maxEdgeGrowth": 0.05565686441232583,
+      "worstPhase": 0.75,
+      "pass": true
+    },
+    {
+      "mode": "web",
+      "key": "fallIdle",
+      "samples": 13,
+      "finite": true,
+      "maxExtent": 2.8157815428857256,
+      "maxEdgeGrowth": 0.05565689766309184,
+      "worstPhase": 0.75,
+      "pass": true
+    },
+    {
+      "mode": "web",
+      "key": "roll",
+      "samples": 13,
+      "finite": true,
+      "maxExtent": 2.3194361299181656,
+      "maxEdgeGrowth": 0.052297718346994405,
+      "worstPhase": 0.25,
+      "pass": true
+    },
+    {
+      "mode": "web",
+      "key": "injuredIdle",
+      "samples": 13,
+      "finite": true,
+      "maxExtent": 2.178511019662449,
+      "maxEdgeGrowth": 0.016693145449203466,
+      "worstPhase": 0.6666666666666666,
+      "pass": true
+    },
+    {
+      "mode": "web",
+      "key": "wall",
+      "samples": 13,
+      "finite": true,
+      "maxExtent": 2.7604215468467523,
+      "maxEdgeGrowth": 0.08926424124134896,
+      "worstPhase": 0.16666666666666666,
+      "pass": true
+    },
+    {
+      "mode": "web",
+      "key": "combatIdle",
+      "samples": 13,
+      "finite": true,
+      "maxExtent": 2.3767744680196734,
+      "maxEdgeGrowth": 0.04434470952821192,
+      "worstPhase": 0.08333333333333333,
+      "pass": true
+    },
+    {
+      "mode": "web",
+      "key": "jab",
+      "samples": 13,
+      "finite": true,
+      "maxExtent": 2.5832970698917483,
+      "maxEdgeGrowth": 0.03989700481993938,
+      "worstPhase": 0.6666666666666666,
+      "pass": true
+    },
+    {
+      "mode": "web",
+      "key": "guard",
+      "samples": 13,
+      "finite": true,
+      "maxExtent": 2.2374055918423066,
+      "maxEdgeGrowth": 0.04062219904114875,
+      "worstPhase": 0.75,
+      "pass": true
+    },
+    {
+      "mode": "web",
+      "key": "slam",
+      "samples": 13,
+      "finite": true,
+      "maxExtent": 2.5756329989807036,
+      "maxEdgeGrowth": 0.055719811880524314,
+      "worstPhase": 0.08333333333333333,
+      "pass": true
+    },
+    {
+      "mode": "web",
+      "key": "slamLand",
+      "samples": 13,
+      "finite": true,
+      "maxExtent": 2.557873462597364,
+      "maxEdgeGrowth": 0.05718551508165215,
+      "worstPhase": 0.25,
+      "pass": true
+    },
+    {
+      "mode": "web",
+      "key": "hook",
+      "samples": 13,
+      "finite": true,
+      "maxExtent": 2.626368515052678,
+      "maxEdgeGrowth": 0.04192455768933581,
+      "worstPhase": 0.4166666666666667,
+      "pass": true
+    },
+    {
+      "mode": "web",
+      "key": "heavy",
+      "samples": 13,
+      "finite": true,
+      "maxExtent": 2.626368515052678,
+      "maxEdgeGrowth": 0.04192455768933581,
+      "worstPhase": 0.4166666666666667,
+      "pass": true
+    },
+    {
+      "mode": "web",
+      "key": "hitHead",
+      "samples": 13,
+      "finite": true,
+      "maxExtent": 2.414308821079742,
+      "maxEdgeGrowth": 0.023376194284185147,
+      "worstPhase": 0.4166666666666667,
+      "pass": true
+    },
+    {
+      "mode": "web",
+      "key": "rightHook",
+      "samples": 13,
+      "finite": true,
+      "maxExtent": 2.2643681776554745,
+      "maxEdgeGrowth": 0.07616788895934376,
+      "worstPhase": 0.6666666666666666,
+      "pass": true
+    },
+    {
+      "mode": "web",
+      "key": "cross",
+      "samples": 13,
+      "finite": true,
+      "maxExtent": 2.6542227238334757,
+      "maxEdgeGrowth": 0.06865597986611793,
+      "worstPhase": 0.5833333333333334,
+      "pass": true
+    },
+    {
+      "mode": "web",
+      "key": "airTrick",
+      "samples": 13,
+      "finite": true,
+      "maxExtent": 3.1545966582883898,
+      "maxEdgeGrowth": 0.06381376436113442,
+      "worstPhase": 0.75,
+      "pass": true
+    },
+    {
+      "mode": "web",
+      "key": "special",
+      "samples": 13,
+      "finite": true,
+      "maxExtent": 2.6467762551142147,
+      "maxEdgeGrowth": 0.07007249429418036,
+      "worstPhase": 0.5833333333333334,
+      "pass": true
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "cases": 4,
+  "failed": 0,
+  "results": [
+    {
+      "fps": 24,
+      "pass": true,
+      "frames": 168,
+      "changes": 2
+    },
+    {
+      "fps": 30,
+      "pass": true,
+      "frames": 210,
+      "changes": 2
+    },
+    {
+      "fps": 60,
+      "pass": true,
+      "frames": 420,
+      "changes": 2
+    },
+    {
+      "fps": 144,
+      "pass": true,
+      "frames": 1008,
+      "changes": 2
+    }
+  ]
+}

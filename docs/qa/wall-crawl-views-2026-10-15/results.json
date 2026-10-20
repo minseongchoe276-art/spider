@@ -1,9 +1,9 @@
 {
-  "passed": 101,
+  "passed": 149,
   "failed": 0,
   "results": [
     {
-      "name": "24fps climb / facade 0 / third",
+      "name": "24fps climb / facade 0 / close",
       "status": "PASS",
       "detail": {
         "frames": 72,
@@ -16,12 +16,12 @@
         "maxPlantDrift": 0.0000020926610581821827,
         "maxFrameSlip": 0.000002509599043847858,
         "minPalmAlignment": 0.999999999999915,
-        "minSoleAlignment": 0.9968921613895054,
+        "minSoleAlignment": 0.942725990504916,
         "maxViewFrameTravel": 0
       }
     },
     {
-      "name": "24fps climb / facade 0 / first",
+      "name": "24fps climb / facade 0 / follow",
       "status": "PASS",
       "detail": {
         "frames": 72,
@@ -34,12 +34,30 @@
         "maxPlantDrift": 0.0000020926610581821827,
         "maxFrameSlip": 0.000002509599043847858,
         "minPalmAlignment": 0.999999999999915,
-        "minSoleAlignment": 0.9968921613895054,
-        "maxViewFrameTravel": 0.10816765240521779
+        "minSoleAlignment": 0.942725990504916,
+        "maxViewFrameTravel": 0
       }
     },
     {
-      "name": "24fps sprint / facade 0 / third",
+      "name": "24fps climb / facade 0 / swing",
+      "status": "PASS",
+      "detail": {
+        "frames": 72,
+        "contacts": {
+          "lefthand": 33,
+          "righthand": 36,
+          "leftfoot": 27,
+          "rightfoot": 30
+        },
+        "maxPlantDrift": 0.0000020926610581821827,
+        "maxFrameSlip": 0.000002509599043847858,
+        "minPalmAlignment": 0.999999999999915,
+        "minSoleAlignment": 0.942725990504916,
+        "maxViewFrameTravel": 0
+      }
+    },
+    {
+      "name": "24fps sprint / facade 0 / close",
       "status": "PASS",
       "detail": {
         "frames": 72,
@@ -49,15 +67,15 @@
           "leftfoot": 23,
           "rightfoot": 27
         },
-        "maxPlantDrift": 0.000002139907400592214,
-        "maxFrameSlip": 0.000002852008433544134,
+        "maxPlantDrift": 0.000002139909081046281,
+        "maxFrameSlip": 0.0000028521024928935896,
         "minPalmAlignment": 0.9999999999998949,
-        "minSoleAlignment": 0.9874587497408457,
+        "minSoleAlignment": 0.9132988234509669,
         "maxViewFrameTravel": 0
       }
     },
     {
-      "name": "24fps sprint / facade 0 / first",
+      "name": "24fps sprint / facade 0 / follow",
       "status": "PASS",
       "detail": {
         "frames": 72,
@@ -67,33 +85,33 @@
           "leftfoot": 23,
           "rightfoot": 27
         },
-        "maxPlantDrift": 0.000002139907400592214,
-        "maxFrameSlip": 0.000002852008433544134,
+        "maxPlantDrift": 0.000002139909081046281,
+        "maxFrameSlip": 0.0000028521024928935896,
         "minPalmAlignment": 0.9999999999998949,
-        "minSoleAlignment": 0.9874587497408457,
-        "maxViewFrameTravel": 0.11247634760127392
-      }
-    },
-    {
-      "name": "24fps diagonal / facade 0 / third",
-      "status": "PASS",
-      "detail": {
-        "frames": 72,
-        "contacts": {
-          "lefthand": 32,
-          "righthand": 17,
-          "leftfoot": 22,
-          "rightfoot": 35
-        },
-        "maxPlantDrift": 0.0000020195785694136847,
-        "maxFrameSlip": 0.0000029637878651773257,
-        "minPalmAlignment": 0.9999999999999553,
-        "minSoleAlignment": 0.9674641090281717,
+        "minSoleAlignment": 0.9132988234509669,
         "maxViewFrameTravel": 0
       }
     },
     {
-      "name": "24fps diagonal / facade 0 / first",
+      "name": "24fps sprint / facade 0 / swing",
+      "status": "PASS",
+      "detail": {
+        "frames": 72,
+        "contacts": {
+          "lefthand": 28,
+          "righthand": 31,
+          "leftfoot": 23,
+          "rightfoot": 27
+        },
+        "maxPlantDrift": 0.000002139909081046281,
+        "maxFrameSlip": 0.0000028521024928935896,
+        "minPalmAlignment": 0.9999999999998949,
+        "minSoleAlignment": 0.9132988234509669,
+        "maxViewFrameTravel": 0
+      }
+    },
+    {
+      "name": "24fps diagonal / facade 0 / close",
       "status": "PASS",
       "detail": {
         "frames": 72,
@@ -103,15 +121,51 @@
           "leftfoot": 22,
           "rightfoot": 35
         },
-        "maxPlantDrift": 0.0000020195785694136847,
-        "maxFrameSlip": 0.0000029637878651773257,
+        "maxPlantDrift": 0.000002019578569306578,
+        "maxFrameSlip": 0.0000029637878741187813,
         "minPalmAlignment": 0.9999999999999553,
-        "minSoleAlignment": 0.9674641090281717,
-        "maxViewFrameTravel": 0.12348478837855427
+        "minSoleAlignment": 0.8702848519421436,
+        "maxViewFrameTravel": 0
       }
     },
     {
-      "name": "24fps climb / facade 90 / third",
+      "name": "24fps diagonal / facade 0 / follow",
+      "status": "PASS",
+      "detail": {
+        "frames": 72,
+        "contacts": {
+          "lefthand": 32,
+          "righthand": 17,
+          "leftfoot": 22,
+          "rightfoot": 35
+        },
+        "maxPlantDrift": 0.000002019578569306578,
+        "maxFrameSlip": 0.0000029637878741187813,
+        "minPalmAlignment": 0.9999999999999553,
+        "minSoleAlignment": 0.8702848519421436,
+        "maxViewFrameTravel": 0
+      }
+    },
+    {
+      "name": "24fps diagonal / facade 0 / swing",
+      "status": "PASS",
+      "detail": {
+        "frames": 72,
+        "contacts": {
+          "lefthand": 32,
+          "righthand": 17,
+          "leftfoot": 22,
+          "rightfoot": 35
+        },
+        "maxPlantDrift": 0.000002019578569306578,
+        "maxFrameSlip": 0.0000029637878741187813,
+        "minPalmAlignment": 0.9999999999999553,
+        "minSoleAlignment": 0.8702848519421436,
+        "maxViewFrameTravel": 0
+      }
+    },
+    {
+      "name": "24fps climb / facade 90 / close",
       "status": "PASS",
       "detail": {
         "frames": 72,
@@ -122,14 +176,14 @@
           "rightfoot": 30
         },
         "maxPlantDrift": 0.0000019708677099443987,
-        "maxFrameSlip": 0.000001908185901823819,
+        "maxFrameSlip": 0.000002286170642487017,
         "minPalmAlignment": 0.999999999999883,
-        "minSoleAlignment": 0.9968921883469966,
+        "minSoleAlignment": 0.9427261368344622,
         "maxViewFrameTravel": 0
       }
     },
     {
-      "name": "24fps climb / facade 90 / first",
+      "name": "24fps climb / facade 90 / follow",
       "status": "PASS",
       "detail": {
         "frames": 72,
@@ -140,32 +194,32 @@
           "rightfoot": 30
         },
         "maxPlantDrift": 0.0000019708677099443987,
-        "maxFrameSlip": 0.000001908185901823819,
+        "maxFrameSlip": 0.000002286170642487017,
         "minPalmAlignment": 0.999999999999883,
-        "minSoleAlignment": 0.9968921883469966,
-        "maxViewFrameTravel": 0.10816767371513439
-      }
-    },
-    {
-      "name": "24fps sprint / facade 90 / third",
-      "status": "PASS",
-      "detail": {
-        "frames": 72,
-        "contacts": {
-          "lefthand": 28,
-          "righthand": 31,
-          "leftfoot": 23,
-          "rightfoot": 27
-        },
-        "maxPlantDrift": 0.0000019719772304502862,
-        "maxFrameSlip": 0.0000025968290140320774,
-        "minPalmAlignment": 0.9999999999998369,
-        "minSoleAlignment": 0.9874586732512187,
+        "minSoleAlignment": 0.9427261368344622,
         "maxViewFrameTravel": 0
       }
     },
     {
-      "name": "24fps sprint / facade 90 / first",
+      "name": "24fps climb / facade 90 / swing",
+      "status": "PASS",
+      "detail": {
+        "frames": 72,
+        "contacts": {
+          "lefthand": 33,
+          "righthand": 36,
+          "leftfoot": 27,
+          "rightfoot": 30
+        },
+        "maxPlantDrift": 0.0000019708677099443987,
+        "maxFrameSlip": 0.000002286170642487017,
+        "minPalmAlignment": 0.999999999999883,
+        "minSoleAlignment": 0.9427261368344622,
+        "maxViewFrameTravel": 0
+      }
+    },
+    {
+      "name": "24fps sprint / facade 90 / close",
       "status": "PASS",
       "detail": {
         "frames": 72,
@@ -176,14 +230,50 @@
           "rightfoot": 27
         },
         "maxPlantDrift": 0.0000019719772304502862,
-        "maxFrameSlip": 0.0000025968290140320774,
+        "maxFrameSlip": 0.000002963601973128569,
         "minPalmAlignment": 0.9999999999998369,
-        "minSoleAlignment": 0.9874586732512187,
-        "maxViewFrameTravel": 0.11247633953777232
+        "minSoleAlignment": 0.9132985772043563,
+        "maxViewFrameTravel": 0
       }
     },
     {
-      "name": "24fps diagonal / facade 90 / third",
+      "name": "24fps sprint / facade 90 / follow",
+      "status": "PASS",
+      "detail": {
+        "frames": 72,
+        "contacts": {
+          "lefthand": 28,
+          "righthand": 31,
+          "leftfoot": 23,
+          "rightfoot": 27
+        },
+        "maxPlantDrift": 0.0000019719772304502862,
+        "maxFrameSlip": 0.000002963601973128569,
+        "minPalmAlignment": 0.9999999999998369,
+        "minSoleAlignment": 0.9132985772043563,
+        "maxViewFrameTravel": 0
+      }
+    },
+    {
+      "name": "24fps sprint / facade 90 / swing",
+      "status": "PASS",
+      "detail": {
+        "frames": 72,
+        "contacts": {
+          "lefthand": 28,
+          "righthand": 31,
+          "leftfoot": 23,
+          "rightfoot": 27
+        },
+        "maxPlantDrift": 0.0000019719772304502862,
+        "maxFrameSlip": 0.000002963601973128569,
+        "minPalmAlignment": 0.9999999999998369,
+        "minSoleAlignment": 0.9132985772043563,
+        "maxViewFrameTravel": 0
+      }
+    },
+    {
+      "name": "24fps diagonal / facade 90 / close",
       "status": "PASS",
       "detail": {
         "frames": 72,
@@ -196,12 +286,12 @@
         "maxPlantDrift": 0.0000023779678341910906,
         "maxFrameSlip": 0.000002779490428712193,
         "minPalmAlignment": 0.9999999999998958,
-        "minSoleAlignment": 0.9674637195456612,
+        "minSoleAlignment": 0.8702845013199708,
         "maxViewFrameTravel": 0
       }
     },
     {
-      "name": "24fps diagonal / facade 90 / first",
+      "name": "24fps diagonal / facade 90 / follow",
       "status": "PASS",
       "detail": {
         "frames": 72,
@@ -214,12 +304,30 @@
         "maxPlantDrift": 0.0000023779678341910906,
         "maxFrameSlip": 0.000002779490428712193,
         "minPalmAlignment": 0.9999999999998958,
-        "minSoleAlignment": 0.9674637195456612,
-        "maxViewFrameTravel": 0.12348477120147933
+        "minSoleAlignment": 0.8702845013199708,
+        "maxViewFrameTravel": 0
       }
     },
     {
-      "name": "24fps climb / facade 180 / third",
+      "name": "24fps diagonal / facade 90 / swing",
+      "status": "PASS",
+      "detail": {
+        "frames": 72,
+        "contacts": {
+          "lefthand": 32,
+          "righthand": 17,
+          "leftfoot": 22,
+          "rightfoot": 35
+        },
+        "maxPlantDrift": 0.0000023779678341910906,
+        "maxFrameSlip": 0.000002779490428712193,
+        "minPalmAlignment": 0.9999999999998958,
+        "minSoleAlignment": 0.8702845013199708,
+        "maxViewFrameTravel": 0
+      }
+    },
+    {
+      "name": "24fps climb / facade 180 / close",
       "status": "PASS",
       "detail": {
         "frames": 72,
@@ -229,15 +337,15 @@
           "leftfoot": 27,
           "rightfoot": 30
         },
-        "maxPlantDrift": 0.000002240675795324484,
-        "maxFrameSlip": 0.0000028763262859803075,
+        "maxPlantDrift": 0.000002240675795343266,
+        "maxFrameSlip": 0.0000028763262862292352,
         "minPalmAlignment": 0.9999999999997721,
-        "minSoleAlignment": 0.9968921613895055,
+        "minSoleAlignment": 0.9427259905049157,
         "maxViewFrameTravel": 0
       }
     },
     {
-      "name": "24fps climb / facade 180 / first",
+      "name": "24fps climb / facade 180 / follow",
       "status": "PASS",
       "detail": {
         "frames": 72,
@@ -247,33 +355,33 @@
           "leftfoot": 27,
           "rightfoot": 30
         },
-        "maxPlantDrift": 0.000002240675795324484,
-        "maxFrameSlip": 0.0000028763262859803075,
+        "maxPlantDrift": 0.000002240675795343266,
+        "maxFrameSlip": 0.0000028763262862292352,
         "minPalmAlignment": 0.9999999999997721,
-        "minSoleAlignment": 0.9968921613895055,
-        "maxViewFrameTravel": 0.10816767188304545
-      }
-    },
-    {
-      "name": "24fps sprint / facade 180 / third",
-      "status": "PASS",
-      "detail": {
-        "frames": 72,
-        "contacts": {
-          "lefthand": 28,
-          "righthand": 31,
-          "leftfoot": 23,
-          "rightfoot": 27
-        },
-        "maxPlantDrift": 0.000002236193905288395,
-        "maxFrameSlip": 0.0000031618591941638087,
-        "minPalmAlignment": 0.999999999999772,
-        "minSoleAlignment": 0.9874587497408452,
+        "minSoleAlignment": 0.9427259905049157,
         "maxViewFrameTravel": 0
       }
     },
     {
-      "name": "24fps sprint / facade 180 / first",
+      "name": "24fps climb / facade 180 / swing",
+      "status": "PASS",
+      "detail": {
+        "frames": 72,
+        "contacts": {
+          "lefthand": 33,
+          "righthand": 36,
+          "leftfoot": 27,
+          "rightfoot": 30
+        },
+        "maxPlantDrift": 0.000002240675795343266,
+        "maxFrameSlip": 0.0000028763262862292352,
+        "minPalmAlignment": 0.9999999999997721,
+        "minSoleAlignment": 0.9427259905049157,
+        "maxViewFrameTravel": 0
+      }
+    },
+    {
+      "name": "24fps sprint / facade 180 / close",
       "status": "PASS",
       "detail": {
         "frames": 72,
@@ -283,15 +391,51 @@
           "leftfoot": 23,
           "rightfoot": 27
         },
-        "maxPlantDrift": 0.000002236193905288395,
-        "maxFrameSlip": 0.0000031618591941638087,
+        "maxPlantDrift": 0.0000022361938972766758,
+        "maxFrameSlip": 0.000003161859191234064,
         "minPalmAlignment": 0.999999999999772,
-        "minSoleAlignment": 0.9874587497408452,
-        "maxViewFrameTravel": 0.11247635539841652
+        "minSoleAlignment": 0.9132988234509671,
+        "maxViewFrameTravel": 0
       }
     },
     {
-      "name": "24fps diagonal / facade 180 / third",
+      "name": "24fps sprint / facade 180 / follow",
+      "status": "PASS",
+      "detail": {
+        "frames": 72,
+        "contacts": {
+          "lefthand": 28,
+          "righthand": 31,
+          "leftfoot": 23,
+          "rightfoot": 27
+        },
+        "maxPlantDrift": 0.0000022361938972766758,
+        "maxFrameSlip": 0.000003161859191234064,
+        "minPalmAlignment": 0.999999999999772,
+        "minSoleAlignment": 0.9132988234509671,
+        "maxViewFrameTravel": 0
+      }
+    },
+    {
+      "name": "24fps sprint / facade 180 / swing",
+      "status": "PASS",
+      "detail": {
+        "frames": 72,
+        "contacts": {
+          "lefthand": 28,
+          "righthand": 31,
+          "leftfoot": 23,
+          "rightfoot": 27
+        },
+        "maxPlantDrift": 0.0000022361938972766758,
+        "maxFrameSlip": 0.000003161859191234064,
+        "minPalmAlignment": 0.999999999999772,
+        "minSoleAlignment": 0.9132988234509671,
+        "maxViewFrameTravel": 0
+      }
+    },
+    {
+      "name": "24fps diagonal / facade 180 / close",
       "status": "PASS",
       "detail": {
         "frames": 72,
@@ -302,14 +446,14 @@
           "rightfoot": 35
         },
         "maxPlantDrift": 0.000002139603538014182,
-        "maxFrameSlip": 0.0000030534444631851973,
+        "maxFrameSlip": 0.0000030534444649124626,
         "minPalmAlignment": 0.9999999999999546,
-        "minSoleAlignment": 0.9674641090281715,
+        "minSoleAlignment": 0.8702848519421433,
         "maxViewFrameTravel": 0
       }
     },
     {
-      "name": "24fps diagonal / facade 180 / first",
+      "name": "24fps diagonal / facade 180 / follow",
       "status": "PASS",
       "detail": {
         "frames": 72,
@@ -320,14 +464,32 @@
           "rightfoot": 35
         },
         "maxPlantDrift": 0.000002139603538014182,
-        "maxFrameSlip": 0.0000030534444631851973,
+        "maxFrameSlip": 0.0000030534444649124626,
         "minPalmAlignment": 0.9999999999999546,
-        "minSoleAlignment": 0.9674641090281715,
-        "maxViewFrameTravel": 0.12348478539997687
+        "minSoleAlignment": 0.8702848519421433,
+        "maxViewFrameTravel": 0
       }
     },
     {
-      "name": "24fps climb / facade 270 / third",
+      "name": "24fps diagonal / facade 180 / swing",
+      "status": "PASS",
+      "detail": {
+        "frames": 72,
+        "contacts": {
+          "lefthand": 32,
+          "righthand": 17,
+          "leftfoot": 22,
+          "rightfoot": 35
+        },
+        "maxPlantDrift": 0.000002139603538014182,
+        "maxFrameSlip": 0.0000030534444649124626,
+        "minPalmAlignment": 0.9999999999999546,
+        "minSoleAlignment": 0.8702848519421433,
+        "maxViewFrameTravel": 0
+      }
+    },
+    {
+      "name": "24fps climb / facade 270 / close",
       "status": "PASS",
       "detail": {
         "frames": 72,
@@ -338,14 +500,14 @@
           "rightfoot": 30
         },
         "maxPlantDrift": 0.00000210224057318814,
-        "maxFrameSlip": 0.0000020571548950400087,
+        "maxFrameSlip": 0.000002286766499424656,
         "minPalmAlignment": 0.9999999999998874,
-        "minSoleAlignment": 0.9968924134953203,
+        "minSoleAlignment": 0.9427262283339273,
         "maxViewFrameTravel": 0
       }
     },
     {
-      "name": "24fps climb / facade 270 / first",
+      "name": "24fps climb / facade 270 / follow",
       "status": "PASS",
       "detail": {
         "frames": 72,
@@ -356,32 +518,32 @@
           "rightfoot": 30
         },
         "maxPlantDrift": 0.00000210224057318814,
-        "maxFrameSlip": 0.0000020571548950400087,
+        "maxFrameSlip": 0.000002286766499424656,
         "minPalmAlignment": 0.9999999999998874,
-        "minSoleAlignment": 0.9968924134953203,
-        "maxViewFrameTravel": 0.10816766285212498
-      }
-    },
-    {
-      "name": "24fps sprint / facade 270 / third",
-      "status": "PASS",
-      "detail": {
-        "frames": 72,
-        "contacts": {
-          "lefthand": 28,
-          "righthand": 31,
-          "leftfoot": 23,
-          "rightfoot": 27
-        },
-        "maxPlantDrift": 0.000002208842189739501,
-        "maxFrameSlip": 0.0000025460298773912853,
-        "minPalmAlignment": 0.9999999999998369,
-        "minSoleAlignment": 0.9874586551294464,
+        "minSoleAlignment": 0.9427262283339273,
         "maxViewFrameTravel": 0
       }
     },
     {
-      "name": "24fps sprint / facade 270 / first",
+      "name": "24fps climb / facade 270 / swing",
+      "status": "PASS",
+      "detail": {
+        "frames": 72,
+        "contacts": {
+          "lefthand": 33,
+          "righthand": 36,
+          "leftfoot": 27,
+          "rightfoot": 30
+        },
+        "maxPlantDrift": 0.00000210224057318814,
+        "maxFrameSlip": 0.000002286766499424656,
+        "minPalmAlignment": 0.9999999999998874,
+        "minSoleAlignment": 0.9427262283339273,
+        "maxViewFrameTravel": 0
+      }
+    },
+    {
+      "name": "24fps sprint / facade 270 / close",
       "status": "PASS",
       "detail": {
         "frames": 72,
@@ -391,15 +553,51 @@
           "leftfoot": 23,
           "rightfoot": 27
         },
-        "maxPlantDrift": 0.000002208842189739501,
-        "maxFrameSlip": 0.0000025460298773912853,
+        "maxPlantDrift": 0.000002208839768306338,
+        "maxFrameSlip": 0.000002903259827644095,
         "minPalmAlignment": 0.9999999999998369,
-        "minSoleAlignment": 0.9874586551294464,
-        "maxViewFrameTravel": 0.11247634192339556
+        "minSoleAlignment": 0.9132985770449545,
+        "maxViewFrameTravel": 0
       }
     },
     {
-      "name": "24fps diagonal / facade 270 / third",
+      "name": "24fps sprint / facade 270 / follow",
+      "status": "PASS",
+      "detail": {
+        "frames": 72,
+        "contacts": {
+          "lefthand": 28,
+          "righthand": 31,
+          "leftfoot": 23,
+          "rightfoot": 27
+        },
+        "maxPlantDrift": 0.000002208839768306338,
+        "maxFrameSlip": 0.000002903259827644095,
+        "minPalmAlignment": 0.9999999999998369,
+        "minSoleAlignment": 0.9132985770449545,
+        "maxViewFrameTravel": 0
+      }
+    },
+    {
+      "name": "24fps sprint / facade 270 / swing",
+      "status": "PASS",
+      "detail": {
+        "frames": 72,
+        "contacts": {
+          "lefthand": 28,
+          "righthand": 31,
+          "leftfoot": 23,
+          "rightfoot": 27
+        },
+        "maxPlantDrift": 0.000002208839768306338,
+        "maxFrameSlip": 0.000002903259827644095,
+        "minPalmAlignment": 0.9999999999998369,
+        "minSoleAlignment": 0.9132985770449545,
+        "maxViewFrameTravel": 0
+      }
+    },
+    {
+      "name": "24fps diagonal / facade 270 / close",
       "status": "PASS",
       "detail": {
         "frames": 72,
@@ -412,12 +610,12 @@
         "maxPlantDrift": 0.000001883520980160758,
         "maxFrameSlip": 0.0000027794781946347535,
         "minPalmAlignment": 0.9999999999998594,
-        "minSoleAlignment": 0.9674642087698708,
+        "minSoleAlignment": 0.8702846190958207,
         "maxViewFrameTravel": 0
       }
     },
     {
-      "name": "24fps diagonal / facade 270 / first",
+      "name": "24fps diagonal / facade 270 / follow",
       "status": "PASS",
       "detail": {
         "frames": 72,
@@ -430,12 +628,30 @@
         "maxPlantDrift": 0.000001883520980160758,
         "maxFrameSlip": 0.0000027794781946347535,
         "minPalmAlignment": 0.9999999999998594,
-        "minSoleAlignment": 0.9674642087698708,
-        "maxViewFrameTravel": 0.1234847966077703
+        "minSoleAlignment": 0.8702846190958207,
+        "maxViewFrameTravel": 0
       }
     },
     {
-      "name": "30fps climb / facade 0 / third",
+      "name": "24fps diagonal / facade 270 / swing",
+      "status": "PASS",
+      "detail": {
+        "frames": 72,
+        "contacts": {
+          "lefthand": 32,
+          "righthand": 17,
+          "leftfoot": 22,
+          "rightfoot": 35
+        },
+        "maxPlantDrift": 0.000001883520980160758,
+        "maxFrameSlip": 0.0000027794781946347535,
+        "minPalmAlignment": 0.9999999999998594,
+        "minSoleAlignment": 0.8702846190958207,
+        "maxViewFrameTravel": 0
+      }
+    },
+    {
+      "name": "30fps climb / facade 0 / close",
       "status": "PASS",
       "detail": {
         "frames": 90,
@@ -445,15 +661,15 @@
           "leftfoot": 27,
           "rightfoot": 35
         },
-        "maxPlantDrift": 0.0000020941702901533623,
+        "maxPlantDrift": 0.0000020941702901824782,
         "maxFrameSlip": 0.000002478138721931533,
         "minPalmAlignment": 0.9999999999999377,
-        "minSoleAlignment": 0.9912057540095551,
+        "minSoleAlignment": 0.9234767657344628,
         "maxViewFrameTravel": 0
       }
     },
     {
-      "name": "30fps climb / facade 0 / first",
+      "name": "30fps climb / facade 0 / follow",
       "status": "PASS",
       "detail": {
         "frames": 90,
@@ -463,15 +679,33 @@
           "leftfoot": 27,
           "rightfoot": 35
         },
-        "maxPlantDrift": 0.0000020941702901533623,
+        "maxPlantDrift": 0.0000020941702901824782,
         "maxFrameSlip": 0.000002478138721931533,
         "minPalmAlignment": 0.9999999999999377,
-        "minSoleAlignment": 0.9912057540095551,
-        "maxViewFrameTravel": 0.08907484957008277
+        "minSoleAlignment": 0.9234767657344628,
+        "maxViewFrameTravel": 0
       }
     },
     {
-      "name": "30fps sprint / facade 0 / third",
+      "name": "30fps climb / facade 0 / swing",
+      "status": "PASS",
+      "detail": {
+        "frames": 90,
+        "contacts": {
+          "lefthand": 38,
+          "righthand": 38,
+          "leftfoot": 27,
+          "rightfoot": 35
+        },
+        "maxPlantDrift": 0.0000020941702901824782,
+        "maxFrameSlip": 0.000002478138721931533,
+        "minPalmAlignment": 0.9999999999999377,
+        "minSoleAlignment": 0.9234767657344628,
+        "maxViewFrameTravel": 0
+      }
+    },
+    {
+      "name": "30fps sprint / facade 0 / close",
       "status": "PASS",
       "detail": {
         "frames": 90,
@@ -481,15 +715,15 @@
           "leftfoot": 21,
           "rightfoot": 27
         },
-        "maxPlantDrift": 0.000002100300586497566,
-        "maxFrameSlip": 0.000002550029637563228,
+        "maxPlantDrift": 0.000002100300586450351,
+        "maxFrameSlip": 0.000002708741258628622,
         "minPalmAlignment": 0.999999999999952,
-        "minSoleAlignment": 0.9920043218302701,
+        "minSoleAlignment": 0.9257509255243422,
         "maxViewFrameTravel": 0
       }
     },
     {
-      "name": "30fps sprint / facade 0 / first",
+      "name": "30fps sprint / facade 0 / follow",
       "status": "PASS",
       "detail": {
         "frames": 90,
@@ -499,15 +733,33 @@
           "leftfoot": 21,
           "rightfoot": 27
         },
-        "maxPlantDrift": 0.000002100300586497566,
-        "maxFrameSlip": 0.000002550029637563228,
+        "maxPlantDrift": 0.000002100300586450351,
+        "maxFrameSlip": 0.000002708741258628622,
         "minPalmAlignment": 0.999999999999952,
-        "minSoleAlignment": 0.9920043218302701,
-        "maxViewFrameTravel": 0.09208966015569107
+        "minSoleAlignment": 0.9257509255243422,
+        "maxViewFrameTravel": 0
       }
     },
     {
-      "name": "30fps diagonal / facade 0 / third",
+      "name": "30fps sprint / facade 0 / swing",
+      "status": "PASS",
+      "detail": {
+        "frames": 90,
+        "contacts": {
+          "lefthand": 29,
+          "righthand": 31,
+          "leftfoot": 21,
+          "rightfoot": 27
+        },
+        "maxPlantDrift": 0.000002100300586450351,
+        "maxFrameSlip": 0.000002708741258628622,
+        "minPalmAlignment": 0.999999999999952,
+        "minSoleAlignment": 0.9257509255243422,
+        "maxViewFrameTravel": 0
+      }
+    },
+    {
+      "name": "30fps diagonal / facade 0 / close",
       "status": "PASS",
       "detail": {
         "frames": 90,
@@ -517,15 +769,15 @@
           "leftfoot": 21,
           "rightfoot": 39
         },
-        "maxPlantDrift": 0.0000021531926609224833,
-        "maxFrameSlip": 0.000002658054790671443,
+        "maxPlantDrift": 0.000002153192662702335,
+        "maxFrameSlip": 0.000002658054790828954,
         "minPalmAlignment": 0.9999999999999577,
-        "minSoleAlignment": 0.9804368176266416,
+        "minSoleAlignment": 0.8971947792515234,
         "maxViewFrameTravel": 0
       }
     },
     {
-      "name": "30fps diagonal / facade 0 / first",
+      "name": "30fps diagonal / facade 0 / follow",
       "status": "PASS",
       "detail": {
         "frames": 90,
@@ -535,15 +787,33 @@
           "leftfoot": 21,
           "rightfoot": 39
         },
-        "maxPlantDrift": 0.0000021531926609224833,
-        "maxFrameSlip": 0.000002658054790671443,
+        "maxPlantDrift": 0.000002153192662702335,
+        "maxFrameSlip": 0.000002658054790828954,
         "minPalmAlignment": 0.9999999999999577,
-        "minSoleAlignment": 0.9804368176266416,
-        "maxViewFrameTravel": 0.10056310018488365
+        "minSoleAlignment": 0.8971947792515234,
+        "maxViewFrameTravel": 0
       }
     },
     {
-      "name": "30fps climb / facade 90 / third",
+      "name": "30fps diagonal / facade 0 / swing",
+      "status": "PASS",
+      "detail": {
+        "frames": 90,
+        "contacts": {
+          "lefthand": 31,
+          "righthand": 15,
+          "leftfoot": 21,
+          "rightfoot": 39
+        },
+        "maxPlantDrift": 0.000002153192662702335,
+        "maxFrameSlip": 0.000002658054790828954,
+        "minPalmAlignment": 0.9999999999999577,
+        "minSoleAlignment": 0.8971947792515234,
+        "maxViewFrameTravel": 0
+      }
+    },
+    {
+      "name": "30fps climb / facade 90 / close",
       "status": "PASS",
       "detail": {
         "frames": 90,
@@ -553,15 +823,15 @@
           "leftfoot": 27,
           "rightfoot": 35
         },
-        "maxPlantDrift": 0.000001982984814365353,
-        "maxFrameSlip": 0.0000019348584654053683,
+        "maxPlantDrift": 0.0000019829848142673457,
+        "maxFrameSlip": 0.000002175689620443944,
         "minPalmAlignment": 0.9999999999998098,
-        "minSoleAlignment": 0.9912057049055594,
+        "minSoleAlignment": 0.9234765193341747,
         "maxViewFrameTravel": 0
       }
     },
     {
-      "name": "30fps climb / facade 90 / first",
+      "name": "30fps climb / facade 90 / follow",
       "status": "PASS",
       "detail": {
         "frames": 90,
@@ -571,33 +841,33 @@
           "leftfoot": 27,
           "rightfoot": 35
         },
-        "maxPlantDrift": 0.000001982984814365353,
-        "maxFrameSlip": 0.0000019348584654053683,
+        "maxPlantDrift": 0.0000019829848142673457,
+        "maxFrameSlip": 0.000002175689620443944,
         "minPalmAlignment": 0.9999999999998098,
-        "minSoleAlignment": 0.9912057049055594,
-        "maxViewFrameTravel": 0.08907483656378713
-      }
-    },
-    {
-      "name": "30fps sprint / facade 90 / third",
-      "status": "PASS",
-      "detail": {
-        "frames": 90,
-        "contacts": {
-          "lefthand": 29,
-          "righthand": 31,
-          "leftfoot": 21,
-          "rightfoot": 27
-        },
-        "maxPlantDrift": 0.0000019184325730370336,
-        "maxFrameSlip": 0.000002353936837397968,
-        "minPalmAlignment": 0.999999999999866,
-        "minSoleAlignment": 0.9920044017098198,
+        "minSoleAlignment": 0.9234765193341747,
         "maxViewFrameTravel": 0
       }
     },
     {
-      "name": "30fps sprint / facade 90 / first",
+      "name": "30fps climb / facade 90 / swing",
+      "status": "PASS",
+      "detail": {
+        "frames": 90,
+        "contacts": {
+          "lefthand": 38,
+          "righthand": 38,
+          "leftfoot": 27,
+          "rightfoot": 35
+        },
+        "maxPlantDrift": 0.0000019829848142673457,
+        "maxFrameSlip": 0.000002175689620443944,
+        "minPalmAlignment": 0.9999999999998098,
+        "minSoleAlignment": 0.9234765193341747,
+        "maxViewFrameTravel": 0
+      }
+    },
+    {
+      "name": "30fps sprint / facade 90 / close",
       "status": "PASS",
       "detail": {
         "frames": 90,
@@ -607,15 +877,51 @@
           "leftfoot": 21,
           "rightfoot": 27
         },
-        "maxPlantDrift": 0.0000019184325730370336,
-        "maxFrameSlip": 0.000002353936837397968,
+        "maxPlantDrift": 0.0000019184325487060558,
+        "maxFrameSlip": 0.0000026467950542040675,
         "minPalmAlignment": 0.999999999999866,
-        "minSoleAlignment": 0.9920044017098198,
-        "maxViewFrameTravel": 0.09208966344551872
+        "minSoleAlignment": 0.925751181706079,
+        "maxViewFrameTravel": 0
       }
     },
     {
-      "name": "30fps diagonal / facade 90 / third",
+      "name": "30fps sprint / facade 90 / follow",
+      "status": "PASS",
+      "detail": {
+        "frames": 90,
+        "contacts": {
+          "lefthand": 29,
+          "righthand": 31,
+          "leftfoot": 21,
+          "rightfoot": 27
+        },
+        "maxPlantDrift": 0.0000019184325487060558,
+        "maxFrameSlip": 0.0000026467950542040675,
+        "minPalmAlignment": 0.999999999999866,
+        "minSoleAlignment": 0.925751181706079,
+        "maxViewFrameTravel": 0
+      }
+    },
+    {
+      "name": "30fps sprint / facade 90 / swing",
+      "status": "PASS",
+      "detail": {
+        "frames": 90,
+        "contacts": {
+          "lefthand": 29,
+          "righthand": 31,
+          "leftfoot": 21,
+          "rightfoot": 27
+        },
+        "maxPlantDrift": 0.0000019184325487060558,
+        "maxFrameSlip": 0.0000026467950542040675,
+        "minPalmAlignment": 0.999999999999866,
+        "minSoleAlignment": 0.925751181706079,
+        "maxViewFrameTravel": 0
+      }
+    },
+    {
+      "name": "30fps diagonal / facade 90 / close",
       "status": "PASS",
       "detail": {
         "frames": 90,
@@ -625,15 +931,15 @@
           "leftfoot": 21,
           "rightfoot": 39
         },
-        "maxPlantDrift": 0.0000019004314261847943,
-        "maxFrameSlip": 0.000002645137152838912,
+        "maxPlantDrift": 0.0000019004314262491794,
+        "maxFrameSlip": 0.0000026766820364051403,
         "minPalmAlignment": 0.9999999999999113,
-        "minSoleAlignment": 0.9804364170965835,
+        "minSoleAlignment": 0.897194390119904,
         "maxViewFrameTravel": 0
       }
     },
     {
-      "name": "30fps diagonal / facade 90 / first",
+      "name": "30fps diagonal / facade 90 / follow",
       "status": "PASS",
       "detail": {
         "frames": 90,
@@ -643,15 +949,33 @@
           "leftfoot": 21,
           "rightfoot": 39
         },
-        "maxPlantDrift": 0.0000019004314261847943,
-        "maxFrameSlip": 0.000002645137152838912,
+        "maxPlantDrift": 0.0000019004314262491794,
+        "maxFrameSlip": 0.0000026766820364051403,
         "minPalmAlignment": 0.9999999999999113,
-        "minSoleAlignment": 0.9804364170965835,
-        "maxViewFrameTravel": 0.10056309409823384
+        "minSoleAlignment": 0.897194390119904,
+        "maxViewFrameTravel": 0
       }
     },
     {
-      "name": "30fps climb / facade 180 / third",
+      "name": "30fps diagonal / facade 90 / swing",
+      "status": "PASS",
+      "detail": {
+        "frames": 90,
+        "contacts": {
+          "lefthand": 31,
+          "righthand": 15,
+          "leftfoot": 21,
+          "rightfoot": 39
+        },
+        "maxPlantDrift": 0.0000019004314262491794,
+        "maxFrameSlip": 0.0000026766820364051403,
+        "minPalmAlignment": 0.9999999999999113,
+        "minSoleAlignment": 0.897194390119904,
+        "maxViewFrameTravel": 0
+      }
+    },
+    {
+      "name": "30fps climb / facade 180 / close",
       "status": "PASS",
       "detail": {
         "frames": 90,
@@ -661,15 +985,15 @@
           "leftfoot": 27,
           "rightfoot": 35
         },
-        "maxPlantDrift": 0.0000020946034280461467,
-        "maxFrameSlip": 0.0000026531347082535243,
+        "maxPlantDrift": 0.000002094604952661303,
+        "maxFrameSlip": 0.000002653134707987928,
         "minPalmAlignment": 0.9999999999996771,
-        "minSoleAlignment": 0.9912057540095545,
+        "minSoleAlignment": 0.923476765734463,
         "maxViewFrameTravel": 0
       }
     },
     {
-      "name": "30fps climb / facade 180 / first",
+      "name": "30fps climb / facade 180 / follow",
       "status": "PASS",
       "detail": {
         "frames": 90,
@@ -679,87 +1003,15 @@
           "leftfoot": 27,
           "rightfoot": 35
         },
-        "maxPlantDrift": 0.0000020946034280461467,
-        "maxFrameSlip": 0.0000026531347082535243,
+        "maxPlantDrift": 0.000002094604952661303,
+        "maxFrameSlip": 0.000002653134707987928,
         "minPalmAlignment": 0.9999999999996771,
-        "minSoleAlignment": 0.9912057540095545,
-        "maxViewFrameTravel": 0.08907484444123619
-      }
-    },
-    {
-      "name": "30fps sprint / facade 180 / third",
-      "status": "PASS",
-      "detail": {
-        "frames": 90,
-        "contacts": {
-          "lefthand": 29,
-          "righthand": 31,
-          "leftfoot": 21,
-          "rightfoot": 27
-        },
-        "maxPlantDrift": 0.000002100300582990459,
-        "maxFrameSlip": 0.0000025500296374807488,
-        "minPalmAlignment": 0.9999999999996756,
-        "minSoleAlignment": 0.9920043218302702,
+        "minSoleAlignment": 0.923476765734463,
         "maxViewFrameTravel": 0
       }
     },
     {
-      "name": "30fps sprint / facade 180 / first",
-      "status": "PASS",
-      "detail": {
-        "frames": 90,
-        "contacts": {
-          "lefthand": 29,
-          "righthand": 31,
-          "leftfoot": 21,
-          "rightfoot": 27
-        },
-        "maxPlantDrift": 0.000002100300582990459,
-        "maxFrameSlip": 0.0000025500296374807488,
-        "minPalmAlignment": 0.9999999999996756,
-        "minSoleAlignment": 0.9920043218302702,
-        "maxViewFrameTravel": 0.09208966001692102
-      }
-    },
-    {
-      "name": "30fps diagonal / facade 180 / third",
-      "status": "PASS",
-      "detail": {
-        "frames": 90,
-        "contacts": {
-          "lefthand": 31,
-          "righthand": 15,
-          "leftfoot": 21,
-          "rightfoot": 39
-        },
-        "maxPlantDrift": 0.000002153192662683142,
-        "maxFrameSlip": 0.0000031320281255208796,
-        "minPalmAlignment": 0.9999999999999578,
-        "minSoleAlignment": 0.9804368176266411,
-        "maxViewFrameTravel": 0
-      }
-    },
-    {
-      "name": "30fps diagonal / facade 180 / first",
-      "status": "PASS",
-      "detail": {
-        "frames": 90,
-        "contacts": {
-          "lefthand": 31,
-          "righthand": 15,
-          "leftfoot": 21,
-          "rightfoot": 39
-        },
-        "maxPlantDrift": 0.000002153192662683142,
-        "maxFrameSlip": 0.0000031320281255208796,
-        "minPalmAlignment": 0.9999999999999578,
-        "minSoleAlignment": 0.9804368176266411,
-        "maxViewFrameTravel": 0.10056310124772617
-      }
-    },
-    {
-      "name": "30fps climb / facade 270 / third",
+      "name": "30fps climb / facade 180 / swing",
       "status": "PASS",
       "detail": {
         "frames": 90,
@@ -769,15 +1021,123 @@
           "leftfoot": 27,
           "rightfoot": 35
         },
-        "maxPlantDrift": 0.0000021459745288848163,
-        "maxFrameSlip": 0.0000021626016559685047,
-        "minPalmAlignment": 0.999999999999871,
-        "minSoleAlignment": 0.9912056365972807,
+        "maxPlantDrift": 0.000002094604952661303,
+        "maxFrameSlip": 0.000002653134707987928,
+        "minPalmAlignment": 0.9999999999996771,
+        "minSoleAlignment": 0.923476765734463,
         "maxViewFrameTravel": 0
       }
     },
     {
-      "name": "30fps climb / facade 270 / first",
+      "name": "30fps sprint / facade 180 / close",
+      "status": "PASS",
+      "detail": {
+        "frames": 90,
+        "contacts": {
+          "lefthand": 29,
+          "righthand": 31,
+          "leftfoot": 21,
+          "rightfoot": 27
+        },
+        "maxPlantDrift": 0.000002100300584706307,
+        "maxFrameSlip": 0.0000027087412584675782,
+        "minPalmAlignment": 0.9999999999996756,
+        "minSoleAlignment": 0.9257509255243421,
+        "maxViewFrameTravel": 0
+      }
+    },
+    {
+      "name": "30fps sprint / facade 180 / follow",
+      "status": "PASS",
+      "detail": {
+        "frames": 90,
+        "contacts": {
+          "lefthand": 29,
+          "righthand": 31,
+          "leftfoot": 21,
+          "rightfoot": 27
+        },
+        "maxPlantDrift": 0.000002100300584706307,
+        "maxFrameSlip": 0.0000027087412584675782,
+        "minPalmAlignment": 0.9999999999996756,
+        "minSoleAlignment": 0.9257509255243421,
+        "maxViewFrameTravel": 0
+      }
+    },
+    {
+      "name": "30fps sprint / facade 180 / swing",
+      "status": "PASS",
+      "detail": {
+        "frames": 90,
+        "contacts": {
+          "lefthand": 29,
+          "righthand": 31,
+          "leftfoot": 21,
+          "rightfoot": 27
+        },
+        "maxPlantDrift": 0.000002100300584706307,
+        "maxFrameSlip": 0.0000027087412584675782,
+        "minPalmAlignment": 0.9999999999996756,
+        "minSoleAlignment": 0.9257509255243421,
+        "maxViewFrameTravel": 0
+      }
+    },
+    {
+      "name": "30fps diagonal / facade 180 / close",
+      "status": "PASS",
+      "detail": {
+        "frames": 90,
+        "contacts": {
+          "lefthand": 31,
+          "righthand": 15,
+          "leftfoot": 21,
+          "rightfoot": 39
+        },
+        "maxPlantDrift": 0.000002153192662705534,
+        "maxFrameSlip": 0.000003132028124881382,
+        "minPalmAlignment": 0.9999999999999578,
+        "minSoleAlignment": 0.8971947792515232,
+        "maxViewFrameTravel": 0
+      }
+    },
+    {
+      "name": "30fps diagonal / facade 180 / follow",
+      "status": "PASS",
+      "detail": {
+        "frames": 90,
+        "contacts": {
+          "lefthand": 31,
+          "righthand": 15,
+          "leftfoot": 21,
+          "rightfoot": 39
+        },
+        "maxPlantDrift": 0.000002153192662705534,
+        "maxFrameSlip": 0.000003132028124881382,
+        "minPalmAlignment": 0.9999999999999578,
+        "minSoleAlignment": 0.8971947792515232,
+        "maxViewFrameTravel": 0
+      }
+    },
+    {
+      "name": "30fps diagonal / facade 180 / swing",
+      "status": "PASS",
+      "detail": {
+        "frames": 90,
+        "contacts": {
+          "lefthand": 31,
+          "righthand": 15,
+          "leftfoot": 21,
+          "rightfoot": 39
+        },
+        "maxPlantDrift": 0.000002153192662705534,
+        "maxFrameSlip": 0.000003132028124881382,
+        "minPalmAlignment": 0.9999999999999578,
+        "minSoleAlignment": 0.8971947792515232,
+        "maxViewFrameTravel": 0
+      }
+    },
+    {
+      "name": "30fps climb / facade 270 / close",
       "status": "PASS",
       "detail": {
         "frames": 90,
@@ -787,15 +1147,51 @@
           "leftfoot": 27,
           "rightfoot": 35
         },
-        "maxPlantDrift": 0.0000021459745288848163,
-        "maxFrameSlip": 0.0000021626016559685047,
+        "maxPlantDrift": 0.0000021459745288059597,
+        "maxFrameSlip": 0.0000021751977831464262,
         "minPalmAlignment": 0.999999999999871,
-        "minSoleAlignment": 0.9912056365972807,
-        "maxViewFrameTravel": 0.08907481986231067
+        "minSoleAlignment": 0.9234765000240401,
+        "maxViewFrameTravel": 0
       }
     },
     {
-      "name": "30fps sprint / facade 270 / third",
+      "name": "30fps climb / facade 270 / follow",
+      "status": "PASS",
+      "detail": {
+        "frames": 90,
+        "contacts": {
+          "lefthand": 38,
+          "righthand": 38,
+          "leftfoot": 27,
+          "rightfoot": 35
+        },
+        "maxPlantDrift": 0.0000021459745288059597,
+        "maxFrameSlip": 0.0000021751977831464262,
+        "minPalmAlignment": 0.999999999999871,
+        "minSoleAlignment": 0.9234765000240401,
+        "maxViewFrameTravel": 0
+      }
+    },
+    {
+      "name": "30fps climb / facade 270 / swing",
+      "status": "PASS",
+      "detail": {
+        "frames": 90,
+        "contacts": {
+          "lefthand": 38,
+          "righthand": 38,
+          "leftfoot": 27,
+          "rightfoot": 35
+        },
+        "maxPlantDrift": 0.0000021459745288059597,
+        "maxFrameSlip": 0.0000021751977831464262,
+        "minPalmAlignment": 0.999999999999871,
+        "minSoleAlignment": 0.9234765000240401,
+        "maxViewFrameTravel": 0
+      }
+    },
+    {
+      "name": "30fps sprint / facade 270 / close",
       "status": "PASS",
       "detail": {
         "frames": 90,
@@ -805,15 +1201,15 @@
           "leftfoot": 21,
           "rightfoot": 27
         },
-        "maxPlantDrift": 0.000002020891143028501,
-        "maxFrameSlip": 0.0000024041906741275094,
+        "maxPlantDrift": 0.00000202088991873292,
+        "maxFrameSlip": 0.000002646706833077451,
         "minPalmAlignment": 0.999999999999866,
-        "minSoleAlignment": 0.9920046388077252,
+        "minSoleAlignment": 0.9257512455161606,
         "maxViewFrameTravel": 0
       }
     },
     {
-      "name": "30fps sprint / facade 270 / first",
+      "name": "30fps sprint / facade 270 / follow",
       "status": "PASS",
       "detail": {
         "frames": 90,
@@ -823,33 +1219,33 @@
           "leftfoot": 21,
           "rightfoot": 27
         },
-        "maxPlantDrift": 0.000002020891143028501,
-        "maxFrameSlip": 0.0000024041906741275094,
+        "maxPlantDrift": 0.00000202088991873292,
+        "maxFrameSlip": 0.000002646706833077451,
         "minPalmAlignment": 0.999999999999866,
-        "minSoleAlignment": 0.9920046388077252,
-        "maxViewFrameTravel": 0.09208964363114272
-      }
-    },
-    {
-      "name": "30fps diagonal / facade 270 / third",
-      "status": "PASS",
-      "detail": {
-        "frames": 90,
-        "contacts": {
-          "lefthand": 31,
-          "righthand": 15,
-          "leftfoot": 21,
-          "rightfoot": 39
-        },
-        "maxPlantDrift": 0.000001924618665395322,
-        "maxFrameSlip": 0.00000268104890141566,
-        "minPalmAlignment": 0.999999999999878,
-        "minSoleAlignment": 0.9804369812915656,
+        "minSoleAlignment": 0.9257512455161606,
         "maxViewFrameTravel": 0
       }
     },
     {
-      "name": "30fps diagonal / facade 270 / first",
+      "name": "30fps sprint / facade 270 / swing",
+      "status": "PASS",
+      "detail": {
+        "frames": 90,
+        "contacts": {
+          "lefthand": 29,
+          "righthand": 31,
+          "leftfoot": 21,
+          "rightfoot": 27
+        },
+        "maxPlantDrift": 0.00000202088991873292,
+        "maxFrameSlip": 0.000002646706833077451,
+        "minPalmAlignment": 0.999999999999866,
+        "minSoleAlignment": 0.9257512455161606,
+        "maxViewFrameTravel": 0
+      }
+    },
+    {
+      "name": "30fps diagonal / facade 270 / close",
       "status": "PASS",
       "detail": {
         "frames": 90,
@@ -859,15 +1255,51 @@
           "leftfoot": 21,
           "rightfoot": 39
         },
-        "maxPlantDrift": 0.000001924618665395322,
-        "maxFrameSlip": 0.00000268104890141566,
+        "maxPlantDrift": 0.0000019246186679190026,
+        "maxFrameSlip": 0.0000026810489118926574,
         "minPalmAlignment": 0.999999999999878,
-        "minSoleAlignment": 0.9804369812915656,
-        "maxViewFrameTravel": 0.10056308850334553
+        "minSoleAlignment": 0.8971946008025997,
+        "maxViewFrameTravel": 0
       }
     },
     {
-      "name": "60fps climb / facade 0 / third",
+      "name": "30fps diagonal / facade 270 / follow",
+      "status": "PASS",
+      "detail": {
+        "frames": 90,
+        "contacts": {
+          "lefthand": 31,
+          "righthand": 15,
+          "leftfoot": 21,
+          "rightfoot": 39
+        },
+        "maxPlantDrift": 0.0000019246186679190026,
+        "maxFrameSlip": 0.0000026810489118926574,
+        "minPalmAlignment": 0.999999999999878,
+        "minSoleAlignment": 0.8971946008025997,
+        "maxViewFrameTravel": 0
+      }
+    },
+    {
+      "name": "30fps diagonal / facade 270 / swing",
+      "status": "PASS",
+      "detail": {
+        "frames": 90,
+        "contacts": {
+          "lefthand": 31,
+          "righthand": 15,
+          "leftfoot": 21,
+          "rightfoot": 39
+        },
+        "maxPlantDrift": 0.0000019246186679190026,
+        "maxFrameSlip": 0.0000026810489118926574,
+        "minPalmAlignment": 0.999999999999878,
+        "minSoleAlignment": 0.8971946008025997,
+        "maxViewFrameTravel": 0
+      }
+    },
+    {
+      "name": "60fps climb / facade 0 / close",
       "status": "PASS",
       "detail": {
         "frames": 180,
@@ -878,14 +1310,14 @@
           "rightfoot": 65
         },
         "maxPlantDrift": 0.0000020700957448286554,
-        "maxFrameSlip": 0.0000022141740581120595,
+        "maxFrameSlip": 0.0000022141745848000303,
         "minPalmAlignment": 0.9999999999998999,
-        "minSoleAlignment": 0.9922628549731732,
+        "minSoleAlignment": 0.9265290138605644,
         "maxViewFrameTravel": 0
       }
     },
     {
-      "name": "60fps climb / facade 0 / first",
+      "name": "60fps climb / facade 0 / follow",
       "status": "PASS",
       "detail": {
         "frames": 180,
@@ -896,14 +1328,32 @@
           "rightfoot": 65
         },
         "maxPlantDrift": 0.0000020700957448286554,
-        "maxFrameSlip": 0.0000022141740581120595,
+        "maxFrameSlip": 0.0000022141745848000303,
         "minPalmAlignment": 0.9999999999998999,
-        "minSoleAlignment": 0.9922628549731732,
-        "maxViewFrameTravel": 0.06107690342361423
+        "minSoleAlignment": 0.9265290138605644,
+        "maxViewFrameTravel": 0
       }
     },
     {
-      "name": "60fps sprint / facade 0 / third",
+      "name": "60fps climb / facade 0 / swing",
+      "status": "PASS",
+      "detail": {
+        "frames": 180,
+        "contacts": {
+          "lefthand": 75,
+          "righthand": 77,
+          "leftfoot": 54,
+          "rightfoot": 65
+        },
+        "maxPlantDrift": 0.0000020700957448286554,
+        "maxFrameSlip": 0.0000022141745848000303,
+        "minPalmAlignment": 0.9999999999998999,
+        "minSoleAlignment": 0.9265290138605644,
+        "maxViewFrameTravel": 0
+      }
+    },
+    {
+      "name": "60fps sprint / facade 0 / close",
       "status": "PASS",
       "detail": {
         "frames": 180,
@@ -914,14 +1364,14 @@
           "rightfoot": 52
         },
         "maxPlantDrift": 0.0000020940566086458856,
-        "maxFrameSlip": 0.0000024331769881072897,
+        "maxFrameSlip": 0.000002433212125619054,
         "minPalmAlignment": 0.9999999999999044,
-        "minSoleAlignment": 0.9824202886426914,
+        "minSoleAlignment": 0.900960302076605,
         "maxViewFrameTravel": 0
       }
     },
     {
-      "name": "60fps sprint / facade 0 / first",
+      "name": "60fps sprint / facade 0 / follow",
       "status": "PASS",
       "detail": {
         "frames": 180,
@@ -932,86 +1382,14 @@
           "rightfoot": 52
         },
         "maxPlantDrift": 0.0000020940566086458856,
-        "maxFrameSlip": 0.0000024331769881072897,
+        "maxFrameSlip": 0.000002433212125619054,
         "minPalmAlignment": 0.9999999999999044,
-        "minSoleAlignment": 0.9824202886426914,
-        "maxViewFrameTravel": 0.06240987346293741
-      }
-    },
-    {
-      "name": "60fps diagonal / facade 0 / third",
-      "status": "PASS",
-      "detail": {
-        "frames": 180,
-        "contacts": {
-          "lefthand": 62,
-          "righthand": 30,
-          "leftfoot": 42,
-          "rightfoot": 75
-        },
-        "maxPlantDrift": 0.0000020691323572184407,
-        "maxFrameSlip": 0.0000017941240570821806,
-        "minPalmAlignment": 0.9999999999999576,
-        "minSoleAlignment": 0.9674641090281645,
+        "minSoleAlignment": 0.900960302076605,
         "maxViewFrameTravel": 0
       }
     },
     {
-      "name": "60fps diagonal / facade 0 / first",
-      "status": "PASS",
-      "detail": {
-        "frames": 180,
-        "contacts": {
-          "lefthand": 62,
-          "righthand": 30,
-          "leftfoot": 42,
-          "rightfoot": 75
-        },
-        "maxPlantDrift": 0.0000020691323572184407,
-        "maxFrameSlip": 0.0000017941240570821806,
-        "minPalmAlignment": 0.9999999999999576,
-        "minSoleAlignment": 0.9674641090281645,
-        "maxViewFrameTravel": 0.06419981258149571
-      }
-    },
-    {
-      "name": "60fps climb / facade 90 / third",
-      "status": "PASS",
-      "detail": {
-        "frames": 180,
-        "contacts": {
-          "lefthand": 75,
-          "righthand": 77,
-          "leftfoot": 54,
-          "rightfoot": 65
-        },
-        "maxPlantDrift": 0.0000019956967940762806,
-        "maxFrameSlip": 0.0000012351846814853637,
-        "minPalmAlignment": 0.9999999999998419,
-        "minSoleAlignment": 0.992262936946278,
-        "maxViewFrameTravel": 0
-      }
-    },
-    {
-      "name": "60fps climb / facade 90 / first",
-      "status": "PASS",
-      "detail": {
-        "frames": 180,
-        "contacts": {
-          "lefthand": 75,
-          "righthand": 77,
-          "leftfoot": 54,
-          "rightfoot": 65
-        },
-        "maxPlantDrift": 0.0000019956967940762806,
-        "maxFrameSlip": 0.0000012351846814853637,
-        "minPalmAlignment": 0.9999999999998419,
-        "minSoleAlignment": 0.992262936946278,
-        "maxViewFrameTravel": 0.06107690204275679
-      }
-    },
-    {
-      "name": "60fps sprint / facade 90 / third",
+      "name": "60fps sprint / facade 0 / swing",
       "status": "PASS",
       "detail": {
         "frames": 180,
@@ -1021,15 +1399,123 @@
           "leftfoot": 39,
           "rightfoot": 52
         },
-        "maxPlantDrift": 0.000001922507691620968,
-        "maxFrameSlip": 0.000001612130062119827,
-        "minPalmAlignment": 0.9999999999998435,
-        "minSoleAlignment": 0.9824202187196528,
+        "maxPlantDrift": 0.0000020940566086458856,
+        "maxFrameSlip": 0.000002433212125619054,
+        "minPalmAlignment": 0.9999999999999044,
+        "minSoleAlignment": 0.900960302076605,
         "maxViewFrameTravel": 0
       }
     },
     {
-      "name": "60fps sprint / facade 90 / first",
+      "name": "60fps diagonal / facade 0 / close",
+      "status": "PASS",
+      "detail": {
+        "frames": 180,
+        "contacts": {
+          "lefthand": 62,
+          "righthand": 30,
+          "leftfoot": 42,
+          "rightfoot": 75
+        },
+        "maxPlantDrift": 0.0000020691336166727002,
+        "maxFrameSlip": 0.0000017941240620488011,
+        "minPalmAlignment": 0.9999999999999576,
+        "minSoleAlignment": 0.8702848519421299,
+        "maxViewFrameTravel": 0
+      }
+    },
+    {
+      "name": "60fps diagonal / facade 0 / follow",
+      "status": "PASS",
+      "detail": {
+        "frames": 180,
+        "contacts": {
+          "lefthand": 62,
+          "righthand": 30,
+          "leftfoot": 42,
+          "rightfoot": 75
+        },
+        "maxPlantDrift": 0.0000020691336166727002,
+        "maxFrameSlip": 0.0000017941240620488011,
+        "minPalmAlignment": 0.9999999999999576,
+        "minSoleAlignment": 0.8702848519421299,
+        "maxViewFrameTravel": 0
+      }
+    },
+    {
+      "name": "60fps diagonal / facade 0 / swing",
+      "status": "PASS",
+      "detail": {
+        "frames": 180,
+        "contacts": {
+          "lefthand": 62,
+          "righthand": 30,
+          "leftfoot": 42,
+          "rightfoot": 75
+        },
+        "maxPlantDrift": 0.0000020691336166727002,
+        "maxFrameSlip": 0.0000017941240620488011,
+        "minPalmAlignment": 0.9999999999999576,
+        "minSoleAlignment": 0.8702848519421299,
+        "maxViewFrameTravel": 0
+      }
+    },
+    {
+      "name": "60fps climb / facade 90 / close",
+      "status": "PASS",
+      "detail": {
+        "frames": 180,
+        "contacts": {
+          "lefthand": 75,
+          "righthand": 77,
+          "leftfoot": 54,
+          "rightfoot": 65
+        },
+        "maxPlantDrift": 0.0000019956929662487506,
+        "maxFrameSlip": 0.0000012712769364585125,
+        "minPalmAlignment": 0.9999999999998419,
+        "minSoleAlignment": 0.9265292735011871,
+        "maxViewFrameTravel": 0
+      }
+    },
+    {
+      "name": "60fps climb / facade 90 / follow",
+      "status": "PASS",
+      "detail": {
+        "frames": 180,
+        "contacts": {
+          "lefthand": 75,
+          "righthand": 77,
+          "leftfoot": 54,
+          "rightfoot": 65
+        },
+        "maxPlantDrift": 0.0000019956929662487506,
+        "maxFrameSlip": 0.0000012712769364585125,
+        "minPalmAlignment": 0.9999999999998419,
+        "minSoleAlignment": 0.9265292735011871,
+        "maxViewFrameTravel": 0
+      }
+    },
+    {
+      "name": "60fps climb / facade 90 / swing",
+      "status": "PASS",
+      "detail": {
+        "frames": 180,
+        "contacts": {
+          "lefthand": 75,
+          "righthand": 77,
+          "leftfoot": 54,
+          "rightfoot": 65
+        },
+        "maxPlantDrift": 0.0000019956929662487506,
+        "maxFrameSlip": 0.0000012712769364585125,
+        "minPalmAlignment": 0.9999999999998419,
+        "minSoleAlignment": 0.9265292735011871,
+        "maxViewFrameTravel": 0
+      }
+    },
+    {
+      "name": "60fps sprint / facade 90 / close",
       "status": "PASS",
       "detail": {
         "frames": 180,
@@ -1039,33 +1525,51 @@
           "leftfoot": 39,
           "rightfoot": 52
         },
-        "maxPlantDrift": 0.000001922507691620968,
-        "maxFrameSlip": 0.000001612130062119827,
+        "maxPlantDrift": 0.0000019225075995983063,
+        "maxFrameSlip": 0.0000017785318667755901,
         "minPalmAlignment": 0.9999999999998435,
-        "minSoleAlignment": 0.9824202187196528,
-        "maxViewFrameTravel": 0.062409876671543275
-      }
-    },
-    {
-      "name": "60fps diagonal / facade 90 / third",
-      "status": "PASS",
-      "detail": {
-        "frames": 180,
-        "contacts": {
-          "lefthand": 62,
-          "righthand": 30,
-          "leftfoot": 42,
-          "rightfoot": 75
-        },
-        "maxPlantDrift": 0.0000017442322679700181,
-        "maxFrameSlip": 0.0000014530297643344906,
-        "minPalmAlignment": 0.9999999999998898,
-        "minSoleAlignment": 0.9674637195456538,
+        "minSoleAlignment": 0.900960071436407,
         "maxViewFrameTravel": 0
       }
     },
     {
-      "name": "60fps diagonal / facade 90 / first",
+      "name": "60fps sprint / facade 90 / follow",
+      "status": "PASS",
+      "detail": {
+        "frames": 180,
+        "contacts": {
+          "lefthand": 60,
+          "righthand": 61,
+          "leftfoot": 39,
+          "rightfoot": 52
+        },
+        "maxPlantDrift": 0.0000019225075995983063,
+        "maxFrameSlip": 0.0000017785318667755901,
+        "minPalmAlignment": 0.9999999999998435,
+        "minSoleAlignment": 0.900960071436407,
+        "maxViewFrameTravel": 0
+      }
+    },
+    {
+      "name": "60fps sprint / facade 90 / swing",
+      "status": "PASS",
+      "detail": {
+        "frames": 180,
+        "contacts": {
+          "lefthand": 60,
+          "righthand": 61,
+          "leftfoot": 39,
+          "rightfoot": 52
+        },
+        "maxPlantDrift": 0.0000019225075995983063,
+        "maxFrameSlip": 0.0000017785318667755901,
+        "minPalmAlignment": 0.9999999999998435,
+        "minSoleAlignment": 0.900960071436407,
+        "maxViewFrameTravel": 0
+      }
+    },
+    {
+      "name": "60fps diagonal / facade 90 / close",
       "status": "PASS",
       "detail": {
         "frames": 180,
@@ -1075,15 +1579,51 @@
           "leftfoot": 42,
           "rightfoot": 75
         },
-        "maxPlantDrift": 0.0000017442322679700181,
-        "maxFrameSlip": 0.0000014530297643344906,
+        "maxPlantDrift": 0.0000017442322679032954,
+        "maxFrameSlip": 0.0000018730209555182247,
         "minPalmAlignment": 0.9999999999998898,
-        "minSoleAlignment": 0.9674637195456538,
-        "maxViewFrameTravel": 0.06419982128478544
+        "minSoleAlignment": 0.8702845013199574,
+        "maxViewFrameTravel": 0
       }
     },
     {
-      "name": "60fps climb / facade 180 / third",
+      "name": "60fps diagonal / facade 90 / follow",
+      "status": "PASS",
+      "detail": {
+        "frames": 180,
+        "contacts": {
+          "lefthand": 62,
+          "righthand": 30,
+          "leftfoot": 42,
+          "rightfoot": 75
+        },
+        "maxPlantDrift": 0.0000017442322679032954,
+        "maxFrameSlip": 0.0000018730209555182247,
+        "minPalmAlignment": 0.9999999999998898,
+        "minSoleAlignment": 0.8702845013199574,
+        "maxViewFrameTravel": 0
+      }
+    },
+    {
+      "name": "60fps diagonal / facade 90 / swing",
+      "status": "PASS",
+      "detail": {
+        "frames": 180,
+        "contacts": {
+          "lefthand": 62,
+          "righthand": 30,
+          "leftfoot": 42,
+          "rightfoot": 75
+        },
+        "maxPlantDrift": 0.0000017442322679032954,
+        "maxFrameSlip": 0.0000018730209555182247,
+        "minPalmAlignment": 0.9999999999998898,
+        "minSoleAlignment": 0.8702845013199574,
+        "maxViewFrameTravel": 0
+      }
+    },
+    {
+      "name": "60fps climb / facade 180 / close",
       "status": "PASS",
       "detail": {
         "frames": 180,
@@ -1094,14 +1634,14 @@
           "rightfoot": 65
         },
         "maxPlantDrift": 0.000002093186403633771,
-        "maxFrameSlip": 0.000002248824381517,
+        "maxFrameSlip": 0.000002248824381874504,
         "minPalmAlignment": 0.9999999999996773,
-        "minSoleAlignment": 0.9922628549731732,
+        "minSoleAlignment": 0.9265290138605635,
         "maxViewFrameTravel": 0
       }
     },
     {
-      "name": "60fps climb / facade 180 / first",
+      "name": "60fps climb / facade 180 / follow",
       "status": "PASS",
       "detail": {
         "frames": 180,
@@ -1112,86 +1652,14 @@
           "rightfoot": 65
         },
         "maxPlantDrift": 0.000002093186403633771,
-        "maxFrameSlip": 0.000002248824381517,
+        "maxFrameSlip": 0.000002248824381874504,
         "minPalmAlignment": 0.9999999999996773,
-        "minSoleAlignment": 0.9922628549731732,
-        "maxViewFrameTravel": 0.06107690085970523
-      }
-    },
-    {
-      "name": "60fps sprint / facade 180 / third",
-      "status": "PASS",
-      "detail": {
-        "frames": 180,
-        "contacts": {
-          "lefthand": 60,
-          "righthand": 61,
-          "leftfoot": 39,
-          "rightfoot": 52
-        },
-        "maxPlantDrift": 0.000002266446821957493,
-        "maxFrameSlip": 0.0000024644193557912627,
-        "minPalmAlignment": 0.9999999999996638,
-        "minSoleAlignment": 0.9824202886426904,
+        "minSoleAlignment": 0.9265290138605635,
         "maxViewFrameTravel": 0
       }
     },
     {
-      "name": "60fps sprint / facade 180 / first",
-      "status": "PASS",
-      "detail": {
-        "frames": 180,
-        "contacts": {
-          "lefthand": 60,
-          "righthand": 61,
-          "leftfoot": 39,
-          "rightfoot": 52
-        },
-        "maxPlantDrift": 0.000002266446821957493,
-        "maxFrameSlip": 0.0000024644193557912627,
-        "minPalmAlignment": 0.9999999999996638,
-        "minSoleAlignment": 0.9824202886426904,
-        "maxViewFrameTravel": 0.06240987566964388
-      }
-    },
-    {
-      "name": "60fps diagonal / facade 180 / third",
-      "status": "PASS",
-      "detail": {
-        "frames": 180,
-        "contacts": {
-          "lefthand": 62,
-          "righthand": 30,
-          "leftfoot": 42,
-          "rightfoot": 75
-        },
-        "maxPlantDrift": 0.0000020691323580891317,
-        "maxFrameSlip": 0.0000025798768755102532,
-        "minPalmAlignment": 0.9999999999999577,
-        "minSoleAlignment": 0.9674641090281648,
-        "maxViewFrameTravel": 0
-      }
-    },
-    {
-      "name": "60fps diagonal / facade 180 / first",
-      "status": "PASS",
-      "detail": {
-        "frames": 180,
-        "contacts": {
-          "lefthand": 62,
-          "righthand": 30,
-          "leftfoot": 42,
-          "rightfoot": 75
-        },
-        "maxPlantDrift": 0.0000020691323580891317,
-        "maxFrameSlip": 0.0000025798768755102532,
-        "minPalmAlignment": 0.9999999999999577,
-        "minSoleAlignment": 0.9674641090281648,
-        "maxViewFrameTravel": 0.0641998148641842
-      }
-    },
-    {
-      "name": "60fps climb / facade 270 / third",
+      "name": "60fps climb / facade 180 / swing",
       "status": "PASS",
       "detail": {
         "frames": 180,
@@ -1201,15 +1669,123 @@
           "leftfoot": 54,
           "rightfoot": 65
         },
-        "maxPlantDrift": 0.0000021022405728931333,
-        "maxFrameSlip": 0.0000017798987695161977,
-        "minPalmAlignment": 0.999999999999871,
-        "minSoleAlignment": 0.9922631705701115,
+        "maxPlantDrift": 0.000002093186403633771,
+        "maxFrameSlip": 0.000002248824381874504,
+        "minPalmAlignment": 0.9999999999996773,
+        "minSoleAlignment": 0.9265290138605635,
         "maxViewFrameTravel": 0
       }
     },
     {
-      "name": "60fps climb / facade 270 / first",
+      "name": "60fps sprint / facade 180 / close",
+      "status": "PASS",
+      "detail": {
+        "frames": 180,
+        "contacts": {
+          "lefthand": 60,
+          "righthand": 61,
+          "leftfoot": 39,
+          "rightfoot": 52
+        },
+        "maxPlantDrift": 0.0000022664468210528353,
+        "maxFrameSlip": 0.0000024644193557912627,
+        "minPalmAlignment": 0.9999999999996638,
+        "minSoleAlignment": 0.9009603020766032,
+        "maxViewFrameTravel": 0
+      }
+    },
+    {
+      "name": "60fps sprint / facade 180 / follow",
+      "status": "PASS",
+      "detail": {
+        "frames": 180,
+        "contacts": {
+          "lefthand": 60,
+          "righthand": 61,
+          "leftfoot": 39,
+          "rightfoot": 52
+        },
+        "maxPlantDrift": 0.0000022664468210528353,
+        "maxFrameSlip": 0.0000024644193557912627,
+        "minPalmAlignment": 0.9999999999996638,
+        "minSoleAlignment": 0.9009603020766032,
+        "maxViewFrameTravel": 0
+      }
+    },
+    {
+      "name": "60fps sprint / facade 180 / swing",
+      "status": "PASS",
+      "detail": {
+        "frames": 180,
+        "contacts": {
+          "lefthand": 60,
+          "righthand": 61,
+          "leftfoot": 39,
+          "rightfoot": 52
+        },
+        "maxPlantDrift": 0.0000022664468210528353,
+        "maxFrameSlip": 0.0000024644193557912627,
+        "minPalmAlignment": 0.9999999999996638,
+        "minSoleAlignment": 0.9009603020766032,
+        "maxViewFrameTravel": 0
+      }
+    },
+    {
+      "name": "60fps diagonal / facade 180 / close",
+      "status": "PASS",
+      "detail": {
+        "frames": 180,
+        "contacts": {
+          "lefthand": 62,
+          "righthand": 30,
+          "leftfoot": 42,
+          "rightfoot": 75
+        },
+        "maxPlantDrift": 0.00000206913361667918,
+        "maxFrameSlip": 0.000002579876879422085,
+        "minPalmAlignment": 0.9999999999999577,
+        "minSoleAlignment": 0.8702848519421306,
+        "maxViewFrameTravel": 0
+      }
+    },
+    {
+      "name": "60fps diagonal / facade 180 / follow",
+      "status": "PASS",
+      "detail": {
+        "frames": 180,
+        "contacts": {
+          "lefthand": 62,
+          "righthand": 30,
+          "leftfoot": 42,
+          "rightfoot": 75
+        },
+        "maxPlantDrift": 0.00000206913361667918,
+        "maxFrameSlip": 0.000002579876879422085,
+        "minPalmAlignment": 0.9999999999999577,
+        "minSoleAlignment": 0.8702848519421306,
+        "maxViewFrameTravel": 0
+      }
+    },
+    {
+      "name": "60fps diagonal / facade 180 / swing",
+      "status": "PASS",
+      "detail": {
+        "frames": 180,
+        "contacts": {
+          "lefthand": 62,
+          "righthand": 30,
+          "leftfoot": 42,
+          "rightfoot": 75
+        },
+        "maxPlantDrift": 0.00000206913361667918,
+        "maxFrameSlip": 0.000002579876879422085,
+        "minPalmAlignment": 0.9999999999999577,
+        "minSoleAlignment": 0.8702848519421306,
+        "maxViewFrameTravel": 0
+      }
+    },
+    {
+      "name": "60fps climb / facade 270 / close",
       "status": "PASS",
       "detail": {
         "frames": 180,
@@ -1219,33 +1795,51 @@
           "leftfoot": 54,
           "rightfoot": 65
         },
-        "maxPlantDrift": 0.0000021022405728931333,
+        "maxPlantDrift": 0.000002102240572729683,
         "maxFrameSlip": 0.0000017798987695161977,
         "minPalmAlignment": 0.999999999999871,
-        "minSoleAlignment": 0.9922631705701115,
-        "maxViewFrameTravel": 0.061076901125604405
-      }
-    },
-    {
-      "name": "60fps sprint / facade 270 / third",
-      "status": "PASS",
-      "detail": {
-        "frames": 180,
-        "contacts": {
-          "lefthand": 60,
-          "righthand": 61,
-          "leftfoot": 39,
-          "rightfoot": 52
-        },
-        "maxPlantDrift": 0.0000020208911425471725,
-        "maxFrameSlip": 0.0000020301042602723982,
-        "minPalmAlignment": 0.9999999999998499,
-        "minSoleAlignment": 0.9824201641127794,
+        "minSoleAlignment": 0.9265293361660973,
         "maxViewFrameTravel": 0
       }
     },
     {
-      "name": "60fps sprint / facade 270 / first",
+      "name": "60fps climb / facade 270 / follow",
+      "status": "PASS",
+      "detail": {
+        "frames": 180,
+        "contacts": {
+          "lefthand": 75,
+          "righthand": 77,
+          "leftfoot": 54,
+          "rightfoot": 65
+        },
+        "maxPlantDrift": 0.000002102240572729683,
+        "maxFrameSlip": 0.0000017798987695161977,
+        "minPalmAlignment": 0.999999999999871,
+        "minSoleAlignment": 0.9265293361660973,
+        "maxViewFrameTravel": 0
+      }
+    },
+    {
+      "name": "60fps climb / facade 270 / swing",
+      "status": "PASS",
+      "detail": {
+        "frames": 180,
+        "contacts": {
+          "lefthand": 75,
+          "righthand": 77,
+          "leftfoot": 54,
+          "rightfoot": 65
+        },
+        "maxPlantDrift": 0.000002102240572729683,
+        "maxFrameSlip": 0.0000017798987695161977,
+        "minPalmAlignment": 0.999999999999871,
+        "minSoleAlignment": 0.9265293361660973,
+        "maxViewFrameTravel": 0
+      }
+    },
+    {
+      "name": "60fps sprint / facade 270 / close",
       "status": "PASS",
       "detail": {
         "frames": 180,
@@ -1255,15 +1849,51 @@
           "leftfoot": 39,
           "rightfoot": 52
         },
-        "maxPlantDrift": 0.0000020208911425471725,
+        "maxPlantDrift": 0.0000020208899184009397,
         "maxFrameSlip": 0.0000020301042602723982,
         "minPalmAlignment": 0.9999999999998499,
-        "minSoleAlignment": 0.9824201641127794,
-        "maxViewFrameTravel": 0.06240987537548106
+        "minSoleAlignment": 0.9009600537730968,
+        "maxViewFrameTravel": 0
       }
     },
     {
-      "name": "60fps diagonal / facade 270 / third",
+      "name": "60fps sprint / facade 270 / follow",
+      "status": "PASS",
+      "detail": {
+        "frames": 180,
+        "contacts": {
+          "lefthand": 60,
+          "righthand": 61,
+          "leftfoot": 39,
+          "rightfoot": 52
+        },
+        "maxPlantDrift": 0.0000020208899184009397,
+        "maxFrameSlip": 0.0000020301042602723982,
+        "minPalmAlignment": 0.9999999999998499,
+        "minSoleAlignment": 0.9009600537730968,
+        "maxViewFrameTravel": 0
+      }
+    },
+    {
+      "name": "60fps sprint / facade 270 / swing",
+      "status": "PASS",
+      "detail": {
+        "frames": 180,
+        "contacts": {
+          "lefthand": 60,
+          "righthand": 61,
+          "leftfoot": 39,
+          "rightfoot": 52
+        },
+        "maxPlantDrift": 0.0000020208899184009397,
+        "maxFrameSlip": 0.0000020301042602723982,
+        "minPalmAlignment": 0.9999999999998499,
+        "minSoleAlignment": 0.9009600537730968,
+        "maxViewFrameTravel": 0
+      }
+    },
+    {
+      "name": "60fps diagonal / facade 270 / close",
       "status": "PASS",
       "detail": {
         "frames": 180,
@@ -1274,14 +1904,14 @@
           "rightfoot": 75
         },
         "maxPlantDrift": 0.0000019281222553046673,
-        "maxFrameSlip": 0.0000021216095592994268,
+        "maxFrameSlip": 0.0000021216095658020322,
         "minPalmAlignment": 0.9999999999997972,
-        "minSoleAlignment": 0.9674642087698639,
+        "minSoleAlignment": 0.8702846190958081,
         "maxViewFrameTravel": 0
       }
     },
     {
-      "name": "60fps diagonal / facade 270 / first",
+      "name": "60fps diagonal / facade 270 / follow",
       "status": "PASS",
       "detail": {
         "frames": 180,
@@ -1292,14 +1922,32 @@
           "rightfoot": 75
         },
         "maxPlantDrift": 0.0000019281222553046673,
-        "maxFrameSlip": 0.0000021216095592994268,
+        "maxFrameSlip": 0.0000021216095658020322,
         "minPalmAlignment": 0.9999999999997972,
-        "minSoleAlignment": 0.9674642087698639,
-        "maxViewFrameTravel": 0.06419981459942238
+        "minSoleAlignment": 0.8702846190958081,
+        "maxViewFrameTravel": 0
       }
     },
     {
-      "name": "144fps climb / facade 0 / third",
+      "name": "60fps diagonal / facade 270 / swing",
+      "status": "PASS",
+      "detail": {
+        "frames": 180,
+        "contacts": {
+          "lefthand": 62,
+          "righthand": 30,
+          "leftfoot": 42,
+          "rightfoot": 75
+        },
+        "maxPlantDrift": 0.0000019281222553046673,
+        "maxFrameSlip": 0.0000021216095658020322,
+        "minPalmAlignment": 0.9999999999997972,
+        "minSoleAlignment": 0.8702846190958081,
+        "maxViewFrameTravel": 0
+      }
+    },
+    {
+      "name": "144fps climb / facade 0 / close",
       "status": "PASS",
       "detail": {
         "frames": 432,
@@ -1310,14 +1958,14 @@
           "rightfoot": 150
         },
         "maxPlantDrift": 0.0000020940330148053207,
-        "maxFrameSlip": 0.0000019932630639900616,
+        "maxFrameSlip": 0.0000019932630622050884,
         "minPalmAlignment": 0.9999999999998868,
-        "minSoleAlignment": 0.9835900208913888,
+        "minSoleAlignment": 0.9036755427706823,
         "maxViewFrameTravel": 0
       }
     },
     {
-      "name": "144fps climb / facade 0 / first",
+      "name": "144fps climb / facade 0 / follow",
       "status": "PASS",
       "detail": {
         "frames": 432,
@@ -1328,32 +1976,32 @@
           "rightfoot": 150
         },
         "maxPlantDrift": 0.0000020940330148053207,
-        "maxFrameSlip": 0.0000019932630639900616,
+        "maxFrameSlip": 0.0000019932630622050884,
         "minPalmAlignment": 0.9999999999998868,
-        "minSoleAlignment": 0.9835900208913888,
-        "maxViewFrameTravel": 0.03605158043391821
-      }
-    },
-    {
-      "name": "144fps sprint / facade 0 / third",
-      "status": "PASS",
-      "detail": {
-        "frames": 432,
-        "contacts": {
-          "lefthand": 129,
-          "righthand": 132,
-          "leftfoot": 79,
-          "rightfoot": 106
-        },
-        "maxPlantDrift": 0.0000020962334971422586,
-        "maxFrameSlip": 0.0000018221573693872312,
-        "minPalmAlignment": 0.9999999999998772,
-        "minSoleAlignment": 0.9783694481677814,
+        "minSoleAlignment": 0.9036755427706823,
         "maxViewFrameTravel": 0
       }
     },
     {
-      "name": "144fps sprint / facade 0 / first",
+      "name": "144fps climb / facade 0 / swing",
+      "status": "PASS",
+      "detail": {
+        "frames": 432,
+        "contacts": {
+          "lefthand": 174,
+          "righthand": 174,
+          "leftfoot": 118,
+          "rightfoot": 150
+        },
+        "maxPlantDrift": 0.0000020940330148053207,
+        "maxFrameSlip": 0.0000019932630622050884,
+        "minPalmAlignment": 0.9999999999998868,
+        "minSoleAlignment": 0.9036755427706823,
+        "maxViewFrameTravel": 0
+      }
+    },
+    {
+      "name": "144fps sprint / facade 0 / close",
       "status": "PASS",
       "detail": {
         "frames": 432,
@@ -1363,15 +2011,51 @@
           "leftfoot": 79,
           "rightfoot": 106
         },
-        "maxPlantDrift": 0.0000020962334971422586,
+        "maxPlantDrift": 0.0000020962334970907594,
         "maxFrameSlip": 0.0000018221573693872312,
         "minPalmAlignment": 0.9999999999998772,
-        "minSoleAlignment": 0.9783694481677814,
-        "maxViewFrameTravel": 0.036172411252245615
+        "minSoleAlignment": 0.8917485675343455,
+        "maxViewFrameTravel": 0
       }
     },
     {
-      "name": "144fps diagonal / facade 0 / third",
+      "name": "144fps sprint / facade 0 / follow",
+      "status": "PASS",
+      "detail": {
+        "frames": 432,
+        "contacts": {
+          "lefthand": 129,
+          "righthand": 132,
+          "leftfoot": 79,
+          "rightfoot": 106
+        },
+        "maxPlantDrift": 0.0000020962334970907594,
+        "maxFrameSlip": 0.0000018221573693872312,
+        "minPalmAlignment": 0.9999999999998772,
+        "minSoleAlignment": 0.8917485675343455,
+        "maxViewFrameTravel": 0
+      }
+    },
+    {
+      "name": "144fps sprint / facade 0 / swing",
+      "status": "PASS",
+      "detail": {
+        "frames": 432,
+        "contacts": {
+          "lefthand": 129,
+          "righthand": 132,
+          "leftfoot": 79,
+          "rightfoot": 106
+        },
+        "maxPlantDrift": 0.0000020962334970907594,
+        "maxFrameSlip": 0.0000018221573693872312,
+        "minPalmAlignment": 0.9999999999998772,
+        "minSoleAlignment": 0.8917485675343455,
+        "maxViewFrameTravel": 0
+      }
+    },
+    {
+      "name": "144fps diagonal / facade 0 / close",
       "status": "PASS",
       "detail": {
         "frames": 432,
@@ -1382,14 +2066,14 @@
           "rightfoot": 168
         },
         "maxPlantDrift": 0.000002005375714712237,
-        "maxFrameSlip": 0.0000016949317223660537,
+        "maxFrameSlip": 0.0000016949317225293483,
         "minPalmAlignment": 0.9999999999999429,
-        "minSoleAlignment": 0.978839629275897,
+        "minSoleAlignment": 0.8936582062384857,
         "maxViewFrameTravel": 0
       }
     },
     {
-      "name": "144fps diagonal / facade 0 / first",
+      "name": "144fps diagonal / facade 0 / follow",
       "status": "PASS",
       "detail": {
         "frames": 432,
@@ -1400,32 +2084,32 @@
           "rightfoot": 168
         },
         "maxPlantDrift": 0.000002005375714712237,
-        "maxFrameSlip": 0.0000016949317223660537,
+        "maxFrameSlip": 0.0000016949317225293483,
         "minPalmAlignment": 0.9999999999999429,
-        "minSoleAlignment": 0.978839629275897,
-        "maxViewFrameTravel": 0.03647390562362474
-      }
-    },
-    {
-      "name": "144fps climb / facade 90 / third",
-      "status": "PASS",
-      "detail": {
-        "frames": 432,
-        "contacts": {
-          "lefthand": 174,
-          "righthand": 174,
-          "leftfoot": 118,
-          "rightfoot": 150
-        },
-        "maxPlantDrift": 0.0000020038663741302684,
-        "maxFrameSlip": 0.0000010970993561902746,
-        "minPalmAlignment": 0.9999999999998257,
-        "minSoleAlignment": 0.9835899862005304,
+        "minSoleAlignment": 0.8936582062384857,
         "maxViewFrameTravel": 0
       }
     },
     {
-      "name": "144fps climb / facade 90 / first",
+      "name": "144fps diagonal / facade 0 / swing",
+      "status": "PASS",
+      "detail": {
+        "frames": 432,
+        "contacts": {
+          "lefthand": 138,
+          "righthand": 58,
+          "leftfoot": 83,
+          "rightfoot": 168
+        },
+        "maxPlantDrift": 0.000002005375714712237,
+        "maxFrameSlip": 0.0000016949317225293483,
+        "minPalmAlignment": 0.9999999999999429,
+        "minSoleAlignment": 0.8936582062384857,
+        "maxViewFrameTravel": 0
+      }
+    },
+    {
+      "name": "144fps climb / facade 90 / close",
       "status": "PASS",
       "detail": {
         "frames": 432,
@@ -1435,15 +2119,51 @@
           "leftfoot": 118,
           "rightfoot": 150
         },
-        "maxPlantDrift": 0.0000020038663741302684,
+        "maxPlantDrift": 0.000002003866373582339,
         "maxFrameSlip": 0.0000010970993561902746,
         "minPalmAlignment": 0.9999999999998257,
-        "minSoleAlignment": 0.9835899862005304,
-        "maxViewFrameTravel": 0.03605157882529716
+        "minSoleAlignment": 0.9036753674097604,
+        "maxViewFrameTravel": 0
       }
     },
     {
-      "name": "144fps sprint / facade 90 / third",
+      "name": "144fps climb / facade 90 / follow",
+      "status": "PASS",
+      "detail": {
+        "frames": 432,
+        "contacts": {
+          "lefthand": 174,
+          "righthand": 174,
+          "leftfoot": 118,
+          "rightfoot": 150
+        },
+        "maxPlantDrift": 0.000002003866373582339,
+        "maxFrameSlip": 0.0000010970993561902746,
+        "minPalmAlignment": 0.9999999999998257,
+        "minSoleAlignment": 0.9036753674097604,
+        "maxViewFrameTravel": 0
+      }
+    },
+    {
+      "name": "144fps climb / facade 90 / swing",
+      "status": "PASS",
+      "detail": {
+        "frames": 432,
+        "contacts": {
+          "lefthand": 174,
+          "righthand": 174,
+          "leftfoot": 118,
+          "rightfoot": 150
+        },
+        "maxPlantDrift": 0.000002003866373582339,
+        "maxFrameSlip": 0.0000010970993561902746,
+        "minPalmAlignment": 0.9999999999998257,
+        "minSoleAlignment": 0.9036753674097604,
+        "maxViewFrameTravel": 0
+      }
+    },
+    {
+      "name": "144fps sprint / facade 90 / close",
       "status": "PASS",
       "detail": {
         "frames": 432,
@@ -1454,14 +2174,14 @@
           "rightfoot": 106
         },
         "maxPlantDrift": 0.000001915946046447389,
-        "maxFrameSlip": 0.0000011653228617997125,
+        "maxFrameSlip": 0.0000011653228617333437,
         "minPalmAlignment": 0.9999999999998369,
-        "minSoleAlignment": 0.9783695231724613,
+        "minSoleAlignment": 0.891748750865845,
         "maxViewFrameTravel": 0
       }
     },
     {
-      "name": "144fps sprint / facade 90 / first",
+      "name": "144fps sprint / facade 90 / follow",
       "status": "PASS",
       "detail": {
         "frames": 432,
@@ -1472,14 +2192,32 @@
           "rightfoot": 106
         },
         "maxPlantDrift": 0.000001915946046447389,
-        "maxFrameSlip": 0.0000011653228617997125,
+        "maxFrameSlip": 0.0000011653228617333437,
         "minPalmAlignment": 0.9999999999998369,
-        "minSoleAlignment": 0.9783695231724613,
-        "maxViewFrameTravel": 0.036172409676358576
+        "minSoleAlignment": 0.891748750865845,
+        "maxViewFrameTravel": 0
       }
     },
     {
-      "name": "144fps diagonal / facade 90 / third",
+      "name": "144fps sprint / facade 90 / swing",
+      "status": "PASS",
+      "detail": {
+        "frames": 432,
+        "contacts": {
+          "lefthand": 129,
+          "righthand": 132,
+          "leftfoot": 79,
+          "rightfoot": 106
+        },
+        "maxPlantDrift": 0.000001915946046447389,
+        "maxFrameSlip": 0.0000011653228617333437,
+        "minPalmAlignment": 0.9999999999998369,
+        "minSoleAlignment": 0.891748750865845,
+        "maxViewFrameTravel": 0
+      }
+    },
+    {
+      "name": "144fps diagonal / facade 90 / close",
       "status": "PASS",
       "detail": {
         "frames": 432,
@@ -1490,14 +2228,14 @@
           "rightfoot": 168
         },
         "maxPlantDrift": 0.000001769369192159497,
-        "maxFrameSlip": 0.000001116567777282029,
+        "maxFrameSlip": 0.0000011165677782490972,
         "minPalmAlignment": 0.999999999999887,
-        "minSoleAlignment": 0.9788392418087605,
+        "minSoleAlignment": 0.893657846922868,
         "maxViewFrameTravel": 0
       }
     },
     {
-      "name": "144fps diagonal / facade 90 / first",
+      "name": "144fps diagonal / facade 90 / follow",
       "status": "PASS",
       "detail": {
         "frames": 432,
@@ -1508,14 +2246,32 @@
           "rightfoot": 168
         },
         "maxPlantDrift": 0.000001769369192159497,
-        "maxFrameSlip": 0.000001116567777282029,
+        "maxFrameSlip": 0.0000011165677782490972,
         "minPalmAlignment": 0.999999999999887,
-        "minSoleAlignment": 0.9788392418087605,
-        "maxViewFrameTravel": 0.036473904005511065
+        "minSoleAlignment": 0.893657846922868,
+        "maxViewFrameTravel": 0
       }
     },
     {
-      "name": "144fps climb / facade 180 / third",
+      "name": "144fps diagonal / facade 90 / swing",
+      "status": "PASS",
+      "detail": {
+        "frames": 432,
+        "contacts": {
+          "lefthand": 138,
+          "righthand": 58,
+          "leftfoot": 83,
+          "rightfoot": 168
+        },
+        "maxPlantDrift": 0.000001769369192159497,
+        "maxFrameSlip": 0.0000011165677782490972,
+        "minPalmAlignment": 0.999999999999887,
+        "minSoleAlignment": 0.893657846922868,
+        "maxViewFrameTravel": 0
+      }
+    },
+    {
+      "name": "144fps climb / facade 180 / close",
       "status": "PASS",
       "detail": {
         "frames": 432,
@@ -1525,15 +2281,15 @@
           "leftfoot": 118,
           "rightfoot": 150
         },
-        "maxPlantDrift": 0.000002147222384908372,
-        "maxFrameSlip": 0.0000020613035181884393,
+        "maxPlantDrift": 0.0000021472223857478947,
+        "maxFrameSlip": 0.0000020613034776077723,
         "minPalmAlignment": 0.9999999999996865,
-        "minSoleAlignment": 0.9835900208913884,
+        "minSoleAlignment": 0.9036755427706823,
         "maxViewFrameTravel": 0
       }
     },
     {
-      "name": "144fps climb / facade 180 / first",
+      "name": "144fps climb / facade 180 / follow",
       "status": "PASS",
       "detail": {
         "frames": 432,
@@ -1543,87 +2299,15 @@
           "leftfoot": 118,
           "rightfoot": 150
         },
-        "maxPlantDrift": 0.000002147222384908372,
-        "maxFrameSlip": 0.0000020613035181884393,
+        "maxPlantDrift": 0.0000021472223857478947,
+        "maxFrameSlip": 0.0000020613034776077723,
         "minPalmAlignment": 0.9999999999996865,
-        "minSoleAlignment": 0.9835900208913884,
-        "maxViewFrameTravel": 0.03605157823546123
-      }
-    },
-    {
-      "name": "144fps sprint / facade 180 / third",
-      "status": "PASS",
-      "detail": {
-        "frames": 432,
-        "contacts": {
-          "lefthand": 129,
-          "righthand": 132,
-          "leftfoot": 79,
-          "rightfoot": 106
-        },
-        "maxPlantDrift": 0.0000021401380967554528,
-        "maxFrameSlip": 0.0000021320540916784775,
-        "minPalmAlignment": 0.9999999999996778,
-        "minSoleAlignment": 0.9783694481677808,
+        "minSoleAlignment": 0.9036755427706823,
         "maxViewFrameTravel": 0
       }
     },
     {
-      "name": "144fps sprint / facade 180 / first",
-      "status": "PASS",
-      "detail": {
-        "frames": 432,
-        "contacts": {
-          "lefthand": 129,
-          "righthand": 132,
-          "leftfoot": 79,
-          "rightfoot": 106
-        },
-        "maxPlantDrift": 0.0000021401380967554528,
-        "maxFrameSlip": 0.0000021320540916784775,
-        "minPalmAlignment": 0.9999999999996778,
-        "minSoleAlignment": 0.9783694481677808,
-        "maxViewFrameTravel": 0.03617240907986585
-      }
-    },
-    {
-      "name": "144fps diagonal / facade 180 / third",
-      "status": "PASS",
-      "detail": {
-        "frames": 432,
-        "contacts": {
-          "lefthand": 138,
-          "righthand": 58,
-          "leftfoot": 83,
-          "rightfoot": 168
-        },
-        "maxPlantDrift": 0.0000020809814352634698,
-        "maxFrameSlip": 0.0000021711033390929227,
-        "minPalmAlignment": 0.9999999999999428,
-        "minSoleAlignment": 0.9788396292758967,
-        "maxViewFrameTravel": 0
-      }
-    },
-    {
-      "name": "144fps diagonal / facade 180 / first",
-      "status": "PASS",
-      "detail": {
-        "frames": 432,
-        "contacts": {
-          "lefthand": 138,
-          "righthand": 58,
-          "leftfoot": 83,
-          "rightfoot": 168
-        },
-        "maxPlantDrift": 0.0000020809814352634698,
-        "maxFrameSlip": 0.0000021711033390929227,
-        "minPalmAlignment": 0.9999999999999428,
-        "minSoleAlignment": 0.9788396292758967,
-        "maxViewFrameTravel": 0.03647390340761299
-      }
-    },
-    {
-      "name": "144fps climb / facade 270 / third",
+      "name": "144fps climb / facade 180 / swing",
       "status": "PASS",
       "detail": {
         "frames": 432,
@@ -1633,15 +2317,123 @@
           "leftfoot": 118,
           "rightfoot": 150
         },
-        "maxPlantDrift": 0.0000020895763377341835,
-        "maxFrameSlip": 0.0000015510788597412181,
-        "minPalmAlignment": 0.9999999999998314,
-        "minSoleAlignment": 0.9835898987129937,
+        "maxPlantDrift": 0.0000021472223857478947,
+        "maxFrameSlip": 0.0000020613034776077723,
+        "minPalmAlignment": 0.9999999999996865,
+        "minSoleAlignment": 0.9036755427706823,
         "maxViewFrameTravel": 0
       }
     },
     {
-      "name": "144fps climb / facade 270 / first",
+      "name": "144fps sprint / facade 180 / close",
+      "status": "PASS",
+      "detail": {
+        "frames": 432,
+        "contacts": {
+          "lefthand": 129,
+          "righthand": 132,
+          "leftfoot": 79,
+          "rightfoot": 106
+        },
+        "maxPlantDrift": 0.000002140138096794737,
+        "maxFrameSlip": 0.000002132054091882834,
+        "minPalmAlignment": 0.9999999999996778,
+        "minSoleAlignment": 0.8917485675343453,
+        "maxViewFrameTravel": 0
+      }
+    },
+    {
+      "name": "144fps sprint / facade 180 / follow",
+      "status": "PASS",
+      "detail": {
+        "frames": 432,
+        "contacts": {
+          "lefthand": 129,
+          "righthand": 132,
+          "leftfoot": 79,
+          "rightfoot": 106
+        },
+        "maxPlantDrift": 0.000002140138096794737,
+        "maxFrameSlip": 0.000002132054091882834,
+        "minPalmAlignment": 0.9999999999996778,
+        "minSoleAlignment": 0.8917485675343453,
+        "maxViewFrameTravel": 0
+      }
+    },
+    {
+      "name": "144fps sprint / facade 180 / swing",
+      "status": "PASS",
+      "detail": {
+        "frames": 432,
+        "contacts": {
+          "lefthand": 129,
+          "righthand": 132,
+          "leftfoot": 79,
+          "rightfoot": 106
+        },
+        "maxPlantDrift": 0.000002140138096794737,
+        "maxFrameSlip": 0.000002132054091882834,
+        "minPalmAlignment": 0.9999999999996778,
+        "minSoleAlignment": 0.8917485675343453,
+        "maxViewFrameTravel": 0
+      }
+    },
+    {
+      "name": "144fps diagonal / facade 180 / close",
+      "status": "PASS",
+      "detail": {
+        "frames": 432,
+        "contacts": {
+          "lefthand": 138,
+          "righthand": 58,
+          "leftfoot": 83,
+          "rightfoot": 168
+        },
+        "maxPlantDrift": 0.000002080981434996838,
+        "maxFrameSlip": 0.000002171103338782394,
+        "minPalmAlignment": 0.9999999999999428,
+        "minSoleAlignment": 0.8936582062384857,
+        "maxViewFrameTravel": 0
+      }
+    },
+    {
+      "name": "144fps diagonal / facade 180 / follow",
+      "status": "PASS",
+      "detail": {
+        "frames": 432,
+        "contacts": {
+          "lefthand": 138,
+          "righthand": 58,
+          "leftfoot": 83,
+          "rightfoot": 168
+        },
+        "maxPlantDrift": 0.000002080981434996838,
+        "maxFrameSlip": 0.000002171103338782394,
+        "minPalmAlignment": 0.9999999999999428,
+        "minSoleAlignment": 0.8936582062384857,
+        "maxViewFrameTravel": 0
+      }
+    },
+    {
+      "name": "144fps diagonal / facade 180 / swing",
+      "status": "PASS",
+      "detail": {
+        "frames": 432,
+        "contacts": {
+          "lefthand": 138,
+          "righthand": 58,
+          "leftfoot": 83,
+          "rightfoot": 168
+        },
+        "maxPlantDrift": 0.000002080981434996838,
+        "maxFrameSlip": 0.000002171103338782394,
+        "minPalmAlignment": 0.9999999999999428,
+        "minSoleAlignment": 0.8936582062384857,
+        "maxViewFrameTravel": 0
+      }
+    },
+    {
+      "name": "144fps climb / facade 270 / close",
       "status": "PASS",
       "detail": {
         "frames": 432,
@@ -1651,15 +2443,51 @@
           "leftfoot": 118,
           "rightfoot": 150
         },
-        "maxPlantDrift": 0.0000020895763377341835,
-        "maxFrameSlip": 0.0000015510788597412181,
+        "maxPlantDrift": 0.000002089207364074806,
+        "maxFrameSlip": 0.0000015510789186150563,
         "minPalmAlignment": 0.9999999999998314,
-        "minSoleAlignment": 0.9835898987129937,
-        "maxViewFrameTravel": 0.0360515786236188
+        "minSoleAlignment": 0.9036753365035394,
+        "maxViewFrameTravel": 0
       }
     },
     {
-      "name": "144fps sprint / facade 270 / third",
+      "name": "144fps climb / facade 270 / follow",
+      "status": "PASS",
+      "detail": {
+        "frames": 432,
+        "contacts": {
+          "lefthand": 174,
+          "righthand": 174,
+          "leftfoot": 118,
+          "rightfoot": 150
+        },
+        "maxPlantDrift": 0.000002089207364074806,
+        "maxFrameSlip": 0.0000015510789186150563,
+        "minPalmAlignment": 0.9999999999998314,
+        "minSoleAlignment": 0.9036753365035394,
+        "maxViewFrameTravel": 0
+      }
+    },
+    {
+      "name": "144fps climb / facade 270 / swing",
+      "status": "PASS",
+      "detail": {
+        "frames": 432,
+        "contacts": {
+          "lefthand": 174,
+          "righthand": 174,
+          "leftfoot": 118,
+          "rightfoot": 150
+        },
+        "maxPlantDrift": 0.000002089207364074806,
+        "maxFrameSlip": 0.0000015510789186150563,
+        "minPalmAlignment": 0.9999999999998314,
+        "minSoleAlignment": 0.9036753365035394,
+        "maxViewFrameTravel": 0
+      }
+    },
+    {
+      "name": "144fps sprint / facade 270 / close",
       "status": "PASS",
       "detail": {
         "frames": 432,
@@ -1669,15 +2497,15 @@
           "leftfoot": 79,
           "rightfoot": 106
         },
-        "maxPlantDrift": 0.0000019922334328539794,
-        "maxFrameSlip": 0.0000016438800469819247,
+        "maxPlantDrift": 0.0000019922334321527017,
+        "maxFrameSlip": 0.0000016438878103262105,
         "minPalmAlignment": 0.9999999999998369,
-        "minSoleAlignment": 0.9783697595217359,
+        "minSoleAlignment": 0.8917487678070386,
         "maxViewFrameTravel": 0
       }
     },
     {
-      "name": "144fps sprint / facade 270 / first",
+      "name": "144fps sprint / facade 270 / follow",
       "status": "PASS",
       "detail": {
         "frames": 432,
@@ -1687,33 +2515,33 @@
           "leftfoot": 79,
           "rightfoot": 106
         },
-        "maxPlantDrift": 0.0000019922334328539794,
-        "maxFrameSlip": 0.0000016438800469819247,
+        "maxPlantDrift": 0.0000019922334321527017,
+        "maxFrameSlip": 0.0000016438878103262105,
         "minPalmAlignment": 0.9999999999998369,
-        "minSoleAlignment": 0.9783697595217359,
-        "maxViewFrameTravel": 0.036172409542550285
-      }
-    },
-    {
-      "name": "144fps diagonal / facade 270 / third",
-      "status": "PASS",
-      "detail": {
-        "frames": 432,
-        "contacts": {
-          "lefthand": 138,
-          "righthand": 58,
-          "leftfoot": 83,
-          "rightfoot": 168
-        },
-        "maxPlantDrift": 0.000002003338590623512,
-        "maxFrameSlip": 0.000001915776379156168,
-        "minPalmAlignment": 0.9999999999997982,
-        "minSoleAlignment": 0.9788397913986553,
+        "minSoleAlignment": 0.8917487678070386,
         "maxViewFrameTravel": 0
       }
     },
     {
-      "name": "144fps diagonal / facade 270 / first",
+      "name": "144fps sprint / facade 270 / swing",
+      "status": "PASS",
+      "detail": {
+        "frames": 432,
+        "contacts": {
+          "lefthand": 129,
+          "righthand": 132,
+          "leftfoot": 79,
+          "rightfoot": 106
+        },
+        "maxPlantDrift": 0.0000019922334321527017,
+        "maxFrameSlip": 0.0000016438878103262105,
+        "minPalmAlignment": 0.9999999999998369,
+        "minSoleAlignment": 0.8917487678070386,
+        "maxViewFrameTravel": 0
+      }
+    },
+    {
+      "name": "144fps diagonal / facade 270 / close",
       "status": "PASS",
       "detail": {
         "frames": 432,
@@ -1723,58 +2551,102 @@
           "leftfoot": 83,
           "rightfoot": 168
         },
-        "maxPlantDrift": 0.000002003338590623512,
-        "maxFrameSlip": 0.000001915776379156168,
+        "maxPlantDrift": 0.0000020033385924678834,
+        "maxFrameSlip": 0.0000019157763810899893,
         "minPalmAlignment": 0.9999999999997982,
-        "minSoleAlignment": 0.9788397913986553,
-        "maxViewFrameTravel": 0.03647390384203312
+        "minSoleAlignment": 0.8936580439568713,
+        "maxViewFrameTravel": 0
       }
     },
     {
-      "name": "24fps first/third silk uses the same taper, fibers, shot ownership and cleanup",
+      "name": "144fps diagonal / facade 270 / follow",
+      "status": "PASS",
+      "detail": {
+        "frames": 432,
+        "contacts": {
+          "lefthand": 138,
+          "righthand": 58,
+          "leftfoot": 83,
+          "rightfoot": 168
+        },
+        "maxPlantDrift": 0.0000020033385924678834,
+        "maxFrameSlip": 0.0000019157763810899893,
+        "minPalmAlignment": 0.9999999999997982,
+        "minSoleAlignment": 0.8936580439568713,
+        "maxViewFrameTravel": 0
+      }
+    },
+    {
+      "name": "144fps diagonal / facade 270 / swing",
+      "status": "PASS",
+      "detail": {
+        "frames": 432,
+        "contacts": {
+          "lefthand": 138,
+          "righthand": 58,
+          "leftfoot": 83,
+          "rightfoot": 168
+        },
+        "maxPlantDrift": 0.0000020033385924678834,
+        "maxFrameSlip": 0.0000019157763810899893,
+        "minPalmAlignment": 0.9999999999997982,
+        "minSoleAlignment": 0.8936580439568713,
+        "maxViewFrameTravel": 0
+      }
+    },
+    {
+      "name": "24fps third-person silk uses the same taper, fibers, shot ownership and cleanup",
       "status": "PASS",
       "detail": {
         "coreDiameters": [
           0.025884209314424787,
           0.025884054437266144,
-          0.02588401406809372,
-          0.025884086541788382
+          0.025884153950181985,
+          0.02588415074831145,
+          0.025884099020918094,
+          0.025884122036046793
         ]
       }
     },
     {
-      "name": "30fps first/third silk uses the same taper, fibers, shot ownership and cleanup",
+      "name": "30fps third-person silk uses the same taper, fibers, shot ownership and cleanup",
       "status": "PASS",
       "detail": {
         "coreDiameters": [
           0.025884155351274727,
           0.02588412838791236,
-          0.025884038352083204,
-          0.025884093394642347
+          0.025884215703602036,
+          0.02588416881235723,
+          0.025884007520199728,
+          0.02588416613459417
         ]
       }
     },
     {
-      "name": "60fps first/third silk uses the same taper, fibers, shot ownership and cleanup",
+      "name": "60fps third-person silk uses the same taper, fibers, shot ownership and cleanup",
       "status": "PASS",
       "detail": {
         "coreDiameters": [
           0.025884091221557094,
           0.025884126152310602,
-          0.025884205934405265,
-          0.025884118700211848
+          0.025884181979708668,
+          0.025884132217381877,
+          0.025884165052686953,
+          0.025884155855890448
         ]
       }
     },
     {
-      "name": "144fps first/third silk uses the same taper, fibers, shot ownership and cleanup",
+      "name": "144fps third-person silk uses the same taper, fibers, shot ownership and cleanup",
       "status": "PASS",
       "detail": {
         "coreDiameters": [
           0.025884166617111737,
           0.025884080119569473,
-          0.025884075266240057,
-          0.02588411801064486
+          0.025884123177730166,
+          0.025884121887537366,
+          0.025884149303297046,
+          0.025884089918460754
         ]
       }
     },

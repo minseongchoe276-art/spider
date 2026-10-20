@@ -26,14 +26,18 @@ console.log('PASS downward view stays on the exact reticle with either saved ass
 let reference;
 for (const fps of [30,60,144]) {
   const p=player();p.findBestAnchor=()=>new THREE.Vector3(0,30,30);assert(p.startSwing(camera));
-  const anchor=p.anchorPoint.clone(),length=p.ropeLength;
+  const anchor=p.anchorPoint.clone();let peak=p.position.y;
+  assert.equal(p.velocity.y,p.jumpForce,'A valid ground attachment must launch upward');
+  assert(Math.abs(p.velocity.z-14)<1e-7,'Launch must move toward the attached surface');
   for(let n=0;n<fps*4;n++){
     p.update(1/fps,{webHold:true,webFireHeld:true},camera);
-    assert(p.isSwinging&&p.anchorPoint.equals(anchor));assert.equal(p.ropeLength,length);
-    assert(Math.abs(p.position.y-.1)<1e-7);assert(p.velocity.length()<1e-7,'Held ground web manufactured movement');
+    assert(p.isSwinging&&p.anchorPoint.equals(anchor));
+    assert(p.position.toArray().every(Number.isFinite));
+    assert(p.velocity.length()<=p.maxSpeed+1e-6);peak=Math.max(peak,p.position.y);
   }
-  if(reference)assert(p.position.distanceTo(reference)<1e-7);reference=p.position.clone();
-  console.log(`PASS grounded web stays attached without automatic jump or drift at ${fps}fps`);
+  assert(peak>3,'Held launch never left the floor');
+  if(reference)assert(p.position.distanceTo(reference)<.05,'Launch diverged across frame rates');reference=p.position.clone();
+  console.log(`PASS valid grounded attachment launches toward its anchor at ${fps}fps`);
 }
 
 // An explicit jump and attachment preserve momentum without a second impulse.
@@ -43,7 +47,7 @@ manual.findBestAnchor=()=>new THREE.Vector3(0,30,30);
 const jumpVelocity=manual.velocity.clone();
 assert(manual.startSwing(camera));
 assert(manual.velocity.equals(jumpVelocity),'Shooting during a jump injected another launch');
-assert.equal(manual.webs[0].launchPending,false,'The rope length should apply immediately after a deliberate shot');
+assert.equal(manual.webs[0].launchPending,true,'The ascending takeoff must retain rope slack until the apex');
 const earlyRelease=manual.velocity.clone();manual.releaseSwing(true);
 assert(manual.velocity.equals(earlyRelease),'Space release added speed during takeoff');
 console.log('PASS Space then web shares the ballistic takeoff, and early release preserves velocity');
@@ -51,8 +55,9 @@ console.log('PASS Space then web shares the ballistic takeoff, and early release
 const away = new THREE.PerspectiveCamera();
 const launch = player(); launch.findBestAnchor = () => new THREE.Vector3(0, 30, 30);
 assert(launch.startSwing(away));
-assert.equal(launch.velocity.length(),0,'Ground attachment injected directional speed');
-console.log('PASS attachment creates no camera-dependent launch impulse');
+assert.equal(launch.velocity.y,launch.jumpForce);
+assert(Math.abs(launch.velocity.x)<1e-8 && Math.abs(launch.velocity.z-14)<1e-8,'Launch ignored the attached surface direction');
+console.log('PASS ground launch follows its valid anchor even when the camera faces elsewhere');
 
 const groundZip=player();groundZip.city.buildingMeshes=[wall];
 assert(!groundZip.performAirJump(camera),'E must not pull the player off the ground');

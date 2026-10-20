@@ -1,0 +1,186 @@
+{
+  "started": "2026-10-19T13:10:38.720Z",
+  "finished": "2026-10-19T13:11:19.701Z",
+  "reason": "SwingPhysics.js changed during the full 40-suite audit: grounded web launch and floor catch restored. Rechecked all affected physics, input and integration branches. Animation skin/rig suites continue separately.",
+  "total": 19,
+  "passed": 19,
+  "stable": true,
+  "changed": [],
+  "results": [
+    {
+      "suite": "controller",
+      "pass": true
+    },
+    {
+      "suite": "gameplay",
+      "pass": true
+    },
+    {
+      "suite": "dual-web",
+      "pass": true
+    },
+    {
+      "suite": "pendulum",
+      "pass": true
+    },
+    {
+      "suite": "physics-invariants",
+      "pass": true
+    },
+    {
+      "suite": "mechanics-audit",
+      "pass": true
+    },
+    {
+      "suite": "traversal",
+      "pass": true
+    },
+    {
+      "suite": "qa",
+      "pass": true
+    },
+    {
+      "suite": "review-2",
+      "pass": true
+    },
+    {
+      "suite": "combat",
+      "pass": true
+    },
+    {
+      "suite": "swing-accessibility",
+      "pass": true
+    },
+    {
+      "suite": "cross-system-regressions",
+      "pass": true
+    },
+    {
+      "suite": "web-continuity",
+      "pass": true
+    },
+    {
+      "suite": "expert-audit",
+      "pass": true
+    },
+    {
+      "suite": "camera-motion-web",
+      "pass": true
+    },
+    {
+      "suite": "full-game-audit",
+      "pass": true
+    },
+    {
+      "suite": "input-lifecycle",
+      "pass": true
+    },
+    {
+      "suite": "wall-ledge",
+      "pass": true
+    },
+    {
+      "suite": "combat-traversal",
+      "pass": true
+    }
+  ],
+  "fingerprints": {
+    "src/AirTricks.js": "836d8d9c52a1f36aaf79a9f4f2e787cf96a783a17fbc3d28b858478d1ebe8979",
+    "src/AssetLoader.js": "bb5d7f719cd1bca9bf94c2396cb507f4d76c18ce3f365d9e31591e7657479bd2",
+    "src/Audio.js": "3c64c5c4b4a8662d5828a61e3c34f3e3872456ffdec1a7fe8b6205f47ad95674",
+    "src/AuditMetrics.js": "98e189f8cd611b17d387eee53a29d9f8204506e99042ab5a27246e714b3fab09",
+    "src/Camera.js": "76e4295308fc6933add89957a9bb25d73fa833129f0dc23068cc9ed6d008297b",
+    "src/Character.js": "4ef8e2439eab53dbd4732da9925ddac3aa9be72fa18484bba012081e8d3fd57f",
+    "src/CharacterAppearance.js": "57b877fa624ca22d9053dbc897ebb8450844768317850934e3f10d17d1ee0c99",
+    "src/CharacterPose.js": "2e51409e8229a88a65f2331f49910e773236b7f67a5c9daa53b9c3bb6889185a",
+    "src/City.js": "fc370259d074d8e96665f7d684e4985e6b55293c9b72b9cc91659a0e7c8a2abd",
+    "src/CitySelection.js": "21a2c16d910ef99f62fd06916a2fb8baecc42c41edb15f67abe15337cfccdc18",
+    "src/Combat.js": "bf1fd13f8f4d600436675a9fbcbcd02f82f4e31551773e1f16f9a16e62f50873",
+    "src/CombatAim.js": "00d1bd21e0972c6ef29c7faab035973b206f45976eed8cfcf4877e0700b8dd74",
+    "src/CombatChoreography.js": "78514c4ab430601040317c7e969ef423fe72feca1608e4090a5290ce954d9dd1",
+    "src/CombatFeedback.js": "213dde62be0ffdb3562b85178bb37fdbf1a9864292c3bd4edce6230188d77ddd",
+    "src/CombatPractice.js": "a6e25e0f9832d862c7654f8ae2e3b28dcc07aaafca552a947f271281ed2f1668",
+    "src/CombatReview.js": "a29b2c435dcf4eb99e793c734bf4be27995fb402aec7b56498c2f23f12284816",
+    "src/DisplayMode.js": "b388ff225bbf6ef1666da7acbfb53261aa155f6d8b443fc500b0e90f90babf8f",
+    "src/EffectsReview.js": "d648c47f38d699ab4db907b27610d45f10e1d2e5528f0963974b1fd19bc7a1ab",
+    "src/GamepadInput.js": "9390e14060af4c6b1680cfb88ebef0699dc383b3cb6e1441280005174c3c13b0",
+    "src/HongKongAudit.js": "e549e2619b1fcbe8e7e781df176f2c8363ebe8092aa4109c7bf9e914fada3345",
+    "src/JointConstraints.js": "31ec0f1bc512dd19a6b0a6e724d17e7181db9ac2ae3690e5b61f0a8474c4e88a",
+    "src/LedgeTraversal.js": "fa5db0ea7085f248874b4b78827da06d8fc6f730f357cf5d9f440a9cd57fb7e0",
+    "src/LocalCityLayout.js": "e977179fddc8c4f7945245b7035c8fd4e13d58a5c550020b30a6543a5fccae58",
+    "src/MatchRules.js": "ae74a453a6525483cb45fd4635fa2d1ce8b81f028e57c1293a26c0b76a79c5f3",
+    "src/Minimap.js": "0d217c33e8b812c8edba8ff25af96766e0a44208b5848af5117ad99fefe9f05b",
+    "src/MixamoMotion.js": "8e3b0d98e5b7ebe289fa36c0ddafa5ed276be26ef498abb164f680d1e217da50",
+    "src/MotionAuditReview.js": "fe39255b03419f8d16d2c4461ebec2040a71693e0f558c91c08d52ed2501c3cf",
+    "src/MotionCatalog.js": "734890628ced946814fbca768c21ebfad8ff2e00da1480235c60e4ef2163716e",
+    "src/MotionRetarget.js": "0a907c67f30fb9717805d2616c69a40fb9cfa582cb6f923d91e23abe1b7319ae",
+    "src/MotionReview.js": "da58a366af5fda1734b7efb648af91d6749b864cc2100ae1d724d1b38b0be0af",
+    "src/MovementCollision.js": "6ef229e28dab111ee88cf2d1ce9fbeb0e28744eb10ab18de13652ac794986f51",
+    "src/Multiplayer.js": "b438bb323a2777441505791fea912421bc578839839135e0c54a632703aa35ba",
+    "src/PerformanceBudget.js": "67f1e987e18103d3aca035fb6a9e64f419b5d305cfcc98ef5bd1d161a266e9be",
+    "src/PlayerExperience.js": "52e4062f3c35deb779c9a47a05f47f333450282539c7e18de426083c25799242",
+    "src/PlayerPositionMarkers.js": "9f00d3ce24b76e43ef663d882104ced7fe75fb54271387620a65a4cb07d4be7a",
+    "src/PlayerSettings.js": "da71b5e45c850040487a77844c98b9e5ebfac3de38a8e950f5f42cb53b473258",
+    "src/Preferences.js": "c95cf22b8b96bfeab1e26c108583f85efe1af30191453cc424dc1e604baee261",
+    "src/Progression.js": "5a6cf0af11346f45914acf29a10038a3c34d2c62be912c44c0c2b5e3bd773cf2",
+    "src/PursuitRules.js": "24b23e50863d6fac782ee29f1610fc7f12cff2f4a7e4976dc70e411ae6a556fb",
+    "src/RemoteMotion.js": "82e62f094955c06a4a4b43b28096177e03c89ff5e27eeef7921d741505b4b843",
+    "src/SettingsPanel.js": "e85b9800c90d02adfb55dd9df149329f57fcf133477184297c93313906670276",
+    "src/SpeedLines.js": "70f649a380d660f04242fb3b2a57940b67a55862272e582e90868cc4be28180d",
+    "src/StreamedCollision.js": "ea3562e5256eaaa22a7b93f9531108b4403802217b255ba1ab95ed4e13f1a88f",
+    "src/StuntSystem.js": "53b39a856978cd0e1812a30ffc50f10794a224d2a28173f98d5e9edfaefefaae",
+    "src/SupabaseRooms.js": "2eaad363c106352451fa3ded7b2e1576ac870f03e34579d3be642a6103ce748f",
+    "src/SwingPhysics.js": "3d55c3d95d79f942cfe3616988cfc1c4ee137891bcb538623874e294b20ab2fd",
+    "src/TileTextures.js": "bedffd13ced0ce3c126dd2b2a82d94b7ff890e486115eeace1f59910237f3b3e",
+    "src/TouchControls.js": "3c24abc91787c227a0d0ab7dbcb66c94386311da4dce4d2878cea2670d366781",
+    "src/TraversalPlaytest.js": "05b9dda7ae3630c08e824e6024293283b976deb7d00a3060197f40ad1114df57",
+    "src/UrbanGroundCity.js": "2ad25ad2efee845a06cc9b2623c7a1f1e4d770f4eb4f868f102d3f33970e8930",
+    "src/VFX.js": "a0f903e6a17223462b14d3552314d36a9038fc59220e499936ff0026bc88aec0",
+    "src/WebConstraints.js": "d7947ac07084b35f90fbd9109ca4569c1a8cae1f880076a9c377282911e695dd",
+    "src/WebHandPose.js": "fd9346d671b826b821163ccea08568934f0f8be8ee20a40641a07ef56afeaa12",
+    "src/WebHandReview.js": "555e073db34da2e3f85e62323d12b89ecf2feb62ef3052fbe46b6f436d5170fd",
+    "src/WebStrand.js": "c2fc2374f02a9229a4ed122e9b3ae3e08e7449a7dc574ec6683606ed9e806f54",
+    "src/WebSwinger.js": "2573af6543bf544d20173ac5114b53c8ac15174d5838b4e891e34b2568bd49f6",
+    "src/WorldMap.js": "8e253366755dd49f2b5ebd6d9bf31b5a3af9a230f6b4654d0e243dc24d411a24",
+    "src/main.js": "dacbdcca720226f2db7d3baadd727c04ecc04e9c907240d8f19ea502a2e65ad4",
+    "public/motions/airTrick.json": "97895e302850eb8d0044ba6addfe0c07e8136212611ac72638cf0555ba1ab140",
+    "public/motions/candidateFront.json": "bcf862b51ac96207f006252b4917cff25c8ee39f3009b9b26d2ea2a8bfff4d2f",
+    "public/motions/candidateStylish.json": "85e2450c1db7e2d35a41417e220b4dbc7f27a54312cfa3f1b75e7fd400ea2d78",
+    "public/motions/combatIdle.json": "d5b491ca1827de368b544d189c8382155c41585cc9f3748064aed630ced8e9f0",
+    "public/motions/cross.json": "b1c4461889b426a8b1e91c00675367683682b78b00dea45d1ef09b57a6b66ec9",
+    "public/motions/drop.json": "9f35903ac46d650c23c90b6f1c1d71cb385e9a25fd9ba7029c05c9986e218d0f",
+    "public/motions/fall.json": "0a56f21c0fffe6d1863ad3bcb33478154bfa79186e83eaaf87211f6e276b4c43",
+    "public/motions/fallIdle.json": "a7809dbd61c052339ffe5cc3c33ffeaab4be1ea95b7ce28119d20347488c6974",
+    "public/motions/fallVariant.json": "8a42659691fbf77b5643c790d7f29410f9d2fc8ab754ce1f43cbe7a6040c4cb0",
+    "public/motions/guard.json": "88046f223265e930fd0e31ae23ae8466ef21058aae5b8cb1c3cb650a7d80c83a",
+    "public/motions/heavy.json": "2a0493f236086a6afba8bc14f53ae2c6adce490bab76ae413cf87ea3034200a8",
+    "public/motions/hitHead.json": "dc8661aa34e9a3d52c6650e0828b7df9dee833e42acdf79bfe72be435aa278b8",
+    "public/motions/hook.json": "424a407271024d46fdd59ebcc71c80346b1862b23157b54ef142effdca47f65d",
+    "public/motions/idle.json": "9c2d4cd35c09157dcff4ac52cee5d2bb9530584dda57305ef85bb94bbc322c78",
+    "public/motions/injuredIdle.json": "ce7d859a7282d450c5b0a3f11bfcb9bedbd22e0f1d4079b85ae2264f93700329",
+    "public/motions/jab.json": "4887a6bd7bdf5bacfbdbab253522d973048be378be1ad929c92ed340e8802e73",
+    "public/motions/jump.json": "72aa51a9765e314ef13258f32146e1bc25871796a148ad0321af5c1fef23ec5c",
+    "public/motions/jumpDown.json": "8d51c85ca6f6c4ed4566765e2666dc29887999380c50066a5381b3620d65fdab",
+    "public/motions/jumpDownVariant.json": "47a2f6ead584ffdc5b6197f88df94ef7d4e5d2a9796ddb886d6c6e82fa8141d8",
+    "public/motions/land.json": "9ce935c77da6440e08d33eaaa5eebec90192b6e504571a49a40c9be4610732d6",
+    "public/motions/manifest.json": "f43f33e51e9c5f686d99996421a24f630da3bb434f8fc5cb9c10a3d1904eab5d",
+    "public/motions/regularRun.json": "abeeaf3337ca3e72fb40a1f9772702e7225a93febbedc73c6a4368f8c871c9ed",
+    "public/motions/rightHook.json": "7851ac81a5732528751d2a5b91e56364ce0fae1b9ad27fa7bc1214eee92e1cde",
+    "public/motions/roll.json": "62ba6e105bcfe74189d9da484fd8162474bfc0939f91dbc7e957fcc488c60cde",
+    "public/motions/run.json": "77755326202916738dcbcbac9b9efbcacb8f2af6615332591f0a4a7fbbeb1181",
+    "public/motions/runStop.json": "179a6454ff111366bc1aafdb09e034aa4371c04ca5aad72aa000c038bb73f37d",
+    "public/motions/slam.json": "b0e4b05e48716e565041f72f0142e2f88822d5203fa59d191f1a58cf10bcdbce",
+    "public/motions/slamLand.json": "de424ada5436789db132150f06c69342f8d22b3bc30287c464bac1e58a85156e",
+    "public/motions/special.json": "5f41e0ce65d50c912c99a8680c18b8c8f0659cbdffdd350201079c317c24869e",
+    "public/motions/stop.json": "47124443e7837710fddfa601d46db59ddaa3cc4fedf466651ae743b15afef77d",
+    "public/motions/swing.json": "e08f8595fb0f9adbcaa5d330f7b2f0ac504880e0b40a0605c8bff052e7996fbd",
+    "public/motions/turnLeft.json": "52232d00d7c4e0368223b08ae3620897891e986de992781d8f97e4cab0959331",
+    "public/motions/turnRight.json": "955d26235b5c141fa74b4844a12e0b2a245a8240da736fb66280b9e0abb644f7",
+    "public/motions/walk.json": "7e7d75006ee2811dad006cea8ffed3ab1cdc7fef935f298a9821ec6e01c665a6",
+    "public/motions/wall.json": "10add05098934f3582340d23860765468c98a8bffb085c7fa2652bfcea8b90e8",
+    "public/motions/zip.json": "07ce75df388d48b82b070f84a86823ad241901a2cdc71e9498637cf10e492adc",
+    "public/models/shadow-pulse-rig.glb": "527a65e1749512e95d16045c63d7b6be4565f54dfd477be817fe4efd78422a5a",
+    "public/models/appearance-web.glb": "697c4fbd6bd8279d3b5457e399c02430291edff391db5a017d20c284299582ec",
+    "public/models/appearance-combat.glb": "97b96089238697101ebe29825eb2492aa8f15faa720a73e675fd01a4c9e3450b"
+  }
+}

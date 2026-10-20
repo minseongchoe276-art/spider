@@ -345,7 +345,7 @@ export class GameApp {
       if (!this.isPlaying && e.target?.closest?.('button, a') && k !== 'Escape') return;
       if (k === 'Escape' && performance.now() < (this.ignoreEscapeUntil || 0)) return;
       // Native dialogs own Escape and focus until they close.
-      if(document.getElementById('fullscreen-help')?.open)return;
+      if(document.getElementById?.('fullscreen-help')?.open)return;
       if(k==='Escape' && this.worldMap?.isOpen){e.preventDefault();this.worldMap.close();return;}
       if(this.worldMap?.isOpen && k!=='KeyM')return;
       if(k==='Escape' && this.helpOpen){e.preventDefault();if(!e.repeat)this.toggleHelp();return;}
@@ -642,7 +642,7 @@ export class GameApp {
 
   togglePause() {
     if (!this.isPlaying) return;
-    if(this.worldMap?.isOpen || document.getElementById('fullscreen-help')?.open)return;
+    if(this.worldMap?.isOpen || document.getElementById?.('fullscreen-help')?.open)return;
     this.setPaused(!this.isPaused);
     if (!this.isPaused && this.pointerLockWanted) {
       Promise.resolve(this.canvas.requestPointerLock?.()).catch(() => {});
@@ -662,7 +662,7 @@ export class GameApp {
     if(!paused && this.contextLost){this.showNotice('그래픽 연결을 복구한 뒤 계속할 수 있습니다.');return;}
     // An interruption after a dialog opens must survive closing that dialog.
     if(paused && this.worldMap?.isOpen)this.worldMap.wasPaused=true;
-    if(paused && document.getElementById('fullscreen-help')?.open && this.displayMode)this.displayMode.resumeAfterHelp=false;
+    if(paused && document.getElementById?.('fullscreen-help')?.open && this.displayMode)this.displayMode.resumeAfterHelp=false;
     this.setHelpOpen(false,false);
     if(!paused){
       // A background tab may receive no animation frames for minutes. Drain

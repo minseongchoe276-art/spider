@@ -1,0 +1,29 @@
+{
+  "baseline": "78fbc8d60d136d9bfadf878d5dc72cd571dbcfa7",
+  "scope": "Clean archive of HEAD plus the exact source and checks selected for this change. Other uncommitted game changes were excluded.",
+  "passed": true,
+  "commands": [
+    "node scripts/check-expanded-input-camera.mjs",
+    "node scripts/check-expanded-gait-stability.mjs",
+    "npm run build"
+  ],
+  "inputCameraCases": 526,
+  "gaitCases": 4,
+  "terrainDependencyClosure": 21,
+  "terrainClosureMatchesTestedWorkspace": true,
+  "sourceFingerprints": {
+    "src/Character.js": "8c8389458557b7ea3ef2571cb22cad52d10253ba1bda49faa86dcd79b6c3af35",
+    "src/CharacterPose.js": "3e4a90aa1760636a086280c659140742a9a9c032019ecf676a3a7fbf927ceac2",
+    "src/SwingPhysics.js": "84275924439ae18737849daf43d8075752a8f04d06a73c045636e9cc85cff904",
+    "src/MotionAuditReview.js": "ed766e237cd1b3f820ee02409d670f8d4f6e602202ebbb8ef2c0db5cadbe4bdc",
+    "src/TraversalPlaytest.js": "5caa63d5991e5def1e28527fed1f836521f30611e4b47eadaea93c6de35e1681",
+    "src/main.js": "dacbdcca720226f2db7d3baadd727c04ecc04e9c907240d8f19ea502a2e65ad4",
+    "package.json": "1f949fc0f2f5ad15577e5ab09d71ee779434324bcad296fb071e2571b3057584",
+    "scripts/check-expert-audit.mjs": "4bace283b20aad461c16e3d0cda6611e5bf27a914c04bda75ae1dc7fae95f483",
+    "scripts/check-input-lifecycle.mjs": "8379c0248eb16b06f29e7e083b5568d7242ecf57ca17e40178b32caac678e364",
+    "scripts/check-swing-accessibility.mjs": "5c3f3df98ee460260c755c265243c56822e8c03633b9df23811323b2c8447a5e",
+    "scripts/check-expanded-input-camera.mjs": "759243b628e2e5fc5f08869e91f6c1766eeb48522bcc3a42afba90fd86bd0b95",
+    "scripts/check-expanded-terrain-motion.mjs": "2e34ca7404dca9fc8b06353b46d98758a86d3945ff147af57089c77cf4105107",
+    "scripts/check-expanded-gait-stability.mjs": "f9c0246bad776d3b3c0b0d6eb2304e77bc2e1551f05811f8f7363bf4e273ffb0"
+  }
+}

@@ -106,10 +106,10 @@ check('Pause clears touch-owned keyboard, webs, and joystick',()=>dom(()=>{
   g.setPaused(true);assert.equal(g.touchHeldKeys.size,0);assert.equal(g.touchMouseButtons.size,0);
   assert(!g.input.forward&&!g.input.wallRun&&!g.input.webHold);
 }));
-check('Space explicitly jumps from a grounded held strand without an automatic launch',()=>dom(()=>{
-  const g=app();g.physics.position.set(0,.1,0);g.physics.state='IDLE';g.physics.findBestAnchor=()=>new THREE.Vector3(0,30,30);
+check('Space explicitly jumps from a grounded attached strand',()=>dom(()=>{
+  const g=app();g.physics.position.set(0,.1,0);g.physics.state='IDLE';g.physics.launchAssistAvailable=false;g.physics.findBestAnchor=()=>new THREE.Vector3(0,30,30);
   assert(g.physics.startSwing(g.camera));g.input.webHold=true;g.input.webFireHeld=true;
-  g.physics.update(1/60,g.input,g.camera);assert.equal(g.physics.velocity.y,0);assert.equal(g.physics.position.y,.1);
+  assert.equal(g.physics.velocity.y,0);assert.equal(g.physics.position.y,.1);
   key('keydown','Space');assert(!g.physics.isSwinging&&g.input.jump);
   g.physics.update(1/60,g.input,g.camera);assert(g.physics.velocity.y>0);
 }));

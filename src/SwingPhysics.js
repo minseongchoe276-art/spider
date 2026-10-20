@@ -569,7 +569,7 @@ export class SwingPhysics {
     const clearance = below === null ? Infinity : Math.max(0,this.position.y-below-0.1);
     this.character.contactTime = (this.velocity.y + Math.sqrt(this.velocity.y*this.velocity.y+2*this.gravity*clearance))/this.gravity;
     this.character.group.position.copy(this.renderPosition);
-    this.character.surfaceProbe=p=>groundSample(this.city,p,0.8);
+    this.character.surfaceProbe=(p,range=.8)=>groundSample(this.city,p,range);
     this.character.groundProbe=p=>this.character.surfaceProbe(p)?.height ?? null;
     this.character.mantle=this.state==='MANTLING'?this.mantle:null;
     const visualState = this.animationState;

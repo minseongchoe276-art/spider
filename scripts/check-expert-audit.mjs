@@ -56,9 +56,9 @@ check('Ascending contact time rejects unfinished tricks while a high jump allows
   assert(p.character.contactTime<.7);assert(!p.performAirTrick('front'));
   p.position.y=12;p.velocity.y=12;p.update(0,{},camera);assert(p.performAirTrick('front'));
 });
-check('Grounded web attachment preserves the swing pose without automatic takeoff',()=>{
+check('Grounded launch uses takeoff pose until the rope becomes taut',()=>{
   const p=body();p.findBestAnchor=()=>new THREE.Vector3(0,30,30);assert(p.startSwing(camera));
-  const pose=capturePose(p,p.character);assert.equal(pose.state,'SWINGING');assert.equal(pose.webs.length,1);assert.equal(p.webs[0].launchPending,false);
+  const pose=capturePose(p,p.character);assert.equal(pose.state,'JUMPING');assert.equal(pose.webs.length,1);assert.equal(p.webs[0].launchPending,true);assert.equal(p.velocity.y,p.jumpForce);
   p.webs[0].launchPending=false;assert.equal(capturePose(p,p.character).state,'SWINGING');
 });
 check('Holding guard buffers through a punch and releases immediately',()=>{

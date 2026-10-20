@@ -476,6 +476,7 @@ export class Character {
     updateAppearance(this,delta);
     this.poseState=state;this.wallViewWeight=THREE.MathUtils.damp(this.wallViewWeight || 0,['WALL_RUNNING','MANTLING'].includes(state)?1:0,14,delta);
     this.webMotionSpeed=velocity.length();
+    this.groundMotionVelocity=velocity.clone().setY(0);
     this.viewMoveSpeed=Math.hypot(velocity.x,velocity.z);
     if (this.copySource) this.copyLoadedCharacter(this.copySource);
     restoreHandPose(this.webFingerRig);
@@ -524,6 +525,7 @@ export class Character {
     const horizontalSpeed = Math.hypot(velocity.x, velocity.z);
     const grounded = GROUNDED.includes(state);
     const previous = this.lastState;
+    if(state!=='RUNNING'){this.locomotionGait=null;this.gaitChangeTime=0;this.pendingGait=null;}
     const playing = name => !!this.actions[name] && this.activeAction === this.actions[name] &&
       this.activeAction.time < this.activeAction.getClip().duration - 0.05;
     let name = 'idle';
@@ -547,8 +549,20 @@ export class Character {
       else if (previous === 'RUNNING') name = 'stop';
       else if (playing('runStop')) name = 'runStop';
       else if (playing('stop')) name = 'stop';
-    } else name = state === 'SPRINTING' ? 'run' :
-      horizontalSpeed > 3.1 ? 'regularRun' : 'walk';
+    } else if(state==='SPRINTING')name='run';
+    else {
+      this.locomotionGait ||= horizontalSpeed>3.1?'regularRun':'walk';
+      const wanted=this.locomotionGait==='regularRun'
+        ?(horizontalSpeed<2.65?'walk':'regularRun'):(horizontalSpeed>3.35?'regularRun':'walk');
+      if(wanted!==this.locomotionGait){
+        this.gaitChangeTime=this.pendingGait===wanted?(this.gaitChangeTime || 0)+delta:delta;
+        this.pendingGait=wanted;
+        // A riser can slow the capsule for a single tick. Keep the gait's
+        // phase until the new speed is sustained instead of restarting a fade.
+        if(this.gaitChangeTime>=.12){this.locomotionGait=wanted;this.gaitChangeTime=0;}
+      }else {this.gaitChangeTime=0;this.pendingGait=null;}
+      name=this.locomotionGait;
+    }
     const combat=this.combatAction;
     const combatClip= combat?.key==='hit'?'hitHead':combat?.key?.startsWith('dodge')?'combatIdle':combat?.key;
     const movingStrike=grounded && horizontalSpeed>.25 && combat?.duration && ['jab','cross','hook','heavy','special'].includes(combat.key);
@@ -783,6 +797,24 @@ export class Character {
       }
       this.group.updateMatrixWorld(true);
     }
+    // Release ground IK in body space when a step edge or jump starts a
+    // flight. Root motion remains immediate; only the departing foot pose eases.
+    if(GROUNDED.includes(previous) && ['JUMPING','FALLING'].includes(state))this.airFootRelease=.14;
+    else this.airFootRelease=Math.max(0,(this.airFootRelease || 0)-delta);
+    if(this.airFootRelease>0 && !this.isTricking && this.finalFeetModel===this.model && this.finalFeet){
+      for(const side of ['left','right']){
+        const find=id=>Object.values(this.bones || {}).find(b=>boneId(b.name)===id);
+        const hip=find(side+'upleg'),knee=find(side+'leg'),foot=find(side+'foot'),last=this.finalFeet[side];
+        if(!hip || !knee || !foot || !last)continue;
+        const position=foot.getWorldPosition(new THREE.Vector3()),target=last.clone().add(this.group.getWorldPosition(new THREE.Vector3()));
+        const move=position.clone().sub(target),limit=(18+2*horizontalSpeed)*delta;
+        if(move.length()>limit){
+          const rotation=foot.getWorldQuaternion(new THREE.Quaternion());
+          this.solveLimb(hip,knee,foot,target.add(move.setLength(limit)),.995);
+          fitGroundAnkle(this,side,foot,rotation);
+        }
+      }
+    }
     constrainJoints(this.jointConstraints);
     this.combatWristWeight=THREE.MathUtils.damp(this.combatWristWeight || 0,
       this.combatStance && grounded?1:0,24,delta);
@@ -800,8 +832,21 @@ export class Character {
         this.lastAnklePose.set(bone,bone.quaternion.clone());bone.updateMatrixWorld(true);
       }
     }
+    // The next contact step starts from the rendered ankle, after the
+    // anatomical clamp and sole clearance have both adjusted the IK result.
+    if(grounded && this.groundFootRotations){
+      for(const side of ['left','right']){
+        const foot=Object.values(this.bones || {}).find(b=>boneId(b.name)===side+'foot');
+        if(foot)this.groundFootRotations[side]=foot.getWorldQuaternion(new THREE.Quaternion());
+      }
+    }
     this.mantleExitFeet=state==='MANTLING' || (grounded && this.mantleFootRelease>0)
       ?Object.fromEntries(['left','right'].map(side=>[side,Object.values(this.bones || {}).find(b=>boneId(b.name)===side+'foot')?.getWorldPosition(new THREE.Vector3())])):null;
+    this.finalFeetModel=this.model;
+    this.finalFeet=Object.fromEntries(['left','right'].map(side=>{
+      const foot=Object.values(this.bones || {}).find(b=>boneId(b.name)===side+'foot');
+      return [side,foot?.getWorldPosition(new THREE.Vector3()).sub(this.group.getWorldPosition(new THREE.Vector3()))];
+    }));
     const attached = ['SWINGING','WEB_ZIP'].includes(state) && !!anchorPos;
     const visibleAnchor = attached ? anchorPos : (this.persistentWebAnchor || firingAnchor);
     this.updateWeb(!!visibleAnchor, visibleAnchor);

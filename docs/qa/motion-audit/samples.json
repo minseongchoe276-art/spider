@@ -1,7 +1,7 @@
 {
-  "motions": 31,
-  "cases": 93,
-  "samples": 14665,
+  "motions": 33,
+  "cases": 99,
+  "samples": 15340,
   "report": [
     {
       "key": "idle",
@@ -468,23 +468,23 @@
     {
       "key": "jab",
       "fps": 30,
-      "frames": 38,
-      "maxFrame": 8,
-      "maxStep": 0.1099
+      "frames": 42,
+      "maxFrame": 9,
+      "maxStep": 0.1
     },
     {
       "key": "jab",
       "fps": 60,
-      "frames": 74,
-      "maxFrame": 15,
-      "maxStep": 0.0567
+      "frames": 82,
+      "maxFrame": 17,
+      "maxStep": 0.0515
     },
     {
       "key": "jab",
       "fps": 144,
-      "frames": 174,
-      "maxFrame": 34,
-      "maxStep": 0.0245
+      "frames": 194,
+      "maxFrame": 39,
+      "maxStep": 0.022
     },
     {
       "key": "guard",
@@ -613,6 +613,48 @@
       "maxStep": 0.0036
     },
     {
+      "key": "rightHook",
+      "fps": 30,
+      "frames": 22,
+      "maxFrame": 19,
+      "maxStep": 0.1202
+    },
+    {
+      "key": "rightHook",
+      "fps": 60,
+      "frames": 42,
+      "maxFrame": 36,
+      "maxStep": 0.0631
+    },
+    {
+      "key": "rightHook",
+      "fps": 144,
+      "frames": 99,
+      "maxFrame": 86,
+      "maxStep": 0.0265
+    },
+    {
+      "key": "cross",
+      "fps": 30,
+      "frames": 45,
+      "maxFrame": 22,
+      "maxStep": 0.218
+    },
+    {
+      "key": "cross",
+      "fps": 60,
+      "frames": 88,
+      "maxFrame": 44,
+      "maxStep": 0.113
+    },
+    {
+      "key": "cross",
+      "fps": 144,
+      "frames": 208,
+      "maxFrame": 103,
+      "maxStep": 0.0486
+    },
+    {
       "key": "airTrick",
       "fps": 30,
       "frames": 29,
@@ -636,23 +678,23 @@
     {
       "key": "special",
       "fps": 30,
-      "frames": 38,
-      "maxFrame": 8,
-      "maxStep": 0.1099
+      "frames": 55,
+      "maxFrame": 27,
+      "maxStep": 0.225
     },
     {
       "key": "special",
       "fps": 60,
-      "frames": 74,
-      "maxFrame": 15,
-      "maxStep": 0.0567
+      "frames": 109,
+      "maxFrame": 53,
+      "maxStep": 0.1169
     },
     {
       "key": "special",
       "fps": 144,
-      "frames": 174,
-      "maxFrame": 34,
-      "maxStep": 0.0245
+      "frames": 261,
+      "maxFrame": 127,
+      "maxStep": 0.0487
     }
   ]
 }

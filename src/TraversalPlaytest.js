@@ -22,6 +22,7 @@ export function startTraversalPlaytest(GameApp) {
     results.push({name, pass, ...detail});
     status.textContent = `${name}: ${pass?'PASS':'FAIL'}\n${JSON.stringify(detail, null, 2)}`;
     panel.dataset.results = JSON.stringify(results);
+    panel.dataset.summary=JSON.stringify({completed:results.length,passed:results.filter(r=>r.pass).length,failed:results.filter(r=>!r.pass).length});
   };
   function prepare(view, wall) {
     game.multiplayer.beginSolo();
@@ -63,7 +64,7 @@ export function startTraversalPlaytest(GameApp) {
       const startPosition=p.position.clone(),attacks=new Set();let rightFired=false,maxAnkle=0;
       let nextSwitch=.6, released=false, leftReleased=false, independentRelease=false, peakWebs=0, reachedRoof=false, maxAimError=0;
       let jumpResult=null,maxJumpRise=0;
-      if(kind==='combat'){key('KeyW',true);game.gamepad.mouse(0,true);game.gamepad.mouse(0,false);}
+      if(kind==='combat'){key('KeyW',true);if(switching){key('ShiftLeft',true);key('KeyD',true);}game.gamepad.mouse(0,true);game.gamepad.mouse(0,false);}
       else if (kind === 'climb') { key('KeyW',true); key('KeyF',true); }
       else {
         game.tpsCamera.pitch = -.45;
@@ -79,7 +80,9 @@ export function startTraversalPlaytest(GameApp) {
           if(game.combat.action)attacks.add(game.combat.action.key);
           for(const {bone,rest,kind:jointKind} of game.character.jointConstraints || [])if(jointKind==='foot')maxAnkle=Math.max(maxAnkle,rest.angleTo(bone.quaternion)*180/Math.PI);
           if(kind==='combat' && elapsed>.85 && !rightFired){game.gamepad.mouse(2,true);game.gamepad.mouse(2,false);rightFired=true;}
-          if(kind==='combat' && elapsed>1.6)key('KeyW',false);
+          if(kind==='combat' && elapsed>.6)key('KeyD',false);
+          if(kind==='combat' && elapsed>1.6){key('KeyW',false);key('ShiftLeft',false);}
+          if(kind==='combat' && switching && elapsed>1.8 && !jumpResult){const height=p.position.y;tap('Space');jumpResult={height,velocityY:p.velocity.y};}
           maxStep=Math.max(maxStep,p.position.distanceTo(previous));previous.copy(p.position);
           let switchedThisFrame=false;
           if (switching && elapsed>=nextSwitch && (kind==='web' ? elapsed<2 : !reachedRoof)) {
@@ -117,13 +120,13 @@ export function startTraversalPlaytest(GameApp) {
         requestAnimationFrame(frame);
       });
       const detail={jumpResult,maxJumpRise,maxAnkle,travel:p.position.distanceTo(startPosition),attacks:[...attacks],frames,states:[...states],switches,maxAimError,maxStep,maxWristError,seenWeb,peakWebs,independentRelease,reachedRoof,finalState:p.state,roof:box.maxY,position:p.position.toArray(),released:!game.character.webMesh.visible&&!game.character.webMeshOffhand.visible};
-      const pass=kind==='jump'?jumpResult?.attached && jumpResult.detached && jumpResult.velocityY===p.jumpForce && maxJumpRise>1:kind==='combat'?detail.travel>4 && attacks.has('jab') && attacks.has('cross') && maxAnkle<=35.001:kind==='climb'?reachedRoof && maxStep<.8 && maxAimError<1e-8:seenWeb && peakWebs===2 && independentRelease && detail.released && maxWristError<.02 && maxAimError<1e-8;
+      const pass=kind==='jump'?jumpResult?.attached && jumpResult.detached && jumpResult.velocityY===p.jumpForce && maxJumpRise>1:kind==='combat'?detail.travel>4 && attacks.has('jab') && attacks.has('cross') && maxAnkle<=35.001 && maxAimError<1e-8 && (!switching || (states.has('JUMPING') && maxJumpRise>1)):kind==='climb'?reachedRoof && maxStep<.8 && maxAimError<1e-8:seenWeb && peakWebs===2 && independentRelease && detail.released && maxWristError<.02 && maxAimError<1e-8;
       report(name,detail,pass);
     } catch(error) { report(name,{error:error.message},false); }
     finally {game.clearInput();game.setPaused(true);game.clickToPlayOverlay?.classList.add('hidden');busy=false;}
   }
   const cases=['climb','combat','jump','web'].flatMap(kind=>['close','follow','swing'].map(view=>[`${kind} ${view}`,kind,view,false]));
-  cases.push(['Web switch','web','follow',true],['Climb switch','climb','follow',true]);
+  for(const kind of ['climb','combat','jump','web'])for(const view of ['close','follow','swing'])cases.push([`${kind} ${view} switch`,kind,view,true]);
   const all=document.createElement('button');all.textContent='Run all';
   all.onclick=async()=>{if(busy)return;for(const [,kind,view,switching] of cases)await run(kind,view,switching);};panel.append(all);
   for(const [label,kind,view,switching] of cases) {

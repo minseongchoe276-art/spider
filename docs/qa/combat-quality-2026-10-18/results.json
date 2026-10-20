@@ -1,6 +1,6 @@
 [
   {
-    "case": "distinct hook and overhand trajectories",
+    "case": "imported rear power cross and retained hook",
     "hookElbowDegrees": 87.95336346828356,
     "pass": true
   },
@@ -8,32 +8,32 @@
     "fps": 24,
     "key": "jab",
     "sprint": false,
-    "travel": 2.5666088720969027,
-    "maxHandStep": 0.2920490416314932,
+    "travel": 3.299941968579775,
+    "maxHandStep": 0.1874484248052832,
     "pass": true
   },
   {
     "fps": 24,
     "key": "jab",
     "sprint": true,
-    "travel": 3.7915812883249593,
-    "maxHandStep": 0.2825319929085241,
+    "travel": 4.874914271765563,
+    "maxHandStep": 0.19311025506843738,
     "pass": true
   },
   {
     "fps": 24,
     "key": "cross",
     "sprint": false,
-    "travel": 3.116608666198352,
-    "maxHandStep": 0.17169958857058973,
+    "travel": 3.6666085993528794,
+    "maxHandStep": 0.3526678597935887,
     "pass": true
   },
   {
     "fps": 24,
     "key": "cross",
     "sprint": true,
-    "travel": 4.604080984156644,
-    "maxHandStep": 0.1565423485588776,
+    "travel": 5.416580885407647,
+    "maxHandStep": 0.38731529319404623,
     "pass": true
   },
   {
@@ -41,7 +41,7 @@
     "key": "special",
     "sprint": false,
     "travel": 5.3166085683185464,
-    "maxHandStep": 0.25103814273811575,
+    "maxHandStep": 0.28036966451970496,
     "pass": true
   },
   {
@@ -49,39 +49,39 @@
     "key": "special",
     "sprint": true,
     "travel": 7.854080839561462,
-    "maxHandStep": 0.26640033125091855,
+    "maxHandStep": 0.2988108105797617,
     "pass": true
   },
   {
     "fps": 60,
     "key": "jab",
     "sprint": false,
-    "travel": 2.4932755881032573,
-    "maxHandStep": 0.15864810524500705,
+    "travel": 3.226608646255614,
+    "maxHandStep": 0.08787695255565056,
     "pass": true
   },
   {
     "fps": 60,
     "key": "jab",
     "sprint": true,
-    "travel": 3.6832480278798023,
-    "maxHandStep": 0.1521850049418124,
+    "travel": 4.76658095469578,
+    "maxHandStep": 0.08774813736886414,
     "pass": true
   },
   {
     "fps": 60,
     "key": "cross",
     "sprint": false,
-    "travel": 3.0066086911730947,
-    "maxHandStep": 0.07162102730626925,
+    "travel": 3.6666085993528794,
+    "maxHandStep": 0.1790332529167434,
     "pass": true
   },
   {
     "fps": 60,
     "key": "cross",
     "sprint": true,
-    "travel": 4.441581021051151,
-    "maxHandStep": 0.06666187536224512,
+    "travel": 5.416580885407647,
+    "maxHandStep": 0.18439796766446773,
     "pass": true
   },
   {
@@ -89,7 +89,7 @@
     "key": "special",
     "sprint": false,
     "travel": 5.2799419017375175,
-    "maxHandStep": 0.10634917269186273,
+    "maxHandStep": 0.14505872622377683,
     "pass": true
   },
   {
@@ -97,39 +97,39 @@
     "key": "special",
     "sprint": true,
     "travel": 7.799914173021307,
-    "maxHandStep": 0.12077684619333395,
+    "maxHandStep": 0.15326032924741995,
     "pass": true
   },
   {
     "fps": 144,
     "key": "jab",
     "sprint": false,
-    "travel": 2.4566089490245284,
-    "maxHandStep": 0.06628614506103522,
+    "travel": 3.153275325713114,
+    "maxHandStep": 0.03797807343487756,
     "pass": true
   },
   {
     "fps": 144,
     "key": "jab",
     "sprint": true,
-    "travel": 3.629081401968044,
-    "maxHandStep": 0.06429978095152142,
+    "travel": 4.658247640257997,
+    "maxHandStep": 0.03843634878770509,
     "pass": true
   },
   {
     "fps": 144,
     "key": "cross",
     "sprint": false,
-    "travel": 2.969942034160489,
-    "maxHandStep": 0.030348215528183935,
+    "travel": 3.629941935188934,
+    "maxHandStep": 0.07696816682425477,
     "pass": true
   },
   {
     "fps": 144,
     "key": "cross",
     "sprint": true,
-    "travel": 4.387414368646166,
-    "maxHandStep": 0.02897452460519697,
+    "travel": 5.362414222438183,
+    "maxHandStep": 0.07882168467490425,
     "pass": true
   },
   {
@@ -137,7 +137,7 @@
     "key": "special",
     "sprint": false,
     "travel": 5.2799419017375175,
-    "maxHandStep": 0.04633974395145432,
+    "maxHandStep": 0.0630400117914131,
     "pass": true
   },
   {
@@ -145,35 +145,35 @@
     "key": "special",
     "sprint": true,
     "travel": 7.799914173021307,
-    "maxHandStep": 0.05061304199452506,
+    "maxHandStep": 0.06779596947937215,
     "pass": true
   },
   {
-    "case": "jab contact boots remain level",
+    "case": "jab contact boots retain bounded authored pivot",
     "tiltDegrees": {
-      "left": 0,
-      "right": 0.011640349146547886
+      "left": 0.000028432072521862283,
+      "right": 22.776819857829594
     },
     "pass": true
   },
   {
-    "case": "cross contact boots remain level",
+    "case": "cross contact boots retain bounded authored pivot",
     "tiltDegrees": {
-      "left": 0.017664184818750765,
-      "right": 0.02186323485796258
+      "left": 0.00005729196509083288,
+      "right": 25.17262073324815
     },
     "pass": true
   },
   {
-    "case": "special contact boots remain level",
+    "case": "special contact boots retain bounded authored pivot",
     "tiltDegrees": {
-      "left": 0.01913109812978904,
-      "right": 0.020879878197537043
+      "left": 0.00005897221679426923,
+      "right": 25.521566153602706
     },
     "pass": true
   },
   {
-    "case": "first-person moving guard stays closed between attacks",
+    "case": "third-person moving guard stays closed between attacks",
     "pass": true
   },
   {

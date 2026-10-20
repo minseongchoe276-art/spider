@@ -5,22 +5,18 @@
     60,
     144
   ],
-  "registered": 31,
-  "embedded": 1,
+  "registered": 33,
+  "embedded": 0,
   "archivedCompiled": [
     "candidateFront",
     "candidateStylish"
   ],
   "results": [
     {
-      "name": "24fps first-person strikes peak inside their authored impact phase",
-      "status": "PASS"
-    },
-    {
       "name": "24fps hitHead keeps a supported foot during the full hit reaction",
       "status": "PASS",
       "detail": {
-        "maxContactError": 0.00712318443335179
+        "maxContactError": 0.009094369396356314
       }
     },
     {
@@ -46,30 +42,10 @@
       }
     },
     {
-      "name": "24fps first-person jab moves the correct arm and its wrist together",
-      "status": "PASS"
-    },
-    {
-      "name": "24fps first-person hook moves the correct arm and its wrist together",
-      "status": "PASS"
-    },
-    {
-      "name": "24fps first-person heavy moves the correct arm and its wrist together",
-      "status": "PASS"
-    },
-    {
-      "name": "24fps first-person special moves the correct arm and its wrist together",
-      "status": "PASS"
-    },
-    {
-      "name": "30fps first-person strikes peak inside their authored impact phase",
-      "status": "PASS"
-    },
-    {
       "name": "30fps hitHead keeps a supported foot during the full hit reaction",
       "status": "PASS",
       "detail": {
-        "maxContactError": 0.00712318443335179
+        "maxContactError": 0.009094358238769126
       }
     },
     {
@@ -95,30 +71,10 @@
       }
     },
     {
-      "name": "30fps first-person jab moves the correct arm and its wrist together",
-      "status": "PASS"
-    },
-    {
-      "name": "30fps first-person hook moves the correct arm and its wrist together",
-      "status": "PASS"
-    },
-    {
-      "name": "30fps first-person heavy moves the correct arm and its wrist together",
-      "status": "PASS"
-    },
-    {
-      "name": "30fps first-person special moves the correct arm and its wrist together",
-      "status": "PASS"
-    },
-    {
-      "name": "60fps first-person strikes peak inside their authored impact phase",
-      "status": "PASS"
-    },
-    {
       "name": "60fps hitHead keeps a supported foot during the full hit reaction",
       "status": "PASS",
       "detail": {
-        "maxContactError": 0.00712318443335179
+        "maxContactError": 0.0090934761219824
       }
     },
     {
@@ -144,30 +100,10 @@
       }
     },
     {
-      "name": "60fps first-person jab moves the correct arm and its wrist together",
-      "status": "PASS"
-    },
-    {
-      "name": "60fps first-person hook moves the correct arm and its wrist together",
-      "status": "PASS"
-    },
-    {
-      "name": "60fps first-person heavy moves the correct arm and its wrist together",
-      "status": "PASS"
-    },
-    {
-      "name": "60fps first-person special moves the correct arm and its wrist together",
-      "status": "PASS"
-    },
-    {
-      "name": "144fps first-person strikes peak inside their authored impact phase",
-      "status": "PASS"
-    },
-    {
       "name": "144fps hitHead keeps a supported foot during the full hit reaction",
       "status": "PASS",
       "detail": {
-        "maxContactError": 0.00712318443335179
+        "maxContactError": 0.009090999641696448
       }
     },
     {
@@ -193,27 +129,11 @@
       }
     },
     {
-      "name": "144fps first-person jab moves the correct arm and its wrist together",
-      "status": "PASS"
-    },
-    {
-      "name": "144fps first-person hook moves the correct arm and its wrist together",
-      "status": "PASS"
-    },
-    {
-      "name": "144fps first-person heavy moves the correct arm and its wrist together",
-      "status": "PASS"
-    },
-    {
-      "name": "144fps first-person special moves the correct arm and its wrist together",
-      "status": "PASS"
-    },
-    {
       "name": "Every registered clip and embedded fallback has explicit coverage",
       "status": "PASS",
       "detail": {
-        "registered": 31,
-        "embedded": 1,
+        "registered": 33,
+        "embedded": 0,
         "archivedCompiled": [
           "candidateFront",
           "candidateStylish"
@@ -1106,8 +1026,8 @@
       "detail": {
         "key": "jab",
         "fps": 24,
-        "frames": 30,
-        "maxExtremitySpeed": 3.262799041631564
+        "frames": 34,
+        "maxExtremitySpeed": 2.9755397558412064
       }
     },
     {
@@ -1116,8 +1036,8 @@
       "detail": {
         "key": "jab",
         "fps": 30,
-        "frames": 38,
-        "maxExtremitySpeed": 3.3876818716112
+        "frames": 42,
+        "maxExtremitySpeed": 3.0754427165795124
       }
     },
     {
@@ -1126,8 +1046,8 @@
       "detail": {
         "key": "jab",
         "fps": 60,
-        "frames": 74,
-        "maxExtremitySpeed": 3.4497296868062346
+        "frames": 82,
+        "maxExtremitySpeed": 3.128994574846665
       }
     },
     {
@@ -1136,8 +1056,8 @@
       "detail": {
         "key": "jab",
         "fps": 144,
-        "frames": 174,
-        "maxExtremitySpeed": 3.525950185761068
+        "frames": 194,
+        "maxExtremitySpeed": 3.1914443960735768
       }
     },
     {
@@ -1381,6 +1301,86 @@
       }
     },
     {
+      "name": "rightHook: entire timeline at 24fps",
+      "status": "PASS",
+      "detail": {
+        "key": "rightHook",
+        "fps": 24,
+        "frames": 18,
+        "maxExtremitySpeed": 3.703386581224332
+      }
+    },
+    {
+      "name": "rightHook: entire timeline at 30fps",
+      "status": "PASS",
+      "detail": {
+        "key": "rightHook",
+        "fps": 30,
+        "frames": 22,
+        "maxExtremitySpeed": 3.712882904127283
+      }
+    },
+    {
+      "name": "rightHook: entire timeline at 60fps",
+      "status": "PASS",
+      "detail": {
+        "key": "rightHook",
+        "fps": 60,
+        "frames": 42,
+        "maxExtremitySpeed": 3.804039711775665
+      }
+    },
+    {
+      "name": "rightHook: entire timeline at 144fps",
+      "status": "PASS",
+      "detail": {
+        "key": "rightHook",
+        "fps": 144,
+        "frames": 99,
+        "maxExtremitySpeed": 3.8260688813592134
+      }
+    },
+    {
+      "name": "cross: entire timeline at 24fps",
+      "status": "PASS",
+      "detail": {
+        "key": "cross",
+        "fps": 24,
+        "frames": 36,
+        "maxExtremitySpeed": 6.549781464593831
+      }
+    },
+    {
+      "name": "cross: entire timeline at 30fps",
+      "status": "PASS",
+      "detail": {
+        "key": "cross",
+        "fps": 30,
+        "frames": 45,
+        "maxExtremitySpeed": 6.692030140011342
+      }
+    },
+    {
+      "name": "cross: entire timeline at 60fps",
+      "status": "PASS",
+      "detail": {
+        "key": "cross",
+        "fps": 60,
+        "frames": 88,
+        "maxExtremitySpeed": 6.858311617105916
+      }
+    },
+    {
+      "name": "cross: entire timeline at 144fps",
+      "status": "PASS",
+      "detail": {
+        "key": "cross",
+        "fps": 144,
+        "frames": 208,
+        "maxExtremitySpeed": 7.018687118727873
+      }
+    },
+    {
       "name": "airTrick: entire timeline at 24fps",
       "status": "PASS",
       "detail": {
@@ -1426,8 +1426,8 @@
       "detail": {
         "key": "special",
         "fps": 24,
-        "frames": 30,
-        "maxExtremitySpeed": 3.262799041631564
+        "frames": 45,
+        "maxExtremitySpeed": 6.701580418105587
       }
     },
     {
@@ -1436,8 +1436,8 @@
       "detail": {
         "key": "special",
         "fps": 30,
-        "frames": 38,
-        "maxExtremitySpeed": 3.3876818716112
+        "frames": 55,
+        "maxExtremitySpeed": 6.750995470250676
       }
     },
     {
@@ -1446,8 +1446,8 @@
       "detail": {
         "key": "special",
         "fps": 60,
-        "frames": 74,
-        "maxExtremitySpeed": 3.4497296868062346
+        "frames": 109,
+        "maxExtremitySpeed": 7.015450725526949
       }
     },
     {
@@ -1456,48 +1456,8 @@
       "detail": {
         "key": "special",
         "fps": 144,
-        "frames": 174,
-        "maxExtremitySpeed": 3.525950185761068
-      }
-    },
-    {
-      "name": "default: entire timeline at 24fps",
-      "status": "PASS",
-      "detail": {
-        "key": "default",
-        "fps": 24,
-        "frames": 19,
-        "maxExtremitySpeed": 6.3214991611472255
-      }
-    },
-    {
-      "name": "default: entire timeline at 30fps",
-      "status": "PASS",
-      "detail": {
-        "key": "default",
-        "fps": 30,
-        "frames": 24,
-        "maxExtremitySpeed": 6.2877973774637015
-      }
-    },
-    {
-      "name": "default: entire timeline at 60fps",
-      "status": "PASS",
-      "detail": {
-        "key": "default",
-        "fps": 60,
-        "frames": 46,
-        "maxExtremitySpeed": 6.5653928689672085
-      }
-    },
-    {
-      "name": "default: entire timeline at 144fps",
-      "status": "PASS",
-      "detail": {
-        "key": "default",
-        "fps": 144,
-        "frames": 107,
-        "maxExtremitySpeed": 6.619432049256248
+        "frames": 261,
+        "maxExtremitySpeed": 7.03061417501926
       }
     },
     {
@@ -1664,7 +1624,7 @@
       "name": "24fps every directed clip pair can reverse mid-blend without a pose snap",
       "status": "PASS",
       "detail": {
-        "cases": 1156,
+        "cases": 1225,
         "maxDiscontinuity": 1.301417060394025e-7
       }
     },
@@ -1672,7 +1632,7 @@
       "name": "30fps every directed clip pair can reverse mid-blend without a pose snap",
       "status": "PASS",
       "detail": {
-        "cases": 1156,
+        "cases": 1225,
         "maxDiscontinuity": 0
       }
     },
@@ -1680,7 +1640,7 @@
       "name": "60fps every directed clip pair can reverse mid-blend without a pose snap",
       "status": "PASS",
       "detail": {
-        "cases": 1156,
+        "cases": 1225,
         "maxDiscontinuity": 0
       }
     },
@@ -1688,7 +1648,7 @@
       "name": "144fps every directed clip pair can reverse mid-blend without a pose snap",
       "status": "PASS",
       "detail": {
-        "cases": 1156,
+        "cases": 1225,
         "maxDiscontinuity": 8.957114522284181e-10
       }
     }

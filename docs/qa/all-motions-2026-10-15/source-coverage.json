@@ -1,8 +1,8 @@
 {
-  "files": 32,
-  "animatedTakes": 44,
+  "files": 34,
+  "animatedTakes": 43,
   "emptyTakes": 7,
-  "frames": 5476,
+  "frames": 5430,
   "results": [
     {
       "file": "public/models/Boxing Hook.fbx",
@@ -39,11 +39,8 @@
       "file": "public/models/Boxing Lead Jab.fbx",
       "take": "mixamo.com",
       "status": "PASS",
-      "usedBy": [
-        "jab",
-        "special"
-      ],
-      "archived": false,
+      "usedBy": [],
+      "archived": true,
       "duration": 1.2000000476837158,
       "frames": 74,
       "bones": 65,
@@ -57,7 +54,8 @@
       "take": "mixamo.com",
       "status": "PASS",
       "usedBy": [
-        "combatIdle"
+        "combatIdle",
+        "rightHook"
       ],
       "archived": false,
       "duration": 4.400000095367432,
@@ -88,8 +86,11 @@
       "file": "public/models/Cross Punch.fbx",
       "take": "mixamo.com",
       "status": "PASS",
-      "usedBy": [],
-      "archived": true,
+      "usedBy": [
+        "cross",
+        "special"
+      ],
+      "archived": false,
       "duration": 2,
       "frames": 121,
       "bones": 65,
@@ -319,8 +320,10 @@
       "file": "public/models/Lead Jab.fbx",
       "take": "mixamo.com",
       "status": "PASS",
-      "usedBy": [],
-      "archived": true,
+      "usedBy": [
+        "jab"
+      ],
+      "archived": false,
       "duration": 1.3333333730697632,
       "frames": 82,
       "bones": 65,
@@ -709,20 +712,6 @@
       "hipRange": [
         1.2521199458545265,
         1.3222782085644482
-      ]
-    },
-    {
-      "file": "public/models/spiderman.glb",
-      "take": "Armature|mixamo.com|Layer0",
-      "status": "PASS",
-      "usedBy": [],
-      "archived": false,
-      "duration": 0.7333333492279053,
-      "frames": 46,
-      "bones": 65,
-      "hipRange": [
-        1.1095875526268093,
-        1.2653260739702332
       ]
     }
   ]

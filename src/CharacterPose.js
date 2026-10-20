@@ -82,21 +82,42 @@ export function clearGroundSoles(c) {
     const samples=soleSamples(c,side);if(!samples.length)continue;
     const rotation=foot.getWorldQuaternion(new THREE.Quaternion());
     for(let pass=0;pass<4;pass++){
-      const ankle=worldPosition(foot),base=footSupport(c,ankle);if(!base)break;
+      const ankle=worldPosition(foot);
       const points=samples.map(({mesh,vertex})=>mesh.localToWorld(mesh.applyBoneTransform(vertex,new THREE.Vector3().fromBufferAttribute(mesh.geometry.attributes.position,vertex))));
       const toe=find(c,side+'toebase');if(toe)points.push(worldPosition(toe));
-      const probes=[{point:ankle,support:base}];
-      for(const [axis,sign] of [['x',1],['x',-1],['z',1],['z',-1]]){
-        const point=points.reduce((a,b)=>a[axis]*sign>b[axis]*sign?a:b);
-        const support=footSupport(c,point);if(support)probes.push({point,support});
-      }
+      const probes=[];
+      const probe=point=>{const support=footSupport(c,point);if(support)probes.push({point,support});};
+      probe(ankle);
+      // At a step's side edge the ankle may have no support while the toe
+      // already overlaps a higher tread. Do not skip the whole boot there.
+      if(toe)probe(worldPosition(toe));
+      for(const [axis,sign] of [['x',1],['x',-1],['z',1],['z',-1]])
+        probe(points.reduce((a,b)=>a[axis]*sign>b[axis]*sign?a:b));
+      if(!probes.length)break;
+      const {point:basePoint,support:base}=probes[0];
       let lift=0;
+      // Raise a swinging boot before its outline crosses a discrete riser.
+      // Continuous ramps are handled by their plane and receive no extra lift.
+      const advance=c.groundMotionVelocity?.clone().multiplyScalar(.15).clampLength(0,.7);
+      if(pass===0 && advance && advance.lengthSq()>.0001)for(const {point,support} of probes){
+        for(const fraction of [.125,.25,.375,.5,.625,.75,.875,1]){
+          const ahead=point.clone().addScaledVector(advance,fraction),next=footSupport(c,ahead);
+          if(!next)continue;
+          const plane=support.height-(support.normal.x*(ahead.x-point.x)+support.normal.z*(ahead.z-point.z))/support.normal.y;
+          const rise=next.height-plane;
+          if(rise>.08 && rise<.65){
+            const anticipate=rise*(1-fraction)**2;
+            lift=Math.max(lift,support.height+.003+anticipate-point.y);
+            delete c.movingPlants?.[side];
+          }
+        }
+      }
       for(const point of points){
         const probe=probes.reduce((a,b)=>Math.hypot(point.x-a.point.x,point.z-a.point.z)<Math.hypot(point.x-b.point.x,point.z-b.point.z)?a:b);
         const {height,normal}=probe.support;
         const surface=height-(normal.x*(point.x-probe.point.x)+normal.z*(point.z-probe.point.z))/normal.y;
         lift=Math.max(lift,surface+.003-point.y);
-        const expected=base.height-(base.normal.x*(probe.point.x-ankle.x)+base.normal.z*(probe.point.z-ankle.z))/base.normal.y;
+        const expected=base.height-(base.normal.x*(probe.point.x-basePoint.x)+base.normal.z*(probe.point.z-basePoint.z))/base.normal.y;
         if(height-expected>.08)delete c.movingPlants?.[side];
       }
       if(lift<.0001)break;
@@ -107,7 +128,7 @@ export function clearGroundSoles(c) {
     // A boot can span two support heights at a ramp/step exit. Sole clearance
     // takes priority; once it moves the ankle off its anchor, release that
     // contact instead of reporting a planted foot and pulling it down again.
-    if(plant && actual.distanceTo(plant.position)>.025){
+    if(plant && plant.age>.08 && Math.abs(actual.y-plant.position.y)>.03){
       delete c.movingPlants[side];
       if(c.movingReleases)delete c.movingReleases[side];
     }
@@ -117,7 +138,7 @@ export function clearGroundSoles(c) {
 
 export function footSupport(c,position,anticipateStep=false) {
   const root=worldPosition(c.group),probe=new THREE.Vector3(position.x,root.y+0.45,position.z);
-  const sample=c.surfaceProbe?c.surfaceProbe(probe):null;
+  const sample=c.surfaceProbe?c.surfaceProbe(probe,1.1):null;
   let height=c.surfaceProbe?sample?.height:c.groundProbe?.(probe);
   if(height===null || height===undefined || !Number.isFinite(height) || Math.abs(height-root.y)>0.65)return null;
   const normal=sample?.normal?.clone().normalize() || up.clone();
@@ -221,21 +242,19 @@ export function plantMovingFeet(c,delta) {
         offset:c.plantLastFeet[side].clone().sub(current),rotation:c.groundFootRotations?.[side]?.clone() || authored.clone(),action,age:0};
       delete c.movingPlants[side];
       const release=c.movingReleases[side];
-      if(release && supported) {
+      if(release) {
         release.age+=delta;
         // Ease out the IK correction; snapping straight back to the authored
         // swing pose displaced an ankle by up to 75cm in a single frame.
         const weight=Math.exp(-release.age/0.075);
         const target=current.clone().addScaledVector(release.offset,weight);
-        target.y=Math.max(swingSurface+0.11,target.y);
+        if(supported)target.y=Math.max(swingSurface+0.11,target.y);
         c.solveLimb(hip,knee,foot,bounded(side,target),0.995);
         if(weight<0.01)delete c.movingReleases[side];
       } else {
         delete c.movingReleases[side];
-        if(supported) {
-          const target=current.clone();target.y=Math.max(swingSurface+0.11,target.y);
-          c.solveLimb(hip,knee,foot,bounded(side,target),0.995);
-        }
+        const target=current.clone();if(supported)target.y=Math.max(swingSurface+0.11,target.y);
+        c.solveLimb(hip,knee,foot,bounded(side,target),0.995);
       }
       const rotation=release && supported?authored.slerp(release.rotation,Math.exp(-release.age/0.075)):authored;
       orientGroundFoot(c,side,foot,rotation,delta);
