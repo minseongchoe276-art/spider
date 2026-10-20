@@ -37,7 +37,8 @@ export class CombatFeedback {
     const remain=Math.max(0,(this.cooldowns[kind]||0)-now);
     const target=this.preview;
     const aim=target?.blocked?'가림':target?`${target.name} · HP ${target.player?.health??'?'} · ${target.distance.toFixed(1)}m · ${target.aimReady===false?'표시 영역에 상대 몸 중심을 넣으세요':'조준 가능 · 서버 확인 전'}`:'조준점에 상대 없음';
-    out.textContent=`${kind==='web'?'거미줄':'주먹'} ${remain?`${(remain/1000).toFixed(1)}초 대기`:'준비'} · ${aim} | 에너지 와이어 · 수평 ≤${MATCH.web.reach}m / 높이 차 ≤${MATCH.web.vertical}m / 좌우 33° · 15 피해 · 간격 1.6초 | 주먹 ≤${MATCH.punch.reach}m / 높이 ≤${MATCH.punch.vertical}m / 좌우 49° · 25 피해 · 0.56초 · 벽 뒤에는 맞지 않음`;
+    const rule=MATCH[kind];
+    out.textContent=`${kind==='web'?'거미줄':'주먹'} ${remain?`${(remain/1000).toFixed(1)}초 대기`:'준비'} · ${aim} | 수평 ≤${rule.reach}m · 높이 ≤${rule.vertical}m · 좌우 ${kind==='web'?33:49}° · ${rule.damage} 피해 · 간격 ${(rule.cooldown/1000).toFixed(2)}초 · 벽 뒤·아군 피해 없음`;
   }
   canFire(kind,online){
     if((online.vulnerableAt||0)>online.serverNow()){this.show('시작 보호 중 · 보호 시간이 끝난 뒤 공격하세요');return false;}

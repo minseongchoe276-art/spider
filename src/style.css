@@ -1102,3 +1102,7 @@ body.touch-device #overlay-click-to-play button, body.touch-device #world-map bu
 .online-card,.lobby-shell,.lobby-stage > * {min-width:0;}
 .player-position-marker.targeted {outline:2px solid #7cffa9;box-shadow:0 0 12px #7cffa955;}
 .player-position-marker::after {content:'';position:absolute;bottom:0;left:0;height:3px;width:var(--hp-value,100%);background:currentColor;}
+
+/* Keep combat availability clear of the central aim area and character. */
+#combat-feedback {top:96px;max-width:min(720px,calc(100vw - 24px));}
+@media(max-width:650px){#combat-feedback {top:116px;font-size:10px;padding:6px 8px;}}

@@ -54,12 +54,12 @@ const mapPoint=terrainMarkerPoint(new THREE.Vector3(2000,800,-2000),mapCamera).p
 assert(Math.abs(mapPoint.x)<=.840001 && Math.abs(mapPoint.y)<=.840001);
 console.log('PASS on-screen, behind-camera, distant and high-altitude markers stay inside both HUD and minimap bounds');
 
-function element(){return {classList:{toggle(){}},style:{},dataset:{},attributes:{},setAttribute(k,v){this.attributes[k]=v;},remove(){this.removed=true;}};}
+function element(){return {classList:{toggle(){}},style:{setProperty(k,v){this[k]=v;}},dataset:{},attributes:{},setAttribute(k,v){this.attributes[k]=v;},remove(){this.removed=true;}};}
 const root={...element(),append(){}};globalThis.document={getElementById:()=>root,createElement:element};
 try{
   const markers=new PlayerPositionMarkers({camera,canvas:{getBoundingClientRect:()=>({width:1280,height:720})}});
-  const origin=new THREE.Vector3();markers.update([{id:'enemy',name:'친구',team:'runner',x:0,y:5,z:-20}],origin,true);
-  const label=markers.markers.get('enemy');assert(label.textContent.includes('21m'));assert(label.textContent.includes('↑5m'));
+  const origin=new THREE.Vector3();markers.update([{id:'enemy',name:'친구',team:'runner',health:75,targeted:true,x:0,y:5,z:-20}],origin,true);
+  const label=markers.markers.get('enemy');assert(label.textContent.includes('21m'));assert(label.textContent.includes('↑5m'));assert(label.textContent.includes('HP 75'));assert.equal(label.style['--hp-value'],'75%');
   markers.update([{id:'enemy',name:'친구',team:'runner',x:0,y:0,z:40}],origin,true);
   assert(label.textContent.includes('40m'));assert(label.textContent.includes('↓'));
   markers.update([],origin,false);assert.equal(markers.markers.size,0);assert(label.removed);
