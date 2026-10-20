@@ -1,0 +1,40 @@
+{
+  "result": "PASS",
+  "method": "Actual Playwright keyboard down/up on the public deployment; DOM HUD observations and recorded rendered frames only; no game-state or pose writes.",
+  "url": "https://minogame.site/?city=procedural",
+  "bundle": "/assets/index-CYgUp3cE.js",
+  "runs": [
+    {
+      "appearance": "web",
+      "facade": "north side of spawn roof",
+      "wallPosition": "E -98m N +107m",
+      "arrival": {
+        "label": "climb sample",
+        "time": "2026-10-20T14:01:27.102Z",
+        "state": "PULSE READY",
+        "position": "E -98m N +104m · ALT 95m",
+        "fps": "60 FPS · 16.7 ms · P95 17.5 ms"
+      },
+      "observedMantleSamples": 4
+    },
+    {
+      "appearance": "combat",
+      "facade": "west side of spawn roof",
+      "wallPosition": "E -107m N +102m",
+      "arrival": {
+        "label": "combat climb sample",
+        "time": "2026-10-20T14:03:29.376Z",
+        "state": "COMBAT READY",
+        "position": "E -104m N +102m · ALT 95m"
+      },
+      "observedMantleSamples": 5
+    }
+  ],
+  "additionalValidation": [
+    "check-wall-ledge.mjs: 7 passed, 0 failed; 79 safe arrivals and 1 blocked grip across 80 actual city facades; actual 24/30/60/144 FPS seam cases passed",
+    "check-wall-ledge-rig.mjs: 30/60/144 FPS actual rig passed",
+    "check-natural-wall-motion.mjs: 36/36 appearance/frame-rate/facade and skin cases passed"
+  ],
+  "newJointDefectsObserved": false,
+  "gameplayCodeChanged": false
+}
