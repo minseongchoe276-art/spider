@@ -69,7 +69,7 @@ async function handle(ws, data, terrain) {
   if(data.type==='create') {
     const capacity=Number(data.capacity);
     if(!Number.isInteger(capacity)||capacity<MATCH.minPlayers||capacity>MATCH.maxPlayers) return error(ws,`정원은 ${MATCH.minPlayers}~${MATCH.maxPlayers}명입니다.`);
-    const room={code:code(),name:String(data.name||'새 방').trim().slice(0,24)||'새 방',mode:['tag','custom'].includes(data.mode)?data.mode:'free',format:data.format==='ffa'?'ffa':'teams',city:data.city==='hong-kong'?'hong-kong':'procedural',capacity,phase:'waiting',players:new Map(),host:null,endsAt:0,winner:null,enhanced:data.mode==='tag'&&data.enhanced===true,round:1,pendingHits:new Map()};
+    const room={code:code(),name:String(data.name||'새 방').trim().slice(0,24)||'새 방',mode:['tag','custom'].includes(data.mode)?data.mode:'free',format:data.format==='ffa'?'ffa':'teams',city:data.city==='hong-kong'?'hong-kong':'procedural',capacity,phase:'waiting',players:new Map(),host:null,endsAt:0,winner:null,enhanced:data.mode!=='custom'&&data.enhanced===true,round:1,pendingHits:new Map()};
     rooms.set(room.code,room);join(ws,room,data.playerName,room.city);room.host=ws.player?.id;publish(room);return;
   }
   if(data.type==='join') return join(ws,rooms.get(String(data.code||'').trim().toUpperCase()),data.playerName,data.city);
@@ -132,7 +132,7 @@ async function handle(ws, data, terrain) {
     const kind=data.kind,now=Date.now(),rule=MATCH[kind];
     const reject=reason=>send(ws,{type:'attack-result',kind,reason});
     if(!['punch','web'].includes(kind))return reject('invalid');
-    if(!p.seen || now-p.lastMove>1500)return reject('stale');
+    if(!p.seen || ((room.enhanced||room.city==='hong-kong'||room.mode==='custom')&&now-p.lastMove>1500))return reject('stale');
     if(now<(room.vulnerableAt||0))return reject('protected');
     p.cooldowns||={punch:0,web:0};
     if(now-(p.cooldowns[kind]||0)<rule.cooldown)return reject('cooldown');
