@@ -1,0 +1,9 @@
+PASS Help cannot remain hidden beneath the lobby or pause menu
+PASS Background pause closes solo help so resume really restores gameplay
+PASS Solo and online session entry retire a help dialog from the previous activity
+PASS Opening help unlocks the cursor without pausing; closing restores game focus
+PASS Repeated Escape closes help only once before opening the pause menu
+PASS Pad Start does not reintroduce stick movement or camera look in the pause frame
+PASS Pad resume defers sticks until the next frame and does not use paused look time
+PASS Match finish clears combat overlays before the paused game can render another frame
+Session flow review: 8 passed, 0 failed.

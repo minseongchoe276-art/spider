@@ -1,0 +1,12 @@
+PASS COMBAT: Web is default; Q selects human combat and disables grounded web entry points
+PASS COMBAT: Toggle clears held fire and guard and releases with velocity preserved
+PASS COMBAT: Left jab and right straight are distinct, grounded, guarded strikes
+PASS COMBAT: Damage has an active window and happens only once per target
+PASS COMBAT: A wall, wrong height or rear position blocks an attack
+PASS COMBAT: Frontal guard spends stamina; rear attacks hurt; dodge grants temporary protection
+PASS COMBAT: Every directional dodge uses its own take and stamina blocks spam
+PASS COMBAT: Rear power cross loads before contact, respects cooldown and deals one heavy hit
+PASS COMBAT: E hook is grounded and does not force an airborne dive
+PASS COMBAT: No training drone factory remains; reset clears transient combat state
+PASS COMBAT: Combat stance waits until movement stopping animation completes
+PASS: 11 combat scenarios

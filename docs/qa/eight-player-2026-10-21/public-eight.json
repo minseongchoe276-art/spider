@@ -1,0 +1,90 @@
+{
+  "clientsPerRoom": 8,
+  "allObserversAgree": true,
+  "protocolPacketsSent": [
+    828,
+    710,
+    717,
+    717,
+    717,
+    717,
+    717,
+    717,
+    1
+  ],
+  "status": "PASS",
+  "checkedAt": "2026-10-21T11:45:11.309Z",
+  "service": "https://minogame-room-authority.onrender.com",
+  "revision": "abcb1e16354fe1b4248dab81da616cc26c3c6312",
+  "attackRoundTripMs": [
+    142.90695799999958,
+    138.75233300000036,
+    135.86083299999882,
+    144.92874999999913,
+    129.7416250000024,
+    137.04566599999816,
+    138.76200000000244,
+    139.44483300000138,
+    129.30383299999812,
+    139.48795899999823,
+    129.93974999999773,
+    608.7916659999973,
+    177.08350000000064,
+    135.65287499999977,
+    170.41979100000026,
+    129.56441600000107,
+    137.6050419999956,
+    138.83095799999865,
+    125.65887500000099,
+    125.53204099999857,
+    160.05333399999654,
+    132.88558399999602,
+    125.75841599999694,
+    340.3466249999983,
+    140.00937500000146,
+    124.1952919999967,
+    140.57529200000135,
+    121.87149999999383,
+    123.68912500000442,
+    127.3839169999992,
+    136.39295900000434,
+    141.42808300000615,
+    141.33737499999552,
+    127.59675000000425,
+    127.26958400000876,
+    137.90795799999614,
+    148.90620800000033,
+    136.0182499999937,
+    136.15950000000885,
+    121.83350000000792,
+    129.94929199999024,
+    126.32066599999962,
+    129.7352499999979,
+    127.30304199999955,
+    128.75487499999872,
+    146.30262500001118,
+    176.59108300000662,
+    125.70404199999757,
+    142.62641599999915,
+    120.82450000000244,
+    143.86050000000978
+  ],
+  "results": [
+    {
+      "name": "Eight internet clients agree: front block 25→10 and 15→6; rear/air/stale guard take full damage",
+      "status": "PASS"
+    },
+    {
+      "name": "Eight live peers each receive all eight sanitized animation phases (56 remote viewpoints plus self echoes)",
+      "status": "PASS"
+    },
+    {
+      "name": "Eight real internet clients: capacity, 4v4, grace, named non-nearest target, friendly-fire rejection, mutual attacks, cooldown, elimination, team win and rematch",
+      "status": "PASS"
+    },
+    {
+      "name": "Eight-player FFA: each participant is an opponent; last survivor wins",
+      "status": "PASS"
+    }
+  ]
+}

@@ -1,0 +1,262 @@
+{
+  "passed": 32,
+  "failed": 0,
+  "results": [
+    {
+      "mode": "web",
+      "fps": 24,
+      "key": "runStop",
+      "pass": true,
+      "maxAxialDegreesPerSecond": 33.47716408863049,
+      "frames": 22
+    },
+    {
+      "mode": "web",
+      "fps": 24,
+      "key": "slamLand",
+      "pass": true,
+      "maxAxialDegreesPerSecond": 113.11831639335239,
+      "frames": 22
+    },
+    {
+      "mode": "web",
+      "fps": 24,
+      "key": "hook",
+      "pass": true,
+      "maxAxialDegreesPerSecond": 13.70885071094746,
+      "frames": 34
+    },
+    {
+      "mode": "web",
+      "fps": 24,
+      "key": "wall-steering",
+      "pass": true,
+      "maxAxialDegreesPerSecond": 416.0875865345563,
+      "frames": 96
+    },
+    {
+      "mode": "web",
+      "fps": 30,
+      "key": "runStop",
+      "pass": true,
+      "maxAxialDegreesPerSecond": 49.926673884892345,
+      "frames": 27
+    },
+    {
+      "mode": "web",
+      "fps": 30,
+      "key": "slamLand",
+      "pass": true,
+      "maxAxialDegreesPerSecond": 103.61550855622369,
+      "frames": 27
+    },
+    {
+      "mode": "web",
+      "fps": 30,
+      "key": "hook",
+      "pass": true,
+      "maxAxialDegreesPerSecond": 15.996557910244983,
+      "frames": 42
+    },
+    {
+      "mode": "web",
+      "fps": 30,
+      "key": "wall-steering",
+      "pass": true,
+      "maxAxialDegreesPerSecond": 416.2045398186685,
+      "frames": 120
+    },
+    {
+      "mode": "web",
+      "fps": 60,
+      "key": "runStop",
+      "pass": true,
+      "maxAxialDegreesPerSecond": 78.73296997324174,
+      "frames": 54
+    },
+    {
+      "mode": "web",
+      "fps": 60,
+      "key": "slamLand",
+      "pass": true,
+      "maxAxialDegreesPerSecond": 175.0156816254752,
+      "frames": 54
+    },
+    {
+      "mode": "web",
+      "fps": 60,
+      "key": "hook",
+      "pass": true,
+      "maxAxialDegreesPerSecond": 15.37023383602457,
+      "frames": 84
+    },
+    {
+      "mode": "web",
+      "fps": 60,
+      "key": "wall-steering",
+      "pass": true,
+      "maxAxialDegreesPerSecond": 413.2447085029916,
+      "frames": 240
+    },
+    {
+      "mode": "web",
+      "fps": 144,
+      "key": "runStop",
+      "pass": true,
+      "maxAxialDegreesPerSecond": 93.27600954667427,
+      "frames": 130
+    },
+    {
+      "mode": "web",
+      "fps": 144,
+      "key": "slamLand",
+      "pass": true,
+      "maxAxialDegreesPerSecond": 334.0385212850409,
+      "frames": 128
+    },
+    {
+      "mode": "web",
+      "fps": 144,
+      "key": "hook",
+      "pass": true,
+      "maxAxialDegreesPerSecond": 15.860693975884496,
+      "frames": 202
+    },
+    {
+      "mode": "web",
+      "fps": 144,
+      "key": "wall-steering",
+      "pass": true,
+      "maxAxialDegreesPerSecond": 421.97565821157133,
+      "frames": 576
+    },
+    {
+      "mode": "combat",
+      "fps": 24,
+      "key": "runStop",
+      "pass": true,
+      "maxAxialDegreesPerSecond": 35.21104879402951,
+      "frames": 22
+    },
+    {
+      "mode": "combat",
+      "fps": 24,
+      "key": "slamLand",
+      "pass": true,
+      "maxAxialDegreesPerSecond": 113.93488081067805,
+      "frames": 22
+    },
+    {
+      "mode": "combat",
+      "fps": 24,
+      "key": "hook",
+      "pass": true,
+      "maxAxialDegreesPerSecond": 14.480610328903234,
+      "frames": 34
+    },
+    {
+      "mode": "combat",
+      "fps": 24,
+      "key": "wall-steering",
+      "pass": true,
+      "maxAxialDegreesPerSecond": 416.0875865345563,
+      "frames": 96
+    },
+    {
+      "mode": "combat",
+      "fps": 30,
+      "key": "runStop",
+      "pass": true,
+      "maxAxialDegreesPerSecond": 50.99858036311038,
+      "frames": 27
+    },
+    {
+      "mode": "combat",
+      "fps": 30,
+      "key": "slamLand",
+      "pass": true,
+      "maxAxialDegreesPerSecond": 104.90128945379878,
+      "frames": 27
+    },
+    {
+      "mode": "combat",
+      "fps": 30,
+      "key": "hook",
+      "pass": true,
+      "maxAxialDegreesPerSecond": 16.688257707102245,
+      "frames": 42
+    },
+    {
+      "mode": "combat",
+      "fps": 30,
+      "key": "wall-steering",
+      "pass": true,
+      "maxAxialDegreesPerSecond": 416.2045398186685,
+      "frames": 120
+    },
+    {
+      "mode": "combat",
+      "fps": 60,
+      "key": "runStop",
+      "pass": true,
+      "maxAxialDegreesPerSecond": 80.61209785773633,
+      "frames": 54
+    },
+    {
+      "mode": "combat",
+      "fps": 60,
+      "key": "slamLand",
+      "pass": true,
+      "maxAxialDegreesPerSecond": 176.51575395708227,
+      "frames": 54
+    },
+    {
+      "mode": "combat",
+      "fps": 60,
+      "key": "hook",
+      "pass": true,
+      "maxAxialDegreesPerSecond": 15.933376196235304,
+      "frames": 84
+    },
+    {
+      "mode": "combat",
+      "fps": 60,
+      "key": "wall-steering",
+      "pass": true,
+      "maxAxialDegreesPerSecond": 413.2447085029916,
+      "frames": 240
+    },
+    {
+      "mode": "combat",
+      "fps": 144,
+      "key": "runStop",
+      "pass": true,
+      "maxAxialDegreesPerSecond": 94.5547723399407,
+      "frames": 130
+    },
+    {
+      "mode": "combat",
+      "fps": 144,
+      "key": "slamLand",
+      "pass": true,
+      "maxAxialDegreesPerSecond": 337.23790829783485,
+      "frames": 128
+    },
+    {
+      "mode": "combat",
+      "fps": 144,
+      "key": "hook",
+      "pass": true,
+      "maxAxialDegreesPerSecond": 16.473410878421422,
+      "frames": 202
+    },
+    {
+      "mode": "combat",
+      "fps": 144,
+      "key": "wall-steering",
+      "pass": true,
+      "maxAxialDegreesPerSecond": 421.97565821157133,
+      "frames": 576
+    }
+  ]
+}
