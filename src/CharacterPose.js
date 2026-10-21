@@ -47,11 +47,11 @@ export function clearImpactBody(c,delta,active=true) {
     mesh.localToWorld(mesh.applyBoneTransform(vertex,p.fromBufferAttribute(geometry.attributes.position,vertex)));
     const height=support.height-(support.normal.x*(p.x-root.x)+support.normal.z*(p.z-root.z))/support.normal.y;
     // A small envelope margin covers the gaps between sampled directions.
-    lift=Math.max(lift,height+(active?.012:0)-p.y);
+    lift=Math.max(lift,height+(active?(c.poseState==='ROLLING'?.04:.012):0)-p.y);
   }
   // An interrupted roll still crossfades out of its low pose. Release its
   // support offset with that pose instead of dropping the skin in one frame.
-  lift=Math.max(lift,(c.impactLift || 0)*Math.exp(-18*delta));
+  lift=Math.max(lift,Math.max(0,(c.impactLift || 0)-2*Math.max(0,delta)));
   c.impactLift=lift<.0001?0:lift;
   if(lift>0){c.model.position.y+=lift;c.group.updateMatrixWorld(true);}
 }
@@ -709,12 +709,22 @@ export function alignCombatGaze(c,delta,active) {
     const mesh=c.model.getObjectByProperty('isSkinnedMesh',true),index=mesh?.skeleton.bones.indexOf(head);
     if(!(index>=0))return;
     const bind=new THREE.Quaternion();mesh.skeleton.boneInverses[index].clone().invert().decompose(new THREE.Vector3(),bind,new THREE.Vector3());
-    c.combatGazeForward=new THREE.Vector3(0,0,1).applyQuaternion(bind.invert());c.combatGazeModel=c.model;
+    c.combatGazeForward=new THREE.Vector3(0,0,1).applyQuaternion(bind.invert());
+    c.combatGazeUp=new THREE.Vector3(0,1,0).applyQuaternion(bind);c.combatGazeModel=c.model;
   }
   c.group.updateMatrixWorld(true);
   const from=c.combatGazeForward.clone().applyQuaternion(head.getWorldQuaternion(new THREE.Quaternion())).normalize();
   const to=new THREE.Vector3(0,-.08,1).normalize().applyQuaternion(c.model.getWorldQuaternion(new THREE.Quaternion()));
   const correction=new THREE.Quaternion().setFromUnitVectors(from,to);
+  // Facing correction alone leaves the imported guard's sideways head roll.
+  // Keep a small natural lean while leveling the eyes above the moving torso.
+  const predictedUp=c.combatGazeUp.clone().applyQuaternion(head.getWorldQuaternion(new THREE.Quaternion()))
+    .applyQuaternion(correction).projectOnPlane(to).normalize();
+  const desiredUp=new THREE.Vector3(0,1,0).applyQuaternion(c.model.getWorldQuaternion(new THREE.Quaternion()))
+    .projectOnPlane(to).normalize();
+  const roll=Math.atan2(to.dot(predictedUp.clone().cross(desiredUp)),predictedUp.dot(desiredUp));
+  const limit=THREE.MathUtils.degToRad(8);
+  correction.premultiply(new THREE.Quaternion().setFromAxisAngle(to,roll-THREE.MathUtils.clamp(roll,-limit,limit)));
   for(const [bone,share]of [[neck,.55],[head,neck ? .45 : 1]]){
     if(!bone)continue;
     const turn=new THREE.Quaternion().slerp(correction,share*c.combatGazeWeight);
