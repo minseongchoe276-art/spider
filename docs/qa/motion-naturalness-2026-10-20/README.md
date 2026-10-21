@@ -44,3 +44,9 @@ node scripts/export-motion-quality.mjs
 커밋 대상으로 고정한 최종 프로덕션 빌드의 로컬 미리보기에서 실제 키·마우스 입력으로 대기 → B+W 이동 방어 → 잽 → 훅 → 스트레이트 → G 강한 타격 → 질주 → 점프 → Q 모드 전환을 수행했다. 내부 상태·좌표·관절을 강제로 설정하지 않았다. [이동 방어](after/game-moving-guard.png), [훅](after/game-hook.png), [스트레이트](after/game-cross.png), [강한 타격](after/game-special.png), [점프](after/game-jump.png), [모드 전환 후](after/game-mode-release.png)를 보존했다.
 
 배포 게임의 벽 → 난간 → 옥상 직접 입력 검증은 [앞선 배포 검증 기록](../production-wall-ledge-2026-10-20/README.md)에 있다. 이번 수정 빌드의 모든 지형·모든 입력 조합을 배포 환경에서 다시 검증했다는 의미는 아니다. 유한한 검사와 시각 표본의 통과가 모든 모션의 예술적 완벽함을 보증하지는 않는다.
+
+## 배포 반영 후 직접 확인
+
+수정 커밋 `e479084`를 main에 푸시한 뒤 `https://minogame.site/?city=procedural`의 번들이 `index-CDLQhRr0.js`에서 `index-07eE3od0.js`로 교체된 것을 확인했다. 공개 번들에서 원본 손 복원·오른쪽 훅 주먹·복싱 지지 발 보정의 세 코드 패턴을 확인하고 [번들 해시와 확인 결과](production-check.json)를 보존했다. Render MCP는 선택된 workspace가 없어 관리 API의 배포 상태 대신 공개 페이지와 게임 자체로 검증했다.
+
+새 배포에서 실제 키·마우스로 Q 인간 전투 모드 → B+W 이동 방어 → 좌클릭 잽 → E 훅 → 우클릭 스트레이트 → G 강한 타격 → Shift+W 질주 → Space 점프 → Q 와이어 모드 전환을 실행했다. 이 입력 경로의 화면 표본에서는 새 손발 뒤집힘이나 비정상적인 늘어남을 발견하지 못했다. 마지막 [HUD 기록](production/hud.txt)은 로컬 도시 고도 95m, PULSE READY다. [대기](production/idle.png), [이동 방어](production/moving-guard.png), [훅](production/hook.png), [스트레이트](production/cross.png), [강한 타격](production/special.png), [점프](production/jump.png), [모드 전환](production/mode-release.png)를 보존했다.
