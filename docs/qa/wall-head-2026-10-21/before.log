@@ -1,0 +1,20 @@
+MEASURE 60 0 {
+  minimum: 0.2177946360763345,
+  minimumHeadForwardY: -0.2296039721768324,
+  maxHoldError: 0.02444665810037688
+}
+node:internal/modules/run_main:123
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Head looks down into the wall: -0.2296039721768324
+    at file:///private/var/folders/2s/myqxyk555vd84268xfsrgl000000gn/T/combat-roll-verify-p05jteq7/scripts/check-wall-head-clearance.mjs:39:2 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
+
+Node.js v22.19.0

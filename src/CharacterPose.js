@@ -47,11 +47,11 @@ export function clearImpactBody(c,delta,active=true) {
     mesh.localToWorld(mesh.applyBoneTransform(vertex,p.fromBufferAttribute(geometry.attributes.position,vertex)));
     const height=support.height-(support.normal.x*(p.x-root.x)+support.normal.z*(p.z-root.z))/support.normal.y;
     // A small envelope margin covers the gaps between sampled directions.
-    lift=Math.max(lift,height+(active?.012:0)-p.y);
+    lift=Math.max(lift,height+(active?(c.poseState==='ROLLING'?.04:.012):0)-p.y);
   }
   // An interrupted roll still crossfades out of its low pose. Release its
   // support offset with that pose instead of dropping the skin in one frame.
-  lift=Math.max(lift,(c.impactLift || 0)*Math.exp(-18*delta));
+  lift=Math.max(lift,Math.max(0,(c.impactLift || 0)-2*Math.max(0,delta)));
   c.impactLift=lift<.0001?0:lift;
   if(lift>0){c.model.position.y+=lift;c.group.updateMatrixWorld(true);}
 }
@@ -314,7 +314,9 @@ export function adaptPelvisToTerrain(c,delta,grounded) {
     if(heights.length)target=THREE.MathUtils.clamp(Math.min(0,...heights),-0.22,0);
   }
   c.terrainPelvis=THREE.MathUtils.damp(c.terrainPelvis || 0,target,14,delta);
-  if(grounded)c.model.position.y+=c.terrainPelvis;
+  // The previous stair/ramp crouch must ease out in the air as well.
+  // Dropping its render offset at takeoff snaps both feet above their reach.
+  if(grounded || ['JUMPING','FALLING'].includes(c.poseState))c.model.position.y+=c.terrainPelvis;
   c.group.updateMatrixWorld(true);
 }
 
@@ -404,7 +406,10 @@ export function plantMovingFeet(c,delta) {
     // almost-straight boxing legs alternate between two ankle poses.
     const candidate=plant?.position || current.clone().setY((surface ?? current.y)+.11);
     const reachable=worldPosition(hip).distanceTo(candidate)<=length*0.975;
-    const stance=sample[side] && supported && action.getEffectiveWeight()>=0.8 && reachable;
+    // A changed tread must release through the same bounded path as toe-off.
+    // Skipping this solve restored the far-away authored foot in one frame.
+    const changedSupport=plant && supported && Math.abs(plant.position.y-surface-(plant.offset ?? .11))>.12;
+    const stance=sample[side] && supported && action.getEffectiveWeight()>=0.8 && reachable && !changedSupport;
     if(!stance) {
       support=footSupport(c,current,true) || support;
       const swingSurface=support?.height;
@@ -443,9 +448,6 @@ export function plantMovingFeet(c,delta) {
       plant.position.y=surface+0.11;
     }
     // Keep a stance anchored to the actual support, including a changed LOD.
-    if(Math.abs(plant.position.y-surface-(plant.offset ?? .11))>0.12) {
-      delete c.movingPlants[side];delete c.movingReleases[side];continue;
-    }
     plant.position.y=THREE.MathUtils.damp(plant.position.y,surface+(plant.offset ?? .11),20,delta);
     if(plant.normal.dot(support.normal)<0.9999) {
       const nextNormal=plant.normal.clone().lerp(support.normal,1-Math.exp(-16*delta)).normalize();
@@ -526,6 +528,33 @@ function crawlContact(c,id,base,normal,direction,phase,delta,speed) {
   contact.last.copy(target);return {contact,target};
 }
 
+// Keep the actual helmet, neck and torso surface outside the facade. Limb
+// IK runs afterwards, so this body clearance never drags planted hands away.
+function clearWallBody(c,normal,root) {
+  prepareImpactBody(c);
+  const mesh=c.model.getObjectByProperty('isSkinnedMesh',true);if(!mesh)return;
+  if(c.wallBodyMesh!==mesh || c.wallBodyGeometry!==mesh.geometry){
+    c.wallBodyMesh=mesh;c.wallBodyGeometry=mesh.geometry;
+    const indices=mesh.geometry.attributes.skinIndex,weights=mesh.geometry.attributes.skinWeight;
+    const body=mesh.skeleton.bones.map(b=>/^(head|neck|spine\d*)$/.test(boneId(b.name)));
+    c.wallBodyVertices=c.impactVertices.filter(vertex=>{
+      let weight=0;for(let k=0;k<4;k++)if(body[indices.getComponent(vertex,k)])weight+=weights.getComponent(vertex,k);
+      return weight>.5;
+    });
+  }
+  const plane=root.dot(normal)-(c.wallDistance ?? .7),point=new THREE.Vector3();let clearance=Infinity;
+  for(const vertex of c.wallBodyVertices){
+    mesh.localToWorld(mesh.applyBoneTransform(vertex,point.fromBufferAttribute(mesh.geometry.attributes.position,vertex)));
+    clearance=Math.min(clearance,point.dot(normal)-plane);
+  }
+  const correction=Math.max(0,.06-clearance),hips=find(c,'hips');
+  c.wallBodyClearance=clearance;c.wallBodyCorrection=correction;
+  if(correction>0 && hips){
+    hips.position.copy(hips.parent.worldToLocal(worldPosition(hips).addScaledVector(normal,correction)));
+    c.group.updateMatrixWorld(true);
+  }
+}
+
 export function poseWall(c,delta,velocity) {
   const normal=c.wallNormal.clone().normalize(),root=worldPosition(c.group);
   const right=new THREE.Vector3().crossVectors(up,normal.clone().negate()).normalize();
@@ -564,7 +593,11 @@ export function poseWall(c,delta,velocity) {
     worldRotation(hips,new THREE.Quaternion().setFromAxisAngle(right,.32*c.wallPoseWeight)
       .multiply(new THREE.Quaternion().setFromAxisAngle(up,.045*transfer)).multiply(hips.getWorldQuaternion(new THREE.Quaternion())));
   }
-  if(spine)worldRotation(spine,new THREE.Quaternion().setFromAxisAngle(up,-.065*transfer).multiply(spine.getWorldQuaternion(new THREE.Quaternion())));
+  if(spine)worldRotation(spine,new THREE.Quaternion().setFromAxisAngle(right,-.18*c.wallPoseWeight)
+    .multiply(new THREE.Quaternion().setFromAxisAngle(up,-.065*transfer)).multiply(spine.getWorldQuaternion(new THREE.Quaternion())));
+  const neck=find(c,'neck');
+  if(neck)worldRotation(neck,new THREE.Quaternion().setFromAxisAngle(right,-.18*c.wallPoseWeight).multiply(neck.getWorldQuaternion(new THREE.Quaternion())));
+  clearWallBody(c,normal,root);
   for(const side of ['left','right'])for(const limb of ['hand','foot']){
     const hand=limb==='hand',sign=side==='left'?1:-1,id=side+limb;
     const upper=find(c,side+(hand?'arm':'upleg')),lower=find(c,side+(hand?'forearm':'leg')),end=find(c,id);
@@ -711,12 +744,22 @@ export function alignCombatGaze(c,delta,active) {
     const mesh=c.model.getObjectByProperty('isSkinnedMesh',true),index=mesh?.skeleton.bones.indexOf(head);
     if(!(index>=0))return;
     const bind=new THREE.Quaternion();mesh.skeleton.boneInverses[index].clone().invert().decompose(new THREE.Vector3(),bind,new THREE.Vector3());
-    c.combatGazeForward=new THREE.Vector3(0,0,1).applyQuaternion(bind.invert());c.combatGazeModel=c.model;
+    c.combatGazeForward=new THREE.Vector3(0,0,1).applyQuaternion(bind.invert());
+    c.combatGazeUp=new THREE.Vector3(0,1,0).applyQuaternion(bind);c.combatGazeModel=c.model;
   }
   c.group.updateMatrixWorld(true);
   const from=c.combatGazeForward.clone().applyQuaternion(head.getWorldQuaternion(new THREE.Quaternion())).normalize();
   const to=new THREE.Vector3(0,-.08,1).normalize().applyQuaternion(c.model.getWorldQuaternion(new THREE.Quaternion()));
   const correction=new THREE.Quaternion().setFromUnitVectors(from,to);
+  // Facing correction alone leaves the imported guard's sideways head roll.
+  // Keep a small natural lean while leveling the eyes above the moving torso.
+  const predictedUp=c.combatGazeUp.clone().applyQuaternion(head.getWorldQuaternion(new THREE.Quaternion()))
+    .applyQuaternion(correction).projectOnPlane(to).normalize();
+  const desiredUp=new THREE.Vector3(0,1,0).applyQuaternion(c.model.getWorldQuaternion(new THREE.Quaternion()))
+    .projectOnPlane(to).normalize();
+  const roll=Math.atan2(to.dot(predictedUp.clone().cross(desiredUp)),predictedUp.dot(desiredUp));
+  const limit=THREE.MathUtils.degToRad(8);
+  correction.premultiply(new THREE.Quaternion().setFromAxisAngle(to,roll-THREE.MathUtils.clamp(roll,-limit,limit)));
   for(const [bone,share]of [[neck,.55],[head,neck ? .45 : 1]]){
     if(!bone)continue;
     const turn=new THREE.Quaternion().slerp(correction,share*c.combatGazeWeight);

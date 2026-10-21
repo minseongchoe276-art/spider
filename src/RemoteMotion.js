@@ -62,7 +62,8 @@ export function capturePose(physics,character) {
   const action=character.activeAction,clip=action?.getClip();
   return sanitizePose({state:physics.animationState || physics.state,velocity:physics.velocity,webs:physics.webs,
     animation:clip?{key:clip.name,phase:action.time/clip.duration,
-      rate:character.combatAction?.duration && action.getEffectiveTimeScale()===0
+      rate:clip.name==='roll' && physics.recoveryTime>0?clip.duration/physics.recoveryTime
+        :character.combatAction?.duration && action.getEffectiveTimeScale()===0
         ?clip.duration/character.combatAction.duration:action.getEffectiveTimeScale()}:null,
     visualYaw:character.visualYaw,contactTime:character.contactTime,wallPhase:character.wallPhase,wallRate:character.wallPhaseRate,
     webShots:Object.entries(character.webLaunchTimers || {}).filter(([,remaining])=>remaining>0).map(([hand,remaining])=>({hand,remaining,

@@ -1,0 +1,18 @@
+<!doctype html><html lang="ko"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>벽 기어가기 · 머리 간격 검수</title><style>body{margin:0;background:#dce4eb;font:14px system-ui;color:#142331}header{padding:10px}button,select{font:inherit}canvas{display:block}aside{position:fixed;left:52%;top:65px;background:#ffffffcf;padding:5px 8px}</style><header>벽 기어가기 · 전신 / 머리 확대 <button id="play">정지</button> <select id="travel" aria-label="이동"><option value="up">위로</option><option value="side">대각선</option><option value="down">아래로</option><option value="hold">벽에서 멈춤</option></select></header><aside>측면 · 헬멧과 벽 사이 간격</aside><script type="module">
+import * as T from '/node_modules/three/build/three.module.js';
+import {Character} from '/src/Character.js';
+import {boneId} from '/src/MotionRetarget.js';
+const scene=new T.Scene();scene.background=new T.Color('#dce4eb');scene.add(new T.HemisphereLight(0xffffff,0x718291,3));const light=new T.DirectionalLight(0xffffff,3);light.position.set(4,8,5);scene.add(light);
+const wall=new T.Mesh(new T.BoxGeometry(200,200,.08),new T.MeshStandardMaterial({color:0x7c9bb2,side:T.DoubleSide}));wall.position.z=-.04;scene.add(wall);
+const grid=new T.GridHelper(200,200,0x45677f,0x6d8da5);grid.rotation.x=Math.PI/2;grid.position.z=.001;scene.add(grid);
+const renderer=new T.WebGLRenderer({antialias:true});renderer.setPixelRatio(devicePixelRatio);document.body.append(renderer.domElement);const camera=new T.OrthographicCamera(-1,1,1,-1,.01,100);
+let c;await new Promise(resolve=>{c=new Character(scene,null,resolve)});c.wallNormal=new T.Vector3(0,0,1);c.wallDistance=.7;c.groundProbe=()=>null;c.group.position.set(0,4,.7);
+let play=true,last=performance.now();document.querySelector('#play').onclick=e=>{play=!play;e.target.textContent=play?'정지':'재생'};
+renderer.setAnimationLoop(()=>{const now=performance.now(),dt=Math.min(.04,(now-last)/1000);last=now;
+if(play){const mode=document.querySelector('#travel').value,v=mode==='hold'?new T.Vector3():new T.Vector3(mode==='side'?2.4:0,mode==='down'?-2.8:2.8,0);c.group.position.addScaledVector(v,dt);c.update(dt,'WALL_RUNNING',v);}c.group.updateMatrixWorld(true);
+const w=innerWidth,h=innerHeight-50;renderer.setSize(w,h);renderer.setScissorTest(true);
+const head=Object.values(c.bones).find(b=>boneId(b.name)==='head').getWorldPosition(new T.Vector3());
+for(let i=0;i<2;i++){const width=w/2,center=i?head.clone().add(new T.Vector3(0,.03,0)):c.group.position.clone().add(new T.Vector3(0,1,0)),span=i?1.35:2.9;center.z=.28;
+camera.left=-span*width/h/2;camera.right=-camera.left;camera.top=span/2;camera.bottom=-span/2;camera.position.copy(center).add(i?new T.Vector3(4,0,0):new T.Vector3(4,.3,0));camera.lookAt(center);camera.updateProjectionMatrix();renderer.setViewport(i*width,0,width,h);renderer.setScissor(i*width,0,width,h);renderer.render(scene,camera);}renderer.setScissorTest(false);
+});
+</script></html>

@@ -62,7 +62,8 @@ export function applyHandPose(rig,side,shoot=0,grip=0,{absolute=false,relaxed=0}
 export function updateWebHandPose(c,delta,state) {
   c.webFingerRig ||= createHandPoseRig(c.model,c.bones);
   c.webGestures ||= {};
-  const combatKey=c.combatAction?.key || (c.combatStance && GROUNDED.includes(state)?'combatIdle':null);
+  const combatGround=['IDLE','RUNNING','SPRINTING'].includes(state);
+  const combatKey=combatGround?(c.combatAction?.key || (c.combatStance?'combatIdle':null)):null;
   const blocked=['WALL_RUNNING','MANTLING'].includes(state) || !!combatKey;
   for(const side of ['left','right']){
     const attached=c.webAttachments?.some(web=>web.hand===side);

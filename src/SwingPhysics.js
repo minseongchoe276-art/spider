@@ -575,6 +575,8 @@ export class SwingPhysics {
     this.character.groundProbe=p=>this.character.surfaceProbe(p)?.height ?? null;
     this.character.mantle=this.state==='MANTLING'?this.mantle:null;
     const visualState = this.animationState;
+    this.character.recoveryProgress=visualState==='ROLLING' && this.recoveryTime>0
+      ?this.recoveryElapsed/this.recoveryTime:null;
     this.character.update(delta, visualState, this.velocity,
       this.anchorPoint || this.zipAnchor || this.lastWebAnchor);
 
@@ -851,7 +853,7 @@ export class SwingPhysics {
       } else return;
     }
     if (isGrounded && ['LANDING','ROLLING'].includes(this.state)) {
-      if (this.recoveryElapsed > this.recoveryTime * 0.45 &&
+      if (this.recoveryElapsed > this.recoveryTime * (this.state==='ROLLING'?.88:.45) &&
           (input.jump || input.forward || input.backward || input.left || input.right)) {
         if(this.landingCarry && (input.forward||input.backward||input.left||input.right)){const carry=this.landingCarry.clone().clampLength(0,input.sprint?this.sprintSpeed:this.walkSpeed);this.velocity.x=carry.x;this.velocity.z=carry.z;}
         this.state = 'IDLE'; this.recoveryTime = 0;this.landingCarry=null;
@@ -1035,17 +1037,25 @@ export class SwingPhysics {
       const moving = input.forward || input.backward || input.left || input.right;
       if (airborne && impact > 7) {
         const horizontal = Math.hypot(this.velocity.x, this.velocity.z);
-        const rollEnd = this.position.clone().add(new THREE.Vector3(
-          Math.sin(this.facingAngle) * 2.5, 0, Math.cos(this.facingAngle) * 2.5));
-        const canRoll = impact > 24 && horizontal > 3 && !sweepBody(this.position, rollEnd, this.city.colliders)
-          && this.supportHeight(rollEnd) !== null;
+        const rollFacing=horizontal>.5?Math.atan2(this.velocity.x,this.velocity.z):this.facingAngle;
+        const rollPoints=this.character.actions?.roll?.getClip().userData?.rootMotion || [];
+        const rollDistance=Math.max(2.5,(rollPoints.at(-1)?.distance || 0)-(rollPoints[0]?.distance || 0))+.35;
+        const direction=new THREE.Vector3(Math.sin(rollFacing),0,Math.cos(rollFacing));
+        const rollEnd=this.position.clone().addScaledVector(direction,rollDistance);
+        let canRoll=!sweepBody(this.position,rollEnd,this.city.colliders);
+        for(let distance=.4;canRoll && distance<rollDistance+.4;distance+=.4){
+          const sample=this.position.clone().addScaledVector(direction,Math.min(distance,rollDistance));
+          canRoll=this.supportHeight(sample)!==null;
+        }
         this.state = canRoll ? 'ROLLING' : 'LANDING';
-        const isSuperLanding = !canRoll && impact > 18 && !!this.character.actions?.slamLand;
-        const key = canRoll ? 'roll' : (isSuperLanding ? 'slamLand' : 'land');
-        this.recoveryTime = this.character.actions?.[key]?.getClip().duration || (key === 'roll' ? 1.55 : isSuperLanding ? 0.72 : 0.87);
+        if(!canRoll)this.character.landingAction='land';
+        // Fall recovery uses the forward roll when there is supported room.
+        // A blocked edge keeps a compact landing instead of rolling off it.
+        const key = canRoll ? 'roll' : 'land';
+        this.recoveryTime = this.character.actions?.[key]?.getClip().duration || (canRoll ? 1.55 : .87);
         this.recoveryElapsed = 0;
-        if (key === 'roll' && Math.hypot(this.velocity.x,this.velocity.z)>0.5) {
-          this.facingAngle = Math.atan2(this.velocity.x,this.velocity.z);
+        if (key === 'roll') {
+          this.facingAngle = rollFacing;
           this.character.targetFacingAngle = this.facingAngle;
         }
       } else if (!['TURNING','LANDING','ROLLING'].includes(this.state)) {
