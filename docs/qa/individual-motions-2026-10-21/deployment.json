@@ -1,0 +1,38 @@
+{
+  "commit": "44f6ef2ea3d9f26a297bd5a68acacb8debf22eec",
+  "frontendUrl": "https://minogame.site",
+  "remoteAsset": "/assets/index-CrodTnM1.js",
+  "localAsset": "/assets/index-CrodTnM1.js",
+  "remoteSha256": "92331b56a14adb783b29a11ed8609a5a68f4d816c5aca9f24ac3818f8a4e3911",
+  "localSha256": "92331b56a14adb783b29a11ed8609a5a68f4d816c5aca9f24ac3818f8a4e3911",
+  "assetMatches": true,
+  "dropMatches": true,
+  "dropDuration": 0.3999999761581421,
+  "sourceAirborneWindow": [
+    0.5333333333333333,
+    0.9666666666666667
+  ],
+  "verifiedAt": "2026-10-21T05:36:06.179532+00:00",
+  "roomHealth": {
+    "status": "ready",
+    "transport": "websocket",
+    "authority": "server-owned-rooms",
+    "protocol": 2,
+    "features": [
+      "custom-matches",
+      "named-targets",
+      "attack-results"
+    ],
+    "revision": "cc8b676eaa3cfcd6ff0de04723a2e9bf9acd670f",
+    "uptimeSeconds": 369,
+    "terrainSeedWarm": true,
+    "terrainSeedStatus": "CLEAR"
+  },
+  "browserSmoke": {
+    "soloStarted": true,
+    "combatGuardWalk": true,
+    "airborneCombatAfterClickAndE": "JUMPING; combat mode; switch with Q for wires",
+    "consoleErrors": [],
+    "customLobbyTeamAndFfaVisible": true
+  }
+}
