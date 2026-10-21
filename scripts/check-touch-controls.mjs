@@ -9,6 +9,10 @@ assert(!stickState(0,0).forward);
 assert(!stickState(5,-5).forward,'Central deadzone must reject thumb jitter');
 assert(stickState(0,-30).forward&&!stickState(0,-30).sprint);
 assert(stickState(0,-100).forward&&stickState(0,-100).sprint);
+assert(!stickState(12,-40).right,'A nearly straight thumb drag must keep moving straight');
+assert(!stickState(0,-48).sprint,'Walking must remain available close to the outer ring');
+assert(stickState(0,-44,52,true).sprint,'Small thumb drift must not cancel an active sprint');
+assert(!stickState(0,-35,52,true).sprint,'Pulling back must exit sprint');
 assert(stickState(100,100).right&&stickState(100,100).backward);
 const edge=stickState(999,999);assert(Math.abs(Math.hypot(edge.x,edge.y)-52)<1e-8);
 
@@ -28,6 +32,8 @@ controls.up({pointerId:1});assert(controls.pointers.has(2)&&controls.pointers.ha
 controls.up({pointerId:999});assert.equal(controls.pointers.size,2);
 controls.release();assert.equal(controls.pointers.size,0);assert.deepEqual(game.touchDirections,{});
 assert(calls.some(c=>c[0]===0&&c[1]===false)&&calls.some(c=>c[0]===2&&c[1]===false));
+const disabled=Object.assign(target({key:'heavy'}),{disabled:true});
+controls.down(event(99,disabled));assert(!controls.pointers.has(99),'Disabled actions captured a finger');
 const jump=target({key:'jump'});controls.down(event(4,jump));game.isPaused=true;controls.move(event(4,jump,70,70));
 assert.equal(controls.pointers.size,0);assert(calls.some(c=>c[0]==='jump'&&c[1]===false));
 console.log('PASS: stick deadzone/directions/sprint/clamp, three simultaneous touches, held-web look, independent release, cancel and pause cleanup');
@@ -45,6 +51,8 @@ const lookCalls=()=>calls.filter(c=>c[0]==='look').length;
 const before=lookCalls();controls.down(event(12,jump,100,100));
 controls.move(event(12,jump,103,101));assert.equal(lookCalls(),before,'Button jitter moved the camera');
 controls.move(event(12,jump,120,100));assert.equal(lookCalls(),before+1,'Held jump cannot drag to aim');
+const firstDrag=calls.filter(c=>c[0]==='look').at(-1);
+assert(firstDrag[1]>0&&firstDrag[1]<20,'Action aiming must subtract its deadzone without a camera jump');
 controls.up({pointerId:12});assert.equal(controls.pointers.size,0);
 console.log('PASS: floating stick neutral acquisition, screen-edge origin, sprint drag, offhand independence, rest-position reset, jump drag aiming and jitter rejection');
 
@@ -66,5 +74,11 @@ try{
  game.physics.state='FALLING';controls.update();assert(!controls.pointers.has(20),'A hidden guard retained its held key');assert(controls.pointers.has(21),'Changing context cancelled an independent strand');
  assert(calls.some(c=>c[0]==='guard'&&c[1]===false));assert.equal(zip.textContent,'착지 후 훅');assert(webButtons.every(b=>b.disabled));
  controls.up({pointerId:21});
+ game.physics.state='ROLLING';controls.update();assert.equal(zip.textContent,'회복 후 훅','Recovery labels must update even while both states are airborne');
+ controls.extra={hidden:false,contains:el=>el===right};
+ controls.root.querySelector=s=>s==='[data-ui=more]'?{setAttribute(){}}:null;
+ controls.down(event(30,right));controls.down(event(31,movement));
+ controls.setExpanded(false);assert(!controls.pointers.has(30)&&controls.pointers.has(31),'Closing extra actions must release only their owned pointers');
+ controls.release();
  console.log('PASS: contextual combat HUD, cached DOM updates, airborne guard cleanup and independent held strand');
 }finally{if(oldDocument===undefined)delete globalThis.document;else globalThis.document=oldDocument;}

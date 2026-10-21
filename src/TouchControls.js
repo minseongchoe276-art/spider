@@ -1,10 +1,12 @@
 import {COMBAT_GROUND_STATES} from './AttackRules.js';
-import { GROUNDED } from './MotionCatalog.js';
 
-export function stickState(dx, dy, radius = 52) {
+export function stickState(dx, dy, radius = 52, wasSprinting = false) {
   const length=Math.hypot(dx,dy),scale=Math.min(1,radius/Math.max(length,1));
-  const x=dx*scale/radius,y=dy*scale/radius,dead=.16;
-  return {x:x*radius,y:y*radius,forward:y<-dead,backward:y>dead,left:x<-dead,right:x>dead,sprint:length/radius>.85};
+  const x=dx*scale/radius,y=dy*scale/radius,dead=.2;
+  // Wide cardinal sectors make straight movement easy; the outer ring runs.
+  const horizontal=Math.abs(x)>dead && Math.abs(x)>=Math.abs(y)*.5;
+  const vertical=Math.abs(y)>dead && Math.abs(y)>=Math.abs(x)*.5;
+  return {x:x*radius,y:y*radius,forward:vertical&&y<0,backward:vertical&&y>0,left:horizontal&&x<0,right:horizontal&&x>0,sprint:length/radius>(wasSprinting ? .78 : .96)};
 }
 
 export function isTouchDevice({coarsePointer=false,mobileUserAgent=false,review=false}={}) {
@@ -30,16 +32,17 @@ export class TouchControls {
       ${action('data-key="mode" class="touch-mode" aria-label="전투와 에너지 와이어 모드 전환" aria-pressed="false"','mode','전투')}
       <div class="touch-actions" role="group" aria-label="오른쪽 동작 · 누른 채 드래그로 조준">
       ${action('data-mouse="0" class="touch-web touch-primary" aria-label="왼손 와이어 · 누른 채 드래그로 조준"','wire','왼손 와이어')}
-      ${action('data-mouse="2" class="touch-web touch-offhand" aria-label="오른손 와이어 · 누른 채 드래그로 조준"','offhand','오른손')}
       ${action('data-key="jump" class="touch-jump" aria-label="점프 / 줄에서 뛰어내리기"','jump','점프')}
       ${action('data-key="zip" class="touch-zip" aria-label="와이어 집 / 전투 훅"','zip','집')}
-      ${action('data-key="wall" class="touch-wall" aria-label="벽 이동 · 이동 스틱을 앞으로 유지"','wall','벽 이동')}
       ${action('data-key="guard" class="touch-guard" aria-label="방어 · 누르고 유지" hidden','guard','방어')}
-      ${action('data-key="trick" class="touch-trick" aria-label="공중 묘기"','trick','묘기')}
       ${action('data-key="heavy" class="touch-heavy" aria-label="강공격" hidden','heavy','강공격')}
       ${action('data-key="dodge" class="touch-dodge" aria-label="회피 · 이동 스틱으로 방향 선택"','dodge','회피')}
-      <button data-ui="more" class="touch-more" aria-label="시점과 조작 안내" aria-expanded="false" aria-controls="touch-extra">···</button></div>
-      <div id="touch-extra" class="touch-extra" hidden><button data-key="camera">시점</button><button data-key="recenter">시점 정렬</button><button data-ui="help">조작 안내</button></div>`;
+      <button data-ui="more" class="touch-more" aria-label="보조 동작과 시점 메뉴" aria-expanded="false" aria-controls="touch-extra">···<span>더보기</span></button></div>
+      <div id="touch-extra" class="touch-extra" role="group" aria-label="보조 동작과 시점" hidden>
+      ${action('data-mouse="2" class="touch-web touch-offhand" aria-label="오른손 와이어 · 누른 채 드래그로 조준"','offhand','오른손')}
+      ${action('data-key="wall" class="touch-wall" aria-label="벽 이동 · 이동 스틱을 앞으로 유지"','wall','벽 이동')}
+      ${action('data-key="trick" class="touch-trick" aria-label="공중 묘기"','trick','묘기')}
+      <button data-key="camera">시점</button><button data-key="recenter">시점 정렬</button><button data-ui="help">조작 안내</button></div>`;
     document.getElementById('game-container').append(this.root);
     this.stick=this.root.querySelector('.touch-stick');this.knob=this.root.querySelector('.touch-stick-knob');
     this.moveZone=this.root.querySelector('.touch-move-zone');
@@ -55,12 +58,17 @@ export class TouchControls {
       if(button.dataset.ui==='map')game.worldMap.toggle();
       if(button.dataset.ui==='menu')game.togglePause();
       if(button.dataset.ui==='help')game.toggleHelp();
-      if(button.dataset.ui==='more'){const open=this.extra.hidden;this.extra.hidden=!open;button.setAttribute('aria-expanded',String(open));}
+      if(button.dataset.ui==='more')this.setExpanded(this.extra.hidden);
     });
     this.media.addEventListener('change',()=>this.detect());
     window.addEventListener('resize',()=>this.release());
     window.addEventListener('orientationchange',()=>this.release());
     this.detect();
+  }
+  setExpanded(open){
+    if(!open)for(const [id,p] of this.pointers)if(this.extra.contains(p.target))this.up({pointerId:id});
+    this.extra.hidden=!open;this.root.querySelector('[data-ui=more]').setAttribute('aria-expanded',String(open));
+    document.body.classList.toggle('touch-extra-open',open);
   }
   detect(){this.enabled=isTouchDevice({coarsePointer:this.media.matches,mobileUserAgent:navigator.userAgentData?.mobile ?? /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent),review:this.review});document.body.classList.toggle('touch-device',this.enabled);this.update();}
   active(){const g=this.game;return this.enabled&&g.isPlaying&&!g.isPaused&&!g.helpOpen&&!g.multiplayer?.spectating&&!g.contextLost;}
@@ -75,7 +83,7 @@ export class TouchControls {
   }
   down(e){
     if((e.pointerType==='mouse'&&!this.review)||!this.active())return;
-    const button=e.target.closest('button');if(button?.dataset.ui)return;
+    const button=e.target.closest('button');if(button?.dataset.ui || button?.disabled)return;
     let kind,action;
     if(e.target.closest('.touch-stick') || e.target.closest('.touch-move-zone'))kind='stick';
     else if(button?.dataset.key){kind='key';action=button.dataset.key;}
@@ -99,7 +107,7 @@ export class TouchControls {
       this.moveStick(e);
     }
   }
-  moveStick(e){const r=this.stick.getBoundingClientRect(),origin=this.stickOrigin || {x:r.x+r.width/2,y:r.y+r.height/2};const s=stickState(e.clientX-origin.x,e.clientY-origin.y,Math.max(1,(r.width-54)/2));
+  moveStick(e){const r=this.stick.getBoundingClientRect(),origin=this.stickOrigin || {x:r.x+r.width/2,y:r.y+r.height/2};const s=stickState(e.clientX-origin.x,e.clientY-origin.y,Math.max(1,(r.width-(this.knob.getBoundingClientRect?.().width||54))/2),!!this.game.touchDirections?.sprint);
     this.knob.style.transform=`translate(${s.x}px,${s.y}px)`;this.game.touchDirections=s;this.game.syncHeldInput();this.stick.classList.toggle('sprinting',s.sprint);}
   move(e){const p=this.pointers.get(e.pointerId);if(!p)return;
     e.preventDefault();if(!this.active()){this.release();return;}
@@ -107,9 +115,16 @@ export class TouchControls {
     if(p.kind==='look'||p.kind==='mouse'||(p.kind==='key'&&p.action!=='mode')){
       // Ignore tiny thumb jitter on an action button, then keep aiming while
       // jumping, dodging or holding a strand with the same thumb.
-      p.looking ||= p.kind==='look'||Math.hypot(e.clientX-p.startX,e.clientY-p.startY)>=6;
+      const started=p.looking;
+      p.looking ||= p.kind==='look'||Math.hypot(e.clientX-p.startX,e.clientY-p.startY)>=8;
       if(p.looking){
-      this.game.tpsCamera.handleMouseMove(e.clientX-p.x,e.clientY-p.y,.0035);
+      // Spend the first action drag on the deadzone, avoiding a sudden view jump.
+      let dx=e.clientX-p.x,dy=e.clientY-p.y;
+      if(!started && p.kind!=='look'){
+        dx=e.clientX-p.startX;dy=e.clientY-p.startY;
+        const remaining=1-8/Math.hypot(dx,dy);dx*=remaining;dy*=remaining;
+      }
+      this.game.tpsCamera.handleMouseMove(dx,dy,.0028);
       this.game.physics.setWebAimPoint(0,0,null,true);
       }
     }
@@ -126,7 +141,7 @@ export class TouchControls {
   release(){
     for(const id of [...this.pointers.keys()])this.up({pointerId:id});
     this.game.touchDirections={};this.resetStick();this.game.syncHeldInput();
-    if(this.extra){this.extra.hidden=true;this.root.querySelector('[data-ui=more]').setAttribute('aria-expanded','false');}
+    if(this.extra)this.setExpanded(false);
   }
   update(){
     const active=this.active(),g=this.game;
@@ -134,11 +149,11 @@ export class TouchControls {
     this.root.dataset.spectating=String(!!g.multiplayer?.spectating);
     document.body.classList.toggle('touch-solo',this.enabled&&!!g.multiplayer?.solo);
     document.body.classList.toggle('touch-extra-open',!this.root.hidden&&!this.extra.hidden);
-    if(active&&!this.announced){this.announced=true;g.showNotice('왼쪽은 이동 · 오른쪽은 조준 · 와이어 버튼을 누른 채 밀어도 조준할 수 있습니다.');}
+    if(active&&!this.announced){this.announced=true;g.showNotice('왼쪽 이동 · 오른쪽 드래그로 시점 · 와이어를 누른 채 조준 · 보조 동작은 더보기');}
     if(this.enabled)this.game.pointerLockWanted=false;
     if(!active&&this.pointers.size)this.release();
     const combat=this.game.combat?.mode==='combat',grounded=COMBAT_GROUND_STATES.includes(this.game.physics.state),recovering=['ROLLING','TURNING'].includes(this.game.physics.state);
-    const layoutKey=`${g.combat?.mode}:${grounded}:${!!g.combat?.allowGuardInWeb}`;
+    const layoutKey=`${g.combat?.mode}:${grounded}:${recovering}:${!!g.combat?.allowGuardInWeb}`;
     if(this.layoutKey===layoutKey)return;
     this.layoutKey=layoutKey;
     this.root.dataset.combat=String(combat);
