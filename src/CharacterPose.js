@@ -533,6 +533,8 @@ export function poseWall(c,delta,velocity) {
   const speed=travel.length(),moved=c.wallPoseRoot?root.distanceTo(c.wallPoseRoot):0;
   if(moved>.8){c.wallContacts=null;c.wallPhase=0;c.wallPoseWeight=0;c.wallTravelDirection=null;c.wallLiftWeight=0;c.wallPalmDirections=null;}
   c.wallPoseRoot=root.clone();c.wallPhase=((c.wallPhase || 0)+(moved>.8?0:moved)/crawlStride)%1;
+  c.wallPhaseRate=delta>0&&moved<=.8?moved/(delta*crawlStride):0;
+  if(Number.isFinite(c.networkWallPhase))c.wallPhase=c.networkWallPhase;
   c.wallContacts ||= {};
   c.wallLiftWeight=THREE.MathUtils.damp(c.wallLiftWeight ?? 0,Math.min(1,speed/.3),18,delta);
   c.wallPoseWeight=THREE.MathUtils.damp(c.wallPoseWeight || 0,1,18,delta);

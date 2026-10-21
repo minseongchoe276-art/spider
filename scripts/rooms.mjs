@@ -5,7 +5,7 @@ import { MATCH, policeCount } from '../src/MatchRules.js';
 import { sanitizePose } from '../src/RemoteMotion.js';
 import {PURSUIT,matchDuration,arenaFrom,arenaContains,validArenaPoint} from '../src/PursuitRules.js';
 import {proceduralCollision,blockedSegment} from './city-collision.mjs';
-import {attackGate,canAttack,opponents} from '../src/AttackRules.js';
+import {attackGate,canAttack,opponents,guardedDamage,COMBAT_GROUND_STATES} from '../src/AttackRules.js';
 import {LOCAL_CITY} from '../src/LocalCityLayout.js';
 
 const rooms = new Map();
@@ -126,7 +126,8 @@ async function handle(ws, data, terrain) {
     const previousMove=p.lastMove;
     p.x=data.x;p.y=data.y;p.z=data.z;p.facing=data.facing;p.seen=true;p.lastMove=now;
     if(room.enhanced){p.history||=[];p.history.push({x:p.x,y:p.y,z:p.z,time:now});p.history=p.history.filter(h=>now-h.time<600);advanceGoal(room,p,now,previousMove);}
-    broadcast(room,{type:'move',id:p.id,x:p.x,y:p.y,z:p.z,facing:p.facing,pose:sanitizePose(data.pose)});return;
+    p.pose=sanitizePose(data.pose);p.allowRunnerGuard=room.mode==='tag'&&p.team==='runner';
+    broadcast(room,{type:'move',id:p.id,x:p.x,y:p.y,z:p.z,facing:p.facing,pose:p.pose});return;
   }
   if(data.type==='attack' && canAttack(room,p)) {
     const kind=data.kind,now=Date.now(),rule=MATCH[kind];
@@ -134,6 +135,12 @@ async function handle(ws, data, terrain) {
     if(!['punch','web'].includes(kind))return reject('invalid');
     if(!p.seen || ((room.enhanced||room.city==='hong-kong'||room.mode==='custom')&&now-p.lastMove>1500))return reject('stale');
     if(now<(room.vulnerableAt||0))return reject('protected');
+    // Q/releasing B can happen between the 10Hz movement packets. Use the
+    // attack's current pose for its mode, without accepting a new position.
+    const attackPose=sanitizePose(data.pose);if(attackPose)p.pose=attackPose;
+    if(p.pose?.combat?.key==='guard'&&now-p.lastMove<=MATCH.guard.freshnessMs)return reject('guarding');
+    if(kind==='web'&&p.pose?.combatStance)return reject('mode');
+    if(kind==='punch'&&p.pose&&!COMBAT_GROUND_STATES.includes(p.pose.state))return reject('recovering');
     p.cooldowns||={punch:0,web:0};
     if(now-(p.cooldowns[kind]||0)<rule.cooldown)return reject('cooldown');
     p.cooldowns[kind]=now;
@@ -145,6 +152,7 @@ async function handle(ws, data, terrain) {
     if(!target)return reject('target');
     const reason=attackGate(p,target,kind,facing);if(reason)return reject(reason);
     if(target.disconnectedAt)return reject('stale');
+    const damage=guardedDamage(p,target,kind,now);
     if(room.city==='hong-kong'){
       const round=room.round,life=target.lifeEpoch,attackerLife=p.lifeEpoch,from={x:p.x,y:p.y,z:p.z},to={x:target.x,y:target.y,z:target.z};
       const decision=await terrain.visibility(from,to);
@@ -152,13 +160,14 @@ async function handle(ws, data, terrain) {
       if(decision.status==='UNKNOWN')return reject('terrain');
       if(decision.status!=='CLEAR'||!decision.version)return reject('blocked');
     }else if(blockedSegment(p,target,proceduralCollision().colliders))return reject('blocked');
-    applyHit(room,p,target,kind);
+    applyHit(room,p,target,kind,damage);
     return;
   }
 }
 
-function applyHit(room,attacker,target,kind){if(!attacker||!target)return;target.health=Math.max(0,target.health-MATCH[kind].damage);target.eliminated=target.health===0;
- broadcast(room,{type:'hit',attacker:attacker.id,target:target.id,kind,health:target.health,eliminated:target.eliminated});
+function applyHit(room,attacker,target,kind,result=guardedDamage(attacker,target,kind)){if(!attacker||!target)return;
+ target.health=Math.max(0,target.health-result.damage);target.eliminated=target.health===0;
+ broadcast(room,{type:'hit',attacker:attacker.id,target:target.id,kind,...result,health:target.health,eliminated:target.eliminated});
  if(room.mode==='custom'){checkCustomVictory(room);return;}
  if([...room.players.values()].filter(v=>v.team==='runner').every(v=>v.eliminated))finish(room,'police');}
 function checkCustomVictory(room){
@@ -197,7 +206,7 @@ export function attachRooms(server,options={}) {
 
   wss.on('connection', ws => {
     clients.add(ws);
-    send(ws,{type:'welcome',protocol:2,features:['custom-matches','named-targets','attack-results']});
+    send(ws,{type:'welcome',protocol:2,features:['custom-matches','named-targets','attack-results','directional-guard','motion-phase']});
     publishList();
     let windowAt=Date.now(),messages=0,controls=0;
     // ws emits an error before closing an over-limit frame. Keep that error

@@ -446,6 +446,7 @@ export class GameApp {
       buttons.add(e.button);
       if(wasHeld)return;
       this.audio.ensureContext();
+      if(this.combat?.blocking && (e.button===0 || e.button===2))return;
 
       const groundedCombat = this.combat?.mode==='combat' && GROUNDED.includes(this.physics.state);
       if(groundedCombat && (e.button===0 || e.button===2)) {

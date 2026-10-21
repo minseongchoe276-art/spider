@@ -576,6 +576,7 @@ export class Character {
     if (this.airTrick) name = this.airTrick.key === 'front' && this.actions.airTrick
       ? 'airTrick' : this.actions.fallIdle ? 'fallIdle' : 'fall';
     else if(this.isTricking && !grounded && !['WALL_RUNNING','MANTLING','WEB_ZIP'].includes(state) && this.actions.airTrick)name='airTrick';
+    if(this.networkAnimation && this.actions[this.networkAnimation.key])name=this.networkAnimation.key;
     this.fadeToAction(name, combatClip===name ? (combat.duration ? 0.065 : name==='guard' ? 0.18 : 0.12) : state==='MANTLING' && name==='idle' ? .3 : ['LANDING','ROLLING'].includes(state) ? 0.06 : grounded ? 0.18 : 0.12);
     if (STRIDES.includes(name)) {
       const measuredSpeed = this.activeAction?.getClip().userData?.nominalSpeed;
@@ -596,6 +597,10 @@ export class Character {
       this.activeAction.getClip().duration / AIR_TRICKS.front.duration);
     if(name==='wall')this.activeAction?.setEffectiveTimeScale(state==='MANTLING'?0:THREE.MathUtils.clamp(velocity.length()/(this.activeAction.getClip().userData.climbSpeed || 3),0,6));
     this.mixer.update(delta);
+    if(this.networkAnimation && this.activeAction===this.actions[this.networkAnimation.key]){
+      this.activeAction.time=this.networkAnimation.time;
+      this.mixer.update(0);
+    }
     if(this.animationPoseModel!==this.model || !this.animationPose){
       this.animationPoseModel=this.model;
       this.animationPose=Object.values(this.bones).map(bone=>({bone,p:bone.position.clone(),q:bone.quaternion.clone()}));
@@ -607,7 +612,7 @@ export class Character {
       }
     }
     this.movingGuardWeight=THREE.MathUtils.damp(this.movingGuardWeight || 0,
-      grounded && horizontalSpeed>.25 && (this.combatStance || movingStrike)?1:0,18,delta);
+      grounded && horizontalSpeed>.25 && (this.combatStance || movingStrike || movingGuard)?1:0,18,delta);
     if(movingStrike || this.movingGuardWeight>.001) {
       const clip=this.actions[movingStrike?combatClip:movingGuard?'guard':'combatIdle']?.getClip();
       if(clip) {
@@ -680,11 +685,12 @@ export class Character {
     const currentYaw = this.visualYaw ?? yaw;
     this.visualYaw = currentYaw + Math.atan2(Math.sin(yaw - currentYaw),
       Math.cos(yaw - currentYaw)) * (1 - Math.exp(-12 * delta));
+    if(Number.isFinite(this.networkVisualYaw))this.visualYaw=this.networkVisualYaw;
     this.bodyPitch = THREE.MathUtils.damp(this.bodyPitch,
       state === 'WEB_ZIP' ? THREE.MathUtils.clamp(Math.atan2(horizontalSpeed,Math.max(2,velocity.y))*0.65,0,1)
         : state === 'SWINGING' ? THREE.MathUtils.clamp(-velocity.y * 0.015, -0.45, 0.45) : 0, 10, delta);
     this.model.rotation.set(this.bodyPitch + this.trickRotation, this.visualYaw, 0, 'YXZ');
-    alignCombatGaze(this,delta,grounded&&this.combatStance&&(!combat||['combatIdle','guard'].includes(combat.key)));
+    alignCombatGaze(this,delta,grounded&&(this.combatStance||combat?.key==='guard')&&(!combat||['combatIdle','guard'].includes(combat.key)||combat.key.startsWith('dodge')));
     if ((state === 'WALL_RUNNING' || state==='MANTLING') && this.wallNormal) {
       // A humanoid's local Y is its spine, not the sole normal. Swapping
       // Y with the wall normal laid the entire character across the wall.

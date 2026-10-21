@@ -75,6 +75,6 @@ export function updateWebHandPose(c,delta,state) {
     if(total>1){pose.shoot/=total;pose.grip/=total;}
     if(!blocked)applyHandPose(c.webFingerRig,side,pose.shoot,pose.grip);
     else if(['WALL_RUNNING','MANTLING'].includes(state))applyHandPose(c.webFingerRig,side,0,0,{absolute:true,relaxed:.12});
-    else if(['jab','cross','rightHook','hook','heavy','special','guard','combatIdle'].includes(combatKey))applyHandPose(c.webFingerRig,side,0,1,{absolute:true});
+    else if(['jab','cross','rightHook','hook','heavy','special','guard','combatIdle'].includes(combatKey)||combatKey?.startsWith('dodge'))applyHandPose(c.webFingerRig,side,0,1,{absolute:true});
   }
 }

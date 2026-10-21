@@ -11,9 +11,10 @@ const suites=[...new Set([
     'appearances','moving-combat-skin','full-appearance-motions','remote-appearance',
     'modal-lifecycle','audit-edge-cases','mantle-balcony','room-entry','city-authority','postgres-rules',
     'trusted-terrain','hong-kong-terrain','hong-kong-db-authority','hong-kong-transport',
-    'room-server'].map(name=>`check-${name}.mjs`),
+    'room-server','motion-expression','online-guard','online-motion-sync','online-stance',
+    'mode-selection','expanded-input-camera','expanded-terrain-motion','expanded-gait-stability','wall-cross-crawl'].map(name=>`check-${name}.mjs`),
 ])];
-const folder='docs/qa/comprehensive-2026-10-19';fs.mkdirSync(folder,{recursive:true});
+const folder=process.env.COMPREHENSIVE_AUDIT_DIR||'docs/qa/comprehensive-2026-10-19';fs.mkdirSync(folder,{recursive:true});
 const walk=dir=>fs.readdirSync(dir,{withFileTypes:true}).flatMap(entry=>entry.isDirectory()?walk(`${dir}/${entry.name}`):[`${dir}/${entry.name}`]);
 const snapshot=()=>Object.fromEntries(['src','scripts','public/models','public/motions','supabase/functions','supabase/migrations'].flatMap(walk).concat(['package.json','package-lock.json','index.html','vite.config.js']).sort().map(path=>[path,createHash('sha256').update(fs.readFileSync(path)).digest('hex')]));
 const before=snapshot(),results=[];let next=0,status='RUNNING',changed=[];
@@ -32,7 +33,8 @@ async function worker(){while(next<suites.length){
   fs.closeSync(fd);results.push({suite,status:outcome.code===0?'PASS':'FAIL',...outcome,seconds:(Date.now()-start)/1000});save();
   console.log(`${outcome.code===0?'PASS':'FAIL'} ${suite} (${((Date.now()-start)/1000).toFixed(1)}s)`);
 }}
-await Promise.all([worker(),worker()]);
+const workers=Math.max(1,Math.min(4,Number(process.env.COMPREHENSIVE_AUDIT_WORKERS)||2));
+await Promise.all(Array.from({length:workers},()=>worker()));
 const after=snapshot();changed=[...new Set([...Object.keys(before),...Object.keys(after)])].filter(path=>before[path]!==after[path]);
 status=results.some(r=>r.status!=='PASS')||changed.length?'FAIL':'PASS';save();
 fs.writeFileSync(`${folder}/source-snapshot.json`,JSON.stringify({before,after,changed},null,2)+'\n');

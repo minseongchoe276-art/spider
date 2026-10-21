@@ -32,7 +32,10 @@ export class CombatFeedback {
     if(now>(this.previewAt||0)){this.preview=canAttack(online.room,me)?online.attackPreview?.(kind):null;this.previewAt=now+100;}
     if(this.aimZone)this.aimZone.dataset.ready=String(!!this.preview?.aimReady&&!this.preview?.blocked&&!grace);
     if(now<this.until){out.textContent=this.message;return;}
-    if(!canAttack(online.room,me)){out.textContent=`내 HP ${me.health}/100 · 경찰의 주먹 25 / 거미줄 15 · 벽 뒤에서는 피해 없음`;return;}
+    if(this.game.combat?.blocking){out.textContent=online.serverCapabilities?.includes('directional-guard')
+      ?`정면 방어 중 · 지상 좌우 60° · 피해 60% 감소 · 주먹 10 / 와이어 6 · 후방·공중 미적용`
+      :'방어 자세 · 서버 방어 기능 업데이트 대기';return;}
+    if(!canAttack(online.room,me)){out.textContent=`내 HP ${me.health}/100 · 경찰의 주먹 25 / 거미줄 15 · B 지상 정면 방어: 10 / 6 피해 · 벽 뒤 피해 없음`;return;}
     if(kind==='punch'&&!GROUNDED.includes(this.game.physics?.state)){out.textContent='전투 모드 · 착지 후 주먹 공격 · 와이어는 Q로 모드 전환 후 사용';return;}
     if(grace){out.textContent=`시작 보호 ${Math.ceil(grace/1000)}초 · 아직 피해 없음`;return;}
     const remain=Math.max(0,(this.cooldowns[kind]||0)-now);
@@ -58,8 +61,8 @@ export class CombatFeedback {
     this.show(target?`${kind==='web'?'에너지 와이어':'주먹'} → ${target.name||'상대'} · 서버 판정 중`:'정면 범위에 상대 없음 · 거리·높이·방향을 확인하세요');}
   hit(data,player){
     this.pendingUntil=0;
-    const damage=MATCH[data.kind]?.damage || 0;
-    this.show(`${data.kind==='web'?'에너지 와이어':'주먹'} 명중 −${damage} · 상대 HP ${data.health}`,true);
+    const damage=data.damage ?? MATCH[data.kind]?.damage ?? 0;
+    this.show(`${data.blocked?'상대 정면 방어 · ':''}${data.kind==='web'?'에너지 와이어':'주먹'} 명중 −${damage} · 상대 HP ${data.health}`,true);
     const out=this.element();if(out){out.classList.add('confirmed');if(this.marker)this.marker.hidden=false;clearTimeout(this.flash);this.flash=setTimeout(()=>{out.classList.remove('confirmed');if(this.marker)this.marker.hidden=true;},450);}
     if(player)this.game.vfx?.spawnWebImpact?.(new THREE.Vector3(player.x,player.y+1,player.z));
   }

@@ -58,6 +58,7 @@ try{
  controls.root={dataset:{},querySelector:s=>s==='.touch-mode'?mode:s==='.touch-zip span'?zip:buttons[s.match(/data-key="(\w+)"/)?.[1]],querySelectorAll:()=>webButtons};
  controls.extra={hidden:true};controls.announced=true;game.combat={mode:'web'};game.physics.state='IDLE';
  controls.update();assert(buttons.guard.hidden&&buttons.heavy.hidden&&!buttons.wall.hidden&&!buttons.trick.hidden);
+ game.combat.allowGuardInWeb=true;controls.update();assert(!buttons.guard.hidden&&buttons.heavy.hidden,'Runner cannot hold guard on touch');game.combat.allowGuardInWeb=false;controls.update();
  const steady=writes;controls.update();assert.equal(writes,steady,'Unchanged HUD rewrote icons/labels every animation frame');
  game.combat.mode='combat';controls.update();assert(!buttons.guard.hidden&&!buttons.heavy.hidden&&buttons.wall.hidden&&buttons.trick.hidden);
  assert.equal(zip.textContent,'훅');

@@ -123,7 +123,7 @@
           <span class="key-badge">우클릭</span>
           <span class="guide-desc key-accent">반대 손에서 같은 진자 스윙. 꾹 누르면 매달리고, 떼면 그 손만 놓습니다. 땅의 전투는 오른손 스트레이트</span>
         </div>
-        <div class="guide-row"><span class="key-badge">B</span><span class="guide-desc">전투: 누르는 동안 방어</span></div>
+        <div class="guide-row"><span class="key-badge">B</span><span class="guide-desc">누르는 동안 방어. 온라인: 지상에서 캐릭터 정면 좌우 60°의 피해 60% 감소(주먹 10 / 와이어 6). 후방·공중은 감소하지 않습니다. 기력 12 이상일 때 가능. 도망자는 와이어 모드에서도 B 방어 가능</span></div>
         <div class="guide-row">
           <span class="key-badge">E</span>
           <span class="guide-desc">공중에서 한 번 눌러 짧게 이동 (최대 12m) · 지상 출발은 좌/우클릭 · 전투 모드에서는 훅</span>
@@ -194,7 +194,7 @@
           <div class="online-grid"><label class="online-field">방 이름<input id="room-name" maxlength="24" value="새로운 도시 여행"></label><label class="online-field">정원<select id="room-capacity"><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option selected>8</option></select></label></div>
 
           <label id="custom-options" class="online-field hidden">경기 방식<select id="custom-format"><option value="teams">팀전 · 1대1 / 다수 대 다수</option><option value="ffa">개인전 · 마지막 1명 생존</option></select></label>
-          <details class="attack-guide"><summary>공통 공격 판정 · 주먹 / 거미줄</summary><p>HP 100. 주먹: 수평 2.6m 이내 · 높이 차 2.2m 이내 · 정면 좌우 약 49° · 피해 25 · 간격 0.56초. 거미줄: 수평 22m 이내 · 높이 차 8m 이내 · 정면 좌우 약 33°와 화면 조준 영역 모두 충족 · 피해 15 · 간격 1.6초.</p><p>벽·건물 뒤, 같은 팀, 탈락자는 공격할 수 없습니다. 경찰과 도망자에서는 경찰만 공격합니다. 주먹은 실제 타격 순간, 거미줄은 발사 요청 순간의 서버 수신 위치로 판정합니다. 공격 한 번에 표시된 상대 한 명만 피격됩니다. 서버 명중 확인 후에만 HP가 감소합니다. Q로 전투/거미줄 모드를 전환하세요.</p></details>
+          <details class="attack-guide"><summary>공통 공격 판정 · 주먹 / 거미줄</summary><p>HP 100. 주먹: 수평 2.6m 이내 · 높이 차 2.2m 이내 · 정면 좌우 약 49° · 피해 25 · 간격 0.56초. 거미줄: 수평 22m 이내 · 높이 차 8m 이내 · 정면 좌우 약 33°와 화면 조준 영역 모두 충족 · 피해 15 · 간격 1.6초.</p><p>벽·건물 뒤, 같은 팀, 탈락자는 공격할 수 없습니다. 경찰과 도망자에서는 경찰만 공격합니다. 주먹은 실제 타격 순간, 거미줄은 발사 요청 순간의 서버 수신 위치로 판정합니다. 공격 한 번에 표시된 상대 한 명만 피격됩니다. 기력 12 이상에서 B를 누른 지상 정면 방어는 피해를 60% 줄입니다(주먹 10 / 거미줄 6). 후방·공중에는 적용되지 않으며 방어 중에는 공격할 수 없습니다. 서버 명중 확인 후에만 HP가 감소합니다. Q로 전투/거미줄 모드를 전환하세요.</p></details>
           <button id="create-room" class="online-primary" type="button">새 방 만들기 <span>↗</span></button>
           <div class="online-divider"><span>또는 바로 합류</span></div>
           <div class="online-inline"><input id="room-code" maxlength="6" placeholder="초대 코드 6자리" aria-label="방 코드"><button id="join-code" type="button">코드 입장</button></div>

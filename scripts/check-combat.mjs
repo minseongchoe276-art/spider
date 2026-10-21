@@ -40,7 +40,7 @@ check('A wall, wrong height or rear position blocks an attack',()=>{
  physics.city.raycast=()=>null;c.cancel();
 });
 check('Frontal guard spends stamina; rear attacks hurt; dodge grants temporary protection',()=>{
- physics.facingAngle=0;c.enemies=[];c.stamina=100;c.guard(true);assert.equal(c.receiveDamage(10,enemy()),0);assert.equal(c.stamina,88);
+ physics.facingAngle=0;c.enemies=[];c.stamina=100;c.guard(true);const hp=c.health;assert.equal(c.receiveDamage(10,enemy()),4);assert.equal(c.health,hp-4);assert.equal(c.stamina,88);assert(c.blocking);
  assert.equal(c.receiveDamage(10,enemy(0,-2)),10);c.cancel();c.invulnerable=0;c.stamina=100;
  assert(c.dodge({left:true},camera));assert.equal(c.action.key,'dodgeLeft');assert.equal(c.receiveDamage(10,enemy()),0);c.cancel();
 });

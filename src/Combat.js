@@ -1,5 +1,8 @@
 import * as THREE from 'three';
 import {GROUNDED} from './MotionCatalog.js';
+import {COMBAT_GROUND_STATES} from './AttackRules.js';
+import {MATCH} from './MatchRules.js';
+const canStrike=p=>COMBAT_GROUND_STATES.includes(p.state);
 
 export const ATTACKS={
   jab:{duration:0.72,from:0.14,to:0.22,damage:12,reach:1.8},
@@ -42,23 +45,23 @@ export class CombatSystem {
     this.character.combatAction={id:this.action.id,key,time:0,duration};
   }
   attack(camera) {
-    if(this.mode!=='combat' || !grounded(this.physics) || this.blocking || this.stamina<4)return false;
+    if(this.mode!=='combat' || !canStrike(this.physics) || this.blocking || this.stamina<4)return false;
     if(this.action){this.queue('attack',camera);return false;}
     this.stamina-=4;this.start('jab',ATTACKS.jab.duration,camera);return true;
   }
   straight(camera) {
     if(this.action){this.queue('straight',camera);return false;}
-    if(this.mode!=='combat' || !grounded(this.physics) || this.blocking || this.stamina<7)return false;
+    if(this.mode!=='combat' || !canStrike(this.physics) || this.blocking || this.stamina<7)return false;
     this.stamina-=7;this.start('cross',ATTACKS.cross.duration,camera);return true;
   }
   heavy(camera) {
-    if(this.mode!=='combat' || this.action || this.stamina<18 || !grounded(this.physics))return false;
+    if(this.mode!=='combat' || this.action || this.stamina<18 || !canStrike(this.physics))return false;
     this.stamina-=18;this.blocking=false;
     this.start('hook',ATTACKS.hook.duration,camera);
     return true;
   }
   special(camera) {
-    if(this.mode!=='combat' || this.action || !grounded(this.physics) || this.blocking || this.stamina<35 || this.specialCooldown>0)return false;
+    if(this.mode!=='combat' || this.action || !canStrike(this.physics) || this.blocking || this.stamina<35 || this.specialCooldown>0)return false;
     this.stamina-=35;this.specialCooldown=4;
     this.start('special',ATTACKS.special.duration,camera);return true;
   }
@@ -78,15 +81,15 @@ export class CombatSystem {
     const duration={dodgeLeft:0.38,dodgeRight:0.38,dodgeBack:0.42,dodgeForward:0.52}[key];
     this.start(key,duration,null);this.action.direction=direction;this.invulnerable=0.28;return true;
   }
-  guard(value) {this.blocking=value && this.mode==='combat' && !this.action && grounded(this.physics) && this.stamina>0;}
+  guard(value) {this.blocking=value && (this.mode==='combat'||this.allowGuardInWeb) && !this.action && canStrike(this.physics) && this.stamina>=12;}
   before(delta,camera,input=null) {
     this.character.combatStance=this.mode==='combat';
     delta=Math.max(0,Math.min(delta,0.1));this.elapsed+=delta;
     this.specialCooldown=Math.max(0,this.specialCooldown-delta);this.invulnerable=Math.max(0,this.invulnerable-delta);
     this.stamina=Math.min(100,this.stamina+delta*(this.blocking?3:this.action?0:18));
-    if(this.blocking && (!grounded(this.physics)||this.stamina<=0))this.blocking=false;
+    if(this.blocking && (!canStrike(this.physics)||this.stamina<12))this.blocking=false;
     // Grounded strikes and evasions cannot resume halfway through on landing.
-    if(this.action && !grounded(this.physics) && this.action.key!=='slam')this.cancel();
+    if(this.action && (!grounded(this.physics)||(ATTACKS[this.action.key]&&!canStrike(this.physics))) && this.action.key!=='slam')this.cancel();
     const a=this.action;
     if(a) {
       a.previous=a.time;a.time+=delta;
@@ -142,10 +145,11 @@ export class CombatSystem {
   receiveDamage(amount,enemy) {
     if(this.invulnerable>0)return 0;
     const d=enemy.position.clone().sub(this.physics.position).setY(0).normalize();
-    const guarded=this.blocking && d.dot(forward(this.physics))>0.2 && this.stamina>=12;
-    if(guarded) {this.stamina-=12;this.audio?.playCombatHit?.(false);return 0;}
-    this.health=Math.max(0,this.health-amount);this.invulnerable=0.65;this.cancel();
-    if(this.mode==='combat' && grounded(this.physics))this.start('hitHead',0.4,null);
+    const guarded=this.blocking && canStrike(this.physics) && d.dot(forward(this.physics))>=MATCH.guard.cone && this.stamina>=12;
+    if(guarded) {this.stamina-=12;amount=Math.ceil(amount*MATCH.guard.damageMultiplier);this.audio?.playCombatHit?.(false);}
+    this.health=Math.max(0,this.health-amount);
+    if(!guarded){this.invulnerable=0.65;this.cancel();
+      if(this.mode==='combat' && grounded(this.physics))this.start('hitHead',0.4,null);}
     if(this.health===0) {this.physics.resetPosition?.();this.health=100;this.stamina=100;this.cancel();this.clearEnemies();this.onNotice('시작 위치에서 회복');}
     return amount;
   }

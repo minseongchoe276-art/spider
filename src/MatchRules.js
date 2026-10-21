@@ -6,6 +6,7 @@ export const MATCH = {
   durationMs: 5 * 60 * 1000,
   // Runners can leave the roof before the first web connects.
   graceMs: 8000,
+  guard: { damageMultiplier: .4, cone: .5, freshnessMs: 350 },
   punch: { damage: 25, reach: 2.6, vertical: 2.2, cone: 0.65, cooldown: 560 },
   web: { damage: 15, reach: 22, vertical: 8, cone: 0.84, cooldown: 1600 },
 };
