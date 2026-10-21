@@ -37,6 +37,7 @@ export class ThirdPersonCamera {
     this.isRecentering = false;
     this.recenterYaw = 0;
     this.lockBehind = true;
+    this.followMovement = true;
     this.orbitReturnTime = 0;
 
     // Raycaster for building collision prevention
@@ -117,6 +118,7 @@ export class ThirdPersonCamera {
     this.recenterYaw = facingAngle;
     this.isRecentering = true;
     this.lockBehind = true;
+    this.followMovement = true;
     this.orbitReturnTime = 0;
   }
 
@@ -124,8 +126,10 @@ export class ThirdPersonCamera {
   // leaves the first frame on -Z even when the character faces another way.
   placeBehind(playerPos, facing) {
     this.yaw = facing;
+    this.camera.userData.movementYaw = facing;
     this.pitch = 0.16;
     this.lockBehind = true;
+    this.followMovement = true;
     this.isRecentering = false;
     this.orbitReturnTime = 0;
     this.boomSide = 0;
@@ -166,7 +170,11 @@ export class ThirdPersonCamera {
     this.shakeIntensity = Math.max(this.shakeIntensity, intensity*this.shakeStrength);
   }
 
-  update(delta, playerPos, playerVelocity, isSwinging, cityMeshes = [], cityRaycast = null, facingAngle = null) {
+  update(delta, playerPos, playerVelocity, isSwinging, cityMeshes = [], cityRaycast = null, facingAngle = null, movement = null) {
+    // Camera-relative reverse/side movement must not steer its own reference.
+    // Keep that view through the stop; forward or C resumes body following.
+    if (movement?.backward || movement?.left || movement?.right) this.followMovement = false;
+    else if (movement?.forward) this.followMovement = true;
     if (this.isRecentering) {
       const difference = Math.atan2(Math.sin(this.recenterYaw - this.yaw), Math.cos(this.recenterYaw - this.yaw));
       this.yaw += difference * (1 - Math.exp(-7 * delta));
@@ -177,10 +185,12 @@ export class ThirdPersonCamera {
     }
     // Keep the boom offset relative to the character, like a conventional
     // third-person follow camera. Mouse input temporarily unlocks this orbit.
-    if (this.lockBehind && facingAngle !== null) {
+    if (this.lockBehind && this.followMovement && facingAngle !== null) {
       const difference = Math.atan2(Math.sin(facingAngle - this.yaw), Math.cos(facingAngle - this.yaw));
       this.yaw += difference * (1 - Math.exp(-10 * this.followStrength * delta));
     }
+    // Movement uses the intended view yaw, without spring lag or impact shake.
+    this.camera.userData.movementYaw = this.yaw;
     const speed = playerVelocity.length();
     const speedKmh = speed * 3.6;
 

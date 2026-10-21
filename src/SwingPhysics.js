@@ -5,6 +5,10 @@ import { resolveBody, sweepBody } from './MovementCollision.js';
 import { groundSample, planMantle, mantlePosition, resolveTraversal, hasMantleSupport } from './LedgeTraversal.js';
 import { constrainWebs } from './WebConstraints.js';
 
+const movementForward = (camera,target) => Number.isFinite(camera?.userData?.movementYaw)
+  ? target.set(Math.sin(camera.userData.movementYaw),0,Math.cos(camera.userData.movementYaw))
+  : camera?.getWorldDirection(target);
+
 // Normals require the inverse-transpose under unequal scale or shear.
 const surfaceNormal = hit => hit.face.normal.clone()
   .applyNormalMatrix(new THREE.Matrix3().getNormalMatrix(hit.object.matrixWorld));
@@ -629,7 +633,7 @@ export class SwingPhysics {
     if(this.webs.length && !this.webs.some(web=>web.launchPending)) {
       // Gentle player effort acts across the rope, never reels it inward.
       const camForward=new THREE.Vector3();
-      camera?.getWorldDirection(camForward);
+      movementForward(camera,camForward);
       camForward.y=0;
       if(camForward.lengthSq()<1e-6)camForward.set(Math.sin(this.facingAngle),0,Math.cos(this.facingAngle));
       camForward.normalize();
@@ -884,7 +888,7 @@ export class SwingPhysics {
 
     // Camera relative planar movement
     const camForward = new THREE.Vector3();
-    camera.getWorldDirection(camForward);
+    movementForward(camera,camForward);
     camForward.y = 0;
     // Screen-right is the camera's local +X. At yaw 0 the look is (0,0,1)
     // and forward × up is (-1,0,0), which matches that column.

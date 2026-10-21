@@ -882,7 +882,8 @@ export class GameApp {
         this.physics.isSwinging,
         this.city.getCameraCollisionMeshes?.(this.physics.renderPosition) || this.city.buildingMeshes,
         this.city.raycast?.bind(this.city),
-        this.physics.facingAngle
+        this.physics.facingAngle,
+        this.input
       );
       // 3. Update Visuals & FX
       const speedKmh = this.physics.velocity.length() * 3.6;
