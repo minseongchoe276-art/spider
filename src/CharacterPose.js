@@ -8,6 +8,54 @@ export const GROUND_SOLE_SPEED=240;
 const worldPosition=n=>n.getWorldPosition(new THREE.Vector3());
 const find=(c,id)=>Object.values(c.bones || {}).find(b=>boneId(b.name)===id);
 
+// Impact poses can support their weight on a hand, knee or shoulder. Soles
+// alone cannot keep a rolling hand or a three-point landing knee above ground.
+// Cache directional skin extrema in each dominant bone's bind frame, then
+// skin only that surface envelope during these short impact actions.
+const impactEnvelopes=new WeakMap();
+export function prepareImpactBody(c) {
+  const mesh=c.model.getObjectByProperty('isSkinnedMesh',true),geometry=mesh?.geometry;
+  if(!geometry)return;
+  if(c.impactGeometry!==geometry){
+    c.impactGeometry=geometry;
+    if(impactEnvelopes.has(geometry)){c.impactVertices=impactEnvelopes.get(geometry);return;}
+    const directions=[];
+    for(let x=-1;x<=1;x++)for(let y=-1;y<=1;y++)for(let z=-1;z<=1;z++)
+      if(x||y||z)directions.push(new THREE.Vector3(x,y,z).normalize());
+    const groups=new Map(),position=geometry.attributes.position,weights=geometry.attributes.skinWeight,indices=geometry.attributes.skinIndex;
+    const p=new THREE.Vector3();
+    for(let vertex=0;vertex<position.count;vertex++){
+      let slot=0;for(let k=1;k<4;k++)if(weights.getComponent(vertex,k)>weights.getComponent(vertex,slot))slot=k;
+      const bone=indices.getComponent(vertex,slot);
+      if(!groups.has(bone))groups.set(bone,directions.map(()=>({value:-Infinity,vertex:0})));
+      p.fromBufferAttribute(position,vertex).applyMatrix4(mesh.bindMatrix).applyMatrix4(mesh.skeleton.boneInverses[bone]);
+      const extrema=groups.get(bone);
+      for(let k=0;k<directions.length;k++){const value=p.dot(directions[k]);if(value>extrema[k].value)extrema[k]={value,vertex};}
+    }
+    c.impactVertices=[...new Set([...groups.values()].flatMap(extrema=>extrema.map(p=>p.vertex)))];
+    impactEnvelopes.set(geometry,c.impactVertices);
+  }
+}
+export function clearImpactBody(c,delta,active=true) {
+  prepareImpactBody(c);
+  const mesh=c.model.getObjectByProperty('isSkinnedMesh',true),geometry=mesh?.geometry;
+  if(!geometry)return;
+  const root=worldPosition(c.group),support=footSupport(c,root);
+  if(!support)return;
+  const p=new THREE.Vector3();let lift=0;
+  for(const vertex of c.impactVertices){
+    mesh.localToWorld(mesh.applyBoneTransform(vertex,p.fromBufferAttribute(geometry.attributes.position,vertex)));
+    const height=support.height-(support.normal.x*(p.x-root.x)+support.normal.z*(p.z-root.z))/support.normal.y;
+    // A small envelope margin covers the gaps between sampled directions.
+    lift=Math.max(lift,height+(active?.012:0)-p.y);
+  }
+  // An interrupted roll still crossfades out of its low pose. Release its
+  // support offset with that pose instead of dropping the skin in one frame.
+  lift=Math.max(lift,(c.impactLift || 0)*Math.exp(-18*delta));
+  c.impactLift=lift<.0001?0:lift;
+  if(lift>0){c.model.position.y+=lift;c.group.updateMatrixWorld(true);}
+}
+
 export function reuseHeldGroundPose(c,delta,grounded) {
   const eligible=grounded && c.poseState==='IDLE' && (c.groundMotionVelocity?.lengthSq() || 0)<.0025 && !(c.mantleFootRelease>0);
   if(!eligible){c.groundPoseInput=null;c.groundPoseStillTime=0;return false;}

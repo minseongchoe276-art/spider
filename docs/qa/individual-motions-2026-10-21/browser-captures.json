@@ -1,0 +1,134 @@
+[
+  {
+    "key": "idle",
+    "status": "1 / 33 · idle · web · IDLE · 4.00초 · 7개 구간 × 정면·측면·후면"
+  },
+  {
+    "key": "walk",
+    "status": "2 / 33 · walk · web · RUNNING · 0.97초 · 7개 구간 × 정면·측면·후면"
+  },
+  {
+    "key": "regularRun",
+    "status": "3 / 33 · regularRun · web · RUNNING · 0.70초 · 7개 구간 × 정면·측면·후면"
+  },
+  {
+    "key": "run",
+    "status": "4 / 33 · run · web · SPRINTING · 0.53초 · 7개 구간 × 정면·측면·후면"
+  },
+  {
+    "key": "stop",
+    "status": "5 / 33 · stop · web · IDLE · 0.23초 · 7개 구간 × 정면·측면·후면"
+  },
+  {
+    "key": "runStop",
+    "status": "6 / 33 · runStop · web · IDLE · 0.90초 · 7개 구간 × 정면·측면·후면"
+  },
+  {
+    "key": "zip",
+    "status": "7 / 33 · zip · web · WEB_ZIP · 1.00초 · 7개 구간 × 정면·측면·후면"
+  },
+  {
+    "key": "turnLeft",
+    "status": "8 / 33 · turnLeft · web · TURNING · 0.93초 · 7개 구간 × 정면·측면·후면"
+  },
+  {
+    "key": "turnRight",
+    "status": "9 / 33 · turnRight · web · TURNING · 0.93초 · 7개 구간 × 정면·측면·후면"
+  },
+  {
+    "key": "jump",
+    "status": "10 / 33 · jump · web · JUMPING · 0.60초 · 7개 구간 × 정면·측면·후면"
+  },
+  {
+    "key": "land",
+    "status": "11 / 33 · land · web · LANDING · 0.87초 · 7개 구간 × 정면·측면·후면"
+  },
+  {
+    "key": "jumpDown",
+    "status": "12 / 33 · jumpDown · web · FALLING · 2.30초 · 7개 구간 × 정면·측면·후면"
+  },
+  {
+    "key": "drop",
+    "status": "13 / 33 · drop · web · FALLING · 0.40초 · 7개 구간 × 정면·측면·후면"
+  },
+  {
+    "key": "jumpDownVariant",
+    "status": "14 / 33 · jumpDownVariant · web · FALLING · 2.63초 · 7개 구간 × 정면·측면·후면"
+  },
+  {
+    "key": "swing",
+    "status": "15 / 33 · swing · web · SWINGING · 1.95초 · 7개 구간 × 정면·측면·후면"
+  },
+  {
+    "key": "fall",
+    "status": "16 / 33 · fall · web · FALLING · 4.50초 · 7개 구간 × 정면·측면·후면"
+  },
+  {
+    "key": "fallVariant",
+    "status": "17 / 33 · fallVariant · web · FALLING · 4.50초 · 7개 구간 × 정면·측면·후면"
+  },
+  {
+    "key": "fallIdle",
+    "status": "18 / 33 · fallIdle · web · FALLING · 4.50초 · 7개 구간 × 정면·측면·후면"
+  },
+  {
+    "key": "roll",
+    "status": "19 / 33 · roll · web · ROLLING · 1.54초 · 7개 구간 × 정면·측면·후면"
+  },
+  {
+    "key": "injuredIdle",
+    "status": "20 / 33 · injuredIdle · web · IDLE · 9.33초 · 7개 구간 × 정면·측면·후면"
+  },
+  {
+    "key": "wall",
+    "status": "21 / 33 · wall · web · WALL_RUNNING · 2.00초 · 7개 구간 × 정면·측면·후면"
+  },
+  {
+    "key": "combatIdle",
+    "status": "22 / 33 · combatIdle · web · IDLE · 4.40초 · 7개 구간 × 정면·측면·후면"
+  },
+  {
+    "key": "jab",
+    "status": "23 / 33 · jab · web · IDLE · 1.33초 · 7개 구간 × 정면·측면·후면"
+  },
+  {
+    "key": "guard",
+    "status": "24 / 33 · guard · web · IDLE · 2.00초 · 7개 구간 × 정면·측면·후면"
+  },
+  {
+    "key": "slam",
+    "status": "25 / 33 · slam · web · FALLING · 2.71초 · 7개 구간 × 정면·측면·후면"
+  },
+  {
+    "key": "slamLand",
+    "status": "26 / 33 · slamLand · web · LANDING · 0.88초 · 7개 구간 × 정면·측면·후면"
+  },
+  {
+    "key": "hook",
+    "status": "27 / 33 · hook · web · IDLE · 1.40초 · 7개 구간 × 정면·측면·후면"
+  },
+  {
+    "key": "heavy",
+    "status": "28 / 33 · heavy · web · IDLE · 1.40초 · 7개 구간 × 정면·측면·후면"
+  },
+  {
+    "key": "hitHead",
+    "status": "29 / 33 · hitHead · web · IDLE · 0.54초 · 7개 구간 × 정면·측면·후면"
+  },
+  {
+    "key": "rightHook",
+    "status": "30 / 33 · rightHook · web · IDLE · 0.68초 · 7개 구간 × 정면·측면·후면"
+  },
+  {
+    "key": "cross",
+    "status": "31 / 33 · cross · web · IDLE · 1.43초 · 7개 구간 × 정면·측면·후면"
+  },
+  {
+    "key": "airTrick",
+    "status": "32 / 33 · airTrick · web · FALLING · 0.93초 · 7개 구간 × 정면·측면·후면"
+  },
+  {
+    "key": "special",
+    "status": "33 / 33 · special · web · IDLE · 1.80초 · 7개 구간 × 정면·측면·후면"
+  }
+]

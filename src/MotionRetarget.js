@@ -42,7 +42,12 @@ export function prepareMotion(clip, key, bones, item={}) {
     clip=THREE.AnimationUtils.subclip(clip,key,14,Math.ceil(clip.duration*30),30);
     clip.userData={sourceContactTime:14/30};
   }
-  if (key === 'drop') clip = THREE.AnimationUtils.subclip(clip, 'drop', 0, 16, 30);
+  // FALLING begins after support is lost. The first 16 source frames are
+  // a grounded crouch/takeoff; playing them here made ledge exits squat in air.
+  if (key === 'drop') {
+    clip = THREE.AnimationUtils.subclip(clip, 'drop', 16, 29, 30);
+    clip.userData={sourceAirborneWindow:[16/30,29/30]};
+  }
   if (key === 'femaleStop') clip = THREE.AnimationUtils.subclip(clip, 'femaleStop', 29, 47, 30);
   if (key === 'stop') clip = THREE.AnimationUtils.subclip(clip, 'stop', Math.max(0,Math.floor(clip.duration*30)-8), Math.floor(clip.duration*30), 30);
   if (key === 'swing' || key === 'zip') {

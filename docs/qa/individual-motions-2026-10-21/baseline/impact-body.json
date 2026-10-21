@@ -1,0 +1,126 @@
+{
+  "passed": 0,
+  "total": 10,
+  "results": [
+    {
+      "key": "roll",
+      "fps": 24,
+      "slope": 0,
+      "pass": false,
+      "error": "roll skin penetrated the floor -129.5mm at 40.5%",
+      "minimum": -0.12953570108986012,
+      "maxLift": 0,
+      "maxLiftSpeed": 0,
+      "worstPhase": 0.4051695344485449,
+      "frames": 39
+    },
+    {
+      "key": "slamLand",
+      "fps": 24,
+      "slope": 0,
+      "pass": false,
+      "error": "slamLand skin penetrated the floor -55.5mm at 23.6%",
+      "minimum": -0.055497157538317014,
+      "maxLift": 0,
+      "maxLiftSpeed": 0,
+      "worstPhase": 0.23569024477192188,
+      "frames": 23
+    },
+    {
+      "key": "roll",
+      "fps": 60,
+      "slope": 0,
+      "pass": false,
+      "error": "roll skin penetrated the floor -129.5mm at 42.1%",
+      "minimum": -0.12953570108986048,
+      "maxLift": 0,
+      "maxLiftSpeed": 0,
+      "worstPhase": 0.4213763158264867,
+      "frames": 94
+    },
+    {
+      "key": "slamLand",
+      "fps": 60,
+      "slope": 0,
+      "pass": false,
+      "error": "slamLand skin penetrated the floor -58.8mm at 22.6%",
+      "minimum": -0.05878279014534073,
+      "maxLift": 0,
+      "maxLiftSpeed": 0,
+      "worstPhase": 0.226262634981045,
+      "frames": 55
+    },
+    {
+      "key": "roll",
+      "fps": 144,
+      "slope": 0,
+      "pass": false,
+      "error": "roll skin penetrated the floor -130.0mm at 43.2%",
+      "minimum": -0.1300123164892691,
+      "maxLift": 0,
+      "maxLiftSpeed": 0,
+      "worstPhase": 0.43218083674511454,
+      "frames": 224
+    },
+    {
+      "key": "slamLand",
+      "fps": 144,
+      "slope": 0,
+      "pass": false,
+      "error": "slamLand skin penetrated the floor -59.8mm at 22.0%",
+      "minimum": -0.05984067995824558,
+      "maxLift": 0,
+      "maxLiftSpeed": 0,
+      "worstPhase": 0.21997756178712707,
+      "frames": 129
+    },
+    {
+      "key": "roll",
+      "fps": 60,
+      "slope": 0.2,
+      "pass": false,
+      "error": "roll skin penetrated the floor -179.5mm at 42.1%",
+      "minimum": -0.17954325072388747,
+      "maxLift": 0,
+      "maxLiftSpeed": 0,
+      "worstPhase": 0.4213763158264867,
+      "frames": 94
+    },
+    {
+      "key": "slamLand",
+      "fps": 60,
+      "slope": 0.2,
+      "pass": false,
+      "error": "slamLand skin penetrated the floor -181.5mm at 26.4%",
+      "minimum": -0.18147066655806765,
+      "maxLift": 0,
+      "maxLiftSpeed": 1.0029569190908403,
+      "worstPhase": 0.2639730741445525,
+      "frames": 55
+    },
+    {
+      "key": "roll",
+      "fps": 60,
+      "slope": -0.2,
+      "pass": false,
+      "error": "roll skin penetrated the floor -91.6mm at 43.2%",
+      "minimum": -0.09155761058971085,
+      "maxLift": 0,
+      "maxLiftSpeed": 0,
+      "worstPhase": 0.43218083674511454,
+      "frames": 94
+    },
+    {
+      "key": "slamLand",
+      "fps": 60,
+      "slope": -0.2,
+      "pass": false,
+      "error": "slamLand skin penetrated the floor -109.4mm at 22.6%",
+      "minimum": -0.10938458956985699,
+      "maxLift": 0,
+      "maxLiftSpeed": 0.38678330736487104,
+      "worstPhase": 0.226262634981045,
+      "frames": 55
+    }
+  ]
+}

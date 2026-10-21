@@ -12,6 +12,7 @@ const suites=[
  'camera-motion-web','full-game-audit','input-lifecycle','wall-ledge','wall-ledge-rig',
  'all-motions','motion-sources','web-hand-pose','silk-gait','wall-crawl','natural-wall-motion','end-joint-stability','limb-continuity','turn-joint-stability','motion-cleanup',
  'combat-traversal','combat-aim','combat-quality','combat-feet','moving-combat-skin','appearances','full-appearance-motions','motion-expression',
+ 'impact-body','drop-motion','human-mode','wall-cross-crawl',
 ];
 const folder=process.env.MOTION_AUDIT_DIR || 'docs/qa/complete-motion-2026-10-19';fs.mkdirSync(folder,{recursive:true});
 const model=fs.readFileSync('public/models/shadow-pulse-rig.glb');

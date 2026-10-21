@@ -6,8 +6,10 @@ import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
 import {loadMotionRig,joint,point,disposeRig} from './lib/motion-rig.mjs';
 import {boneId} from '../src/MotionRetarget.js';
 
-const folder='docs/qa/motion-quality-2026-10-20';fs.mkdirSync(folder,{recursive:true});
-const tracked=['src/Character.js','src/CharacterPose.js','src/JointConstraints.js',...fs.readdirSync('public/motions').filter(f=>f.endsWith('.json')).map(f=>'public/motions/'+f)];
+const folder=process.env.MOTION_QUALITY_DIR || 'docs/qa/motion-quality-2026-10-20';fs.mkdirSync(folder,{recursive:true});
+const tracked=['src/Character.js','src/CharacterPose.js','src/CharacterAppearance.js','src/MotionRetarget.js','src/JointConstraints.js',
+ 'public/models/shadow-pulse-rig.glb','public/models/appearance-web.glb',
+ ...fs.readdirSync('public/motions').filter(f=>f.endsWith('.json')).map(f=>'public/motions/'+f)];
 const fingerprint=()=>Object.fromEntries(tracked.map(p=>[p,crypto.createHash('sha256').update(fs.readFileSync(p)).digest('hex')]));
 const sourceHashes=fingerprint();
 const {actor,clips}=await loadMotionRig();
@@ -16,7 +18,9 @@ const combat=new Set(['combatIdle','jab','cross','hook','heavy','special','right
 const air=new Set(['jump','drop','jumpDown','jumpDownVariant','fall','fallIdle','fallVariant','airTrick','slam','swing','zip']);
 const keys=['head','hips','lefthand','righthand','leftfoot','rightfoot'];
 for(const mode of ['web','combat']){
- const b=fs.readFileSync(`public/models/appearance-${mode}.glb`),len=b.readUInt32LE(12),g=JSON.parse(b.subarray(20,20+len));
+ // Both gameplay modes now use the same published skin. Keep two mode rows
+ // for review compatibility, without measuring a removed character model.
+ const b=fs.readFileSync('public/models/appearance-web.glb'),len=b.readUInt32LE(12),g=JSON.parse(b.subarray(20,20+len));
  g.buffers[0].uri='data:application/octet-stream;base64,'+b.subarray(28+len).toString('base64');
  delete g.images;delete g.textures;g.materials=[];for(const m of g.meshes)for(const p of m.primitives)delete p.material;
  const geometry=(await new GLTFLoader().parseAsync(JSON.stringify(g),'')).scene.getObjectByProperty('isSkinnedMesh',true).geometry;

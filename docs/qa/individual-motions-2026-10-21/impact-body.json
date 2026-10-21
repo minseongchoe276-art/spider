@@ -1,0 +1,222 @@
+{
+  "passed": 10,
+  "total": 10,
+  "results": [
+    {
+      "key": "roll",
+      "fps": 24,
+      "slope": 0,
+      "pass": true,
+      "minimum": 0.011551823190072169,
+      "maxLift": 0.1410875203687889,
+      "maxLiftSpeed": 1.9098027347281565,
+      "worstPhase": 0.4051695344485449,
+      "frames": 39,
+      "skinVertices": 29133,
+      "envelopeVertices": 626
+    },
+    {
+      "key": "slamLand",
+      "fps": 24,
+      "slope": 0,
+      "pass": true,
+      "minimum": 0.007991019604066465,
+      "maxLift": 0.06386594941153777,
+      "maxLiftSpeed": 1.033067717785574,
+      "worstPhase": 0.28282829372630625,
+      "frames": 23,
+      "skinVertices": 29133,
+      "envelopeVertices": 626
+    },
+    {
+      "key": "roll",
+      "fps": 60,
+      "slope": 0,
+      "pass": true,
+      "minimum": 0.011195494355733637,
+      "maxLift": 0.1410875203687894,
+      "maxLiftSpeed": 3.9339851420651146,
+      "worstPhase": 0.399767273989231,
+      "frames": 94,
+      "skinVertices": 29133,
+      "envelopeVertices": 626
+    },
+    {
+      "key": "slamLand",
+      "fps": 60,
+      "slope": 0,
+      "pass": true,
+      "minimum": 0.007371387261137717,
+      "maxLift": 0.0672004535921946,
+      "maxLiftSpeed": 1.2699285728742478,
+      "worstPhase": 0.1131313174905225,
+      "frames": 55,
+      "skinVertices": 29133,
+      "envelopeVertices": 626
+    },
+    {
+      "key": "roll",
+      "fps": 144,
+      "slope": 0,
+      "pass": true,
+      "minimum": 0.011119593470776179,
+      "maxLift": 0.14163936641092148,
+      "maxLiftSpeed": 4.973462478045757,
+      "worstPhase": 0.40967141816463987,
+      "frames": 224,
+      "skinVertices": 29133,
+      "envelopeVertices": 626
+    },
+    {
+      "key": "slamLand",
+      "fps": 144,
+      "slope": 0,
+      "pass": true,
+      "minimum": 0.007239421871204443,
+      "maxLift": 0.06827674092109151,
+      "maxLiftSpeed": 1.4769717489372547,
+      "worstPhase": 0.10998878089356354,
+      "frames": 129,
+      "skinVertices": 29133,
+      "envelopeVertices": 626
+    },
+    {
+      "key": "roll",
+      "fps": 60,
+      "slope": 0.2,
+      "pass": true,
+      "minimum": 0.004766994396609686,
+      "maxLift": 0.19136706762801814,
+      "maxLiftSpeed": 3.5893486499042573,
+      "worstPhase": 0.5942486505245326,
+      "frames": 94,
+      "skinVertices": 29133,
+      "envelopeVertices": 626
+    },
+    {
+      "key": "slamLand",
+      "fps": 60,
+      "slope": 0.2,
+      "pass": true,
+      "minimum": 0.008495461981464232,
+      "maxLift": 0.09939536427638385,
+      "maxLiftSpeed": 2.5842041426549986,
+      "worstPhase": 0.075420878327015,
+      "frames": 55,
+      "skinVertices": 29133,
+      "envelopeVertices": 626
+    },
+    {
+      "key": "roll",
+      "fps": 60,
+      "slope": -0.2,
+      "pass": true,
+      "minimum": 0.007968135431113382,
+      "maxLift": 0.10299530526051177,
+      "maxLiftSpeed": 3.1743949563276406,
+      "worstPhase": 0.1296542510235344,
+      "frames": 94,
+      "skinVertices": 29133,
+      "envelopeVertices": 626
+    },
+    {
+      "key": "slamLand",
+      "fps": 60,
+      "slope": -0.2,
+      "pass": true,
+      "minimum": 0.006718585431831861,
+      "maxLift": 0.06574842072398626,
+      "maxLiftSpeed": 1.6696179072310762,
+      "worstPhase": 0.3959596112168287,
+      "frames": 55,
+      "skinVertices": 29133,
+      "envelopeVertices": 626
+    }
+  ],
+  "transitions": [
+    {
+      "fps": 24,
+      "key": "roll",
+      "exit": "RUNNING",
+      "maxReleaseStep": 0.07332618653790483,
+      "pass": true
+    },
+    {
+      "fps": 24,
+      "key": "roll",
+      "exit": "JUMPING",
+      "maxReleaseStep": 0.07332618653790483,
+      "pass": true
+    },
+    {
+      "fps": 24,
+      "key": "slamLand",
+      "exit": "RUNNING",
+      "maxReleaseStep": 0.004329276703302778,
+      "pass": true
+    },
+    {
+      "fps": 24,
+      "key": "slamLand",
+      "exit": "JUMPING",
+      "maxReleaseStep": 0.004329276703302778,
+      "pass": true
+    },
+    {
+      "fps": 60,
+      "key": "roll",
+      "exit": "RUNNING",
+      "maxReleaseStep": 0.035625183127953874,
+      "pass": true
+    },
+    {
+      "fps": 60,
+      "key": "roll",
+      "exit": "JUMPING",
+      "maxReleaseStep": 0.0221796871800672,
+      "pass": true
+    },
+    {
+      "fps": 60,
+      "key": "slamLand",
+      "exit": "RUNNING",
+      "maxReleaseStep": 0.0021266082447052304,
+      "pass": true
+    },
+    {
+      "fps": 60,
+      "key": "slamLand",
+      "exit": "JUMPING",
+      "maxReleaseStep": 0.0021266082447052304,
+      "pass": true
+    },
+    {
+      "fps": 144,
+      "key": "roll",
+      "exit": "RUNNING",
+      "maxReleaseStep": 0.07667595829603109,
+      "pass": true
+    },
+    {
+      "fps": 144,
+      "key": "roll",
+      "exit": "JUMPING",
+      "maxReleaseStep": 0.006870612832170192,
+      "pass": true
+    },
+    {
+      "fps": 144,
+      "key": "slamLand",
+      "exit": "RUNNING",
+      "maxReleaseStep": 0.0009641227728247751,
+      "pass": true
+    },
+    {
+      "fps": 144,
+      "key": "slamLand",
+      "exit": "JUMPING",
+      "maxReleaseStep": 0.0009641227728247751,
+      "pass": true
+    }
+  ]
+}

@@ -9,7 +9,7 @@ import { retargetMotion, prepareMotion, boneId } from './MotionRetarget.js';
 import { MOTIONS, STRIDES, GROUNDED } from './MotionCatalog.js';
 import { fetchAsset, forEachConcurrent } from './AssetLoader.js';
 import { clone as cloneSkeleton } from 'three/addons/utils/SkeletonUtils.js';
-import { plantMovingFeet, poseWall, poseZipLegs, poseMantle, adaptPelvisToTerrain, footSupport, soleRotation, clearGroundSoles, fitGroundAnkle, alignCombatWrists, alignCombatGaze, reuseHeldGroundPose, cacheGroundPose } from './CharacterPose.js';
+import { plantMovingFeet, poseWall, poseZipLegs, poseMantle, adaptPelvisToTerrain, footSupport, soleRotation, clearGroundSoles, fitGroundAnkle, alignCombatWrists, alignCombatGaze, reuseHeldGroundPose, cacheGroundPose, clearImpactBody, prepareImpactBody } from './CharacterPose.js';
 import {createHandPoseRig,restoreHandPose,updateWebHandPose} from './WebHandPose.js';
 
 export class Character {
@@ -90,6 +90,7 @@ export class Character {
     }
     this.isLoaded = true;
     this.copySource = null;
+    prepareImpactBody(this);
     return true;
   }
 
@@ -172,6 +173,7 @@ export class Character {
       this.webFingerRig=null;
 
       updateAppearance(this,0);
+      prepareImpactBody(this);
       this.mixer = new THREE.AnimationMixer(this.model);
 
       // Embedded animation if available
@@ -347,6 +349,7 @@ export class Character {
   }
 
   stopAnimation() {
+    this.impactLift=0;
     restoreHandPose(this.webFingerRig);
     if(this.model && this.jointConstraintModel!==this.model){
       this.jointConstraintModel=this.model;this.jointConstraints=createJointConstraints(this.model,this.bones);
@@ -840,6 +843,13 @@ export class Character {
     constrainJoints(this.jointConstraints?.filter(item=>item.kind==='foot' || item.kind==='toebase'));
     const changedSoles=stabilizeEndJoints(this,delta);
     if(!heldGround && changedSoles && grounded && state!=='ROLLING')clearGroundSoles(this,{preserveLocal:true});
+    const impactPose=state==='ROLLING' || name==='slamLand';
+    if(grounded && (impactPose || this.impactLift>0))clearImpactBody(this,delta,impactPose);
+    else if(this.impactLift>0){
+      this.impactLift=THREE.MathUtils.damp(this.impactLift,0,18,delta);
+      this.model.position.y+=this.impactLift;
+      this.group.updateMatrixWorld(true);
+    }
     // The next contact step starts from the rendered ankle, after the
     // anatomical clamp and sole clearance have both adjusted the IK result.
     if(grounded && this.groundFootRotations){
