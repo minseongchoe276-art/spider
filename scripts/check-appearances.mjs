@@ -8,7 +8,7 @@ import {setAppearance,updateAppearance,disposeAppearance} from '../src/Character
 import {CombatSystem} from '../src/Combat.js';
 import {soleSamples} from '../src/CharacterPose.js';
 const {actor,clips}=await loadMotionRig(),assets={},results=[];
-for(const [mode,name] of [['web','사람모습'],['combat','변신모습']]){
+for(const [mode,name] of [['web','사람모습']]){
  const b=fs.readFileSync(`public/models/appearance-${mode}.glb`),length=b.readUInt32LE(12),j=JSON.parse(b.subarray(20,20+length));
  assert.equal(j.asset.extras.sourceSha256,crypto.createHash('sha256').update(fs.readFileSync(`artifacts/${name}.glb`)).digest('hex'));
  assert(j.images.length>=1,'Authored textures must remain embedded');
@@ -20,19 +20,18 @@ for(const [mode,name] of [['web','사람모습'],['combat','변신모습']]){
 }
 const c=actor();c.appearances=assets;updateAppearance(c,0);assert.equal(c.appearanceMode,'web');
 const webSoles=soleSamples(c,'left');assert(webSoles.length>0);
-setAppearance(c,'combat',false);const combatSoles=soleSamples(c,'left');
-assert.notEqual(combatSoles,webSoles,'Each appearance needs sole samples for its own geometry');
-assert(combatSoles.every(({vertex})=>vertex<c.model.getObjectByProperty('isSkinnedMesh',true).geometry.attributes.position.count),
- 'Combat sole cache contains vertex indices from the larger web model');
-setAppearance(c,'web',false);
-results.push({case:'appearance changes invalidate cached foot-contact vertices',webSoleSamples:webSoles.length,combatSoleSamples:combatSoles.length,pass:true});
+const mesh=c.model.getObjectByProperty('isSkinnedMesh',true),geometry=mesh.geometry,material=mesh.material;
+setAppearance(c,'combat',true);
+assert.equal(c.appearanceMode,'web');assert.equal(mesh.geometry,geometry);assert.equal(mesh.material,material);
+assert.equal(soleSamples(c,'left'),webSoles,'Mode switching must preserve sole samples');
+results.push({case:'Combat appearance requests preserve the single web model and sole cache',pass:true});
 const root=c.group.position.clone(),mixer=c.mixer,skeleton=c.model.getObjectByProperty('isSkinnedMesh',true).skeleton;
 c.fadeToAction('run',0);c.mixer.update(.23);const time=c.activeAction.time,pose=Object.values(c.bones).map(b=>b.quaternion.clone());
 const physics={state:'IDLE',velocity:new T.Vector3(3,2,1),clearPendingInput(){},clearWebAnchor(){}};
 const combat=new CombatSystem(c.scene,physics,c);assert.equal(combat.mode,'web');
-for(let i=0;i<40;i++){combat.toggle({});updateAppearance(c,1/60);assert.equal(c.appearanceMode,combat.mode);assert.equal(c.mixer,mixer);assert.equal(c.activeAction.time,time);assert(c.group.position.equals(root));assert.deepEqual(physics.velocity.toArray(),[3,2,1]);assert.equal(c.model.getObjectByProperty('isSkinnedMesh',true).skeleton,skeleton);Object.values(c.bones).forEach((b,k)=>assert(b.quaternion.equals(pose[k])));}
-updateAppearance(c,1);assert.equal(c.transformTime,null);assert.equal(c.transformEffect.visible,false);results.push({case:'40 mode changes preserve pose, mixer, root and momentum; effect expires',pass:true});
-for(const mode of ['web','combat']){
+for(let i=0;i<40;i++){combat.toggle({});updateAppearance(c,1/60);assert.equal(c.appearanceMode,'web');assert.equal(mesh.geometry,geometry);assert.equal(mesh.material,material);assert.equal(c.mixer,mixer);assert.equal(c.activeAction.time,time);assert(c.group.position.equals(root));assert.deepEqual(physics.velocity.toArray(),[3,2,1]);assert.equal(c.model.getObjectByProperty('isSkinnedMesh',true).skeleton,skeleton);Object.values(c.bones).forEach((b,k)=>assert(b.quaternion.equals(pose[k])));}
+updateAppearance(c,1);assert(!c.transformEffect,'Q must not create a suit transformation effect');assert.equal(combat.mode,'web');combat.toggle({});assert.equal(combat.mode,'combat');assert.equal(physics.webEnabled,false);combat.toggle({});assert.equal(physics.webEnabled,true);results.push({case:'40 mode changes preserve model, materials, pose, mixer, root and momentum; gameplay mode still toggles',pass:true});
+for(const mode of ['web']){
  setAppearance(c,mode,false);const mesh=c.model.getObjectByProperty('isSkinnedMesh',true),p=mesh.geometry.attributes.position;
  let samples=0,maxExtent=0;
  for(const {key,clip,archived} of clips){if(archived)continue;c.mixer.stopAllAction();const a=c.actions[key];a.enabled=true;a.reset().play();a.setEffectiveWeight(1);

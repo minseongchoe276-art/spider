@@ -797,7 +797,7 @@ export class GameApp {
 
   updateHUD(speedKmh, altitude, state) {
     const combatHud=document.getElementById('combat-status');
-    if(combatHud && this.combat){const airborne=!GROUNDED.includes(state);combatHud.textContent=this.multiplayer?.room?'':`${airborne?(this.combat.mode==='combat'?'공중 · 인간 모드':'공중 · 양손 에너지 와이어'):this.combat.mode==='web'?'에너지 와이어 이동':'전투'} · HP ${Math.ceil(this.combat.health)} · 기력 ${Math.ceil(this.combat.stamina)} · ${this.combat.enemies.some(e=>e.windup>0)?'공격 예고! · 방어 / 회피':'모드 '+this.preferences.values.settings.bindings.mode.replace('Key','')}`;combatHud.classList.toggle('hidden',!!this.multiplayer?.room);}
+    if(combatHud && this.combat){const airborne=!GROUNDED.includes(state);combatHud.textContent=this.multiplayer?.room?'':`${airborne?(this.combat.mode==='combat'?'공중 · 전투 모드':'공중 · 양손 에너지 와이어'):this.combat.mode==='web'?'에너지 와이어 이동':'전투'} · HP ${Math.ceil(this.combat.health)} · 기력 ${Math.ceil(this.combat.stamina)} · ${this.combat.enemies.some(e=>e.windup>0)?'공격 예고! · 방어 / 회피':'모드 '+this.preferences.values.settings.bindings.mode.replace('Key','')}`;combatHud.classList.toggle('hidden',!!this.multiplayer?.room);}
     // 1. Speedometer
     if (this.speedDisplay) {
       this.speedDisplay.textContent = Math.round(speedKmh);

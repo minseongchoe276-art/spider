@@ -140,7 +140,7 @@ export class Character {
       this.model.scale.setScalar(1);
       this.model.position.y = 0;
 
-      this.onProgress?.(45, '두 캐릭터의 공통 뼈대와 외형 준비 중...');
+      this.onProgress?.(45, '캐릭터 뼈대와 외형 준비 중...');
       this.appearances = await loadAppearances();
 
       // Enable shadows and find bones

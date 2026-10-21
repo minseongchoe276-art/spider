@@ -447,7 +447,7 @@ function crawlBootDepth(c,side,normal,right) {
   c.wallBootDepth ||= {};return c.wallBootDepth[side]=depth;
 }
 function crawlContact(c,id,base,normal,direction,phase,delta,speed) {
-  const crawlStance=id.endsWith('hand')?.58:.46;
+  const crawlStance=id.endsWith('hand')?.64:.62;
   let contact=c.wallContacts[id];
   const stance=phase<crawlStance;
   if(!contact)contact=c.wallContacts[id]={stance,age:0,last:base.clone(),
@@ -488,7 +488,13 @@ export function poseWall(c,delta,velocity) {
   c.wallContacts ||= {};
   c.wallLiftWeight=THREE.MathUtils.damp(c.wallLiftWeight ?? 0,Math.min(1,speed/.3),18,delta);
   c.wallPoseWeight=THREE.MathUtils.damp(c.wallPoseWeight || 0,1,18,delta);
-  if(speed>.01)c.wallTravelDirection=travel.normalize();
+  if(speed>.01){
+    const desired=travel.normalize();
+    c.wallTravelDirection ||= desired.clone();
+    const turn=Math.atan2(normal.dot(c.wallTravelDirection.clone().cross(desired)),
+      c.wallTravelDirection.dot(desired));
+    c.wallTravelDirection.applyAxisAngle(normal,turn*(1-Math.exp(-8*delta))).normalize();
+  }
   const direction=c.wallTravelDirection || up;
   if(c.wallBindModel!==c.model){c.wallBindModel=c.model;c.wallBind=bindTransforms(c.model);c.wallPalmDirections=null;}
   c.wallPalmDirections ||= {};
@@ -504,18 +510,20 @@ export function poseWall(c,delta,velocity) {
   const hips=find(c,'hips'),spine=find(c,'spine');
   const transfer=Math.sin(c.wallPhase*Math.PI*2)*c.wallPoseWeight;
   if(hips){
-    hips.position.copy(hips.parent.worldToLocal(worldPosition(hips).addScaledVector(right,.018*transfer).addScaledVector(normal,.25*c.wallPoseWeight)));
-    worldRotation(hips,new THREE.Quaternion().setFromAxisAngle(right,.42*c.wallPoseWeight)
-      .multiply(new THREE.Quaternion().setFromAxisAngle(up,.025*transfer)).multiply(hips.getWorldQuaternion(new THREE.Quaternion())));
+    hips.position.copy(hips.parent.worldToLocal(worldPosition(hips).addScaledVector(right,.032*transfer).addScaledVector(normal,.20*c.wallPoseWeight)));
+    worldRotation(hips,new THREE.Quaternion().setFromAxisAngle(right,.32*c.wallPoseWeight)
+      .multiply(new THREE.Quaternion().setFromAxisAngle(up,.045*transfer)).multiply(hips.getWorldQuaternion(new THREE.Quaternion())));
   }
-  if(spine)worldRotation(spine,new THREE.Quaternion().setFromAxisAngle(up,-.045*transfer).multiply(spine.getWorldQuaternion(new THREE.Quaternion())));
+  if(spine)worldRotation(spine,new THREE.Quaternion().setFromAxisAngle(up,-.065*transfer).multiply(spine.getWorldQuaternion(new THREE.Quaternion())));
   for(const side of ['left','right'])for(const limb of ['hand','foot']){
     const hand=limb==='hand',sign=side==='left'?1:-1,id=side+limb;
     const upper=find(c,side+(hand?'arm':'upleg')),lower=find(c,side+(hand?'forearm':'leg')),end=find(c,id);
     if(!upper || !lower || !end)continue;
-    const phase=(c.wallPhase+(side==='left'?0:.5)+(hand?.04:0))%1;
+    // Cross-crawl: the reaching hand travels with the opposite foot.
+    // Overlapping stance intervals keep a diagonal support pair planted.
+    const phase=(c.wallPhase+(side==='left'?0:.5)+(hand?.04:.5))%1;
     const base=root.clone().addScaledVector(normal,-(c.wallDistance ?? .7)+(hand?.03:crawlBootDepth(c,side,normal,right)))
-      .addScaledVector(up,hand?1.73:.44).addScaledVector(right,sign*(hand?.28:.235));
+      .addScaledVector(up,hand?1.73:.38).addScaledVector(right,sign*(hand?.28:.235));
     const {contact,target}=crawlContact(c,id,base,normal,direction,phase,delta,speed);
     const effector=hand?(find(c,side+'handmiddle4') || end):end;
     contact.effectorId=boneId(effector.name);
@@ -538,7 +546,8 @@ export function poseWall(c,delta,velocity) {
     }
     const start=worldPosition(effector),pole=normal.clone().multiplyScalar(hand?.4:-1)
       .addScaledVector(right,sign*(hand?.5:.18)).addScaledVector(up,hand?-.45:0);
-    c.solveLimb(upper,lower,effector,start.lerp(target,c.wallPoseWeight),.985,pole);
+    const goal=start.lerp(target,c.wallPoseWeight);
+    c.solveLimb(upper,lower,effector,goal,.985,pole);
     if(hand){
       const palmNormal=normal.clone().lerp(up,grip).normalize();
       const previousPalm=c.wallPalmDirections[side];
@@ -547,7 +556,7 @@ export function poseWall(c,delta,velocity) {
       // the forearm permits a stable wall contact with a straight wrist.
       // Pronation can move the slightly relaxed tip by a few millimetres.
       for(let pass=0;pass<2;pass++){
-        c.solveLimb(upper,lower,effector,target,.985,pole);
+        c.solveLimb(upper,lower,effector,goal,.985,pole);
         alignStraightPalm(c,side,end,palmNormal,previousPalm,delta);
       }
       const wrist=worldPosition(end),index=find(c,side+'handindex1'),pinky=find(c,side+'handpinky1');

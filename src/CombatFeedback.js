@@ -33,7 +33,7 @@ export class CombatFeedback {
     if(this.aimZone)this.aimZone.dataset.ready=String(!!this.preview?.aimReady&&!this.preview?.blocked&&!grace);
     if(now<this.until){out.textContent=this.message;return;}
     if(!canAttack(online.room,me)){out.textContent=`내 HP ${me.health}/100 · 경찰의 주먹 25 / 거미줄 15 · 벽 뒤에서는 피해 없음`;return;}
-    if(kind==='punch'&&!GROUNDED.includes(this.game.physics?.state)){out.textContent='인간 모드 · 착지 후 주먹 공격 · 거미줄은 Q로 변신 후 사용';return;}
+    if(kind==='punch'&&!GROUNDED.includes(this.game.physics?.state)){out.textContent='전투 모드 · 착지 후 주먹 공격 · 와이어는 Q로 모드 전환 후 사용';return;}
     if(grace){out.textContent=`시작 보호 ${Math.ceil(grace/1000)}초 · 아직 피해 없음`;return;}
     const remain=Math.max(0,(this.cooldowns[kind]||0)-now);
     const target=this.preview;

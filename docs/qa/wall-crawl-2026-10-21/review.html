@@ -1,0 +1,20 @@
+<!doctype html><html lang="ko"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>벽 기어가기 수정 검수</title><style>body{margin:0;background:#dce4eb;font:13px system-ui;color:#142331}header{padding:8px}button,select{font:inherit}canvas{display:block;width:100%}</style><header>벽 기어가기 · 교차 보행<br><button id="play">정지</button> <select id="appearance"><option value="web">변신 외형</option><option value="combat">사람 외형</option></select> <select id="travel"><option value="up">위로</option><option value="side">대각선</option><option value="hold">멈춤</option></select></header><script type="module">
+import * as T from '/node_modules/three/build/three.module.js';
+import {Character} from '/src/Character.js';
+import {setAppearance} from '/src/CharacterAppearance.js';
+const scene=new T.Scene();scene.background=new T.Color('#dce4eb');scene.add(new T.HemisphereLight(0xffffff,0x718291,3));
+const sun=new T.DirectionalLight(0xffffff,3);sun.position.set(3,5,4);scene.add(sun);
+const grid=new T.GridHelper(100,100,0x748797,0xa4b4bf);grid.rotation.x=Math.PI/2;scene.add(grid);
+const renderer=new T.WebGLRenderer({antialias:true});renderer.setPixelRatio(devicePixelRatio);document.body.append(renderer.domElement);
+const camera=new T.PerspectiveCamera(35,1,.01,200);let c;await new Promise(resolve=>{c=new Character(scene,null,resolve)});
+c.wallNormal=new T.Vector3(0,0,1);c.wallDistance=.7;c.groundProbe=()=>null;c.group.position.set(0,4,.7);
+let playing=true,last=performance.now();document.querySelector('#play').onclick=e=>{playing=!playing;e.target.textContent=playing?'정지':'재생'};
+document.querySelector('#appearance').onchange=e=>{c.combatStance=e.target.value==='combat';setAppearance(c,e.target.value,false);};
+renderer.setAnimationLoop(()=>{const now=performance.now(),dt=Math.min(.04,(now-last)/1000);last=now;
+if(playing){const mode=document.querySelector('#travel').value,v=mode==='hold'?new T.Vector3():new T.Vector3(mode==='side'?1.5:0,2.8,0);c.group.position.addScaledVector(v,dt);c.update(dt,'WALL_RUNNING',v);}
+if(c.transformEffect)c.transformEffect.visible=false;
+const w=innerWidth,h=Math.max(600,innerHeight-70);renderer.setSize(w,h);renderer.setScissorTest(true);
+const center=c.group.position.clone().add(new T.Vector3(0,1,0));
+for(const [i,d] of [[0,new T.Vector3(0,0,1)],[1,new T.Vector3(1,0,.25)],[2,new T.Vector3(0,0,-1)]]){const vh=h/3;camera.aspect=w/vh;camera.position.copy(center).addScaledVector(d,4.2);camera.lookAt(center);camera.updateProjectionMatrix();renderer.setViewport(0,h-(i+1)*vh,w,vh);renderer.setScissor(0,h-(i+1)*vh,w,vh);renderer.render(scene,camera);}renderer.setScissorTest(false);
+});
+</script></html>
