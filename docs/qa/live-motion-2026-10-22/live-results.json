@@ -1,0 +1,32 @@
+{
+  "runtimeCommit": "7f0e2b2",
+  "site": "https://minogame.site/?city=procedural",
+  "input": "Normal solo UI, native keyboard and mouse; no injected gameplay state",
+  "checks": [
+    {
+      "case": "moving guard / reverse movement",
+      "result": "Straight retreat with stable view; feet and guard inspected in sequential frames"
+    },
+    {
+      "case": "moving jab and straight",
+      "result": "Both mouse attacks used while W held; lower body keeps moving"
+    },
+    {
+      "case": "high fall",
+      "result": "Jumped from 95m roof, fell to ground, observed roll entry/tuck/recovery and return to idle"
+    },
+    {
+      "case": "wall climb",
+      "result": "Facade acquired with W+F; side view inspected; climbed from ground to about 95m roof via MANTLING; walked on roof after completion"
+    }
+  ],
+  "automated": {
+    "cameraMovementCases": 24,
+    "fallRecoveryCases": 33,
+    "wallSkinAndHoldCases": 12,
+    "inputLifecycleCases": 16,
+    "gameplayRegression": "PASS",
+    "cameraWebAndThirdPersonRegression": "PASS",
+    "build": "PASS"
+  }
+}

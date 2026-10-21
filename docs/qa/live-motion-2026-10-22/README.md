@@ -17,3 +17,5 @@ Validation:
 - `npm run build`
 
 The selected roll/wall screenshots record actual production gameplay before the camera follow correction. Postdeployment evidence is recorded separately after the final live rerun.
+
+Postdeployment: reloaded production after `7f0e2b2` was published, repeated S+B retreat, W+left/right-click movement, the 95m rooftop drop, and side-view wall ascent. Then climbed the full facade and completed MANTLING onto the 95m roof, followed by roof walking. `final-*` screenshots and `roof-walk-final.png` record this rerun. `live-results.json` records the checks; deployment.json identifies the fetched production asset. No further motion defect was reproduced in these inspected sequences.
