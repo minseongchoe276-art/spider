@@ -1,0 +1,27 @@
+PASS Requested motions are absent from catalog, generated assets and loaded actors
+PASS Every retained compiled motion respects ankle, wrist and toe limits between keyframes
+PASS 24fps walk, run, sprint, stop, slope and all retained combat poses
+PASS 24fps climb, diagonal and sprint on facade 0
+PASS 24fps climb, diagonal and sprint on facade 90
+PASS 24fps climb, diagonal and sprint on facade 180
+PASS 24fps climb, diagonal and sprint on facade 270
+PASS 24fps actual wall → parapet → roof: joint bounds, grip, clearance and continuity
+PASS 30fps walk, run, sprint, stop, slope and all retained combat poses
+PASS 30fps climb, diagonal and sprint on facade 0
+PASS 30fps climb, diagonal and sprint on facade 90
+PASS 30fps climb, diagonal and sprint on facade 180
+PASS 30fps climb, diagonal and sprint on facade 270
+PASS 30fps actual wall → parapet → roof: joint bounds, grip, clearance and continuity
+PASS 60fps walk, run, sprint, stop, slope and all retained combat poses
+PASS 60fps climb, diagonal and sprint on facade 0
+PASS 60fps climb, diagonal and sprint on facade 90
+PASS 60fps climb, diagonal and sprint on facade 180
+PASS 60fps climb, diagonal and sprint on facade 270
+PASS 60fps actual wall → parapet → roof: joint bounds, grip, clearance and continuity
+PASS 144fps walk, run, sprint, stop, slope and all retained combat poses
+PASS 144fps climb, diagonal and sprint on facade 0
+PASS 144fps climb, diagonal and sprint on facade 90
+PASS 144fps climb, diagonal and sprint on facade 180
+PASS 144fps climb, diagonal and sprint on facade 270
+PASS 144fps actual wall → parapet → roof: joint bounds, grip, clearance and continuity
+Motion cleanup: 26 passed, 0 failed

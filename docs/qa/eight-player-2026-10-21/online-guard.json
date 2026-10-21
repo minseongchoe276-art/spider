@@ -1,0 +1,92 @@
+{
+  "passed": 12,
+  "total": 12,
+  "clients": 8,
+  "results": [
+    {
+      "name": "unguarded",
+      "pass": true,
+      "damage": [
+        25,
+        15
+      ],
+      "observers": 8
+    },
+    {
+      "name": "front guard",
+      "pass": true,
+      "damage": [
+        10,
+        6
+      ],
+      "observers": 8
+    },
+    {
+      "name": "rear guard",
+      "pass": true,
+      "damage": [
+        25,
+        15
+      ],
+      "observers": 8
+    },
+    {
+      "name": "air guard rejected",
+      "pass": true,
+      "damage": [
+        25,
+        15
+      ],
+      "observers": 8
+    },
+    {
+      "name": "roll cannot claim invisible guard",
+      "pass": true,
+      "damage": [
+        25,
+        15
+      ],
+      "observers": 8
+    },
+    {
+      "name": "turn cannot claim invisible guard",
+      "pass": true,
+      "damage": [
+        25,
+        15
+      ],
+      "observers": 8
+    },
+    {
+      "name": "custom wire pose cannot claim guard",
+      "pass": true,
+      "damage": [
+        25,
+        15
+      ],
+      "observers": 8
+    },
+    {
+      "name": "Paused/stale guard expires",
+      "pass": true
+    },
+    {
+      "name": "No attack while guarding; no human wire; immediate Q mode change uses fresh attack pose",
+      "pass": true
+    },
+    {
+      "name": "Both 60 degree guard boundaries included",
+      "pass": true
+    },
+    {
+      "name": "Async terrain check preserves attack-time guard snapshot",
+      "pass": true
+    },
+    {
+      "name": "Cops/runners: wire-mode runner can defend but cannot attack",
+      "pass": true,
+      "police": 2,
+      "runners": 6
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+PASS Local pursuit rejects off-map origins and excludes off-map objectives
+PASS Late room and identity messages cannot replace an explicit solo session
+PASS First-person elimination hides local arms and follows a third-person spectator
+PASS Match finish retires goal and rescue markers and restores player visibility
+PASS Changing quality synchronizes the adaptive controller with manual resolution
+PASS Small city warnings stay quiet at spawn and appear near the actual boundary
+PASS Context loss exposes retry controls and blocks gameplay until recovery
+PASS Preview searches stay at 10Hz at 30/60/144fps while actual shots search immediately
+PASS real Rapier swing/zip/pull use indexed streamed surfaces and correct normals without visual triangle scans
+Full game audit: 9 passed, 0 failed.

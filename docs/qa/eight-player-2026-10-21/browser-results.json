@@ -1,0 +1,83 @@
+{
+  "checkedAt": "2026-10-21T11:45:28.419Z",
+  "site": "https://minogame.site/?city=procedural",
+  "clients": 8,
+  "roomCode": "AFB101",
+  "clientsState": [
+    {
+      "name": "Motion-QA-01",
+      "count": "8명 · 962ms",
+      "health": "HP 100/100 · 기력 100",
+      "role": "레드 팀",
+      "labels": "Motion-QA-02 · HP 100 · 23m\nMotion-QA-03 · HP 100 · 5m\nMotion-QA-04 · HP 100 · 23m\nMotion-QA-05 · HP 100 · 2m\nMotion-QA-06 · HP 100 · 22m\nMotion-QA-07 · HP 100 · 3m\nMotion-QA-08 · HP 100 · 22m"
+    },
+    {
+      "name": "Motion-QA-02",
+      "count": "8명 · 231ms",
+      "health": "HP 100/100 · 기력 100",
+      "role": "블루 팀",
+      "labels": "Motion-QA-01 · HP 100 · 23m\nMotion-QA-03 · HP 100 · 22m\nMotion-QA-04 · HP 100 · 2m\nMotion-QA-05 · HP 100 · 22m\nMotion-QA-06 · HP 100 · 2m\nMotion-QA-07 · HP 100 · 22m\nMotion-QA-08 · HP 100 · 3m"
+    },
+    {
+      "name": "Motion-QA-03",
+      "count": "8명 · 557ms",
+      "health": "HP 100/100 · 기력 100",
+      "role": "레드 팀",
+      "labels": "Motion-QA-01 · HP 100 · 5m\nMotion-QA-02 · HP 100 · 22m\nMotion-QA-04 · HP 100 · 22m\nMotion-QA-05 · HP 100 · 3m\nMotion-QA-06 · HP 100 · 23m\nMotion-QA-07 · HP 100 · 2m\nMotion-QA-08 · HP 100 · 23m"
+    },
+    {
+      "name": "Motion-QA-04",
+      "count": "8명 · 918ms",
+      "health": "HP 100/100 · 기력 100",
+      "role": "블루 팀",
+      "labels": "Motion-QA-01 · HP 100 · 23m\nMotion-QA-02 · HP 100 · 2m\nMotion-QA-03 · HP 100 · 22m\nMotion-QA-05 · HP 100 · 23m\nMotion-QA-06 · HP 100 · 3m\nMotion-QA-07 · HP 100 · 22m\nMotion-QA-08 · HP 100 · 5m"
+    },
+    {
+      "name": "Motion-QA-05",
+      "count": "8명 · 832ms",
+      "health": "HP 100/100 · 기력 100",
+      "role": "레드 팀",
+      "labels": "Motion-QA-01 · HP 100 · 2m\nMotion-QA-02 · HP 100 · 22m\nMotion-QA-03 · HP 100 · 3m\nMotion-QA-04 · HP 100 · 23m\nMotion-QA-06 · HP 100 · 22m\nMotion-QA-07 · HP 100 · 2m\nMotion-QA-08 · HP 100 · 22m"
+    },
+    {
+      "name": "Motion-QA-06",
+      "count": "8명 · 520ms",
+      "health": "HP 100/100 · 기력 100",
+      "role": "블루 팀",
+      "labels": "Motion-QA-01 · HP 100 · 22m\nMotion-QA-02 · HP 100 · 2m\nMotion-QA-03 · HP 100 · 23m\nMotion-QA-04 · HP 100 · 3m\nMotion-QA-05 · HP 100 · 22m\nMotion-QA-07 · HP 100 · 22m\nMotion-QA-08 · HP 100 · 2m"
+    },
+    {
+      "name": "Motion-QA-07",
+      "count": "8명 · 609ms",
+      "health": "HP 100/100 · 기력 100",
+      "role": "레드 팀",
+      "labels": "Motion-QA-01 · HP 100 · 3m\nMotion-QA-02 · HP 100 · 22m\nMotion-QA-03 · HP 100 · 2m\nMotion-QA-04 · HP 100 · 22m\nMotion-QA-05 · HP 100 · 2m\nMotion-QA-06 · HP 100 · 22m\nMotion-QA-08 · HP 100 · 23m"
+    },
+    {
+      "name": "Motion-QA-08",
+      "count": "8명 · 544ms",
+      "health": "HP 100/100 · 기력 100",
+      "role": "블루 팀",
+      "labels": "Motion-QA-01 · HP 100 · 22m\nMotion-QA-02 · HP 100 · 3m\nMotion-QA-03 · HP 100 · 23m\nMotion-QA-04 · HP 100 · 5m\nMotion-QA-05 · HP 100 · 22m\nMotion-QA-06 · HP 100 · 2m\nMotion-QA-07 · HP 100 · 23m"
+    }
+  ],
+  "consoleErrors": [
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    []
+  ],
+  "guardWalk": {
+    "input": "B+W held 6s",
+    "observerDistanceBefore": 23,
+    "observerDistanceAfter": 18,
+    "observerLabels": "Motion-QA-01 · HP 100 · 18m\nMotion-QA-03 · HP 100 · 22m\nMotion-QA-04 · HP 100 · 2m\nMotion-QA-05 · HP 100 · 22m\nMotion-QA-06 · HP 100 · 2m\nMotion-QA-07 · HP 100 · 22m\nMotion-QA-08 · HP 100 · 3m"
+  },
+  "withdrawalVictoryText": null,
+  "withdrawalVictorySnapshot": "- generic \"게임 화면. W A S D 이동, Space 점프, Escape 일시정지\"\n- complementary \"LOCAL CITY\":\n  - strong: LOCAL CITY\n  - generic: PROCEDURAL DISTRICT\n  - generic: LOCAL\n  - img \"현재 위치 동쪽 -97미터, 북쪽 83미터, 고도 95미터\"\n  - generic \"플레이어 위치 표시\"\n  - generic: N ↑\n  - text: 3D · 나 경찰\n  - emphasis: 도망자\n  - generic: 180m\n  - text: RANGE\n  - status: E -97m N +83m · ALT 95m\n- status\n- status: 사용자 설정 경기 · HP 100 · 상대 전원 제압! Q로 전투/거미줄 전환 · 주먹 25 / 거미줄 15 · 시작 보호 8초\n- dialog \"도시를 가로질러.\":\n  - generic: ✳\n  - text: WEB RUNNER\n  - generic: LOCAL CITY · OPEN WORLD\n  - generic: 온라인 · 방을 선택하세요\n  - button \"전체화면으로 플레이\": 전체화면\n  - text: \"01\"\n  - generic: YOUR CITY. YOUR MOVE.\n  - heading \"도시를 가로질러.\" [level=1]:\n    - text: 도시를\n    - emphasis: 가로질러.\n  - paragraph:\n    - text: 건물 사이를 스윙하고, 추격전을 시작하고,\n    - text: 나만의 도시를 네 방식대로 누벼봐.\n  - navigation \"플레이 지도 선택\":\n    - generic: 플레이 지도\n    - link \"홍콩 실제 3D 도시 탐험\":\n      - /url: \"?city=hong-kong\"\n      - generic: 홍콩\n      - generic: 실제 3D 도시 탐험\n    - link \"로컬 도시 빠르게 시작\":\n      - /url: \"?city=procedural\"\n      - generic: 로컬 도시\n      - generic: 빠르게 시작\n  - button \"▶ 혼자 플레이 로컬 도시에서 시작 ↗\":\n    - generic: ▶\n    - generic: 혼자 플레이\n    - generic: 로컬 도시에서 시작\n    - generic: ↗\n  - generic: 01 / EXPLORE\n  - generic: 02 / CHASE\n  - generic: 03 / SWING\n  - text: MULTIPLAYER / 02\n  - heading \"함께 플레이\" [level=2]\n  - paragraph: 방을 만들거나 친구의 게임에 합류하세요.\n  - text: YOUR SQUAD / 대기실\n  - heading \"Eight browser QA only\" [level=2]\n  - paragraph: 사용자 설정 경기 · 4/8명 · 정원 8명\n  - text: 초대 코드\n  - strong: AFB101\n  - button \"복사\"\n  - button \"초대 링크 복사\"\n  - generic: ★ Motion-QA-01 (나) · 레드 팀\n  - strong\n  - generic: Motion-QA-03 · 레드 팀\n  - strong\n  - generic: Motion-QA-05 · 레드 팀\n  - strong\n  - generic: Motion-QA-07 · 레드 팀\n  - strong\n  - paragraph: 레드 팀 승리. 방장이 다시 대기실을 열 수 있습니다.\n  - button \"다시 대기실로\"\n  - button \"방 나가기\"\n  - generic: SHADOW PULSE · LOCAL CITY\n  - generic: WASD 이동 · 마우스 조준 · SPACE 점프",
+  "cleanup": "All eight temporary participants explicitly left through the UI"
+}

@@ -1,0 +1,34 @@
+{
+  "checkedAt": "2026-10-21T12:08:15.214341+00:00",
+  "frontendRevision": "2b6b2d4f8c59ccaf38422a5d9a868b748013b79d",
+  "site": "https://minogame.site",
+  "assets": [
+    {
+      "path": "/assets/index-pmBKgVpb.js",
+      "sha256": "b66f5e85813c9af57e23b330e977975b90e4cd144f6460f49c804788236d8c58",
+      "localMatch": true
+    },
+    {
+      "path": "/assets/index-CLloxmDO.css",
+      "sha256": "5f867a72d756b41e1fc28742038131c00faa6b1f21609ffd2cc50690be5a7ed1",
+      "localMatch": true
+    }
+  ],
+  "health": {
+    "status": "ready",
+    "transport": "websocket",
+    "authority": "server-owned-rooms",
+    "protocol": 2,
+    "features": [
+      "custom-matches",
+      "named-targets",
+      "attack-results",
+      "directional-guard",
+      "motion-phase"
+    ],
+    "revision": "abcb1e16354fe1b4248dab81da616cc26c3c6312",
+    "uptimeSeconds": 1986,
+    "terrainSeedWarm": true,
+    "terrainSeedStatus": "CLEAR"
+  }
+}
