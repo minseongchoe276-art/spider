@@ -1,0 +1,31 @@
+PASS 24fps left: anatomical third-person shooting, held grip and clean release
+PASS 24fps left: a missed shot articulates, expires and never attaches
+PASS 24fps right: anatomical third-person shooting, held grip and clean release
+PASS 24fps right: a missed shot articulates, expires and never attaches
+PASS 30fps left: anatomical third-person shooting, held grip and clean release
+PASS 30fps left: a missed shot articulates, expires and never attaches
+PASS 30fps right: anatomical third-person shooting, held grip and clean release
+PASS 30fps right: a missed shot articulates, expires and never attaches
+PASS 60fps left: anatomical third-person shooting, held grip and clean release
+PASS 60fps left: a missed shot articulates, expires and never attaches
+PASS 60fps right: anatomical third-person shooting, held grip and clean release
+PASS 60fps right: a missed shot articulates, expires and never attaches
+PASS 144fps left: anatomical third-person shooting, held grip and clean release
+PASS 144fps left: a missed shot articulates, expires and never attaches
+PASS 144fps right: anatomical third-person shooting, held grip and clean release
+PASS 144fps right: a missed shot articulates, expires and never attaches
+PASS 24fps: both hands can shoot and release independently
+PASS 24fps: web fingers cannot overwrite combat or wall contact fingers
+PASS 24fps: remote hit/miss/dual hand gestures and stale cleanup use independent skin
+PASS 30fps: both hands can shoot and release independently
+PASS 30fps: web fingers cannot overwrite combat or wall contact fingers
+PASS 30fps: remote hit/miss/dual hand gestures and stale cleanup use independent skin
+PASS 60fps: both hands can shoot and release independently
+PASS 60fps: web fingers cannot overwrite combat or wall contact fingers
+PASS 60fps: remote hit/miss/dual hand gestures and stale cleanup use independent skin
+PASS 144fps: both hands can shoot and release independently
+PASS 144fps: web fingers cannot overwrite combat or wall contact fingers
+PASS 144fps: remote hit/miss/dual hand gestures and stale cleanup use independent skin
+PASS Remote shot capture validates handedness, expiry, target and payload size
+PASS A new remote character never inherits the local firing fingers
+Web hand pose: 30 passed, 0 failed.

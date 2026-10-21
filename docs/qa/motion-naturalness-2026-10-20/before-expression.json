@@ -1,0 +1,27 @@
+{
+  "passed": 1,
+  "total": 4,
+  "results": [
+    {
+      "name": "Boxing support boots face the opponent instead of pointing backwards",
+      "pass": false,
+      "error": "combatIdle right support toe points 112.3 degrees away from the opponent"
+    },
+    {
+      "name": "A lifted running foot keeps its authored knee bend plane",
+      "pass": true,
+      "maxSwingKneePlaneError": 17.172193853343273,
+      "samples": 8
+    },
+    {
+      "name": "A right hook closes both hands consistently with the other strikes",
+      "pass": false,
+      "error": "left index1 right hook has a different open/folded finger pose"
+    },
+    {
+      "name": "An absolute fist layer restores the authored fingers before the next sample",
+      "pass": false,
+      "error": "An absolute hand layer leaks its fist into a held/unchanged animation sample"
+    }
+  ]
+}

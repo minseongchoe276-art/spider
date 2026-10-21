@@ -11,7 +11,7 @@ const suites=[
  'swing-accessibility','cross-system-regressions','web-continuity','expert-audit',
  'camera-motion-web','full-game-audit','input-lifecycle','wall-ledge','wall-ledge-rig',
  'all-motions','motion-sources','web-hand-pose','silk-gait','wall-crawl','natural-wall-motion','end-joint-stability','limb-continuity','turn-joint-stability','motion-cleanup',
- 'combat-traversal','combat-aim','combat-quality','combat-feet','moving-combat-skin','appearances','full-appearance-motions',
+ 'combat-traversal','combat-aim','combat-quality','combat-feet','moving-combat-skin','appearances','full-appearance-motions','motion-expression',
 ];
 const folder=process.env.MOTION_AUDIT_DIR || 'docs/qa/complete-motion-2026-10-19';fs.mkdirSync(folder,{recursive:true});
 const model=fs.readFileSync('public/models/shadow-pulse-rig.glb');
@@ -34,7 +34,8 @@ async function worker(){while(next<suites.length){
  fs.writeFileSync(folder+'/suite-results.json',JSON.stringify({completed:results.length,total:suites.length,passed:results.filter(r=>r.pass).length,failed:results.filter(r=>!r.pass).length,results},null,2)+'\n');
  console.log(`${result.pass?'PASS':'FAIL'} ${suite} (${result.seconds.toFixed(1)}s)`);
 }}
-await Promise.all([worker(),worker()]);
+const workers=Math.max(1,Math.min(4,Number(process.env.MOTION_AUDIT_WORKERS)||2));
+await Promise.all(Array.from({length:workers},()=>worker()));
 const sourceAfter=fingerprint(),changed=tracked.filter(path=>sourceBefore[path]!==sourceAfter[path]);
 fs.writeFileSync(folder+'/source-integrity.json',JSON.stringify({stable:changed.length===0,changed,fingerprints:sourceAfter},null,2)+'\n');
 const failed=results.filter(r=>!r.pass);console.log(`COMPLETE: ${results.length-failed.length}/${suites.length} suites passed; source ${changed.length?'CHANGED':'stable'}`);if(failed.length || changed.length)process.exitCode=1;

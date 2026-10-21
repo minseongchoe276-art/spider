@@ -238,7 +238,20 @@ export function soleRotation(c,side,normal,authoredRotation) {
   const sole=groundSoleNormal(c,side,authored);
   if(!sole)return authored;
   // Remove pitch and roll while retaining the authored toe heading/pivot.
-  return new THREE.Quaternion().setFromUnitVectors(sole,normal).multiply(authored);
+  const rotation=new THREE.Quaternion().setFromUnitVectors(sole,normal).multiply(authored);
+  // Imported boxing stances can turn the rear boot past perpendicular to the
+  // opponent. Keep its support heading in the stance, without adding ankle bend.
+  if(['combatIdle','jab','cross','rightHook','hook','heavy','special'].includes(c.activeAction?.getClip().name)){
+    const toe=find(c,side+'toebase');
+    if(toe){
+      const heading=toe.position.clone().applyQuaternion(rotation).projectOnPlane(normal).normalize();
+      const forward=new THREE.Vector3(0,0,1).applyQuaternion(c.model.getWorldQuaternion(new THREE.Quaternion())).projectOnPlane(normal).normalize();
+      const yaw=Math.atan2(normal.dot(forward.clone().cross(heading)),forward.dot(heading));
+      const limit=THREE.MathUtils.degToRad(45);
+      rotation.premultiply(new THREE.Quaternion().setFromAxisAngle(normal,THREE.MathUtils.clamp(yaw,-limit,limit)-yaw));
+    }
+  }
+  return rotation;
 }
 
 export function adaptPelvisToTerrain(c,delta,grounded) {
@@ -373,6 +386,12 @@ export function plantMovingFeet(c,delta) {
     }
     if(!plant || plant.action!==action) {
       plant=c.movingPlants[side]={action,position:current.clone(),rotation:soleRotation(c,side,support.normal) || foot.getWorldQuaternion(new THREE.Quaternion()),age:0,normal:support.normal,offset:.11};
+      // Shorten the imported rear stance with its heading correction. Turning
+      // only the boot while keeping that long rear reach rolls its outer edge.
+      if(side==='right' && ['combatIdle','jab','cross','rightHook','hook','heavy','special'].includes(clip.name)){
+        const forward=new THREE.Vector3(0,0,1).applyQuaternion(c.model.getWorldQuaternion(new THREE.Quaternion())).projectOnPlane(support.normal).normalize();
+        plant.position.addScaledVector(forward,.10);
+      }
       plant.position.y=surface+0.11;
     }
     // Keep a stance anchored to the actual support, including a changed LOD.

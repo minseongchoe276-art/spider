@@ -1,0 +1,16 @@
+node:fs:561
+  return binding.open(
+                 ^
+
+Error: ENOENT: no such file or directory, open 'artifacts/변신모습.glb'
+    at Object.openSync (node:fs:561:18)
+    at Object.readFileSync (node:fs:445:35)
+    at geometry (file:///private/tmp/motion-naturalness-index-20261021/scripts/check-full-appearance-motions.mjs:7:13)
+    at file:///private/tmp/motion-naturalness-index-20261021/scripts/check-full-appearance-motions.mjs:14:81 {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'artifacts/변신모습.glb'
+}
+
+Node.js v22.19.0

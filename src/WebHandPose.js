@@ -52,7 +52,7 @@ export function applyHandPose(rig,side,shoot=0,grip=0,{absolute=false,relaxed=0}
   const weight=THREE.MathUtils.clamp(shoot+grip,0,1);
   for(const item of rig?.[side] || []){
     if(!absolute && weight<1e-5)continue;
-    if(!absolute)item.authored=item.bone.quaternion.clone();
+    item.authored ||= item.bone.quaternion.clone();
     const target=targetRotation(item,shoot,grip,relaxed);
     if(absolute)item.bone.quaternion.copy(target);
     else item.bone.quaternion.slerp(target,weight);
@@ -75,6 +75,6 @@ export function updateWebHandPose(c,delta,state) {
     if(total>1){pose.shoot/=total;pose.grip/=total;}
     if(!blocked)applyHandPose(c.webFingerRig,side,pose.shoot,pose.grip);
     else if(['WALL_RUNNING','MANTLING'].includes(state))applyHandPose(c.webFingerRig,side,0,0,{absolute:true,relaxed:.12});
-    else if(['jab','cross','hook','heavy','special','guard','combatIdle'].includes(combatKey))applyHandPose(c.webFingerRig,side,0,1,{absolute:true});
+    else if(['jab','cross','rightHook','hook','heavy','special','guard','combatIdle'].includes(combatKey))applyHandPose(c.webFingerRig,side,0,1,{absolute:true});
   }
 }

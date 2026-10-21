@@ -51,6 +51,7 @@
     "test:comprehensive": "node scripts/build-motions.mjs && node scripts/check-comprehensive-audit.mjs",
     "test:expanded-motion": "node scripts/check-expanded-input-camera.mjs && node scripts/check-expanded-terrain-motion.mjs && node scripts/check-expanded-gait-stability.mjs",
     "test:limb-continuity": "node scripts/check-limb-continuity.mjs",
+    "test:motion-expression": "node scripts/check-motion-expression.mjs",
     "test:turn-joints": "node scripts/check-turn-joint-stability.mjs",
     "qa:motion-quality": "node scripts/build-motions.mjs && node scripts/export-motion-quality.mjs",
     "test:custom": "node scripts/check-custom-matches.mjs && node scripts/check-combat-aim.mjs",

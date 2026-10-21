@@ -1,0 +1,27 @@
+{
+  "passed": 4,
+  "total": 4,
+  "results": [
+    {
+      "name": "Boxing support boots face the opponent instead of pointing backwards",
+      "pass": true,
+      "maxSupportToeYaw": 65.60424709761199
+    },
+    {
+      "name": "A lifted running foot keeps its authored knee bend plane",
+      "pass": true,
+      "maxSwingKneePlaneError": 17.172193853343273,
+      "samples": 8
+    },
+    {
+      "name": "A right hook closes both hands consistently with the other strikes",
+      "pass": true,
+      "maxFingerDifference": 0.0000017075472925031877
+    },
+    {
+      "name": "An absolute fist layer restores the authored fingers before the next sample",
+      "pass": true,
+      "restored": true
+    }
+  ]
+}

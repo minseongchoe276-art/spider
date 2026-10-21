@@ -1,0 +1,27 @@
+
+> shadow-pulse@1.0.0 prebuild
+> node scripts/build-motions.mjs
+
+PASS: compiled motions match current model and FBX sources
+
+> shadow-pulse@1.0.0 build
+> vite build
+
+vite v7.3.7 building client environment for production...
+transforming...
+✓ 129 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                           22.75 kB │ gzip:     7.41 kB
+dist/assets/index-V0yuhH6p.css            50.01 kB │ gzip:    11.75 kB
+dist/assets/EffectsReview-C_73RKq6.js      3.43 kB │ gzip:     1.79 kB
+dist/assets/WebHandReview-Yp0QPeJW.js      5.33 kB │ gzip:     2.46 kB
+dist/assets/CombatReview-BEkkqhRT.js       6.05 kB │ gzip:     2.90 kB
+dist/assets/MotionReview-CBS7Gpxn.js      14.66 kB │ gzip:     5.86 kB
+dist/assets/index-VKI2GM30.js          5,698.34 kB │ gzip: 2,033.43 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 14.95s
