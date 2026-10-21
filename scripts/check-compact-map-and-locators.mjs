@@ -5,7 +5,7 @@ import {LOCAL_CITY} from '../src/LocalCityLayout.js';
 import {proceduralCollision} from './city-collision.mjs';
 import {Multiplayer} from '../src/Multiplayer.js';
 import {edgeMinimapMarker,terrainMarkerPoint,configureTerrainCamera} from '../src/Minimap.js';
-import {positionMarker,PlayerPositionMarkers} from '../src/PlayerPositionMarkers.js';
+import {positionMarker,PlayerPositionMarkers,separateMarker} from '../src/PlayerPositionMarkers.js';
 import {PlayerExperience} from '../src/PlayerExperience.js';
 import {arenaFrom} from '../src/PursuitRules.js';
 
@@ -69,3 +69,11 @@ console.log('PASS labels refresh distance/height/direction and clean up on leavi
 const experience=Object.create(PlayerExperience.prototype);experience.game={city:{playableHalfExtent:160},physics:{supportHeight:()=>0}};
 assert(!experience.safe(new THREE.Vector3(140,.1,240)),'An old out-of-bounds saved position was restored');
 console.log('PASS old saved positions outside the compact map are rejected');
+
+for(const [width,height] of [[1280,720],[1024,768],[390,844],[844,390]])for(const y of [0,height/2,height]){
+ const occupied=[];
+ for(let i=0;i<7;i++){const p=separateMarker({x:width/2,y},occupied,width,height);assert(Number.isFinite(p.x)&&Number.isFinite(p.y));}
+ for(let i=0;i<occupied.length;i++){const a=occupied[i];assert(a.x>=0&&a.y>=0&&a.x+a.w<=width&&a.y+a.h<=height);
+  for(const b of occupied.slice(i+1))assert(!(a.x<b.x+b.w&&a.x+a.w>b.x&&a.y<b.y+b.h&&a.y+a.h>b.y),'Seven coincident player labels overlap');}
+}
+console.log('PASS seven overlapping head projections separate within desktop, portrait and landscape viewport bounds');

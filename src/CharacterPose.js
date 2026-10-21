@@ -314,7 +314,10 @@ export function adaptPelvisToTerrain(c,delta,grounded) {
     if(heights.length)target=THREE.MathUtils.clamp(Math.min(0,...heights),-0.22,0);
   }
   c.terrainPelvis=THREE.MathUtils.damp(c.terrainPelvis || 0,target,14,delta);
-  if(grounded)c.model.position.y+=c.terrainPelvis;
+  // A step edge must release the visual crouch with the same decay.
+  // Dropping it on the first airborne frame lifted the hips beyond the
+  // departing foot's reach and defeated the foot-release blend.
+  if(grounded || ['JUMPING','FALLING'].includes(c.poseState))c.model.position.y+=c.terrainPelvis;
   c.group.updateMatrixWorld(true);
 }
 
@@ -404,7 +407,8 @@ export function plantMovingFeet(c,delta) {
     // almost-straight boxing legs alternate between two ankle poses.
     const candidate=plant?.position || current.clone().setY((surface ?? current.y)+.11);
     const reachable=worldPosition(hip).distanceTo(candidate)<=length*0.975;
-    const stance=sample[side] && supported && action.getEffectiveWeight()>=0.8 && reachable;
+    const changedSupport=plant && Math.abs(plant.position.y-surface-(plant.offset ?? .11))>.12;
+    const stance=sample[side] && supported && !changedSupport && action.getEffectiveWeight()>=0.8 && reachable;
     if(!stance) {
       support=footSupport(c,current,true) || support;
       const swingSurface=support?.height;
@@ -443,9 +447,8 @@ export function plantMovingFeet(c,delta) {
       plant.position.y=surface+0.11;
     }
     // Keep a stance anchored to the actual support, including a changed LOD.
-    if(Math.abs(plant.position.y-surface-(plant.offset ?? .11))>0.12) {
-      delete c.movingPlants[side];delete c.movingReleases[side];continue;
-    }
+    // Changed treads release through the same bounded swing path above.
+    // Skipping that solve restored the authored ankle almost a metre away.
     plant.position.y=THREE.MathUtils.damp(plant.position.y,surface+(plant.offset ?? .11),20,delta);
     if(plant.normal.dot(support.normal)<0.9999) {
       const nextNormal=plant.normal.clone().lerp(support.normal,1-Math.exp(-16*delta)).normalize();

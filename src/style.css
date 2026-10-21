@@ -1106,3 +1106,5 @@ body.touch-device #overlay-click-to-play button, body.touch-device #world-map bu
 /* Keep combat availability clear of the central aim area and character. */
 #combat-feedback {top:96px;max-width:min(720px,calc(100vw - 24px));}
 @media(max-width:650px){#combat-feedback {top:116px;font-size:10px;padding:6px 8px;}}
+
+.player-position-marker.compact {max-width:220px;padding:4px 8px;font-size:11px;}

@@ -486,5 +486,5 @@ export class Multiplayer {
     }a.receive(p,p.pose);p.pose=null;}
     for(const [id,a] of this.avatars)if(!alive.has(id)){a.dispose();this.avatars.delete(id);}
   }
-  clearAvatars(){if(this.goalMarker)this.goalMarker.visible=false;this.rescueStarted=null;this.rescueTarget=null;for(const a of this.avatars.values())a.dispose();this.avatars.clear();for(const marker of this.downedMarkers?.values()||[]){this.game.scene.remove(marker);marker.geometry.dispose();marker.material.dispose();}this.downedMarkers?.clear();}
+  clearAvatars(){this.positionMarkers?.update([],this.game.physics.position,false);for(const overlay of [this.feedback?.output,this.feedback?.aimZone,this.feedback?.marker])if(overlay)overlay.hidden=true;if(this.goalMarker)this.goalMarker.visible=false;this.rescueStarted=null;this.rescueTarget=null;for(const a of this.avatars.values())a.dispose();this.avatars.clear();for(const marker of this.downedMarkers?.values()||[]){this.game.scene.remove(marker);marker.geometry.dispose();marker.material.dispose();}this.downedMarkers?.clear();}
 }

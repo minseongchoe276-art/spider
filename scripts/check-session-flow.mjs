@@ -111,5 +111,16 @@ check('Pad resume defers sticks until the next frame and does not use paused loo
   buttons[9].pressed = false; pad.update(1 / 60); assert(game.input.forward && game.input.right); assert.equal(game.cameraMoves, 1);
 }));
 
+check('Match finish clears combat overlays before the paused game can render another frame', () => {
+  const root={hidden:false},label={removed:false,remove(){this.removed=true;}};
+  const multiplayer=Object.create(Multiplayer.prototype);
+  Object.assign(multiplayer,{game:{physics:{position:new THREE.Vector3()},character:{group:{}},clearInput(){},setPaused(){}},avatars:new Map(),
+    positionMarkers:{update(players,position,active){root.hidden=!active;if(!players.length)label.remove();}},
+    feedback:{output:{hidden:false},aimZone:{hidden:false},marker:{hidden:false}}});
+  multiplayer.finish();
+  assert(root.hidden && label.removed,'Ended match left a stale player label over the result screen');
+  assert(Object.values(multiplayer.feedback).every(el=>el.hidden),'Combat hints remained visible over the lobby');
+});
+
 console.log(`Session flow review: ${passed} passed, ${failed} failed.`);
 if (failed) process.exitCode = 1;
