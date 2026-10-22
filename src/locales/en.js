@@ -110,3 +110,10 @@ export const EN_TEMPLATES=[
 ];
 Object.assign(EN,{'로컬 5개 맵은 혼자 탐험 · 온라인 입장 시 네온 도심으로 이동':'Explore 5 local districts solo · Online play takes you to Neon Core','지도 변경':'Change district','지도 변경 시 로비로 돌아갑니다. 온라인 경기는 네온 도심에서 진행합니다.':'Changing district returns to the lobby. Online matches use Neon Core.'});
 Object.assign(EN,{'방향':'Direction','크기':'Size','승리':'wins','관전':'Spectate','대기 위치':'Last known position','지도 범위 밖':'Outside map range','로딩':'Loading','전':'ago'});
+Object.assign(EN,{
+'동작 버튼':'Action buttons','놓기':'Release','연결 중':'Connecting','보조 와이어':'Extra Wire',
+'거미줄 놓기':'Release wire','거미줄 연결 · 한 번 누르기':'Connect wire · Tap once','거미줄 · 건물을 바라보세요':'Wire · Look toward a building',
+'왼쪽 이동 · 거미줄 한 번으로 연결 / 다시 눌러 놓기 · 카메라 자동 추적':'Move on the left · Tap Wire to connect / tap again to release · Camera follows automatically',
+'왼쪽 이동 · 카메라 자동 추적':'Move on the left · Automatic camera follow','거미줄 한 번으로 연결 / 다시 눌러 놓기 · 점프로 도약':'Tap Wire to connect / tap again to release · Jump to leap off',
+'왼쪽 스틱으로 이동하고 끝까지 밀면 질주합니다. 거미줄 버튼을 한 번 누르면 앞쪽 건물에 연결되고, 다시 누르면 놓습니다. 초록 표시는 연결 가능한 지점입니다. 카메라는 진행 방향을 부드럽게 따라갑니다. 오른쪽 화면을 밀면 직접 시점을 조절하며 수동 조작이 우선합니다. 점프 버튼은 줄을 놓고 도약합니다. 전투·보조 와이어·벽 이동·묘기는 더보기에서 엽니다.':'Move with the left stick; push to the edge to sprint. Tap Wire to connect to a building ahead, and tap again to release. Green marks a valid attachment point. The camera follows your direction smoothly. Drag on the right to look manually; your input takes priority. Jump releases the wire and launches you. Open More for combat, extra wire, wall traversal and tricks.',
+});

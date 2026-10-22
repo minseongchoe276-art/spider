@@ -1,3 +1,4 @@
+import {followMobileCamera} from './MobileTraversal.js';
 import * as THREE from 'three';
 
 export class ThirdPersonCamera {
@@ -97,6 +98,7 @@ export class ThirdPersonCamera {
 
   handleMouseMove(deltaX, deltaY, sensitivity = 0.0011) {
     this.isRecentering = false;
+    if(this.mobileAutoFollow)this.mobileLookDelay=2.2;
     this.lockBehind = false;
     // Keep the camera where the player aimed it. Auto-centering after a pause
     // makes the view drift unexpectedly; C is the deliberate recenter action.
@@ -115,6 +117,7 @@ export class ThirdPersonCamera {
   }
 
   recenterBehind(facingAngle) {
+    this.mobileLookDelay=0;
     this.recenterYaw = facingAngle;
     this.isRecentering = true;
     this.lockBehind = true;
@@ -185,7 +188,8 @@ export class ThirdPersonCamera {
     }
     // Keep the boom offset relative to the character, like a conventional
     // third-person follow camera. Mouse input temporarily unlocks this orbit.
-    if (this.lockBehind && this.followMovement && facingAngle !== null) {
+    if(this.mobileAutoFollow)followMobileCamera(this,Math.min(.05,Math.max(0,delta)),playerVelocity,isSwinging,facingAngle,movement);
+    if (!this.mobileAutoFollow && this.lockBehind && this.followMovement && facingAngle !== null) {
       const difference = Math.atan2(Math.sin(facingAngle - this.yaw), Math.cos(facingAngle - this.yaw));
       this.yaw += difference * (1 - Math.exp(-10 * this.followStrength * delta));
     }

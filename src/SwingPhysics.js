@@ -1,3 +1,4 @@
+import {MOBILE_ANCHOR_FAN,mobileAnchorScore} from './MobileTraversal.js';
 import { AIR_TRICKS, selectAirTrick } from './AirTricks.js';
 import * as THREE from 'three';
 import { GROUNDED } from './MotionCatalog.js';
@@ -120,10 +121,27 @@ export class SwingPhysics {
       return this.bestAnchorCandidate;
     };
 
-    // The visible reticle is the only targeting authority. A miss stays a miss.
+    // Desktop keeps exact reticle targeting. Mobile's opt-in traversal fan
+    // still uses visible, supported surfaces and the same obstruction checks.
     this.raycaster.far = 130;
     this.raycaster.setFromCamera(this.webAimNdc, camera);
-    return accept(this.castWebSurface(this.raycaster.ray.origin,this.raycaster.ray.direction,130));
+    const direct=this.castWebSurface(this.raycaster.ray.origin,this.raycaster.ray.direction,130);
+    if(!this.mobileTraversalAssist)return accept(direct);
+    let best=null,bestScore=Infinity;
+    const consider=hit=>{
+      if(!hit?.point)return;
+      const score=mobileAnchorScore(hit.point,eye,camera);
+      if(score>=bestScore)return;
+      // The camera can see over a ledge that blocks the character's hand.
+      if(!accept(hit))return;best=hit;bestScore=score;
+    };
+    consider(direct);
+    for(const [x,y]of MOBILE_ANCHOR_FAN){
+      this.raycaster.setFromCamera(new THREE.Vector2(x,y),camera);
+      consider(this.castWebSurface(this.raycaster.ray.origin,this.raycaster.ray.direction,130));
+    }
+    this.bestAnchorCandidate=this.bestAnchorNormal=this.bestAnchorObject=null;
+    return best?accept(best):null;
   }
 
   castWebSurface(origin,direction,distance) {

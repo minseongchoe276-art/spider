@@ -1266,3 +1266,19 @@ body.in-game .language-in-menu,.language-in-menu {position:static;display:inline
 .loading-atlas > summary {cursor:pointer;font-size:12px;color:#9ab4c3;padding:12px;}
 .loading-atlas[open] .city-options {margin-top:8px;}
 #open-multiplayer:focus-visible,.map-selector summary:focus-visible,#lobby-back:focus-visible {outline:2px solid #b2e9df;outline-offset:4px;}
+
+/* Mobile traversal: two thumbs, one tether button, a deliberate jump. */
+#touch-controls[data-simple="true"][data-combat="false"] .touch-actions {width:146px;height:190px;}
+#touch-controls[data-simple="true"][data-combat="false"] .touch-actions .touch-primary {top:0;right:0;width:90px;height:90px;background:#1b494bc9;border-color:#a3d6d6;}
+#touch-controls[data-simple="true"][data-combat="false"] .touch-actions .touch-jump {width:70px;height:70px;right:0;bottom:0;}
+#touch-controls[data-simple="true"][data-combat="false"] .touch-actions .touch-more {left:0;right:auto;top:auto;bottom:36px;width:48px;height:48px;}
+#touch-controls[data-simple="true"][data-combat="false"] .touch-actions .touch-guard {left:0;top:0;width:48px;height:48px;}
+#touch-controls[data-simple="true"][data-wire-connected="true"] .touch-primary {background:#366657e8!important;border-color:#9ff6c8!important;box-shadow:0 0 0 5px #92dfbc18;}
+#touch-controls[data-simple="true"][data-wire-ready="true"][data-combat="false"] .touch-primary {border-color:#9ce9cf;}
+#touch-controls[data-simple="true"] .touch-extra .touch-mode {position:static;min-width:60px;width:60px;height:56px;}
+#touch-controls[data-simple="true"][data-combat="false"] .touch-extra {bottom:calc(var(--action-bottom) + 204px);max-height:calc(100dvh - 140px);overflow-y:auto;}
+#touch-anchor {position:fixed;pointer-events:none;width:18px;height:18px;transform:translate(-50%,-50%);border:2px solid #b3ffe1;border-radius:50%;box-shadow:0 0 0 4px #19433e77,0 0 14px #8defc855;}
+#touch-anchor::after {content:'';position:absolute;inset:5px;border-radius:50%;background:#d7fff0;}
+body:not(.touch-device) #touch-anchor {display:none;}
+body.touch-device.mobile-traversal.in-game #crosshair {opacity:.35;}
+@media(max-height:500px) and (orientation:landscape){#touch-controls[data-simple="true"][data-combat="false"] .touch-extra{right:calc(var(--touch-edge) + 158px);bottom:var(--action-bottom);max-height:calc(100dvh - 94px);}#touch-controls[data-simple="true"][data-combat="false"] .touch-actions{height:170px;}#touch-controls[data-simple="true"][data-combat="false"] .touch-primary{width:82px;height:82px;}}

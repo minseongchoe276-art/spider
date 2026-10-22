@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import {language} from './I18n.js';
-const NAMES={wire:['와이어 발사','Wire Shot'],jab:['잽','Jab'],cross:['크로스','Cross'],hook:['라이징 훅','Rising Hook'],special:['펄스 스트라이크','Pulse Strike'],slam:['에어 다이브','Air Dive'],slamLand:['임팩트','Impact'],dodgeLeft:['회피','Evade'],dodgeRight:['회피','Evade'],dodgeForward:['회피','Evade'],dodgeBack:['회피','Evade'],zip:['와이어 집','Wire Zip'],swing:['와이어 연결','Tether Cast'],trick:['에어 롤','Air Roll']};
+const NAMES={jab:['잽','Jab'],cross:['크로스','Cross'],hook:['라이징 훅','Rising Hook'],special:['펄스 스트라이크','Pulse Strike'],slam:['에어 다이브','Air Dive'],slamLand:['임팩트','Impact'],dodgeLeft:['회피','Evade'],dodgeRight:['회피','Evade'],dodgeForward:['회피','Evade'],dodgeBack:['회피','Evade'],trick:['에어 롤','Air Roll']};
 // Presentation observes accepted actions: it never changes damage, cooldown or input.
 export class SkillPresentation {
   constructor(game){
@@ -36,8 +36,6 @@ export class SkillPresentation {
     const action=g.combat?.action,p=g.physics;
     if(active){
       if(action&&action.id!==this.lastAction){this.cast(action.key);this.lastAction=action.id;}
-      if(p.state==='WEB_ZIP'&&this.lastState!=='WEB_ZIP')this.cast('zip');
-      if(p.webs.length>this.lastWebs)this.cast('swing');
       if(g.character.airTrick&&!this.lastTrick)this.cast('trick');
     }
     this.lastState=p.state;this.lastWebs=p.webs.length;this.lastTrick=g.character.airTrick;

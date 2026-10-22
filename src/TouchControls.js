@@ -20,18 +20,18 @@ const action=(attributes,name,label)=>`<button ${attributes}>${icon(name)}<span>
 // Touch owns its pointers and held inputs independently of keyboard/gamepad.
 export class TouchControls {
   constructor(game) {
-    this.game=game;this.pointers=new Map();this.enabled=false;
+    this.game=game;this.simpleTraversal=true;this.wireLatched=false;this.pointers=new Map();this.enabled=false;
     this.review=!!import.meta.env?.DEV && new URLSearchParams(location.search).has('touchReview');
     // `any-pointer` and maxTouchPoints also match many touchscreen laptops.
     // Use the primary pointer, with a mobile-UA fallback for older browsers.
     this.media=window.matchMedia('(pointer: coarse)');
-    this.root=document.createElement('div');this.root.id='touch-controls';
+    this.root=document.createElement('div');this.root.id='touch-controls';this.root.dataset.simple='true';
     this.root.setAttribute('aria-label','모바일 게임 조작');
     this.root.innerHTML=`<nav class="touch-toolbar" aria-label="게임 메뉴"><button data-ui="fullscreen" aria-label="전체화면으로 플레이" aria-pressed="false">전체화면</button><button data-ui="map" aria-label="전체 지도 열기">지도</button><button data-ui="menu" aria-label="게임 메뉴 열기">메뉴</button></nav>
       <div class="touch-move-zone" aria-label="왼쪽 이동 영역"><div class="touch-stick" role="group" aria-label="이동 스틱 · 끝까지 밀면 질주"><span class="touch-sprint-mark">질주 ↑</span><span class="touch-stick-knob"></span><span class="touch-stick-caption">이동</span></div></div>
       ${action('data-key="mode" class="touch-mode" aria-label="전투와 에너지 와이어 모드 전환" aria-pressed="false"','mode','전투')}
-      <div class="touch-actions" role="group" aria-label="오른쪽 동작 · 누른 채 드래그로 조준">
-      ${action('data-mouse="0" class="touch-web touch-primary" aria-label="왼손 와이어 · 누른 채 드래그로 조준"','wire','왼손 와이어')}
+      <div class="touch-actions" role="group" aria-label="동작 버튼">
+      ${action('data-mouse="0" class="touch-web touch-primary" aria-label="거미줄 연결 · 한 번 누르기"','wire','거미줄')}
       ${action('data-key="jump" class="touch-jump" aria-label="점프 / 줄에서 뛰어내리기"','jump','점프')}
       ${action('data-key="zip" class="touch-zip" aria-label="와이어 집 / 전투 훅"','zip','집')}
       ${action('data-key="guard" class="touch-guard" aria-label="방어 · 누르고 유지" hidden','guard','방어')}
@@ -47,6 +47,8 @@ export class TouchControls {
     this.stick=this.root.querySelector('.touch-stick');this.knob=this.root.querySelector('.touch-stick-knob');
     this.moveZone=this.root.querySelector('.touch-move-zone');
     this.extra=this.root.querySelector('#touch-extra');
+    for(const selector of ['.touch-mode','.touch-zip','.touch-dodge'])this.extra.append(this.root.querySelector(selector));
+    this.anchorMarker=document.createElement('div');this.anchorMarker.id='touch-anchor';this.anchorMarker.hidden=true;this.anchorMarker.setAttribute('aria-hidden','true');this.root.append(this.anchorMarker);
     this.root.addEventListener('contextmenu',e=>e.preventDefault());
     this.root.addEventListener('pointerdown',e=>this.down(e));
     game.canvas.addEventListener('pointerdown',e=>this.down(e));
@@ -70,16 +72,16 @@ export class TouchControls {
     this.extra.hidden=!open;this.root.querySelector('[data-ui=more]').setAttribute('aria-expanded',String(open));
     document.body.classList.toggle('touch-extra-open',open);
   }
-  detect(){this.enabled=isTouchDevice({coarsePointer:this.media.matches,mobileUserAgent:navigator.userAgentData?.mobile ?? /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent),review:this.review});document.body.classList.toggle('touch-device',this.enabled);this.update();}
+  detect(){const previous=this.enabled;this.enabled=isTouchDevice({coarsePointer:this.media.matches,mobileUserAgent:navigator.userAgentData?.mobile ?? /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent),review:this.review});if(previous&&!this.enabled)this.release();document.body.classList.toggle('touch-device',this.enabled);this.update();}
   active(){const g=this.game;return this.enabled&&g.isPlaying&&!g.isPaused&&!g.helpOpen&&!g.multiplayer?.spectating&&!g.contextLost;}
   key(action,down){
     const code=this.game.preferences.values.settings.bindings[action];if(!code)return;
     const event=new KeyboardEvent(down?'keydown':'keyup',{code,bubbles:true});Object.defineProperty(event,'touchInput',{value:true});window.dispatchEvent(event);
   }
-  mouse(button,down){
+  mouse(button,down,traversal=false){
     const r=this.game.canvas.getBoundingClientRect();
     const event=new MouseEvent(down?'mousedown':'mouseup',{button,clientX:r.x+r.width/2,clientY:r.y+r.height/2,bubbles:true});
-    Object.defineProperty(event,'touchInput',{value:true});(down?this.game.canvas:window).dispatchEvent(event);
+    Object.defineProperty(event,'touchInput',{value:true});Object.defineProperty(event,'touchTraversal',{value:traversal});(down?this.game.canvas:window).dispatchEvent(event);
   }
   down(e){
     if((e.pointerType==='mouse'&&!this.review)||!this.active())return;
@@ -87,7 +89,7 @@ export class TouchControls {
     let kind,action;
     if(e.target.closest('.touch-stick') || e.target.closest('.touch-move-zone'))kind='stick';
     else if(button?.dataset.key){kind='key';action=button.dataset.key;}
-    else if(button?.dataset.mouse!==undefined){kind='mouse';action=Number(button.dataset.mouse);}
+    else if(button?.dataset.mouse!==undefined){action=Number(button.dataset.mouse);kind=this.simpleTraversal&&action===0&&this.game.combat?.mode!=='combat'?'wire':'mouse';}
     else if(e.target===this.game.canvas&&e.clientX>innerWidth*.3)kind='look';
     else return;
     if([...this.pointers.values()].some(p=>p.kind===kind&&(kind==='stick'||kind==='look'||p.action===action)))return;
@@ -95,7 +97,7 @@ export class TouchControls {
     const pointer={kind,action,x:e.clientX,y:e.clientY,startX:e.clientX,startY:e.clientY,target:e.target};this.pointers.set(e.pointerId,pointer);
     button?.classList.add('pressed');
     this.game.audio.ensureContext();
-    if(kind==='key')this.key(action,true);
+    if(kind==='key'){this.key(action,true);if(this.simpleTraversal&&['jump','mode'].includes(action))this.releaseWire();}
     if(kind==='mouse')this.mouse(action,true);
     if(kind==='stick'){
       if(this.moveZone){
@@ -112,7 +114,7 @@ export class TouchControls {
   move(e){const p=this.pointers.get(e.pointerId);if(!p)return;
     e.preventDefault();if(!this.active()){this.release();return;}
     if(p.kind==='stick')this.moveStick(e);
-    if(p.kind==='look'||p.kind==='mouse'||(p.kind==='key'&&p.action!=='mode')){
+    if(p.kind==='look'||p.kind==='mouse'||p.kind==='wire'||(p.kind==='key'&&p.action!=='mode')){
       // Ignore tiny thumb jitter on an action button, then keep aiming while
       // jumping, dodging or holding a strand with the same thumb.
       const started=p.looking;
@@ -135,11 +137,50 @@ export class TouchControls {
     if(p.target.hasPointerCapture?.(e.pointerId))p.target.releasePointerCapture?.(e.pointerId);
     if(p.kind==='key')this.key(p.action,false);
     if(p.kind==='mouse')this.mouse(p.action,false);
+    if(p.kind==='wire'&&!p.looking&&e.type!=='pointercancel'&&e.type!=='lostpointercapture'&&this.active())this.toggleWire();
     if(p.kind==='stick'){this.game.touchDirections={};this.resetStick();this.game.syncHeldInput();}
+  }
+  toggleWire(){
+    if(this.wireLatched){this.releaseWire();return;}
+    if(!this.active()||this.game.combat?.mode==='combat')return;
+    this.wireLatched=true;this.mouse(0,true,true);
+    // Keep a successful rope, but do not keep firing/reconnecting after a miss.
+    this.game.input.webFireHeld=false;
+  }
+  releaseWire(){
+    if(!this.wireLatched)return;
+    this.wireLatched=false;this.mouse(0,false,true);
+    if(this.game.input)this.game.input.webTap=false;
+  }
+  syncTraversal(active){
+    const g=this.game,p=g.physics,combat=g.combat?.mode==='combat';
+    p.mobileTraversalAssist=this.enabled&&!combat;
+    document.body.classList.toggle('mobile-traversal',this.enabled&&!combat);
+    g.tpsCamera.mobileAutoFollow=this.enabled;
+    g.tpsCamera.mobileLooking=[...this.pointers.values()].some(pointer=>pointer.kind==='look'||pointer.looking);
+    if(this.wireLatched&&(!active||combat||(!g.input.webTap&&(!g.input.webHold||!p.webs.some(web=>(web.button??0)===0)))))this.releaseWire();
+    const connected=this.wireLatched&&p.webs.some(web=>(web.button??0)===0),ready=!!p.bestAnchorCandidate;
+    const button=this.root.querySelector('.touch-primary');
+    const key=`${combat}:${connected}:${this.wireLatched}:${ready}`;
+    if(this.wireUiKey!==key){
+      this.wireUiKey=key;button.setAttribute('aria-pressed',String(connected));
+      if(!combat){button.querySelector('span').textContent=connected?'놓기':this.wireLatched?'연결 중':'거미줄';button.setAttribute('aria-label',connected?'거미줄 놓기':ready?'거미줄 연결 · 한 번 누르기':'거미줄 · 건물을 바라보세요');button.querySelector('path').setAttribute('d',icons.wire);}
+      this.root.dataset.wireConnected=String(connected);this.root.dataset.wireReady=String(ready);
+    }
+    if(this.anchorMarker){
+      this.anchorMarker.hidden=true;
+      if(active&&!combat&&!connected&&p.bestAnchorCandidate){
+        const screen=p.bestAnchorCandidate.clone().project(g.camera),rect=g.canvas.getBoundingClientRect();
+        if(screen.z>-1&&screen.z<1&&Math.abs(screen.x)<.92&&Math.abs(screen.y)<.94){
+          this.anchorMarker.hidden=false;this.anchorMarker.style.left=`${rect.x+(screen.x+1)*rect.width/2}px`;this.anchorMarker.style.top=`${rect.y+(1-screen.y)*rect.height/2}px`;
+        }
+      }
+    }
   }
   resetStick(){this.stickOrigin=null;this.knob.style.transform='translate(0px,0px)';this.stick.classList.remove('sprinting');if(this.moveZone){this.stick.style.left='';this.stick.style.top='';this.stick.style.bottom='';}}
   release(){
-    for(const id of [...this.pointers.keys()])this.up({pointerId:id});
+    for(const id of [...this.pointers.keys()])this.up({pointerId:id,type:'pointercancel'});
+    if(this.simpleTraversal)this.releaseWire();
     this.game.touchDirections={};this.resetStick();this.game.syncHeldInput();
     if(this.extra)this.setExpanded(false);
   }
@@ -149,9 +190,10 @@ export class TouchControls {
     this.root.dataset.spectating=String(!!g.multiplayer?.spectating);
     document.body.classList.toggle('touch-solo',this.enabled&&!!g.multiplayer?.solo);
     document.body.classList.toggle('touch-extra-open',!this.root.hidden&&!this.extra.hidden);
-    if(active&&!this.announced){this.announced=true;g.showNotice('왼쪽 이동 · 오른쪽 드래그로 시점 · 와이어를 누른 채 조준 · 보조 동작은 더보기');}
+    if(active&&!this.announced){this.announced=true;g.showNotice(this.simpleTraversal?'왼쪽 이동 · 거미줄 한 번으로 연결 / 다시 눌러 놓기 · 카메라 자동 추적':'왼쪽 이동 · 오른쪽 드래그로 시점 · 와이어를 누른 채 조준 · 보조 동작은 더보기');}
     if(this.enabled)this.game.pointerLockWanted=false;
-    if(!active&&this.pointers.size)this.release();
+    if(!active&&(this.pointers.size||this.wireLatched))this.release();
+    if(this.simpleTraversal)this.syncTraversal(active);
     const combat=this.game.combat?.mode==='combat',grounded=COMBAT_GROUND_STATES.includes(this.game.physics.state),recovering=['ROLLING','TURNING'].includes(this.game.physics.state);
     const layoutKey=`${g.combat?.mode}:${grounded}:${recovering}:${!!g.combat?.allowGuardInWeb}`;
     if(this.layoutKey===layoutKey)return;
@@ -171,7 +213,7 @@ export class TouchControls {
     const zipButton=this.root.querySelector('.touch-zip');if(zipButton)zipButton.disabled=combat&&!grounded;
     for(const button of this.root.querySelectorAll('[data-mouse]')){
       button.disabled=combat&&!grounded;
-      const right=button.dataset.mouse==='2';const label=combat?(!grounded?(recovering?'회복 후 공격':'착지 후 공격'):right?'스트레이트':'잽'):(right?'오른손':'왼손 와이어');
+      const right=button.dataset.mouse==='2';if(this.simpleTraversal&&!combat&&!right)continue;const label=combat?(!grounded?(recovering?'회복 후 공격':'착지 후 공격'):right?'스트레이트':'잽'):(this.simpleTraversal?'보조 와이어':right?'오른손':'왼손 와이어');
       const caption=button.querySelector('span');
       button.querySelector('path').setAttribute('d',icons[combat?'heavy':right?'offhand':'wire']);
       if(caption.textContent!==label){caption.textContent=label;button.setAttribute('aria-label',`${right?'오른손':'왼손'} ${combat?'공격':'와이어'} · 누른 채 드래그로 조준`);}

@@ -481,7 +481,7 @@ export class GameApp {
           this.canvas.getBoundingClientRect(),
           true // Both hands fire through the fixed screen-center reticle.
         );
-        if(this.multiplayer?.attack('web'))return;
+        if(!e.touchTraversal && this.multiplayer?.attack('web'))return;
         this.input.webTap = true;
         this.input.webFireHeld = true;
         this.input.webHold = true;
@@ -495,7 +495,7 @@ export class GameApp {
           this.canvas.getBoundingClientRect(),
           true
         );
-        if(this.multiplayer?.attack('web','right'))return;
+        if(!e.touchTraversal && this.multiplayer?.attack('web','right'))return;
         this.input.webTapRight = true;
         this.input.webFireHeldRight = true;
         this.input.webHoldRight = true;
