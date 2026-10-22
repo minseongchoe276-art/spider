@@ -582,11 +582,22 @@ export class Character {
     }
     const combat=this.combatAction;
     const combatClip= combat?.key==='hit'?'hitHead':combat?.key?.startsWith('dodge')?'combatIdle':combat?.key;
-    const combatGround=['IDLE','RUNNING','SPRINTING'].includes(state) && !(this.rollReleaseTime>.08);
-    const combatMoving=combatGround && (['RUNNING','SPRINTING'].includes(state)||horizontalSpeed>.25);
+    const rollRecovering=(this.rollReleaseTime || 0)>.08;
+    const combatGround=['IDLE','RUNNING','SPRINTING'].includes(state) && !rollRecovering;
+    const legsMoving=['RUNNING','SPRINTING'].includes(state) || horizontalSpeed>.25;
+    const combatMoving=combatGround && legsMoving;
+    const gait=['RUNNING','SPRINTING'].includes(state);
+    const strikeKey=!!(combat?.duration && ['jab','cross','hook','heavy','special'].includes(combat.key));
+    const reactKey=!!(combat && (combat.key?.startsWith('dodge') || combat.key==='hit' || combat.key==='hitHead'));
+    // Dodges and hits are short stance clips. Swapping them in for a run
+    // dragged the planted feet along the capsule. A punch opened during roll
+    // recovery did the same under the roll blend, so the strike never showed.
+    // Those actions stay above the hips and the gait keeps the legs.
+    const movingStrike=strikeKey && ((combatGround && legsMoving) || (rollRecovering && gait));
     const movingGuard=combatMoving && combat?.key==='guard';
-    const movingStrike=combatMoving && combat?.duration && ['jab','cross','hook','heavy','special'].includes(combat.key);
-    if(combat && !movingStrike && !movingGuard && this.actions[combatClip] && (grounded || combat.key==='slam') && !['ROLLING','TURNING'].includes(state) && (state!=='LANDING'||combatClip==='slamLand'))name=combatClip;
+    const movingReact=reactKey && gait && (combatGround || rollRecovering);
+    const recoveryOwnsBody=rollRecovering && !!combat && (combat.key==='guard' || combat.key==='combatIdle');
+    if(combat && !movingStrike && !movingGuard && !movingReact && !recoveryOwnsBody && this.actions[combatClip] && (grounded || combat.key==='slam') && !['ROLLING','TURNING'].includes(state) && (state!=='LANDING'||combatClip==='slamLand'))name=combatClip;
     // A ground-pound recovery owns the landing until physics releases it,
     // even if its timed combat action ends before that landing state does.
     if(state==='LANDING' && name==='slamLand')this.landingAction='slamLand';
@@ -641,11 +652,12 @@ export class Character {
     }
     // Recovery and airborne clips own the whole body. A fading guard layer
     // must not pin the chest upright while the pelvis rolls underneath it.
-    if(!combatGround)this.movingGuardWeight=0;
+    const upperAction=movingStrike || movingReact;
+    if(!combatGround && !upperAction)this.movingGuardWeight=0;
     this.movingGuardWeight=THREE.MathUtils.damp(this.movingGuardWeight || 0,
-      combatMoving && (this.combatStance || movingStrike || movingGuard)?1:0,18,delta);
-    if(combatGround && (movingStrike || this.movingGuardWeight>.001)) {
-      const clip=this.actions[movingStrike?combatClip:movingGuard?'guard':'combatIdle']?.getClip();
+      upperAction || (combatMoving && (this.combatStance || movingGuard))?1:0,18,delta);
+    if((combatGround || upperAction) && (upperAction || this.movingGuardWeight>.001)) {
+      const clip=this.actions[upperAction?combatClip:movingGuard?'guard':'combatIdle']?.getClip();
       if(clip) {
         this.strikeLayers ||= new WeakMap();
         if(!this.strikeLayers.has(clip))this.strikeLayers.set(clip,clip.tracks.flatMap(track=>{
@@ -653,7 +665,7 @@ export class Character {
           return bone && property==='quaternion' && /^(spine|neck|head|leftshoulder|rightshoulder|leftarm|rightarm|leftforearm|rightforearm|lefthand|righthand)/.test(boneId(id))
             ?[{bone,sample:track.createInterpolant()}]:[];
         }));
-        const phase=movingStrike?THREE.MathUtils.clamp(combat.time/combat.duration,0,1):0;
+        const phase=upperAction && combat.duration?THREE.MathUtils.clamp(combat.time/combat.duration,0,1):0;
         // Enter guard before the strike instead of snapping from a running
         // arm swing. Contact stays fully weighted; recovery returns to guard.
         const weight=this.movingGuardWeight;
@@ -664,7 +676,7 @@ export class Character {
         // above the hips while moving; compensating both thigh frames after
         // twisting the pelvis introduced opposite calf/boot rotations.
         const layers=this.strikeLayers.get(clip);
-        const token=movingStrike?combat.id || combat.key:movingGuard?'movingGuard':'guard';
+        const token=upperAction?combat.id || combat.key:movingGuard?'movingGuard':'guard';
         if(this.movingStrikeToken!==token){
           this.movingStrikeToken=token;this.movingStrikeBlend=0;
           this.movingStrikeFrom=this.movingStrikePose;
