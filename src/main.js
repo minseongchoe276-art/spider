@@ -1,7 +1,6 @@
 import {initLobbySelection} from './LobbySelection.js';
 import {localMap,mapName} from './MapCatalog.js';
 import {initLanguage,t,language} from './I18n.js';
-import {SkillPresentation} from './SkillPresentation.js';
 import { initCitySelection, selectedCity } from './CitySelection.js';
 import { createHongKongAudit } from './HongKongAudit.js';
 import { CombatSystem } from './Combat.js';
@@ -111,7 +110,6 @@ export class GameApp {
     this.touchControls=new TouchControls(this);
     this.applyPreferences();
     this.multiplayer = new Multiplayer(this);
-    this.skillPresentation=new SkillPresentation(this);
     this.displayMode = new DisplayMode(this);
 
     this.canvas.addEventListener('webglcontextlost', event => {
@@ -871,7 +869,6 @@ export class GameApp {
     // Keep streamed city tiles advancing while the start overlay is visible;
     // TilesRenderer performs visibility/LOD work independently of gameplay.
     this.city.update(this.clock.elapsedTime);
-    this.skillPresentation?.update();
     if (!this.assetsReady && this.character.isLoaded &&
         (!(this.city instanceof UrbanGroundCity) || this.city.isReady)) this.onAssetsLoaded();
 

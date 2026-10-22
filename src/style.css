@@ -1173,34 +1173,12 @@ body.in-game .language-switch {display:none;}
 .world-map-destinations a[aria-current] {color:#91fff0;border-color:#91fff0;}
 #game-notice {top:88px;border:0;border-radius:30px;padding:12px 24px;max-width:min(680px,85vw);background:linear-gradient(90deg,#101e2be8,#203349e8);box-shadow:0 8px 32px #0004,inset 0 1px #ffffff24;backdrop-filter:blur(18px);line-height:1.6;}
 #combat-feedback {border:0;border-radius:22px;padding:9px 18px;background:#101c2de0;box-shadow:inset 0 1px #ffffff20,0 8px 25px #0003;}
-#skill-cast {position:fixed;left:50%;top:145px;transform:translateX(-50%);display:flex;align-items:center;gap:14px;pointer-events:none;z-index:24;color:#e9fffc;text-shadow:0 2px 14px #75e9ec55;}
-#skill-cast[hidden] {display:none;}
-.cast-emblem {width:64px;height:64px;overflow:visible;filter:drop-shadow(0 0 9px #77ecec70);fill:none;stroke:#8df1ed;stroke-width:1.2;}
-.cast-emblem circle:first-child {stroke-dasharray:52 12;transform-origin:center;}
-.cast-emblem circle:nth-child(2) {opacity:.35;stroke-dasharray:2 5;}
-.cast-emblem path {stroke-width:2.3;stroke-linecap:round;stroke-linejoin:round;}
-#skill-cast small {display:block;font:600 8px/1.5 Outfit,system-ui;letter-spacing:.25em;color:#a5d4d8;}
-#skill-cast strong {display:block;font:800 25px/1.55 Outfit,'Noto Sans KR',sans-serif;letter-spacing:.04em;}
-#skill-cast i {display:block;font:500 9px Outfit,system-ui;letter-spacing:.24em;color:#a3c3cd;}
-#skill-cast.casting {animation:cast-reveal 1.05s both;}
-.casting .cast-emblem circle:first-child {animation:cast-orbit 1.05s ease-out;}
-#skill-cast[data-kind="special"] {color:#e8deff;filter:drop-shadow(0 0 12px #b28aff60);}
-@keyframes cast-reveal {0%{opacity:0;filter:blur(6px);translate:0 7px}18%,65%{opacity:1;filter:blur(0);translate:0 0}100%{opacity:0;translate:0 -6px}}
-@keyframes cast-orbit {from{rotate:-60deg}to{rotate:35deg}}
-@media(max-width:650px){.city-options{grid-template-columns:repeat(2,minmax(0,1fr))}.city-options a{min-height:82px;padding:10px}.language-switch{right:8px;top:8px}#skill-cast{top:160px;gap:9px}#skill-cast strong{font-size:20px}.cast-emblem{width:49px;height:49px}}
-@media(prefers-reduced-motion:reduce){#skill-cast.casting,.casting .cast-emblem circle:first-child{animation:none}.city-options a{transition:none}}
-body.reduced-motion #skill-cast.casting,body.reduced-motion .casting .cast-emblem circle:first-child {animation:none;}
+@media(max-width:650px){.city-options{grid-template-columns:repeat(2,minmax(0,1fr))}.city-options a{min-height:82px;padding:10px}.language-switch{right:8px;top:8px}}
+@media(prefers-reduced-motion:reduce){.city-options a{transition:none}}
 .pause-atlas .city-options {margin-top:12px;}
 .pause-atlas p,.district-online-note {font-size:11px;line-height:1.6;color:#aabecd;}
 #world-map {overflow:auto;}
 .world-map-destinations a {min-height:30px;display:inline-flex;align-items:center;}
-@media (max-height:500px){#skill-cast{top:92px;left:40%}#skill-cast strong{font-size:17px}.cast-emblem{width:40px;height:40px}}
-#skill-cast {width:max-content;max-width:calc(100vw - 24px);}
-#skill-cast strong {white-space:nowrap;}
-body.skill-casting #game-notice.visible {opacity:0;}
-@media(max-width:650px){#skill-cast{top:145px}#skill-cast strong{font-size:21px;letter-spacing:.01em}}
-body.skill-casting #combat-status {visibility:hidden;}
-#skill-cast strong {text-shadow:0 2px 5px #071725,0 0 22px #65e8ed70;}
 body.in-game .language-in-menu,.language-in-menu {position:static;display:inline-flex;margin:14px 0;backdrop-filter:none;}
 .district-route {font-size:10px!important;line-height:1.7!important;color:#a6c4cd!important;margin:12px 0 0!important;}
 @media(max-width:650px){body:not(.in-game) > .language-switch {top:max(68px,calc(env(safe-area-inset-top) + 60px));right:16px;}}

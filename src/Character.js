@@ -942,10 +942,11 @@ export class Character {
     const up=new THREE.Vector3(0,1,0).addScaledVector(direction,-direction.y);
     if(up.lengthSq()<1e-5)up.set(0,0,1).addScaledVector(direction,-direction.z);
     up.normalize();
-    // Cock the wrist above the shot. Pointing the fingers along the rope
-    // sent the strand through the palm instead of out below the glove.
-    const finger=direction.clone().multiplyScalar(.574).addScaledVector(up,.819).normalize();
-    const palm=direction.clone().multiplyScalar(.819).addScaledVector(up,-.574).normalize();
+    // Lift the fingers just clear of the strand. A 55° cock snapped the
+    // wrist; 32° still exits below the glove without folding the hand back.
+    const cock=THREE.MathUtils.degToRad(32);
+    const finger=direction.clone().multiplyScalar(Math.cos(cock)).addScaledVector(up,Math.sin(cock)).normalize();
+    const palm=direction.clone().multiplyScalar(Math.sin(cock)).addScaledVector(up,-Math.cos(cock)).normalize();
     const across=new THREE.Vector3().crossVectors(finger,palm).normalize();
     const aim=new THREE.Quaternion().setFromRotationMatrix(new THREE.Matrix4().makeBasis(across,finger,palm));
     const local=hand.parent.getWorldQuaternion(new THREE.Quaternion()).invert().multiply(aim);
