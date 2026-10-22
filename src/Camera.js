@@ -1,6 +1,11 @@
 import {followMobileCamera} from './MobileTraversal.js';
 import * as THREE from 'three';
 
+// Positive pitch sits the camera above the body and looks down.
+// These stay short of ±90° so the boom keeps a heading and lookAt does not flip.
+export const CAMERA_PITCH_MIN = -1.40; // about 80° above the horizon
+export const CAMERA_PITCH_MAX = 1.25; // about 72° below the horizon
+
 export class ThirdPersonCamera {
   constructor(camera, domElement) {
     this.camera = camera;
@@ -105,9 +110,12 @@ export class ThirdPersonCamera {
     this.orbitReturnTime = Infinity;
     this.yaw -= deltaX * sensitivity * this.sensitivity;
     this.pitch += deltaY * sensitivity * this.sensitivity * (this.invertY?-1:1);
+    this.clampPitch();
+  }
 
-    // Clamp pitch so camera doesn't flip
-    this.pitch = THREE.MathUtils.clamp(this.pitch, -0.52, 0.58);
+  clampPitch(pitch = this.pitch) {
+    this.pitch = THREE.MathUtils.clamp(pitch, CAMERA_PITCH_MIN, CAMERA_PITCH_MAX);
+    return this.pitch;
   }
 
   handleKeyboardLook(keys,delta) {
@@ -130,7 +138,7 @@ export class ThirdPersonCamera {
   placeBehind(playerPos, facing, pitch = 0.16) {
     this.yaw = facing;
     this.camera.userData.movementYaw = facing;
-    this.pitch = THREE.MathUtils.clamp(pitch,-0.52,0.58);
+    this.clampPitch(pitch);
     this.lockBehind = true;
     this.followMovement = true;
     this.isRecentering = false;
@@ -156,7 +164,7 @@ export class ThirdPersonCamera {
   setMode(mode) {
     if (!this.modeOrder.includes(mode)) return this.mode;
     this.mode = mode;
-    this.pitch = THREE.MathUtils.clamp(this.pitch,-0.52,0.58);
+    this.clampPitch();
     return this.mode;
   }
 
