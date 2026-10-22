@@ -1,6 +1,6 @@
 import {HongKongTerrain} from '../supabase/functions/_shared/hong-kong-terrain.js';
 import { WebSocketServer } from 'ws';
-import { randomBytes } from 'node:crypto';
+import { createHash, randomBytes, timingSafeEqual } from 'node:crypto';
 import { MATCH, policeCount } from '../src/MatchRules.js';
 import { sanitizePose } from '../src/RemoteMotion.js';
 import {PURSUIT,matchDuration,arenaFrom,arenaContains,validArenaPoint} from '../src/PursuitRules.js';
@@ -8,8 +8,13 @@ import {proceduralCollision,blockedSegment} from './city-collision.mjs';
 import {attackGate,canAttack,opponents,guardedDamage,COMBAT_GROUND_STATES} from '../src/AttackRules.js';
 import {LOCAL_CITY} from '../src/LocalCityLayout.js';
 
+export const ROOM_FEATURES=['custom-matches','named-targets','attack-results','directional-guard','motion-phase','admin-overview'];
+// GAME_ADMIN_TOKEN replaces this verifier. The password itself is not in the repository.
+const BUILTIN_ADMIN_SHA256='9ddf127c808cc89e8af9734aeaac18f3f2d85f1cb3b1c76525898a3461ee90a6';
 const rooms = new Map();
 const clients = new Set();
+const adminStrikes=[];
+const serverStarted=Date.now();
 const validName = value => String(value || '').trim().slice(0, 16) || '플레이어';
 const send = (ws, data) => { if (ws.readyState === 1) ws.send(JSON.stringify(data)); };
 const publicRoom = room => ({ code: room.code, name: room.name, mode: room.mode, format:room.format, city:room.city, count: room.players.size, capacity: room.capacity, phase: room.phase, enhanced:!!room.enhanced });
@@ -19,6 +24,92 @@ const roomState = room => ({ type:'room', room:publicRoom(room), players:[...roo
 const publish = room => { broadcast(room, roomState(room)); publishList(); };
 const publishList = () => { const data={type:'rooms', rooms:[...rooms.values()].filter(r=>r.phase==='waiting').map(publicRoom)}; for (const ws of clients) send(ws,data); };
 const error = (ws, message) => send(ws,{type:'error',message});
+const sha256 = value => createHash('sha256').update(String(value)).digest();
+const sameHash = (left, right) => Buffer.isBuffer(left) && Buffer.isBuffer(right) && left.length===right.length && left.length>0 && timingSafeEqual(left, right);
+function adminAuthorized(token){
+  if(typeof token!=='string' || token.length<1 || token.length>128) return false;
+  const given=sha256(token);
+  const expected=process.env.GAME_ADMIN_TOKEN ? sha256(process.env.GAME_ADMIN_TOKEN) : Buffer.from(BUILTIN_ADMIN_SHA256,'hex');
+  return sameHash(given, expected);
+}
+function adminLocked(ws){
+  const now=Date.now();
+  while(adminStrikes.length && now-adminStrikes[0]>60000) adminStrikes.shift();
+  if(adminStrikes.length>=40) return true;
+  if((ws.adminLockUntil||0)>now) return true;
+  if(ws.adminLockUntil){ws.adminLockUntil=0;ws.adminFails=0;}
+  return false;
+}
+function noteAdminFailure(ws){
+  const now=Date.now();
+  adminStrikes.push(now);
+  while(adminStrikes.length && now-adminStrikes[0]>60000) adminStrikes.shift();
+  ws.adminFails=(ws.adminFails||0)+1;
+  if(ws.adminFails>=8) ws.adminLockUntil=now+60000;
+}
+function activityOf(ws){
+  const room=ws.player && rooms.get(ws.player.room);
+  if(room && ws.player.ws===ws && !ws.player.disconnectedAt) return 'room';
+  if(ws.activity==='solo' && Date.now()-(ws.activityAt||0)<60000) return 'solo';
+  return 'lobby';
+}
+function seatConnected(player){
+  return !!(player.ws && clients.has(player.ws) && player.ws.readyState===1 && !player.disconnectedAt);
+}
+function adminTeam(team){
+  return ['police','runner','red','blue','free'].includes(team) ? team : team ? 'ffa' : 'free';
+}
+function adminSnapshot(){
+  const now=Date.now();
+  const online={connected:0,lobby:0,solo:0,waiting:0,playing:0,finished:0,reconnecting:0};
+  for(const ws of clients){
+    const room=ws.player && rooms.get(ws.player.room);
+    const kind=activityOf(ws);
+    if(kind==='room'){
+      if(room.phase==='playing') online.playing++;
+      else if(room.phase==='finished') online.finished++;
+      else online.waiting++;
+    }else if(kind==='solo') online.solo++;
+    else online.lobby++;
+    online.connected++;
+  }
+  const matches=[];
+  let seated=0, seats=0;
+  const phases={waiting:0,playing:0,finished:0};
+  for(const room of rooms.values()){
+    seated+=room.players.size; seats+=room.capacity;
+    if(room.phase==='playing'||room.phase==='finished'||room.phase==='waiting') phases[room.phase]++;
+    for(const player of room.players.values()) if(!seatConnected(player)) online.reconnecting++;
+    matches.push({
+      code:room.code, name:room.name, mode:room.mode, format:room.format==='ffa'?'ffa':'teams', city:room.city,
+      phase:room.phase, enhanced:!!room.enhanced, count:room.players.size, capacity:room.capacity, round:room.round||1,
+      winner:room.winner||null,
+      endsInSeconds:room.phase==='playing' && room.endsAt ? Math.max(0, Math.ceil((room.endsAt-now)/1000)) : null,
+      ageSeconds:room.openedAt ? Math.max(0, Math.floor((now-room.openedAt)/1000)) : null,
+      hostName:room.players.get(room.host)?.name || '방장',
+      players:[...room.players.values()].map(player=>({
+        name:player.name, team:adminTeam(player.team), ready:!!player.ready, health:player.health,
+        eliminated:!!player.eliminated, connected:seatConnected(player), reconnecting:!seatConnected(player),
+        host:room.host===player.id, idleSeconds:player.lastMove ? Math.max(0, Math.floor((now-player.lastMove)/1000)) : null,
+      })),
+    });
+  }
+  const order={playing:0,waiting:1,finished:2};
+  matches.sort((a,b)=>(order[a.phase]??9)-(order[b.phase]??9) || (a.code<b.code?-1:1));
+  return {
+    transport:'websocket', serverNow:now, uptimeSeconds:Math.floor((now-serverStarted)/1000), protocol:2,
+    online, rooms:{total:matches.length, ...phases, seated, seats}, matches:matches.slice(0,32), truncated:matches.length>32,
+  };
+}
+function adminReply(ws, token){
+  if(adminLocked(ws)) return {type:'admin', ok:false, message:'잠시 후 다시 시도하세요.'};
+  if(!adminAuthorized(token)){
+    noteAdminFailure(ws);
+    return {type:'admin', ok:false, message:adminLocked(ws)?'잠시 후 다시 시도하세요.':'관리자 키가 올바르지 않습니다.'};
+  }
+  ws.adminFails=0; ws.adminLockUntil=0;
+  return {type:'admin', ok:true, ...adminSnapshot()};
+}
 const code = () => { let value; do { value=randomBytes(3).toString('hex').toUpperCase(); } while(rooms.has(value)); return value; };
 function finish(room, winner) { if(room.phase!=='playing') return; room.phase='finished'; room.winner=winner; room.endsAt=0; for(const p of room.players.values()) p.ready=false; publish(room); }
 function leave(ws) {
@@ -66,10 +157,12 @@ async function handle(ws, data, terrain) {
   if(data.type==='resume'&&ws.player)return error(ws,'먼저 현재 방에서 나가세요.');
   if(data.type==='resume'){const room=rooms.get(String(data.code||''));const player=room&&[...room.players.values()].find(p=>p.resumeToken===data.token&&p.disconnectedAt&&Date.now()-p.disconnectedAt<30000);if(!player)return error(ws,'복귀 시간이 만료되었습니다.');player.ws=ws;player.disconnectedAt=0;ws.player=player;send(ws,{type:'joined',id:player.id,resumeToken:player.resumeToken,code:room.code});publish(room);return;}
   if(data.type==='list') return publishList();
+  if(data.type==='presence'){ws.activity=data.activity==='solo'?'solo':'lobby';ws.activityAt=Date.now();return;}
+  if(data.type==='admin') return send(ws, adminReply(ws, data.token));
   if(data.type==='create') {
     const capacity=Number(data.capacity);
     if(!Number.isInteger(capacity)||capacity<MATCH.minPlayers||capacity>MATCH.maxPlayers) return error(ws,`정원은 ${MATCH.minPlayers}~${MATCH.maxPlayers}명입니다.`);
-    const room={code:code(),name:String(data.name||'새 방').trim().slice(0,24)||'새 방',mode:['tag','custom'].includes(data.mode)?data.mode:'free',format:data.format==='ffa'?'ffa':'teams',city:data.city==='hong-kong'?'hong-kong':'procedural',capacity,phase:'waiting',players:new Map(),host:null,endsAt:0,winner:null,enhanced:data.mode!=='custom'&&data.enhanced===true,round:1,pendingHits:new Map()};
+    const room={code:code(),name:String(data.name||'새 방').trim().slice(0,24)||'새 방',mode:['tag','custom'].includes(data.mode)?data.mode:'free',format:data.format==='ffa'?'ffa':'teams',city:data.city==='hong-kong'?'hong-kong':'procedural',capacity,phase:'waiting',players:new Map(),host:null,endsAt:0,winner:null,enhanced:data.mode!=='custom'&&data.enhanced===true,round:1,openedAt:Date.now(),pendingHits:new Map()};
     rooms.set(room.code,room);join(ws,room,data.playerName,room.city);room.host=ws.player?.id;publish(room);return;
   }
   if(data.type==='join') return join(ws,rooms.get(String(data.code||'').trim().toUpperCase()),data.playerName,data.city);
@@ -206,7 +299,7 @@ export function attachRooms(server,options={}) {
 
   wss.on('connection', ws => {
     clients.add(ws);
-    send(ws,{type:'welcome',protocol:2,features:['custom-matches','named-targets','attack-results','directional-guard','motion-phase']});
+    send(ws,{type:'welcome',protocol:2,features:ROOM_FEATURES});
     publishList();
     let windowAt=Date.now(),messages=0,controls=0;
     // ws emits an error before closing an over-limit frame. Keep that error

@@ -210,7 +210,20 @@
         </section>
           </div>
         </div>
-        <div class="lobby-footer"><span>SHADOW PULSE <b>·</b> HONG KONG</span><span>WASD 이동 &nbsp;·&nbsp; 마우스 조준 &nbsp;·&nbsp; SPACE 점프</span></div>
+        <div class="lobby-footer"><span>SHADOW PULSE <b>·</b> HONG KONG</span><span>WASD 이동 &nbsp;·&nbsp; 마우스 조준 &nbsp;·&nbsp; SPACE 점프</span><button id="open-admin" type="button">관리</button></div>
+      </div>
+    </div>
+
+
+    <div id="admin-overlay" class="overlay hidden" role="dialog" aria-modal="true" aria-labelledby="admin-title">
+      <div class="admin-card">
+        <div class="online-header"><span class="menu-index">ADMIN / LIVE</span><h2 id="admin-title">운영 현황</h2><p id="admin-status">관리자 키를 입력하세요.</p></div>
+        <form id="admin-login">
+          <label class="online-field">관리자 키<input id="admin-token" type="password" autocomplete="current-password" maxlength="128"></label>
+          <button class="online-primary" type="submit">열기</button>
+        </form>
+        <div id="admin-body" class="hidden"></div>
+        <div class="admin-actions"><button id="admin-refresh" class="hidden" type="button">새로고침</button><button id="admin-lock" class="hidden" type="button">잠그기</button><button id="admin-close" type="button">닫기</button></div>
       </div>
     </div>
 
@@ -230,7 +243,7 @@
         <p class="touch-menu-hint">왼쪽 스틱으로 이동 · 오른쪽 화면을 밀어 조준<br>에너지 와이어는 누르고 유지 · 점프 버튼으로 도약</p>
         <button id="btn-start-game" class="start-btn"><span>계속 플레이</span><b>↗</b></button>
         <button id="btn-start-drag" type="button">마우스 잠금 없이 계속</button>
-        <div class="pause-secondary"><button type="button" data-fullscreen aria-pressed="false">전체화면</button><button id="btn-restart" class="hidden" type="button">시작점 복귀</button><button id="btn-leave-match" type="button">로비로 돌아가기</button></div>
+        <div class="pause-secondary"><button type="button" data-fullscreen aria-pressed="false">전체화면</button><button id="btn-restart" class="hidden" type="button">시작점 복귀</button><button id="btn-leave-match" type="button">로비로 돌아가기</button><button id="open-admin-pause" type="button">관리자</button></div>
         <div class="pause-settings"><span class="settings-title">설정</span><button id="reduced-motion" type="button" aria-pressed="false">화면 효과 줄이기 <span class="setting-value">꺼짐</span></button>
         <label class="guide-setting" for="graphics-quality">그래픽 품질
           <select id="graphics-quality" aria-label="그래픽 품질"><option value="low">낮음</option><option value="balanced" selected>기본</option><option value="high">높음</option></select>

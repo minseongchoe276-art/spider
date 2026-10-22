@@ -349,6 +349,7 @@ export class GameApp {
       if(k==='Escape' && this.worldMap?.isOpen){e.preventDefault();this.worldMap.close();return;}
       if(this.worldMap?.isOpen && k!=='KeyM')return;
       if(k==='Escape' && this.helpOpen){e.preventDefault();if(!e.repeat)this.toggleHelp();return;}
+      if(k==='Escape' && !e.repeat && this.multiplayer?.admin?.isOpen){e.preventDefault();this.multiplayer.admin.close();return;}
       const gameplayKey = [
         'KeyW', 'KeyA', 'KeyS', 'KeyD', 'ArrowUp', 'ArrowDown',
         'ArrowLeft', 'ArrowRight', 'Home', 'End', 'PageUp', 'PageDown', 'ShiftLeft', 'ShiftRight', 'Space',

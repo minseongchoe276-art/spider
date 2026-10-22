@@ -285,6 +285,20 @@ export class SupabaseRooms {
 
   async dispatch(data) {
     if (data.type === 'list') return this.list();
+    if (data.type === 'presence') {
+      const activity = ['lobby', 'solo', 'room'].includes(data.activity) ? data.activity : 'lobby';
+      const city = data.city === 'hong-kong' || data.city === 'procedural' ? data.city : null;
+      try { await this.rpc('game_presence_ping', { p_city: city, p_activity: activity }); } catch {}
+      return;
+    }
+    if (data.type === 'admin') {
+      try {
+        this.emit(await this.rpc('game_admin_overview', { p_token: String(data.token || '').slice(0, 128) }));
+      } catch (error) {
+        this.emit({ type: 'admin', ok: false, message: error?.message || '관리자 현황을 읽지 못했습니다.' });
+      }
+      return;
+    }
     if (data.type === 'create' || data.type === 'join') {
       const state = await this.enter(data.type, data);
       if(this.readyState===WebSocket.CLOSED)return;

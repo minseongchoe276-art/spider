@@ -1103,3 +1103,40 @@ body.touch-device #overlay-click-to-play button, body.touch-device #world-map bu
 @media(max-width:650px){#combat-feedback {top:116px;font-size:10px;padding:6px 8px;}}
 
 .player-position-marker.compact {max-width:220px;padding:4px 8px;font-size:11px;}
+
+#open-admin { flex-shrink: 0; border: 1px solid rgba(117,231,236,.35); background: rgba(20,72,79,.45); color: #9ce5df; font: 800 10px Outfit, sans-serif; letter-spacing: .14em; padding: 7px 12px; cursor: pointer; }
+#admin-overlay { z-index: 80; align-items: flex-start; overflow: auto; }
+.admin-card { width: min(640px, 100%); margin: 24px auto; padding: 22px; border: 1px solid rgba(167,202,219,.28); border-top: 3px solid #75e7ec; background: rgba(8,17,30,.96); color: #e7f1fa; }
+.admin-card h2 { margin: 8px 0 6px; font-size: 28px; }
+.admin-card p { color: #9daebe; }
+.admin-card .online-field input { width: 100%; height: 43px; margin-top: 7px; padding: 0 12px; border: 1px solid #33485a; background: rgba(13,29,46,.9); color: #fff; }
+.admin-card button { cursor: pointer; border: 1px solid #527b86; border-radius: 2px; padding: 10px 14px; background: #163341; color: #fff; font-weight: 800; }
+.admin-card .online-primary { width: 100%; border: 0; background: #ed3155; }
+.admin-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(132px, 1fr)); gap: 8px; margin: 16px 0; }
+.admin-stat { display: grid; gap: 2px; min-height: 78px; padding: 10px; border: 1px solid #30465a; background: rgba(16,32,53,.8); }
+.admin-stat b { color: #f4f8fb; font: 900 26px/1 Outfit, sans-serif; }
+.admin-stat span { color: #d5e4ee; font-size: 12px; font-weight: 800; }
+.admin-stat small, .admin-note, .admin-room-meta, .admin-summary { color: #8ea3b5; font-size: 11px; line-height: 1.45; }
+.admin-summary { margin: 0 0 10px; }
+.admin-rooms { display: grid; gap: 8px; }
+.admin-room { padding: 10px; border: 1px solid #30465a; background: rgba(12,24,40,.72); }
+.admin-room-title { display: flex; justify-content: space-between; gap: 12px; }
+.admin-room-title span { color: #8de2df; font: 800 12px Outfit, sans-serif; letter-spacing: .08em; }
+.admin-players { margin: 8px 0 0; padding-left: 18px; }
+.admin-players li { margin: 3px 0; color: #d5e2ec; font-size: 12px; }
+.admin-actions { display: flex; gap: 8px; margin-top: 14px; }
+.admin-actions button { flex: 1; }
+
+.room-code-line {flex-wrap:wrap;}
+.room-code-line button {white-space:nowrap;}
+.player-row {gap:8px;flex-wrap:wrap;align-items:center;}
+.player-row > span {overflow-wrap:anywhere;min-width:0;}
+.online-card,.lobby-shell,.lobby-stage > * {min-width:0;}
+.player-position-marker.targeted {outline:2px solid #7cffa9;box-shadow:0 0 12px #7cffa955;}
+.player-position-marker::after {content:'';position:absolute;bottom:0;left:0;height:3px;width:var(--hp-value,100%);background:currentColor;}
+
+/* Keep combat availability clear of the central aim area and character. */
+#combat-feedback {top:96px;max-width:min(720px,calc(100vw - 24px));}
+@media(max-width:650px){#combat-feedback {top:116px;font-size:10px;padding:6px 8px;}}
+
+.player-position-marker.compact {max-width:220px;padding:4px 8px;font-size:11px;}

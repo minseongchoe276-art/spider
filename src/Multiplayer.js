@@ -8,6 +8,7 @@ import { RemoteMotion, capturePose, sanitizePose } from './RemoteMotion.js';
 import { ATTACKS } from './Combat.js';
 import {PURSUIT,arenaContains} from './PursuitRules.js';
 import {PlayerPositionMarkers} from './PlayerPositionMarkers.js';
+import {AdminConsole} from './AdminConsole.js';
 
 const $ = id => document.getElementById(id);
 const label = mode => mode === 'tag' ? '경찰과 도망자' : mode==='custom'?'사용자 설정 경기':'자유 플레이';
@@ -16,7 +17,7 @@ const make = (tag, className, value) => { const el=document.createElement(tag);e
 export class Multiplayer {
   constructor(game) {
     this.game=game;this.feedback=new CombatFeedback(game);this.ws=null;this.id=null;this.room=null;this.solo=false;this.players=[];this.avatars=new Map();this.lastSend=0;this.lastPhase=null;this.spectating=false;this.clockOffset=0;this.vulnerableAt=0;this.arena=null;this.pulseUntil=0;this.spectateIndex=0;
-    this.downedMarkers=new Map();this.connect();this.bind();
+    this.downedMarkers=new Map();this.admin=new AdminConsole(this);this.connect();this.bind();
     this.positionMarkers=new PlayerPositionMarkers(game);
   }
   send(data) {
@@ -41,6 +42,9 @@ export class Multiplayer {
     const socket=this.ws;
     this.ws.onopen=()=>{
       if(this.ws!==socket)return;
+      this.reportPresence();
+      clearInterval(this.presenceTimer);
+      this.presenceTimer=setInterval(()=>{if(this.ws===socket)this.reportPresence();},15000);
       if(this.solo)this.send({type:'leave'});
       else if(!(socket instanceof SupabaseRooms)){
         try{const saved=JSON.parse(sessionStorage.getItem('web-runner-room-resume')||'null');if(saved?.token)this.send({type:'resume',...saved});}catch{}
@@ -56,6 +60,7 @@ export class Multiplayer {
     this.ws.onmessage=event=>{if(this.ws!==socket)return;try{this.message(JSON.parse(event.data));}catch(error){console.error(error);}};
     this.ws.onclose=()=>{
       if(this.ws!==socket)return;
+      clearInterval(this.presenceTimer);this.presenceTimer=null;
       $('online-status').textContent=this.ws?.fatal?'방 연결 설정을 확인하세요':'연결이 끊겼습니다. 다시 연결 중…';
       this.room=null;this.id=null;this.players=[];this.lastPhase=null;this.setSpectating(false);this.pendingPunch=null;this.arena=null;this.pulseUntil=0;
       clearInterval(this.beginTimer);this.beginTimer=null;this.clearAvatars();this.render();
@@ -104,6 +109,7 @@ export class Multiplayer {
   }
   message(data) {
     if(data.type==='welcome'){this.serverCapabilities=Array.isArray(data.features)?data.features:[];return;}
+    if(data.type==='admin'){this.admin?.receive(data);return;}
     // An explicit solo choice wins over a delayed resume or room response.
     if(this.solo && !['error','rooms','pong','left'].includes(data.type))return;
     if(data.type==='error')return this.game.showNotice(data.message);
@@ -194,6 +200,10 @@ export class Multiplayer {
     for(const room of rooms){const button=make('button','room-list-item','');button.type='button';button.append(make('span','room-list-icon',room.mode==='tag'?'⌖':'↗'));const text=make('span','room-list-text','');text.append(make('strong','',room.name),make('small','',`${label(room.mode)} · ${room.city==='procedural'?'로컬 도시':'홍콩'}`));button.append(text,make('span','room-list-count',`${room.count}/${room.capacity}  ↗`));button.addEventListener('click',()=>this.join(room.code));list.append(button);}
   }
   get city(){return this.game.city.isStreamed?'hong-kong':'procedural';}
+  reportPresence(){
+    const activity=this.room?'room':this.solo?'solo':'lobby';
+    this.send({type:'presence',activity,city:this.city});
+  }
   join(code){this.send({type:'join',code,playerName:$('player-name').value,city:this.city});}
   switchCity(code,city){try{sessionStorage.setItem('online-name',$('player-name').value);}catch{}location.href=`?city=${encodeURIComponent(city)}&join=${encodeURIComponent(code)}`;}
   render() {
@@ -315,7 +325,7 @@ export class Multiplayer {
   }
   beginSolo() {
     if(this.room||this.solo)return;
-    this.solo=true;
+    this.solo=true;this.reportPresence();
     try{sessionStorage.removeItem('web-runner-room-resume');}catch{}
     if(this.ws?.roomCode)this.send({type:'leave'});
     this.render();
@@ -344,7 +354,7 @@ export class Multiplayer {
     game.showNotice('혼자 플레이 시작! 화면을 클릭해 카메라를 조작하세요. M 키로 전체 지도를 확인하세요.');
   }
   finish(){this.pendingPunch=null;clearInterval(this.beginTimer);this.beginTimer=null;this.setSpectating(false);this.game.isPlaying=false;this.game.clearInput();this.game.setPaused(true);this.game.clickToPlayOverlay?.classList.add('hidden');this.clearAvatars();}
-  leaveLocal(){this.game.character.group.visible=true;this.rescueStarted=null;this.rescueTarget=null;if(this.goalMarker)this.goalMarker.visible=false;$('pursuit-hud').textContent='';$('spectate-next')?.classList.add('hidden');try{sessionStorage.removeItem('web-runner-room-resume');}catch{}this.arena=null;this.pulseUntil=0;this.game.practice?.stop();this.room=null;this.pendingPunch=null;clearInterval(this.beginTimer);this.beginTimer=null;this.spectating=false;this.solo=false;clearInterval(this.soloStartTimer);this.soloStartTimer=null;this.players=[];this.id=null;this.lastPhase=null;this.game.isPlaying=false;this.game.clearInput();this.game.setPaused(true);this.game.clickToPlayOverlay?.classList.add('hidden');this.clearAvatars();this.render();this.send({type:'list'});}
+  leaveLocal(){this.game.character.group.visible=true;this.rescueStarted=null;this.rescueTarget=null;if(this.goalMarker)this.goalMarker.visible=false;$('pursuit-hud').textContent='';$('spectate-next')?.classList.add('hidden');try{sessionStorage.removeItem('web-runner-room-resume');}catch{}this.arena=null;this.pulseUntil=0;this.game.practice?.stop();this.room=null;this.pendingPunch=null;clearInterval(this.beginTimer);this.beginTimer=null;this.spectating=false;this.solo=false;clearInterval(this.soloStartTimer);this.soloStartTimer=null;this.players=[];this.id=null;this.lastPhase=null;this.game.isPlaying=false;this.game.clearInput();this.game.setPaused(true);this.game.clickToPlayOverlay?.classList.add('hidden');this.clearAvatars();this.render();this.reportPresence();this.send({type:'list'});}
   attack(kind,hand='left'){
     if(kind==='web'&&this.game.combat?.mode==='combat')return false;
     const me=this.players.find(p=>p.id===this.id);
