@@ -1,0 +1,191 @@
+{
+  "date": "2026-10-20",
+  "motions": [
+    {
+      "key": "idle",
+      "source": "/models/Idle.fbx",
+      "loop": true
+    },
+    {
+      "key": "walk",
+      "source": "/models/Walking.fbx",
+      "loop": true
+    },
+    {
+      "key": "regularRun",
+      "source": "/models/Running.fbx",
+      "loop": true
+    },
+    {
+      "key": "run",
+      "source": "/models/Fast Run.fbx",
+      "loop": true
+    },
+    {
+      "key": "stop",
+      "source": "/models/Run To Stop.fbx",
+      "loop": false
+    },
+    {
+      "key": "runStop",
+      "source": "/models/Run To Stop.fbx",
+      "loop": false
+    },
+    {
+      "key": "zip",
+      "source": "/models/Rope Swinging.fbx",
+      "loop": true
+    },
+    {
+      "key": "turnLeft",
+      "source": "/models/Left Turn.fbx",
+      "loop": false
+    },
+    {
+      "key": "turnRight",
+      "source": "/models/Right Turn.fbx",
+      "loop": false
+    },
+    {
+      "key": "jump",
+      "source": "/models/Standing Jump.fbx",
+      "loop": false
+    },
+    {
+      "key": "land",
+      "source": "/models/Standing Jump.fbx",
+      "loop": false
+    },
+    {
+      "key": "jumpDown",
+      "source": "/models/Jumping Down (1).fbx",
+      "loop": false
+    },
+    {
+      "key": "drop",
+      "source": "/models/Jumping Down (1).fbx",
+      "loop": false
+    },
+    {
+      "key": "jumpDownVariant",
+      "source": "/models/Jumping Down.fbx",
+      "loop": false
+    },
+    {
+      "key": "swing",
+      "source": "/models/Rope Swinging.fbx",
+      "loop": true
+    },
+    {
+      "key": "fall",
+      "source": "/models/Falling (2).fbx",
+      "loop": true
+    },
+    {
+      "key": "fallVariant",
+      "source": "/models/Falling.fbx",
+      "loop": true
+    },
+    {
+      "key": "fallIdle",
+      "source": "/models/Falling Idle.fbx",
+      "loop": true
+    },
+    {
+      "key": "roll",
+      "source": "/models/Falling To Roll.fbx",
+      "loop": false
+    },
+    {
+      "key": "injuredIdle",
+      "source": "/models/Injured Idle.fbx",
+      "loop": true
+    },
+    {
+      "key": "wall",
+      "source": "/models/Climbing Up Wall.fbx",
+      "loop": true
+    },
+    {
+      "key": "combatIdle",
+      "source": "/models/Boxing Stance.fbx",
+      "loop": true
+    },
+    {
+      "key": "jab",
+      "source": "/models/Lead Jab.fbx",
+      "loop": false
+    },
+    {
+      "key": "guard",
+      "source": "/models/sources/combat-addon.glb",
+      "loop": true
+    },
+    {
+      "key": "slam",
+      "source": "/models/sources/combat-addon.glb",
+      "loop": false
+    },
+    {
+      "key": "slamLand",
+      "source": "/models/sources/combat-addon.glb",
+      "loop": false
+    },
+    {
+      "key": "hook",
+      "source": "/models/Boxing Hook.fbx",
+      "loop": false
+    },
+    {
+      "key": "heavy",
+      "source": "/models/Boxing Hook.fbx",
+      "loop": false
+    },
+    {
+      "key": "hitHead",
+      "source": "/models/sources/combat-base.glb",
+      "loop": false
+    },
+    {
+      "key": "rightHook",
+      "source": "/models/Boxing Stance.fbx",
+      "loop": false
+    },
+    {
+      "key": "cross",
+      "source": "/models/Cross Punch.fbx",
+      "loop": false
+    },
+    {
+      "key": "airTrick",
+      "source": "/models/Front Flip.fbx",
+      "loop": false
+    },
+    {
+      "key": "special",
+      "source": "/models/Cross Punch.fbx",
+      "loop": false
+    }
+  ],
+  "embedded": [],
+  "airTricks": [
+    "front"
+  ],
+  "appearances": [
+    "web",
+    "combat"
+  ],
+  "cameraModes": [
+    "close",
+    "follow",
+    "swing"
+  ],
+  "frameRates": [
+    24,
+    30,
+    60,
+    144
+  ],
+  "suiteCount": 41,
+  "limits": "Finite, explicitly enumerated automated matrix plus visual contact-sheet review. Passing does not prove all possible inputs, terrain or subjective artistic perfection."
+}

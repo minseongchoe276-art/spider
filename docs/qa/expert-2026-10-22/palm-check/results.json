@@ -1,0 +1,91 @@
+{
+  "passed": 6,
+  "failed": 0,
+  "results": [
+    {
+      "name": "144fps diagonal / facade 0 / close",
+      "status": "PASS",
+      "detail": {
+        "frames": 432,
+        "contacts": {
+          "lefthand": 147,
+          "righthand": 151,
+          "leftfoot": 115,
+          "rightfoot": 146
+        },
+        "maxPlantDrift": 0.02082228234353412,
+        "maxFrameSlip": 0.020375036999647704,
+        "minPalmAlignment": 0.006651722349596393,
+        "minSoleAlignment": 0.11548694772844564,
+        "minSoleUp": 0.8617590566501998,
+        "minToeFacing": 0.8894529551887517,
+        "maxActualWrist": 2.924318166797719,
+        "maxViewFrameTravel": 0
+      }
+    },
+    {
+      "name": "24fps third-person silk uses the same taper, fibers, shot ownership and cleanup",
+      "status": "PASS",
+      "detail": {
+        "coreDiameters": [
+          0.025884083456850566,
+          0.025884148103213073,
+          0.02588406614462731,
+          0.025884174525224037,
+          0.02588417011325353,
+          0.025884080423520178
+        ]
+      }
+    },
+    {
+      "name": "30fps third-person silk uses the same taper, fibers, shot ownership and cleanup",
+      "status": "PASS",
+      "detail": {
+        "coreDiameters": [
+          0.025884142505634172,
+          0.025884150628694237,
+          0.02588414915725835,
+          0.025884070907027115,
+          0.025884062265461753,
+          0.025884097379352093
+        ]
+      }
+    },
+    {
+      "name": "60fps third-person silk uses the same taper, fibers, shot ownership and cleanup",
+      "status": "PASS",
+      "detail": {
+        "coreDiameters": [
+          0.02588401939722942,
+          0.025884075940229765,
+          0.02588410028832776,
+          0.025884104621182864,
+          0.02588413349076049,
+          0.02588411578135592
+        ]
+      }
+    },
+    {
+      "name": "144fps third-person silk uses the same taper, fibers, shot ownership and cleanup",
+      "status": "PASS",
+      "detail": {
+        "coreDiameters": [
+          0.025884126686024855,
+          0.02588413734267036,
+          0.02588426850051819,
+          0.02588404352192951,
+          0.02588419400125558,
+          0.025884028441446792
+        ]
+      }
+    },
+    {
+      "name": "Actual facade physics selects a crawl cadence and a separate held sprint",
+      "status": "PASS",
+      "detail": {
+        "crawl": 2.8,
+        "sprint": 4.2
+      }
+    }
+  ]
+}

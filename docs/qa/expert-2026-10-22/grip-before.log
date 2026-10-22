@@ -1,0 +1,39 @@
+GRIP {
+  fps: 30,
+  frame: 40,
+  side: 'left',
+  t: 0.20138888888888887,
+  error: 0.08860537188095395,
+  root: [ 0, 10.613430331258982, 0.7 ],
+  goal: [ -0.3, 11.26, -0.15 ],
+  arm: [ -0.17580012873790038, 10.84522065837049, 0.34574062931878896 ],
+  distance: 0.6581992721216886,
+  length: 0.5732077481877595
+}
+PASS 30fps actual rig: grip 88.6mm, max extremity speed 13.08m/s, no foot penetration or stretched limb
+GRIP {
+  fps: 60,
+  frame: 81,
+  side: 'left',
+  t: 0.20138888888888887,
+  error: 0.06438648735204129,
+  root: [ 0, 10.613430331258982, 0.7 ],
+  goal: [ -0.3, 11.26, -0.15 ],
+  arm: [ -0.17002498587189396, 10.844777153882534, 0.3105681573123936 ],
+  distance: 0.6335823101741587,
+  length: 0.573207762138624
+}
+PASS 60fps actual rig: grip 64.4mm, max extremity speed 13.05m/s, no foot penetration or stretched limb
+GRIP {
+  fps: 144,
+  frame: 196,
+  side: 'left',
+  t: 0.20138888888888887,
+  error: 0.0470816866633284,
+  root: [ 0, 10.613430331258982, 0.7 ],
+  goal: [ -0.3, 11.26, -0.15 ],
+  arm: [ -0.16964929575998408, 10.848128600968744, 0.2888403940210575 ],
+  distance: 0.6158004927412684,
+  length: 0.5732077703771945
+}
+PASS 144fps actual rig: grip 47.1mm, max extremity speed 14.37m/s, no foot penetration or stretched limb

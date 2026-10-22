@@ -1,0 +1,10 @@
+PASS downward view stays on the exact reticle with either saved assist setting
+PASS grounded web stays attached without automatic jump or drift at 30fps
+PASS grounded web stays attached without automatic jump or drift at 60fps
+PASS grounded web stays attached without automatic jump or drift at 144fps
+PASS Space then web shares the ballistic takeoff, and early release preserves velocity
+PASS attachment creates no camera-dependent launch impulse
+PASS E is airborne only, never repeats while held, and remains usable on a new press
+PASS short zip respects intervening collision and failed shots remain retryable
+PASS actual streamed triangles and Rapier capsule launch upward and chain into E
+PASS online button focus and corrections preserve movement; text inputs stay isolated

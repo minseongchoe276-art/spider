@@ -1,0 +1,4 @@
+PASS: bounded parallel loading overlaps requests and processes every item once
+PASS: streaming starts locally, preserves nearby detail, and restores the full camera range
+PASS: loading and gameplay collision budgets produce identical rooftop support
+PASS: RGB pixels, alpha, color space and all authored mip levels are preserved

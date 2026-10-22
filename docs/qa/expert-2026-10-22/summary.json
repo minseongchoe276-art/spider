@@ -1,0 +1,17 @@
+{
+  "status": "PASS",
+  "date": "2026-10-22",
+  "checkedAt": "2026-10-21T17:44:22.879Z",
+  "fixedIssues": 8,
+  "suites": 95,
+  "passed": 95,
+  "failed": 0,
+  "sourceChangedDuringFinalRun": [],
+  "registeredMotions": 33,
+  "newRecoveryCases": 14,
+  "productionBuild": "PASS",
+  "allDependencyVulnerabilities": 0,
+  "httpCases": 6,
+  "browserChecks": "browser-checks.json",
+  "scope": "Local source, actual local frontend, isolated local WebSocket/PostgreSQL and motion/physics matrices; excludes production deployment and mobile hardware/network acceptance."
+}

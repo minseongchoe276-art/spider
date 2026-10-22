@@ -1,17 +1,23 @@
 import * as THREE from 'three';
 import {LOCAL_CITY} from './LocalCityLayout.js';
+import {localMap} from './MapCatalog.js';
+import {districtLayout} from './DistrictLayout.js';
 
 // Procedural Manhattan-style Open World City Generator
 export class City {
-  constructor(scene) {
+  constructor(scene, mapId = 'procedural') {
+    this.profile=localMap(mapId);this.mapId=this.profile.id;
+    this.district=districtLayout(this.mapId);
+    this.layout={...LOCAL_CITY,blockSize:this.profile.block,streetWidth:this.profile.street};
     this.scene = scene;
     // Stable city layout keeps saved personal race times comparable.
-    this.randomState = 0x5f3759df;
+    this.randomState = this.profile.seed;
     this.playableHalfExtent = LOCAL_CITY.playableHalfExtent;
     this.buildings = []; // Array of { mesh, box, height, center, type }
     this.buildingMeshes = []; // Meshes for Three.js raycasting
     this.colliders = []; // AABB boxes for fast collision
     this.rooftopSpawns = []; // Ideal spawn points for player on rooftops
+    this.landmarkFootprints = [];
     this.beaconLights = []; // Blinking rooftop antenna beacons
 
     // Texture noise must never change authoritative building/collision layout.
@@ -19,8 +25,12 @@ export class City {
     this.initTextures();
     this.randomState=layoutSeed;
     this.initMaterials();
+    this.matGlass.color.setHex(this.profile.glass);
+    this.matBrick.color.setHex(this.profile.brick);
+    this.matDark.color.setHex(this.profile.dark);
     this.generateCity();
     this.createStreetsAndGround();
+    this.createDistrictDetails();
   }
 
   random() {
@@ -172,13 +182,19 @@ export class City {
   generateCity() {
     const gridRows = LOCAL_CITY.rows;
     const gridCols = LOCAL_CITY.columns;
-    const blockSize = LOCAL_CITY.blockSize;
-    const streetWidth = LOCAL_CITY.streetWidth;
+    const blockSize = this.layout.blockSize;
+    const streetWidth = this.layout.streetWidth;
     const step = blockSize + streetWidth;
     const halfWidth = (gridCols * step) / 2;
 
     const cityGroup = new THREE.Group();
     cityGroup.name = 'CityBlocks';
+
+    if(this.mapId!=='procedural') {
+      for(const b of this.district.buildings)this.createBuilding(cityGroup,b.x,b.z,b.size,b.height,b.type,b.depth);
+      this.scene.add(cityGroup);
+      return;
+    }
 
     for (let r = 0; r < gridRows; r++) {
       for (let c = 0; c < gridCols; c++) {
@@ -189,9 +205,9 @@ export class City {
         const distFromCenter = Math.hypot(c - gridCols / 2 + 0.5, r - gridRows / 2 + 0.5);
         const centerFactor = Math.max(0, 1 - distFromCenter / 2.8);
         const baseHeight = 45 + centerFactor * 70 + this.random() * 40;
-        const height = Math.min(160, Math.max(45, baseHeight));
+        const height = Math.min(205, Math.max(22, baseHeight*this.profile.height));
 
-        const buildingType = (r * 3 + c) % 4; // 0: Glass, 1: Deco Setback, 2: Dark Cyber, 3: Brick Classic
+        const buildingType = this.mapId==='old-town'?3:this.mapId==='harbor'?((r+c)%2?3:0):this.mapId==='skyline'?((r+c)%3): (r * 3 + c) % 4; // 0: Glass, 1: Deco Setback, 2: Dark Cyber, 3: Brick Classic
         this.createBuilding(cityGroup, x, z, blockSize, height, buildingType);
       }
     }
@@ -199,7 +215,7 @@ export class City {
     this.scene.add(cityGroup);
   }
 
-  createBuilding(parentGroup, x, z, size, height, type) {
+  createBuilding(parentGroup, x, z, size, height, type, depth = size) {
     const group = new THREE.Group();
     group.position.set(x, 0, z);
 
@@ -222,7 +238,7 @@ export class City {
       bMesh = this.createSetbackTower(size, height, matInstance);
     } else {
       // Standard monolithic skyscraper
-      const geom = new THREE.BoxGeometry(size, height, size);
+      const geom = new THREE.BoxGeometry(size, height, depth);
       bMesh = new THREE.Mesh(geom, [matInstance,matInstance,this.matRoof,this.matConcrete,matInstance,matInstance]);
       bMesh.position.y = height / 2;
       bMesh.castShadow = true;
@@ -254,6 +270,7 @@ export class City {
       x: x,
       z: z,
       size: size,
+      depth: depth,
       height: height,
       topY: height
     });
@@ -261,10 +278,12 @@ export class City {
     this.buildingMeshes.push(group);
 
     // Add rooftop spawn point
-    if (height > 60) {
+    if (height > 60 || (this.mapId!=='procedural' && height>=22)) {
       // Find a clear body volume and camera boom, rather than spawning inside HVAC.
       const roofSize = bMesh.isGroup ? size * 0.5 : size;
-      for (const [fx,fz] of [[0.3,0],[0,0.3],[-0.3,0],[0,-0.3],[0.3,-0.3],[-0.3,0.3]]) {
+      const candidates=[[0.3,0],[0,0.3],[-0.3,0],[0,-0.3],[0.3,-0.3],[-0.3,0.3]];
+      if(this.mapId!=='procedural')candidates.unshift([Math.sign((this.mapId==='harbor'?114:0)-x)*.38,Math.sign(-z)*.38]);
+      for (const [fx,fz] of candidates) {
         const spawn = new THREE.Vector3(x+roofSize*fx,height+0.1,z+roofSize*fz);
         const support = this.colliders.find(c => Math.abs(c.maxY-height)<0.05 &&
           spawn.x>c.minX+0.7 && spawn.x<c.maxX-0.7 && spawn.z>c.minZ+0.7 && spawn.z<c.maxZ-0.7);
@@ -464,7 +483,8 @@ export class City {
 
     this.roadTex.repeat.set(12, 12);
     const groundMat = new THREE.MeshStandardMaterial({
-      map: this.roadTex,
+      map: this.mapId==='procedural'?this.roadTex:null,
+      color: this.mapId==='procedural'?0xffffff:this.mapId==='harbor'?0x938d80:this.mapId==='gardens'?0xb2bca6:this.mapId==='old-town'?0x9b8a79:0x7d879b,
       roughness: 0.9,
       metalness: 0.1
     });
@@ -478,6 +498,69 @@ export class City {
     this.groundMesh = ground;
   }
 
+  createDistrictDetails() {
+    const group=new THREE.Group();group.name='DistrictLandmarks';
+    const accent=new THREE.MeshStandardMaterial({color:this.profile.accent,emissive:this.profile.accent,emissiveIntensity:.22,roughness:.5});
+    const stone=new THREE.MeshStandardMaterial({color:this.mapId==='gardens'?0x779785:0x818e9b,roughness:.9});
+    const foliage=new THREE.MeshStandardMaterial({color:0x447d63,roughness:.95});
+    const add=(geometry,material,x,y,z,solid=true)=>{
+      const mesh=new THREE.Mesh(geometry,material);mesh.position.set(x,y,z);mesh.castShadow=true;mesh.receiveShadow=true;group.add(mesh);
+      if(solid){mesh.updateWorldMatrix(true,false);const box=new THREE.Box3().setFromObject(mesh);this.colliders.push({box,minX:box.min.x,maxX:box.max.x,minY:box.min.y,maxY:box.max.y,minZ:box.min.z,maxZ:box.max.z,center:box.getCenter(new THREE.Vector3()),height:box.max.y-box.min.y});this.buildingMeshes.push(mesh);this.landmarkFootprints.push({minX:box.min.x,maxX:box.max.x,minZ:box.min.z,maxZ:box.max.z,height:box.max.y-box.min.y,x,z});}
+      return mesh;
+    };
+    // Painted sidewalks follow the actual building footprint, never add a step collider.
+    const paving=new THREE.MeshStandardMaterial({color:this.mapId==='old-town'?0x9d8a7b:0xa6b2b8,roughness:1});
+    for(const b of this.buildings){const pavement=new THREE.Mesh(new THREE.PlaneGeometry(b.size+3,b.depth+3),paving);pavement.rotation.x=-Math.PI/2;pavement.position.set(b.x,.018,b.z);pavement.receiveShadow=true;group.add(pavement);}
+    // The default online map gets cosmetic detail only, retaining exact server solids.
+    if(this.mapId==='procedural'){
+      for(const b of this.buildings){add(new THREE.BoxGeometry(.12,b.height*.7,.12),accent,b.x-b.size/2-.07,b.height*.5,b.z-b.size/2-.07,false);}
+      this.scene.add(group);return;
+    }
+    // Surfaces have the same authored outlines as the atlas. Ground physics stays at y=0.
+    const surfaces=new THREE.Group();surfaces.name='DistrictSurfaces';
+    const surface=(rect,material,y)=>{const mesh=new THREE.Mesh(new THREE.PlaneGeometry(rect.width,rect.depth),material);mesh.rotation.x=-Math.PI/2;mesh.position.set(rect.x,y,rect.z);mesh.receiveShadow=true;surfaces.add(mesh);};
+    for(const rect of this.district.zones)surface(rect,new THREE.MeshStandardMaterial({color:rect.color,roughness:rect.kind==='water'?.3:1,metalness:rect.kind==='water'?.35:0}),rect.kind==='water'?-.2:.009);
+    const asphalt=new THREE.MeshStandardMaterial({color:this.mapId==='old-town'?0x7e736a:0x596574,roughness:1});
+    for(const rect of this.district.roads)surface(rect,asphalt,.012);
+    this.scene.add(surfaces);this.mapSurfaceMeshes=surfaces.children;
+    if(this.mapId==='gardens') {
+      // Tree rows frame the park paths; trunks have solid support and can be grappled.
+      for(const x of [-54,-27,27,54])for(const z of [-48,48]) {
+        add(new THREE.BoxGeometry(1.5,7,1.5),this.matWood,x,3.5,z);
+        add(new THREE.SphereGeometry(7,8,6),foliage,x,10,z,false);
+      }
+      for(const b of this.buildings) {
+        add(new THREE.BoxGeometry(7,.5,5),foliage,b.x-b.size*.25,b.height+.25,b.z+b.depth*.25);
+      }
+      // Raised terraced garden islands give the open park traversal surfaces.
+      for(const x of [-34,34])add(new THREE.BoxGeometry(18,2,22),stone,x,1,0);
+    } else if(this.mapId==='harbor') {
+      for(const z of [-94,0,94]) {
+        // Gantry cranes: separated AABB legs leave a clear passage underneath.
+        for(const x of [88,140])add(new THREE.BoxGeometry(3,42,3),accent,x,21,z);
+        add(new THREE.BoxGeometry(62,3,5),accent,114,43.5,z);
+        add(new THREE.BoxGeometry(2,16,2),stone,126,34,z);
+      }
+      for(const z of [-58,-42,42,58])for(const x of [94,116])add(new THREE.BoxGeometry(16,5,8),z>0?accent:stone,x,2.5,z);
+    } else if(this.mapId==='old-town') {
+      for(const x of [-12,12]) {
+        for(const z of [-14,10])add(new THREE.BoxGeometry(.7,5,.7),this.matWood,x,2.5,z);
+        add(new THREE.BoxGeometry(10,.6,28),accent,x,5.3,-2);
+      }
+      // A bell tower marks the market from street level and rooftops.
+      add(new THREE.BoxGeometry(8,24,8),stone,0,12,-8);
+      add(new THREE.BoxGeometry(11,2,11),accent,0,25,-8);
+    } else if(this.mapId==='skyline') {
+      // Elevated skywalks join the crown to the cardinal towers.
+      for(const side of [-1,1]) {
+        add(new THREE.BoxGeometry(74,2,7),stone,side*55,82,0);
+        add(new THREE.BoxGeometry(7,2,74),stone,0,82,side*55);
+      }
+      for(const b of this.buildings)add(new THREE.BoxGeometry(.3,b.height*.8,.3),accent,b.x-b.size/2-.1,b.height*.5,b.z-b.depth/2-.1,false);
+    }
+    this.scene.add(group);
+  }
+
   // Update blinking antenna beacon lights
   update(time) {
     const blink = this.reducedMotion || Math.sin(time * 5) > 0.2;
@@ -487,11 +570,18 @@ export class City {
     }
   }
 
+  getSpawnFacing(position) {
+    if(this.mapId==='procedural')return 0;
+    // Face the signature landmark on entry rather than the empty map edge.
+    return Math.atan2((this.mapId==='harbor'?114:0)-position.x,-position.z);
+  }
+
   // Get nearest rooftop spawn point to an ideal height
   getRooftopSpawn(preferredHeight = 90) {
     if (this.rooftopSpawns.length === 0) {
       return new THREE.Vector3(0, 75, 0);
     }
+    if(this.mapId==='gardens')preferredHeight=56;
     let best = this.rooftopSpawns[0];
     let bestDiff = Math.abs(best.y - preferredHeight);
     for (const sp of this.rooftopSpawns) {

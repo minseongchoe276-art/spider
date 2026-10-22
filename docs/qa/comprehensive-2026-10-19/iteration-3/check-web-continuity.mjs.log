@@ -1,0 +1,27 @@
+PASS 30fps: temporary LOD loss keeps the original pivot and full arc; permanent loss releases
+PASS 60fps: temporary LOD loss keeps the original pivot and full arc; permanent loss releases
+PASS 144fps: temporary LOD loss keeps the original pivot and full arc; permanent loss releases
+PASS attachment seam tolerance never ignores a real intervening wall
+PASS held press reconnects after obstruction; mouse release still detaches immediately
+PASS actual game render loop preserves a held button when physics loses its attachment
+node:internal/modules/run_main:123
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+
+  assert(graze.position.y>=.1&&graze.position.y<.12)
+
+    at file:///Users/choeminseong/Desktop/%E1%84%80%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%B7/scripts/check-web-continuity.mjs:62:61
+    at ModuleJob.run (node:internal/modules/esm/module_job:345:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:651:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5) {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
+
+Node.js v22.19.0

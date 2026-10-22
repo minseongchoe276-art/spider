@@ -1,0 +1,13 @@
+PASS PLAYER: Button 0: releasing and reattaching keeps the held opposite strand
+PASS PLAYER: Button 2: releasing and reattaching keeps the held opposite strand
+PASS PLAYER: Refiring the right button never stacks two strands owned by that button
+PASS PLAYER: An obstructed freshly fired hand loses its shot visual while the other hand remains
+PASS PLAYER: Zip-to-swing transition retains inward momentum on a slackening strand
+PASS PLAYER: A reticle miss never falls back to a different reachable facade
+PASS PLAYER: A new obstacle across a live zip severs the tether before continuing the pull
+PASS PLAYER: Mixed button presses, releases and misses at 30 FPS retain independent ownership
+PASS PLAYER: Mixed button presses, releases and misses at 60 FPS retain independent ownership
+PASS PLAYER: Mixed button presses, releases and misses at 144 FPS retain independent ownership
+PASS PLAYER: Zip arrival retains the held button 0 and releases with that button
+PASS PLAYER: Zip arrival retains the held button 2 and releases with that button
+Player audit: 12 passed, 0 failed.

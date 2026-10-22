@@ -1,0 +1,332 @@
+{
+  "passed": 26,
+  "failed": 0,
+  "results": [
+    {
+      "name": "Requested motions are absent from catalog, generated assets and loaded actors",
+      "status": "PASS",
+      "detail": {
+        "removed": [
+          "hit",
+          "dodgeBack",
+          "dodgeLeft",
+          "dodgeRight",
+          "dodgeForward",
+          "femaleStop",
+          "jog"
+        ],
+        "retainedAirTricks": [
+          "front"
+        ]
+      }
+    },
+    {
+      "name": "Every retained compiled motion respects ankle, wrist and toe limits between keyframes",
+      "status": "PASS",
+      "detail": {
+        "frames": 3943,
+        "maxDegrees": {
+          "foot": 35.00002040126295,
+          "toebase": 15.000040897496676,
+          "hand": 70.00000726173857
+        }
+      }
+    },
+    {
+      "name": "24fps walk, run, sprint, stop, slope and all retained combat poses",
+      "status": "PASS",
+      "detail": {
+        "frames": 348,
+        "maxDegrees": {
+          "foot": 35,
+          "toebase": 14.999999999999734,
+          "hand": 69.99977068476721
+        }
+      }
+    },
+    {
+      "name": "24fps climb, diagonal and sprint on facade 0",
+      "status": "PASS",
+      "detail": {
+        "frames": 72,
+        "maxDegrees": {
+          "foot": 35.000000000000036,
+          "toebase": 2.4599029276422635,
+          "hand": 70.00000000000003
+        }
+      }
+    },
+    {
+      "name": "24fps climb, diagonal and sprint on facade 90",
+      "status": "PASS",
+      "detail": {
+        "frames": 72,
+        "maxDegrees": {
+          "foot": 35.000000000000036,
+          "toebase": 2.4599029276422635,
+          "hand": 70.00000000000003
+        }
+      }
+    },
+    {
+      "name": "24fps climb, diagonal and sprint on facade 180",
+      "status": "PASS",
+      "detail": {
+        "frames": 72,
+        "maxDegrees": {
+          "foot": 35.000000000000036,
+          "toebase": 2.4599029276422635,
+          "hand": 70.00000000000003
+        }
+      }
+    },
+    {
+      "name": "24fps climb, diagonal and sprint on facade 270",
+      "status": "PASS",
+      "detail": {
+        "frames": 72,
+        "maxDegrees": {
+          "foot": 35.00000000000013,
+          "toebase": 2.4599029276422635,
+          "hand": 70.00000000000003
+        }
+      }
+    },
+    {
+      "name": "24fps actual wall → parapet → roof: joint bounds, grip, clearance and continuity",
+      "status": "PASS",
+      "detail": {
+        "maxDegrees": {
+          "foot": 35,
+          "toebase": 6.514892483573583,
+          "hand": 70
+        },
+        "maxGripError": 0.04016621200107136,
+        "maxExtremitySpeed": 13.214331159111197,
+        "landed": true
+      }
+    },
+    {
+      "name": "30fps walk, run, sprint, stop, slope and all retained combat poses",
+      "status": "PASS",
+      "detail": {
+        "frames": 435,
+        "maxDegrees": {
+          "foot": 35,
+          "toebase": 14.99999992755534,
+          "hand": 69.9999931701597
+        }
+      }
+    },
+    {
+      "name": "30fps climb, diagonal and sprint on facade 0",
+      "status": "PASS",
+      "detail": {
+        "frames": 90,
+        "maxDegrees": {
+          "foot": 35,
+          "toebase": 2.509928555736945,
+          "hand": 70.00000000000003
+        }
+      }
+    },
+    {
+      "name": "30fps climb, diagonal and sprint on facade 90",
+      "status": "PASS",
+      "detail": {
+        "frames": 90,
+        "maxDegrees": {
+          "foot": 35.00000000000013,
+          "toebase": 2.509928555736945,
+          "hand": 70.00000000000003
+        }
+      }
+    },
+    {
+      "name": "30fps climb, diagonal and sprint on facade 180",
+      "status": "PASS",
+      "detail": {
+        "frames": 90,
+        "maxDegrees": {
+          "foot": 35.000000000000036,
+          "toebase": 2.509928555736945,
+          "hand": 70.00000000000003
+        }
+      }
+    },
+    {
+      "name": "30fps climb, diagonal and sprint on facade 270",
+      "status": "PASS",
+      "detail": {
+        "frames": 90,
+        "maxDegrees": {
+          "foot": 35.000000000000036,
+          "toebase": 2.509928555736945,
+          "hand": 70.00000000000003
+        }
+      }
+    },
+    {
+      "name": "30fps actual wall → parapet → roof: joint bounds, grip, clearance and continuity",
+      "status": "PASS",
+      "detail": {
+        "maxDegrees": {
+          "foot": 35,
+          "toebase": 7.0295845356399,
+          "hand": 70.00000000000003
+        },
+        "maxGripError": 0.05872206235216072,
+        "maxExtremitySpeed": 13.31742016232157,
+        "landed": true
+      }
+    },
+    {
+      "name": "60fps walk, run, sprint, stop, slope and all retained combat poses",
+      "status": "PASS",
+      "detail": {
+        "frames": 870,
+        "maxDegrees": {
+          "foot": 35.00000000000008,
+          "toebase": 14.999999999999734,
+          "hand": 69.9999931701597
+        }
+      }
+    },
+    {
+      "name": "60fps climb, diagonal and sprint on facade 0",
+      "status": "PASS",
+      "detail": {
+        "frames": 180,
+        "maxDegrees": {
+          "foot": 35.000000000000036,
+          "toebase": 2.540951347540726,
+          "hand": 70.00000000000003
+        }
+      }
+    },
+    {
+      "name": "60fps climb, diagonal and sprint on facade 90",
+      "status": "PASS",
+      "detail": {
+        "frames": 180,
+        "maxDegrees": {
+          "foot": 35.00000000000013,
+          "toebase": 2.540951347540726,
+          "hand": 70
+        }
+      }
+    },
+    {
+      "name": "60fps climb, diagonal and sprint on facade 180",
+      "status": "PASS",
+      "detail": {
+        "frames": 180,
+        "maxDegrees": {
+          "foot": 35,
+          "toebase": 2.540951347540726,
+          "hand": 70.00000000000003
+        }
+      }
+    },
+    {
+      "name": "60fps climb, diagonal and sprint on facade 270",
+      "status": "PASS",
+      "detail": {
+        "frames": 180,
+        "maxDegrees": {
+          "foot": 35.00000000000008,
+          "toebase": 2.540951347540726,
+          "hand": 70.00000000000003
+        }
+      }
+    },
+    {
+      "name": "60fps actual wall → parapet → roof: joint bounds, grip, clearance and continuity",
+      "status": "PASS",
+      "detail": {
+        "maxDegrees": {
+          "foot": 35.000000000000036,
+          "toebase": 7.032582477184222,
+          "hand": 70.00000000000003
+        },
+        "maxGripError": 0.04184417710761134,
+        "maxExtremitySpeed": 13.303909928708059,
+        "landed": true
+      }
+    },
+    {
+      "name": "144fps walk, run, sprint, stop, slope and all retained combat poses",
+      "status": "PASS",
+      "detail": {
+        "frames": 2088,
+        "maxDegrees": {
+          "foot": 35,
+          "toebase": 15.000000000000028,
+          "hand": 69.99999708468721
+        }
+      }
+    },
+    {
+      "name": "144fps climb, diagonal and sprint on facade 0",
+      "status": "PASS",
+      "detail": {
+        "frames": 432,
+        "maxDegrees": {
+          "foot": 35.000000000000036,
+          "toebase": 2.554550809294398,
+          "hand": 70.00000000000003
+        }
+      }
+    },
+    {
+      "name": "144fps climb, diagonal and sprint on facade 90",
+      "status": "PASS",
+      "detail": {
+        "frames": 432,
+        "maxDegrees": {
+          "foot": 35.00000000000008,
+          "toebase": 2.554550809294398,
+          "hand": 70.00000000000003
+        }
+      }
+    },
+    {
+      "name": "144fps climb, diagonal and sprint on facade 180",
+      "status": "PASS",
+      "detail": {
+        "frames": 432,
+        "maxDegrees": {
+          "foot": 35.00000000000013,
+          "toebase": 2.554550809294398,
+          "hand": 70.00000000000003
+        }
+      }
+    },
+    {
+      "name": "144fps climb, diagonal and sprint on facade 270",
+      "status": "PASS",
+      "detail": {
+        "frames": 432,
+        "maxDegrees": {
+          "foot": 35.00000000000008,
+          "toebase": 2.554550809294398,
+          "hand": 70.00000000000003
+        }
+      }
+    },
+    {
+      "name": "144fps actual wall → parapet → roof: joint bounds, grip, clearance and continuity",
+      "status": "PASS",
+      "detail": {
+        "maxDegrees": {
+          "foot": 35.00000000000008,
+          "toebase": 7.152542570040082,
+          "hand": 70.00000000000003
+        },
+        "maxGripError": 0.030029378501855147,
+        "maxExtremitySpeed": 14.819279041288542,
+        "landed": true
+      }
+    }
+  ]
+}

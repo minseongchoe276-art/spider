@@ -1,0 +1,9 @@
+# 이미지 제작 기록
+
+도구: 내장 image_gen (CLI/API 키 방식 사용 안 함). 원본 게임 캡처를 캐릭터 참조로 사용했습니다. 결과는 게임 렌더가 아닌 홍보 일러스트입니다.
+
+## cover.png
+Use case: ads-marketing. Create a polished indie game promotional cover for SHADOW PULSE, approximately 1260x1000 landscape 1.26:1, suitable for itch.io cover thumbnail. Input image is CHARACTER DESIGN REFERENCE ONLY: preserve the original slender athletic full face masked black suit with violet contour lines, no existing superhero logos or spider emblem. Illustration, clearly key art rather than a gameplay screenshot. One hero swinging on a thin luminous energy wire over simple dense Hong Kong inspired rooftops, dynamic readable diagonal silhouette, dusky blue city with restrained violet highlights, modern graphic indie game poster, visually tasteful with atmospheric depth, no fake HUD, no photographic realism promises. Bold highly legible exact title 'SHADOW PULSE' on two lines in upper left with generous safe margins. No other text, no badges, no third party IP marks. Hero hands anatomically correct, exactly two arms and two legs. Compose for small cover readability.
+
+## banner.png
+Use case: ads-marketing. Create a companion WIDE HEADER BANNER, 3:1 aspect, ideally 1920x640, for this indie game itch.io page. Image reference defines exact title style, original black and violet full face masked character, and midnight blue violet city palette. Recompose as wide banner, do not just crop the poster: exact readable title 'SHADOW PULSE' at left center in two lines, the same single character flying on a thin violet energy wire at right, simple atmospheric Hong Kong inspired city below, uncluttered. Preserve character original suit, no spider emblem, no extra logos or text. Promotional illustration, no UI and not a gameplay screenshot. Generous margins on title and limbs, banner art consistent with reference.

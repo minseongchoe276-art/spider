@@ -1,3 +1,4 @@
+import {t} from './I18n.js';
 import * as THREE from 'three';
 import {LOCAL_CITY} from './LocalCityLayout.js';
 
@@ -12,14 +13,14 @@ export function collectTerrainMeshes(city, position, range, limit = 900) {
   const roots = city?.buildingMeshes?.length ? city.buildingMeshes
     : [...(city?.collisionWorld?.meshes?.values?.() || [])].map(entry => entry.mesh);
   const found = new Map();
-  for (const root of [...roots, city?.groundMesh].filter(Boolean)) {
+  for (const root of [...roots, ...(city?.mapSurfaceMeshes||[]), city?.groundMesh].filter(Boolean)) {
     root.updateWorldMatrix(true, true);
     root.traverseVisible(mesh => {
       if (!mesh.isMesh || !mesh.geometry?.attributes?.position) return;
       if (!mesh.geometry.boundingBox) mesh.geometry.computeBoundingBox();
       const box = mesh.geometry.boundingBox.clone().applyMatrix4(mesh.matrixWorld);
       const size = box.getSize(new THREE.Vector3());
-      if (!city?.isStreamed && mesh!==city?.groundMesh && size.x*size.y*size.z<25) return;
+      if (!city?.isStreamed && mesh!==city?.groundMesh && !city?.mapSurfaceMeshes?.includes(mesh) && size.x*size.y*size.z<25) return;
       const dx = Math.max(box.min.x-position.x, 0, position.x-box.max.x);
       const dz = Math.max(box.min.z-position.z, 0, position.z-box.max.z);
       if (Math.hypot(dx, dz) > range * 1.5) return;
@@ -108,8 +109,8 @@ export class HongKongMinimap {
     this.lastDraw = -Infinity;
     this.resize();
     if (!city?.isStreamed) {
-      if (this.title) this.title.textContent = 'LOCAL CITY';
-      if (this.subtitle) this.subtitle.textContent = 'PROCEDURAL DISTRICT';
+      if (this.title) this.title.textContent = city.profile?.en.toUpperCase() || 'LOCAL CITY';
+      if (this.subtitle) this.subtitle.textContent = city.profile?.tagEn.toUpperCase() || 'PROCEDURAL DISTRICT';
     }
     this.onResize = () => this.resize();
     window.addEventListener('resize', this.onResize);
@@ -144,7 +145,7 @@ export class HongKongMinimap {
     for (const source of active) {
       let copy = this.terrainCopies.get(source);
       if (!copy) {
-        copy = new THREE.Mesh(source.geometry,source===this.city.groundMesh ? this.groundMaterial : this.terrainMaterial);
+        copy = new THREE.Mesh(source.geometry,this.city.mapSurfaceMeshes?.includes(source) ? source.material : source===this.city.groundMesh ? this.groundMaterial : this.terrainMaterial);
         copy.matrixAutoUpdate = false;
         this.terrainCopies.set(source,copy); this.mapScene.add(copy);
       }
@@ -245,8 +246,8 @@ export class HongKongMinimap {
       }
       const placed=actorOverlayPoint(player,position,this.range,this.size,this.renderer?this.mapCamera:null);
       const distance=Math.round(Math.hypot(player.x-position.x,player.y-position.y,player.z-position.z));
-      const name=String(player.name || (player.team==='police'?'경찰':player.team==='runner'?'도망자':'플레이어')).slice(0,12);
-      const status=player.rescue?' · 구조':player.downed||player.eliminated?' · 탈락':player.connected===false?' · 마지막 위치':player.lastKnown?' · 대기 위치':'';
+      const name=String(player.name || t(player.team==='police'?'경찰':player.team==='runner'?'도망자':'플레이어')).slice(0,12);
+      const status=t(player.rescue?' · 구조':player.downed||player.eliminated?' · 탈락':player.connected===false?' · 마지막 위치':player.lastKnown?' · 대기 위치':'');
       el.children[0].textContent=player.downed||player.eliminated?'×':placed.offscreen?'➤':'●';
       el.children[0].style.transform=placed.offscreen && !player.downed && !player.eliminated?`rotate(${placed.angle}rad)`:'';
       el.children[1].textContent=`${name} · ${distance}m${status}`;
@@ -255,7 +256,7 @@ export class HongKongMinimap {
       el.dataset.side=placed.x<this.size*.33?'left':placed.x>this.size*.66?'right':'center';
       el.dataset.bottom=String(placed.y>this.size*.7);
       el.classList.toggle('offscreen',placed.offscreen);el.classList.toggle('last-known',!!player.lastKnown);
-      el.setAttribute('aria-label',`${name}, 거리 ${distance}미터${status}${placed.offscreen?', 지도 범위 밖':''}`);
+      el.dataset.userContent='';el.setAttribute('aria-label',`${name}, ${t('거리')} ${distance}${t('미터')}${status}${placed.offscreen?t(', 지도 범위 밖'):''}`);
       el.style.left=`${placed.x/this.size*100}%`;el.style.top=`${placed.y/this.size*100}%`;
     }
     for(const[id,el]of this.actorLabels)if(!active.has(id)){el.remove();this.actorLabels.delete(id);}
@@ -263,10 +264,11 @@ export class HongKongMinimap {
 
   collectFootprints(position) {
     if (!this.city?.isStreamed) {
-      return (this.city?.buildings || [])
-        .filter(building => isInsideMinimap(building, position, this.range, building.size))
-        .map(building => ({ minX: building.x - building.size / 2, maxX: building.x + building.size / 2,
-          minZ: building.z - building.size / 2, maxZ: building.z + building.size / 2, height: building.height }));
+      const buildings=(this.city?.buildings || [])
+        .map(building => ({ x:building.x,z:building.z,minX: building.x - building.size / 2, maxX: building.x + building.size / 2,
+          minZ: building.z - (building.depth||building.size) / 2, maxZ: building.z + (building.depth||building.size) / 2, height: building.height }));
+      return [...buildings,...(this.city?.landmarkFootprints||[])]
+        .filter(footprint => isInsideMinimap(footprint,position,this.range,Math.max(footprint.maxX-footprint.minX,footprint.maxZ-footprint.minZ)));
     }
     const entries = [...(this.city?.collisionWorld?.meshes?.values?.() || [])]
       .filter(Boolean).map(entry => entry.mesh);
@@ -334,7 +336,7 @@ export class HongKongMinimap {
     for(const player of locatedPlayers(this.players?.()||[])){
       const marker=edgeMinimapMarker(player,position,this.range,radius-10,center);ctx.fillStyle=player.rescue?'#ff6682':player.ally?'#7cffa9':player.team==='police'?'#41d9ff':'#ffce67';ctx.beginPath();ctx.arc(marker.x,marker.y,8,0,Math.PI*2);ctx.fill();
       ctx.strokeStyle='#ffffff';ctx.lineWidth=2.5;ctx.stroke();
-      if(player.rescue){ctx.font='bold 10px system-ui';ctx.textAlign='center';ctx.fillText('구조',marker.x,marker.y-7);}
+      if(player.rescue){ctx.font='bold 10px system-ui';ctx.textAlign='center';ctx.fillText(t('구조'),marker.x,marker.y-7);}
     }
 
     for (const enemy of this.combat?.enemies || []) {
@@ -351,7 +353,7 @@ export class HongKongMinimap {
     ctx.moveTo(0, -12); ctx.lineTo(8, 9); ctx.lineTo(0, 5); ctx.lineTo(-8, 9); ctx.closePath();
     ctx.fill(); ctx.stroke(); ctx.restore();
     ctx.fillStyle = '#24e8ff'; ctx.font = '800 10px Outfit, sans-serif'; ctx.textAlign = 'center';
-    ctx.fillText('나', center, center + 24);
+    ctx.fillText(t('나'), center, center + 24);
   }
 
   updateLabels(position) {

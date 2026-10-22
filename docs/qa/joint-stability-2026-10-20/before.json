@@ -1,0 +1,365 @@
+[
+  {
+    "key": "idle",
+    "wrists": 26.7947668855205,
+    "localWrist": 63.078768267175796,
+    "ankles": 34.93593961350331,
+    "maxAngularSpeed": 2743.0077771335486,
+    "worst": {
+      "side": "left",
+      "time": 2.65
+    }
+  },
+  {
+    "key": "walk",
+    "wrists": 33.27819047731097,
+    "localWrist": 69.99999939062221,
+    "ankles": 34.90485339378972,
+    "maxAngularSpeed": 4199.911330581502,
+    "worst": {
+      "side": "right",
+      "time": 0.45
+    }
+  },
+  {
+    "key": "regularRun",
+    "wrists": 31.843041669724272,
+    "localWrist": 54.633898169881064,
+    "ankles": 34.62194055794513,
+    "maxAngularSpeed": 3843.676035535573,
+    "worst": {
+      "side": "right",
+      "time": 0.21666666666666667
+    }
+  },
+  {
+    "key": "run",
+    "wrists": 48.284637330505475,
+    "localWrist": 54.45400477592213,
+    "ankles": 35,
+    "maxAngularSpeed": 3038.697975106666,
+    "worst": {
+      "side": "left",
+      "time": 0.26666666666666666
+    }
+  },
+  {
+    "key": "stop",
+    "wrists": 20.189412249441123,
+    "localWrist": 60.951486692359374,
+    "ankles": 23.471015567687576,
+    "maxAngularSpeed": 35.088536945418596,
+    "worst": {
+      "side": "left",
+      "time": 0.11666666666666667
+    }
+  },
+  {
+    "key": "runStop",
+    "wrists": 23.655322867609197,
+    "localWrist": 61.75083499408813,
+    "ankles": 35,
+    "maxAngularSpeed": 1298.5607470697275,
+    "worst": {
+      "side": "left",
+      "time": 0.31666666666666665
+    }
+  },
+  {
+    "key": "zip",
+    "wrists": 44.3335227135068,
+    "localWrist": 56.574041237414406,
+    "ankles": 24.339724755745284,
+    "maxAngularSpeed": 2.235068330820026,
+    "worst": {
+      "side": "left",
+      "time": 0
+    }
+  },
+  {
+    "key": "turnLeft",
+    "wrists": 21.10775020193124,
+    "localWrist": 25.557940895204446,
+    "ankles": 31.527476170136733,
+    "maxAngularSpeed": 695.9179921069077,
+    "worst": {
+      "side": "left",
+      "time": 0.36666666666666664
+    }
+  },
+  {
+    "key": "turnRight",
+    "wrists": 17.711792130866073,
+    "localWrist": 31.47020147784464,
+    "ankles": 30.25400561829888,
+    "maxAngularSpeed": 616.2650713134775,
+    "worst": {
+      "side": "right",
+      "time": 0.36666666666666664
+    }
+  },
+  {
+    "key": "jump",
+    "wrists": 51.14984619386315,
+    "localWrist": 69.99969318299483,
+    "ankles": 34.99999561175285,
+    "maxAngularSpeed": 1479.4147236820772,
+    "worst": {
+      "side": "right",
+      "time": 0.55
+    }
+  },
+  {
+    "key": "land",
+    "wrists": 43.38071751563795,
+    "localWrist": 69.99999830175852,
+    "ankles": 34.99491265349607,
+    "maxAngularSpeed": 3984.6282444885214,
+    "worst": {
+      "side": "right",
+      "time": 0
+    }
+  },
+  {
+    "key": "jumpDown",
+    "wrists": 44.18202707264775,
+    "localWrist": 69.99999992549493,
+    "ankles": 34.99999880528758,
+    "maxAngularSpeed": 3587.7703162305124,
+    "worst": {
+      "side": "right",
+      "time": 0.8833333333333333
+    }
+  },
+  {
+    "key": "drop",
+    "wrists": 33.85109265178105,
+    "localWrist": 69.99999985662573,
+    "ankles": 34.999996975659975,
+    "maxAngularSpeed": 611.9935654823449,
+    "worst": {
+      "side": "right",
+      "time": 0.21666666666666667
+    }
+  },
+  {
+    "key": "jumpDownVariant",
+    "wrists": 50.72585501683962,
+    "localWrist": 69.93256671891024,
+    "ankles": 34.99999452074571,
+    "maxAngularSpeed": 770.1869667101372,
+    "worst": {
+      "side": "right",
+      "time": 0.7833333333333333
+    }
+  },
+  {
+    "key": "swing",
+    "wrists": 49.26729212413052,
+    "localWrist": 66.91953770666862,
+    "ankles": 34.99873256104844,
+    "maxAngularSpeed": 497.01452528861836,
+    "worst": {
+      "side": "left",
+      "time": 0.5833333333333334
+    }
+  },
+  {
+    "key": "fall",
+    "wrists": 39.4510805184084,
+    "localWrist": 49.55849155133479,
+    "ankles": 34.99999996392929,
+    "maxAngularSpeed": 458.366556176416,
+    "worst": {
+      "side": "left",
+      "time": 3.75
+    }
+  },
+  {
+    "key": "fallVariant",
+    "wrists": 39.4510805184084,
+    "localWrist": 49.55849155133479,
+    "ankles": 34.99999996392929,
+    "maxAngularSpeed": 458.366556176416,
+    "worst": {
+      "side": "left",
+      "time": 3.75
+    }
+  },
+  {
+    "key": "fallIdle",
+    "wrists": 39.451058235971296,
+    "localWrist": 49.55845900059664,
+    "ankles": 34.999999917758345,
+    "maxAngularSpeed": 458.3671472842345,
+    "worst": {
+      "side": "left",
+      "time": 3.75
+    }
+  },
+  {
+    "key": "roll",
+    "wrists": 54.11072018933783,
+    "localWrist": 69.99896679091506,
+    "ankles": 34.99991086799492,
+    "maxAngularSpeed": 514.3662865906574,
+    "worst": {
+      "side": "right",
+      "time": 0.21666666666666667
+    }
+  },
+  {
+    "key": "injuredIdle",
+    "wrists": 18.57640369503182,
+    "localWrist": 67.0666394349957,
+    "ankles": 33.25212167660043,
+    "maxAngularSpeed": 2825.135031878342,
+    "worst": {
+      "side": "left",
+      "time": 5.416666666666667
+    }
+  },
+  {
+    "key": "wall",
+    "wrists": 86.91331848480043,
+    "localWrist": 70.00000000000003,
+    "ankles": 35,
+    "maxAngularSpeed": 982.5776557377891,
+    "worst": {
+      "side": "right",
+      "time": 1.4833333333333334
+    }
+  },
+  {
+    "key": "combatIdle",
+    "wrists": 25.251491617666826,
+    "localWrist": 41.541734544662845,
+    "ankles": 30.058614093576484,
+    "maxAngularSpeed": 122.92613203862068,
+    "worst": {
+      "side": "right",
+      "time": 3
+    }
+  },
+  {
+    "key": "jab",
+    "wrists": 31.78629284651416,
+    "localWrist": 37.67419127890401,
+    "ankles": 34.80318898651095,
+    "maxAngularSpeed": 2846.665683262757,
+    "worst": {
+      "side": "left",
+      "time": 0.8
+    }
+  },
+  {
+    "key": "guard",
+    "wrists": 17.88828374496581,
+    "localWrist": 0.01921520322069202,
+    "ankles": 26.692658528388,
+    "maxAngularSpeed": 13.55580417488621,
+    "worst": {
+      "side": "right",
+      "time": 0
+    }
+  },
+  {
+    "key": "slam",
+    "wrists": 71.73992783195973,
+    "localWrist": 69.9990984396841,
+    "ankles": 34.99999999362196,
+    "maxAngularSpeed": 1691.1170664692163,
+    "worst": {
+      "side": "right",
+      "time": 0.3833333333333333
+    }
+  },
+  {
+    "key": "slamLand",
+    "wrists": 70.310559733186,
+    "localWrist": 69.99999620787993,
+    "ankles": 35,
+    "maxAngularSpeed": 3177.590384656149,
+    "worst": {
+      "side": "right",
+      "time": 0
+    }
+  },
+  {
+    "key": "hook",
+    "wrists": 26.101624359938285,
+    "localWrist": 41.00682611272285,
+    "ankles": 34.9792922371438,
+    "maxAngularSpeed": 3109.3968399455243,
+    "worst": {
+      "side": "left",
+      "time": 0.4
+    }
+  },
+  {
+    "key": "heavy",
+    "wrists": 26.101624359938285,
+    "localWrist": 41.00682611272285,
+    "ankles": 34.9792922371438,
+    "maxAngularSpeed": 3109.3968399455243,
+    "worst": {
+      "side": "left",
+      "time": 0.4
+    }
+  },
+  {
+    "key": "hitHead",
+    "wrists": 32.12442847294355,
+    "localWrist": 15.291993903302211,
+    "ankles": 21.907801864325496,
+    "maxAngularSpeed": 1.9821436668534127,
+    "worst": {
+      "side": "right",
+      "time": 0.36666666666666664
+    }
+  },
+  {
+    "key": "rightHook",
+    "wrists": 17.88829045217738,
+    "localWrist": 0.01921520322069202,
+    "ankles": 34.62063705632573,
+    "maxAngularSpeed": 201.386834085539,
+    "worst": {
+      "side": "right",
+      "time": 0.4
+    }
+  },
+  {
+    "key": "cross",
+    "wrists": 38.92982558562781,
+    "localWrist": 65.92424694829917,
+    "ankles": 34.99033235618293,
+    "maxAngularSpeed": 2211.3131503769328,
+    "worst": {
+      "side": "left",
+      "time": 0.7666666666666666
+    }
+  },
+  {
+    "key": "airTrick",
+    "wrists": 57.40568554894495,
+    "localWrist": 69.99999978344134,
+    "ankles": 34.99999998814834,
+    "maxAngularSpeed": 4115.448768862252,
+    "worst": {
+      "side": "left",
+      "time": 0
+    }
+  },
+  {
+    "key": "special",
+    "wrists": 38.9298233593122,
+    "localWrist": 65.92424706690907,
+    "ankles": 34.828598069149926,
+    "maxAngularSpeed": 2418.247411299302,
+    "worst": {
+      "side": "left",
+      "time": 0.9333333333333333
+    }
+  }
+]

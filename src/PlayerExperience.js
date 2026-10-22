@@ -25,7 +25,7 @@ export class PlayerExperience {
     this.refreshProgress();
     window.addEventListener('pagehide',()=>game.progression.save());
   }
-  get city(){return this.game.city.isStreamed?'hong-kong':'procedural';}
+  get city(){return this.game.city.isStreamed?'hong-kong':(this.game.city.mapId||'procedural');}
   safe(position) {
     const limit=this.game.city.playableHalfExtent || 2400;
     if(![position.x,position.y,position.z].every(Number.isFinite) || Math.abs(position.x)>limit-2 || Math.abs(position.z)>limit-2)return false;
@@ -87,7 +87,7 @@ export class PlayerExperience {
   previewAnchor(){const g=this.game,p=g.physics,marker=document.getElementById('anchor-preview'),hands=document.getElementById('hand-status');
     const inCombat=g.combat.mode==='combat';
     const zipStatus=GROUNDED.includes(p.state)?'집: 공중 전용':p.state==='WEB_ZIP'?'집 이동 중':p.zipCooldown>0?'집 대기':'집 준비';
-    if(hands)hands.textContent=inCombat?(GROUNDED.includes(p.state)?`전투 모드 · ${keyLabel(g.preferences.values.settings.bindings.guard)} 방어`:'공중 · 전투 모드 · Q로 와이어 모드 전환'):
+    if(hands)hands.textContent=inCombat?(GROUNDED.includes(p.state)?`전투 모드 · ${keyLabel(g.preferences.values.settings.bindings.guard)} 방어`:`공중 · 전투 모드 · ${keyLabel(g.preferences.values.settings.bindings.mode)}로 와이어 모드 전환`):
       `${p.webs.some(w=>w.button===0)?'좌클릭 연결':'좌클릭 준비'} · ${p.webs.some(w=>w.button===2)?'우클릭 연결':'우클릭 준비'} · ${zipStatus}`;
     // Availability belongs on the fixed reticle, not a moving world marker.
     g.crosshair?.classList.toggle('aiming',!inCombat && !!p.bestAnchorCandidate);

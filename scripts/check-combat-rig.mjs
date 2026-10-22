@@ -141,7 +141,7 @@ console.log('PASS: boxing ready stance stays planted with restrained breathing')
  const sampled=c.activeAction.time;
  c.combatAction=null;c.landingSpeed=34;
  c.update(1/60,'LANDING',v);
- assert.equal(c.activeAction,c.actions.slamLand);
+ assert(c.activeAction===c.actions.slamLand,'Ground-pound recovery switched clips after the timed action ended');
  assert(c.activeAction.time>sampled,'Landing inherited the skill playback speed of zero');
  for(let i=0;i<60;i++)c.update(1/60,'IDLE',v);
  assert.equal(c.activeAction,c.actions.idle);assert(c.activeAction.isRunning());
@@ -181,10 +181,10 @@ console.log('PASS: timed landing resumes, paused idle recovers, and retained ski
 console.log('PASS: resetting mid-transition stops every old skill before idle restarts');
 {
  const c=actor(),v=new THREE.Vector3();c.landingSpeed=34;
- c.update(1/60,'LANDING',v);assert.equal(c.activeAction,c.actions.slamLand);
+ c.update(1/60,'LANDING',v);assert(c.activeAction===c.actions.land,'An ordinary compact landing must use the current land take');
  for(let i=0;i<30;i++){
    c.landingSpeed=0;c.update(1/60,'LANDING',v);
-   assert.equal(c.activeAction,c.actions.slamLand,'Heavy landing switched clips after its one-frame impact event');
+   assert(c.activeAction===c.actions.land,'Heavy landing switched clips after its one-frame impact event');
  }
  c.update(1/60,'IDLE',v);assert.equal(c.activeAction,c.actions.idle);
  c.mixer.stopAllAction();

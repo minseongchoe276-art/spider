@@ -1,0 +1,69 @@
+{
+  "status": "PASS",
+  "checkedAt": "2026-10-22T01:22:29.578Z",
+  "regressionSuites": {
+    "passed": 96,
+    "total": 96,
+    "failed": 0
+  },
+  "finalSourceGate": {
+    "passed": 29,
+    "failed": 0,
+    "affectedBroadSuitesRechecked": [
+      "check-mechanics-audit.mjs",
+      "check-qa.mjs",
+      "check-review-2.mjs",
+      "check-minimap.mjs",
+      "check-remote-motion.mjs",
+      "check-multiplayer.mjs",
+      "check-upgrade.mjs",
+      "check-online-edge-cases.mjs",
+      "check-swing-accessibility.mjs",
+      "check-cross-system-regressions.mjs",
+      "check-compact-map-and-locators.mjs",
+      "check-expert-audit.mjs",
+      "check-camera-motion-web.mjs",
+      "check-full-game-audit.mjs",
+      "check-web-continuity.mjs",
+      "check-input-lifecycle.mjs",
+      "check-session-flow.mjs",
+      "check-visibility.mjs",
+      "check-combat-aim.mjs",
+      "check-combat-traversal.mjs",
+      "check-human-mode.mjs",
+      "check-mode-selection.mjs",
+      "check-expert-recovery.mjs",
+      "check-third-person-only.mjs",
+      "check-display-mode.mjs",
+      "check-modal-lifecycle.mjs",
+      "check-expanded-input-camera.mjs"
+    ],
+    "changedAfterGate": []
+  },
+  "iterationIntegrity": {
+    "rawBroadStatus": "FAIL",
+    "reason": "The broad run detected seven UI/locale files being refined during the run. All affected dependency and source-assertion suites were rerun against stable final sources. No broad test suite failed.",
+    "changedDuringBroad": [
+      "src/CitySelection.js",
+      "src/CombatFeedback.js",
+      "src/I18n.js",
+      "src/SkillPresentation.js",
+      "src/locales/en.js",
+      "src/main.js",
+      "src/style.css"
+    ],
+    "changedSinceBroad": [
+      "src/SkillPresentation.js",
+      "src/style.css"
+    ]
+  },
+  "supplementary": [
+    "five-map collision, spawn, atlas and independent-save checks",
+    "563 bilingual catalog phrases and numeric messages",
+    "actual browser UI and accessibility: no untranslated Korean UI text in English mode",
+    "1000 casts, six-mesh pool, reduced motion and pause cleanup",
+    "accepted online wire-shot presentation",
+    "local online-room create redirect retains map/language/name/mode; test room left"
+  ],
+  "build": "PASS; pre-existing large JS chunk warning remains"
+}

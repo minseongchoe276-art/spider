@@ -1,0 +1,8 @@
+{
+  "gameRuntimeAndAssetsMatchAudit": true,
+  "postAuditChanges": [
+    "src/MotionQualityReview.js"
+  ],
+  "reason": "Only the developer review playback loader was fixed after the batch: opaque binary transport and loading controls. All gameplay source and motion/appearance assets match the completed 43-suite audit.",
+  "reviewSha256": "84a99a451df55cf0acee48dfbd68fd6091dfc88cc1c89cc68ccaec06af6d6ec2"
+}

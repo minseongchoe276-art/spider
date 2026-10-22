@@ -51,6 +51,7 @@ export class CombatFeedback {
     this.cooldowns[kind]=now+MATCH[kind].cooldown;return true;
   }
   sent(kind,target,hand='left'){
+    if(kind==='web'&&target)this.game.skillPresentation?.cast?.('wire');
     this.pendingUntil=target?performance.now()+1400:0;
     if(kind==='web' && target && [target.x,target.y,target.z].every(Number.isFinite)){
       this.game.character?.cancelAirTrick?.();

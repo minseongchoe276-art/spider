@@ -7,7 +7,7 @@
       "key": "idle",
       "samples": 13,
       "finite": true,
-      "maxExtent": 2.4070293002128182,
+      "maxExtent": 2.409357006666865,
       "maxEdgeGrowth": 0.04816126474862065,
       "worstPhase": 0.5,
       "pass": true
@@ -17,7 +17,7 @@
       "key": "walk",
       "samples": 13,
       "finite": true,
-      "maxExtent": 2.487291591195298,
+      "maxExtent": 2.4967724100594246,
       "maxEdgeGrowth": 0.055471359338291754,
       "worstPhase": 0.25,
       "pass": true
@@ -27,7 +27,7 @@
       "key": "regularRun",
       "samples": 13,
       "finite": true,
-      "maxExtent": 2.6451069268569944,
+      "maxExtent": 2.646458971496434,
       "maxEdgeGrowth": 0.0658034245614309,
       "worstPhase": 0.6666666666666666,
       "pass": true
@@ -37,7 +37,7 @@
       "key": "run",
       "samples": 13,
       "finite": true,
-      "maxExtent": 2.593427999429192,
+      "maxExtent": 2.564715269903302,
       "maxEdgeGrowth": 0.11153735560025649,
       "worstPhase": 0.16666666666666666,
       "pass": true
@@ -47,7 +47,7 @@
       "key": "stop",
       "samples": 13,
       "finite": true,
-      "maxExtent": 2.3672155784558933,
+      "maxExtent": 2.369864508557986,
       "maxEdgeGrowth": 0.04798315027585087,
       "worstPhase": 0.75,
       "pass": true
@@ -57,7 +57,7 @@
       "key": "runStop",
       "samples": 13,
       "finite": true,
-      "maxExtent": 2.3664572595871043,
+      "maxExtent": 2.3733963613233655,
       "maxEdgeGrowth": 0.06556278692277803,
       "worstPhase": 0.08333333333333333,
       "pass": true
@@ -67,7 +67,7 @@
       "key": "zip",
       "samples": 13,
       "finite": true,
-      "maxExtent": 2.0654445060892104,
+      "maxExtent": 2.061283046885263,
       "maxEdgeGrowth": 0.06642616461601607,
       "worstPhase": 0,
       "pass": true
@@ -77,7 +77,7 @@
       "key": "turnLeft",
       "samples": 13,
       "finite": true,
-      "maxExtent": 2.241043751066642,
+      "maxExtent": 2.242792153286263,
       "maxEdgeGrowth": 0.062351299567311586,
       "worstPhase": 0.5833333333333334,
       "pass": true
@@ -87,7 +87,7 @@
       "key": "turnRight",
       "samples": 13,
       "finite": true,
-      "maxExtent": 2.253908012023424,
+      "maxExtent": 2.259424483143713,
       "maxEdgeGrowth": 0.060286134833289845,
       "worstPhase": 0.5833333333333334,
       "pass": true
@@ -97,7 +97,7 @@
       "key": "jump",
       "samples": 13,
       "finite": true,
-      "maxExtent": 2.5175302869550715,
+      "maxExtent": 2.481750917918206,
       "maxEdgeGrowth": 0.04898227448253574,
       "worstPhase": 0.25,
       "pass": true
@@ -107,7 +107,7 @@
       "key": "land",
       "samples": 13,
       "finite": true,
-      "maxExtent": 2.443817787822567,
+      "maxExtent": 2.429185475296482,
       "maxEdgeGrowth": 0.06572912737332025,
       "worstPhase": 1,
       "pass": true
@@ -117,7 +117,7 @@
       "key": "jumpDown",
       "samples": 13,
       "finite": true,
-      "maxExtent": 2.7820323816809216,
+      "maxExtent": 2.764294638860132,
       "maxEdgeGrowth": 0.10469967666318558,
       "worstPhase": 0.8333333333333334,
       "pass": true
@@ -127,9 +127,9 @@
       "key": "drop",
       "samples": 13,
       "finite": true,
-      "maxExtent": 2.5599247514885937,
-      "maxEdgeGrowth": 0.10820901705529604,
-      "worstPhase": 0.8333333333333334,
+      "maxExtent": 2.78787867240721,
+      "maxEdgeGrowth": 0.10458370205548775,
+      "worstPhase": 0.25,
       "pass": true
     },
     {
@@ -137,7 +137,7 @@
       "key": "jumpDownVariant",
       "samples": 13,
       "finite": true,
-      "maxExtent": 2.7040076867431586,
+      "maxExtent": 2.716705271588542,
       "maxEdgeGrowth": 0.10213410205110018,
       "worstPhase": 0.5,
       "pass": true
@@ -147,7 +147,7 @@
       "key": "swing",
       "samples": 13,
       "finite": true,
-      "maxExtent": 2.6933336294985204,
+      "maxExtent": 2.689714223183174,
       "maxEdgeGrowth": 0.08369624194910152,
       "worstPhase": 0.8333333333333334,
       "pass": true
@@ -157,7 +157,7 @@
       "key": "fall",
       "samples": 13,
       "finite": true,
-      "maxExtent": 2.787647963856766,
+      "maxExtent": 2.7505109017287714,
       "maxEdgeGrowth": 0.12177110409949687,
       "worstPhase": 0.75,
       "pass": true
@@ -167,7 +167,7 @@
       "key": "fallVariant",
       "samples": 13,
       "finite": true,
-      "maxExtent": 2.787647963856766,
+      "maxExtent": 2.7505109017287714,
       "maxEdgeGrowth": 0.12177110409949687,
       "worstPhase": 0.75,
       "pass": true
@@ -177,7 +177,7 @@
       "key": "fallIdle",
       "samples": 13,
       "finite": true,
-      "maxExtent": 2.787648490393593,
+      "maxExtent": 2.750511460800039,
       "maxEdgeGrowth": 0.12177117184631206,
       "worstPhase": 0.75,
       "pass": true
@@ -187,7 +187,7 @@
       "key": "roll",
       "samples": 13,
       "finite": true,
-      "maxExtent": 2.308005843071232,
+      "maxExtent": 2.3299913540768666,
       "maxEdgeGrowth": 0.09158836757757177,
       "worstPhase": 0.5,
       "pass": true
@@ -197,7 +197,7 @@
       "key": "injuredIdle",
       "samples": 13,
       "finite": true,
-      "maxExtent": 2.2033209593969536,
+      "maxExtent": 2.213233407220882,
       "maxEdgeGrowth": 0.03099804058156476,
       "worstPhase": 0.6666666666666666,
       "pass": true
@@ -207,7 +207,7 @@
       "key": "wall",
       "samples": 13,
       "finite": true,
-      "maxExtent": 2.752372051729992,
+      "maxExtent": 2.7178414571009553,
       "maxEdgeGrowth": 0.12317495389180072,
       "worstPhase": 0.16666666666666666,
       "pass": true
@@ -217,7 +217,7 @@
       "key": "combatIdle",
       "samples": 13,
       "finite": true,
-      "maxExtent": 2.3750652684177846,
+      "maxExtent": 2.362894438021311,
       "maxEdgeGrowth": 0.06567699335896718,
       "worstPhase": 0.9166666666666666,
       "pass": true
@@ -227,7 +227,7 @@
       "key": "jab",
       "samples": 13,
       "finite": true,
-      "maxExtent": 2.599636202027777,
+      "maxExtent": 2.6232499551149435,
       "maxEdgeGrowth": 0.08712693925238366,
       "worstPhase": 0.6666666666666666,
       "pass": true
@@ -237,7 +237,7 @@
       "key": "guard",
       "samples": 13,
       "finite": true,
-      "maxExtent": 2.2342089697020175,
+      "maxExtent": 2.2401276862830892,
       "maxEdgeGrowth": 0.050841005862601873,
       "worstPhase": 0.75,
       "pass": true
@@ -247,7 +247,7 @@
       "key": "slam",
       "samples": 13,
       "finite": true,
-      "maxExtent": 2.53340002450497,
+      "maxExtent": 2.576698215350313,
       "maxEdgeGrowth": 0.12019049925497843,
       "worstPhase": 0.08333333333333333,
       "pass": true
@@ -257,7 +257,7 @@
       "key": "slamLand",
       "samples": 13,
       "finite": true,
-      "maxExtent": 2.579061663717779,
+      "maxExtent": 2.564020566282133,
       "maxEdgeGrowth": 0.12637223591239408,
       "worstPhase": 0.25,
       "pass": true
@@ -267,7 +267,7 @@
       "key": "hook",
       "samples": 13,
       "finite": true,
-      "maxExtent": 2.645242539753269,
+      "maxExtent": 2.6452379163327397,
       "maxEdgeGrowth": 0.09002195385697916,
       "worstPhase": 0.6666666666666666,
       "pass": true
@@ -277,7 +277,7 @@
       "key": "heavy",
       "samples": 13,
       "finite": true,
-      "maxExtent": 2.645242539753269,
+      "maxExtent": 2.6452379163327397,
       "maxEdgeGrowth": 0.09002195385697916,
       "worstPhase": 0.6666666666666666,
       "pass": true
@@ -287,7 +287,7 @@
       "key": "hitHead",
       "samples": 13,
       "finite": true,
-      "maxExtent": 2.4076336979129405,
+      "maxExtent": 2.410831593047851,
       "maxEdgeGrowth": 0.05348274617824832,
       "worstPhase": 0.5833333333333334,
       "pass": true
@@ -297,7 +297,7 @@
       "key": "rightHook",
       "samples": 13,
       "finite": true,
-      "maxExtent": 2.2668062678145446,
+      "maxExtent": 2.2785316086234477,
       "maxEdgeGrowth": 0.08035691704689484,
       "worstPhase": 0.5833333333333334,
       "pass": true
@@ -307,7 +307,7 @@
       "key": "cross",
       "samples": 13,
       "finite": true,
-      "maxExtent": 2.6549504447530863,
+      "maxExtent": 2.648735987922582,
       "maxEdgeGrowth": 0.07900849279029244,
       "worstPhase": 0.5833333333333334,
       "pass": true
@@ -317,7 +317,7 @@
       "key": "airTrick",
       "samples": 13,
       "finite": true,
-      "maxExtent": 3.171806712822694,
+      "maxExtent": 3.1495643839541434,
       "maxEdgeGrowth": 0.08889443433397176,
       "worstPhase": 0,
       "pass": true
@@ -327,7 +327,7 @@
       "key": "special",
       "samples": 13,
       "finite": true,
-      "maxExtent": 2.646458414274625,
+      "maxExtent": 2.6401654534902463,
       "maxEdgeGrowth": 0.07712993499616619,
       "worstPhase": 0.5,
       "pass": true
@@ -337,7 +337,7 @@
       "key": "idle",
       "samples": 13,
       "finite": true,
-      "maxExtent": 2.4132061678907837,
+      "maxExtent": 2.4132951342850446,
       "maxEdgeGrowth": 0.021350486150951205,
       "worstPhase": 0.8333333333333334,
       "pass": true
@@ -347,7 +347,7 @@
       "key": "walk",
       "samples": 13,
       "finite": true,
-      "maxExtent": 2.4599941013453406,
+      "maxExtent": 2.4644858744567064,
       "maxEdgeGrowth": 0.0246872305118592,
       "worstPhase": 0.25,
       "pass": true
@@ -357,7 +357,7 @@
       "key": "regularRun",
       "samples": 13,
       "finite": true,
-      "maxExtent": 2.6302926858211713,
+      "maxExtent": 2.629841496414034,
       "maxEdgeGrowth": 0.03363535207396849,
       "worstPhase": 0.75,
       "pass": true
@@ -367,7 +367,7 @@
       "key": "run",
       "samples": 13,
       "finite": true,
-      "maxExtent": 2.5598998273398834,
+      "maxExtent": 2.5342862523027456,
       "maxEdgeGrowth": 0.048750067130558364,
       "worstPhase": 0.16666666666666666,
       "pass": true
@@ -377,7 +377,7 @@
       "key": "stop",
       "samples": 13,
       "finite": true,
-      "maxExtent": 2.3773396726963294,
+      "maxExtent": 2.382921844210066,
       "maxEdgeGrowth": 0.021309581547164804,
       "worstPhase": 0.75,
       "pass": true
@@ -387,7 +387,7 @@
       "key": "runStop",
       "samples": 13,
       "finite": true,
-      "maxExtent": 2.3766068882653153,
+      "maxExtent": 2.3824868382169484,
       "maxEdgeGrowth": 0.02932325071345973,
       "worstPhase": 0.08333333333333333,
       "pass": true
@@ -397,7 +397,7 @@
       "key": "zip",
       "samples": 13,
       "finite": true,
-      "maxExtent": 2.053018365620383,
+      "maxExtent": 2.041970896955228,
       "maxEdgeGrowth": 0.04773514639914896,
       "worstPhase": 0,
       "pass": true
@@ -407,7 +407,7 @@
       "key": "turnLeft",
       "samples": 13,
       "finite": true,
-      "maxExtent": 2.232477928023025,
+      "maxExtent": 2.2318943127466633,
       "maxEdgeGrowth": 0.03059253609402867,
       "worstPhase": 0.5833333333333334,
       "pass": true
@@ -417,7 +417,7 @@
       "key": "turnRight",
       "samples": 13,
       "finite": true,
-      "maxExtent": 2.2455082681944143,
+      "maxExtent": 2.250535231162553,
       "maxEdgeGrowth": 0.029248809262125385,
       "worstPhase": 0.5833333333333334,
       "pass": true
@@ -427,7 +427,7 @@
       "key": "jump",
       "samples": 13,
       "finite": true,
-      "maxExtent": 2.5124559318051016,
+      "maxExtent": 2.47319714951943,
       "maxEdgeGrowth": 0.03068060627500587,
       "worstPhase": 0.9166666666666666,
       "pass": true
@@ -437,7 +437,7 @@
       "key": "land",
       "samples": 13,
       "finite": true,
-      "maxExtent": 2.4617982289460403,
+      "maxExtent": 2.447462596034728,
       "maxEdgeGrowth": 0.030366040383109822,
       "worstPhase": 1,
       "pass": true
@@ -447,7 +447,7 @@
       "key": "jumpDown",
       "samples": 13,
       "finite": true,
-      "maxExtent": 2.7922718132360673,
+      "maxExtent": 2.777393374971879,
       "maxEdgeGrowth": 0.07754674556918145,
       "worstPhase": 0.16666666666666666,
       "pass": true
@@ -457,9 +457,9 @@
       "key": "drop",
       "samples": 13,
       "finite": true,
-      "maxExtent": 2.5754340323088427,
-      "maxEdgeGrowth": 0.07945338694179373,
-      "worstPhase": 0.8333333333333334,
+      "maxExtent": 2.806358153688267,
+      "maxEdgeGrowth": 0.07138015008639395,
+      "worstPhase": 0.08333333333333333,
       "pass": true
     },
     {
@@ -467,7 +467,7 @@
       "key": "jumpDownVariant",
       "samples": 13,
       "finite": true,
-      "maxExtent": 2.706172508225627,
+      "maxExtent": 2.727047367984447,
       "maxEdgeGrowth": 0.06958511859452662,
       "worstPhase": 0.4166666666666667,
       "pass": true
@@ -477,7 +477,7 @@
       "key": "swing",
       "samples": 13,
       "finite": true,
-      "maxExtent": 2.719058947379184,
+      "maxExtent": 2.710474667840149,
       "maxEdgeGrowth": 0.07140300011218526,
       "worstPhase": 0,
       "pass": true
@@ -487,7 +487,7 @@
       "key": "fall",
       "samples": 13,
       "finite": true,
-      "maxExtent": 2.8157810012705697,
+      "maxExtent": 2.7790386415103976,
       "maxEdgeGrowth": 0.05565686441232583,
       "worstPhase": 0.75,
       "pass": true
@@ -497,7 +497,7 @@
       "key": "fallVariant",
       "samples": 13,
       "finite": true,
-      "maxExtent": 2.8157810012705697,
+      "maxExtent": 2.7790386415103976,
       "maxEdgeGrowth": 0.05565686441232583,
       "worstPhase": 0.75,
       "pass": true
@@ -507,7 +507,7 @@
       "key": "fallIdle",
       "samples": 13,
       "finite": true,
-      "maxExtent": 2.8157815428857256,
+      "maxExtent": 2.7790389633534973,
       "maxEdgeGrowth": 0.05565689766309184,
       "worstPhase": 0.75,
       "pass": true
@@ -517,7 +517,7 @@
       "key": "roll",
       "samples": 13,
       "finite": true,
-      "maxExtent": 2.3194361299181656,
+      "maxExtent": 2.335187330819326,
       "maxEdgeGrowth": 0.052297718346994405,
       "worstPhase": 0.25,
       "pass": true
@@ -527,7 +527,7 @@
       "key": "injuredIdle",
       "samples": 13,
       "finite": true,
-      "maxExtent": 2.178511019662449,
+      "maxExtent": 2.182417352447334,
       "maxEdgeGrowth": 0.016693145449203466,
       "worstPhase": 0.6666666666666666,
       "pass": true
@@ -537,7 +537,7 @@
       "key": "wall",
       "samples": 13,
       "finite": true,
-      "maxExtent": 2.7604215468467523,
+      "maxExtent": 2.7068872364475243,
       "maxEdgeGrowth": 0.08926424124134896,
       "worstPhase": 0.16666666666666666,
       "pass": true
@@ -547,7 +547,7 @@
       "key": "combatIdle",
       "samples": 13,
       "finite": true,
-      "maxExtent": 2.3767744680196734,
+      "maxExtent": 2.3636536756533784,
       "maxEdgeGrowth": 0.04434470952821192,
       "worstPhase": 0.08333333333333333,
       "pass": true
@@ -557,7 +557,7 @@
       "key": "jab",
       "samples": 13,
       "finite": true,
-      "maxExtent": 2.5832970698917483,
+      "maxExtent": 2.601951593674793,
       "maxEdgeGrowth": 0.03989700481993938,
       "worstPhase": 0.6666666666666666,
       "pass": true
@@ -567,7 +567,7 @@
       "key": "guard",
       "samples": 13,
       "finite": true,
-      "maxExtent": 2.2374055918423066,
+      "maxExtent": 2.234851293010173,
       "maxEdgeGrowth": 0.04062219904114875,
       "worstPhase": 0.75,
       "pass": true
@@ -577,7 +577,7 @@
       "key": "slam",
       "samples": 13,
       "finite": true,
-      "maxExtent": 2.5756329989807036,
+      "maxExtent": 2.6000335185370145,
       "maxEdgeGrowth": 0.055719811880524314,
       "worstPhase": 0.08333333333333333,
       "pass": true
@@ -587,7 +587,7 @@
       "key": "slamLand",
       "samples": 13,
       "finite": true,
-      "maxExtent": 2.557873462597364,
+      "maxExtent": 2.545638056596793,
       "maxEdgeGrowth": 0.05718551508165215,
       "worstPhase": 0.25,
       "pass": true
@@ -597,7 +597,7 @@
       "key": "hook",
       "samples": 13,
       "finite": true,
-      "maxExtent": 2.626368515052678,
+      "maxExtent": 2.6306073767411617,
       "maxEdgeGrowth": 0.04192455768933581,
       "worstPhase": 0.4166666666666667,
       "pass": true
@@ -607,7 +607,7 @@
       "key": "heavy",
       "samples": 13,
       "finite": true,
-      "maxExtent": 2.626368515052678,
+      "maxExtent": 2.6306073767411617,
       "maxEdgeGrowth": 0.04192455768933581,
       "worstPhase": 0.4166666666666667,
       "pass": true
@@ -617,7 +617,7 @@
       "key": "hitHead",
       "samples": 13,
       "finite": true,
-      "maxExtent": 2.414308821079742,
+      "maxExtent": 2.416925696586996,
       "maxEdgeGrowth": 0.023376194284185147,
       "worstPhase": 0.4166666666666667,
       "pass": true
@@ -627,7 +627,7 @@
       "key": "rightHook",
       "samples": 13,
       "finite": true,
-      "maxExtent": 2.2643681776554745,
+      "maxExtent": 2.259511760014705,
       "maxEdgeGrowth": 0.07616788895934376,
       "worstPhase": 0.6666666666666666,
       "pass": true
@@ -637,7 +637,7 @@
       "key": "cross",
       "samples": 13,
       "finite": true,
-      "maxExtent": 2.6542227238334757,
+      "maxExtent": 2.650230411397071,
       "maxEdgeGrowth": 0.06865597986611793,
       "worstPhase": 0.5833333333333334,
       "pass": true
@@ -647,7 +647,7 @@
       "key": "airTrick",
       "samples": 13,
       "finite": true,
-      "maxExtent": 3.1545966582883898,
+      "maxExtent": 3.1460041021458958,
       "maxEdgeGrowth": 0.06381376436113442,
       "worstPhase": 0.75,
       "pass": true
@@ -657,7 +657,7 @@
       "key": "special",
       "samples": 13,
       "finite": true,
-      "maxExtent": 2.6467762551142147,
+      "maxExtent": 2.642808655239263,
       "maxEdgeGrowth": 0.07007249429418036,
       "worstPhase": 0.5833333333333334,
       "pass": true

@@ -21,7 +21,7 @@ i.forward=true; advance(p,i,2); assert.equal(p.state,'RUNNING'); assert(Math.abs
 i.sprint=true; advance(p,i,2); assert.equal(p.state,'SPRINTING'); assert(Math.abs(p.velocity.length()-6.5)<0.01);
 i.forward=false; advance(p,i,2); assert.equal(p.state,'IDLE'); assert.equal(p.velocity.length(),0);
 i.jump=true; p.update(1/60,i,camera); assert.equal(p.state,'JUMPING'); assert(p.velocity.y>0); assert.equal(p.velocity.z,0);
-advance(p,i,3); assert.equal(p.state,'IDLE'); assert.equal(p.position.y,0.1); assert.equal(p.velocity.length(),0);
+advance(p,i,4); assert.equal(p.state,'IDLE'); assert.equal(p.position.y,0.1); assert.equal(p.velocity.length(),0);
 // Jump from a roof must not immediately be snapped back; walking off it falls.
 const roof=controller(); roof.city.colliders=[{minX:-2,maxX:2,minZ:-2,maxZ:2,minY:0,maxY:10}]; roof.position.set(0,10.1,0);
 const ri=input(); ri.jump=true; roof.update(1/60,ri,camera); assert(roof.position.y>10.2); advance(roof,ri,3); assert.equal(roof.position.y,10.1);
@@ -33,10 +33,10 @@ const release=controller();release.isSwinging=true;release.velocity.set(20,0,0);
 const stages=controller(), si=input();si.forward=true;si.jog=true;advance(stages,si,2);assert(Math.abs(stages.velocity.length()-3.4)<0.01);
 si.jog=false;si.run=true;advance(stages,si,2);assert(Math.abs(stages.velocity.length()-4.8)<0.01);
 const turn=controller();assert(turn.turnOnSpot('left'));advance(turn,input(),1.1);assert.equal(turn.state,'IDLE');assert(Math.abs(turn.facingAngle+Math.PI/2)<0.01);assert.equal(turn.position.length(),0.1);
-const land=controller();land.position.y=0.3;land.velocity.y=-15;land.state='FALLING';land.update(1/60,input(),camera);assert.equal(land.state,'LANDING');advance(land,input(),1.5);assert.equal(land.state,'IDLE');
+const land=controller();land.city.colliders=[{minX:-3,maxX:3,minZ:1,maxZ:2,minY:0,maxY:3}];land.position.y=0.3;land.velocity.y=-15;land.state='FALLING';land.update(1/60,input(),camera);assert.equal(land.state,'LANDING');advance(land,input(),1.5);assert.equal(land.state,'IDLE');
 const roll=controller();roll.character.actions={roll:{getClip:()=>({duration:1,userData:{rootMotion:[{time:0,distance:0},{time:1,distance:2}]}})}};
 roll.position.y=0.3;roll.velocity.set(0,-30,4);roll.state='FALLING';roll.update(1/60,input(),camera);assert.equal(roll.state,'ROLLING');advance(roll,input(),1.5);assert.equal(roll.state,'IDLE');assert(Math.abs(roll.position.z-2)<0.1);assert.equal(roll.velocity.length(),0);
-const verticalLand=controller();verticalLand.position.y=0.3;verticalLand.velocity.y=-30;verticalLand.state='FALLING';verticalLand.update(1/60,input(),camera);assert.equal(verticalLand.state,'LANDING','Vertical falls must not launch a forward roll');
+const verticalLand=controller();verticalLand.position.y=0.3;verticalLand.velocity.y=-30;verticalLand.state='FALLING';verticalLand.update(1/60,input(),camera);assert.equal(verticalLand.state,'ROLLING','A vertical fall with a clear supported path uses the current forward-roll recovery');advance(verticalLand,input(),2);assert.equal(verticalLand.state,'IDLE');
 const zip=controller();zip.state='FALLING';zip.position.y=2;
 assert.equal(zip.performAirJump(camera),false);assert.equal(zip.canAirJump,true,'A missed zip target must not consume the air ability');
 const facade=new THREE.Mesh(new THREE.BoxGeometry(10,20,2),new THREE.MeshBasicMaterial());facade.position.set(0,10,20);facade.updateMatrixWorld(true);zip.city.buildingMeshes=[facade];

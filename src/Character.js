@@ -587,6 +587,9 @@ export class Character {
     const movingGuard=combatMoving && combat?.key==='guard';
     const movingStrike=combatMoving && combat?.duration && ['jab','cross','hook','heavy','special'].includes(combat.key);
     if(combat && !movingStrike && !movingGuard && this.actions[combatClip] && (grounded || combat.key==='slam') && !['ROLLING','TURNING'].includes(state) && (state!=='LANDING'||combatClip==='slamLand'))name=combatClip;
+    // A ground-pound recovery owns the landing until physics releases it,
+    // even if its timed combat action ends before that landing state does.
+    if(state==='LANDING' && name==='slamLand')this.landingAction='slamLand';
     if (this.airTrick) name = this.airTrick.key === 'front' && this.actions.airTrick
       ? 'airTrick' : this.actions.fallIdle ? 'fallIdle' : 'fall';
     else if(this.isTricking && !grounded && !['WALL_RUNNING','MANTLING','WEB_ZIP'].includes(state) && this.actions.airTrick)name='airTrick';
@@ -747,7 +750,10 @@ export class Character {
       const steppingDown=this.mantle.end.y<this.mantle.height;
       const inPose=THREE.MathUtils.smoothstep(t,0,steppingDown?.20:.12);
       const standUp=THREE.MathUtils.smoothstep(t,steppingDown?.32:.5,steppingDown?.80:.92);
+      // A parapet's higher grip needs a slightly shallower crouch. The
+      // deeper roof pose left the shoulder beyond the arm's fixed reach.
       this.model.position.y=-0.1*(steppingDown?inPose:1)-1.28*inPose*(1-standUp);
+      if(steppingDown)this.model.position.y+=.12*inPose*(1-THREE.MathUtils.smoothstep(t,.22,.35));
     }
     if(state==='MANTLING' && this.mantle){
       // Lean the chest over the grip without sweeping the pelvis through

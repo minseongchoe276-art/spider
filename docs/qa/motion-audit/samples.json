@@ -1,7 +1,7 @@
 {
   "motions": 33,
   "cases": 99,
-  "samples": 15340,
+  "samples": 15309,
   "report": [
     {
       "key": "idle",
@@ -258,23 +258,23 @@
     {
       "key": "drop",
       "fps": 30,
-      "frames": 17,
-      "maxFrame": 11,
-      "maxStep": 0.1801
+      "frames": 13,
+      "maxFrame": 1,
+      "maxStep": 0.0998
     },
     {
       "key": "drop",
       "fps": 60,
-      "frames": 33,
-      "maxFrame": 22,
-      "maxStep": 0.0915
+      "frames": 25,
+      "maxFrame": 2,
+      "maxStep": 0.05
     },
     {
       "key": "drop",
       "fps": 144,
-      "frames": 78,
-      "maxFrame": 53,
-      "maxStep": 0.038
+      "frames": 59,
+      "maxFrame": 4,
+      "maxStep": 0.0207
     },
     {
       "key": "jumpDownVariant",

@@ -1,0 +1,26 @@
+PASS walk 30fps: 71 contact samples, max step slip 3.0mm, overall foot step 433.1mm
+PASS jog 30fps: 29 contact samples, max step slip 1.7mm, overall foot step 256.9mm
+PASS regularRun 30fps: 16 contact samples, max step slip 0.6mm, overall foot step 357.9mm
+PASS run 30fps: 22 contact samples, max step slip 2.7mm, overall foot step 452.9mm
+WALL 30fps normal 0,0,1: 84 facade-contact samples, error 0.294m {
+  lefthand: 0.06992536238767275,
+  righthand: 0.06836497122805713,
+  leftfoot: 0.2940384566543147,
+  rightfoot: 0.2831828776389842
+}
+{}
+node:internal/modules/run_main:123
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Authored wall limb left the facade
+    at file:///Users/choeminseong/Desktop/%E1%84%80%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%B7/scripts/check-pose.mjs:96:23 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
+
+Node.js v22.19.0

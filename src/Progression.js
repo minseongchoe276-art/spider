@@ -12,8 +12,8 @@ export class Progression {
       if(saved&&typeof saved==='object') {
         if(Number.isFinite(saved.distance)&&saved.distance>=0)this.data.distance=Math.min(saved.distance,1e12);
         this.dirty=Object.keys(saved).some(key=>!Object.hasOwn(this.data,key));
-        this.data.discoveries=Array.isArray(saved.discoveries)?saved.discoveries.filter(x=>typeof x==='string'&&/^(procedural|hong-kong):-?\d+:-?\d+$/.test(x)).slice(-2048):[];
-        for(const city of ['procedural','hong-kong'])if(finitePosition(saved.safe?.[city]))this.data.safe[city]=saved.safe[city];
+        this.data.discoveries=Array.isArray(saved.discoveries)?saved.discoveries.filter(x=>typeof x==='string'&&/^(procedural|hong-kong|harbor|gardens|old-town|skyline):-?\d+:-?\d+$/.test(x)).slice(-2048):[];
+        for(const city of ['procedural','hong-kong','harbor','gardens','old-town','skyline'])if(finitePosition(saved.safe?.[city]))this.data.safe[city]=saved.safe[city];
         if(['white',...rewards.map(r=>r.id)].includes(saved.theme))this.data.theme=saved.theme;
       }
     }catch{/* Local storage may be unavailable. */}

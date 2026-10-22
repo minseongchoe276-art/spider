@@ -1047,9 +1047,18 @@ export class SwingPhysics {
         const direction=new THREE.Vector3(Math.sin(rollFacing),0,Math.cos(rollFacing));
         const rollEnd=this.position.clone().addScaledVector(direction,rollDistance);
         let canRoll=!sweepBody(this.position,rollEnd,this.city.colliders);
+        let rollPrevious=this.position.clone();
         for(let distance=.4;canRoll && distance<rollDistance+.4;distance+=.4){
           const sample=this.position.clone().addScaledVector(direction,Math.min(distance,rollDistance));
           canRoll=this.supportHeight(sample)!==null;
+          // Streamed maps have triangle colliders rather than AABBs. Sweep
+          // the same capsule used in play before committing to a full roll.
+          if(canRoll && (this.city.resolveMovement || this.city.collisionWorld?.resolve)){
+            const resolved=resolveTraversal(this.city,rollPrevious,sample);
+            canRoll=Math.hypot(resolved.position.x-sample.x,resolved.position.z-sample.z)<.075 &&
+              !resolved.contacts.some(contact=>contact.blocked!==false && contact.normal.y<.5);
+            rollPrevious.copy(resolved.position);
+          }
         }
         this.state = canRoll ? 'ROLLING' : 'LANDING';
         if(!canRoll)this.character.landingAction='land';
@@ -1147,8 +1156,8 @@ export class SwingPhysics {
     this.webFireCooldown = 0;
     this.anchorPreviewElapsed=.1;this.bestAnchorCandidate=null;
     this.zipCooldown = 0;
-    this.facingAngle = 0; this.character.targetFacingAngle = 0;
-    this.character.visualYaw = 0; this.character.bodyPitch = 0;
+    this.facingAngle = this.city.getSpawnFacing?.(spawn)||0; this.character.targetFacingAngle = this.facingAngle;
+    this.character.visualYaw = this.facingAngle; this.character.bodyPitch = 0;
     this.character.idleFootAnchors = null; this.character.pendingTurn = null;
     this.character.idlePlantDelay=0;this.character.terrainPelvis=0;
     this.character.movingPlants=null;this.character.movingReleases=null;

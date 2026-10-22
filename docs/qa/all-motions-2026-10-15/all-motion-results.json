@@ -16,7 +16,7 @@
       "name": "24fps hitHead keeps a supported foot during the full hit reaction",
       "status": "PASS",
       "detail": {
-        "maxContactError": 0.009094369396356314
+        "maxContactError": 0.009482905829273344
       }
     },
     {
@@ -45,7 +45,7 @@
       "name": "30fps hitHead keeps a supported foot during the full hit reaction",
       "status": "PASS",
       "detail": {
-        "maxContactError": 0.009094358238769126
+        "maxContactError": 0.009482907873357468
       }
     },
     {
@@ -74,7 +74,7 @@
       "name": "60fps hitHead keeps a supported foot during the full hit reaction",
       "status": "PASS",
       "detail": {
-        "maxContactError": 0.0090934761219824
+        "maxContactError": 0.009482917176124137
       }
     },
     {
@@ -103,7 +103,7 @@
       "name": "144fps hitHead keeps a supported foot during the full hit reaction",
       "status": "PASS",
       "detail": {
-        "maxContactError": 0.009090999641696448
+        "maxContactError": 0.009482983347487747
       }
     },
     {
@@ -626,8 +626,8 @@
       "detail": {
         "key": "drop",
         "fps": 24,
-        "frames": 14,
-        "maxExtremitySpeed": 5.354574791933175
+        "frames": 11,
+        "maxExtremitySpeed": 2.949288845091638
       }
     },
     {
@@ -636,8 +636,8 @@
       "detail": {
         "key": "drop",
         "fps": 30,
-        "frames": 17,
-        "maxExtremitySpeed": 5.402305681822626
+        "frames": 13,
+        "maxExtremitySpeed": 2.9952798468930273
       }
     },
     {
@@ -646,8 +646,8 @@
       "detail": {
         "key": "drop",
         "fps": 60,
-        "frames": 33,
-        "maxExtremitySpeed": 5.491510552649821
+        "frames": 25,
+        "maxExtremitySpeed": 3.0023104617177143
       }
     },
     {
@@ -656,8 +656,8 @@
       "detail": {
         "key": "drop",
         "fps": 144,
-        "frames": 78,
-        "maxExtremitySpeed": 5.492829159972923
+        "frames": 59,
+        "maxExtremitySpeed": 3.002355495250147
       }
     },
     {
@@ -1649,7 +1649,7 @@
       "status": "PASS",
       "detail": {
         "cases": 1225,
-        "maxDiscontinuity": 8.957114522284181e-10
+        "maxDiscontinuity": 4.387202128565448e-8
       }
     }
   ]

@@ -1,0 +1,502 @@
+{
+  "builtAt": "2026-10-21T23:58:01.460Z",
+  "files": 98,
+  "uncompressedBytes": 195032661,
+  "zipBytes": 72485998,
+  "zipSha256": "644c8996e79105c593c5a48dfc7482154984ac15d2662eeee50a47b16508f232",
+  "onlineTransport": "Supabase; free roam and tag; custom matches omitted",
+  "defaultCity": "procedural",
+  "hongKongProxy": "https://minogame.site/urban-tiles",
+  "entries": [
+    {
+      "name": "THIRD_PARTY_NOTICES.txt",
+      "bytes": 43906,
+      "sha256": "d2b792df8e8868398798a42ada9831c5f763a03371218e529ea78441e9799565"
+    },
+    {
+      "name": "app-icon.svg",
+      "bytes": 516,
+      "sha256": "7b70f6784071b327ae6b7a6982f1725e46ebdf20aa9cc8cd316d163e014fb169"
+    },
+    {
+      "name": "assets/CombatReview-C0vmrJ2I.js",
+      "bytes": 6049,
+      "sha256": "eb205570d0808da96aef0a96d29afec20d704ca125d629f3726a21100e9f8c73"
+    },
+    {
+      "name": "assets/EffectsReview-DEDY0LeZ.js",
+      "bytes": 3427,
+      "sha256": "a454f41c759f41ab8397806c622a06ea320ab148de2b04018f49c8db28acd7ed"
+    },
+    {
+      "name": "assets/MotionReview-C8b00Lou.js",
+      "bytes": 14659,
+      "sha256": "8572e17ad613c3bbb6cafae831699a35b6a2e31fb155799e7a93b1451fa9447c"
+    },
+    {
+      "name": "assets/WebHandReview-C4W01F8N.js",
+      "bytes": 5331,
+      "sha256": "73837afab62795b70ed828688e1f1830fd1e210edb5880017a27b92252ab67c8"
+    },
+    {
+      "name": "assets/index-Bd0fItqZ.css",
+      "bytes": 51095,
+      "sha256": "ad0e7d0e22029bf67cc441edc4dbf72446fcf564a504dc864a96ed0ebe9c4e9b"
+    },
+    {
+      "name": "assets/index-CwgNsLUx.js",
+      "bytes": 5710565,
+      "sha256": "07afc894418323ee89f5058d2cb24b15310ccba9449f962a76b4ab0e188862c0"
+    },
+    {
+      "name": "basis/basis_transcoder.js",
+      "bytes": 57529,
+      "sha256": "8478b5b6d6b74e7d3082b89f6417321d8d1dc0307f2b30d4484bb11b441696a1"
+    },
+    {
+      "name": "basis/basis_transcoder.wasm",
+      "bytes": 527333,
+      "sha256": "6cf17dc889352c42e9acf8897107978d127005fe3386c36a0e3845e27967630a"
+    },
+    {
+      "name": "index.html",
+      "bytes": 22614,
+      "sha256": "4fa749ed4558f9198e40acf26e5c6388329e8fe82e3f871bcda63c7f18bd9735"
+    },
+    {
+      "name": "manifest.webmanifest",
+      "bytes": 378,
+      "sha256": "9c95e8aaeefe0aaf31893c9e54918c7b5a928b158a3e315c17d21377f5aca172"
+    },
+    {
+      "name": "models/Boxing Hook.fbx",
+      "bytes": 424096,
+      "sha256": "b2895d3389b2b5e03e91748cfbdb92ce4cc28f440c6059716d43c0bc49b3f1db"
+    },
+    {
+      "name": "models/Boxing Idle.fbx",
+      "bytes": 440288,
+      "sha256": "032d1877dc539c9451fdbfd4f572904adc1ea49130a719b1f44f5c75a8a48499"
+    },
+    {
+      "name": "models/Boxing Lead Jab.fbx",
+      "bytes": 359296,
+      "sha256": "82f7cdb5ec78e4eaa252f0632de815dc618317192f3bb9d2bc96156f813ab64f"
+    },
+    {
+      "name": "models/Boxing Stance.fbx",
+      "bytes": 546496,
+      "sha256": "689c70f906e7f689a6f6152e4919a397c243974aadb3d05518639a75834ad60c"
+    },
+    {
+      "name": "models/Climbing Up Wall.fbx",
+      "bytes": 467296,
+      "sha256": "ab317f650965f174a1b9d95ecbffc405fa8b2aeb1a82f25f5a7edb2aba860969"
+    },
+    {
+      "name": "models/Cross Punch.fbx",
+      "bytes": 424096,
+      "sha256": "271b49cc56a966cf694eb5d1ea656dbef01fcaeeff5d9da81f8694d460384c96"
+    },
+    {
+      "name": "models/Falling (2).fbx",
+      "bytes": 645152,
+      "sha256": "5085f53139fe26d99eaccccf74f0b1d97f057604d3b564a982afa2fd98076b34"
+    },
+    {
+      "name": "models/Falling Idle.fbx",
+      "bytes": 18014224,
+      "sha256": "85115e3fa9b69736f31be33fbab8023c043b1db85ad269df6af2e72235d2bc52"
+    },
+    {
+      "name": "models/Falling To Roll.fbx",
+      "bytes": 480896,
+      "sha256": "fd5eec844d950160e56d62ada25bfda7692f80dabbf1fa71c02efa6b7fc18dbf"
+    },
+    {
+      "name": "models/Falling.fbx",
+      "bytes": 645152,
+      "sha256": "0735d3a77f80df5439c7139f5545d3d666bc42c33f28b67dbca62645125375b8"
+    },
+    {
+      "name": "models/Fast Run.fbx",
+      "bytes": 305232,
+      "sha256": "f94b9f6507a8a7b1e6f39b4c2845a7c1b398fe6d4d5e324fba83aabdf0058956"
+    },
+    {
+      "name": "models/Female Stop Walking.fbx",
+      "bytes": 386288,
+      "sha256": "505b287501ee9c160522c419a46c1b6ab17b8aeabe5a9348ab8d45af2429f155"
+    },
+    {
+      "name": "models/Front Flip.fbx",
+      "bytes": 451088,
+      "sha256": "2ae6440ac3418685ffbb7c681efc89b3e5755a0fe8510608c62b4031b6fb1a2a"
+    },
+    {
+      "name": "models/Idle.fbx",
+      "bytes": 18041488,
+      "sha256": "bc451195e178ec6e7d4ff6da08e3e0c073c34a64fbecc2979994509978950fc6"
+    },
+    {
+      "name": "models/Injured Idle.fbx",
+      "bytes": 1003696,
+      "sha256": "6ae92903cad77154b29be97b6d3e38349bb811b33a8bc451574359cbc921ffa9"
+    },
+    {
+      "name": "models/Jogging.fbx",
+      "bytes": 17916608,
+      "sha256": "2145d3b311df784ade736ca8ce4298e37455f4cdb55d632eecb7a764abafe684"
+    },
+    {
+      "name": "models/Jumping Down (1).fbx",
+      "bytes": 448320,
+      "sha256": "859d43d6961f3607bc024993aa78d8212a564917bfcaa6cb70a1393c2ab5a862"
+    },
+    {
+      "name": "models/Jumping Down.fbx",
+      "bytes": 17928224,
+      "sha256": "569919b0a48d261e03a70f20d6bb7e70046b25efcfb4a4bb1dd0ab17d6324993"
+    },
+    {
+      "name": "models/Lead Jab.fbx",
+      "bytes": 370096,
+      "sha256": "a07eb2721db05a7321e9da19175bf47132c9ddb170e9bcc2e5df670d2821e94d"
+    },
+    {
+      "name": "models/Left Turn.fbx",
+      "bytes": 365856,
+      "sha256": "151c9c16b985c3828cf71a1a989026dd11a74a1f6c3323b39dd03d4281db1c93"
+    },
+    {
+      "name": "models/Mma Kick.fbx",
+      "bytes": 443536,
+      "sha256": "66fe53f8362c66e6eeaddb4b7bc6c344cb3ea569ef94fa6badda1077975a32a6"
+    },
+    {
+      "name": "models/Right Turn.fbx",
+      "bytes": 365856,
+      "sha256": "5679c5fe0f34cfea8f4234c804ca42cac3e85adb4876d3aeab372853670abaa3"
+    },
+    {
+      "name": "models/Rope Swinging.fbx",
+      "bytes": 18031776,
+      "sha256": "d3b992c732bf4910284d6c23688551f56bca834ed6e45bd09d230af064ea963c"
+    },
+    {
+      "name": "models/Run To Stop.fbx",
+      "bytes": 354368,
+      "sha256": "87604dc0e3e907a6cd575e72eb6b57e7b8f4c3edb3c1ddb2fc2a7f46169fb3eb"
+    },
+    {
+      "name": "models/Running.fbx",
+      "bytes": 17701392,
+      "sha256": "b1563e81706ae3e80ea2e5d0f99619cc5c0dd60b34d557f9da6527b406a48cab"
+    },
+    {
+      "name": "models/Standing Jump.fbx",
+      "bytes": 17896912,
+      "sha256": "01c13c4f7f5038d145278556e53cd8ca6c845f3c140cec220f1ad99ea65e7f67"
+    },
+    {
+      "name": "models/Surprise Uppercut.fbx",
+      "bytes": 602288,
+      "sha256": "869da292787412b2c4426489658d91d0b0925f4f8302cfeaff4a1f8ebdaca63e"
+    },
+    {
+      "name": "models/Walking.fbx",
+      "bytes": 371648,
+      "sha256": "c02732ab90f678f04311f93c697fe109a5bb4655f02021d74b180d72bcd4348a"
+    },
+    {
+      "name": "models/appearance-combat.glb",
+      "bytes": 11316428,
+      "sha256": "97b96089238697101ebe29825eb2492aa8f15faa720a73e675fd01a4c9e3450b"
+    },
+    {
+      "name": "models/appearance-web.glb",
+      "bytes": 7711440,
+      "sha256": "697c4fbd6bd8279d3b5457e399c02430291edff391db5a017d20c284299582ec"
+    },
+    {
+      "name": "models/shadow-pulse-rig.glb",
+      "bytes": 7711440,
+      "sha256": "527a65e1749512e95d16045c63d7b6be4565f54dfd477be817fe4efd78422a5a"
+    },
+    {
+      "name": "models/sources/LICENSE-CC0.md",
+      "bytes": 294,
+      "sha256": "52fec1c484df708c16b4c27b2bf0d7f0d3994105c57adc4b9e6f95bcfd9de65f"
+    },
+    {
+      "name": "models/sources/combat-addon.glb",
+      "bytes": 3902688,
+      "sha256": "e654b9fc1fc61ee6489cb2b7425aa76678231265d24daa544c47820545f4661f"
+    },
+    {
+      "name": "models/sources/combat-base.glb",
+      "bytes": 3916024,
+      "sha256": "b183369aa993af28943015ddc968ca035bbbac6161d181c89eea5f50d18a3311"
+    },
+    {
+      "name": "models/sources/mesh2motion-climb.glb",
+      "bytes": 3735400,
+      "sha256": "7fa7d0e792c57b264beb2898225c0ec97090f1e72c7706dfbebd5011cd2c1345"
+    },
+    {
+      "name": "motions/airTrick.json",
+      "bytes": 192466,
+      "sha256": "48c66a584280e4f8261070e1159629f04ae18b038bc2c25080ec5cdb8e5c83cf"
+    },
+    {
+      "name": "motions/candidateFront.json",
+      "bytes": 332259,
+      "sha256": "bcf862b51ac96207f006252b4917cff25c8ee39f3009b9b26d2ea2a8bfff4d2f"
+    },
+    {
+      "name": "motions/candidateStylish.json",
+      "bytes": 434145,
+      "sha256": "85e2450c1db7e2d35a41417e220b4dbc7f27a54312cfa3f1b75e7fd400ea2d78"
+    },
+    {
+      "name": "motions/combatIdle.json",
+      "bytes": 878783,
+      "sha256": "c7f192d8e737b6c5673dceec29e4756c9b3cfb66d2933c1c8c8c70c057e6529a"
+    },
+    {
+      "name": "motions/cross.json",
+      "bytes": 291240,
+      "sha256": "54cb875c07d78d999d5446a2d29cfd358cb0fd643f7d550bd2716294a029d484"
+    },
+    {
+      "name": "motions/drop.json",
+      "bytes": 94422,
+      "sha256": "7ba1a69ee3a7e49b2bbca5e884c186c7ad3eb6eba9d2a629d34699a42b8d3035"
+    },
+    {
+      "name": "motions/fall.json",
+      "bytes": 876712,
+      "sha256": "1f32f7bd0e00a00acb5b7543466228439af9c957bb03d3eed3064a50ccce5e9a"
+    },
+    {
+      "name": "motions/fallIdle.json",
+      "bytes": 876681,
+      "sha256": "023f7aab5ea30c13b53619ba51bf638f9fef5d5e07b36cc5307ae1e344e5d37b"
+    },
+    {
+      "name": "motions/fallVariant.json",
+      "bytes": 876719,
+      "sha256": "cc8047cac173030621987dd40a29f2460a18f2bd803afc2889973e314a3a6fdb"
+    },
+    {
+      "name": "motions/guard.json",
+      "bytes": 777859,
+      "sha256": "72298eacbfd769c44f4296b7d634ec2efa4a5caac4b42b395b0e0e678db86440"
+    },
+    {
+      "name": "motions/heavy.json",
+      "bytes": 284197,
+      "sha256": "969eebd73bcb5cfb53e65a87714786105905e000b025374ea02281a8d781453d"
+    },
+    {
+      "name": "motions/hitHead.json",
+      "bytes": 101088,
+      "sha256": "d04d5dff34862da7444b88593fd102d88b739c6fd3268e1782c880b9e769b909"
+    },
+    {
+      "name": "motions/hook.json",
+      "bytes": 284196,
+      "sha256": "f5d466d23375a9f75838cd77f11be00d6ad0c3b483c4e52b14fa0a13551557b6"
+    },
+    {
+      "name": "motions/idle.json",
+      "bytes": 781503,
+      "sha256": "61a3d2f13e922faa90648723d2d132a8f398b40bfa83454a4f35bb4f50bbeb51"
+    },
+    {
+      "name": "motions/injuredIdle.json",
+      "bytes": 1796402,
+      "sha256": "6c469b44c2241200d4b050e99f644b387504de1f61eecbedadeba314c82b587d"
+    },
+    {
+      "name": "motions/jab.json",
+      "bytes": 279778,
+      "sha256": "15ed5a0656ee5b4e003a684132bb3591ba805b9c32f5e678a7cfd6f28efa96a0"
+    },
+    {
+      "name": "motions/jump.json",
+      "bytes": 130923,
+      "sha256": "34e6c909a966168ef01c0eac76f42982d361dc10a7e5e3841ba6f7c0ddbec7ea"
+    },
+    {
+      "name": "motions/jumpDown.json",
+      "bytes": 461192,
+      "sha256": "f3bb8bd7ba66f269e05ca9ae5101cd15d21497d4463758cc212679ddc10bc94f"
+    },
+    {
+      "name": "motions/jumpDownVariant.json",
+      "bytes": 529849,
+      "sha256": "aecd7674906ed86be59dfbf369f290f536edd7a3673eec3ef216e0b415efa59e"
+    },
+    {
+      "name": "motions/land.json",
+      "bytes": 184023,
+      "sha256": "e243cba9faa1b89914973b0d0419aba5c1399eb5501e2734ccb2eaa29717cfe0"
+    },
+    {
+      "name": "motions/manifest.json",
+      "bytes": 124,
+      "sha256": "7002ea717f3e736991cd97f69681a108bef1c71d5a82ba749a31ecf59b9cf702"
+    },
+    {
+      "name": "motions/regularRun.json",
+      "bytes": 149799,
+      "sha256": "6aa1567baf292db238224224d1c4b06fc707c9023cf05685331092278d3f99ff"
+    },
+    {
+      "name": "motions/rightHook.json",
+      "bytes": 284635,
+      "sha256": "fba6f3cdbdf8d7fe46f46be7d63176bd54c6f0b0524c6f767096f55d536d9b5d"
+    },
+    {
+      "name": "motions/roll.json",
+      "bytes": 317697,
+      "sha256": "fe8a969772cc91c6a2af7d8092b6db40021e65967e9cf651c51d0d1d8fd77110"
+    },
+    {
+      "name": "motions/run.json",
+      "bytes": 122451,
+      "sha256": "31a99479d2551301717f7d070c9fcee85b6a5dcd5cb084b7f25d383bcababe73"
+    },
+    {
+      "name": "motions/runStop.json",
+      "bytes": 189898,
+      "sha256": "0d2cbb1bf687d17f43ff791c181ac4bc8bead9869c400d430dfef486a075cd70"
+    },
+    {
+      "name": "motions/slam.json",
+      "bytes": 442609,
+      "sha256": "b12f1141d3b2d13974f91335d918918bc2ffb9a24699aa2b6f7307ddfa19708a"
+    },
+    {
+      "name": "motions/slamLand.json",
+      "bytes": 156434,
+      "sha256": "c3dadf1c0c2c845018cf0c5a9f684249b286348e4ace6eae994b21806eac98d7"
+    },
+    {
+      "name": "motions/special.json",
+      "bytes": 360647,
+      "sha256": "e4945855e4cfbd70101f90728c9bb526fea7dc270b3189f7e2b3be8d9d9555c7"
+    },
+    {
+      "name": "motions/stop.json",
+      "bytes": 59323,
+      "sha256": "6c9681699516bc40b4279de3832354e041744adcd6984a6532d1da731448ed53"
+    },
+    {
+      "name": "motions/swing.json",
+      "bytes": 395925,
+      "sha256": "b3707fab07e4c016e61ad92e4df44598ff8d74efbe615b466215d59fc448cb38"
+    },
+    {
+      "name": "motions/turnLeft.json",
+      "bytes": 202905,
+      "sha256": "c3261c378008972d9523c88507969a6eff8fa2ca0c401fc71bcdef0204e42704"
+    },
+    {
+      "name": "motions/turnRight.json",
+      "bytes": 203018,
+      "sha256": "53a9c26a7fd384da9dd67161b247a933eccc6168e07a486d992bc00c53b1aeaf"
+    },
+    {
+      "name": "motions/walk.json",
+      "bytes": 202167,
+      "sha256": "6919a309bdcac3e751a5d9bf556de4c8788217fecc650a243195c1747bf3cc11"
+    },
+    {
+      "name": "motions/wall.json",
+      "bytes": 398160,
+      "sha256": "043bd0e055d1cedb5cb5be4b723480a4119fe4edeb1a68d3dd2649a30da9f8e8"
+    },
+    {
+      "name": "motions/zip.json",
+      "bytes": 24140,
+      "sha256": "b1b35449021dfaeab2cc0cb412688e4d68e6573b878918f3e197af551786b96f"
+    },
+    {
+      "name": "textures/vfx/LICENSE.txt",
+      "bytes": 645,
+      "sha256": "dabd7cc9f78caf9dd0e0c2dbf27eca9c22383bed5bf035bc26341a246b748cc6"
+    },
+    {
+      "name": "textures/vfx/circle_01_a.png",
+      "bytes": 43706,
+      "sha256": "c14813534d65ec48b9815eca7a50215b960f65a5b82541139db7b97edf18317c"
+    },
+    {
+      "name": "textures/vfx/circle_03_a.png",
+      "bytes": 59571,
+      "sha256": "448bae1569c618333d1982229216de8a5b2a02d382e87111faeeaf03a796f561"
+    },
+    {
+      "name": "textures/vfx/circle_05_a.png",
+      "bytes": 29451,
+      "sha256": "7ec420e3b2c11e0e2820b5f1c3fcc8ecd97aafc1b922b5f1d98343915b290c4d"
+    },
+    {
+      "name": "textures/vfx/dirt_01_a.png",
+      "bytes": 87630,
+      "sha256": "3cf9f052e24c081e882923d7a165cfbe08ac804a519b37412a795a6dde6bed35"
+    },
+    {
+      "name": "textures/vfx/dirt_02_a.png",
+      "bytes": 109841,
+      "sha256": "3aaae4f094cb7bebb3bed023b6cd48fe53af82c2bc7c4728f92b34f6bf5dc612"
+    },
+    {
+      "name": "textures/vfx/dust.png",
+      "bytes": 77863,
+      "sha256": "5a529ca033f2ea99f49cead4cb6618acf534d19d4472ca34e879776bd18c9cd3"
+    },
+    {
+      "name": "textures/vfx/impact_white_6x4.png",
+      "bytes": 36390,
+      "sha256": "e9c617918526f839e1382e4da6b01abf62dc6ba0262ecb08f0abfefa1290d839"
+    },
+    {
+      "name": "textures/vfx/scorch_01_a.png",
+      "bytes": 56894,
+      "sha256": "822d2dff21342e26098288782ec74b4179c78bb4423fe9d18c0de89b16599eb4"
+    },
+    {
+      "name": "textures/vfx/scorch_02_a.png",
+      "bytes": 66764,
+      "sha256": "53a419bfd4f6ffbe104806e84d26d3a18d2c6a5d8d951a887090dccf8b7f3c86"
+    },
+    {
+      "name": "textures/vfx/smoke_01_a.png",
+      "bytes": 74799,
+      "sha256": "9919fcedbc32dac9393dc7662b8dede3548a432f64776e4a83502d2f63470012"
+    },
+    {
+      "name": "textures/vfx/smoke_04_a.png",
+      "bytes": 66951,
+      "sha256": "65e6427ee3b9279e83e9b65fb84bafba3683cb7de7f562f32ee989d96f54626c"
+    },
+    {
+      "name": "textures/vfx/smoke_07_strong_a.png",
+      "bytes": 60579,
+      "sha256": "94006c02d2d163b0ae1049e937b260f166c4c4b3029e49183731412d0a922fe2"
+    },
+    {
+      "name": "textures/vfx/spark_01_a.png",
+      "bytes": 76005,
+      "sha256": "5c5331468ef7f09110b077580db51dc0f8d4a52d3d5d109b5c0e542bf5fd7419"
+    },
+    {
+      "name": "textures/vfx/web-impact.png",
+      "bytes": 42423,
+      "sha256": "b615e988e12bbff49ad061c59d8d08f976fab9f72ceac0224b67b4558e336857"
+    }
+  ]
+}

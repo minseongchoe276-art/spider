@@ -1,0 +1,11 @@
+PASS Aliases obey modifier remaps; help and mute cannot be swallowed
+PASS Releasing one of W/Up or two Shift keys leaves the other held
+PASS Mouse and gamepad release preserve the other device tether; middle drag survives a left release
+PASS Ascending contact time rejects unfinished tricks while a high jump allows them
+PASS Grounded web attachment preserves the swing pose without automatic takeoff
+PASS Holding guard buffers through a punch and releases immediately
+PASS Fallback character actually rotates, completes once, and cancels on landing
+PASS Help suspends solo simulation and race clock, Escape closes it, and online continues
+PASS Disabling adaptive quality restores the selected manual resolution immediately
+PASS A fatal projectile retires all old shots before the next can damage a respawn
+PASS 10 expert audit regressions

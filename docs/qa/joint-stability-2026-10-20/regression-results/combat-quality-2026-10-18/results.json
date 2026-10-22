@@ -1,0 +1,183 @@
+[
+  {
+    "case": "imported rear power cross and retained hook",
+    "hookElbowDegrees": 87.95336346828356,
+    "pass": true
+  },
+  {
+    "fps": 24,
+    "key": "jab",
+    "sprint": false,
+    "travel": 3.299941968579775,
+    "maxHandStep": 0.1874484248052832,
+    "pass": true
+  },
+  {
+    "fps": 24,
+    "key": "jab",
+    "sprint": true,
+    "travel": 4.874914271765563,
+    "maxHandStep": 0.19311025506843738,
+    "pass": true
+  },
+  {
+    "fps": 24,
+    "key": "cross",
+    "sprint": false,
+    "travel": 3.6666085993528794,
+    "maxHandStep": 0.3526678597935887,
+    "pass": true
+  },
+  {
+    "fps": 24,
+    "key": "cross",
+    "sprint": true,
+    "travel": 5.416580885407647,
+    "maxHandStep": 0.38731529319404623,
+    "pass": true
+  },
+  {
+    "fps": 24,
+    "key": "special",
+    "sprint": false,
+    "travel": 5.3166085683185464,
+    "maxHandStep": 0.28036966451970496,
+    "pass": true
+  },
+  {
+    "fps": 24,
+    "key": "special",
+    "sprint": true,
+    "travel": 7.854080839561462,
+    "maxHandStep": 0.2988108105797617,
+    "pass": true
+  },
+  {
+    "fps": 60,
+    "key": "jab",
+    "sprint": false,
+    "travel": 3.226608646255614,
+    "maxHandStep": 0.08787695255565056,
+    "pass": true
+  },
+  {
+    "fps": 60,
+    "key": "jab",
+    "sprint": true,
+    "travel": 4.76658095469578,
+    "maxHandStep": 0.08774813736886414,
+    "pass": true
+  },
+  {
+    "fps": 60,
+    "key": "cross",
+    "sprint": false,
+    "travel": 3.6666085993528794,
+    "maxHandStep": 0.1790332529167434,
+    "pass": true
+  },
+  {
+    "fps": 60,
+    "key": "cross",
+    "sprint": true,
+    "travel": 5.416580885407647,
+    "maxHandStep": 0.18439796766446773,
+    "pass": true
+  },
+  {
+    "fps": 60,
+    "key": "special",
+    "sprint": false,
+    "travel": 5.2799419017375175,
+    "maxHandStep": 0.14505872622377683,
+    "pass": true
+  },
+  {
+    "fps": 60,
+    "key": "special",
+    "sprint": true,
+    "travel": 7.799914173021307,
+    "maxHandStep": 0.15326032924741995,
+    "pass": true
+  },
+  {
+    "fps": 144,
+    "key": "jab",
+    "sprint": false,
+    "travel": 3.153275325713114,
+    "maxHandStep": 0.03797807343487756,
+    "pass": true
+  },
+  {
+    "fps": 144,
+    "key": "jab",
+    "sprint": true,
+    "travel": 4.658247640257997,
+    "maxHandStep": 0.03843634878770509,
+    "pass": true
+  },
+  {
+    "fps": 144,
+    "key": "cross",
+    "sprint": false,
+    "travel": 3.629941935188934,
+    "maxHandStep": 0.07696816682425477,
+    "pass": true
+  },
+  {
+    "fps": 144,
+    "key": "cross",
+    "sprint": true,
+    "travel": 5.362414222438183,
+    "maxHandStep": 0.07882168467490425,
+    "pass": true
+  },
+  {
+    "fps": 144,
+    "key": "special",
+    "sprint": false,
+    "travel": 5.2799419017375175,
+    "maxHandStep": 0.0630400117914131,
+    "pass": true
+  },
+  {
+    "fps": 144,
+    "key": "special",
+    "sprint": true,
+    "travel": 7.799914173021307,
+    "maxHandStep": 0.06779596947937215,
+    "pass": true
+  },
+  {
+    "case": "jab contact boots retain bounded authored pivot",
+    "tiltDegrees": {
+      "left": 0.000027039160995690242,
+      "right": 29.870132404804277
+    },
+    "pass": true
+  },
+  {
+    "case": "cross contact boots retain bounded authored pivot",
+    "tiltDegrees": {
+      "left": 0.00004612748673556372,
+      "right": 22.673968014418445
+    },
+    "pass": true
+  },
+  {
+    "case": "special contact boots retain bounded authored pivot",
+    "tiltDegrees": {
+      "left": 0.00004754377131069603,
+      "right": 22.681094521696085
+    },
+    "pass": true
+  },
+  {
+    "case": "third-person moving guard stays closed between attacks",
+    "pass": true
+  },
+  {
+    "case": "swing, trick and landing callbacks cannot score or show combo notices",
+    "pass": true
+  }
+]

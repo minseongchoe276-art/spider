@@ -1,0 +1,1206 @@
+{
+  "continuous": [
+    {
+      "fps": 24,
+      "speed": 0,
+      "key": "combatIdle",
+      "maxContactTilt": 27.31307676612183,
+      "maxFlatTilt": 27.31307676612183,
+      "maxLateralRoll": 0.0000495501118561025,
+      "maxHeelPitch": 0.000017286464710290506,
+      "forefootContacts": 38,
+      "minSkinClearance": 0.0029645228543429473,
+      "maxSupportGap": 0.015180025670115047,
+      "maxBootDegreesPerSecond": 116.93540695629697,
+      "contacts": 76,
+      "minimumSole": 0.014208035883452194
+    },
+    {
+      "fps": 24,
+      "speed": 0,
+      "key": "jab",
+      "maxContactTilt": 27.886786549022077,
+      "maxFlatTilt": 27.886786549022077,
+      "maxLateralRoll": 0.000030267526597429918,
+      "maxHeelPitch": 0.000008692930506629777,
+      "forefootContacts": 16,
+      "minSkinClearance": 0.0029100986166900223,
+      "maxSupportGap": 0.01290419515253827,
+      "maxBootDegreesPerSecond": 235.4781458602864,
+      "contacts": 26,
+      "minimumSole": 0.004160565612527145
+    },
+    {
+      "fps": 24,
+      "speed": 0,
+      "key": "cross",
+      "maxContactTilt": 26.176387719723543,
+      "maxFlatTilt": 26.176387719723543,
+      "maxLateralRoll": 0.000040083283734853553,
+      "maxHeelPitch": 0.00001709740505006612,
+      "forefootContacts": 23,
+      "minSkinClearance": 0.002973085963666783,
+      "maxSupportGap": 0.015249650083864315,
+      "maxBootDegreesPerSecond": 174.08011667527865,
+      "contacts": 37,
+      "minimumSole": 0.008460357868271873
+    },
+    {
+      "fps": 24,
+      "speed": 0,
+      "key": "hook",
+      "maxContactTilt": 31.595275866548512,
+      "maxFlatTilt": 31.595275866548512,
+      "maxLateralRoll": 0.000017916809475649277,
+      "maxHeelPitch": 0.000007358883553091811,
+      "forefootContacts": 12,
+      "minSkinClearance": 0.0029408312242065926,
+      "maxSupportGap": 0.018753371956374144,
+      "maxBootDegreesPerSecond": 240.0000000000066,
+      "contacts": 25,
+      "minimumSole": 0.0038739396339491083
+    },
+    {
+      "fps": 24,
+      "speed": 0,
+      "key": "special",
+      "maxContactTilt": 26.60414034150796,
+      "maxFlatTilt": 26.60414034150796,
+      "maxLateralRoll": 0.00004117077265813281,
+      "maxHeelPitch": 0.000016834030824715374,
+      "forefootContacts": 32,
+      "minSkinClearance": 0.0029472684592310927,
+      "maxSupportGap": 0.01605036591331742,
+      "maxBootDegreesPerSecond": 153.84149829179023,
+      "contacts": 55,
+      "minimumSole": 0.008449778328554716
+    },
+    {
+      "fps": 24,
+      "speed": 4.4,
+      "key": "combatIdle",
+      "maxContactTilt": 36.155688303173235,
+      "maxFlatTilt": 0,
+      "maxLateralRoll": 20.058659507882485,
+      "maxHeelPitch": 30.733255344556543,
+      "forefootContacts": 20,
+      "minSkinClearance": 0.0027313795780598287,
+      "maxSupportGap": 0.007779338090506861,
+      "maxBootDegreesPerSecond": 239.99999999999963,
+      "contacts": 20,
+      "minimumSole": 0.00294815425316447
+    },
+    {
+      "fps": 24,
+      "speed": 4.4,
+      "key": "jab",
+      "maxContactTilt": 26.470352033630054,
+      "maxFlatTilt": 0,
+      "maxLateralRoll": 12.058844216701932,
+      "maxHeelPitch": 24.199559929686483,
+      "forefootContacts": 6,
+      "minSkinClearance": 0.002683612066175827,
+      "maxSupportGap": 0.008565916090594499,
+      "maxBootDegreesPerSecond": 240.0000000000031,
+      "contacts": 6,
+      "minimumSole": 0.007848340826644012
+    },
+    {
+      "fps": 24,
+      "speed": 4.4,
+      "key": "cross",
+      "maxContactTilt": 26.470352033630054,
+      "maxFlatTilt": 0,
+      "maxLateralRoll": 12.058844216701932,
+      "maxHeelPitch": 24.199559956676016,
+      "forefootContacts": 7,
+      "minSkinClearance": 0.0026836120661758267,
+      "maxSupportGap": 0.0085659160905945,
+      "maxBootDegreesPerSecond": 240.0000000000031,
+      "contacts": 7,
+      "minimumSole": 0.007848340961180422
+    },
+    {
+      "fps": 24,
+      "speed": 4.4,
+      "key": "hook",
+      "maxContactTilt": 26.470352033630054,
+      "maxFlatTilt": 0,
+      "maxLateralRoll": 12.058844216701932,
+      "maxHeelPitch": 24.199559746861066,
+      "forefootContacts": 7,
+      "minSkinClearance": 0.002683612066175827,
+      "maxSupportGap": 0.008565916090594502,
+      "maxBootDegreesPerSecond": 240.0000000000066,
+      "contacts": 7,
+      "minimumSole": 0.007848340853275348
+    },
+    {
+      "fps": 24,
+      "speed": 4.4,
+      "key": "special",
+      "maxContactTilt": 26.47035203363014,
+      "maxFlatTilt": 0,
+      "maxLateralRoll": 12.058844216701948,
+      "maxHeelPitch": 24.199929919915018,
+      "forefootContacts": 10,
+      "minSkinClearance": 0.0026836120661746046,
+      "maxSupportGap": 0.02343332923384217,
+      "maxBootDegreesPerSecond": 240.0000000000066,
+      "contacts": 10,
+      "minimumSole": 0.00784834116372346
+    },
+    {
+      "fps": 24,
+      "speed": 6.5,
+      "key": "combatIdle",
+      "maxContactTilt": 35.601831319867195,
+      "maxFlatTilt": 0,
+      "maxLateralRoll": 20.53838993594358,
+      "maxHeelPitch": 29.74156804528204,
+      "forefootContacts": 15,
+      "minSkinClearance": 0.002573807287746881,
+      "maxSupportGap": 0.018050150977577693,
+      "maxBootDegreesPerSecond": 239.99999999999963,
+      "contacts": 15,
+      "minimumSole": 0.00294815425316472
+    },
+    {
+      "fps": 24,
+      "speed": 6.5,
+      "key": "jab",
+      "maxContactTilt": 28.29013106861877,
+      "maxFlatTilt": 0,
+      "maxLateralRoll": 13.335874368972004,
+      "maxHeelPitch": 25.545707824140454,
+      "forefootContacts": 4,
+      "minSkinClearance": 0.002640868212317408,
+      "maxSupportGap": 0.026154828749077513,
+      "maxBootDegreesPerSecond": 240.0000000000066,
+      "contacts": 4,
+      "minimumSole": 0.01047035509165832
+    },
+    {
+      "fps": 24,
+      "speed": 6.5,
+      "key": "cross",
+      "maxContactTilt": 28.29013106861877,
+      "maxFlatTilt": 0,
+      "maxLateralRoll": 13.335874368972004,
+      "maxHeelPitch": 25.54570834840099,
+      "forefootContacts": 5,
+      "minSkinClearance": 0.002640868212317408,
+      "maxSupportGap": 0.026154830391460732,
+      "maxBootDegreesPerSecond": 239.99999999999963,
+      "contacts": 5,
+      "minimumSole": 0.010470355033316114
+    },
+    {
+      "fps": 24,
+      "speed": 6.5,
+      "key": "hook",
+      "maxContactTilt": 28.29013106862272,
+      "maxFlatTilt": 0,
+      "maxLateralRoll": 13.33587436897941,
+      "maxHeelPitch": 25.54570780117094,
+      "forefootContacts": 5,
+      "minSkinClearance": 0.002640868212334448,
+      "maxSupportGap": 0.02615482860195396,
+      "maxBootDegreesPerSecond": 240.0000000000031,
+      "contacts": 5,
+      "minimumSole": 0.010470355236336007
+    },
+    {
+      "fps": 24,
+      "speed": 6.5,
+      "key": "special",
+      "maxContactTilt": 28.29013106861877,
+      "maxFlatTilt": 0,
+      "maxLateralRoll": 13.335874368972004,
+      "maxHeelPitch": 25.54570810944606,
+      "forefootContacts": 6,
+      "minSkinClearance": 0.002640868212317408,
+      "maxSupportGap": 0.026154829626990696,
+      "maxBootDegreesPerSecond": 240.0000000000066,
+      "contacts": 6,
+      "minimumSole": 0.0069428858736469146
+    },
+    {
+      "fps": 60,
+      "speed": 0,
+      "key": "combatIdle",
+      "maxContactTilt": 26.974666252026708,
+      "maxFlatTilt": 26.974666252026708,
+      "maxLateralRoll": 1.6730532893037728,
+      "maxHeelPitch": 6.926222184034875,
+      "forefootContacts": 91,
+      "minSkinClearance": 0.0029100057310428086,
+      "maxSupportGap": 0.016365680952240773,
+      "maxBootDegreesPerSecond": 239.9999999999718,
+      "contacts": 182,
+      "minimumSole": 0.014243255259982796
+    },
+    {
+      "fps": 60,
+      "speed": 0,
+      "key": "jab",
+      "maxContactTilt": 27.06545451826458,
+      "maxFlatTilt": 27.06545451826458,
+      "maxLateralRoll": 0.000029687294524639475,
+      "maxHeelPitch": 0.000008377664203657948,
+      "forefootContacts": 35,
+      "minSkinClearance": 0.0029382872074142736,
+      "maxSupportGap": 0.0112975921028365,
+      "maxBootDegreesPerSecond": 240.00000000001555,
+      "contacts": 56,
+      "minimumSole": 0.007146984615076943
+    },
+    {
+      "fps": 60,
+      "speed": 0,
+      "key": "cross",
+      "maxContactTilt": 25.60365589656153,
+      "maxFlatTilt": 25.60365589656153,
+      "maxLateralRoll": 0.00004017098648575854,
+      "maxHeelPitch": 0.000017072079037927657,
+      "forefootContacts": 52,
+      "minSkinClearance": 0.002946076968720687,
+      "maxSupportGap": 0.014671526315978452,
+      "maxBootDegreesPerSecond": 239.9999999999718,
+      "contacts": 82,
+      "minimumSole": 0.003171162306137204
+    },
+    {
+      "fps": 60,
+      "speed": 0,
+      "key": "hook",
+      "maxContactTilt": 30.936367745105468,
+      "maxFlatTilt": 30.936367745105468,
+      "maxLateralRoll": 0.000015643189535244256,
+      "maxHeelPitch": 0.000007349448267360078,
+      "forefootContacts": 24,
+      "minSkinClearance": 0.002901405262092037,
+      "maxSupportGap": 0.018138887035747914,
+      "maxBootDegreesPerSecond": 240.00000000001555,
+      "contacts": 44,
+      "minimumSole": 0.007148147077450734
+    },
+    {
+      "fps": 60,
+      "speed": 0,
+      "key": "special",
+      "maxContactTilt": 26.12535296228965,
+      "maxFlatTilt": 26.12535296228965,
+      "maxLateralRoll": 0.000040851858578266424,
+      "maxHeelPitch": 0.000016788148003948265,
+      "forefootContacts": 74,
+      "minSkinClearance": 0.0029482797189673317,
+      "maxSupportGap": 0.015359056018317198,
+      "maxBootDegreesPerSecond": 240.0000000000374,
+      "contacts": 123,
+      "minimumSole": 0.0030105365769710624
+    },
+    {
+      "fps": 60,
+      "speed": 4.4,
+      "key": "combatIdle",
+      "maxContactTilt": 36.980260828362276,
+      "maxFlatTilt": 0,
+      "maxLateralRoll": 22.35892905107944,
+      "maxHeelPitch": 30.255982893649005,
+      "forefootContacts": 43,
+      "minSkinClearance": 0.0028380455900614402,
+      "maxSupportGap": 0.013761631126741728,
+      "maxBootDegreesPerSecond": 240.00000000005932,
+      "contacts": 43,
+      "minimumSole": 0.002997283265766676
+    },
+    {
+      "fps": 60,
+      "speed": 4.4,
+      "key": "jab",
+      "maxContactTilt": 30.35844954168934,
+      "maxFlatTilt": 0,
+      "maxLateralRoll": 16.526156167757403,
+      "maxHeelPitch": 25.833782697253028,
+      "forefootContacts": 10,
+      "minSkinClearance": 0.0029045471299682163,
+      "maxSupportGap": 0.013336982613313945,
+      "maxBootDegreesPerSecond": 240.00000000001555,
+      "contacts": 10,
+      "minimumSole": 0.00612140286628704
+    },
+    {
+      "fps": 60,
+      "speed": 4.4,
+      "key": "cross",
+      "maxContactTilt": 30.37148053919972,
+      "maxFlatTilt": 0,
+      "maxLateralRoll": 17.110282820373154,
+      "maxHeelPitch": 25.48211720461973,
+      "forefootContacts": 14,
+      "minSkinClearance": 0.0029045480694938823,
+      "maxSupportGap": 0.011603262654431578,
+      "maxBootDegreesPerSecond": 240.0000000000374,
+      "contacts": 14,
+      "minimumSole": 0.006121406860779666
+    },
+    {
+      "fps": 60,
+      "speed": 4.4,
+      "key": "hook",
+      "maxContactTilt": 30.334566145431275,
+      "maxFlatTilt": 0,
+      "maxLateralRoll": 16.85088992966188,
+      "maxHeelPitch": 25.602630859858284,
+      "forefootContacts": 14,
+      "minSkinClearance": 0.0029045471299198136,
+      "maxSupportGap": 0.011603259313975213,
+      "maxBootDegreesPerSecond": 240.00000000001555,
+      "contacts": 14,
+      "minimumSole": 0.006121402130090381
+    },
+    {
+      "fps": 60,
+      "speed": 4.4,
+      "key": "special",
+      "maxContactTilt": 28.528574680074314,
+      "maxFlatTilt": 0,
+      "maxLateralRoll": 11.849133228566368,
+      "maxHeelPitch": 26.14162981136998,
+      "forefootContacts": 17,
+      "minSkinClearance": 0.0029045474157127402,
+      "maxSupportGap": 0.014565837511103923,
+      "maxBootDegreesPerSecond": 240.0000000000374,
+      "contacts": 17,
+      "minimumSole": 0.006121406790046885
+    },
+    {
+      "fps": 60,
+      "speed": 6.5,
+      "key": "combatIdle",
+      "maxContactTilt": 37.67138308107819,
+      "maxFlatTilt": 0,
+      "maxLateralRoll": 23.33750222991175,
+      "maxHeelPitch": 30.451778734548718,
+      "forefootContacts": 24,
+      "minSkinClearance": 0.0028737607952146016,
+      "maxSupportGap": 0.016334260932461254,
+      "maxBootDegreesPerSecond": 240.0000000000374,
+      "contacts": 24,
+      "minimumSole": 0.003106585468858322
+    },
+    {
+      "fps": 60,
+      "speed": 6.5,
+      "key": "jab",
+      "maxContactTilt": 26.674345146286264,
+      "maxFlatTilt": 0,
+      "maxLateralRoll": 10.618784968397863,
+      "maxHeelPitch": 25.837418855525538,
+      "forefootContacts": 4,
+      "minSkinClearance": 0.013339650579944852,
+      "maxSupportGap": 0.023726108282175,
+      "maxBootDegreesPerSecond": 240.00000000001555,
+      "contacts": 4,
+      "minimumSole": 0.0070361833201960655
+    },
+    {
+      "fps": 60,
+      "speed": 6.5,
+      "key": "cross",
+      "maxContactTilt": 28.498434120070566,
+      "maxFlatTilt": 0,
+      "maxLateralRoll": 10.341914978973731,
+      "maxHeelPitch": 27.81002074818868,
+      "forefootContacts": 6,
+      "minSkinClearance": 0.0029086400616074207,
+      "maxSupportGap": 0.02537161653886514,
+      "maxBootDegreesPerSecond": 240.00000000005932,
+      "contacts": 6,
+      "minimumSole": 0.008285074372326201
+    },
+    {
+      "fps": 60,
+      "speed": 6.5,
+      "key": "hook",
+      "maxContactTilt": 28.93792506472298,
+      "maxFlatTilt": 0,
+      "maxLateralRoll": 13.645059015874052,
+      "maxHeelPitch": 27.810021377941577,
+      "forefootContacts": 6,
+      "minSkinClearance": 0.010687755026877282,
+      "maxSupportGap": 0.025371616328170452,
+      "maxBootDegreesPerSecond": 240.00000000001555,
+      "contacts": 6,
+      "minimumSole": 0.0074614984901983095
+    },
+    {
+      "fps": 60,
+      "speed": 6.5,
+      "key": "special",
+      "maxContactTilt": 29.33790253917708,
+      "maxFlatTilt": 0,
+      "maxLateralRoll": 13.884780711331537,
+      "maxHeelPitch": 27.810020701257248,
+      "forefootContacts": 7,
+      "minSkinClearance": 0.009070736127109402,
+      "maxSupportGap": 0.02537161849141402,
+      "maxBootDegreesPerSecond": 240.00000000001555,
+      "contacts": 7,
+      "minimumSole": 0.004405915879992589
+    },
+    {
+      "fps": 144,
+      "speed": 0,
+      "key": "combatIdle",
+      "maxContactTilt": 26.9144543248578,
+      "maxFlatTilt": 26.9144543248578,
+      "maxLateralRoll": 2.4479127798113174,
+      "maxHeelPitch": 9.852166373287474,
+      "forefootContacts": 218,
+      "minSkinClearance": 0.0029017742692561844,
+      "maxSupportGap": 0.014196044880474759,
+      "maxBootDegreesPerSecond": 239.9999999999353,
+      "contacts": 436,
+      "minimumSole": 0.014244746485789883
+    },
+    {
+      "fps": 144,
+      "speed": 0,
+      "key": "jab",
+      "maxContactTilt": 27.967324289911343,
+      "maxFlatTilt": 27.967324289911343,
+      "maxLateralRoll": 0.000029344368673039355,
+      "maxHeelPitch": 0.000008318963564166848,
+      "forefootContacts": 81,
+      "minSkinClearance": 0.002900678169798447,
+      "maxSupportGap": 0.01314419739975588,
+      "maxBootDegreesPerSecond": 240.0000000001872,
+      "contacts": 118,
+      "minimumSole": 0.003023143832215164
+    },
+    {
+      "fps": 144,
+      "speed": 0,
+      "key": "cross",
+      "maxContactTilt": 25.511748766705765,
+      "maxFlatTilt": 25.511748766705765,
+      "maxLateralRoll": 0.0000402012518794694,
+      "maxHeelPitch": 0.00001703029452099632,
+      "forefootContacts": 123,
+      "minSkinClearance": 0.0029072519671079692,
+      "maxSupportGap": 0.014567025473417676,
+      "maxBootDegreesPerSecond": 240.0000000001872,
+      "contacts": 193,
+      "minimumSole": 0.0030525678568713716
+    },
+    {
+      "fps": 144,
+      "speed": 0,
+      "key": "hook",
+      "maxContactTilt": 30.863458089751653,
+      "maxFlatTilt": 30.863458089751653,
+      "maxLateralRoll": 0.000015916602523314632,
+      "maxHeelPitch": 0.000007469330195339206,
+      "forefootContacts": 56,
+      "minSkinClearance": 0.002929788948120722,
+      "maxSupportGap": 0.018093904251831317,
+      "maxBootDegreesPerSecond": 240.00000000031315,
+      "contacts": 112,
+      "minimumSole": 0.0030231557568909107
+    },
+    {
+      "fps": 144,
+      "speed": 0,
+      "key": "special",
+      "maxContactTilt": 25.996003206926062,
+      "maxFlatTilt": 25.996003206926062,
+      "maxLateralRoll": 0.00004091769450780735,
+      "maxHeelPitch": 0.00001672021008467416,
+      "forefootContacts": 177,
+      "minSkinClearance": 0.0029159964332231823,
+      "maxSupportGap": 0.015223172184184626,
+      "maxBootDegreesPerSecond": 240.0000000001872,
+      "contacts": 296,
+      "minimumSole": 0.003065524373677672
+    },
+    {
+      "fps": 144,
+      "speed": 4.4,
+      "key": "combatIdle",
+      "maxContactTilt": 37.65230758415179,
+      "maxFlatTilt": 0,
+      "maxLateralRoll": 23.681007729373288,
+      "maxHeelPitch": 30.692634307359842,
+      "forefootContacts": 110,
+      "minSkinClearance": 0.0029007604456883244,
+      "maxSupportGap": 0.013464357793489007,
+      "maxBootDegreesPerSecond": 240.0000000001872,
+      "contacts": 110,
+      "minimumSole": 0.0029434946686151264
+    },
+    {
+      "fps": 144,
+      "speed": 4.4,
+      "key": "jab",
+      "maxContactTilt": 30.774488666345817,
+      "maxFlatTilt": 0,
+      "maxLateralRoll": 16.856784450266275,
+      "maxHeelPitch": 26.13452216653393,
+      "forefootContacts": 22,
+      "minSkinClearance": 0.0029069308462314454,
+      "maxSupportGap": 0.013433536239432295,
+      "maxBootDegreesPerSecond": 240.0000000001872,
+      "contacts": 22,
+      "minimumSole": 0.005540179047137106
+    },
+    {
+      "fps": 144,
+      "speed": 4.4,
+      "key": "cross",
+      "maxContactTilt": 30.873501325319516,
+      "maxFlatTilt": 0,
+      "maxLateralRoll": 17.82151498196836,
+      "maxHeelPitch": 25.63554407197112,
+      "forefootContacts": 36,
+      "minSkinClearance": 0.0029069318849817847,
+      "maxSupportGap": 0.012919049877157612,
+      "maxBootDegreesPerSecond": 240.0000000001872,
+      "contacts": 36,
+      "minimumSole": 0.005540181913989695
+    },
+    {
+      "fps": 144,
+      "speed": 4.4,
+      "key": "hook",
+      "maxContactTilt": 30.743678297507675,
+      "maxFlatTilt": 0,
+      "maxLateralRoll": 17.459162905072517,
+      "maxHeelPitch": 25.714194941245797,
+      "forefootContacts": 35,
+      "minSkinClearance": 0.00290693084842719,
+      "maxSupportGap": 0.011095562776174019,
+      "maxBootDegreesPerSecond": 240.00000000031315,
+      "contacts": 35,
+      "minimumSole": 0.005540178923476691
+    },
+    {
+      "fps": 144,
+      "speed": 4.4,
+      "key": "special",
+      "maxContactTilt": 28.792904147816632,
+      "maxFlatTilt": 0,
+      "maxLateralRoll": 11.930653137460329,
+      "maxHeelPitch": 26.39956926065378,
+      "forefootContacts": 39,
+      "minSkinClearance": 0.002906931245912947,
+      "maxSupportGap": 0.011188069932677763,
+      "maxBootDegreesPerSecond": 240.0000000001872,
+      "contacts": 39,
+      "minimumSole": 0.005540181875642286
+    },
+    {
+      "fps": 144,
+      "speed": 6.5,
+      "key": "combatIdle",
+      "maxContactTilt": 37.30296944921376,
+      "maxFlatTilt": 0,
+      "maxLateralRoll": 22.02718317650247,
+      "maxHeelPitch": 30.89870767914149,
+      "forefootContacts": 59,
+      "minSkinClearance": 0.002869882232618897,
+      "maxSupportGap": 0.014543799046537239,
+      "maxBootDegreesPerSecond": 240.0000000001872,
+      "contacts": 59,
+      "minimumSole": 0.0029154457157739844
+    },
+    {
+      "fps": 144,
+      "speed": 6.5,
+      "key": "jab",
+      "maxContactTilt": 29.505758364497183,
+      "maxFlatTilt": 0,
+      "maxLateralRoll": 10.679780456134445,
+      "maxHeelPitch": 29.341491391218554,
+      "forefootContacts": 9,
+      "minSkinClearance": 0.002943992511062378,
+      "maxSupportGap": 0.014420398505014934,
+      "maxBootDegreesPerSecond": 240.0000000001872,
+      "contacts": 9,
+      "minimumSole": 0.006039123248820943
+    },
+    {
+      "fps": 144,
+      "speed": 6.5,
+      "key": "cross",
+      "maxContactTilt": 29.93435794169054,
+      "maxFlatTilt": 0,
+      "maxLateralRoll": 10.935377149536825,
+      "maxHeelPitch": 29.40891306991835,
+      "forefootContacts": 12,
+      "minSkinClearance": 0.0029553032146824635,
+      "maxSupportGap": 0.015548951395758796,
+      "maxBootDegreesPerSecond": 240.0000000001872,
+      "contacts": 12,
+      "minimumSole": 0.0063240454105884525
+    },
+    {
+      "fps": 144,
+      "speed": 6.5,
+      "key": "hook",
+      "maxContactTilt": 29.93435834764589,
+      "maxFlatTilt": 0,
+      "maxLateralRoll": 13.677983285290878,
+      "maxHeelPitch": 29.408913478317345,
+      "forefootContacts": 12,
+      "minSkinClearance": 0.002939613419057116,
+      "maxSupportGap": 0.015548950444526843,
+      "maxBootDegreesPerSecond": 240.00000000031315,
+      "contacts": 12,
+      "minimumSole": 0.0038584702469700305
+    },
+    {
+      "fps": 144,
+      "speed": 6.5,
+      "key": "special",
+      "maxContactTilt": 29.934357920804114,
+      "maxFlatTilt": 0,
+      "maxLateralRoll": 14.178505838286846,
+      "maxHeelPitch": 29.408913070030067,
+      "forefootContacts": 16,
+      "minSkinClearance": 0.002939613419057544,
+      "maxSupportGap": 0.015548953528645956,
+      "maxBootDegreesPerSecond": 240.0000000001872,
+      "contacts": 16,
+      "minimumSole": 0.0038456444128495137
+    }
+  ],
+  "held": [
+    {
+      "fps": 24,
+      "key": "combatIdle",
+      "phase": 0.15,
+      "drift": 0,
+      "maxAnkleHeight": 0.12491158987754647
+    },
+    {
+      "fps": 24,
+      "key": "combatIdle",
+      "phase": 0.3,
+      "drift": 0,
+      "maxAnkleHeight": 0.1246637970395097
+    },
+    {
+      "fps": 24,
+      "key": "combatIdle",
+      "phase": 0.56,
+      "drift": 0,
+      "maxAnkleHeight": 0.12397757969282619
+    },
+    {
+      "fps": 24,
+      "key": "combatIdle",
+      "phase": 0.75,
+      "drift": 0,
+      "maxAnkleHeight": 0.12459036008948765
+    },
+    {
+      "fps": 24,
+      "key": "combatIdle",
+      "phase": 0.98,
+      "drift": 0,
+      "maxAnkleHeight": 0.1251416937367117
+    },
+    {
+      "fps": 24,
+      "key": "jab",
+      "phase": 0.15,
+      "drift": 0,
+      "maxAnkleHeight": 0.22104100887379585
+    },
+    {
+      "fps": 24,
+      "key": "jab",
+      "phase": 0.3,
+      "drift": 0,
+      "maxAnkleHeight": 0.17076275472425417
+    },
+    {
+      "fps": 24,
+      "key": "jab",
+      "phase": 0.56,
+      "drift": 0,
+      "maxAnkleHeight": 0.1244585544501422
+    },
+    {
+      "fps": 24,
+      "key": "jab",
+      "phase": 0.75,
+      "drift": 0,
+      "maxAnkleHeight": 0.12492954184207872
+    },
+    {
+      "fps": 24,
+      "key": "jab",
+      "phase": 0.98,
+      "drift": 0,
+      "maxAnkleHeight": 0.1250931253983164
+    },
+    {
+      "fps": 24,
+      "key": "cross",
+      "phase": 0.15,
+      "drift": 0,
+      "maxAnkleHeight": 0.12510746061491662
+    },
+    {
+      "fps": 24,
+      "key": "cross",
+      "phase": 0.3,
+      "drift": 0,
+      "maxAnkleHeight": 0.1336910100644373
+    },
+    {
+      "fps": 24,
+      "key": "cross",
+      "phase": 0.56,
+      "drift": 0,
+      "maxAnkleHeight": 0.21692521892688604
+    },
+    {
+      "fps": 24,
+      "key": "cross",
+      "phase": 0.75,
+      "drift": 0,
+      "maxAnkleHeight": 0.16149777557711475
+    },
+    {
+      "fps": 24,
+      "key": "cross",
+      "phase": 0.98,
+      "drift": 0,
+      "maxAnkleHeight": 0.12508052524718372
+    },
+    {
+      "fps": 24,
+      "key": "hook",
+      "phase": 0.15,
+      "drift": 0,
+      "maxAnkleHeight": 0.1328829202950903
+    },
+    {
+      "fps": 24,
+      "key": "hook",
+      "phase": 0.3,
+      "drift": 0,
+      "maxAnkleHeight": 0.31630546680154664
+    },
+    {
+      "fps": 24,
+      "key": "hook",
+      "phase": 0.56,
+      "drift": 0,
+      "maxAnkleHeight": 0.13343334953889446
+    },
+    {
+      "fps": 24,
+      "key": "hook",
+      "phase": 0.75,
+      "drift": 0,
+      "maxAnkleHeight": 0.18762014542354422
+    },
+    {
+      "fps": 24,
+      "key": "hook",
+      "phase": 0.98,
+      "drift": 0,
+      "maxAnkleHeight": 0.12505079096249572
+    },
+    {
+      "fps": 24,
+      "key": "special",
+      "phase": 0.15,
+      "drift": 0,
+      "maxAnkleHeight": 0.12507663601039176
+    },
+    {
+      "fps": 24,
+      "key": "special",
+      "phase": 0.3,
+      "drift": 0,
+      "maxAnkleHeight": 0.1279583286075195
+    },
+    {
+      "fps": 24,
+      "key": "special",
+      "phase": 0.56,
+      "drift": 0,
+      "maxAnkleHeight": 0.21208315234792058
+    },
+    {
+      "fps": 24,
+      "key": "special",
+      "phase": 0.75,
+      "drift": 0,
+      "maxAnkleHeight": 0.12509430212412065
+    },
+    {
+      "fps": 24,
+      "key": "special",
+      "phase": 0.98,
+      "drift": 0,
+      "maxAnkleHeight": 0.12507560519524163
+    },
+    {
+      "fps": 60,
+      "key": "combatIdle",
+      "phase": 0.15,
+      "drift": 0,
+      "maxAnkleHeight": 0.12491158991681584
+    },
+    {
+      "fps": 60,
+      "key": "combatIdle",
+      "phase": 0.3,
+      "drift": 0,
+      "maxAnkleHeight": 0.12466379675418848
+    },
+    {
+      "fps": 60,
+      "key": "combatIdle",
+      "phase": 0.56,
+      "drift": 0,
+      "maxAnkleHeight": 0.12397757972177881
+    },
+    {
+      "fps": 60,
+      "key": "combatIdle",
+      "phase": 0.75,
+      "drift": 0,
+      "maxAnkleHeight": 0.12459036025506576
+    },
+    {
+      "fps": 60,
+      "key": "combatIdle",
+      "phase": 0.98,
+      "drift": 0,
+      "maxAnkleHeight": 0.1251416937047577
+    },
+    {
+      "fps": 60,
+      "key": "jab",
+      "phase": 0.15,
+      "drift": 0,
+      "maxAnkleHeight": 0.22039888643317873
+    },
+    {
+      "fps": 60,
+      "key": "jab",
+      "phase": 0.3,
+      "drift": 0,
+      "maxAnkleHeight": 0.17035868753118238
+    },
+    {
+      "fps": 60,
+      "key": "jab",
+      "phase": 0.56,
+      "drift": 0,
+      "maxAnkleHeight": 0.1244585544488892
+    },
+    {
+      "fps": 60,
+      "key": "jab",
+      "phase": 0.75,
+      "drift": 0,
+      "maxAnkleHeight": 0.12492954183265981
+    },
+    {
+      "fps": 60,
+      "key": "jab",
+      "phase": 0.98,
+      "drift": 0,
+      "maxAnkleHeight": 0.12509312531370476
+    },
+    {
+      "fps": 60,
+      "key": "cross",
+      "phase": 0.15,
+      "drift": 0,
+      "maxAnkleHeight": 0.12510746061491662
+    },
+    {
+      "fps": 60,
+      "key": "cross",
+      "phase": 0.3,
+      "drift": 0,
+      "maxAnkleHeight": 0.13369101359994912
+    },
+    {
+      "fps": 60,
+      "key": "cross",
+      "phase": 0.56,
+      "drift": 0,
+      "maxAnkleHeight": 0.21676202849260046
+    },
+    {
+      "fps": 60,
+      "key": "cross",
+      "phase": 0.75,
+      "drift": 0,
+      "maxAnkleHeight": 0.1611553196876344
+    },
+    {
+      "fps": 60,
+      "key": "cross",
+      "phase": 0.98,
+      "drift": 0,
+      "maxAnkleHeight": 0.12508052524718372
+    },
+    {
+      "fps": 60,
+      "key": "hook",
+      "phase": 0.15,
+      "drift": 0,
+      "maxAnkleHeight": 0.132882921964116
+    },
+    {
+      "fps": 60,
+      "key": "hook",
+      "phase": 0.3,
+      "drift": 0,
+      "maxAnkleHeight": 0.31502982283319203
+    },
+    {
+      "fps": 60,
+      "key": "hook",
+      "phase": 0.56,
+      "drift": 0,
+      "maxAnkleHeight": 0.13360562962999362
+    },
+    {
+      "fps": 60,
+      "key": "hook",
+      "phase": 0.75,
+      "drift": 0,
+      "maxAnkleHeight": 0.18720027273686524
+    },
+    {
+      "fps": 60,
+      "key": "hook",
+      "phase": 0.98,
+      "drift": 0,
+      "maxAnkleHeight": 0.1250507910220946
+    },
+    {
+      "fps": 60,
+      "key": "special",
+      "phase": 0.15,
+      "drift": 0,
+      "maxAnkleHeight": 0.12507663601039176
+    },
+    {
+      "fps": 60,
+      "key": "special",
+      "phase": 0.3,
+      "drift": 0,
+      "maxAnkleHeight": 0.12795833846073557
+    },
+    {
+      "fps": 60,
+      "key": "special",
+      "phase": 0.56,
+      "drift": 0,
+      "maxAnkleHeight": 0.2119424937927683
+    },
+    {
+      "fps": 60,
+      "key": "special",
+      "phase": 0.75,
+      "drift": 0,
+      "maxAnkleHeight": 0.12509430229113438
+    },
+    {
+      "fps": 60,
+      "key": "special",
+      "phase": 0.98,
+      "drift": 0,
+      "maxAnkleHeight": 0.12507560519524163
+    },
+    {
+      "fps": 144,
+      "key": "combatIdle",
+      "phase": 0.15,
+      "drift": 0,
+      "maxAnkleHeight": 0.12491158991657803
+    },
+    {
+      "fps": 144,
+      "key": "combatIdle",
+      "phase": 0.3,
+      "drift": 0,
+      "maxAnkleHeight": 0.12466379699614716
+    },
+    {
+      "fps": 144,
+      "key": "combatIdle",
+      "phase": 0.56,
+      "drift": 0,
+      "maxAnkleHeight": 0.12397757969121093
+    },
+    {
+      "fps": 144,
+      "key": "combatIdle",
+      "phase": 0.75,
+      "drift": 0,
+      "maxAnkleHeight": 0.12459036043848537
+    },
+    {
+      "fps": 144,
+      "key": "combatIdle",
+      "phase": 0.98,
+      "drift": 0,
+      "maxAnkleHeight": 0.12514169993463575
+    },
+    {
+      "fps": 144,
+      "key": "jab",
+      "phase": 0.15,
+      "drift": 0,
+      "maxAnkleHeight": 0.22052665446731057
+    },
+    {
+      "fps": 144,
+      "key": "jab",
+      "phase": 0.3,
+      "drift": 0,
+      "maxAnkleHeight": 0.17043908788471518
+    },
+    {
+      "fps": 144,
+      "key": "jab",
+      "phase": 0.56,
+      "drift": 0,
+      "maxAnkleHeight": 0.12445855885543822
+    },
+    {
+      "fps": 144,
+      "key": "jab",
+      "phase": 0.75,
+      "drift": 0,
+      "maxAnkleHeight": 0.12492954184424643
+    },
+    {
+      "fps": 144,
+      "key": "jab",
+      "phase": 0.98,
+      "drift": 0,
+      "maxAnkleHeight": 0.1250931301925654
+    },
+    {
+      "fps": 144,
+      "key": "cross",
+      "phase": 0.15,
+      "drift": 0,
+      "maxAnkleHeight": 0.12510746061491662
+    },
+    {
+      "fps": 144,
+      "key": "cross",
+      "phase": 0.3,
+      "drift": 0,
+      "maxAnkleHeight": 0.13369101360001984
+    },
+    {
+      "fps": 144,
+      "key": "cross",
+      "phase": 0.56,
+      "drift": 0,
+      "maxAnkleHeight": 0.2167944780001645
+    },
+    {
+      "fps": 144,
+      "key": "cross",
+      "phase": 0.75,
+      "drift": 0,
+      "maxAnkleHeight": 0.1612234607703329
+    },
+    {
+      "fps": 144,
+      "key": "cross",
+      "phase": 0.98,
+      "drift": 0,
+      "maxAnkleHeight": 0.12508052524718372
+    },
+    {
+      "fps": 144,
+      "key": "hook",
+      "phase": 0.15,
+      "drift": 0,
+      "maxAnkleHeight": 0.13288292325512036
+    },
+    {
+      "fps": 144,
+      "key": "hook",
+      "phase": 0.3,
+      "drift": 0,
+      "maxAnkleHeight": 0.31528364751038995
+    },
+    {
+      "fps": 144,
+      "key": "hook",
+      "phase": 0.56,
+      "drift": 0,
+      "maxAnkleHeight": 0.13347995920653755
+    },
+    {
+      "fps": 144,
+      "key": "hook",
+      "phase": 0.75,
+      "drift": 0,
+      "maxAnkleHeight": 0.1872838180299765
+    },
+    {
+      "fps": 144,
+      "key": "hook",
+      "phase": 0.98,
+      "drift": 0,
+      "maxAnkleHeight": 0.12505079101535066
+    },
+    {
+      "fps": 144,
+      "key": "special",
+      "phase": 0.15,
+      "drift": 0,
+      "maxAnkleHeight": 0.12507663601039176
+    },
+    {
+      "fps": 144,
+      "key": "special",
+      "phase": 0.3,
+      "drift": 0,
+      "maxAnkleHeight": 0.12795833846080956
+    },
+    {
+      "fps": 144,
+      "key": "special",
+      "phase": 0.56,
+      "drift": 0,
+      "maxAnkleHeight": 0.2119704648385098
+    },
+    {
+      "fps": 144,
+      "key": "special",
+      "phase": 0.75,
+      "drift": 0,
+      "maxAnkleHeight": 0.12509430231865826
+    },
+    {
+      "fps": 144,
+      "key": "special",
+      "phase": 0.98,
+      "drift": 0,
+      "maxAnkleHeight": 0.12507560519524163
+    }
+  ]
+}

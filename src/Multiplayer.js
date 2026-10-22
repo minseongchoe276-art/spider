@@ -1,3 +1,5 @@
+import {showLobbyView} from './LobbySelection.js';
+import {t,language} from './I18n.js';
 import * as THREE from 'three';
 import {CombatFeedback} from './CombatFeedback.js';
 import {attackGate,canAttack,opponents,teamName,ATTACK_REASONS,isCombatMode} from './AttackRules.js';
@@ -12,7 +14,7 @@ import {AdminConsole} from './AdminConsole.js';
 
 const $ = id => document.getElementById(id);
 const label = mode => mode === 'tag' ? '경찰과 도망자' : mode==='custom'?'사용자 설정 경기':'자유 플레이';
-const make = (tag, className, value) => { const el=document.createElement(tag);el.className=className;el.textContent=value;return el; };
+const make = (tag, className, value) => { const el=document.createElement(tag);el.className=className;if(className==='user-content')el.dataset.userContent='';el.textContent=value;return el; };
 
 export class Multiplayer {
   constructor(game) {
@@ -21,6 +23,14 @@ export class Multiplayer {
     this.positionMarkers=new PlayerPositionMarkers(game);
   }
   send(data) {
+    if(['create','join','resume'].includes(data.type)&&!this.game.city.isStreamed&&this.game.city.mapId&&this.game.city.mapId!=='procedural'){
+      if(data.type==='resume')return false; // Browsing local maps is not consent to resume an old match.
+      try{
+        sessionStorage.setItem('shadow-pulse-online-entry',JSON.stringify({at:Date.now(),data:{...data,city:'procedural'}}));
+        const url=new URL(location.href);url.searchParams.set('city','procedural');url.searchParams.delete('join');location.href=url.href;
+      }catch{this.game.showNotice('온라인 경기는 네온 도심에서 진행합니다. 지도 선택에서 네온 도심으로 이동하세요.');}
+      return false;
+    }
     if(this.ws instanceof SupabaseRooms && data.type==='create'&&data.mode==='custom'){this.game.showNotice('사용자 설정 경기는 전용 방 서버 연결이 필요합니다.');return false;}
     if(data.type==='create'&&data.mode==='custom'&&!(this.ws instanceof SupabaseRooms)&&!this.serverCapabilities?.includes('custom-matches')){this.game.showNotice('방 서버 업데이트 또는 연결을 기다리는 중입니다. 잠시 후 다시 시도하세요.');return false;}
     if(this.ws?.readyState===WebSocket.OPEN){this.ws.send(JSON.stringify(data));return true;}
@@ -47,9 +57,17 @@ export class Multiplayer {
       this.presenceTimer=setInterval(()=>{if(this.ws===socket)this.reportPresence();},15000);
       if(this.solo)this.send({type:'leave'});
       else if(!(socket instanceof SupabaseRooms)){
-        try{const saved=JSON.parse(sessionStorage.getItem('web-runner-room-resume')||'null');if(saved?.token)this.send({type:'resume',...saved});}catch{}
+        try{const saved=JSON.parse(sessionStorage.getItem('web-runner-room-resume')||'null');if(saved?.token&&!sessionStorage.getItem('shadow-pulse-online-entry'))this.send({type:'resume',...saved});}catch{}
       }
       $('online-status').textContent='온라인 · 방을 선택하세요';this.send({type:'list'});
+      try{
+        const entry=JSON.parse(sessionStorage.getItem('shadow-pulse-online-entry')||'null');
+        sessionStorage.removeItem('shadow-pulse-online-entry');
+        if(entry&&Date.now()-entry.at<60000&&!this.solo&&this.game.city.mapId==='procedural'&&['create','join'].includes(entry.data?.type)){
+          $('player-name').value=entry.data.playerName||$('player-name').value;this.send(entry.data);
+        }
+      }catch{}
+
       const pending=new URLSearchParams(location.search).get('join');
       if(pending){
         let playerName=$('player-name').value;try{playerName=sessionStorage.getItem('online-name')||playerName;}catch{}
@@ -197,7 +215,7 @@ export class Multiplayer {
   renderList(rooms) {
     const list=$('room-list');list.replaceChildren();
     if(!rooms.length){list.append(make('p','empty-rooms','열린 방이 없습니다. 새 방을 만들어 보세요.'));return;}
-    for(const room of rooms){const button=make('button','room-list-item','');button.type='button';button.append(make('span','room-list-icon',room.mode==='tag'?'⌖':'↗'));const text=make('span','room-list-text','');text.append(make('strong','',room.name),make('small','',`${label(room.mode)} · ${room.city==='procedural'?'로컬 도시':'홍콩'}`));button.append(text,make('span','room-list-count',`${room.count}/${room.capacity}  ↗`));button.addEventListener('click',()=>this.join(room.code));list.append(button);}
+    for(const room of rooms){const button=make('button','room-list-item','');button.type='button';button.append(make('span','room-list-icon',room.mode==='tag'?'⌖':'↗'));const text=make('span','room-list-text','');text.append(make('strong','user-content',room.name),make('small','',`${label(room.mode)} · ${room.city==='procedural'?'로컬 도시':'홍콩'}`));button.append(text,make('span','room-list-count',`${room.count}/${room.capacity}  ↗`));button.addEventListener('click',()=>this.join(room.code));list.append(button);}
   }
   get city(){return this.game.city.isStreamed?'hong-kong':'procedural';}
   reportPresence(){
@@ -205,12 +223,13 @@ export class Multiplayer {
     this.send({type:'presence',activity,city:this.city});
   }
   join(code){this.send({type:'join',code,playerName:$('player-name').value,city:this.city});}
-  switchCity(code,city){try{sessionStorage.setItem('online-name',$('player-name').value);}catch{}location.href=`?city=${encodeURIComponent(city)}&join=${encodeURIComponent(code)}`;}
+  switchCity(code,city){try{sessionStorage.setItem('online-name',$('player-name').value);}catch{}location.href=`?city=${encodeURIComponent(city)}&join=${encodeURIComponent(code)}&lang=${language()}`;}
   render() {
     document.body.classList.toggle('in-game',this.solo||this.room?.phase==='playing');
     document.body.classList.toggle('room-game',!!this.room);
     $('lobby-panel').classList.toggle('hidden',!!this.room);
     $('room-panel').classList.toggle('hidden',!this.room);
+    if(this.room)showLobbyView('online');
     $('online-overlay').classList.toggle('hidden',this.solo||this.room?.phase==='playing');
     $('match-hud').classList.toggle('hidden',!this.solo&&this.room?.phase!=='playing');
     if(this.solo){this.renderHud();return;}
@@ -221,7 +240,7 @@ export class Multiplayer {
     const list=$('player-list');list.replaceChildren();
     for(const player of this.players){
       const row=make('div','player-row','');
-      row.append(make('span','',`${player.id===this.host?'★ ':''}${player.name}${player.id===this.id?' (나)':''}${this.room.mode==='custom'?' · '+teamName(player.team):''}`),make('strong',player.ready?'준비 완료':'대기 중'));
+      row.append(make('span','user-content',`${player.id===this.host?'★ ':''}${player.name}${player.id===this.id?t(' (나)'):''}${this.room.mode==='custom'?' · '+t(teamName(player.team)):''}`),make('strong',player.ready?'준비 완료':'대기 중'));
       if(this.room.mode==='custom'&&this.room.format==='teams'&&this.room.phase==='waiting'&&player.id===this.id){
         const select=make('select','','');select.setAttribute('aria-label','내 팀 선택');
         for(const team of ['red','blue']){const option=make('option','',teamName(team));option.value=team;select.append(option);}
@@ -354,7 +373,7 @@ export class Multiplayer {
     game.showNotice('혼자 플레이 시작! 화면을 클릭해 카메라를 조작하세요. M 키로 전체 지도를 확인하세요.');
   }
   finish(){this.pendingPunch=null;clearInterval(this.beginTimer);this.beginTimer=null;this.setSpectating(false);this.game.isPlaying=false;this.game.clearInput();this.game.setPaused(true);this.game.clickToPlayOverlay?.classList.add('hidden');this.clearAvatars();}
-  leaveLocal(){this.game.character.group.visible=true;this.rescueStarted=null;this.rescueTarget=null;if(this.goalMarker)this.goalMarker.visible=false;$('pursuit-hud').textContent='';$('spectate-next')?.classList.add('hidden');try{sessionStorage.removeItem('web-runner-room-resume');}catch{}this.arena=null;this.pulseUntil=0;this.game.practice?.stop();this.room=null;this.pendingPunch=null;clearInterval(this.beginTimer);this.beginTimer=null;this.spectating=false;this.solo=false;clearInterval(this.soloStartTimer);this.soloStartTimer=null;this.players=[];this.id=null;this.lastPhase=null;this.game.isPlaying=false;this.game.clearInput();this.game.setPaused(true);this.game.clickToPlayOverlay?.classList.add('hidden');this.clearAvatars();this.render();this.reportPresence();this.send({type:'list'});}
+  leaveLocal(){this.game.character.group.visible=true;this.rescueStarted=null;this.rescueTarget=null;if(this.goalMarker)this.goalMarker.visible=false;$('pursuit-hud').textContent='';$('spectate-next')?.classList.add('hidden');try{sessionStorage.removeItem('web-runner-room-resume');}catch{}this.arena=null;this.pulseUntil=0;this.game.practice?.stop();this.room=null;this.pendingPunch=null;clearInterval(this.beginTimer);this.beginTimer=null;this.spectating=false;this.solo=false;clearInterval(this.soloStartTimer);this.soloStartTimer=null;this.players=[];this.id=null;this.lastPhase=null;this.game.isPlaying=false;this.game.clearInput();this.game.setPaused(true);this.game.clickToPlayOverlay?.classList.add('hidden');this.clearAvatars();showLobbyView('solo');this.render();this.reportPresence();this.send({type:'list'});}
   attack(kind,hand='left'){
     if(kind==='web'&&this.game.combat?.mode==='combat')return false;
     const me=this.players.find(p=>p.id===this.id);

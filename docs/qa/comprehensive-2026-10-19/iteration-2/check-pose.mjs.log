@@ -1,0 +1,94 @@
+PASS walk 30fps: 71 contact samples, max step slip 3.0mm, overall foot step 433.1mm
+PASS jog 30fps: 29 contact samples, max step slip 1.7mm, overall foot step 256.9mm
+PASS regularRun 30fps: 16 contact samples, max step slip 0.6mm, overall foot step 357.9mm
+PASS run 30fps: 22 contact samples, max step slip 2.7mm, overall foot step 452.9mm
+WALL 30fps normal 0,0,1: 84 facade-contact samples, error 0.060m {
+  lefthand: 0.025000079100214123,
+  righthand: 0.015230053213449612,
+  leftfoot: 0.059833448233634734,
+  rightfoot: 0.05917770271256728
+}
+{}
+WALL 30fps normal 1,0,0: 84 facade-contact samples, error 0.060m {
+  lefthand: 0.02500006523358661,
+  righthand: 0.015230106017146208,
+  leftfoot: 0.05983434398133791,
+  rightfoot: 0.059178209245285995
+}
+{}
+WALL 30fps normal 0.7071067811865475,0,0.7071067811865475: 84 facade-contact samples, error 0.060m {
+  lefthand: 0.02500006201756136,
+  righthand: 0.015230070869918955,
+  leftfoot: 0.05983347924156901,
+  rightfoot: 0.05917829453697962
+}
+{}
+PASS walk 60fps: 145 contact samples, max step slip 1.5mm, overall foot step 219.9mm
+PASS jog 60fps: 59 contact samples, max step slip 1.1mm, overall foot step 130.2mm
+PASS regularRun 60fps: 44 contact samples, max step slip 1.5mm, overall foot step 182.8mm
+PASS run 60fps: 44 contact samples, max step slip 1.4mm, overall foot step 227.1mm
+WALL 60fps normal 0,0,1: 164 facade-contact samples, error 0.063m {
+  lefthand: 0.025000090530108265,
+  righthand: 0.017667819777401242,
+  leftfoot: 0.06276503482893425,
+  rightfoot: 0.06033369077345452
+}
+{}
+WALL 60fps normal 1,0,0: 164 facade-contact samples, error 0.063m {
+  lefthand: 0.025000090358914373,
+  righthand: 0.01766783003228667,
+  leftfoot: 0.06276510334151009,
+  rightfoot: 0.06033421473702
+}
+{}
+WALL 60fps normal 0.7071067811865475,0,0.7071067811865475: 164 facade-contact samples, error 0.063m {
+  lefthand: 0.025000082550683478,
+  righthand: 0.017667822786364057,
+  leftfoot: 0.06276511518560368,
+  rightfoot: 0.06033430635065584
+}
+{}
+PASS walk 144fps: 338 contact samples, max step slip 0.6mm, overall foot step 91.7mm
+PASS jog 144fps: 132 contact samples, max step slip 0.4mm, overall foot step 55.7mm
+PASS regularRun 144fps: 100 contact samples, max step slip 0.6mm, overall foot step 76.9mm
+PASS run 144fps: 89 contact samples, max step slip 1.4mm, overall foot step 159.8mm
+WALL 144fps normal 0,0,1: 404 facade-contact samples, error 0.064m {
+  lefthand: 0.02500009039982623,
+  righthand: 0.019724853088179076,
+  leftfoot: 0.06358996812427703,
+  rightfoot: 0.06087782610698328
+}
+{}
+WALL 144fps normal 1,0,0: 404 facade-contact samples, error 0.064m {
+  lefthand: 0.02500008777109372,
+  righthand: 0.019724878074157223,
+  leftfoot: 0.06358942841939036,
+  rightfoot: 0.060878279293857696
+}
+{}
+WALL 144fps normal 0.7071067811865475,0,0.7071067811865475: 404 facade-contact samples, error 0.064m {
+  lefthand: 0.025000080946647643,
+  righthand: 0.019724849308337067,
+  leftfoot: 0.06358933595470068,
+  rightfoot: 0.06087843991636094
+}
+{}
+PASS: 36 actual-rig pose cases, measured stance slip, real-ground sole clearance, ledge release, facade normals, directional web pulls and stop recovery
+PASS: 6 actual-rig independent-hand shot, separate anchor reach, replacement and release cases
+MANTLE 30fps: maximum grip error 0.9mm
+MANTLE 30fps: maximum grip error 0.9mm
+MANTLE 60fps: maximum grip error 0.7mm
+MANTLE 60fps: maximum grip error 0.7mm
+MANTLE 144fps: maximum grip error 0.3mm
+MANTLE 144fps: maximum grip error 0.3mm
+PASS: 18 slope and mantle actual-rig cases, slope normals, pelvis limits, missing-support release and ledge hand grips
+PASS actual capsule + rig slope 30fps: 39 contacts, clearance error 19.1mm
+PASS actual capsule + rig stairs 30fps: 28 contacts, clearance error 13.9mm
+PASS actual capsule + rig slope 60fps: 55 contacts, clearance error 18.2mm
+PASS actual capsule + rig stairs 60fps: 46 contacts, clearance error 17.9mm
+PASS actual capsule + rig slope 144fps: 137 contacts, clearance error 17.9mm
+PASS actual capsule + rig stairs 144fps: 102 contacts, clearance error 14.7mm
+PASS streamed facade + rig mantle 30fps: measured facade gap 0.375m, grip error 0.7mm
+PASS streamed facade + rig mantle 60fps: measured facade gap 0.375m, grip error 0.5mm
+PASS streamed facade + rig mantle 144fps: measured facade gap 0.375m, grip error 0.3mm
+PASS: 63 actual-rig cases total, including 6 real capsule + rig slope/stair scenarios

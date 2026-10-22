@@ -1,3 +1,7 @@
+import {initLobbySelection} from './LobbySelection.js';
+import {localMap,mapName} from './MapCatalog.js';
+import {initLanguage,t,language} from './I18n.js';
+import {SkillPresentation} from './SkillPresentation.js';
 import { initCitySelection, selectedCity } from './CitySelection.js';
 import { createHongKongAudit } from './HongKongAudit.js';
 import { CombatSystem } from './Combat.js';
@@ -27,7 +31,11 @@ const ONE_SHOT_KEYS = new Set(['Space','KeyG','KeyE','KeyT','KeyC','KeyV','KeyQ'
 
 export class GameApp {
   constructor() {
+    const entry=new URL(location.href),soloEntry=entry.searchParams.get('play')==='solo';
+    if(soloEntry){entry.searchParams.delete('play');history.replaceState(null,'',entry.pathname+entry.search+entry.hash);}
+    initLanguage();
     initCitySelection();
+    initLobbySelection();
     // 1. Locate or create Canvas elements
     const container = document.getElementById('game-container') || document.body;
     let canvas = document.getElementById('webgl-canvas');
@@ -103,6 +111,7 @@ export class GameApp {
     this.touchControls=new TouchControls(this);
     this.applyPreferences();
     this.multiplayer = new Multiplayer(this);
+    this.skillPresentation=new SkillPresentation(this);
     this.displayMode = new DisplayMode(this);
 
     this.canvas.addEventListener('webglcontextlost', event => {
@@ -122,6 +131,8 @@ export class GameApp {
     this.clock = new THREE.Clock();
     this.animate = this.animate.bind(this);
     requestAnimationFrame(this.animate);
+    if(soloEntry)queueMicrotask(()=>this.multiplayer.beginSolo());
+
   }
 
   initThree() {
@@ -149,7 +160,9 @@ export class GameApp {
     this.camera = new THREE.PerspectiveCamera(65, window.innerWidth / window.innerHeight, 0.2, 1000);
 
     // Lighting
-    const localCity=selectedCity(location.search)==='procedural';
+    const localCity=selectedCity(location.search)!=='hong-kong';
+    const profile=localMap(selectedCity(location.search));
+    if(localCity){this.scene.background.setHex(profile.sky);this.scene.fog.color.setHex(profile.sky);}
     const ambientLight = new THREE.HemisphereLight(0xd8f1ff, localCity?0xb8c6d5:0x536273, localCity?2.4:1.25);
     this.scene.add(ambientLight);
     if(localCity){
@@ -176,7 +189,7 @@ export class GameApp {
     // Sky Dome Gradient
     const skyGeom = new THREE.SphereGeometry(1900, 32, 16);
     const skyMat = new THREE.MeshBasicMaterial({
-      color: 0x9bd5f0,
+      color: localCity?profile.sky:0x9bd5f0,
       side: THREE.BackSide
     });
     const sky = new THREE.Mesh(skyGeom, skyMat);
@@ -207,15 +220,15 @@ export class GameApp {
       ? new UrbanGroundCity(this.scene, this.camera, this.renderer, (pct, desc) => {
         this.updateLoadingProgress(pct, desc);
       })
-      : new City(this.scene);
+      : new City(this.scene,selectedCity(location.search));
 
     if (!useUrbanGround) {
       const subtitle = document.querySelector('.badge-sub');
-      if (subtitle) subtitle.textContent = 'LOCAL CITY · SHADOW PULSE';
+      if (subtitle) subtitle.textContent = `${this.city.profile.en.toUpperCase()} · SHADOW PULSE`;
       const lobbyEdition = document.querySelector('.lobby-edition');
-      if (lobbyEdition) lobbyEdition.textContent = 'LOCAL CITY · OPEN WORLD';
+      if (lobbyEdition) lobbyEdition.textContent = `${this.city.profile.en.toUpperCase()} · OPEN WORLD`;
       const district = document.querySelector('.hud-district');
-      if (district) district.innerHTML = 'LOCAL CITY <i></i> FREE ROAM';
+      if (district) district.textContent = `${this.city.profile.en.toUpperCase()} · FREE ROAM`;
       const lobbyDescription = document.querySelector('.lobby-hero > p');
       if (lobbyDescription) lobbyDescription.innerHTML = '건물 사이를 스윙하고, 추격전을 시작하고,<br>나만의 도시를 네 방식대로 누벼봐.';
       const heading = document.querySelector('#overlay-click-to-play h2');
@@ -225,7 +238,7 @@ export class GameApp {
       const credit = document.querySelector('.data-credit');
       if (credit) {
         credit.replaceChildren(document.createTextNode('도시 데이터: 절차 생성 로컬 도시'),document.createElement('br'));
-        const link = document.createElement('a');link.href = '?city=hong-kong';link.textContent = '홍콩 도시로 플레이';credit.append(link);
+        const link = document.createElement('a');link.href = `?city=hong-kong&lang=${language()}`;link.textContent = '홍콩 도시로 플레이';credit.append(link);
       }
     }
 
@@ -246,7 +259,7 @@ export class GameApp {
 
     this.vfx = new VFXManager(this.scene);
     this.physics = new SwingPhysics(this.scene, this.city, this.character, this.audio);
-    this.combat=new CombatSystem(this.scene,this.physics,this.character,{vfx:this.vfx,audio:this.audio,onNotice:message=>this.showNotice(message)});
+    this.combat=new CombatSystem(this.scene,this.physics,this.character,{vfx:this.vfx,audio:this.audio,onNotice:message=>this.showNotice(message),getBindings:()=>this.preferences.values.settings.bindings});
     this.physics.onWebAttach=anchor=>this.vfx.spawnWebImpact(anchor);
     this.physics.onLanding = (position, impact, surfaceNormal) => {
       if (this.vfx?.spawnLandingShockwave) {
@@ -283,7 +296,7 @@ export class GameApp {
       this.showNotice(reason === 'boundary' ? `플레이 구역(±${this.city.playableHalfExtent || 2400}m)을 벗어나 시작점으로 돌아왔습니다.` : '안전한 시작점으로 돌아왔습니다.');
     };
 
-    // Set initial spawn on tall central building
+    // Start on a supported roof facing this district’s landmark.
     const bounds = document.getElementById('world-limit');
     if (bounds) bounds.textContent = `구역 원점 기준 ±${this.city.playableHalfExtent || 2400}m`;
     const spawn = this.city.getRooftopSpawn(95);
@@ -292,7 +305,10 @@ export class GameApp {
     this.physics.renderPosition.copy(spawn);
     this.physics.velocity.set(0, 0, 0);
     this.physics.state = 'IDLE';
-    this.tpsCamera.placeBehind(spawn, this.physics.facingAngle);
+    this.physics.facingAngle=this.city.getSpawnFacing?.(spawn)||0;
+    this.character.targetFacingAngle=this.physics.facingAngle;
+    this.character.visualYaw=this.physics.facingAngle;
+    this.tpsCamera.placeBehind(spawn, this.physics.facingAngle,this.city.mapId&&this.city.mapId!=='procedural'?.48:.16);
     this.camera.position.copy(this.tpsCamera.currentPos);
     this.scene.add(this.camera);
     this.camera.lookAt(this.tpsCamera.lookAtTarget);
@@ -738,7 +754,7 @@ export class GameApp {
   showNotice(message) {
     const notice = document.getElementById('game-notice');
     if (!notice) return;
-    notice.textContent = message;
+    notice.textContent = t(message);
     notice.classList.add('visible');
     clearTimeout(this.noticeTimer);
     this.noticeTimer = setTimeout(() => notice.classList.remove('visible'), 5000);
@@ -783,7 +799,7 @@ export class GameApp {
   }
 
   resetCamera() {
-    this.tpsCamera.placeBehind(this.physics.position, this.physics.facingAngle);
+    this.tpsCamera.placeBehind(this.physics.position, this.physics.facingAngle,this.city.mapId&&this.city.mapId!=='procedural'?.48:.16);
     this.camera.position.copy(this.tpsCamera.currentPos);
     this.camera.lookAt(this.tpsCamera.lookAtTarget);
     this.camera.updateMatrixWorld(true);
@@ -799,7 +815,7 @@ export class GameApp {
 
   updateHUD(speedKmh, altitude, state) {
     const combatHud=document.getElementById('combat-status');
-    if(combatHud && this.combat){const airborne=!GROUNDED.includes(state);combatHud.textContent=this.multiplayer?.room?'':`${airborne?(this.combat.mode==='combat'?'공중 · 전투 모드':'공중 · 양손 에너지 와이어'):this.combat.mode==='web'?'에너지 와이어 이동':'전투'} · HP ${Math.ceil(this.combat.health)} · 기력 ${Math.ceil(this.combat.stamina)} · ${this.combat.enemies.some(e=>e.windup>0)?'공격 예고! · 방어 / 회피':'모드 '+this.preferences.values.settings.bindings.mode.replace('Key','')}`;combatHud.classList.toggle('hidden',!!this.multiplayer?.room);}
+    if(combatHud && this.combat){const airborne=!GROUNDED.includes(state);combatHud.textContent=this.multiplayer?.room?'':`${airborne?(this.combat.mode==='combat'?'공중 · 전투 모드':'공중 · 양손 에너지 와이어'):this.combat.mode==='web'?'에너지 와이어 이동':'전투'} · HP ${Math.ceil(this.combat.health)} · 기력 ${Math.ceil(this.combat.stamina)} · ${this.combat.enemies.some(e=>e.windup>0)?'공격 예고! · 방어 / 회피':'모드 '+this.preferences.values.settings.bindings.mode.replace('Key','')}`;combatHud.classList.toggle('hidden',!!this.multiplayer?.room || !(this.practice?.active || this.combat.mode==='combat'));}
     // 1. Speedometer
     if (this.speedDisplay) {
       this.speedDisplay.textContent = Math.round(speedKmh);
@@ -855,6 +871,7 @@ export class GameApp {
     // Keep streamed city tiles advancing while the start overlay is visible;
     // TilesRenderer performs visibility/LOD work independently of gameplay.
     this.city.update(this.clock.elapsedTime);
+    this.skillPresentation?.update();
     if (!this.assetsReady && this.character.isLoaded &&
         (!(this.city instanceof UrbanGroundCity) || this.city.isReady)) this.onAssetsLoaded();
 

@@ -39,7 +39,12 @@ export class CombatPractice {
       if(e.type==='dummy'||e.stagger>0)continue;
       if(distance>45){e.windup=0;continue;}
       if(e.windup>0){e.windup-=delta;e.ring.scale.setScalar(1+Math.max(0,e.windup));if(e.windup<=0){e.cooldown=e.type==='ranged'?2.5:1.25;
-          if(e.type==='ranged')this.fire(e);else if(distance<2.5&&!g.combat.obstructed(e.position.clone().add(new THREE.Vector3(0,1,0)),g.physics.position.clone().add(new THREE.Vector3(0,1,0))))g.combat.receiveDamage(e.type==='shield'?20:12,e);}
+          if(e.type==='ranged')this.fire(e);else if(distance<2.5&&!g.combat.obstructed(e.position.clone().add(new THREE.Vector3(0,1,0)),g.physics.position.clone().add(new THREE.Vector3(0,1,0)))){
+            g.combat.receiveDamage(e.type==='shield'?20:12,e);
+            // Reset replaces the enemy array while this loop still owns the
+            // old iterator. Retire it before another enemy hits the new life.
+            if(!g.combat.enemies.length){this.stop();return;}
+          }}
         continue;}
       const desired=e.type==='ranged'?9:1.8;
       if(distance<desired+.6&&e.cooldown===0&&!g.combat.obstructed(e.position.clone().add(new THREE.Vector3(0,1,0)),g.physics.position.clone().add(new THREE.Vector3(0,1,0)))){e.windup=e.type==='ranged'?.9:.7;e.aim=g.physics.position.clone().add(new THREE.Vector3(0,1,0));continue;}
@@ -63,7 +68,8 @@ export class CombatPractice {
       // must not cancel an earlier hit on a long/slow frame.
       const playerFirst=hit && (!blocked || (Number.isFinite(blocked.distance)&&hitDistance<blocked.distance));
       if(playerFirst){
-        g.combat.receiveDamage(10,shot.enemy);
+        // Guard the incoming shot, even if its shooter has moved behind us.
+        g.combat.receiveDamage(10,{position:previous});
         // Defeat respawns the player and clears enemies. Retire every shot
         // before another projectile can damage the new life in this frame.
         if(!g.combat.enemies.length){this.stop();return;}

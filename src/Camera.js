@@ -124,10 +124,10 @@ export class ThirdPersonCamera {
 
   // Put the boom where the follow camera will keep it. A fixed world offset
   // leaves the first frame on -Z even when the character faces another way.
-  placeBehind(playerPos, facing) {
+  placeBehind(playerPos, facing, pitch = 0.16) {
     this.yaw = facing;
     this.camera.userData.movementYaw = facing;
-    this.pitch = 0.16;
+    this.pitch = THREE.MathUtils.clamp(pitch,-0.52,0.58);
     this.lockBehind = true;
     this.followMovement = true;
     this.isRecentering = false;

@@ -94,7 +94,7 @@ Vercel의 정적 배포에서는 기본 Supabase 방 연결을 사용합니다. 
 
 손·발 관절의 최신 수정과 검증은 [2026-10-20 전투 및 전체 모션 관절 검사](docs/qa/hand-foot-final-2026-10-20/README.md)에 있습니다. 33개 등록 모션과 두 외형의 최종 출력, 좌우 회전 후 대기 전환까지 검사합니다. 재현: `npm run test:turn-joints`, `npm run test:end-joints`, `npm run test:complete-motion`.
 
-현재 통합 검수: [2026-10-19 전체 분야 검사](docs/qa/comprehensive-2026-10-19/REPORT.md). 실행: `npm run test:comprehensive`. 통합 수정 프롬프트는 [PROMPT.md](docs/qa/comprehensive-2026-10-19/PROMPT.md)에 있습니다. 아래 오래된 기록에는 현재 제거된 기능이 포함될 수 있습니다.
+현재 통합 검수: [2026-10-22 전체 분야 검사와 수정](docs/qa/expert-2026-10-22/REPORT.md). 실행: `npm run test:comprehensive`. [2026-10-19 검수 기록](docs/qa/comprehensive-2026-10-19/REPORT.md)은 이전 상태의 기록입니다. 통합 수정 프롬프트는 [PROMPT.md](docs/qa/comprehensive-2026-10-19/PROMPT.md)에 있습니다. 아래 오래된 기록에는 현재 제거된 기능이 포함될 수 있습니다.
 
 전체 모션 전수 검사와 착지·피격·전환·1인칭 팔의 최신 수정은 [2026-10-15 전체 모션 검증](docs/qa/all-motions-2026-10-15/REPORT.md)에 있습니다. 재현 검사: `npm run test:all-motions`.
 에너지 와이어 전용 손가락 제스처·1인칭 실제 수트 손의 후속 구현과 검증은 [2026-10-15 에너지 와이어 손 자세](docs/qa/web-hand-pose-2026-10-15/REPORT.md)에 있습니다. 재현 검사: `npm run test:web-hand-pose`. `?webHandReview`에서 좌우·양손의 발사·유지·해제를 확대 확인할 수 있습니다.

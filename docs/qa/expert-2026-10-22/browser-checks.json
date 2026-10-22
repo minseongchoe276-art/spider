@@ -1,0 +1,50 @@
+{
+  "date": "2026-10-22",
+  "browser": "Google Chrome",
+  "buildOrigin": "http://127.0.0.1:4179",
+  "checks": [
+    {
+      "name": "Procedural city solo entry, movement, jump and combat mode",
+      "status": "PASS"
+    },
+    {
+      "name": "Solo help opens, Escape closes, M opens world map",
+      "status": "PASS"
+    },
+    {
+      "name": "Mixed practice starts through actual menu",
+      "status": "PASS"
+    },
+    {
+      "name": "Combat HP/stamina visible in 1280x720 desktop",
+      "status": "PASS",
+      "evidence": "desktop-hud.png"
+    },
+    {
+      "name": "Touch review layout at 390x844, health separated from telemetry and map",
+      "status": "PASS",
+      "evidence": "mobile-hud.png"
+    },
+    {
+      "name": "Touch review layout at 844x390",
+      "status": "PASS",
+      "evidence": "mobile-landscape-hud.png"
+    },
+    {
+      "name": "Parapet scenario sampled at 1.35 seconds",
+      "status": "PASS",
+      "evidence": "mantle.png"
+    },
+    {
+      "name": "Official Hong Kong terrain loads, player moves and jumps, lands and returns to combat-ready",
+      "status": "PASS",
+      "evidence": "hong-kong-play.png"
+    }
+  ],
+  "limits": [
+    "Viewport/touch-review simulation is not an iOS or Android hardware test.",
+    "Local frontend verification is not production deployment acceptance.",
+    "Screenshots document sampled scenes, not every possible motion frame."
+  ],
+  "cleanup": "Temporary viewport override reset; game paused after checks."
+}

@@ -1,0 +1,12 @@
+{
+  "status": "PASS",
+  "checks": [
+    "accepted attacks trigger names",
+    "cast expires",
+    "notices do not share active cast state",
+    "reduced motion suppresses world arcs",
+    "pause hides effects",
+    "zip transition triggers",
+    "1000 casts retain six pooled meshes"
+  ]
+}

@@ -1,0 +1,290 @@
+{
+  "passed": 4,
+  "failed": 28,
+  "results": [
+    {
+      "mode": "web",
+      "fps": 24,
+      "key": "runStop",
+      "pass": true,
+      "maxAxialDegreesPerSecond": 438.91638682928357,
+      "frames": 22
+    },
+    {
+      "mode": "web",
+      "fps": 24,
+      "key": "slamLand",
+      "pass": false,
+      "maxAxialDegreesPerSecond": 569.8358295668228,
+      "frames": 22,
+      "error": "slamLand axial twist 569.8deg/s at 24FPS"
+    },
+    {
+      "mode": "web",
+      "fps": 24,
+      "key": "hook",
+      "pass": true,
+      "maxAxialDegreesPerSecond": 240.6711281547007,
+      "frames": 34
+    },
+    {
+      "mode": "web",
+      "fps": 24,
+      "key": "wall-steering",
+      "pass": false,
+      "maxAxialDegreesPerSecond": 2661.6093274869077,
+      "frames": 96,
+      "error": "wall-steering axial twist 2661.6deg/s at 24FPS"
+    },
+    {
+      "mode": "web",
+      "fps": 30,
+      "key": "runStop",
+      "pass": false,
+      "maxAxialDegreesPerSecond": 737.8391123428956,
+      "frames": 27,
+      "error": "runStop axial twist 737.8deg/s at 30FPS"
+    },
+    {
+      "mode": "web",
+      "fps": 30,
+      "key": "slamLand",
+      "pass": false,
+      "maxAxialDegreesPerSecond": 910.7708847511294,
+      "frames": 27,
+      "error": "slamLand axial twist 910.8deg/s at 30FPS"
+    },
+    {
+      "mode": "web",
+      "fps": 30,
+      "key": "hook",
+      "pass": false,
+      "maxAxialDegreesPerSecond": 489.89640742145446,
+      "frames": 42,
+      "error": "hook axial twist 489.9deg/s at 30FPS"
+    },
+    {
+      "mode": "web",
+      "fps": 30,
+      "key": "wall-steering",
+      "pass": false,
+      "maxAxialDegreesPerSecond": 3058.8263885683,
+      "frames": 120,
+      "error": "wall-steering axial twist 3058.8deg/s at 30FPS"
+    },
+    {
+      "mode": "web",
+      "fps": 60,
+      "key": "runStop",
+      "pass": false,
+      "maxAxialDegreesPerSecond": 2201.682567378225,
+      "frames": 54,
+      "error": "runStop axial twist 2201.7deg/s at 60FPS"
+    },
+    {
+      "mode": "web",
+      "fps": 60,
+      "key": "slamLand",
+      "pass": false,
+      "maxAxialDegreesPerSecond": 2671.30494177241,
+      "frames": 54,
+      "error": "slamLand axial twist 2671.3deg/s at 60FPS"
+    },
+    {
+      "mode": "web",
+      "fps": 60,
+      "key": "hook",
+      "pass": false,
+      "maxAxialDegreesPerSecond": 1321.400746161119,
+      "frames": 84,
+      "error": "hook axial twist 1321.4deg/s at 60FPS"
+    },
+    {
+      "mode": "web",
+      "fps": 60,
+      "key": "wall-steering",
+      "pass": false,
+      "maxAxialDegreesPerSecond": 3661.316512231875,
+      "frames": 240,
+      "error": "wall-steering axial twist 3661.3deg/s at 60FPS"
+    },
+    {
+      "mode": "web",
+      "fps": 144,
+      "key": "runStop",
+      "pass": false,
+      "maxAxialDegreesPerSecond": 6245.954922217089,
+      "frames": 130,
+      "error": "runStop axial twist 6246.0deg/s at 144FPS"
+    },
+    {
+      "mode": "web",
+      "fps": 144,
+      "key": "slamLand",
+      "pass": false,
+      "maxAxialDegreesPerSecond": 7482.41247733985,
+      "frames": 128,
+      "error": "slamLand axial twist 7482.4deg/s at 144FPS"
+    },
+    {
+      "mode": "web",
+      "fps": 144,
+      "key": "hook",
+      "pass": false,
+      "maxAxialDegreesPerSecond": 3562.2223116200857,
+      "frames": 202,
+      "error": "hook axial twist 3562.2deg/s at 144FPS"
+    },
+    {
+      "mode": "web",
+      "fps": 144,
+      "key": "wall-steering",
+      "pass": false,
+      "maxAxialDegreesPerSecond": 4551.64133130158,
+      "frames": 576,
+      "error": "wall-steering axial twist 4551.6deg/s at 144FPS"
+    },
+    {
+      "mode": "combat",
+      "fps": 24,
+      "key": "runStop",
+      "pass": true,
+      "maxAxialDegreesPerSecond": 435.74652765119134,
+      "frames": 22
+    },
+    {
+      "mode": "combat",
+      "fps": 24,
+      "key": "slamLand",
+      "pass": false,
+      "maxAxialDegreesPerSecond": 570.4047528123849,
+      "frames": 22,
+      "error": "slamLand axial twist 570.4deg/s at 24FPS"
+    },
+    {
+      "mode": "combat",
+      "fps": 24,
+      "key": "hook",
+      "pass": true,
+      "maxAxialDegreesPerSecond": 240.5147027440128,
+      "frames": 34
+    },
+    {
+      "mode": "combat",
+      "fps": 24,
+      "key": "wall-steering",
+      "pass": false,
+      "maxAxialDegreesPerSecond": 2661.6093274869077,
+      "frames": 96,
+      "error": "wall-steering axial twist 2661.6deg/s at 24FPS"
+    },
+    {
+      "mode": "combat",
+      "fps": 30,
+      "key": "runStop",
+      "pass": false,
+      "maxAxialDegreesPerSecond": 732.9806733957629,
+      "frames": 27,
+      "error": "runStop axial twist 733.0deg/s at 30FPS"
+    },
+    {
+      "mode": "combat",
+      "fps": 30,
+      "key": "slamLand",
+      "pass": false,
+      "maxAxialDegreesPerSecond": 911.2596124025952,
+      "frames": 27,
+      "error": "slamLand axial twist 911.3deg/s at 30FPS"
+    },
+    {
+      "mode": "combat",
+      "fps": 30,
+      "key": "hook",
+      "pass": false,
+      "maxAxialDegreesPerSecond": 489.35747582418236,
+      "frames": 42,
+      "error": "hook axial twist 489.4deg/s at 30FPS"
+    },
+    {
+      "mode": "combat",
+      "fps": 30,
+      "key": "wall-steering",
+      "pass": false,
+      "maxAxialDegreesPerSecond": 3058.8263885683,
+      "frames": 120,
+      "error": "wall-steering axial twist 3058.8deg/s at 30FPS"
+    },
+    {
+      "mode": "combat",
+      "fps": 60,
+      "key": "runStop",
+      "pass": false,
+      "maxAxialDegreesPerSecond": 2193.116553864579,
+      "frames": 54,
+      "error": "runStop axial twist 2193.1deg/s at 60FPS"
+    },
+    {
+      "mode": "combat",
+      "fps": 60,
+      "key": "slamLand",
+      "pass": false,
+      "maxAxialDegreesPerSecond": 2672.8050135609915,
+      "frames": 54,
+      "error": "slamLand axial twist 2672.8deg/s at 60FPS"
+    },
+    {
+      "mode": "combat",
+      "fps": 60,
+      "key": "hook",
+      "pass": false,
+      "maxAxialDegreesPerSecond": 1321.402652838269,
+      "frames": 84,
+      "error": "hook axial twist 1321.4deg/s at 60FPS"
+    },
+    {
+      "mode": "combat",
+      "fps": 60,
+      "key": "wall-steering",
+      "pass": false,
+      "maxAxialDegreesPerSecond": 3661.316512231875,
+      "frames": 240,
+      "error": "wall-steering axial twist 3661.3deg/s at 60FPS"
+    },
+    {
+      "mode": "combat",
+      "fps": 144,
+      "key": "runStop",
+      "pass": false,
+      "maxAxialDegreesPerSecond": 6224.382644374862,
+      "frames": 130,
+      "error": "runStop axial twist 6224.4deg/s at 144FPS"
+    },
+    {
+      "mode": "combat",
+      "fps": 144,
+      "key": "slamLand",
+      "pass": false,
+      "maxAxialDegreesPerSecond": 7485.611863411568,
+      "frames": 128,
+      "error": "slamLand axial twist 7485.6deg/s at 144FPS"
+    },
+    {
+      "mode": "combat",
+      "fps": 144,
+      "key": "hook",
+      "pass": false,
+      "maxAxialDegreesPerSecond": 3562.2259767295627,
+      "frames": 202,
+      "error": "hook axial twist 3562.2deg/s at 144FPS"
+    },
+    {
+      "mode": "combat",
+      "fps": 144,
+      "key": "wall-steering",
+      "pass": false,
+      "maxAxialDegreesPerSecond": 4551.64133130158,
+      "frames": 576,
+      "error": "wall-steering axial twist 4551.6deg/s at 144FPS"
+    }
+  ]
+}

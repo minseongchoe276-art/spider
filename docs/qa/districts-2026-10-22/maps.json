@@ -1,0 +1,66 @@
+{
+  "status": "PASS",
+  "maps": [
+    {
+      "id": "procedural",
+      "buildings": 16,
+      "colliders": 184,
+      "spawns": 16,
+      "meshes": 217,
+      "spawn": [
+        99.6,
+        95.47369633906011,
+        90
+      ]
+    },
+    {
+      "id": "harbor",
+      "buildings": 10,
+      "colliders": 151,
+      "spawns": 10,
+      "meshes": 169,
+      "spawn": [
+        27.12,
+        76.1,
+        -95.88
+      ]
+    },
+    {
+      "id": "gardens",
+      "buildings": 12,
+      "colliders": 133,
+      "spawns": 12,
+      "meshes": 161,
+      "spawn": [
+        -89.36,
+        56.1,
+        91.36
+      ]
+    },
+    {
+      "id": "old-town",
+      "buildings": 24,
+      "colliders": 344,
+      "spawns": 24,
+      "meshes": 378,
+      "spawn": [
+        -106.88,
+        68.1,
+        -102.88
+      ]
+    },
+    {
+      "id": "skyline",
+      "buildings": 13,
+      "colliders": 140,
+      "spawns": 12,
+      "meshes": 176,
+      "spawn": [
+        -120.88,
+        80.1,
+        -120.88
+      ]
+    }
+  ],
+  "dictionaryEntries": 563
+}

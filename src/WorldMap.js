@@ -1,3 +1,5 @@
+import {LOCAL_MAPS,mapName} from './MapCatalog.js';
+import {language,t} from './I18n.js';
 import { worldToMinimap, worldToHongKongCoordinates } from './Minimap.js';
 
 export function mercatorPixels(latitude, longitude, zoom = 14) {
@@ -12,6 +14,10 @@ export class WorldMap {
     this.root=document.createElement('dialog');this.root.id='world-map';
     this.root.setAttribute('aria-label','전체 지도');
     this.root.innerHTML='<header><div><small>WORLD MAP</small><h2>전체 지도</h2></div><button type="button" aria-label="전체 지도 닫기">닫기 <kbd>M / Esc</kbd></button></header><canvas aria-label="전체 플레이 구역과 플레이어 위치"></canvas><footer><span>북쪽 ↑ · 흰색: 내 위치 · 청록: 플레이어 · 빨강: 적</span><span class="map-coverage"></span></footer><a class="map-attribution" href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">© OpenStreetMap contributors</a>';
+    this.root.querySelector('h2').textContent=mapName(game.city.isStreamed?'hong-kong':game.city.mapId,language());
+    const nav=document.createElement('nav');nav.className='world-map-destinations';nav.setAttribute('aria-label',t('플레이 지도 선택'));
+    for(const map of [{id:'hong-kong'},...LOCAL_MAPS]){const link=document.createElement('a'),url=new URL(location.href);url.searchParams.set('city',map.id);url.searchParams.delete('join');link.href=url.pathname+url.search;link.textContent=mapName(map.id,language());if((game.city.isStreamed?'hong-kong':game.city.mapId)===map.id)link.setAttribute('aria-current','page');nav.append(link);}
+    this.root.append(nav);
     this.root.querySelector('.map-attribution').hidden=!game.city.isStreamed;
     document.body.append(this.root);this.canvas=this.root.querySelector('canvas');this.ctx=this.canvas.getContext('2d');
     this.root.querySelector('button').addEventListener('click',()=>this.close());
@@ -57,6 +63,21 @@ export class WorldMap {
     ctx.strokeStyle='#203447';ctx.lineWidth=1;
     for(let v=-extent;v<=extent;v+=extent/6){const a=project({x:v,z:v});ctx.beginPath();ctx.moveTo(a.x,pad);ctx.lineTo(a.x,size-pad);ctx.moveTo(pad,a.y);ctx.lineTo(size-pad,a.y);ctx.stroke();}
     const baseTiles=city.isStreamed?this.drawHongKongBase(ctx,extent,pad,radius):0;
+    if(!city.isStreamed){
+      // Draw the real street grid under the same building footprints.
+      ctx.fillStyle=city.mapId==='harbor'?'#163e4b':'#142b36';ctx.fillRect(pad,pad,radius*2,radius*2);
+      if(city.mapId==='procedural') {
+        const step=(city.layout?.blockSize||32)+(city.layout?.streetWidth||28);
+        ctx.strokeStyle='#253e4a';ctx.lineWidth=(city.layout?.streetWidth||28)*radius/extent;
+        for(let v=-2*step;v<=2*step;v+=step){const a=project({x:v,z:v});ctx.beginPath();ctx.moveTo(a.x,pad);ctx.lineTo(a.x,size-pad);ctx.moveTo(pad,a.y);ctx.lineTo(size-pad,a.y);ctx.stroke();}
+      } else {
+        const rectangle=(rect,color)=>{const a=project({x:rect.x+rect.width/2,z:rect.z+rect.depth/2}),b=project({x:rect.x-rect.width/2,z:rect.z-rect.depth/2});ctx.fillStyle=color;ctx.fillRect(a.x,a.y,b.x-a.x,b.y-a.y);};
+        ctx.save();ctx.beginPath();ctx.rect(pad,pad,radius*2,radius*2);ctx.clip();
+        for(const rect of city.district?.zones||[])rectangle(rect,rect.color);
+        for(const rect of city.district?.roads||[])rectangle(rect,'#526374');
+        ctx.restore();
+      }
+    }
     // Reuse local city geometry; streamed districts use the geographic basemap.
     let footprints=[];
     if(!city.isStreamed){
@@ -64,13 +85,13 @@ export class WorldMap {
       try{footprints=map.collectFootprints({x:0,z:0});}finally{map.range=previousRange;}
     }
     for(const f of footprints){const a=project({x:f.maxX,z:f.maxZ}),b=project({x:f.minX,z:f.minZ});
-      ctx.fillStyle='#1b4654';ctx.strokeStyle='#3a7580';ctx.fillRect(a.x,a.y,Math.max(1,b.x-a.x),Math.max(1,b.y-a.y));ctx.strokeRect(a.x,a.y,Math.max(1,b.x-a.x),Math.max(1,b.y-a.y));}
+      ctx.fillStyle=city.mapId==='gardens'?'#315b4a':'#244857';ctx.strokeStyle=city.profile?.accent||'#3a7580';ctx.fillRect(a.x,a.y,Math.max(1,b.x-a.x),Math.max(1,b.y-a.y));ctx.strokeRect(a.x,a.y,Math.max(1,b.x-a.x),Math.max(1,b.y-a.y));}
     ctx.strokeStyle='#75a6be';ctx.strokeRect(pad,pad,size-pad*2,size-pad*2);
     const dot=(position,color,label,r=4)=>{const p=project(position);ctx.beginPath();ctx.arc(p.x,p.y,r,0,Math.PI*2);ctx.fillStyle=color;ctx.fill();ctx.strokeStyle='#081422';ctx.lineWidth=2;ctx.stroke();if(label){ctx.font='bold 12px system-ui';ctx.lineWidth=3;ctx.strokeText(label,p.x+10,p.y-8);ctx.fillText(label,p.x+10,p.y-8);}};
-    for(const p of this.game.multiplayer?.minimapPlayers()||[])dot(p,'#61dbea',p.name||'플레이어');
+    for(const p of this.game.multiplayer?.minimapPlayers()||[])dot(p,'#61dbea',p.name||t('플레이어'));
     for(const e of this.game.combat?.enemies||[])if(e.health>0)dot(e.position,'#ff647e');
-    dot(this.game.physics.position,'#ffffff','내 위치',6);
+    dot(this.game.physics.position,'#ffffff',t('내 위치'),6);
     ctx.fillStyle='#a9c6d7';ctx.font='12px system-ui';ctx.fillText('N ↑',pad,16);ctx.fillText(`${(extent*2/1000).toFixed(1)} km`,size/2-20,size-6);
-    this.root.querySelector('.map-coverage').textContent=city.isStreamed?(baseTiles?'홍콩 전체 플레이 구역 · 도로·해안 지도':'지도 배경 불러오는 중 · 위치 표시 가능'):'전체 구역';
+    this.root.querySelector('.map-coverage').textContent=city.isStreamed?(baseTiles?'홍콩 전체 플레이 구역 · 도로·해안 지도':'지도 배경 불러오는 중 · 위치 표시 가능'):`${mapName(city.mapId,language())} · ${t('전체 구역')}`;
   }
 }

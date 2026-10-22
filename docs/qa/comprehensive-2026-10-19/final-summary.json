@@ -1,0 +1,19 @@
+{
+  "status": "PASS",
+  "suites": 74,
+  "sourceChangesDuringRun": [],
+  "sourceChangesSinceCompletion": [],
+  "browserIntegration": {
+    "passed": 14,
+    "total": 14
+  },
+  "http": {
+    "passed": 10,
+    "total": 10
+  },
+  "skinPoses": 858,
+  "physicsFuzz": 5000,
+  "productionDependenciesKnownVulnerabilities": 0,
+  "behavior": "Preserve grounded auto-launch and grazing-floor relaunch, as requested by the user.",
+  "deployment": "Local changes and local production build; no new public deployment."
+}

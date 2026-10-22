@@ -92,7 +92,7 @@
     </div>
 
     <!-- Instructions / Controls Card (Bottom-Left) -->
-    <div id="combat-status" role="status" style="position:fixed;bottom:20px;left:50%;transform:translateX(-50%);max-width:90vw;text-align:center;padding:10px 16px;border-radius:12px;background:#14202de8;color:white;z-index:8;font:14px system-ui">전투 모드 · Q 에너지 와이어 전환</div>
+    <div id="combat-status" class="hidden" role="status">전투 모드</div>
     <aside id="controls-guide" class="glass-panel hidden" role="dialog" aria-label="조작 가이드">
       <div class="guide-header">
         <h3>🎮 조작 가이드</h3>
@@ -181,7 +181,7 @@
             <div class="lobby-statline"><span>01 / EXPLORE</span><span>02 / CHASE</span><span>03 / SWING</span></div>
           </div>
           <div class="online-card">
-            <div class="online-header"><span class="menu-index">MULTIPLAYER / 02</span><h2>함께 플레이</h2><p>방을 만들거나 친구의 게임에 합류하세요.</p></div>
+            <div class="online-header"><p class="district-online-note">로컬 5개 맵은 혼자 탐험 · 온라인 입장 시 네온 도심으로 이동</p><span class="menu-index">MULTIPLAYER / 02</span><h2>함께 플레이</h2><p>방을 만들거나 친구의 게임에 합류하세요.</p></div>
         <section id="lobby-panel">
           <label class="online-field">플레이어 이름<input id="player-name" maxlength="16" value="Pulse" autocomplete="nickname"></label>
           <div class="mode-heading">게임 모드 <span>선택</span></div>
@@ -214,10 +214,9 @@
       </div>
     </div>
 
-
     <div id="admin-overlay" class="overlay hidden" role="dialog" aria-modal="true" aria-labelledby="admin-title">
       <div class="admin-card">
-        <div class="online-header"><span class="menu-index">ADMIN / LIVE</span><h2 id="admin-title">운영 현황</h2><p id="admin-status">관리자 키를 입력하세요.</p></div>
+        <div class="online-header"><p class="district-online-note">로컬 5개 맵은 혼자 탐험 · 온라인 입장 시 네온 도심으로 이동</p><span class="menu-index">ADMIN / LIVE</span><h2 id="admin-title">운영 현황</h2><p id="admin-status">관리자 키를 입력하세요.</p></div>
         <form id="admin-login">
           <label class="online-field">관리자 키<input id="admin-token" type="password" autocomplete="current-password" maxlength="128"></label>
           <button class="online-primary" type="submit">열기</button>

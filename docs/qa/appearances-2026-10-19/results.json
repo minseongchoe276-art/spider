@@ -5,32 +5,18 @@
     "pass": true
   },
   {
-    "case": "combat source, textures and normalized weights",
-    "vertices": 67491,
+    "case": "Combat appearance requests preserve the single web model and sole cache",
     "pass": true
   },
   {
-    "case": "appearance changes invalidate cached foot-contact vertices",
-    "webSoleSamples": 1551,
-    "combatSoleSamples": 2183,
-    "pass": true
-  },
-  {
-    "case": "40 mode changes preserve pose, mixer, root and momentum; effect expires",
+    "case": "40 mode changes preserve model, materials, pose, mixer, root and momentum; gameplay mode still toggles",
     "pass": true
   },
   {
     "case": "web all catalog motions skin finite and bounded",
     "motionCount": 33,
     "samples": 165,
-    "maxExtent": 2.9088901045875115,
-    "pass": true
-  },
-  {
-    "case": "combat all catalog motions skin finite and bounded",
-    "motionCount": 33,
-    "samples": 165,
-    "maxExtent": 2.9135580966075496,
+    "maxExtent": 2.9179320347358724,
     "pass": true
   }
 ]

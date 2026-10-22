@@ -1,0 +1,16 @@
+PASS actual Rapier capsule enters a 1.5m balcony using its measured facade gap; narrow/low-ceiling balconies remain rejected
+PASS rounded edge contact uses the actual facade normal and enters the supported roof instead of twisting the grip
+PASS open railing uses a reachable higher grip and lands on the supported lower roof
+PASS 30fps real rig over open railing: grip 6.5mm, ankle 18.00deg, supported idle
+PASS 60fps real rig over open railing: grip 10.9mm, ankle 18.00deg, supported idle
+PASS 144fps real rig over open railing: grip 13.9mm, ankle 18.00deg, supported idle
+PASS Four facade directions and three frame rates climb over the actual 1.2m parapet and stay on its roof
+PASS Parapet plan distinguishes the hand-grip height from the lower supported landing
+PASS Blocked headroom retains the wall grip without passing through the roof
+PASS A blocked grip can move sideways to a clear, supported roof entry
+PASS Holding a climb past 25 seconds does not impose an unexplained fall
+  Actual city: 79 safe arrivals, 1 blocked grips, 80 facades.
+PASS Real local-city building facades complete a supported arrival or retain the blocked grip
+PASS Real Rapier terrain supports crossing the lip onto its lower roof at 30/60/144 FPS
+Wall ledge review: 7 passed, 0 failed.
+PASS 24/30/60/144fps real floating-point parapet seam completes a roof arrival

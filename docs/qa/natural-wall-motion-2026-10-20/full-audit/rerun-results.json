@@ -1,0 +1,13 @@
+{
+  "results": [
+    {
+      "suite": "pose",
+      "pass": true,
+      "exitCode": 0,
+      "seconds": 47.225,
+      "reason": "The obsolete ankle-near-wall test assumed a flat sole. The replacement measures planted targets and forefoot clearance; independent new tests also check backward knee bending and actual skinned boot clearance.",
+      "testSha256": "0ef2228cb4e27ecf17f53b461c1d777a45cd0b35364dc7d84884c4be9794894a",
+      "log": "pose-rerun.log"
+    }
+  ]
+}

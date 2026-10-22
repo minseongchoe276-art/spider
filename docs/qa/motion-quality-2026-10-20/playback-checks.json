@@ -1,0 +1,576 @@
+[
+  {
+    "skin": "web",
+    "motion": "idle",
+    "speed": 1,
+    "end": "4.00",
+    "pass": true
+  },
+  {
+    "skin": "web",
+    "motion": "walk",
+    "speed": 1,
+    "end": "0.97",
+    "pass": true
+  },
+  {
+    "skin": "web",
+    "motion": "regularRun",
+    "speed": 1,
+    "end": "0.70",
+    "pass": true
+  },
+  {
+    "skin": "web",
+    "motion": "run",
+    "speed": 1,
+    "end": "0.55",
+    "pass": true
+  },
+  {
+    "skin": "web",
+    "motion": "stop",
+    "speed": 1,
+    "end": "0.23",
+    "pass": true
+  },
+  {
+    "skin": "web",
+    "motion": "runStop",
+    "speed": 1,
+    "end": "0.90",
+    "pass": true
+  },
+  {
+    "skin": "web",
+    "motion": "zip",
+    "speed": 1,
+    "end": "1.00",
+    "pass": true
+  },
+  {
+    "skin": "web",
+    "motion": "turnLeft",
+    "speed": 1,
+    "end": "0.95",
+    "pass": true
+  },
+  {
+    "skin": "web",
+    "motion": "turnRight",
+    "speed": 1,
+    "end": "0.95",
+    "pass": true
+  },
+  {
+    "skin": "web",
+    "motion": "jump",
+    "speed": 1,
+    "end": "0.60",
+    "pass": true
+  },
+  {
+    "skin": "web",
+    "motion": "land",
+    "speed": 1,
+    "end": "0.88",
+    "pass": true
+  },
+  {
+    "skin": "combat",
+    "motion": "idle",
+    "speed": 1,
+    "end": "4.00",
+    "pass": true
+  },
+  {
+    "skin": "combat",
+    "motion": "walk",
+    "speed": 1,
+    "end": "0.97",
+    "pass": true
+  },
+  {
+    "skin": "combat",
+    "motion": "regularRun",
+    "speed": 1,
+    "end": "0.70",
+    "pass": true
+  },
+  {
+    "skin": "combat",
+    "motion": "run",
+    "speed": 1,
+    "end": "0.55",
+    "pass": true
+  },
+  {
+    "skin": "combat",
+    "motion": "stop",
+    "speed": 1,
+    "end": "0.23",
+    "pass": true
+  },
+  {
+    "skin": "combat",
+    "motion": "runStop",
+    "speed": 1,
+    "end": "0.90",
+    "pass": true
+  },
+  {
+    "skin": "combat",
+    "motion": "zip",
+    "speed": 1,
+    "end": "1.00",
+    "pass": true
+  },
+  {
+    "skin": "combat",
+    "motion": "turnLeft",
+    "speed": 1,
+    "end": "0.95",
+    "pass": true
+  },
+  {
+    "skin": "combat",
+    "motion": "turnRight",
+    "speed": 1,
+    "end": "0.95",
+    "pass": true
+  },
+  {
+    "skin": "combat",
+    "motion": "jump",
+    "speed": 1,
+    "end": "0.60",
+    "pass": true
+  },
+  {
+    "skin": "combat",
+    "motion": "land",
+    "speed": 1,
+    "end": "0.88",
+    "pass": true
+  },
+  {
+    "skin": "web",
+    "motion": "jumpDown",
+    "speed": 1,
+    "end": "2.30",
+    "pass": true
+  },
+  {
+    "skin": "web",
+    "motion": "drop",
+    "speed": 1,
+    "end": "0.53",
+    "pass": true
+  },
+  {
+    "skin": "web",
+    "motion": "jumpDownVariant",
+    "speed": 1,
+    "end": "2.65",
+    "pass": true
+  },
+  {
+    "skin": "web",
+    "motion": "swing",
+    "speed": 1,
+    "end": "1.97",
+    "pass": true
+  },
+  {
+    "skin": "web",
+    "motion": "fall",
+    "speed": 1,
+    "end": "4.50",
+    "pass": true
+  },
+  {
+    "skin": "web",
+    "motion": "fallVariant",
+    "speed": 1,
+    "end": "4.50",
+    "pass": true
+  },
+  {
+    "skin": "combat",
+    "motion": "jumpDown",
+    "speed": 1,
+    "end": "2.30",
+    "pass": true
+  },
+  {
+    "skin": "combat",
+    "motion": "drop",
+    "speed": 1,
+    "end": "0.53",
+    "pass": true
+  },
+  {
+    "skin": "combat",
+    "motion": "jumpDownVariant",
+    "speed": 1,
+    "end": "2.65",
+    "pass": true
+  },
+  {
+    "skin": "combat",
+    "motion": "swing",
+    "speed": 1,
+    "end": "1.97",
+    "pass": true
+  },
+  {
+    "skin": "combat",
+    "motion": "fall",
+    "speed": 1,
+    "end": "4.50",
+    "pass": true
+  },
+  {
+    "skin": "combat",
+    "motion": "fallVariant",
+    "speed": 1,
+    "end": "4.50",
+    "pass": true
+  },
+  {
+    "skin": "web",
+    "motion": "fallIdle",
+    "speed": 1,
+    "end": "4.50",
+    "pass": true
+  },
+  {
+    "skin": "web",
+    "motion": "roll",
+    "speed": 1,
+    "end": "1.55",
+    "pass": true
+  },
+  {
+    "skin": "web",
+    "motion": "injuredIdle",
+    "speed": 1,
+    "end": "9.33",
+    "pass": true
+  },
+  {
+    "skin": "web",
+    "motion": "wall",
+    "speed": 1,
+    "end": "2.00",
+    "pass": true
+  },
+  {
+    "skin": "web",
+    "motion": "combatIdle",
+    "speed": 1,
+    "end": "4.42",
+    "pass": true
+  },
+  {
+    "skin": "web",
+    "motion": "jab",
+    "speed": 1,
+    "end": "1.35",
+    "pass": true
+  },
+  {
+    "skin": "combat",
+    "motion": "fallIdle",
+    "speed": 1,
+    "end": "4.50",
+    "pass": true
+  },
+  {
+    "skin": "combat",
+    "motion": "roll",
+    "speed": 1,
+    "end": "1.55",
+    "pass": true
+  },
+  {
+    "skin": "combat",
+    "motion": "injuredIdle",
+    "speed": 1,
+    "end": "9.33",
+    "pass": true
+  },
+  {
+    "skin": "combat",
+    "motion": "wall",
+    "speed": 1,
+    "end": "2.00",
+    "pass": true
+  },
+  {
+    "skin": "combat",
+    "motion": "combatIdle",
+    "speed": 1,
+    "end": "4.42",
+    "pass": true
+  },
+  {
+    "skin": "combat",
+    "motion": "jab",
+    "speed": 1,
+    "end": "1.35",
+    "pass": true
+  },
+  {
+    "skin": "web",
+    "motion": "guard",
+    "speed": 1,
+    "end": "2.00",
+    "pass": true
+  },
+  {
+    "skin": "web",
+    "motion": "slam",
+    "speed": 1,
+    "end": "2.72",
+    "pass": true
+  },
+  {
+    "skin": "web",
+    "motion": "slamLand",
+    "speed": 1,
+    "end": "0.90",
+    "pass": true
+  },
+  {
+    "skin": "web",
+    "motion": "hook",
+    "speed": 1,
+    "end": "1.40",
+    "pass": true
+  },
+  {
+    "skin": "web",
+    "motion": "heavy",
+    "speed": 1,
+    "end": "1.40",
+    "pass": true
+  },
+  {
+    "skin": "web",
+    "motion": "hitHead",
+    "speed": 1,
+    "end": "0.55",
+    "pass": true
+  },
+  {
+    "skin": "web",
+    "motion": "rightHook",
+    "speed": 1,
+    "end": "0.68",
+    "pass": true
+  },
+  {
+    "skin": "web",
+    "motion": "cross",
+    "speed": 1,
+    "end": "1.45",
+    "pass": true
+  },
+  {
+    "skin": "web",
+    "motion": "airTrick",
+    "speed": 1,
+    "end": "0.93",
+    "pass": true
+  },
+  {
+    "skin": "web",
+    "motion": "special",
+    "speed": 1,
+    "end": "1.80",
+    "pass": true
+  },
+  {
+    "skin": "combat",
+    "motion": "guard",
+    "speed": 1,
+    "end": "2.00",
+    "pass": true
+  },
+  {
+    "skin": "combat",
+    "motion": "slam",
+    "speed": 1,
+    "end": "2.72",
+    "pass": true
+  },
+  {
+    "skin": "combat",
+    "motion": "slamLand",
+    "speed": 1,
+    "end": "0.90",
+    "pass": true
+  },
+  {
+    "skin": "combat",
+    "motion": "hook",
+    "speed": 1,
+    "end": "1.40",
+    "pass": true
+  },
+  {
+    "skin": "combat",
+    "motion": "heavy",
+    "speed": 1,
+    "end": "1.40",
+    "pass": true
+  },
+  {
+    "skin": "combat",
+    "motion": "hitHead",
+    "speed": 1,
+    "end": "0.55",
+    "pass": true
+  },
+  {
+    "skin": "combat",
+    "motion": "rightHook",
+    "speed": 1,
+    "end": "0.68",
+    "pass": true
+  },
+  {
+    "skin": "combat",
+    "motion": "cross",
+    "speed": 1,
+    "end": "1.45",
+    "pass": true
+  },
+  {
+    "skin": "combat",
+    "motion": "airTrick",
+    "speed": 1,
+    "end": "0.93",
+    "pass": true
+  },
+  {
+    "skin": "combat",
+    "motion": "special",
+    "speed": 1,
+    "end": "1.80",
+    "pass": true
+  },
+  {
+    "skin": "web",
+    "motion": "runStop",
+    "speed": 0.25,
+    "end": "0.90",
+    "pass": true
+  },
+  {
+    "skin": "web",
+    "motion": "slamLand",
+    "speed": 0.25,
+    "end": "0.90",
+    "pass": true
+  },
+  {
+    "skin": "web",
+    "motion": "hook",
+    "speed": 0.25,
+    "end": "1.40",
+    "pass": true
+  },
+  {
+    "skin": "web",
+    "motion": "wall",
+    "speed": 0.25,
+    "end": "2.00",
+    "pass": true
+  },
+  {
+    "skin": "web",
+    "motion": "regularRun",
+    "speed": 0.25,
+    "end": "0.70",
+    "pass": true
+  },
+  {
+    "skin": "web",
+    "motion": "swing",
+    "speed": 0.25,
+    "end": "1.97",
+    "pass": true
+  },
+  {
+    "skin": "web",
+    "motion": "zip",
+    "speed": 0.25,
+    "end": "1.00",
+    "pass": true
+  },
+  {
+    "skin": "web",
+    "motion": "airTrick",
+    "speed": 0.25,
+    "end": "0.93",
+    "pass": true
+  },
+  {
+    "skin": "combat",
+    "motion": "runStop",
+    "speed": 0.25,
+    "end": "0.90",
+    "pass": true
+  },
+  {
+    "skin": "combat",
+    "motion": "slamLand",
+    "speed": 0.25,
+    "end": "0.90",
+    "pass": true
+  },
+  {
+    "skin": "combat",
+    "motion": "hook",
+    "speed": 0.25,
+    "end": "1.40",
+    "pass": true
+  },
+  {
+    "skin": "combat",
+    "motion": "wall",
+    "speed": 0.25,
+    "end": "2.00",
+    "pass": true
+  },
+  {
+    "skin": "combat",
+    "motion": "regularRun",
+    "speed": 0.25,
+    "end": "0.70",
+    "pass": true
+  },
+  {
+    "skin": "combat",
+    "motion": "swing",
+    "speed": 0.25,
+    "end": "1.97",
+    "pass": true
+  },
+  {
+    "skin": "combat",
+    "motion": "zip",
+    "speed": 0.25,
+    "end": "1.00",
+    "pass": true
+  },
+  {
+    "skin": "combat",
+    "motion": "airTrick",
+    "speed": 0.25,
+    "end": "0.93",
+    "pass": true
+  }
+]

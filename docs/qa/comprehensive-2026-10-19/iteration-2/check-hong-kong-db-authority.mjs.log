@@ -1,0 +1,42 @@
+{
+  "status": "PASS",
+  "results": [
+    {
+      "name": "Client claims cannot finalize or delete a pending hit",
+      "status": "PASS"
+    },
+    {
+      "name": "BLOCKED terrain decisions never cause damage",
+      "status": "PASS"
+    },
+    {
+      "name": "UNKNOWN terrain decisions never cause damage",
+      "status": "PASS"
+    },
+    {
+      "name": "Missing terrain provenance never causes damage",
+      "status": "PASS"
+    },
+    {
+      "name": "Expired requests cannot hit",
+      "status": "PASS"
+    },
+    {
+      "name": "A revived life cannot inherit a delayed hit",
+      "status": "PASS"
+    },
+    {
+      "name": "A subsequent round cannot inherit a delayed hit",
+      "status": "PASS"
+    },
+    {
+      "name": "Parallel damage resolution is applied exactly once",
+      "status": "PASS"
+    },
+    {
+      "name": "Service role can execute resolver but authenticated clients cannot",
+      "status": "PASS"
+    }
+  ],
+  "scope": "Real PostgreSQL rows, role restrictions, room locks, claim consumption, replay and life/round checks; auth identity and realtime network are local substitutes"
+}

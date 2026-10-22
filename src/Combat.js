@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import {GROUNDED} from './MotionCatalog.js';
 import {COMBAT_GROUND_STATES} from './AttackRules.js';
 import {MATCH} from './MatchRules.js';
+import {BINDINGS,keyLabel} from './PlayerSettings.js';
 const canStrike=p=>COMBAT_GROUND_STATES.includes(p.state);
 
 export const ATTACKS={
@@ -14,8 +15,8 @@ export const ATTACKS={
 const grounded=p=>GROUNDED.includes(p.state);
 const forward=p=>new THREE.Vector3(Math.sin(p.facingAngle),0,Math.cos(p.facingAngle));
 export class CombatSystem {
-  constructor(scene,physics,character,{vfx=null,audio=null,onNotice=()=>{},onHit=()=>{}}={}) {
-    Object.assign(this,{scene,physics,character,vfx,audio,onNotice,onHit});
+  constructor(scene,physics,character,{vfx=null,audio=null,onNotice=()=>{},onHit=()=>{},getBindings=()=>BINDINGS}={}) {
+    Object.assign(this,{scene,physics,character,vfx,audio,onNotice,onHit,getBindings});
     this.mode='web';this.action=null;
     this.character.combatStance=false;
     this.blocking=false;this.health=100;this.stamina=100;this.invulnerable=0;
@@ -31,7 +32,8 @@ export class CombatSystem {
     input.webZipHeld=false;
     this.physics.webEnabled=this.mode==='web';this.physics.clearPendingInput?.();
     if(this.mode==='combat')this.physics.clearWebAnchor?.();
-    this.onNotice(this.mode==='web'?'에너지 와이어 모드 · 조준한 표면에 좌·우클릭으로 연결 / 점프는 Space / 떼면 관성 비행':'전투 모드 · 지상 좌클릭 잽 / 우클릭 스트레이트 · B 방어 · 와이어는 Q로 모드 전환 후 사용');
+    const bindings=this.getBindings();
+    this.onNotice(this.mode==='web'?`에너지 와이어 모드 · 조준한 표면에 좌·우클릭으로 연결 / 점프는 ${keyLabel(bindings.jump)} / 떼면 관성 비행`:`전투 모드 · 지상 좌클릭 잽 / 우클릭 스트레이트 · ${keyLabel(bindings.guard)} 방어 · 와이어는 ${keyLabel(bindings.mode)}로 모드 전환 후 사용`);
     return this.mode;
   }
   face(camera) {

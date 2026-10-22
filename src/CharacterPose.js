@@ -358,6 +358,17 @@ function alignStraightPalm(c,side,hand,normal,previousPalm,delta) {
   const angle=Math.atan2(axis.dot(new THREE.Vector3().crossVectors(from,to)),from.dot(to));
   // Aim the palm by pronating the forearm, keeping the wrist straight.
   hand.parent.rotateOnAxis(hand.position.clone().normalize(),angle);hand.parent.updateMatrixWorld(true);
+  // At a straight reach into the wall, forearm pronation alone leaves the
+  // palm exactly edge-on. A small wrist purchase keeps its contact side
+  // facing the facade as the diagonal reach crosses that singularity.
+  const currentWrist=worldPosition(hand),toward=normal.clone().negate();
+  const currentPalm=new THREE.Vector3().crossVectors(worldPosition(index).sub(currentWrist),worldPosition(pinky).sub(currentWrist)).normalize().multiplyScalar(side==='left'?1:-1);
+  const facing=currentPalm.dot(toward);
+  if(facing<.035){
+    const axis=new THREE.Vector3().crossVectors(currentPalm,toward).normalize();
+    const purchase=Math.min(THREE.MathUtils.degToRad(3),Math.asin(.035)-Math.asin(THREE.MathUtils.clamp(facing,-1,1)));
+    worldRotation(hand,new THREE.Quaternion().setFromAxisAngle(axis,purchase).multiply(hand.getWorldQuaternion(new THREE.Quaternion())));
+  }
 }
 
 function palmAlignmentWeight(projection){return THREE.MathUtils.smoothstep(projection,.12,.4);}
