@@ -925,14 +925,21 @@ export class SwingPhysics {
     if (moveDir.lengthSq() > 0.001) {
       moveDir.normalize();
       const nextFacingAngle = Math.atan2(moveDir.x, moveDir.z);
+      // Combat keeps the body on the aim. Turning to face a backstep made the
+      // punch start with a half-turn, and the knees passed through that spin.
+      const aim = new THREE.Vector3();
+      movementForward(camera, aim);
+      aim.y = 0;
+      const aimLocked = !!(this.character.combatStance && aim.lengthSq() > 1e-6);
+      const facingTarget = aimLocked ? Math.atan2(aim.x, aim.z) : nextFacingAngle;
       const turnDelta = Math.atan2(
-        Math.sin(nextFacingAngle - this.facingAngle),
-        Math.cos(nextFacingAngle - this.facingAngle)
+        Math.sin(facingTarget - this.facingAngle),
+        Math.cos(facingTarget - this.facingAngle)
       );
-      if (isGrounded && Math.abs(turnDelta) > 0.45 && this.velocity.length() > 0.5) {
+      if (!aimLocked && isGrounded && Math.abs(turnDelta) > 0.45 && this.velocity.length() > 0.5) {
         this.character.requestTurn(turnDelta > 0 ? 'right' : 'left');
       }
-      if(!combat || combat.key==='guard'){this.facingAngle = nextFacingAngle;this.character.targetFacingAngle = this.facingAngle;}
+      if(!combat || combat.key==='guard'){this.facingAngle = facingTarget;this.character.targetFacingAngle = this.facingAngle;}
     }
 
     if (isGrounded) {

@@ -1,6 +1,8 @@
 import assert from 'node:assert/strict';
 import * as THREE from 'three';
 import {loadMotionRig, disposeRig} from './lib/motion-rig.mjs';
+import {SwingPhysics} from '../src/SwingPhysics.js';
+import {CombatSystem} from '../src/Combat.js';
 import {boneId} from '../src/MotionRetarget.js';
 import {capturePose, RemoteMotion} from '../src/RemoteMotion.js';
 
@@ -19,6 +21,7 @@ function reset() {
     rollReleaseTime: 0, rollRenderedPose: null, rollRenderedPhase: 0, recoveryProgress: null,
     endJointPose: null, endJointModel: null, movingPlants: null, movingGuardWeight: 0,
     movingStrikeToken: null, movingStrikePose: null, movingStrikeFrom: null,
+    strikeHipYaw: 0, strikeStrideScale: null, strikeMoveOffset: 0,
     webAttachments: [], webShotTimer: 0, networkAnimation: null, contactTime: 0,
     wallNormal: null, mantle: null, pendingTurn: null, landingSpeed: 0,
   });
@@ -287,6 +290,215 @@ try {
   assert.equal(remoteClip, 'run', `remote sprint dodge played ${remoteClip}`);
   assert(remote.character.movingGuardWeight > 0.2, 'remote dodge did not layer the upper body');
 } finally { remote.dispose(); }
+
+function movingJab(label, state, velocity, key = 'jab') {
+  reset();
+  c.targetFacingAngle = 0;
+  const dt = 1 / 60;
+  const duration = {jab: 0.72, cross: 0.82, hook: 0.9, heavy: 0.9, special: 1.2}[key];
+  const aim = new THREE.Vector3(0, 0, 1);
+  const travel = velocity.clone().setY(0);
+  const travelDir = travel.lengthSq() > 1e-8 ? travel.normalize() : aim.clone();
+  const swing = new THREE.Vector3();
+  const prevFoot = new Map();
+  const lastPlant = new Map();
+  const slips = [];
+  let maxFoot = 0, minLead = Infinity, wristMax = 0, jointMax = 0;
+  let chestDot = null, fist = null, lean = null, scale = null;
+  const names = [];
+  const leadIn = 0.4;
+  for (let t = 0; t < leadIn + duration; t += dt) {
+    c.group.position.addScaledVector(velocity, dt);
+    const punching = t >= leadIn;
+    c.combatStance = true;
+    c.combatAction = punching ? {id: 30, key, time: Math.min(t - leadIn, duration - 1e-4), duration} : null;
+    c.update(dt, state, velocity);
+    const feet = {};
+    for (const side of ['left', 'right']) {
+      const foot = find(side + 'foot').getWorldPosition(new THREE.Vector3());
+      feet[side] = foot;
+      maxFoot = Math.max(maxFoot, foot.y - c.group.position.y);
+      const rel = foot.clone().sub(c.group.position);
+      const prev = prevFoot.get(side);
+      if (punching && t > leadIn + 0.2 && prev) {
+        const plant = c.movingPlants?.[side];
+        if (!plant || plant.age < 0.08) swing.add(rel.clone().sub(prev));
+      }
+      prevFoot.set(side, rel);
+      if (!punching) continue;
+      const hip = find(side + 'upleg').getWorldPosition(new THREE.Vector3());
+      const knee = find(side + 'leg').getWorldPosition(new THREE.Vector3());
+      const thigh = knee.clone().sub(hip);
+      const shin = foot.clone().sub(knee);
+      const span = foot.clone().sub(hip);
+      const bend = thigh.lengthSq() > 1e-6 && shin.lengthSq() > 1e-6 ? Math.PI - thigh.angleTo(shin) : 0;
+      const along = span.lengthSq() > 1e-6 ? THREE.MathUtils.clamp(thigh.dot(span) / span.lengthSq(), 0, 1) : 0;
+      const lead = knee.clone().sub(hip.clone().addScaledVector(span, along));
+      const hipForward = new THREE.Vector3(Math.sin(c.strikeHipYaw || 0), 0, Math.cos(c.strikeHipYaw || 0));
+      if (bend > 0.5) minLead = Math.min(minLead, lead.dot(hipForward));
+      const plant = c.movingPlants?.[side];
+      if (!plant || plant.age < 0.08) { lastPlant.delete(side); continue; }
+      const held = lastPlant.get(side);
+      if (held?.plant === plant) slips.push(foot.distanceTo(held.foot));
+      lastPlant.set(side, {plant, foot: foot.clone()});
+    }
+    if (!punching) continue;
+    names.push(clipName());
+    jointMax = Math.max(jointMax, poseError());
+    wristMax = Math.max(wristMax, wristBend());
+    const impact = Math.abs((t - leadIn) - duration * 0.34);
+    if (chestDot === null || impact < 0.02) {
+      const hip = find('hips').getWorldPosition(new THREE.Vector3());
+      const neck = find('neck').getWorldPosition(new THREE.Vector3());
+      const leftShoulder = find('leftshoulder').getWorldPosition(new THREE.Vector3());
+      const rightShoulder = find('rightshoulder').getWorldPosition(new THREE.Vector3());
+      const chest = new THREE.Vector3().crossVectors(new THREE.Vector3(0, 1, 0), rightShoulder.sub(leftShoulder));
+      chest.y = 0;
+      chestDot = chest.normalize().dot(aim);
+      const hands = ['left', 'right'].map(side => find(side + 'hand').getWorldPosition(new THREE.Vector3()).sub(neck));
+      fist = Math.max(...hands.map(hand => hand.dot(aim)));
+      const shoulders = find('leftshoulder').getWorldPosition(new THREE.Vector3()).add(find('rightshoulder').getWorldPosition(new THREE.Vector3())).multiplyScalar(0.5);
+      lean = shoulders.sub(hip).dot(aim);
+      scale = c.activeAction?.getEffectiveTimeScale?.() ?? null;
+    }
+  }
+  const slip = slips.length ? Math.max(...slips) : 0;
+  const row = {
+    label, names: [...new Set(names)],
+    swing: {x: +swing.x.toFixed(3), z: +swing.z.toFixed(3)},
+    chestDot: chestDot === null ? null : +chestDot.toFixed(3),
+    fistM: fist === null ? null : +fist.toFixed(3),
+    leanM: lean === null ? null : +lean.toFixed(3),
+    slipMm: +(slip * 1000).toFixed(1),
+    kneeLeadMm: minLead === Infinity ? null : +(minLead * 1000).toFixed(1),
+    footM: +maxFoot.toFixed(3),
+    scale: scale === null ? null : +scale.toFixed(3),
+    wrist: +wristMax.toFixed(2),
+    jointOverDeg: +((jointMax || 0) * 180 / Math.PI).toFixed(3),
+  };
+  console.log(JSON.stringify(row));
+  assert(jointMax < 1e-3, `${label}: joint ${row.jointOverDeg}`);
+  assert(wristMax <= 12.05, `${label}: wrist ${row.wrist}`);
+  assert(slip < 0.025, `${label}: slip ${row.slipMm}mm`);
+  assert(minLead > -0.04, `${label}: knee folded backward ${row.kneeLeadMm}mm`);
+  if (key !== 'hook') {
+    // A cross turns the shoulders through the shot. The ribcage still has to
+    // stay toward the aim; a jab keeps the stricter square-on check.
+    assert(chestDot > (key === 'cross' ? 0.55 : 0.75), `${label}: chest left the punch ${row.chestDot}`);
+    assert(fist > 0.28, `${label}: fist did not reach ${row.fistM}m`);
+  }
+  const along = swing.dot(travelDir);
+  assert(along > 0.04, `${label}: feet stepped against travel (${row.swing.x}, ${row.swing.z})`);
+  return row;
+}
+
+const forwardJab = movingJab('jab forward sprint', 'SPRINTING', v(0, 0, speed));
+assert(forwardJab.names.every(name => name === 'run'), `forward jab left the run: ${forwardJab.names}`);
+const leftJab = movingJab('jab left sprint', 'SPRINTING', v(speed, 0, 0));
+assert(leftJab.names.every(name => name === 'run'), `left jab left the run: ${leftJab.names}`);
+assert(leftJab.swing.x > Math.abs(leftJab.swing.z), 'left jab still stepped forward');
+movingJab('jab right sprint', 'SPRINTING', v(-speed, 0, 0));
+const backJab = movingJab('jab back sprint', 'SPRINTING', v(0, 0, -speed));
+assert(backJab.names.includes('regularRun'), `retreat kept ${backJab.names}`);
+assert(backJab.leanM < 0, `retreat leaned forward ${backJab.leanM}m`);
+assert(backJab.scale < 0, `retreat played forward ${backJab.scale}`);
+movingJab('jab back jog', 'RUNNING', v(0, 0, -4.4));
+movingJab('cross left jog', 'RUNNING', v(4.4, 0, 0), 'cross');
+movingJab('hook back jog', 'RUNNING', v(0, 0, -4.4), 'hook');
+
+function liveStrike(label, hold) {
+  const character = actor();
+  const camera = new THREE.PerspectiveCamera(60, 16 / 9, 0.1, 200);
+  camera.position.set(0, 1.8, -6);
+  camera.lookAt(0, 1.2, 0);
+  camera.userData.movementYaw = 0;
+  const silent = new Proxy({}, {get: () => () => {}});
+  const city = {colliders: [], buildingMeshes: [], checkCollision: () => ({collided: false}), raycast: () => null};
+  const physics = new SwingPhysics(new THREE.Scene(), city, character, silent);
+  physics.position.set(0, 0.1, 0);
+  physics.previousFixedPosition.copy(physics.position);
+  physics.renderPosition.copy(physics.position);
+  const combat = new CombatSystem(new THREE.Scene(), physics, character, {vfx: null, audio: silent});
+  combat.toggle();
+  combat.stamina = 100;
+  const blank = {forward: false, backward: false, left: false, right: false, sprint: false, jump: false, guard: false, wallRun: false};
+  let fired = false;
+  const prev = new Map();
+  const swing = new THREE.Vector3();
+  let chestDot = null, wristMax = 0, jointMax = 0, minLead = Infinity;
+  const names = [];
+  const dt = 1 / 60;
+  try {
+    for (let t = 0; t < 1.5; t += dt) {
+      const input = Object.assign({}, blank, hold, {sprint: true});
+      if (t >= 0.45 && !fired) fired = !!combat.attack(camera);
+      combat.before(dt, camera, input);
+      physics.update(dt, input, camera);
+      combat.after(dt);
+      const key = combat.action?.key || '';
+      if (key !== 'jab') {
+        for (const side of ['left', 'right']) prev.set(side, findLive(character, side + 'foot').clone().sub(character.group.position));
+        continue;
+      }
+      names.push(Object.entries(character.actions).find(([, action]) => action === character.activeAction)?.[0] || null);
+      jointMax = Math.max(jointMax, liveJoint(character));
+      wristMax = Math.max(wristMax, liveWrist(character));
+      const aim = new THREE.Vector3(Math.sin(physics.facingAngle), 0, Math.cos(physics.facingAngle));
+      for (const side of ['left', 'right']) {
+        const foot = findLive(character, side + 'foot');
+        const rel = foot.clone().sub(character.group.position);
+        const before = prev.get(side);
+        const plant = character.movingPlants?.[side];
+        if (before && combat.action.time > 0.2 && (!plant || plant.age < 0.08)) swing.add(rel.clone().sub(before));
+        prev.set(side, rel);
+        const hip = findLive(character, side + 'upleg'), knee = findLive(character, side + 'leg');
+        const span = foot.clone().sub(hip), thigh = knee.clone().sub(hip), shin = foot.clone().sub(knee);
+        const bend = thigh.lengthSq() > 1e-6 && shin.lengthSq() > 1e-6 ? Math.PI - thigh.angleTo(shin) : 0;
+        const along = span.lengthSq() > 1e-6 ? THREE.MathUtils.clamp(thigh.dot(span) / span.lengthSq(), 0, 1) : 0;
+        const lead = knee.clone().sub(hip.clone().addScaledVector(span, along));
+        const hipForward = new THREE.Vector3(Math.sin(physics.facingAngle + (character.strikeHipYaw || 0)), 0, Math.cos(physics.facingAngle + (character.strikeHipYaw || 0)));
+        if (bend > 0.5) minLead = Math.min(minLead, lead.dot(hipForward));
+      }
+      if (combat.action.time > 0.22 && combat.action.time < 0.36) {
+        const leftShoulder = findLive(character, 'leftshoulder'), rightShoulder = findLive(character, 'rightshoulder');
+        const chest = new THREE.Vector3().crossVectors(new THREE.Vector3(0, 1, 0), rightShoulder.sub(leftShoulder));
+        chest.y = 0;
+        chestDot = chest.normalize().dot(aim);
+      }
+    }
+  } finally { disposeRig(character); }
+  const travel = new THREE.Vector3((hold.right ? -1 : 0) + (hold.left ? 1 : 0), 0, (hold.forward ? 1 : 0) - (hold.backward ? 1 : 0)).normalize();
+  const row = {label, names: [...new Set(names)], swing: {x: +swing.x.toFixed(3), z: +swing.z.toFixed(3)}, chestDot: chestDot === null ? null : +chestDot.toFixed(3), kneeLeadMm: +(minLead * 1000).toFixed(1), wrist: +wristMax.toFixed(2), along: +swing.dot(travel).toFixed(3)};
+  console.log(JSON.stringify(row));
+  assert(names.length > 10, `${label}: jab never played`);
+  assert(jointMax < 1e-3, `${label}: joint failed`);
+  assert(wristMax <= 12.05, `${label}: wrist ${row.wrist}`);
+  assert(minLead > -0.04, `${label}: knee ${row.kneeLeadMm}mm`);
+  assert(chestDot > 0.75, `${label}: chest ${row.chestDot}`);
+  assert(swing.dot(travel) > 0.03, `${label}: live feet opposed travel ${row.swing.x}, ${row.swing.z}`);
+  return row;
+}
+const findLive = (character, id) => Object.values(character.bones).find(bone => boneId(bone.name) === id).getWorldPosition(new THREE.Vector3());
+function liveJoint(character) {
+  let worst = 0;
+  for (const item of character.jointConstraints || []) worst = Math.max(worst, item.rest.angleTo(item.bone.quaternion) - item.limit);
+  for (const bone of Object.values(character.bones)) {
+    if (!bone.position.toArray().every(Number.isFinite) || Math.abs(bone.quaternion.length() - 1) > 1e-4) return Infinity;
+  }
+  return worst;
+}
+function liveWrist(character) {
+  let max = 0;
+  for (const side of ['left', 'right']) {
+    const forearm = findLive(character, side + 'forearm'), hand = findLive(character, side + 'hand'), finger = findLive(character, side + 'handmiddle1');
+    max = Math.max(max, hand.clone().sub(forearm).angleTo(finger.clone().sub(hand)));
+  }
+  return max * 180 / Math.PI;
+}
+liveStrike('live jab forward', {forward: true});
+liveStrike('live jab left', {left: true});
+liveStrike('live jab right', {right: true});
+liveStrike('live jab back', {backward: true});
 
 disposeRig(c);
 console.log('PASS motion combinations: gait legs survive dodge, hit, strikes, and roll recovery; traversal clips stay finite');

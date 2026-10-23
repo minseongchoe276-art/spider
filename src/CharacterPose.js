@@ -135,9 +135,20 @@ function fitEndRotation(c,upper,lower,end,rotation) {
     if(constraint.kind==='foot' || constraint.rest.angleTo(local)>constraint.limit){
       const anchor=worldPosition(end);
       const idealParent=rotation.clone().multiply(constraint.rest.clone().invert());
-      const pole=constraint.kind==='foot'
-        ?new THREE.Vector3(0,0,1).applyQuaternion(c.model.getWorldQuaternion(new THREE.Quaternion()))
-        :anchor.clone().sub(end.position.clone().applyQuaternion(idealParent)).sub(worldPosition(upper));
+      // A side-step punch keeps the chest on the aim and the stride on the
+      // travel. The model forward is the aim, so using it as the knee pole
+      // folds the trailing knee out past the hip.
+      const hipYaw=c.strikeHipYaw || 0;
+      let pole;
+      if(constraint.kind==='foot' && Math.abs(hipYaw)>0.12){
+        const knee=worldPosition(lower).sub(worldPosition(upper));
+        const limb=anchor.clone().sub(worldPosition(upper));
+        const off=knee.clone().addScaledVector(limb,-knee.dot(limb)/Math.max(limb.lengthSq(),1e-8));
+        const yaw=(c.targetFacingAngle || 0)+hipYaw;
+        pole=off.lengthSq()>0.0015?knee:new THREE.Vector3(Math.sin(yaw),0.45,Math.cos(yaw));
+      }else if(constraint.kind==='foot'){
+        pole=new THREE.Vector3(0,0,1).applyQuaternion(c.model.getWorldQuaternion(new THREE.Quaternion()));
+      }else pole=anchor.clone().sub(end.position.clone().applyQuaternion(idealParent)).sub(worldPosition(upper));
       c.solveLimb(upper,lower,end,anchor,constraint.kind==='foot'?.985:.995,pole);
       // The position solve leaves the shin/forearm's axial roll arbitrary.
       // Fit that roll to the requested end orientation without moving its
@@ -283,6 +294,11 @@ export function soleRotation(c,side,normal,authoredRotation) {
     c.actions.wall?.getClip().userData?.soleRotations?.[side];
   if(!raw)return null;
   const authored=authoredRotation?.clone() || c.model.getWorldQuaternion(new THREE.Quaternion()).multiply(new THREE.Quaternion().fromArray(raw));
+  // The pelvis yaws toward a side step while the chest stays on the aim.
+  // Toes follow that stride. Leaving them on the model heading twists the ankle
+  // a quarter turn and the correction collapses the knee.
+  if(Math.abs(c.strikeHipYaw || 0)>0.02)
+    authored.premultiply(new THREE.Quaternion().setFromAxisAngle(up,c.strikeHipYaw));
   const sole=groundSoleNormal(c,side,authored);
   if(!sole)return authored;
   // Remove pitch and roll while retaining the authored toe heading/pivot.
@@ -420,7 +436,14 @@ export function plantMovingFeet(c,delta) {
     // A changed tread must release through the same bounded path as toe-off.
     // Skipping this solve restored the far-away authored foot in one frame.
     const changedSupport=plant && supported && Math.abs(plant.position.y-surface-(plant.offset ?? .11))>.12;
-    const stance=sample[side] && supported && action.getEffectiveWeight()>=0.8 && reachable && !changedSupport;
+    // A side-step turns the pelvis after the plant was taken. Holding that
+    // old contact drags the foot across the new thigh and folds the knee back.
+    const turned=plant && Math.abs(Math.atan2(Math.sin((c.strikeHipYaw || 0)-(plant.yaw || 0)), Math.cos((c.strikeHipYaw || 0)-(plant.yaw || 0))))>0.4;
+    const stance=sample[side] && supported && action.getEffectiveWeight()>=0.8 && reachable && !changedSupport && !turned;
+    const yaw=(c.targetFacingAngle || 0)+(c.strikeHipYaw || 0);
+    const kneePole=Math.abs(c.strikeHipYaw || 0)>0.15
+      ?new THREE.Vector3(Math.sin(yaw),0.2,Math.cos(yaw))
+      :null;
     if(!stance) {
       support=footSupport(c,current,true) || support;
       const swingSurface=support?.height;
@@ -449,7 +472,7 @@ export function plantMovingFeet(c,delta) {
       continue;
     }
     if(!plant || plant.action!==action) {
-      plant=c.movingPlants[side]={action,position:current.clone(),rotation:soleRotation(c,side,support.normal) || foot.getWorldQuaternion(new THREE.Quaternion()),age:0,normal:support.normal,offset:.11};
+      plant=c.movingPlants[side]={action,position:current.clone(),rotation:soleRotation(c,side,support.normal) || foot.getWorldQuaternion(new THREE.Quaternion()),age:0,normal:support.normal,offset:.11,yaw:c.strikeHipYaw || 0};
       // Shorten the imported rear stance with its heading correction. Turning
       // only the boot while keeping that long rear reach rolls its outer edge.
       if(side==='right' && ['combatIdle','jab','cross','rightHook','hook','heavy','special'].includes(clip.name)){
@@ -476,7 +499,7 @@ export function plantMovingFeet(c,delta) {
     // time reachability reacquired a contact, producing a visible calf snap.
     // The final local ankle stage already owns temporal easing.
     const rotation=plant.rotation;
-    c.solveLimb(hip,knee,foot,target,0.995);
+    c.solveLimb(hip,knee,foot,target,0.995,kneePole);
     orientGroundFoot(c,side,foot,rotation,delta);
     c.plantLastFeet[side]=worldPosition(foot);
   }
@@ -777,4 +800,69 @@ export function alignCombatGaze(c,delta,active) {
     const world=turn.multiply(bone.getWorldQuaternion(new THREE.Quaternion()));
     bone.quaternion.copy(bone.parent.getWorldQuaternion(new THREE.Quaternion()).invert().multiply(world)).normalize();bone.updateMatrixWorld(true);
   }
+}
+
+function yawWorld(bone, angle) {
+  if (!bone || Math.abs(angle) < 1e-4) return;
+  const world = bone.getWorldQuaternion(new THREE.Quaternion());
+  world.premultiply(new THREE.Quaternion().setFromAxisAngle(up, angle));
+  bone.quaternion.copy(bone.parent.getWorldQuaternion(new THREE.Quaternion()).invert().multiply(world)).normalize();
+  bone.updateMatrixWorld(true);
+}
+
+function pitchModelX(c, bone, angle) {
+  if (!bone || Math.abs(angle) < 1e-4) return;
+  const axis = new THREE.Vector3(1, 0, 0).applyQuaternion(c.model.getWorldQuaternion(new THREE.Quaternion())).normalize();
+  const world = bone.getWorldQuaternion(new THREE.Quaternion());
+  world.premultiply(new THREE.Quaternion().setFromAxisAngle(axis, angle));
+  bone.quaternion.copy(bone.parent.getWorldQuaternion(new THREE.Quaternion()).invert().multiply(world)).normalize();
+  bone.updateMatrixWorld(true);
+}
+
+// Moving punches keep the chest on the aim. Side steps turn the pelvis toward
+// the travel, then the spine brings the chest back. A retreat reverses the
+// stride and leans the chest back instead of twisting it past a half turn.
+export function alignStrikeFootwork(c, delta, active, offset, combat) {
+  const strafe = active && Math.abs(offset) > 0.28 && Math.abs(offset) <= 2;
+  const target = strafe ? offset : 0;
+  c.strikeHipYaw = THREE.MathUtils.damp(c.strikeHipYaw || 0, target, active ? 11 : 14, delta);
+  if (Math.abs(c.strikeHipYaw) > 0.012) {
+    yawWorld(find(c, 'hips'), c.strikeHipYaw);
+    // The whole twist comes back through the waist. Stopping it at the neck
+    // left the shoulders turned toward a right step, because a jab already
+    // cocks the chest that way and the leftover yaw sat on top of it.
+    const back = -c.strikeHipYaw;
+    yawWorld(find(c, 'spine'), back * 0.30);
+    yawWorld(find(c, 'spine1'), back * 0.42);
+    const spine2 = find(c, 'spine2');
+    yawWorld(spine2, back * 0.28);
+    const left = find(c, 'leftshoulder'), right = find(c, 'rightshoulder');
+    if (left && right) {
+      const across = right.getWorldPosition(new THREE.Vector3()).sub(left.getWorldPosition(new THREE.Vector3()));
+      const facing = new THREE.Vector3().crossVectors(up, across);
+      facing.y = 0;
+      const aim = new THREE.Vector3(Math.sin(c.targetFacingAngle || 0), 0, Math.cos(c.targetFacingAngle || 0));
+      if (facing.lengthSq() > 1e-6) {
+        facing.normalize();
+        const turn = Math.atan2(up.dot(new THREE.Vector3().crossVectors(facing, aim)), facing.dot(aim));
+        yawWorld(spine2, THREE.MathUtils.clamp(turn, -0.45, 0.45));
+      }
+    }
+  } else c.strikeHipYaw = 0;
+  if (active && Math.abs(offset) > 2) {
+    // Model +X pitch drops the facing +Z axis. Negative pitch leans the chest back.
+    pitchModelX(c, find(c, 'spine'), -0.2);
+    pitchModelX(c, find(c, 'spine1'), -0.12);
+  }
+  if (!(active && Math.abs(offset) < 0.45 && combat?.duration && ['jab', 'cross', 'hook', 'heavy', 'special'].includes(combat.key))) return;
+  const phase = THREE.MathUtils.clamp(combat.time / combat.duration, 0, 1);
+  const drive = Math.sin(Math.PI * THREE.MathUtils.clamp(phase / 0.48, 0, 1));
+  const side = {jab: 0.02, cross: -0.028, hook: 0.018, heavy: -0.02, special: -0.02}[combat.key] || 0;
+  const hips = find(c, 'hips');
+  if (!hips?.parent) return;
+  const shift = new THREE.Vector3(side * drive, 0, 0.028 * drive).applyQuaternion(c.model.getWorldQuaternion(new THREE.Quaternion()));
+  const parent = hips.parent.getWorldQuaternion(new THREE.Quaternion()).invert();
+  shift.applyQuaternion(parent).divide(hips.parent.getWorldScale(new THREE.Vector3()));
+  hips.position.add(shift);
+  hips.updateMatrixWorld(true);
 }

@@ -10,7 +10,7 @@ import { retargetMotion, prepareMotion, boneId } from './MotionRetarget.js';
 import { MOTIONS, STRIDES, GROUNDED } from './MotionCatalog.js';
 import { fetchAsset, forEachConcurrent } from './AssetLoader.js';
 import { clone as cloneSkeleton } from 'three/addons/utils/SkeletonUtils.js';
-import { plantMovingFeet, poseWall, poseZipLegs, poseMantle, adaptPelvisToTerrain, footSupport, soleRotation, clearGroundSoles, fitGroundAnkle, alignCombatWrists, alignCombatGaze, reuseHeldGroundPose, cacheGroundPose, clearImpactBody, prepareImpactBody } from './CharacterPose.js';
+import { plantMovingFeet, poseWall, poseZipLegs, poseMantle, adaptPelvisToTerrain, footSupport, soleRotation, clearGroundSoles, fitGroundAnkle, alignCombatWrists, alignCombatGaze, alignStrikeFootwork, reuseHeldGroundPose, cacheGroundPose, clearImpactBody, prepareImpactBody } from './CharacterPose.js';
 import {createHandPoseRig,restoreHandPose,updateWebHandPose} from './WebHandPose.js';
 
 export class Character {
@@ -534,6 +534,10 @@ export class Character {
       return;
     }
     const horizontalSpeed = Math.hypot(velocity.x, velocity.z);
+    const travelYaw = Math.atan2(velocity.x, velocity.z);
+    this.strikeMoveOffset = horizontalSpeed > 0.35
+      ? Math.atan2(Math.sin(travelYaw - this.targetFacingAngle), Math.cos(travelYaw - this.targetFacingAngle))
+      : 0;
     const grounded = GROUNDED.includes(state);
     const previous = this.lastState;
     if(GROUNDED.includes(previous) && ['JUMPING','FALLING'].includes(state))this.airModelRelease=.14;
@@ -606,12 +610,32 @@ export class Character {
     else if(this.isTricking && !grounded && !['WALL_RUNNING','MANTLING','WEB_ZIP'].includes(state) && this.actions.airTrick)name='airTrick';
     if(this.networkAnimation && this.actions[this.networkAnimation.key] &&
       (!['ROLLING','LANDING'].includes(state)||this.networkAnimation.key===name))name=this.networkAnimation.key;
+    const retreat=movingStrike && gait && horizontalSpeed>0.45 && Math.abs(this.strikeMoveOffset)>2;
+    // A reversed sprint lifts the knees like a backward bound. A jog stride
+    // played backward reads as a fighting retreat at the same travel speed.
+    if(retreat && name==='run' && this.actions.regularRun)name='regularRun';
     this.fadeToAction(name, combatClip===name ? (combat.duration ? 0.065 : name==='guard' ? 0.18 : 0.12) : state==='MANTLING' && name==='idle' ? .3 : ['LANDING','ROLLING'].includes(state) ? 0.06 : grounded ? 0.18 : 0.12);
     if (STRIDES.includes(name)) {
       const measuredSpeed = this.activeAction?.getClip().userData?.nominalSpeed;
       const strideSpeed = measuredSpeed > 0.1 ? measuredSpeed : ({walk:2.8,regularRun:4.8,run:6.5}[name]);
-      this.activeAction?.setEffectiveTimeScale(THREE.MathUtils.clamp(
-        horizontalSpeed / strideSpeed, 0.15, 1.6));
+      const forwardScale=THREE.MathUtils.clamp(horizontalSpeed / strideSpeed, 0.15, 1.6);
+      if(retreat){
+        const reverse=-THREE.MathUtils.clamp(horizontalSpeed / strideSpeed, 0.8, 1.35);
+        // Start reversed. Sliding the timescale through zero plays one forward
+        // stride against the fading sprint and folds the trailing knee back.
+        if(!(this.strikeStrideScale<0))this.strikeStrideScale=reverse;
+        else this.strikeStrideScale=THREE.MathUtils.damp(this.strikeStrideScale, reverse, 18, delta);
+        this.activeAction?.setEffectiveTimeScale(this.strikeStrideScale);
+        if(this.actions.run && this.actions.run!==this.activeAction)
+          this.actions.run.setEffectiveTimeScale(this.strikeStrideScale);
+      }else if(this.strikeStrideScale<0){
+        this.strikeStrideScale=THREE.MathUtils.damp(this.strikeStrideScale, forwardScale, 14, delta);
+        if(this.strikeStrideScale>-0.04)this.strikeStrideScale=null;
+        this.activeAction?.setEffectiveTimeScale(this.strikeStrideScale ?? forwardScale);
+      }else{
+        this.strikeStrideScale=null;
+        this.activeAction?.setEffectiveTimeScale(forwardScale);
+      }
     }
     if(combatClip===name && combat.id && combat.id!==this.combatClipToken){this.activeAction?.reset().play();this.combatClipToken=combat.id;}
     if(combatClip===name && combat.duration) {
@@ -689,7 +713,12 @@ export class Character {
           // Upper-body tracks are local to the fighting pelvis, which turns
           // relative to the running pelvis. Rebase only the spine root.
           if(basis && bone.parent===hip)pose.premultiply(basis);
-          bone.quaternion.slerp(pose,weight);
+          const id=boneId(bone.name);
+          // Leave a little of the running spine so a forward punch rides the
+          // stride. Arms stay on the punch. Side steps need the full chest.
+          const boneWeight=movingStrike && ['spine','spine1','spine2'].includes(id) && Math.abs(this.strikeMoveOffset || 0)<0.55
+            ?weight*0.84:weight;
+          bone.quaternion.slerp(pose,boneWeight);
           const from=this.movingStrikeFrom?.get(bone);
           if(from && blend<1)bone.quaternion.slerpQuaternions(from,bone.quaternion.clone(),blend);
         }
@@ -722,6 +751,8 @@ export class Character {
       state === 'WEB_ZIP' ? THREE.MathUtils.clamp(Math.atan2(horizontalSpeed,Math.max(2,velocity.y))*0.65,0,1)
         : state === 'SWINGING' ? THREE.MathUtils.clamp(-velocity.y * 0.015, -0.45, 0.45) : 0, 10, delta);
     this.model.rotation.set(this.bodyPitch + this.trickRotation, this.visualYaw, 0, 'YXZ');
+    this.group.updateMatrixWorld(true);
+    alignStrikeFootwork(this, delta, !!(movingStrike && gait && horizontalSpeed>0.35), this.strikeMoveOffset || 0, combat);
     if(!combatGround)this.combatGazeWeight=0;
     alignCombatGaze(this,delta,combatGround&&(this.combatStance||combat?.key==='guard')&&(!combat||['combatIdle','guard'].includes(combat.key)||combat.key.startsWith('dodge')));
     if ((state === 'WALL_RUNNING' || state==='MANTLING') && this.wallNormal) {
