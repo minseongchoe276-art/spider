@@ -1,10 +1,14 @@
+import {GameApp} from '../src/main.js';
+import {City} from '../src/City.js';
+import {LOCAL_MAPS} from '../src/MapCatalog.js';
+import {PlayerExperience} from '../src/PlayerExperience.js';
 import assert from 'node:assert/strict';
 import * as THREE from 'three';
 import fs from 'node:fs';
 import {SwingPhysics} from '../src/SwingPhysics.js';
 import {TouchControls} from '../src/TouchControls.js';
 import {ThirdPersonCamera} from '../src/Camera.js';
-import {followMobileCamera,MOBILE_ANCHOR_FAN,mobileAnchorScore} from '../src/MobileTraversal.js';
+import {followMobileCamera,MOBILE_ANCHOR_FAN,mobileAnchorScore,mobileStartingView} from '../src/MobileTraversal.js';
 const results=[];const pass=name=>{results.push(name);console.log('PASS '+name);};
 function world(meshes){
   meshes.forEach(mesh=>mesh.updateMatrixWorld(true));
@@ -38,6 +42,12 @@ for(const fps of [30,60,144]){
 }
 const rig=new ThirdPersonCamera(new THREE.PerspectiveCamera());rig.mobileAutoFollow=true;rig.handleMouseMove(10,5);assert.equal(rig.mobileLookDelay,2.2);rig.recenterBehind(.2);assert.equal(rig.mobileLookDelay,0);
 pass('30/60/144 FPS smooth follow, angular-speed limit, manual priority/grace, strafe stability and no reversal whip');
+const closeCamera=new ThirdPersonCamera(new THREE.PerspectiveCamera());closeCamera.mobileAutoFollow=true;
+closeCamera.safeDistance=()=>.6;closeCamera.placeBehind(new THREE.Vector3(),0);closeCamera.update(1/60,new THREE.Vector3(),new THREE.Vector3(),false);assert(closeCamera.localAvatarOccluded);
+closeCamera.safeDistance=()=>10;for(let i=0;i<120;i++)closeCamera.update(1/60,new THREE.Vector3(),new THREE.Vector3(),false);assert(!closeCamera.localAvatarOccluded);
+closeCamera.mobileAutoFollow=false;closeCamera.safeDistance=()=>.6;closeCamera.update(1/60,new THREE.Vector3(),new THREE.Vector3(),false);assert(!closeCamera.localAvatarOccluded);
+pass('Mobile wall retraction clears the local body from view and restores it after clearance; desktop visibility unchanged');
+
 const cls={add(){},remove(){},toggle(){}},events=[];
 const game={isPlaying:true,isPaused:false,input:{},physics:{webs:[],state:'IDLE',setWebAimPoint(){}},combat:{mode:'web'},audio:{ensureContext(){}},tpsCamera:{handleMouseMove(){}},syncHeldInput(){}};
 const controls=Object.create(TouchControls.prototype);Object.assign(controls,{simpleTraversal:true,game,enabled:true,pointers:new Map(),wireLatched:false,knob:{style:{}},stick:{classList:cls},mouse(button,down,traversal){events.push({button,down,traversal});if(down){game.input.webTap=true;game.input.webHold=true;}else{game.input.webHold=game.input.webFireHeld=false;game.physics.webs=[];}},key(action,down){events.push({action,down});}});
@@ -56,4 +66,21 @@ const primary={setAttribute(){},querySelector:()=>({textContent:'',setAttribute(
 controls.root={dataset:{},querySelector:()=>primary};game.isPaused=false;game.input.webTap=false;game.input.webHold=false;controls.wireLatched=true;
 const doc=globalThis.document;globalThis.document={body:{classList:cls}};try{controls.syncTraversal(true);assert(!controls.wireLatched);assert(!game.input.webHold);}finally{if(doc===undefined)delete globalThis.document;else globalThis.document=doc;}
 pass('Failed/severed rope clears pending input and never auto-reconnects');
-const folder='docs/qa/mobile-traversal-2026-10-22';fs.mkdirSync(folder,{recursive:true});fs.writeFileSync(`${folder}/mechanics.json`,JSON.stringify({status:'PASS',checks:results},null,2)+'\n');
+class MapCity extends City{
+  initTextures(){for(const key of ['windowGlassTex','windowBrickTex','windowDarkTex','roadTex'])this[key]=new THREE.Texture();}
+  createHelipad(){}
+}
+const starts=[];
+for(const map of LOCAL_MAPS){
+  const city=new MapCity(new THREE.Scene(),map.id),actor={group:new THREE.Group(),update(){},fireWeb(){}};
+  const physics=new SwingPhysics(new THREE.Scene(),city,actor,new Proxy({},{get:()=>()=>{}}));physics.position.copy(city.getRooftopSpawn(95));physics.mobileTraversalAssist=true;
+  const g={city,physics,camera:new THREE.PerspectiveCamera(65,390/844,.2,1000),touchControls:{enabled:true},multiplayer:{solo:true}};
+  g.experience={safe:point=>PlayerExperience.prototype.safe.call({game:g},point)};
+  const original=physics.position.clone(),start=mobileStartingView(g);assert(start,`${map.id}: no accessible first mobile attachment`);assert(g.experience.safe(start.position));assert(physics.position.equals(original),'Searching changed live player position');
+  physics.position.copy(start.position);physics.facingAngle=start.yaw;const liveRig=new ThirdPersonCamera(g.camera);g.tpsCamera=liveRig;liveRig.mobileAutoFollow=true;GameApp.prototype.resetCamera.call(g);assert.equal(liveRig.pitch,.12,'Mobile reset used the steep desktop district preview angle');liveRig.update(1/60,start.position,new THREE.Vector3(),false,city.buildingMeshes,city.raycast.bind(city),start.yaw,{});assert(physics.findBestAnchor(g.camera),`${map.id}: collision-adjusted camera lost the starter pivot`);physics.position.copy(original);
+  const saved=mobileStartingView(g,false);if(saved)assert(saved.position.equals(original),'Saved position was relocated');
+  g.multiplayer.solo=false;assert.equal(mobileStartingView(g),null,'Online authority spawn was changed');g.multiplayer.solo=true;
+  starts.push({map:map.id,position:start.position.toArray(),yaw:start.yaw,relocated:!start.position.equals(original)});
+}
+pass('All five districts have a safe mobile starting view with a visible pivot; saved/online positions are preserved');
+const folder=process.env.MOBILE_TRAVERSAL_QA_DIR||'docs/qa/mobile-traversal-2026-10-25';fs.mkdirSync(folder,{recursive:true});fs.writeFileSync(`${folder}/mechanics.json`,JSON.stringify({status:'PASS',checks:results,starts},null,2)+'\n');

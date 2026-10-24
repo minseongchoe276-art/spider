@@ -31,3 +31,31 @@ export function followMobileCamera(rig,delta,velocity,isSwinging,facing,movement
   rig.yaw+=THREE.MathUtils.clamp(amount,-.75*delta,.75*delta);
   rig.pitch=THREE.MathUtils.damp(rig.pitch,isSwinging?-.08:.12,1.15*rig.followStrength,delta);
 }
+
+// One bounded search at solo entry, not automatic steering during gameplay.
+// A high harbor roof can have no usable overhead pivot; an existing safe street
+// is a better first launch. Saved positions and authoritative online spawns stay put.
+export function mobileStartingView(game,allowRelocate=true){
+  const p=game.physics,city=game.city;
+  if(!game.touchControls?.enabled||!game.multiplayer?.solo||city.isStreamed||!game.experience?.safe||!game.camera?.clone)return null;
+  const original=p.position.clone(),camera=game.camera.clone(),oldAssist=p.mobileTraversalAssist;
+  const points=[original];
+  if(allowRelocate)for(const [x,z]of [[0,0],[0,60],[0,-60],[60,0],[-60,0],[0,120]])points.push(new THREE.Vector3(x,.1,z));
+  try{
+    p.mobileTraversalAssist=true;
+    for(const point of points){
+      if(!game.experience.safe(point))continue;
+      p.position.copy(point);const center=point.clone().add(new THREE.Vector3(0,1.7,0));
+      for(const step of [0,1,-1,2,-2,3,-3,4,-4,5,-5,6,-6,7,-7,8]){
+        const yaw=(p.facingAngle||0)+step*Math.PI/8;
+        camera.position.copy(center).add(new THREE.Vector3(-Math.sin(yaw)*5.8*Math.cos(.12),5.8*Math.sin(.12),-Math.cos(yaw)*5.8*Math.cos(.12)));
+        camera.lookAt(center);camera.updateMatrixWorld(true);
+        if(p.findBestAnchor(camera))return {position:point.clone(),yaw};
+      }
+    }
+    return null;
+  }finally{
+    p.position.copy(original);p.mobileTraversalAssist=oldAssist;
+    p.bestAnchorCandidate=p.bestAnchorNormal=p.bestAnchorObject=null;
+  }
+}

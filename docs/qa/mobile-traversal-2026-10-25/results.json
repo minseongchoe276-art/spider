@@ -1,0 +1,94 @@
+{
+  "status": "PASS",
+  "date": "2026-10-25",
+  "regressions": [
+    {
+      "suite": "mobile-traversal",
+      "status": "PASS",
+      "exitCode": 0
+    },
+    {
+      "suite": "touch-controls",
+      "status": "PASS",
+      "exitCode": 0
+    },
+    {
+      "suite": "input-lifecycle",
+      "status": "PASS",
+      "exitCode": 0
+    },
+    {
+      "suite": "reticle-only",
+      "status": "PASS",
+      "exitCode": 0
+    },
+    {
+      "suite": "camera-motion-web",
+      "status": "PASS",
+      "exitCode": 0
+    },
+    {
+      "suite": "third-person-only",
+      "status": "PASS",
+      "exitCode": 0
+    },
+    {
+      "suite": "physics-invariants",
+      "status": "PASS",
+      "exitCode": 0
+    },
+    {
+      "suite": "dual-web",
+      "status": "PASS",
+      "exitCode": 0
+    },
+    {
+      "suite": "pendulum",
+      "status": "PASS",
+      "exitCode": 0
+    },
+    {
+      "suite": "web-continuity",
+      "status": "PASS",
+      "exitCode": 0
+    },
+    {
+      "suite": "combat-aim",
+      "status": "PASS",
+      "exitCode": 0
+    },
+    {
+      "suite": "session-flow",
+      "status": "PASS",
+      "exitCode": 0
+    },
+    {
+      "suite": "multiplayer",
+      "status": "PASS",
+      "exitCode": 0
+    }
+  ],
+  "build": "PASS",
+  "browserReview": {
+    "portrait": [
+      390,
+      844
+    ],
+    "landscape": [
+      844,
+      390
+    ],
+    "languages": [
+      "ko",
+      "en"
+    ],
+    "observed": [
+      "Tap retained an attached wire after pointer release",
+      "Second explicit button click released it",
+      "Jump and pause cleared the held wire state",
+      "Manual look and More menu remained usable",
+      "A valid attachment marker was visible at a mobile solo start"
+    ],
+    "environment": "Desktop browser with mobile viewport and the game's development touch-review mode; not a physical phone certification"
+  }
+}

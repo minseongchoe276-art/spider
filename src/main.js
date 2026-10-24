@@ -797,7 +797,8 @@ export class GameApp {
   }
 
   resetCamera() {
-    this.tpsCamera.placeBehind(this.physics.position, this.physics.facingAngle,this.city.mapId&&this.city.mapId!=='procedural'?.48:.16);
+    const pitch = this.touchControls?.enabled ? 0.12 : (this.city.mapId&&this.city.mapId!=='procedural' ? 0.48 : 0.16);
+    this.tpsCamera.placeBehind(this.physics.position,this.physics.facingAngle,pitch);
     this.camera.position.copy(this.tpsCamera.currentPos);
     this.camera.lookAt(this.tpsCamera.lookAtTarget);
     this.camera.updateMatrixWorld(true);
@@ -919,6 +920,7 @@ export class GameApp {
     this.hongKongAudit?.update(this.clock.elapsedTime);
 
     // Render 3D Scene
+    if(this.character?.model)this.character.model.visible=!this.tpsCamera?.localAvatarOccluded;
     if (this.assetsReady && !this.contextLost) this.renderer.render(this.scene, this.camera);
 
     // Render 2D Speed lines overlay

@@ -50,6 +50,7 @@ export class ThirdPersonCamera {
     this.raycaster = new THREE.Raycaster();
     this.probeRadius = 0.32;
     this.boomSide = 0;
+    this.localAvatarOccluded=false;
   }
 
   safeDistance(center, direction, distance, meshes, cityRaycast = null) {
@@ -293,6 +294,10 @@ export class ThirdPersonCamera {
     else this.lookAtTarget.lerp(targetLookAt, 1 - Math.exp(-18 * delta));
     this.modeChanged = false;
     this.camera.lookAt(this.lookAtTarget);
+    // A wall can safely retract the boom into the local model. Keep the world
+    // readable on a phone; hysteresis prevents flicker along a facade seam.
+    const bodyDistance=this.camera.position.distanceTo(center);
+    this.localAvatarOccluded=!!this.mobileAutoFollow&&bodyDistance<(this.localAvatarOccluded?1.35:.95);
 
   }
 }

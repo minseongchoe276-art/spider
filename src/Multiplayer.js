@@ -1,3 +1,4 @@
+import {mobileStartingView} from './MobileTraversal.js';
 import {showLobbyView} from './LobbySelection.js';
 import {t,language} from './I18n.js';
 import * as THREE from 'three';
@@ -368,7 +369,13 @@ export class Multiplayer {
     game.isPlaying=true;game.isPaused=false;game.clearInput();game.audio.ensureContext();game.pointerLockWanted=true;
     game.physics.resetPosition();game.resetCamera();game.combat.cancel();game.combat.clearEnemies();
     if(game.combat.mode!=='web')game.combat.toggle(game.input);
-    game.experience?.restorePosition();game.applyPreferences();
+    const restored=game.experience?.restorePosition();
+    const start=mobileStartingView(game,!restored);
+    if(start){
+      game.physics.position.copy(start.position);game.physics.previousFixedPosition.copy(start.position);game.physics.renderPosition.copy(start.position);
+      game.physics.facingAngle=start.yaw;game.character.targetFacingAngle=start.yaw;game.resetCamera();
+    }
+    game.applyPreferences();
     this.render();
     game.showNotice('혼자 플레이 시작! 화면을 클릭해 카메라를 조작하세요. M 키로 전체 지도를 확인하세요.');
   }

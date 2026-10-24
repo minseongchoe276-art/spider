@@ -1,0 +1,64 @@
+{
+  "status": "PASS",
+  "checks": [
+    "Forward side-wall assistance, bounded ten-ray fan, exact desktop miss and automatic hand alternation",
+    "No rear, ground, out-of-range, obstructed or unprepared streamed attachments",
+    "30/60/144 FPS smooth follow, angular-speed limit, manual priority/grace, strafe stability and no reversal whip",
+    "Mobile wall retraction clears the local body from view and restores it after clearance; desktop visibility unchanged",
+    "Tap retains rope after finger lift; second tap releases; drag/cancel/capture-loss never fires; pause clears latch",
+    "Failed/severed rope clears pending input and never auto-reconnects",
+    "All five districts have a safe mobile starting view with a visible pivot; saved/online positions are preserved"
+  ],
+  "starts": [
+    {
+      "map": "procedural",
+      "position": [
+        99.6,
+        95.47369633906011,
+        90
+      ],
+      "yaw": 0,
+      "relocated": false
+    },
+    {
+      "map": "harbor",
+      "position": [
+        0,
+        0.1,
+        0
+      ],
+      "yaw": 0,
+      "relocated": true
+    },
+    {
+      "map": "gardens",
+      "position": [
+        -89.36,
+        56.1,
+        91.36
+      ],
+      "yaw": 1.1780972450961724,
+      "relocated": false
+    },
+    {
+      "map": "old-town",
+      "position": [
+        -106.88,
+        68.1,
+        -102.88
+      ],
+      "yaw": -1.9634954084936207,
+      "relocated": false
+    },
+    {
+      "map": "skyline",
+      "position": [
+        -120.88,
+        80.1,
+        -120.88
+      ],
+      "yaw": 0,
+      "relocated": false
+    }
+  ]
+}
