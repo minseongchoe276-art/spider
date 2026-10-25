@@ -28,7 +28,7 @@ import {PlayerExperience} from './PlayerExperience.js';
 import {CombatPractice} from './CombatPractice.js';
 import {startLoadingStatus} from './LoadingStatus.js';
 import {HudLayout} from './HudLayout.js';
-import {updateVitalsHud} from './VitalsHud.js';
+import {abilitySlotState,updateVitalsHud} from './VitalsHud.js';
 let stopLoadingStatus=()=>{};
 
 const ONE_SHOT_KEYS = new Set(['Space','KeyG','KeyE','KeyT','KeyC','KeyV','KeyQ','ControlLeft','ControlRight']);
@@ -841,13 +841,18 @@ export class GameApp {
       const room=this.multiplayer?.room;
       const me=room?this.multiplayer.players?.find(p=>p.id===this.multiplayer.id):null;
       const health=me?.health??this.combat.health;
-      const fighting=!!(this.practice?.active || this.combat.mode==='combat') && !this.multiplayer?.spectating;
-      const visible=fighting || health<100 || (!!room && ['tag','custom'].includes(room.mode));
+      const spectating=!!(this.multiplayer?.spectating || me?.eliminated);
+      const playing=!!this.isPlaying && !this.isPaused;
+      const wire=this.combat.mode==='web' && !spectating;
+      const fighting=!!(this.practice?.active || this.combat.mode==='combat') && !spectating;
+      const visible=playing && (wire || fighting || spectating || health<100 || (!!room && ['tag','custom'].includes(room.mode)));
       updateVitalsHud(combatHud,{health,stamina:this.combat.stamina,mode:me?.eliminated?'spectating':this.combat.mode,
         warning:this.combat.enemies.some(e=>e.windup>0),visible,translate:t});
-      document.body?.classList?.toggle('combat-hud-active',fighting);
+      document.body?.classList?.toggle('combat-hud-active',fighting && playing);
+      document.body?.classList?.toggle('wire-hud',wire && playing);
+      document.body?.classList?.toggle('skills-hud',playing && !spectating);
       document.body?.classList?.toggle('vitals-active',visible);
-      document.body?.classList?.toggle('hud-low',health<=25);
+      document.body?.classList?.toggle('hud-low',health<=25 && playing);
       this.updateAbilityBar();
     }
   }
@@ -862,16 +867,27 @@ export class GameApp {
       const label=pad?padLabel[slot.dataset.key]:bindings?keyLabel(bindings[slot.dataset.key]):'';
       if(label && slot.textContent!==label)slot.textContent=label;
     }
-    const stamina=this.combat.stamina;
+    const slots=abilitySlotState({
+      mode:this.combat.mode,
+      locked:!!this.multiplayer?.locksCombatToggle?.(),
+      grounded:GROUNDED.includes(this.physics?.state),
+      stamina:this.combat.stamina,
+      specialCooldown:this.combat.specialCooldown||0,
+      zipCooling:(this.physics?.zipCooldown||0)>0 || this.physics?.state==='WEB_ZIP',
+    });
+    if(bar.dataset.mode!==slots.mode)bar.dataset.mode=slots.mode;
+    if(bar.getAttribute('aria-label')!==slots.label)bar.setAttribute('aria-label',slots.label);
     const heavy=bar.querySelector('[data-ability="heavy"]');
-    const cool=this.combat.specialCooldown||0;
     const time=heavy?.querySelector('.ability-time');
-    const shown=cool>0.05?cool.toFixed(1):'';
-    if(time && time.textContent!==shown)time.textContent=shown;
-    heavy?.classList.toggle('is-cooling',cool>0.05);
-    heavy?.classList.toggle('is-dry',stamina<35 || cool>0.05);
-    bar.querySelector('[data-ability="zip"]')?.classList.toggle('is-dry',stamina<18);
-    bar.querySelector('[data-ability="dodge"]')?.classList.toggle('is-dry',stamina<18);
+    if(time && time.textContent!==slots.heavyTime)time.textContent=slots.heavyTime;
+    for(const [name,flags] of Object.entries(slots.slots)){
+      const slot=bar.querySelector(`[data-ability="${name}"]`);
+      if(!slot)continue;
+      slot.classList.toggle('is-active',flags.active);
+      slot.classList.toggle('is-unavailable',flags.unavailable);
+      slot.classList.toggle('is-dry',flags.dry);
+      slot.classList.toggle('is-cooling',flags.cooling);
+    }
   }
 
   updateWorldMarker() {

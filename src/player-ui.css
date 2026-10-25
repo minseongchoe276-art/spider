@@ -335,6 +335,7 @@ body.in-game #crosshair.hit .crosshair-ring { border-color: #fff; box-shadow: 0 
   display: none; position: fixed; z-index: 18; left: 50%; bottom: max(22px, env(safe-area-inset-bottom));
   transform: translateX(-50%); gap: 12px; align-items: end; pointer-events: none;
 }
+body.in-game.skills-hud:not(.touch-device) #ability-bar,
 body.in-game.combat-hud-active:not(.touch-device) #ability-bar { display: flex; }
 .ability {
   position: relative; width: 58px; height: 64px; display: grid; place-items: center; color: #f4f0ff;
@@ -354,6 +355,9 @@ body.in-game.combat-hud-active:not(.touch-device) #ability-bar { display: flex; 
 .ability-time:empty { display: none; }
 .ability.is-dry { color: #8e95a6; }
 .ability.is-cooling kbd { color: #fff; }
+#ability-bar[data-mode="web"] .ability.is-active { color: #e7fff6; filter: drop-shadow(0 0 8px #7dffe066) drop-shadow(0 8px 12px #0008); }
+#ability-bar[data-mode="combat"] .ability.is-active { color: #ffe4ea; filter: drop-shadow(0 0 8px #ff8fa366) drop-shadow(0 8px 12px #0008); }
+.ability.is-unavailable { color: #7c8494; filter: none; }
 
 body.in-game:not(.hud-swing) #hud-top-left { display: none !important; }
 body.hud-swing.touch-device #hud-top-left { visibility: visible; }
@@ -375,6 +379,9 @@ body.in-game #combat-status.vitals-hud:not(.hidden) {
 .vitals-emblem svg { width: 46px; height: 46px; }
 .vitals-stack { display: grid; gap: 6px; min-width: 168px; }
 .vitals-mode { display: none; margin: 0; }
+.vitals-hud.is-wire .vitals-mode, .vitals-hud.is-combat .vitals-mode { display: block; font-size: 11px; font-weight: 700; text-shadow: 0 1px 3px #000; }
+.vitals-hud.is-wire .vitals-mode { color: #b7f3e2; }
+.vitals-hud.is-combat .vitals-mode { color: #ffc4ce; }
 .vitals-hud.is-warning .vitals-mode, .vitals-hud.is-spectating .vitals-mode { display: block; color: #ffd7b0; font-size: 11px; font-weight: 700; text-shadow: 0 1px 3px #000; }
 .vitals-hud.is-spectating .vitals-mode { color: #d5e4f2; }
 .vitals-row { display: grid; grid-template-columns: max-content minmax(72px, 1fr) auto; align-items: center; gap: 8px; margin: 0; }
@@ -439,7 +446,7 @@ body.hud-covered.in-game.hud-web:not(.touch-device) #web-status-pill { display: 
   body.in-game:not(.touch-device) #minimap-panel { width: 148px !important; height: 148px; }
 }
 @media (max-width: 700px) {
-  body.in-game.combat-hud-active:not(.touch-device) #ability-bar { bottom: max(96px, calc(env(safe-area-inset-bottom) + 88px)); }
+  body.in-game.skills-hud:not(.touch-device) #ability-bar { bottom: max(96px, calc(env(safe-area-inset-bottom) + 88px)); }
 }
 @media (max-width: 560px) {
   body.in-game:not(.touch-device) #minimap-panel { width: 112px !important; height: 112px; }

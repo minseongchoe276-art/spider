@@ -22,6 +22,8 @@ export function updateVitalsHud(node,{health,stamina,mode,warning=false,visible=
   node.classList.toggle('is-low-stamina',stamina<12);
   node.classList.toggle('is-warning',!!warning);
   node.classList.toggle('is-spectating',mode==='spectating'&&!warning);
+  node.classList.toggle('is-wire',mode==='web'&&!warning);
+  node.classList.toggle('is-combat',mode==='combat'&&!warning);
   const title=node.querySelector('.vitals-mode');
   const text=translate(warning?'공격 예고! · 방어 / 회피':mode==='spectating'?'관전 중':mode==='combat'?'전투 모드':'와이어 모드');
   if(title.textContent!==text)title.textContent=text;
@@ -32,4 +34,32 @@ export function updateVitalsHud(node,{health,stamina,mode,warning=false,visible=
     if(meter.value!==value)meter.value=value;
     if(output.textContent!==shown)output.textContent=shown;
   }
+}
+
+// Wire mode is the default. Combat-only strikes stay marked unavailable there,
+// and the air zip lights up only while it can actually fire.
+export function abilitySlotState({mode='web',locked=false,grounded=true,stamina=100,specialCooldown=0,zipCooling=false}={}){
+  const wire=mode!=='combat';
+  const cool=specialCooldown>0.05;
+  return {
+    mode:wire?'web':'combat',
+    label:wire?'와이어 기술':'전투 기술',
+    heavyTime:!wire&&grounded&&cool?specialCooldown.toFixed(1):'',
+    slots:{
+      mode:{active:!locked,unavailable:locked,dry:false,cooling:false},
+      zip:{
+        unavailable:!wire&&!grounded,
+        active:(wire&&!grounded&&!zipCooling)||(!wire&&grounded&&stamina>=18),
+        dry:!wire&&grounded&&stamina<18,
+        cooling:wire&&!grounded&&zipCooling,
+      },
+      heavy:{
+        unavailable:wire,
+        active:!wire&&(grounded?stamina>=35&&!cool:stamina>=25),
+        dry:!wire&&(grounded?stamina<35||cool:stamina<25),
+        cooling:!wire&&grounded&&cool,
+      },
+      dodge:{unavailable:wire,active:!wire&&grounded&&stamina>=18,dry:!wire&&(stamina<18||!grounded),cooling:false},
+    },
+  };
 }
