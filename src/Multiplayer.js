@@ -380,7 +380,7 @@ export class Multiplayer {
     game.showNotice('혼자 플레이 시작! 화면을 클릭해 카메라를 조작하세요. M 키로 전체 지도를 확인하세요.');
   }
   finish(){this.pendingPunch=null;clearInterval(this.beginTimer);this.beginTimer=null;this.setSpectating(false);this.game.isPlaying=false;this.game.clearInput();this.game.setPaused(true);this.game.clickToPlayOverlay?.classList.add('hidden');this.clearAvatars();}
-  leaveLocal(){this.game.character.group.visible=true;this.rescueStarted=null;this.rescueTarget=null;if(this.goalMarker)this.goalMarker.visible=false;$('pursuit-hud').textContent='';$('spectate-next')?.classList.add('hidden');try{sessionStorage.removeItem('web-runner-room-resume');}catch{}this.arena=null;this.pulseUntil=0;this.game.practice?.stop();this.room=null;this.pendingPunch=null;clearInterval(this.beginTimer);this.beginTimer=null;this.spectating=false;this.solo=false;clearInterval(this.soloStartTimer);this.soloStartTimer=null;this.players=[];this.id=null;this.lastPhase=null;this.game.isPlaying=false;this.game.clearInput();this.game.setPaused(true);this.game.clickToPlayOverlay?.classList.add('hidden');this.clearAvatars();showLobbyView('solo');this.render();this.reportPresence();this.send({type:'list'});}
+  leaveLocal(){this.game.character.group.visible=true;this.rescueStarted=null;this.rescueTarget=null;this.goalLive=false;if(this.goalMarker)this.goalMarker.visible=false;$('pursuit-hud').textContent='';$('spectate-next')?.classList.add('hidden');try{sessionStorage.removeItem('web-runner-room-resume');}catch{}this.arena=null;this.pulseUntil=0;this.game.practice?.stop();this.room=null;this.pendingPunch=null;clearInterval(this.beginTimer);this.beginTimer=null;this.spectating=false;this.solo=false;clearInterval(this.soloStartTimer);this.soloStartTimer=null;this.players=[];this.id=null;this.lastPhase=null;this.game.isPlaying=false;this.game.clearInput();this.game.setPaused(true);this.game.clickToPlayOverlay?.classList.add('hidden');this.clearAvatars();showLobbyView('solo');this.render();this.reportPresence();this.send({type:'list'});}
   attack(kind,hand='left'){
     if(kind==='web'&&this.game.combat?.mode==='combat')return false;
     const me=this.players.find(p=>p.id===this.id);
@@ -485,7 +485,7 @@ export class Multiplayer {
   }
   renderPursuit() {
     const output=$('pursuit-hud');if(!output)return;
-    const me=this.players.find(p=>p.id===this.id);if(!this.arena||!me||this.room?.mode!=='tag'){output.textContent='';this.goalMarker&&(this.goalMarker.visible=false);return;}
+    const me=this.players.find(p=>p.id===this.id);if(!this.arena||!me||this.room?.mode!=='tag'){output.textContent='';this.goalLive=false;this.goalMarker&&(this.goalMarker.visible=false);return;}
     this.syncDowned(me);
     const point=this.arena.points[(me.progress||0)%this.arena.points.length];
     if(me.team==='runner'&&!me.eliminated&&point){const delta=new THREE.Vector3(point.x,point.y,point.z).sub(this.game.physics.position);
@@ -494,9 +494,10 @@ export class Multiplayer {
       if(down){const distance=Math.hypot(down.x-me.x,down.y-me.y,down.z-me.z);output.textContent+=` · ${down.name} 구조 ${Math.round(distance)}m`;
         if(distance<PURSUIT.reviveRadius){if(this.rescueTarget!==down.id){this.rescueTarget=down.id;this.rescueStarted=performance.now();}this.rescueStarted??=performance.now();output.textContent+=` · 구조 ${Math.min(100,Math.round((performance.now()-this.rescueStarted)/PURSUIT.reviveMs*100))}%`;}else this.rescueStarted=null;
       }else this.rescueStarted=null;
-      if(!this.goalMarker){this.goalMarker=new THREE.Mesh(new THREE.OctahedronGeometry(1.2),new THREE.MeshBasicMaterial({color:0x90ffdf,wireframe:true}));this.game.scene.add(this.goalMarker);}
-      this.goalMarker.visible=true;this.goalMarker.position.set(point.x,point.y+2,point.z);
-    }else{this.goalMarker&&(this.goalMarker.visible=false);output.textContent=me.eliminated?'관전 중 · 팀원이 가까이 오면 구조 가능':'추격 중 · 상대 방향과 거리를 확인하세요';}
+      if(!this.goalMarker){this.goalMarker=new THREE.Mesh(new THREE.OctahedronGeometry(1.2),new THREE.MeshBasicMaterial({color:0x90ffdf,wireframe:true,transparent:true,depthWrite:false}));this.game.scene.add(this.goalMarker);}
+      const fade=THREE.MathUtils.smoothstep(delta.length(),16,36);
+      this.goalLive=true;this.goalMarker.material.opacity=fade;this.goalMarker.visible=fade>0.04;this.goalMarker.position.set(point.x,point.y+2,point.z);
+    }else{this.goalLive=false;this.goalMarker&&(this.goalMarker.visible=false);output.textContent=me.eliminated?'관전 중 · 팀원이 가까이 오면 구조 가능':'추격 중 · 상대 방향과 거리를 확인하세요';}
   }
   syncDowned(me){const ids=new Set();for(const p of this.players){if(!p.eliminated||p.team!==me.team||!p.seen)continue;ids.add(p.id);let marker=this.downedMarkers.get(p.id);
     if(!marker){marker=new THREE.Mesh(new THREE.OctahedronGeometry(.7),new THREE.MeshBasicMaterial({color:0xffd57b,wireframe:true}));this.game.scene.add(marker);this.downedMarkers.set(p.id,marker);}marker.position.set(p.x,p.y+1.4,p.z);}
@@ -522,5 +523,5 @@ export class Multiplayer {
     }a.receive(p,p.pose);p.pose=null;}
     for(const [id,a] of this.avatars)if(!alive.has(id)){a.dispose();this.avatars.delete(id);}
   }
-  clearAvatars(){this.positionMarkers?.update([],this.game.physics.position,false);for(const overlay of [this.feedback?.output,this.feedback?.aimZone,this.feedback?.marker])if(overlay)overlay.hidden=true;if(this.goalMarker)this.goalMarker.visible=false;this.rescueStarted=null;this.rescueTarget=null;for(const a of this.avatars.values())a.dispose();this.avatars.clear();for(const marker of this.downedMarkers?.values()||[]){this.game.scene.remove(marker);marker.geometry.dispose();marker.material.dispose();}this.downedMarkers?.clear();}
+  clearAvatars(){this.positionMarkers?.update([],this.game.physics.position,false);for(const overlay of [this.feedback?.output,this.feedback?.aimZone,this.feedback?.marker])if(overlay)overlay.hidden=true;this.goalLive=false;if(this.goalMarker)this.goalMarker.visible=false;this.rescueStarted=null;this.rescueTarget=null;for(const a of this.avatars.values())a.dispose();this.avatars.clear();for(const marker of this.downedMarkers?.values()||[]){this.game.scene.remove(marker);marker.geometry.dispose();marker.material.dispose();}this.downedMarkers?.clear();}
 }

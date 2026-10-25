@@ -20,7 +20,7 @@ import { Preferences } from './Preferences.js';
 import { HongKongMinimap } from './Minimap.js';
 import { Multiplayer } from './Multiplayer.js';
 import { GROUNDED } from './MotionCatalog.js';
-import {canonicalKey} from './PlayerSettings.js';
+import {canonicalKey,keyLabel} from './PlayerSettings.js';
 import {SettingsPanel} from './SettingsPanel.js';
 import {GamepadInput} from './GamepadInput.js';
 import {TouchControls} from './TouchControls.js';
@@ -28,6 +28,7 @@ import {PlayerExperience} from './PlayerExperience.js';
 import {CombatPractice} from './CombatPractice.js';
 import {startLoadingStatus} from './LoadingStatus.js';
 import {HudLayout} from './HudLayout.js';
+import {updateVitalsHud} from './VitalsHud.js';
 let stopLoadingStatus=()=>{};
 
 const ONE_SHOT_KEYS = new Set(['Space','KeyG','KeyE','KeyT','KeyC','KeyV','KeyQ','ControlLeft','ControlRight']);
@@ -232,7 +233,7 @@ export class GameApp {
       const lobbyEdition = document.querySelector('.lobby-edition');
       if (lobbyEdition) lobbyEdition.textContent = `${this.city.profile.en.toUpperCase()} · OPEN WORLD`;
       const district = document.querySelector('.hud-district');
-      if (district) district.textContent = `${mapName(this.city.mapId||'procedural',language())} · ${t('자유 탐험')}`;
+      if (district) district.textContent = mapName(this.city.mapId||'procedural',language());
       const lobbyDescription = document.querySelector('.lobby-hero > p');
       if (lobbyDescription) lobbyDescription.textContent = t('지도를 고르고 탐험을 시작하세요.');
       const heading = document.querySelector('#overlay-click-to-play h2');
@@ -353,7 +354,7 @@ export class GameApp {
     setTimeout(() => {
       if (this.loadingScreen && !this.contextLost) {
         this.loadingScreen.classList.add('hidden');
-        window.CrazyGames?.SDK?.game?.gameplayStart?.();
+        globalThis.CrazyGames?.SDK?.game?.gameplayStart?.();
       }
     }, 400);
   }
@@ -645,6 +646,7 @@ export class GameApp {
     if(open && (!guide || !this.isPlaying || this.isPaused || this.contextLost))return;
     const wasSuspended=this.gameplaySuspended,wasOpen=!!this.helpOpen;
     this.helpOpen=open;
+    document.body?.classList?.toggle('help-open',!!open);
     if(guide && guide.classList.contains('hidden')===open)guide.classList.toggle('hidden');
     if(wasSuspended && !this.gameplaySuspended)this.clock?.getDelta();
     if(open){
@@ -695,11 +697,11 @@ export class GameApp {
       // that interval before resuming the simulation.
       if(this.isPaused)this.clock?.getDelta();
       this.settingsPanel?.cancel();
-      window.CrazyGames?.SDK?.game?.gameplayStart?.();
+      globalThis.CrazyGames?.SDK?.game?.gameplayStart?.();
     }
     this.isPaused = paused;
     if (paused) {
-      window.CrazyGames?.SDK?.game?.gameplayStop?.();
+      globalThis.CrazyGames?.SDK?.game?.gameplayStop?.();
       if(this.multiplayer?.room?.phase==='playing'){
         this.multiplayer.pendingPunch=null;
         this.combat?.cancel();
@@ -825,9 +827,94 @@ export class GameApp {
     this.showNotice('시작점으로 돌아왔습니다. 계속하기를 눌러 플레이하세요.');
   }
 
-  updateHUD(speedKmh, altitude, state) {
+  syncHudChrome() {
+    const admin=document.getElementById('admin-overlay');
+    const lobby=document.getElementById('online-overlay');
+    const covered=!!(this.isPaused || this.helpOpen || this.worldMap?.isOpen || (admin && !admin.classList.contains('hidden')) || (lobby && !lobby.classList.contains('hidden')));
+    document.body?.classList?.toggle('hud-covered', covered);
+    document.body?.classList?.toggle('help-open', !!this.helpOpen);
+  }
+
+  updateVitals() {
     const combatHud=document.getElementById('combat-status');
-    if(combatHud && this.combat){const airborne=!GROUNDED.includes(state);combatHud.textContent=this.multiplayer?.room?'':`${airborne?(this.combat.mode==='combat'?'공중 · 전투 모드':'공중 · 양손 에너지 와이어'):this.combat.mode==='web'?'에너지 와이어 이동':'전투'} · HP ${Math.ceil(this.combat.health)} · 기력 ${Math.ceil(this.combat.stamina)} · ${this.combat.enemies.some(e=>e.windup>0)?'공격 예고! · 방어 / 회피':'모드 '+this.preferences.values.settings.bindings.mode.replace('Key','')}`;combatHud.classList.toggle('hidden',!!this.multiplayer?.room || !(this.practice?.active || this.combat.mode==='combat'));}
+    if(combatHud && this.combat){
+      const room=this.multiplayer?.room;
+      const me=room?this.multiplayer.players?.find(p=>p.id===this.multiplayer.id):null;
+      const health=me?.health??this.combat.health;
+      const fighting=!!(this.practice?.active || this.combat.mode==='combat') && !this.multiplayer?.spectating;
+      const visible=fighting || health<100 || (!!room && ['tag','custom'].includes(room.mode));
+      updateVitalsHud(combatHud,{health,stamina:this.combat.stamina,mode:me?.eliminated?'spectating':this.combat.mode,
+        warning:this.combat.enemies.some(e=>e.windup>0),visible,translate:t});
+      document.body?.classList?.toggle('combat-hud-active',fighting);
+      document.body?.classList?.toggle('vitals-active',visible);
+      document.body?.classList?.toggle('hud-low',health<=25);
+      this.updateAbilityBar();
+    }
+  }
+
+  updateAbilityBar() {
+    const bar=document.getElementById('ability-bar');
+    if(!bar || !this.combat)return;
+    const bindings=this.preferences?.values?.settings?.bindings;
+    const pad=this.gamepad?.lastPad!=null && !this.touchControls?.enabled;
+    const padLabel={mode:'Y',zip:'X',heavy:'↓',dodge:'B'};
+    for(const slot of bar.querySelectorAll('kbd[data-key]')){
+      const label=pad?padLabel[slot.dataset.key]:bindings?keyLabel(bindings[slot.dataset.key]):'';
+      if(label && slot.textContent!==label)slot.textContent=label;
+    }
+    const stamina=this.combat.stamina;
+    const heavy=bar.querySelector('[data-ability="heavy"]');
+    const cool=this.combat.specialCooldown||0;
+    const time=heavy?.querySelector('.ability-time');
+    const shown=cool>0.05?cool.toFixed(1):'';
+    if(time && time.textContent!==shown)time.textContent=shown;
+    heavy?.classList.toggle('is-cooling',cool>0.05);
+    heavy?.classList.toggle('is-dry',stamina<35 || cool>0.05);
+    bar.querySelector('[data-ability="zip"]')?.classList.toggle('is-dry',stamina<18);
+    bar.querySelector('[data-ability="dodge"]')?.classList.toggle('is-dry',stamina<18);
+  }
+
+  updateWorldMarker() {
+    const node=document.getElementById('world-marker');
+    if(!node)return;
+    const playing=this.isPlaying && !this.isPaused && !this.gameplaySuspended && !this.multiplayer?.spectating;
+    const journey=this.multiplayer?.solo && !this.practice?.active ? this.experience?.journey?.target : null;
+    const goal=!journey && this.multiplayer?.goalLive ? this.multiplayer.goalMarker?.position : null;
+    const source=journey||goal;
+    if(!playing || !source || !this.camera || !this.physics?.position){node.hidden=true;node.classList.remove('is-edge');return;}
+    const point=this._markerPoint||(this._markerPoint=new THREE.Vector3());
+    point.set(source.x,source.y+(goal?0:2.6),source.z);
+    const flat=this._markerFlat||(this._markerFlat=new THREE.Vector3());
+    flat.set(source.x,source.y,source.z);
+    const dist=this.physics.position.distanceTo(flat);
+    const fade=THREE.MathUtils.smoothstep(dist,14,32);
+    if(!Number.isFinite(dist) || fade<0.04){node.hidden=true;node.classList.remove('is-edge');return;}
+    const projected=this._markerProjected||(this._markerProjected=new THREE.Vector3());
+    projected.copy(point).project(this.camera);
+    if(!Number.isFinite(projected.x) || !Number.isFinite(projected.y) || !Number.isFinite(projected.z)){node.hidden=true;node.classList.remove('is-edge');return;}
+    const view=this.renderer?.domElement;
+    const w=view?.clientWidth||window.innerWidth,h=view?.clientHeight||window.innerHeight;
+    const margin=64;
+    let sx=projected.x,sy=projected.y;
+    if(projected.z>1){sx=-sx;sy=-sy;}
+    const maxX=Math.max(0.35,1-(margin*2)/Math.max(w,1));
+    const maxY=Math.max(0.35,1-(margin*2)/Math.max(h,1));
+    const ax=Math.abs(sx)/maxX,ay=Math.abs(sy)/maxY;
+    const edge=projected.z>1 || ax>1 || ay>1;
+    if(edge){const scale=1/Math.max(ax,ay,1e-4);sx*=scale;sy*=scale;}
+    const left=(sx*0.5+0.5)*w,top=(-sy*0.5+0.5)*h;
+    node.hidden=false;
+    node.classList.toggle('is-edge',edge);
+    node.style.setProperty('--aim',`${Math.atan2(top-h/2,left-w/2)}rad`);
+    node.style.left=`${left}px`;
+    node.style.top=`${top}px`;
+    node.style.opacity=fade.toFixed(2);
+    const label=node.querySelector('b');
+    const text=`${Math.round(dist)} m`;
+    if(label && label.textContent!==text)label.textContent=text;
+  }
+
+  updateHUD(speedKmh, altitude, state) {
     // 1. Speedometer
     if (this.speedDisplay) {
       this.speedDisplay.textContent = Math.round(speedKmh);
@@ -865,6 +952,9 @@ export class GameApp {
         if (this.webStatusDot) this.webStatusDot.className = 'status-dot';
       }
     }
+    const heldWeb=(this.physics?.webs?.length||0)>0 || state==='WEB_ZIP';
+    document.body?.classList?.toggle('hud-swing', state === 'SWINGING' || state === 'WEB_ZIP' || speedKmh >= 55);
+    document.body?.classList?.toggle('hud-web', heldWeb);
   }
 
   animate() {
@@ -922,10 +1012,16 @@ export class GameApp {
       this.vfx.update(delta);
       // 4. Update HUD
       this.updateHUD(speedKmh, this.physics.position.y, this.physics.state);
+    } else {
+      document.body?.classList?.toggle('hud-swing', false);
+      document.body?.classList?.toggle('hud-web', false);
     }
 
     this.experience?.update(delta,elapsed);
     this.multiplayer?.update(delta);
+    this.updateVitals();
+    this.updateWorldMarker();
+    this.syncHudChrome();
     if (this.assetsReady) this.minimap?.update((spectating && this.multiplayer.spectatePoint()) || this.physics.renderPosition,
       this.physics.facingAngle, this.clock.elapsedTime);
 

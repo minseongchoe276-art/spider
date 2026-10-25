@@ -15,6 +15,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800;900&family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/src/style.css">
+  <link rel="stylesheet" href="/src/player-ui.css">
 </head>
 <body>
   <div id="game-container">
@@ -30,6 +31,28 @@
     <div id="crosshair">
       <div class="crosshair-dot"></div>
       <div class="crosshair-ring"></div>
+    </div>
+    <div id="speed-wash" aria-hidden="true"></div>
+    <div id="hurt-vignette" aria-hidden="true"></div>
+    <div id="world-marker" hidden aria-hidden="true"><i class="world-marker-aim"></i><i class="world-marker-gem"></i><b>0 m</b></div>
+    <div id="ability-bar" aria-label="전투 기술">
+      <div class="ability" data-ability="mode">
+        <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M4 17h6l3-8 5 14 3-8 2 2h5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <kbd data-key="mode">Q</kbd>
+      </div>
+      <div class="ability" data-ability="zip">
+        <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M18 4 8 18h8l-2 10 10-14h-8z" fill="currentColor"/></svg>
+        <kbd data-key="zip">E</kbd>
+      </div>
+      <div class="ability" data-ability="heavy">
+        <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 3 19 13 29 16 19 19 16 29 13 19 3 16 13 13z" fill="currentColor"/></svg>
+        <kbd data-key="heavy">G</kbd>
+        <b class="ability-time"></b>
+      </div>
+      <div class="ability" data-ability="dodge">
+        <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M6 22c6-2 8-8 8-14m0 0-5 4m5-4 4 5M14 24h12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <kbd data-key="dodge">Ctrl</kbd>
+      </div>
     </div>
 
     <!-- HUD Top-Left: Badge & Telemetry -->
@@ -249,6 +272,7 @@
         </label></div>
         <div id="extended-settings" class="pause-settings"></div>
         <details class="player-progress"><summary>위치 · 에너지 와이어</summary><label for="web-theme">에너지 와이어 색상</label><select id="web-theme"><option value="white">기본 흰색</option></select><button id="btn-save-position" type="button">안전 위치 저장</button><button id="btn-restore-position" type="button">저장 위치로 복귀</button></details>
+        <details class="player-progress" id="exploration-menu"><summary>탐험 안내 · 임무</summary><p id="journey-summary"></p><p id="journey-feedback" role="status"></p><p id="journey-result"></p><p>혼자 플레이에서 진행합니다. 언제든 중단하거나 다시 시작할 수 있습니다.</p><button id="btn-tutorial" type="button">기초 안내 다시 시작</button><button id="btn-tutorial-skip" type="button">기초 안내 닫기</button><button id="btn-lesson-practice" type="button">훈련 표적 시작</button><button id="btn-mission-rooftops" type="button">옥상 3곳 탐사</button><button id="btn-mission-discover" type="button">구역 3곳 탐방</button><button id="btn-mission-travel" type="button">도시 500m 순찰</button><button id="btn-mission-delivery" type="button">물품 회수 · 배달</button><button id="btn-mission-technique" type="button">이동 기술 훈련</button><button id="btn-mission-retry" type="button" hidden>목표 다시 준비</button><button id="btn-mission-repeat" type="button" disabled>최근 임무 다시 도전</button><button id="btn-mission-stop" type="button">임무 중단</button></details>
         <details class="player-progress"><summary>전투 연습</summary><p>현재 위치의 안전한 바닥에서 시작합니다. 온라인 경기에서는 사용할 수 없습니다.</p><select id="practice-type" aria-label="전투 연습 종류"><option value="dummy">훈련 표적</option><option value="melee">근접 상대</option><option value="ranged">원거리 상대</option><option value="shield">방패 상대</option><option value="mixed">혼합 상대</option></select><button id="btn-practice" type="button">연습 시작</button><button id="btn-practice-stop" type="button">연습 종료</button></details>
         <p class="data-credit">도시 데이터: 홍콩 Lands Department<br><a href="?city=procedural">로컬 도시로 플레이</a></p>
       </div>
@@ -264,6 +288,7 @@
           <div id="loading-bar-fill"></div>
         </div>
         <span id="loading-pct">0%</span>
+        <p id="loading-wait" aria-live="off"></p>
         <nav class="city-picker loading-city-picker" aria-label="로딩 중 지도 선택">
           <div class="city-options">
             <a href="?city=hong-kong" data-city="hong-kong"><b>홍콩</b><small>실제 3D 도시 탐험</small></a>

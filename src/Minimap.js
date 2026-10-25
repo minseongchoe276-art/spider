@@ -1,4 +1,4 @@
-import {t} from './I18n.js';
+import {t,language} from './I18n.js';
 import * as THREE from 'three';
 import {LOCAL_CITY} from './LocalCityLayout.js';
 
@@ -95,8 +95,8 @@ export function actorOverlayPoint(player,center,range,size,camera=null) {
 }
 
 export class HongKongMinimap {
-  constructor({ canvas, status, coordinates, rangeLabel, title, subtitle, city, combat, players }) {
-    Object.assign(this, { canvas, status, coordinates, rangeLabel, title, subtitle, city, combat, players });
+  constructor({ canvas, status, coordinates, rangeLabel, title, subtitle, city, combat, players, objective }) {
+    Object.assign(this, { canvas, status, coordinates, rangeLabel, title, subtitle, city, combat, players, objective });
     this.actorRoot=canvas?.parentElement?.querySelector?.('#minimap-actors');
     this.actorLabels=new Map();
     this.range = city?.isStreamed ? 220 : LOCAL_CITY.minimapRange;
@@ -109,8 +109,8 @@ export class HongKongMinimap {
     this.lastDraw = -Infinity;
     this.resize();
     if (!city?.isStreamed) {
-      if (this.title) this.title.textContent = city.profile?.en.toUpperCase() || 'LOCAL CITY';
-      if (this.subtitle) this.subtitle.textContent = city.profile?.tagEn.toUpperCase() || 'PROCEDURAL DISTRICT';
+      if (this.title) this.title.textContent = city.profile?.[language()==='en'?'en':'name'] || t('로컬 도시');
+      if (this.subtitle) this.subtitle.textContent = city.profile?.[language()==='en'?'tagEn':'tag'] || t('자유 탐험');
     }
     this.onResize = () => this.resize();
     window.addEventListener('resize', this.onResize);
@@ -166,7 +166,8 @@ export class HongKongMinimap {
     const r = this.range*1.4;
     this.clipPlanes[0].constant = r-position.x; this.clipPlanes[1].constant = r+position.x;
     this.clipPlanes[2].constant = r-position.z; this.clipPlanes[3].constant = r+position.z;
-    const actors = [{id:'self',position,facing:facingAngle,color:0xffffff},
+    const objective=this.objective?.();
+    const actors = [...(objective?[{id:'objective',position:objective,color:0xe5b46a}]:[]),{id:'self',position,facing:facingAngle,color:0xffffff},
       ...locatedPlayers(this.players?.() || [])
         .map(p => ({id:p.id,position:p,facing:p.facing,color:p.rescue?0xff6682:p.team==='police'?0x41d9ff:0xffce67})),
       ...(this.combat?.enemies || []).filter(e => e.health>0)
@@ -333,6 +334,12 @@ export class HongKongMinimap {
   }
 
   drawActors(ctx, position, radius, center) {
+    const objective=this.objective?.();
+    if(objective&&[objective.x,objective.y,objective.z].every(Number.isFinite)){
+      const marker=edgeMinimapMarker(objective,position,this.range,radius-10,center);
+      ctx.fillStyle='#e5b46a';ctx.strokeStyle='#101a24';ctx.lineWidth=2;
+      ctx.beginPath();ctx.moveTo(marker.x,marker.y-8);ctx.lineTo(marker.x+8,marker.y);ctx.lineTo(marker.x,marker.y+8);ctx.lineTo(marker.x-8,marker.y);ctx.closePath();ctx.fill();ctx.stroke();
+    }
     for(const player of locatedPlayers(this.players?.()||[])){
       const marker=edgeMinimapMarker(player,position,this.range,radius-10,center);ctx.fillStyle=player.rescue?'#ff6682':player.ally?'#7cffa9':player.team==='police'?'#41d9ff':'#ffce67';ctx.beginPath();ctx.arc(marker.x,marker.y,8,0,Math.PI*2);ctx.fill();
       ctx.strokeStyle='#ffffff';ctx.lineWidth=2.5;ctx.stroke();
@@ -342,7 +349,8 @@ export class HongKongMinimap {
     for (const enemy of this.combat?.enemies || []) {
       if (enemy.health <= 0 || !isInsideMinimap(enemy.position, position, this.range)) continue;
       const marker = worldToMinimap(enemy.position, position, this.range, radius, center);
-      ctx.fillStyle = '#ff4d6d'; ctx.beginPath(); ctx.arc(marker.x, marker.y, 3.5, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = '#ff4d6d'; ctx.beginPath(); ctx.arc(marker.x, marker.y, 5, 0, Math.PI * 2); ctx.fill();
+      ctx.strokeStyle = '#ffd5dc'; ctx.lineWidth = 1.5; ctx.stroke();
     }
   }
 
@@ -360,7 +368,7 @@ export class HongKongMinimap {
     const streamed = Boolean(this.city?.isStreamed);
     if (this.status) {
       const ready = !streamed || this.city?.isReady;
-      this.status.textContent = streamed ? (ready ? 'LIVE' : 'LOADING') : 'LOCAL';
+      this.status.textContent = streamed ? (ready ? t('연결됨') : t('불러오는 중')) : t('로컬');
       this.status.dataset.ready = String(ready);
     }
     if (this.coordinates) {

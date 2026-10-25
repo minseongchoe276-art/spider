@@ -3,22 +3,31 @@ import {GROUNDED} from './MotionCatalog.js';
 import {Progression} from './Progression.js';
 import {PerformanceBudget} from './PerformanceBudget.js';
 import {keyLabel} from './PlayerSettings.js';
+import {SoloJourney} from './SoloJourney.js';
 export class PlayerExperience {
   constructor(game,storage) {
     this.game=game;game.progression=new Progression(storage);this.saveTime=0;this.previewTime=0;this.visitTime=0;
     this.performance=new PerformanceBudget();this.performanceActive=false;
+    this.journey=new SoloJourney(game,storage);
     const geometry=new THREE.BufferGeometry().setFromPoints(Array.from({length:17},()=>new THREE.Vector3()));
     this.trajectory=new THREE.Line(geometry,new THREE.LineDashedMaterial({color:0x94f7e0,dashSize:1,gapSize:.8,transparent:true,opacity:.65}));
     this.trajectory.frustumCulled=false;this.trajectory.visible=false;game.scene.add(this.trajectory);
     const previousLanding=game.physics.onLanding;
     game.physics.onLanding=(position,impact,normal)=>{previousLanding?.(position,impact,normal);game.audio.playSurfaceStep?.('landing',Math.min(1,impact/30));};
     const previousRecovery=game.physics.onRecovery;
-    game.physics.onRecovery=reason=>{game.progression.resetTravel();previousRecovery?.(reason);};
+    game.physics.onRecovery=reason=>{game.progression.resetTravel();this.journey.resetSample();previousRecovery?.(reason);};
     const previousReset=game.physics.onReset;
-    game.physics.onReset=()=>{game.progression.resetTravel();previousReset?.();};
+    game.physics.onReset=()=>{game.progression.resetTravel();this.journey.resetSample();previousReset?.();};
     game.physics.onStuntCallback=(name,points)=>{if(!points)game.showStuntNotice(name,0);};
     game.character.onAirTrickComplete=()=>{};
-    game.combat.onHit=damage=>{game.tpsCamera.triggerShake(damage>=24?.16:.08);};
+    game.combat.onHit=damage=>{
+      game.tpsCamera.triggerShake(damage>=24?.16:.08);
+      const reticle=globalThis.document?.getElementById?.('crosshair');
+      if(!reticle)return;
+      reticle.classList.add('hit');
+      clearTimeout(game._hitFlash);
+      game._hitFlash=setTimeout(()=>reticle.classList.remove('hit'),160);
+    };
     game.physics.onWebFailure=reason=>{if(performance.now()>(this.lastFailure||0)+800){game.showNotice(reason);game.audio.playWebFailure?.();this.lastFailure=performance.now();}};
     document.getElementById('btn-save-position')?.addEventListener('click',()=>this.savePosition());
     document.getElementById('btn-restore-position')?.addEventListener('click',()=>this.restorePosition(true));
@@ -45,7 +54,7 @@ export class PlayerExperience {
     const saved=g.progression.data.safe[this.city];if(!saved){if(explicit)g.showNotice('이 지도에 저장된 위치가 없습니다.');return false;}
     const position=new THREE.Vector3().fromArray(saved);
     if(!this.safe(position)){if(explicit)g.showNotice('저장 위치의 지형이 준비되지 않았거나 안전하지 않습니다. 현재 위치를 유지합니다.');return false;}
-    g.clearInput();g.physics.resetPosition();g.physics.position.copy(position);g.physics.previousFixedPosition.copy(position);g.physics.renderPosition.copy(position);g.physics.velocity.set(0,0,0);g.physics.state='IDLE';g.resetCamera();
+    this.journey?.cancel();g.clearInput();g.physics.resetPosition();g.physics.position.copy(position);g.physics.previousFixedPosition.copy(position);g.physics.renderPosition.copy(position);g.physics.velocity.set(0,0,0);g.physics.state='IDLE';g.resetCamera();
     if(explicit)g.showNotice('저장 위치로 돌아왔습니다.');return true;}
   refreshProgress(){const g=this.game,d=g.progression.data,summary=document.getElementById('progress-summary');
     if(summary)summary.textContent='안전한 위치를 저장하고 다시 돌아올 수 있습니다.';
@@ -53,6 +62,7 @@ export class PlayerExperience {
   }
   update(delta,elapsed) {
     const g=this.game,p=g.physics,s=g.preferences.values.settings,active=g.isPlaying&&!g.isPaused&&!g.multiplayer?.spectating&&!g.gameplaySuspended;
+    this.journey?.update(delta);
     const ceiling={low:1,balanced:1.5,high:2}[g.preferences.values.quality];
     // Menus and hidden tabs are not gameplay performance samples. Preserve
     // the applied resolution while discarding stale pressure on transitions.
