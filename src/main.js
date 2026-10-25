@@ -14,7 +14,8 @@ import { SpeedLinesEffect } from './SpeedLines.js';
 import { WorldMap } from './WorldMap.js';
 import { DisplayMode } from './DisplayMode.js';
 import { VFXManager } from './VFX.js';
-import { UrbanGroundCity } from './UrbanGroundCity.js';
+// Loaded only for the streamed map; local cities do not download the tile/physics engine.
+let UrbanGroundCity;
 import { Preferences } from './Preferences.js';
 import { HongKongMinimap } from './Minimap.js';
 import { Multiplayer } from './Multiplayer.js';
@@ -25,6 +26,9 @@ import {GamepadInput} from './GamepadInput.js';
 import {TouchControls} from './TouchControls.js';
 import {PlayerExperience} from './PlayerExperience.js';
 import {CombatPractice} from './CombatPractice.js';
+import {startLoadingStatus} from './LoadingStatus.js';
+import {HudLayout} from './HudLayout.js';
+let stopLoadingStatus=()=>{};
 
 const ONE_SHOT_KEYS = new Set(['Space','KeyG','KeyE','KeyT','KeyC','KeyV','KeyQ','ControlLeft','ControlRight']);
 
@@ -108,6 +112,7 @@ export class GameApp {
     this.initInputListeners();
     this.initUIListeners();
     this.touchControls=new TouchControls(this);
+    this.hudLayout=new HudLayout(container);
     this.applyPreferences();
     this.multiplayer = new Multiplayer(this);
     this.displayMode = new DisplayMode(this);
@@ -205,6 +210,7 @@ export class GameApp {
     this.camera.aspect=width/height;this.camera.updateProjectionMatrix();
     this.renderer.setSize(width,height,false);
     this.speedLines?.resize(width,height);this.minimap?.resize();
+    this.hudLayout?.schedule();
   }
 
   initSystems() {
@@ -226,13 +232,13 @@ export class GameApp {
       const lobbyEdition = document.querySelector('.lobby-edition');
       if (lobbyEdition) lobbyEdition.textContent = `${this.city.profile.en.toUpperCase()} · OPEN WORLD`;
       const district = document.querySelector('.hud-district');
-      if (district) district.textContent = `${this.city.profile.en.toUpperCase()} · FREE ROAM`;
+      if (district) district.textContent = `${mapName(this.city.mapId||'procedural',language())} · ${t('자유 탐험')}`;
       const lobbyDescription = document.querySelector('.lobby-hero > p');
-      if (lobbyDescription) lobbyDescription.innerHTML = '건물 사이를 스윙하고, 추격전을 시작하고,<br>나만의 도시를 네 방식대로 누벼봐.';
+      if (lobbyDescription) lobbyDescription.textContent = t('지도를 고르고 탐험을 시작하세요.');
       const heading = document.querySelector('#overlay-click-to-play h2');
-      if (heading) heading.textContent = '로컬 도시가 기다리고 있습니다.';
+      if (heading) heading.textContent = mapName(this.city.mapId||'procedural',language());
       const footer = document.querySelector('.lobby-footer span:first-child');
-      if (footer) footer.innerHTML = 'SHADOW PULSE <b>·</b> LOCAL CITY';
+      if (footer) footer.textContent = `SHADOW PULSE · ${mapName(this.city.mapId||'procedural',language())}`;
       const credit = document.querySelector('.data-credit');
       if (credit) {
         credit.replaceChildren(document.createTextNode('도시 데이터: 절차 생성 로컬 도시'),document.createElement('br'));
@@ -281,6 +287,7 @@ export class GameApp {
       city: this.city,
       combat: this.combat,
       players: () => this.multiplayer?.minimapPlayers() || [],
+      objective: () => this.multiplayer?.solo&&!this.practice?.active?this.experience?.journey?.target:null,
     });
 
     this.city.onError = error => this.showLoadingError(error.message || '도시 데이터를 불러오지 못했습니다.');
@@ -325,17 +332,18 @@ export class GameApp {
   }
 
   onAssetsLoaded() {
-    if (this.city instanceof UrbanGroundCity && !this.city.isReady) {
+    if (this.city.isStreamed && !this.city.isReady) {
       this.updateLoadingProgress(75, '홍콩 도시의 건물·도로와 충돌 지형을 준비 중...');
       return;
     }
     if (this.assetsReady) return;
     this.assetsReady = true;
+    stopLoadingStatus();
     this.loadingScreen?.setAttribute('data-ready-ms', String(Math.round(performance.now())));
     this.loadingScreen?.setAttribute('data-character-ready-ms', String(Math.round(this.character.readyMilliseconds || 0)));
     this.loadingScreen?.setAttribute('data-city-ready-ms', String(Math.round(this.city.readyAt || 0)));
     this.readyMilliseconds=performance.now()-this.startupAt;
-    if (this.city instanceof UrbanGroundCity) {
+    if (this.city.isStreamed) {
       this.physics.resetPosition();
       this.resetCamera();
     }
@@ -345,6 +353,7 @@ export class GameApp {
     setTimeout(() => {
       if (this.loadingScreen && !this.contextLost) {
         this.loadingScreen.classList.add('hidden');
+        window.CrazyGames?.SDK?.game?.gameplayStart?.();
       }
     }, 400);
   }
@@ -686,9 +695,11 @@ export class GameApp {
       // that interval before resuming the simulation.
       if(this.isPaused)this.clock?.getDelta();
       this.settingsPanel?.cancel();
+      window.CrazyGames?.SDK?.game?.gameplayStart?.();
     }
     this.isPaused = paused;
     if (paused) {
+      window.CrazyGames?.SDK?.game?.gameplayStop?.();
       if(this.multiplayer?.room?.phase==='playing'){
         this.multiplayer.pendingPunch=null;
         this.combat?.cancel();
@@ -766,10 +777,12 @@ export class GameApp {
     const { muted, reducedMotion, quality,settings } = this.preferences.values;
     this.appliedFov=settings.fov;
     Object.assign(this.tpsCamera,{sensitivity:settings.sensitivity,invertY:settings.invertY,baseFov:settings.fov,maxFov:Math.min(95,settings.fov+12),shakeStrength:settings.shake,speedFov:settings.speedFov,followStrength:settings.follow});
+    document.body.classList.toggle('show-performance',!!settings.showPerformance);
     this.physics.aimAssist=false;
     this.physics.softBoundary=true;
     this.audio.configure?.(settings);
     for(const id of ['hud-top-left','minimap-panel','session-hud']){const el=document.getElementById(id);if(el)el.style.scale=String(settings.hudScale);}
+    this.hudLayout?.schedule();
     if (this.audio.isMuted !== muted) this.audio.toggleMute();
     const motionButton = document.getElementById('reduced-motion');
     motionButton?.setAttribute('aria-pressed', String(reducedMotion));
@@ -836,19 +849,19 @@ export class GameApp {
     // 3. Web Status Pill
     if (this.webStatusText && !this.webStatusText.textContent.includes('★')) {
       if (state === 'SWINGING') {
-        this.webStatusText.textContent = this.physics.webs?.length===2 ? 'DUAL TETHER SWING' : 'SWINGING';
+        this.webStatusText.textContent = this.physics.webs?.length===2 ? t('양손 스윙') : t('스윙 중');
         if (this.webStatusDot) this.webStatusDot.className = 'status-dot swinging';
       } else if (state === 'WALL_RUNNING') {
-        this.webStatusText.textContent = 'WALL RUN';
+        this.webStatusText.textContent = t('벽 이동');
         if (this.webStatusDot) this.webStatusDot.className = 'status-dot';
       } else if (state === 'FALLING') {
-        this.webStatusText.textContent = this.physics.velocity.y < -12 ? 'AIR DIVE' : 'SHORT FALL';
+        this.webStatusText.textContent = this.physics.velocity.y < -12 ? t('급강하') : t('공중');
         if (this.webStatusDot) this.webStatusDot.className = 'status-dot';
       } else if (['WEB_ZIP','LANDING','ROLLING','TURNING','JUMPING','MANTLING'].includes(state)) {
-        this.webStatusText.textContent = state.replace('_',' ');
+        this.webStatusText.textContent = t({WEB_ZIP:'와이어 당기기',LANDING:'착지',ROLLING:'구르기',TURNING:'방향 전환',JUMPING:'점프',MANTLING:'턱 오르기'}[state]);
         if (this.webStatusDot) this.webStatusDot.className = 'status-dot';
       } else {
-        this.webStatusText.textContent = this.combat?.mode==='combat'?'COMBAT READY':'PULSE READY';
+        this.webStatusText.textContent = this.combat?.mode==='combat'?t('전투 준비'):t('와이어 준비');
         if (this.webStatusDot) this.webStatusDot.className = 'status-dot';
       }
     }
@@ -871,7 +884,7 @@ export class GameApp {
     // TilesRenderer performs visibility/LOD work independently of gameplay.
     this.city.update(this.clock.elapsedTime);
     if (!this.assetsReady && this.character.isLoaded &&
-        (!(this.city instanceof UrbanGroundCity) || this.city.isReady)) this.onAssetsLoaded();
+        (!(this.city.isStreamed) || this.city.isReady)) this.onAssetsLoaded();
 
     const spectating = !!this.multiplayer?.spectating;
     const wasSuspended=!this.isPlaying || this.isPaused || spectating || this.gameplaySuspended;
@@ -921,7 +934,11 @@ export class GameApp {
 
     // Render 3D Scene
     if(this.character?.model)this.character.model.visible=!this.tpsCamera?.localAvatarOccluded;
-    if (this.assetsReady && !this.contextLost) this.renderer.render(this.scene, this.camera);
+    if (this.assetsReady && !this.contextLost && !globalThis.document?.hidden) {
+      const interactive=this.isPlaying&&!this.isPaused&&!this.gameplaySuspended;
+      const now=performance.now();
+      if(interactive||spectating||now-(this.lastIdleRender||0)>=100){this.renderer.render(this.scene,this.camera);this.lastIdleRender=now;}
+    }
 
     // Render 2D Speed lines overlay
     if (this.speedLines) {
@@ -931,11 +948,14 @@ export class GameApp {
 }
 
 // Bootstrap application on DOM ready or immediately if document is already ready
-function bootstrap() {
+async function bootstrap() {
   if (import.meta.env?.DEV && new URLSearchParams(location.search).has('motionAuditReview')) {
     import('./MotionAuditReview.js').then(m => m.startMotionAuditReview());
   } else if (import.meta.env?.DEV && new URLSearchParams(location.search).has('traversalPlaytest')) {
-    import('./TraversalPlaytest.js').then(m => m.startTraversalPlaytest(GameApp));
+    import('./TraversalPlaytest.js').then(async m => {
+      if(selectedCity(location.search)==='hong-kong')({UrbanGroundCity}=await import('./UrbanGroundCity.js'));
+      m.startTraversalPlaytest(GameApp);
+    });
   } else if (new URLSearchParams(location.search).has('webHandReview')) {
     import('./WebHandReview.js').then(m => m.startWebHandReview());
   } else if (new URLSearchParams(location.search).has('combatReview')) {
@@ -945,7 +965,16 @@ function bootstrap() {
   } else if (new URLSearchParams(location.search).has('motionReview')) {
     import('./MotionReview.js').then(m => m.startMotionReview());
   } else {
-    new GameApp();
+    stopLoadingStatus=startLoadingStatus(selectedCity(location.search)==='hong-kong');
+    try {
+      if(selectedCity(location.search)==='hong-kong')({UrbanGroundCity}=await import('./UrbanGroundCity.js'));
+      new GameApp();
+    }catch(error){
+      console.error(error);
+      const message=document.getElementById('loading-desc');if(message)message.textContent=t('도시 엔진을 불러오지 못했습니다. 연결을 확인한 뒤 다시 시도하세요.');
+      document.getElementById('loading-recovery')?.classList.remove('hidden');
+      document.getElementById('btn-retry-load')?.addEventListener('click',()=>location.reload());
+    }
   }
 }
 
