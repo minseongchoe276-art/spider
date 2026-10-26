@@ -1,6 +1,6 @@
 // Durations are gameplay time, independent of frame rate or animation assets.
 export const AIR_TRICKS = Object.freeze({
-  front: { label: '앞구르기', duration: .82, points: 250, x: 1, y: 0, z: 0 },
+  front: { label: '공중 백플립', duration: .85, points: 300, x: -1, y: 0, z: 0 },
 });
 export function selectAirTrick() {
   return 'front';

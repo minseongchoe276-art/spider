@@ -455,7 +455,7 @@ export class SwingPhysics {
     const trick = AIR_TRICKS[key];
     if (!Object.hasOwn(AIR_TRICKS, key) || this.character.isTricking) return false;
     if (this.character.webShotTimer>0 || this.webs.length || !['FALLING', 'JUMPING'].includes(this.state) || this.isSwinging) {
-      if (this.state === 'SWINGING') this.onStuntCallback?.('줄을 놓고 T로 공중 묘기를 연결하세요', 0);
+      if (this.state === 'SWINGING') this.onStuntCallback?.('줄을 놓고 R로 공중 백플립을 연결하세요', 0);
       return false;
     }
     if (this.character.contactTime < trick.duration + .15 || this.position.y < 3) {
@@ -574,12 +574,22 @@ export class SwingPhysics {
     this.jumpBuffer = Math.max(0, this.jumpBuffer - step);
     input.jump = false;
     this.velocity.clampLength(0, this.maxSpeed);
-    if (![...this.position, ...this.velocity].every(Number.isFinite) || this.position.y < -40 ||
+    if (![...this.position, ...this.velocity].every(Number.isFinite) || this.position.y < (this.city.isStreamed?-12:-40) ||
         Math.abs(this.position.x) > (this.city.playableHalfExtent || 2400) ||
         Math.abs(this.position.z) > (this.city.playableHalfExtent || 2400)) {
-      this.resetPosition(this.position.y < -40 ? 'fall' : 'boundary');
+      this.resetPosition(this.position.y < (this.city.isStreamed?-12:-40) ? 'fall' : 'boundary');
       break;
     }
+    }
+    this.recoverySampleTime=(this.recoverySampleTime||0)+Math.max(0,delta);
+    if(this.city.isStreamed&&this.recoverySampleTime>=.25&&['IDLE','RUNNING','SPRINTING'].includes(this.state)){
+      this.recoverySampleTime=0;
+      const support=this.city.collisionWorld?.groundSample(this.position,.5);
+      if(support&&hasMantleSupport(this.city,this.position,support.height)&&
+        !this.city.raycast?.(this.position.clone().add(new THREE.Vector3(0,.15,0)),new THREE.Vector3(0,1,0),1.65)){
+        this.streamedRecoveryPosition=this.position.clone();
+        this.city.collisionWorld.setRecoveryCollider?.(support.collider);
+      }
     }
     this.renderPosition.lerpVectors(this.previousFixedPosition, this.position, this.accumulator / step);
 
@@ -730,7 +740,8 @@ export class SwingPhysics {
     const inward=this.wallNormal.clone().negate();
     const chestHit=this.city.raycast?.(this.position.clone().add(new THREE.Vector3(0,.8,0)),inward,1.1);
     const lowerHit=this.city.raycast?.(this.position.clone().add(new THREE.Vector3(0,.2,0)),inward,1.1);
-    const wallHit=[chestHit,lowerHit].find(hit=>hit?.normal.dot(this.wallNormal)>.35);
+    const footHit=this.city.collisionWorld&&this.city.raycast?.(this.position.clone().add(new THREE.Vector3(0,-.65,0)),inward,1.1);
+    const wallHit=[chestHit,lowerHit,footHit].find(hit=>hit?.normal.dot(this.wallNormal)>.35);
     if(wallHit)this.character.wallDistance=wallHit.distance;
 
     // A jump pressed at the wall edge should still detach cleanly; on the
@@ -754,31 +765,29 @@ export class SwingPhysics {
     // real walkable surface. Otherwise release into a fall.
     const roofProbe=this.position.clone().addScaledVector(this.wallNormal,-0.8)
       .add(new THREE.Vector3(0,1.1,0));
+    const roofRange=this.city.collisionWorld?2.5:1.4;
     const roof=this.city.collisionWorld
-      ? this.city.collisionWorld.groundAt(roofProbe,1.4)
+      ? this.city.collisionWorld.groundAt(roofProbe,roofRange)
       : (this.city.colliders || []).filter(c => roofProbe.x >= c.minX && roofProbe.x <= c.maxX &&
           roofProbe.z >= c.minZ && roofProbe.z <= c.maxZ && c.maxY <= roofProbe.y &&
-          c.maxY >= roofProbe.y - 1.4).sort((a,b) => b.maxY-a.maxY)[0]?.maxY;
-    if (roof!==null && roof!==undefined && roof-this.position.y>=-0.2 && roof-this.position.y<0.9) {
+          c.maxY >= roofProbe.y - roofRange).sort((a,b) => b.maxY-a.maxY)[0]?.maxY;
+    if (roof!==null && roof!==undefined && roof-this.position.y>=-(this.city.collisionWorld?1.35:.2) && roof-this.position.y<0.9) {
       const plan=planMantle(this.city,this.position,this.wallNormal,roof);
       if(plan){
         this.character.cancelAirTrick?.();
         this.mantle=plan;this.velocity.set(0,0,0);this.state='MANTLING';return;
       }
-      // A parapet or blocked landing is not a request to let go. Keep the
-      // facade grip; continue to its higher lip, or hang if only the lower
-      // probe still has support. Never climb through missing headroom.
-      if(wallHit && (!chestHit || chestHit.normal.dot(this.wallNormal)<.35)){
+      if(!this.city.collisionWorld&&wallHit&&(!chestHit||chestHit.normal.dot(this.wallNormal)<.35)){
         this.velocity.set(0,0,0);
-        if(input.strafe){
-          this.velocity.crossVectors(new THREE.Vector3(0,1,0),this.wallNormal).multiplyScalar(input.strafe*2.8);
-          this.position.addScaledVector(this.velocity,delta);
-        }
+        if(input.strafe){this.velocity.crossVectors(new THREE.Vector3(0,1,0),this.wallNormal).multiplyScalar(input.strafe*2.8);this.position.addScaledVector(this.velocity,delta);}
         return;
       }
+      // Railing gaps can have no chest-height triangle while the feet still
+      // grip the facade. Keep climbing outside it until the hands can clear
+      // the top bar. The ordinary swept capsule still blocks actual ceilings.
     }
 
-    if (!wallHit || wallHit.normal.dot(this.wallNormal)<0.35) {
+    if (!wallHit || (!chestHit && !lowerHit && !Number.isFinite(roof)) || wallHit.normal.dot(this.wallNormal)<0.35) {
       this.state='FALLING';
       this.wallBuilding=null;
       this.velocity.addScaledVector(this.wallNormal,5);
@@ -921,7 +930,7 @@ export class SwingPhysics {
     if (input.left) moveDir.sub(camRight);
 
     const combat=this.combatMotion;
-    if(isGrounded && combat?.direction)moveDir.set(0,0,0);
+    if(isGrounded && (combat?.direction || combat?.plant))moveDir.set(0,0,0);
     if (moveDir.lengthSq() > 0.001) {
       moveDir.normalize();
       const nextFacingAngle = Math.atan2(moveDir.x, moveDir.z);
@@ -951,8 +960,8 @@ export class SwingPhysics {
         this.velocity.z = combat?.direction?targetVelocity.z:THREE.MathUtils.damp(this.velocity.z,targetVelocity.z,9,delta);
         this.state = input.sprint ? 'SPRINTING' : 'RUNNING';
       } else {
-        this.velocity.x = THREE.MathUtils.damp(this.velocity.x, 0, 8, delta);
-        this.velocity.z = THREE.MathUtils.damp(this.velocity.z, 0, 8, delta);
+        this.velocity.x = THREE.MathUtils.damp(this.velocity.x, 0, combat?.plant ? 32 : 8, delta);
+        this.velocity.z = THREE.MathUtils.damp(this.velocity.z, 0, combat?.plant ? 32 : 8, delta);
         // Idle state starts the appropriate stop clip while momentum decays.
         const brakingSpeed = Math.hypot(this.velocity.x, this.velocity.z);
         this.state = 'IDLE';
@@ -1097,7 +1106,14 @@ export class SwingPhysics {
           this.character.targetFacingAngle = this.facingAngle;
         }
       } else if (!['TURNING','LANDING','ROLLING'].includes(this.state)) {
-        this.state = moving ? (input.sprint ? 'SPRINTING' : 'RUNNING') : 'IDLE';
+        const slide = Math.hypot(this.velocity.x, this.velocity.z);
+        const dodge = this.combatMotion?.key?.startsWith('dodge');
+        const hit = this.combatMotion?.key === 'hit' || this.combatMotion?.key === 'hitHead';
+        // A released dodge or hit still carries speed. Idle here swapped the
+        // whole body to a still clip and popped the feet.
+        if (dodge) this.state = input.sprint && slide > 4.2 ? 'SPRINTING' : 'RUNNING';
+        else if (hit && slide > 0.45) this.state = slide > 4.2 || input.sprint ? 'SPRINTING' : 'RUNNING';
+        else this.state = moving ? (input.sprint ? 'SPRINTING' : 'RUNNING') : 'IDLE';
       }
     }
     const col = sweptWall ? { ...sweptWall, collided: true, isWall: true, pen: 0 } :
@@ -1150,7 +1166,10 @@ export class SwingPhysics {
     this.airTrickChain.clear();
     this.airTrickRepeats.clear();
     // Spawn on a nice rooftop
-    const spawn = this.city.getRooftopSpawn(95);
+    const saved=this.streamedRecoveryPosition;
+    const recover=reason&&this.city.isStreamed&&saved&&hasMantleSupport(this.city,saved,saved.y-.1)&&
+      !this.city.raycast?.(saved.clone().add(new THREE.Vector3(0,.15,0)),new THREE.Vector3(0,1,0),1.65);
+    const spawn = recover?saved.clone():this.city.getRooftopSpawn(95);
     this.position.copy(spawn);
     this.velocity.set(0, 0, 0);
     this.state = 'FALLING';

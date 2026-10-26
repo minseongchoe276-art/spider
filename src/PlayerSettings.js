@@ -1,6 +1,6 @@
 export const BINDINGS = {
   forward:'KeyW', backward:'KeyS', left:'KeyA', right:'KeyD', sprint:'ShiftLeft',
-  jump:'Space', wall:'KeyF', zip:'KeyE', trick:'KeyT', mode:'KeyQ', guard:'KeyB',
+  jump:'Space', wall:'KeyF', zip:'KeyE', trick:'KeyR', mode:'KeyQ', guard:'KeyB',
   heavy:'KeyG', dodge:'ControlLeft', recenter:'KeyC', camera:'KeyV',
 };
 export const SETTING_LIMITS = {
@@ -13,10 +13,10 @@ export const validBinding = value => typeof value==='string' && !['KeyH','KeyM']
 export function cleanSettings(saved={}) {
   if(!saved || typeof saved!=='object' || Array.isArray(saved))saved={};
   const result={invertY:false,webToggle:false,sprintToggle:false,aimAssist:false,autoQuality:true,
-    trajectory:false,bindings:{...BINDINGS}};
+    trajectory:false,showPerformance:false,bindings:{...BINDINGS}};
   for(const [key,[min,max,fallback]] of Object.entries(SETTING_LIMITS))
     result[key]=Number.isFinite(saved[key])?Math.max(min,Math.min(max,saved[key])):fallback;
-  for(const key of ['invertY','webToggle','sprintToggle','aimAssist','autoQuality','trajectory'])
+  for(const key of ['invertY','webToggle','sprintToggle','aimAssist','autoQuality','trajectory','showPerformance'])
     if(typeof saved[key]==='boolean')result[key]=saved[key];
   result.aimAssist=false;
   // Keep remaps bijective. Invalid or duplicate input restores the whole map.

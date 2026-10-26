@@ -1,5 +1,28 @@
 // Longest phrases are matched first; numbers and rebound control keys stay intact.
 export const EN = {
+'속도':'Speed',
+'구역 3곳 탐방':'Visit three districts','물품 회수 · 배달':'Collect and deliver','이동 기술 훈련':'Traversal training',
+'목표 다시 준비':'Prepare targets again','최근 임무 다시 도전':'Replay last mission',
+'탐험 안내 · 임무':'Exploration · Missions','기기 · 연결 진단':'Device · Connection diagnostics',
+'혼자 플레이에서 진행합니다. 언제든 중단하거나 다시 시작할 수 있습니다.':'Available in solo play. Stop or restart whenever you like.',
+'기초 안내 다시 시작':'Restart getting started','기초 안내 닫기':'Dismiss getting started','훈련 표적 시작':'Start training target',
+'옥상 3곳 탐사':'Survey three rooftops','새 구역 3곳 발견':'Discover three new districts','도시 500m 순찰':'Patrol 500m','임무 중단':'Stop mission',
+'성능·연결·안내·임무·경기 결과를 이 기기에만 기록합니다. 위치·이름·계정 정보는 포함하지 않습니다.':'Performance, connection, lesson, mission and match observations stay on this device. No positions, names or account information are included.',
+'진단 기록 다운로드':'Download diagnostics','연결 응답을 기다리는 중…':'Waiting for the connection…',
+'연결 지연이 큽니다. 명중 확인이 늦을 수 있습니다.':'High connection latency. Hit confirmation may be delayed.',
+'도시 엔진을 불러오지 못했습니다. 연결을 확인한 뒤 다시 시도하세요.':'Unable to load the city engine. Check your connection and retry.',
+
+'도시 탐험':'City exploration','연결됨':'Connected','로컬':'Local','지도를 고르고 탐험을 시작하세요.':'Choose a district and start exploring.',
+'일시정지':'Paused','설정은 변경 즉시 적용됩니다.':'Settings apply immediately.',
+'메뉴 닫기':'Close menu','플레이 중:':'During play:','반경':'radius','성능 정보 표시':'Show performance statistics',
+'양손 스윙':'Dual swing','스윙 중':'Swinging','급강하':'Diving','공중':'Airborne',
+'와이어 당기기':'Wire pull','착지':'Landing','구르기':'Rolling','방향 전환':'Turning','턱 오르기':'Climbing up',
+'전투 준비':'Combat ready','와이어 준비':'Wire ready','이동 · 카메라':'Movement · Camera',
+'와이어 · 공중 이동':'Wires · Aerial movement','경기 규칙':'Match rules',
+'당기기: 공중 전용':'Pull: airborne only','당기는 중':'Pulling','당기기 대기':'Pull cooldown','당기기 준비':'Pull ready',
+'화면 클릭: 카메라 조작 · H: 조작 가이드 · M: 전체 지도':'Click: camera control · H: controls · M: map',
+'전투 / 와이어':'Combat / wire','함께 탐험':'Explore together',
+
 '도시를':'Cross the', '가로질러.':'city.',
 '건물 사이를 스윙하고, 추격전을 시작하고,':'Swing between buildings, start a chase,',
 '홍콩의 하늘을 네 방식대로 누벼봐.':'and make the skies of Hong Kong your own.',
@@ -54,7 +77,7 @@ export const EN = {
 '혼자 플레이 시작! 화면을 클릭해 카메라를 조작하세요. M 키로 전체 지도를 확인하세요.':'Solo play started! Click the screen to control the camera. Press M for the world map.','자유 플레이 시작! 도시를 함께 탐험하세요.':'Free roam started! Explore the city together.','도망자는 에너지 와이어로만 이동합니다.':'Runners remain in wire mode.',
 '온라인에서는 개인 전투 연습을 시작할 수 없습니다.':'Combat practice is available only in solo play.','게임과 지형 로딩이 완료된 뒤 연습을 시작하세요.':'Wait for the game and terrain to finish loading before starting practice.','평평하고 충분히 넓은 바닥에서 연습을 시작하세요.':'Start practice on flat, open ground.','상대를 놓을 안전한 공간이 부족합니다. 넓은 옥상이나 거리에서 시작하세요.':'Not enough safe space for opponents. Try a wide rooftop or street.','전투 연습 · 붉은 예고는 회피, 근접 공격은 정면 방어 · 방패에는 훅 / 강공격':'Combat practice · Dodge red warnings, guard frontal melee attacks · Use hooks/heavy attacks against shields','전투 연습 완료 · 메뉴에서 다시 시작할 수 있습니다.':'Practice complete · Restart from the menu.',
 '방패 방어 · 훅이나 강공격으로 돌파하세요.':'Shield blocked · Break through with a hook or heavy attack.','대상 제압':'Target defeated','시작 위치에서 회복':'Recovered at the starting position',
-'대상 없음 · 건물을 향해 조준하세요.':'No target · Aim at a building.','거리가 맞지 않습니다 · 부착 범위 1~130m':'Out of range · Attachment range is 1–130m','장애물이 에너지 와이어 경로를 가립니다.':'An obstacle blocks the wire path.','줄을 놓고 T로 공중 묘기를 연결하세요':'Release the wire and press T for an air trick','묘기를 마칠 높이가 부족합니다':'Not enough height to complete a trick',
+'대상 없음 · 건물을 향해 조준하세요.':'No target · Aim at a building.','거리가 맞지 않습니다 · 부착 범위 1~130m':'Out of range · Attachment range is 1–130m','장애물이 에너지 와이어 경로를 가립니다.':'An obstacle blocks the wire path.','줄을 놓고 T로 공중 묘기를 연결하세요':'Release the wire and press T for an air trick','줄을 놓고 R로 공중 백플립을 연결하세요':'Release the wire and press R for an aerial backflip','묘기를 마칠 높이가 부족합니다':'Not enough height to complete a trick',
 '그래픽 연결이 중단되었습니다. 복구를 기다리거나 다시 불러오세요.':'Graphics connection lost. Wait for recovery or reload.','그래픽 연결 복구 완료. 계속하기를 눌러 재개하세요.':'Graphics restored. Press Continue to resume.','도시 데이터를 불러오지 못했습니다.':'Could not load city data.','도시 준비가 지연되고 있습니다. 재시도하거나 로컬 도시로 시작하세요.':'City loading is taking longer than expected. Retry or choose a local map.','도시 마천루 및 지형 생성 완료...':'City towers and terrain generated…','UrbanGround 홍콩 3D 도시 스트리밍 연결 중...':'Connecting to the Hong Kong 3D city stream…','홍콩 도시와 충돌 지형 준비 완료':'Hong Kong city and collision terrain ready','SHADOW PULSE 캐릭터 불러오는 중...':'Loading SHADOW PULSE character…','캐릭터 뼈대와 외형 준비 중...':'Preparing character rig and appearance…','스윙 및 질주 애니메이션 로드 중...':'Loading swing and sprint animations…','준비 완료!':'Ready!',
 '캐릭터 리소스를 불러오지 못해 대체 캐릭터로 실행합니다.':'Character resources could not load. Using a fallback character.','일부 모션을 불러오지 못했습니다. 가능한 대체 모션을 사용합니다.':'Some animations could not load. Using available alternatives.','안전한 시작점으로 돌아왔습니다.':'Returned to a safe starting position.','시작점으로 돌아왔습니다. 계속하기를 눌러 플레이하세요.':'Returned to the starting position. Press Continue to play.',
 '온라인 경기는 계속 진행됩니다 · H / Esc 닫기':'Online match continues · H / Esc to close','혼자 플레이 일시정지 · H / Esc 닫기':'Solo play paused · H / Esc to close','이 브라우저에서는 전체화면을 사용할 수 없습니다.':'Fullscreen is unavailable in this browser.','전체화면을 사용할 수 없습니다.':'Fullscreen is unavailable.','그래픽 연결을 복구한 뒤 계속할 수 있습니다.':'Wait for the graphics connection to recover before continuing.',
@@ -62,7 +85,7 @@ export const EN = {
 '모바일 게임 조작':'Mobile controls','게임 메뉴 열기':'Open game menu','게임 메뉴':'Game menu','전체 지도 열기':'Open world map','왼쪽 이동 영역':'Left movement area','이동 스틱 · 끝까지 밀면 질주':'Movement stick · Push to the edge to sprint','전투와 에너지 와이어 모드 전환':'Switch combat/wire mode','오른쪽 동작 · 누른 채 드래그로 조준':'Right actions · Hold and drag to aim','왼손 와이어 · 누른 채 드래그로 조준':'Left wire · Hold and drag to aim','점프 / 줄에서 뛰어내리기':'Jump / Leap off wire','와이어 집 / 전투 훅':'Wire zip / Combat hook','방어 · 누르고 유지':'Guard · Hold','회피 · 이동 스틱으로 방향 선택':'Evade · Choose direction with the stick','보조 동작과 시점 메뉴':'Extra actions and camera menu','보조 동작과 시점':'Extra actions and camera','오른손 와이어 · 누른 채 드래그로 조준':'Right wire · Hold and drag to aim','벽 이동 · 이동 스틱을 앞으로 유지':'Wall traversal · Hold the stick forward','더보기':'More','왼손 와이어':'Left Wire','오른손':'Right Hand','왼손':'Left Hand','묘기':'Trick','지도':'Map','메뉴':'Menu','이동':'Move','전투':'Combat','모드':'Mode',
 '정면 범위에 상대 없음 · 거리·높이·방향을 확인하세요':'No opponent ahead · Check distance, height and direction','아직 명중 확인 없음 · 거리·높이·가림·연결 상태를 확인하세요':'No hit confirmation yet · Check range, height, cover and connection','시작 보호 중 · 보호 시간이 끝난 뒤 공격하세요':'Spawn protection active · Wait until it ends to attack','벽이나 건물이 상대를 가리고 있습니다':'A wall or building blocks the opponent',
 '정면 방어 중 · 지상 좌우 60° · 피해 60% 감소 · 주먹 10 / 와이어 6 · 후방·공중 미적용':'Guarding · Grounded ±60° · 60% less damage · Punch 10 / Wire 6 · No rear or air protection','방어 자세 · 서버 방어 기능 업데이트 대기':'Guard stance · Waiting for server guard support',
-'내 HP':'Your HP','상대 HP':'Opponent HP','상대 정면 방어':'Opponent guarded','정면 방어':'Frontal guard','주먹':'Punch','거미줄':'Wire','에너지 와이어':'Energy Wire','기력':'Stamina','명중':'Hit','상대':'Opponent','플레이어':'Player','재사용까지':'Cooldown','서버 판정 중':'Awaiting server result','표시 영역에 상대 몸 중심을 넣으세요':'Place the opponent body center in the aim zone','조준 가능 · 서버 확인 전':'Aim ready · Not yet server confirmed','조준점에 상대 없음':'No opponent in reticle','가림':'Blocked','수평':'Horizontal','높이':'Height','좌우':'Cone ±','피해':'damage','간격':'Interval','벽 뒤·아군 피해 없음':'Walls block damage · No friendly fire','서버 확인 전':'Awaiting server confirmation','정면':'Front','공중 전용':'Air only','착지 후 주먹 공격':'Land to punch','와이어는 Q로 모드 전환 후 사용':'Press Q for wire mode',
+'내 HP':'Your HP','상대 HP':'Opponent HP','상대 정면 방어':'Opponent guarded','정면 방어':'Frontal guard','주먹':'Punch','거미줄':'Wire','에너지 와이어':'Energy Wire','체력':'Health','기력':'Stamina','명중':'Hit','상대':'Opponent','플레이어':'Player','재사용까지':'Cooldown','서버 판정 중':'Awaiting server result','표시 영역에 상대 몸 중심을 넣으세요':'Place the opponent body center in the aim zone','조준 가능 · 서버 확인 전':'Aim ready · Not yet server confirmed','조준점에 상대 없음':'No opponent in reticle','가림':'Blocked','수평':'Horizontal','높이':'Height','좌우':'Cone ±','피해':'damage','간격':'Interval','벽 뒤·아군 피해 없음':'Walls block damage · No friendly fire','서버 확인 전':'Awaiting server confirmation','정면':'Front','공중 전용':'Air only','착지 후 주먹 공격':'Land to punch','와이어는 Q로 모드 전환 후 사용':'Press Q for wire mode',
 '집: 공중 전용':'Zip: air only','집 이동 중':'Zipping','집 대기':'Zip cooldown','집 준비':'Zip ready','좌클릭 연결':'Left attached','좌클릭 준비':'Left ready','우클릭 연결':'Right attached','우클릭 준비':'Right ready','좌클릭':'Left click','우클릭':'Right click','공중':'Airborne','집':'Zip','전투 모드':'Combat mode','와이어 모드':'Wire mode','공격 예고! · 방어 / 회피':'Incoming attack! · Guard / Evade','조준 대상':'Targeted','마지막 위치':'Last location','탈락':'Eliminated','구조':'Revive','거리':'Distance','미터':'meters','구역 경계':'District boundary','중심 방향으로 돌아가세요':'Return toward the center','구역 원점 기준':'District bounds','시작 보호':'Spawn protection','시작 여유':'Grace period','남은 시간':'Time left','생존':'Survivors','내 팀':'Your team',
 };
 Object.assign(EN,{
@@ -109,7 +132,7 @@ export const EN_TEMPLATES=[
  [/^탈출 준비 (.+) · 이동 목표 (.+)m · 고도 (.+)m · 쓰러진 팀원 곁에서 3초 유지하면 구조$/,'Escape progress $1 · Objective $2m · Altitude $3m · Stay beside a downed teammate for 3s to revive'],
 ];
 Object.assign(EN,{'로컬 5개 맵은 혼자 탐험 · 온라인 입장 시 네온 도심으로 이동':'Explore 5 local districts solo · Online play takes you to Neon Core','지도 변경':'Change district','지도 변경 시 로비로 돌아갑니다. 온라인 경기는 네온 도심에서 진행합니다.':'Changing district returns to the lobby. Online matches use Neon Core.'});
-Object.assign(EN,{'방향':'Direction','크기':'Size','승리':'wins','관전':'Spectate','대기 위치':'Last known position','지도 범위 밖':'Outside map range','로딩':'Loading','전':'ago'});
+Object.assign(EN,{'방향':'Direction','크기':'Size','승리':'wins','관전':'Spectate','대기 위치':'Last known position','지도 범위 밖':'Outside map range','로딩':'Loading','전':'ago','오픈소스 고지':'Open-source notices'});
 Object.assign(EN,{
 '동작 버튼':'Action buttons','놓기':'Release','연결 중':'Connecting','보조 와이어':'Extra Wire',
 '거미줄 놓기':'Release wire','거미줄 연결 · 한 번 누르기':'Connect wire · Tap once','거미줄 · 건물을 바라보세요':'Wire · Look toward a building',

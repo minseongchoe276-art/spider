@@ -5,12 +5,11 @@ import { AIR_TRICKS, trickRotation } from './AirTricks.js';
 import { createWebStrand, updateWebStrand } from './WebStrand.js';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
-import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader.js';
 import { retargetMotion, prepareMotion, boneId } from './MotionRetarget.js';
 import { MOTIONS, STRIDES, GROUNDED } from './MotionCatalog.js';
 import { fetchAsset, forEachConcurrent } from './AssetLoader.js';
 import { clone as cloneSkeleton } from 'three/addons/utils/SkeletonUtils.js';
-import { plantMovingFeet, poseWall, poseZipLegs, poseMantle, adaptPelvisToTerrain, footSupport, soleRotation, clearGroundSoles, fitGroundAnkle, alignCombatWrists, alignCombatGaze, alignStrikeFootwork, reuseHeldGroundPose, cacheGroundPose, clearImpactBody, prepareImpactBody } from './CharacterPose.js';
+import { plantMovingFeet, poseWall, poseZipLegs, poseMantle, adaptPelvisToTerrain, footSupport, soleRotation, clearGroundSoles, fitGroundAnkle, alignCombatWrists, alignCombatGaze, alignStrikeFootwork, poseCombatLife, heavyClipPhase, leadAirborneKnees, settleHeldStance, reuseHeldGroundPose, cacheGroundPose, clearImpactBody, prepareImpactBody } from './CharacterPose.js';
 import {createHandPoseRig,restoreHandPose,updateWebHandPose} from './WebHandPose.js';
 
 export class Character {
@@ -128,7 +127,7 @@ export class Character {
     this.group.add(this.placeholder);
 
     const gltfLoader = new GLTFLoader();
-    const fbxLoader = new FBXLoader();
+    const fbxLoader = null;
 
     try {
       this.onProgress?.(30, 'SHADOW PULSE 캐릭터 불러오는 중...');
@@ -228,7 +227,7 @@ export class Character {
         }
         const raw=await sources.get(item.url);
         const gltf=item.url.endsWith('.glb')?await new GLTFLoader().parseAsync(raw,'/models/sources/'):null;
-        const fbx = gltf?.scene || fbxLoader.parse(raw, '/models/');
+        const fbx = gltf?.scene || (fbxLoader ||= new (await import('three/examples/jsm/loaders/FBXLoader.js')).FBXLoader()).parse(raw, '/models/');
         if(gltf)fbx.animations=gltf.animations;
 
         if (fbx.animations && fbx.animations.length > 0) {
@@ -315,13 +314,22 @@ export class Character {
     }
 
     if (previousAction !== nextAction) {
-      this.transitionEndsAt=Math.max(this.transitionEndsAt || 0,this.mixer.time+Math.max(0,duration));
+      const interruptedFade=this.mixer.time<(this.transitionEndsAt || 0)-1e-6;
+      this.transitionEndsAt=this.mixer.time+Math.max(0,duration);
+      // An explicit cut owns the entire pose immediately, including when
+      // several older actions were still scheduled by an interrupted fade.
+      if(duration<=0)this.mixer.stopAllAction();
       // A previously fading action still contributes to the visible pose.
       // Resetting it to fade in from zero removes that contribution at once.
       // Capture the blended rig before stopping actions, then use one bounded
       // snapshot to blend into the restarted take without losing its pose.
       let frozenPose=null;
-      if(duration>0 && nextAction.isScheduled() && nextAction.getEffectiveWeight()>1e-5)
+      // A held dodge plants the raised foot after the clip. Blend out from
+      // that planted body, or the next clip snaps the foot back up.
+      const holdPlant=(this.reactSettle || 0)>0.35;
+      // A→B→C also interrupts A's fade-out. Letting A expire on its old
+      // clock leaves total weight below one and pulls the rig toward bind.
+      if(duration>0 && (interruptedFade || holdPlant || (nextAction.isScheduled() && nextAction.getEffectiveWeight()>1e-5)))
         frozenPose=this.captureTransitionPose();
       if(frozenPose){
         this.mixer.stopAllAction();
@@ -350,6 +358,24 @@ export class Character {
   }
 
   stopAnimation() {
+    // Mixer.stopAllAction restores clip bindings, but procedural IK, body
+    // tilt and contact filters live outside the mixer. A respawn must not
+    // ease out of the previous life's swing, strike or planted stance.
+    this.lastState=null;this.pendingTurn=null;this.landingAction=null;this.landingSpeed=0;
+    this.bodyPitch=0;this.bodyRoll=0;this.visualYaw=this.targetFacingAngle || 0;this.idleTime=0;
+    this.locomotionGait=null;this.pendingGait=null;this.gaitChangeTime=0;
+    this.endJointModel=null;this.endJointPose=null;
+    this.finalFeetModel=null;this.finalFeet=null;this.airFootRelease=0;
+    this.idleFootAnchors=null;this.idleFootRoot=null;this.idlePlantDelay=0;
+    this.movingPlants=null;this.movingReleases=null;this.plantLastFeet=null;
+    this.plantRoot=null;this.plantVelocityRoot=null;this.groundFootRotations=null;this.terrainPelvis=0;
+    this.combatClipToken=null;this.movingGuardWeight=0;
+    this.movingStrikeToken=null;this.movingStrikePose=null;this.movingStrikeFrom=null;this.movingStrikeBlend=0;
+    this.strikeHipYaw=0;this.strikeStrideScale=null;this.strikeMoveOffset=0;
+    this.reactStride=null;this.reactToken=null;this.reactSettle=0;this.reactSettleId=null;
+    this.combatGazeWeight=0;this.combatWristWeight=0;this.zipPoseWeight=0;
+    this.wallContacts=null;this.wallPoseRoot=null;this.wallPoseWeight=0;this.wallPhase=0;
+    this.wallTravelDirection=null;this.wallLiftWeight=0;this.wallSoleRotations=null;this.wallPoseNormal=null;
     this.impactLift=0;
     this.rollEntryPose=null;this.rollEntryElapsed=0;this.rollRenderedPose=null;this.rollReleaseTime=0;this.airModelRelease=0;
     restoreHandPose(this.webFingerRig);
@@ -593,27 +619,46 @@ export class Character {
     const gait=['RUNNING','SPRINTING'].includes(state);
     const strikeKey=!!(combat?.duration && ['jab','cross','hook','heavy','special'].includes(combat.key));
     const reactKey=!!(combat && (combat.key?.startsWith('dodge') || combat.key==='hit' || combat.key==='hitHead'));
-    // Dodges and hits are short stance clips. Swapping them in for a run
-    // dragged the planted feet along the capsule. A punch opened during roll
-    // recovery did the same under the roll blend, so the strike never showed.
-    // Those actions stay above the hips and the gait keeps the legs.
-    const movingStrike=strikeKey && ((combatGround && legsMoving) || (rollRecovering && gait));
+    // Ground strikes own the entire body: authored pelvis, knee flexion and
+    // rear-foot pivot carry the punch. Physics brakes travel during contact.
+    // A roll already in recovery retains its stride until safely released.
+    const movingStrike=strikeKey && rollRecovering && gait;
     const movingGuard=combatMoving && combat?.key==='guard';
-    const movingReact=reactKey && gait && (combatGround || rollRecovering);
+    const dodgeKey=!!combat?.key?.startsWith('dodge');
+    const hitKey=combat?.key==='hit' || combat?.key==='hitHead';
+    const playingKey=Object.entries(this.actions).find(([,action])=>action===this.activeAction)?.[0];
+    // The dodge sine starts at zero. Waiting for speed let the run fade into
+    // a walk before the latch, and that swap was the foot pop.
+    const incomingStride=STRIDES.includes(playingKey)?playingKey
+      :this.lastState==='SPRINTING'?'run'
+      :this.lastState==='RUNNING' && STRIDES.includes(this.locomotionGait)?this.locomotionGait
+      :null;
+    if((dodgeKey || hitKey) && grounded && combat.id!=null){
+      if(this.reactToken!==combat.id){
+        this.reactStride=incomingStride;
+        this.reactToken=combat.id;
+      }
+    }else if(!dodgeKey && !hitKey){this.reactStride=null;this.reactToken=null;}
+    const heldReact=!!(this.reactStride && this.actions[this.reactStride] && (dodgeKey || hitKey));
+    const movingReact=reactKey && (gait || heldReact) && (combatGround || rollRecovering);
     const recoveryOwnsBody=rollRecovering && !!combat && (combat.key==='guard' || combat.key==='combatIdle');
     if(combat && !movingStrike && !movingGuard && !movingReact && !recoveryOwnsBody && this.actions[combatClip] && (grounded || combat.key==='slam') && !['ROLLING','TURNING'].includes(state) && (state!=='LANDING'||combatClip==='slamLand'))name=combatClip;
     // A ground-pound recovery owns the landing until physics releases it,
     // even if its timed combat action ends before that landing state does.
     if(state==='LANDING' && name==='slamLand')this.landingAction='slamLand';
-    if (this.airTrick) name = this.airTrick.key === 'front' && this.actions.airTrick
-      ? 'airTrick' : this.actions.fallIdle ? 'fallIdle' : 'fall';
-    else if(this.isTricking && !grounded && !['WALL_RUNNING','MANTLING','WEB_ZIP'].includes(state) && this.actions.airTrick)name='airTrick';
+    if (this.airTrick) name = this.actions.fallIdle ? 'fallIdle' : 'fall';
+    else if(this.isTricking && !grounded && !['WALL_RUNNING','MANTLING','WEB_ZIP'].includes(state) && this.actions.fallIdle)name='fallIdle';
     if(this.networkAnimation && this.actions[this.networkAnimation.key] &&
       (!['ROLLING','LANDING'].includes(state)||this.networkAnimation.key===name))name=this.networkAnimation.key;
     const retreat=movingStrike && gait && horizontalSpeed>0.45 && Math.abs(this.strikeMoveOffset)>2;
-    // A reversed sprint lifts the knees like a backward bound. A jog stride
+    // A reversed sprint lifts the knees like a backward bound. regularRun
     // played backward reads as a fighting retreat at the same travel speed.
     if(retreat && name==='run' && this.actions.regularRun)name='regularRun';
+    // Keep the stride already under the feet. A slow dodge holds that pose
+    // instead of swapping to a walk or playing the sprint in slow motion.
+    // An idle dodge has no stride to keep, so it stays on the fighting stance.
+    if(heldReact)name=this.reactStride;
+    else if(dodgeKey && grounded && state!=='SPRINTING' && horizontalSpeed<3.4)name='combatIdle';
     this.fadeToAction(name, combatClip===name ? (combat.duration ? 0.065 : name==='guard' ? 0.18 : 0.12) : state==='MANTLING' && name==='idle' ? .3 : ['LANDING','ROLLING'].includes(state) ? 0.06 : grounded ? 0.18 : 0.12);
     if (STRIDES.includes(name)) {
       const measuredSpeed = this.activeAction?.getClip().userData?.nominalSpeed;
@@ -634,7 +679,10 @@ export class Character {
         this.activeAction?.setEffectiveTimeScale(this.strikeStrideScale ?? forwardScale);
       }else{
         this.strikeStrideScale=null;
-        this.activeAction?.setEffectiveTimeScale(forwardScale);
+        // A slow dodge or a dying hit must not play the stride in slow motion.
+        // Hold the pose. settleHeldStance then puts a raised foot down.
+        const holdStride=heldReact && ((dodgeKey && horizontalSpeed<3.4) || (hitKey && horizontalSpeed<2.8));
+        this.activeAction?.setEffectiveTimeScale(holdStride ? 0 : forwardScale);
       }
     }
     if(combatClip===name && combat.id && combat.id!==this.combatClipToken){this.activeAction?.reset().play();this.combatClipToken=combat.id;}
@@ -642,8 +690,9 @@ export class Character {
       // The gameplay action owns time, including a slam held until actual
       // contact. Advancing the mixer independently could land in mid-air.
       this.activeAction.enabled=true;this.activeAction.paused=false;
+      const played=combat.key==='heavy'?heavyClipPhase(combat.time/combat.duration):THREE.MathUtils.clamp(combat.time/combat.duration,0,1);
       this.activeAction.time=Math.min(this.activeAction.getClip().duration-1e-6,
-        this.activeAction.getClip().duration*THREE.MathUtils.clamp(combat.time/combat.duration,0,1));
+        this.activeAction.getClip().duration*played);
       this.activeAction.setEffectiveTimeScale(0);
     }
     if(name==='roll' && this.recoveryProgress!=null){
@@ -654,7 +703,7 @@ export class Character {
       this.activeAction.getClip().duration / AIR_TRICKS.front.duration);
     if(name==='wall')this.activeAction?.setEffectiveTimeScale(state==='MANTLING'?0:THREE.MathUtils.clamp(velocity.length()/(this.activeAction.getClip().userData.climbSpeed || 3),0,6));
     this.mixer.update(delta);
-    if(this.networkAnimation && this.activeAction===this.actions[this.networkAnimation.key]){
+    if(this.networkAnimation && this.combatAction?.key!=='heavy' && this.activeAction===this.actions[this.networkAnimation.key]){
       this.activeAction.time=this.networkAnimation.time;
       this.mixer.update(0);
     }
@@ -677,9 +726,9 @@ export class Character {
     // Recovery and airborne clips own the whole body. A fading guard layer
     // must not pin the chest upright while the pelvis rolls underneath it.
     const upperAction=movingStrike || movingReact;
-    if(!combatGround && !upperAction)this.movingGuardWeight=0;
+    if((!combatGround && !upperAction) || (strikeKey && !movingStrike))this.movingGuardWeight=0;
     this.movingGuardWeight=THREE.MathUtils.damp(this.movingGuardWeight || 0,
-      upperAction || (combatMoving && (this.combatStance || movingGuard))?1:0,18,delta);
+      upperAction || (!strikeKey && combatMoving && (this.combatStance || movingGuard))?1:0,18,delta);
     if((combatGround || upperAction) && (upperAction || this.movingGuardWeight>.001)) {
       const clip=this.actions[upperAction?combatClip:movingGuard?'guard':'combatIdle']?.getClip();
       if(clip) {
@@ -689,7 +738,7 @@ export class Character {
           return bone && property==='quaternion' && /^(spine|neck|head|leftshoulder|rightshoulder|leftarm|rightarm|leftforearm|rightforearm|lefthand|righthand)/.test(boneId(id))
             ?[{bone,sample:track.createInterpolant()}]:[];
         }));
-        const phase=upperAction && combat.duration?THREE.MathUtils.clamp(combat.time/combat.duration,0,1):0;
+        const phase=upperAction && combat.duration?(combat.key==='heavy'?heavyClipPhase(combat.time/combat.duration):THREE.MathUtils.clamp(combat.time/combat.duration,0,1)):0;
         // Enter guard before the strike instead of snapping from a running
         // arm swing. Contact stays fully weighted; recovery returns to guard.
         const weight=this.movingGuardWeight;
@@ -745,7 +794,7 @@ export class Character {
       ? Math.atan2(velocity.x, velocity.z) : this.targetFacingAngle;
     const currentYaw = this.visualYaw ?? yaw;
     this.visualYaw = currentYaw + Math.atan2(Math.sin(yaw - currentYaw),
-      Math.cos(yaw - currentYaw)) * (1 - Math.exp(-12 * delta));
+      Math.cos(yaw - currentYaw)) * (1 - Math.exp(-(strikeKey ? 40 : 12) * delta));
     if(Number.isFinite(this.networkVisualYaw))this.visualYaw=this.networkVisualYaw;
     this.bodyPitch = THREE.MathUtils.damp(this.bodyPitch,
       state === 'WEB_ZIP' ? THREE.MathUtils.clamp(Math.atan2(horizontalSpeed,Math.max(2,velocity.y))*0.65,0,1)
@@ -753,6 +802,7 @@ export class Character {
     this.model.rotation.set(this.bodyPitch + this.trickRotation, this.visualYaw, 0, 'YXZ');
     this.group.updateMatrixWorld(true);
     alignStrikeFootwork(this, delta, !!(movingStrike && gait && horizontalSpeed>0.35), this.strikeMoveOffset || 0, combat);
+    poseCombatLife(this, combat);
     if(!combatGround)this.combatGazeWeight=0;
     alignCombatGaze(this,delta,combatGround&&(this.combatStance||combat?.key==='guard')&&(!combat||['combatIdle','guard'].includes(combat.key)||combat.key.startsWith('dodge')));
     if ((state === 'WALL_RUNNING' || state==='MANTLING') && this.wallNormal) {
@@ -774,7 +824,7 @@ export class Character {
     if(['JUMPING','FALLING'].includes(state) && this.airModelRelease>0)
       this.model.position.y-=.1*THREE.MathUtils.smoothstep(this.airModelRelease/.14,0,1);
     this.model.position.x=0;this.model.position.z=0;
-    if (this.airTrick && (this.airTrick.key !== 'front' || !this.actions.airTrick)) {
+    if (this.airTrick) {
       const angles = trickRotation(this.airTrick.key, this.airTrick.elapsed);
       const rotation = new THREE.Quaternion().setFromEuler(new THREE.Euler(angles.x, angles.y, angles.z, 'YXZ'));
       this.model.quaternion.multiply(rotation);
@@ -830,6 +880,7 @@ export class Character {
       if(!heldGround){this.idlePlantDelay=0;this.idleFootAnchors=null;}
     }
     if(groundContacts){if(!heldGround)plantMovingFeet(this,delta);}
+    if(groundContacts)settleHeldStance(this,delta);
     else {this.movingPlants=null;this.movingReleases=null;this.plantLastFeet=null;this.plantVelocityRoot=null;this.groundFootRotations=null;this.groundSoleTargets=null;this.groundSoleSettling=null;}
     if(state==='WEB_ZIP') poseZipLegs(this,delta);
     else this.zipPoseWeight=0;
@@ -918,6 +969,7 @@ export class Character {
         }
       }
     }
+    if(['SWINGING','JUMPING','FALLING'].includes(state))leadAirborneKnees(this);
     constrainJoints(this.jointConstraints);
     if(!combatGround)this.combatWristWeight=0;
     this.combatWristWeight=THREE.MathUtils.damp(this.combatWristWeight || 0,

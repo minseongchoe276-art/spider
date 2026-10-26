@@ -31,7 +31,7 @@ import {HudLayout} from './HudLayout.js';
 import {abilitySlotState,updateVitalsHud} from './VitalsHud.js';
 let stopLoadingStatus=()=>{};
 
-const ONE_SHOT_KEYS = new Set(['Space','KeyG','KeyE','KeyT','KeyC','KeyV','KeyQ','ControlLeft','ControlRight']);
+const ONE_SHOT_KEYS = new Set(['Space','KeyG','KeyE','KeyT','KeyR','KeyC','KeyV','KeyQ','ControlLeft','ControlRight']);
 
 export class GameApp {
   constructor() {
@@ -377,7 +377,7 @@ export class GameApp {
       const gameplayKey = [
         'KeyW', 'KeyA', 'KeyS', 'KeyD', 'ArrowUp', 'ArrowDown',
         'ArrowLeft', 'ArrowRight', 'Home', 'End', 'PageUp', 'PageDown', 'ShiftLeft', 'ShiftRight', 'Space',
-        'KeyG', 'KeyE', 'KeyT', 'KeyF', 'KeyC', 'KeyV', 'KeyQ', 'KeyB', 'ControlLeft', 'ControlRight'
+        'KeyG', 'KeyE', 'KeyT', 'KeyR', 'KeyF', 'KeyC', 'KeyV', 'KeyQ', 'KeyB', 'ControlLeft', 'ControlRight'
       ].includes(k);
       if (gameplayKey && document.getElementById?.('controls-guide') && !document.getElementById('controls-guide').classList.contains('hidden')) return;
       if (gameplayKey && (!this.isPlaying || this.isPaused || this.multiplayer?.spectating)) return;
@@ -442,7 +442,7 @@ export class GameApp {
           if (this.combat.heavy(this.camera)) this.multiplayer?.attack('punch');
         } else this.physics.performAirJump(this.camera, this.physics.webAimNdc);
       }
-      if (k === 'KeyT') this.physics.performAirTrick(this.input);
+      if (k === 'KeyR' || k === 'KeyT') this.physics.performAirTrick(this.input);
       if (k === 'KeyM' && !e.repeat && this.isPlaying) { e.preventDefault(); this.worldMap.toggle(); return; }
       if (k === 'KeyH' && !e.repeat) this.toggleHelp();
       if (k === 'Escape' && !e.repeat) this.togglePause();
