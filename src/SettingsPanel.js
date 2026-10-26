@@ -1,5 +1,5 @@
 import { BINDINGS, SETTING_LIMITS, keyLabel, rebind } from './PlayerSettings.js';
-const labels={forward:'앞으로',backward:'뒤로',left:'왼쪽',right:'오른쪽',sprint:'질주',jump:'점프',wall:'벽 이동',zip:'와이어 당기기 / 훅',trick:'공중 묘기',mode:'전투 / 에너지 와이어',guard:'방어',heavy:'강공격',dodge:'회피',recenter:'카메라 정렬',camera:'시점'};
+const labels={forward:'앞으로',backward:'뒤로',left:'왼쪽',right:'오른쪽',sprint:'질주',jump:'점프',wall:'벽 이동',zip:'와이어 당기기 / 훅',trick:'공중 묘기',mode:'전투 / 에너지 와이어',guard:'방어',heavy:'강공격',crouch:'앉기 / 일어서기',prone:'엎드리기 / 일어서기',recenter:'카메라 정렬',camera:'시점'};
 const ranges={sensitivity:'마우스 / 스틱 감도',fov:'시야각',shake:'카메라 흔들림',speedFov:'속도 시야각 변화',follow:'자동 추적',speedLines:'속도선',effectsVolume:'효과음',environmentVolume:'환경음',musicVolume:'음악',hudScale:'HUD 크기'};
 const switches={invertY:'세로축 반전',webToggle:'에너지 와이어 클릭으로 유지 / 해제',sprintToggle:'질주 키로 유지 / 해제',autoQuality:'성능에 맞춰 해상도 조절',trajectory:'비행 방향 미리 보기',showPerformance:'성능 정보 표시'};
 export class SettingsPanel {
@@ -25,7 +25,7 @@ export class SettingsPanel {
       button.addEventListener('click',()=>{this.cancel();this.pending=action;button.textContent='새 키 입력 · Esc 취소';});this.buttons[action]=button;row.append(title,button);input.append(row);
     }
     const reset=document.createElement('button');reset.type='button';reset.textContent='기본 키로 복원';reset.addEventListener('click',()=>{game.clearInput();game.preferences.values.settings.bindings={...BINDINGS};this.cancel();this.save();});input.append(reset);
-    const pad=document.createElement('p');pad.textContent='게임패드: 왼쪽 스틱 이동 · 오른쪽 시점 · A 점프 · LT/RT 양손 에너지 와이어 · X 집 · Y 모드 · LB 방어 · RB 묘기 · B 회피 · 스틱 클릭 질주/정렬 · 십자키 시점/강공격/벽 이동 · Start 메뉴';input.append(pad);
+    const pad=document.createElement('p');pad.textContent='게임패드: 왼쪽 스틱 이동 · 오른쪽 시점 · A 점프 · LT/RT 양손 에너지 와이어 · X 집 · Y 모드 · LB 방어 · RB 묘기 · B 방어 · 스틱 클릭 질주/정렬 · 십자키 시점/강공격/벽 이동 · Start 메뉴';input.append(pad);
     window.addEventListener('keydown',event=>{
       if(!this.pending)return;event.preventDefault();event.stopImmediatePropagation();
       if(event.code==='Escape')return this.cancel();
@@ -53,7 +53,7 @@ export class SettingsPanel {
     document.querySelectorAll('#controls-guide .key-badge, #gameplay-quickbar kbd').forEach(el=>{
       el.dataset.originalKey??=el.textContent;
       const original=el.dataset.originalKey;
-      const names={Q:'mode',G:'heavy',Shift:'sprint',Space:'jump',E:'zip',T:'trick',C:'recenter',V:'camera',B:'guard'};
+      const names={Q:'mode',G:'heavy',Shift:'sprint',Space:'jump',E:'zip',T:'trick',C:'crouch',Z:'prone',X:'recenter',V:'camera',B:'guard'};
       if(names[original])el.textContent=keyLabel(this.game.preferences.values.settings.bindings[names[original]]);
       if(original==='W A S D')el.textContent=['forward','left','backward','right'].map(a=>keyLabel(this.game.preferences.values.settings.bindings[a])).join(' ');
       if(original==='SPACE')el.textContent=keyLabel(this.game.preferences.values.settings.bindings.jump).toUpperCase();

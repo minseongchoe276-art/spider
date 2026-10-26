@@ -1,0 +1,136 @@
+{
+  "passed": 14,
+  "cases": [
+    {
+      "label": "ground zip is unavailable",
+      "input": {
+        "mode": "web",
+        "grounded": true
+      },
+      "slot": "zip",
+      "flag": "unavailable"
+    },
+    {
+      "label": "air zip can fire",
+      "input": {
+        "mode": "web",
+        "grounded": false
+      },
+      "slot": "zip",
+      "flag": "active"
+    },
+    {
+      "label": "mantle owns the body",
+      "input": {
+        "mode": "web",
+        "grounded": false,
+        "zipBlocked": true
+      },
+      "slot": "zip",
+      "flag": "unavailable"
+    },
+    {
+      "label": "zip cooldown",
+      "input": {
+        "mode": "web",
+        "grounded": false,
+        "zipCooling": true
+      },
+      "slot": "zip",
+      "flag": "cooling"
+    },
+    {
+      "label": "combat hook costs 18",
+      "input": {
+        "mode": "combat",
+        "stamina": 17
+      },
+      "slot": "zip",
+      "flag": "dry"
+    },
+    {
+      "label": "special costs 35",
+      "input": {
+        "mode": "combat",
+        "stamina": 34
+      },
+      "slot": "heavy",
+      "flag": "dry"
+    },
+    {
+      "label": "special cooldown",
+      "input": {
+        "mode": "combat",
+        "specialCooldown": 2
+      },
+      "slot": "heavy",
+      "flag": "cooling"
+    },
+    {
+      "label": "air strike needs a target",
+      "input": {
+        "mode": "combat",
+        "grounded": false,
+        "airTarget": false
+      },
+      "slot": "heavy",
+      "flag": "unavailable"
+    },
+    {
+      "label": "air strike with target",
+      "input": {
+        "mode": "combat",
+        "grounded": false,
+        "airTarget": true,
+        "stamina": 25
+      },
+      "slot": "heavy",
+      "flag": "active"
+    },
+    {
+      "label": "guard costs 12",
+      "input": {
+        "mode": "combat",
+        "stamina": 11
+      },
+      "slot": "guard",
+      "flag": "dry"
+    },
+    {
+      "label": "guard cannot interrupt a strike",
+      "input": {
+        "mode": "combat",
+        "busy": true
+      },
+      "slot": "guard",
+      "flag": "unavailable"
+    },
+    {
+      "label": "hook cannot interrupt a strike",
+      "input": {
+        "mode": "combat",
+        "busy": true
+      },
+      "slot": "zip",
+      "flag": "unavailable"
+    },
+    {
+      "label": "special cannot interrupt a guard",
+      "input": {
+        "mode": "combat",
+        "blocking": true
+      },
+      "slot": "heavy",
+      "flag": "unavailable"
+    },
+    {
+      "label": "roll owns the body",
+      "input": {
+        "mode": "combat",
+        "strikeGround": false
+      },
+      "slot": "zip",
+      "flag": "unavailable"
+    }
+  ]
+}

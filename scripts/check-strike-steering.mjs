@@ -27,8 +27,10 @@ for(const fps of [24,60,144])for(const key of ['jab','cross','hook','heavy','spe
    tick();
    maxPhysicsError=Math.max(maxPhysicsError,angle(p.facingAngle,camera.userData.movementYaw));
    if(frame>fps*.14)maxVisualError=Math.max(maxVisualError,angle(c.visualYaw,p.facingAngle));
-   assert(c.activeAction===c.actions[key],`${key}: locomotion replaced strike legs`);
-   if(combat.action.time>=ATTACKS[key].from && combat.action.time<=ATTACKS[key].to)
+   const stride=['walk','regularRun','run'].some(name=>c.activeAction===c.actions[name]);
+   if(moving)assert(stride,`${key}: moving strike replaced the stride`);
+   else assert(c.activeAction===c.actions[key],`${key}: standing strike lost its lower body`);
+   if(!moving && combat.action.time>=ATTACKS[key].from && combat.action.time<=ATTACKS[key].to)
     maxContactSpeed=Math.max(maxContactSpeed,Math.hypot(p.velocity.x,p.velocity.z));
    const impact=c.actions[key].getClip().userData.impactPhase*ATTACKS[key].duration;
    if(['jab','cross','special'].includes(key) && Math.abs(combat.action.time-impact)<=dt*.51){
@@ -43,10 +45,10 @@ for(const fps of [24,60,144])for(const key of ['jab','cross','hook','heavy','spe
   }
   assert(maxPhysicsError<1e-6,`${key}: aim and hit direction diverged`);
   assert(maxVisualError<.15,`${key}: visible body lag ${maxVisualError}`);
-  assert(maxContactSpeed<.25,`${key}: contact foot slid at ${maxContactSpeed}m/s`);
+  if(!moving)assert(maxContactSpeed<.25,`${key}: contact foot slid at ${maxContactSpeed}m/s`);
   if(['jab','cross','special'].includes(key))assert(centeredFist,'Impact centre sample missing');
   results.push({fps,key,moving,maxPhysicsError,maxVisualError,maxContactSpeed,centeredFist});
  }finally{disposeRig(c);}
 }
 fs.writeFileSync('docs/qa/hud-strike-2026-10-26/steering.json',JSON.stringify(results,null,2)+'\n');
-console.log(`PASS ${results.length} standing/strafe+sprint strikes at 24/60/144FPS: camera rotation, pi seam, off-screen target exclusion, full-body clips, contact braking, anatomical bounds`);
+console.log(`PASS ${results.length} standing/strafe+sprint strikes at 24/60/144FPS: camera rotation, pi seam, off-screen target exclusion, stride kept while moving, standing contact braking, anatomical bounds`);

@@ -452,3 +452,33 @@ body.hud-covered.in-game.hud-web:not(.touch-device) #web-status-pill { display: 
   body.in-game:not(.touch-device) #minimap-panel { width: 112px !important; height: 112px; }
   body.in-game:not(.touch-device) .ability { width: 42px; height: 48px; }
 }
+
+/* Raster ability art with familiar, compact key caps. */
+#ability-bar { pointer-events: auto; gap: 9px; }
+button.ability { width: 60px; height: 64px; padding: 0; clip-path: none; border: 1px solid #a7b9ce45; border-radius: 13px; overflow: hidden; cursor: pointer; box-shadow: 0 5px 18px #0008; background: #0b111d; }
+.ability-art { position: absolute; inset: 0; background-image: url('/images/ability-atlas-v2.jpg'); background-size: 400% 100%; background-position: 0 50%; }
+[data-ability="zip"] .ability-art { background-position: 33.333% 50%; }
+[data-ability="heavy"] .ability-art { background-position: 66.667% 50%; }
+[data-ability="guard"] .ability-art { background-position: 100% 50%; }
+button.ability kbd { bottom: 4px; z-index: 1; padding: 3px 6px; border-radius: 4px; background: #060b14d9; font-size: 10px; }
+button.ability:disabled { cursor: default; }
+button.ability.is-unavailable .ability-art, button.ability.is-dry .ability-art { filter: grayscale(.8) brightness(.38); }
+button.ability:focus-visible { outline: 2px solid #a6fff2; outline-offset: 3px; }
+#match-fullscreen, #match-help { width: 38px; height: 38px; min-height: 38px; padding: 9px; display: grid; place-items: center; border: 1px solid #d5e8f32c; background: #0b1725c9; border-radius: 11px; }
+#match-fullscreen svg, #match-help svg { width: 20px; height: 20px; }
+#world-map { width: min(560px, calc(100vw - 24px)); padding: 16px; border-radius: 18px; }
+#world-map canvas { margin: 0 auto; }
+#world-map h2 { font-size: 19px; }
+#world-map header button { min-height: 36px; font-size: 12px; padding: 7px 10px; }
+#world-map header button kbd { display: none; }
+.map-toolbar { display: flex; justify-content: space-between; align-items: center; color: #a6bece; font-size: 11px; margin-bottom: 8px; }
+.map-toolbar[hidden] { display: none; }
+.map-toolbar > div { display: flex; gap: 8px; align-items: center; }
+.map-toolbar button { width: 30px; height: 30px; padding: 0; font-size: 18px; border-radius: 8px; }
+.map-toolbar button:disabled { opacity: .3; }
+#world-map footer { gap: 6px; font-size: 10px; }
+#world-map .world-map-destinations { gap: 5px; padding-bottom: 0; }
+#world-map .world-map-destinations a { font-size: 10px; padding: 5px 8px; }
+@media(max-height:550px) { #world-map { width: min(680px, calc(100vw - 24px)); } #world-map canvas { float: left; margin-right: 15px; } #world-map .world-map-destinations { max-width: 240px; } }
+#ability-bar[data-mode="combat"] [data-ability="zip"] .ability-art { background-position: 66.667% 50%; filter: hue-rotate(45deg); }
+#ability-bar[data-mode="combat"] [data-ability="zip"]:disabled .ability-art { filter: hue-rotate(45deg) grayscale(.8) brightness(.38); }

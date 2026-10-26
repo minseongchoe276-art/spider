@@ -22,8 +22,8 @@ export class CombatSystem {
     this.blocking=false;this.health=100;this.stamina=100;this.invulnerable=0;
     this.specialCooldown=0;this.enemies=[];this.serial=0;this.hurtCount=0;this.hits=0;this.elapsed=0;this.physics.webEnabled=true;this.physics.onReset=()=>{this.cancel();this.clearEnemies();this.health=this.stamina=100;this.specialCooldown=0;};
   }
-  cancel(){this.queued=null;this.action=null;this.blocking=false;this.character.combatAction=null;this.physics.combatMotion=null;}
-  clearHeld(){this.blocking=false;}
+  cancel(){this.stanceQueued=null;this.queued=null;this.action=null;this.blocking=false;this.character.combatAction=null;this.physics.combatMotion=null;}
+  clearHeld(){this.blocking=false;this.stanceQueued=null;}
   toggle(input={}) {
     this.mode=this.mode==='combat'?'web':'combat';this.cancel();
     this.character.combatStance=this.mode==='combat';
@@ -46,24 +46,35 @@ export class CombatSystem {
     this.face(camera);this.action={id:++this.serial,key,time:0,previous:0,duration,hits:new Set(),landed:false};
     this.character.combatAction={id:this.action.id,key,time:0,duration};
   }
+  standBefore(method,camera,input=null) {
+    const c=this.character;
+    if(!this.physics.lowStance && (c.crouchBlend || 0)+(c.proneBlend || 0)<.001)return false;
+    this.physics.lowStance=null;c.lowStance=null;
+    this.stanceQueued={method,camera,input:input?{...input}:null,expires:this.elapsed+1.2};
+    return true;
+  }
   attack(camera) {
     if(this.mode!=='combat' || !canStrike(this.physics) || this.blocking || this.stamina<4)return false;
     if(this.action){this.queue('attack',camera);return false;}
+    if(this.standBefore('attack',camera))return false;
     this.stamina-=4;this.start('jab',ATTACKS.jab.duration,camera);return true;
   }
   straight(camera) {
     if(this.action){this.queue('straight',camera);return false;}
     if(this.mode!=='combat' || !canStrike(this.physics) || this.blocking || this.stamina<7)return false;
+    if(this.standBefore('straight',camera))return false;
     this.stamina-=7;this.start('cross',ATTACKS.cross.duration,camera);return true;
   }
   heavy(camera) {
     if(this.mode!=='combat' || this.action || this.stamina<18 || !canStrike(this.physics))return false;
+    if(this.standBefore('heavy',camera))return false;
     this.stamina-=18;this.blocking=false;
     this.start('heavy',ATTACKS.heavy.duration,camera);
     return true;
   }
   special(camera) {
     if(this.mode!=='combat' || this.action || !canStrike(this.physics) || this.blocking || this.stamina<35 || this.specialCooldown>0)return false;
+    if(this.standBefore('special',camera))return false;
     this.stamina-=35;this.specialCooldown=4;
     this.start('special',ATTACKS.special.duration,camera);return true;
   }
@@ -76,6 +87,7 @@ export class CombatSystem {
   dodge(input,camera) {
     if(this.mode!=='combat' || !grounded(this.physics) || this.stamina<18 || this.action?.key.startsWith('dodge'))return false;
     if(this.action && this.action.time<this.action.duration*0.55)return false;
+    if(this.standBefore('dodge',camera,input))return false;
     this.cancel();this.stamina-=18;this.face(camera);
     const f=forward(this.physics),r=new THREE.Vector3(-f.z,0,f.x);
     const direction=input.left?r.negate():input.right?r:input.forward?f:f.negate();
@@ -92,6 +104,15 @@ export class CombatSystem {
     if(this.blocking && (!canStrike(this.physics)||this.stamina<12))this.blocking=false;
     // Grounded strikes and evasions cannot resume halfway through on landing.
     if(this.action && (!grounded(this.physics)||(ATTACKS[this.action.key]&&!canStrike(this.physics))) && this.action.key!=='slam')this.cancel();
+    if(this.stanceQueued){
+      const queued=this.stanceQueued;
+      if(queued.expires<this.elapsed || !canStrike(this.physics))this.stanceQueued=null;
+      else if(!this.physics.lowStance && (this.character.crouchBlend || 0)+(this.character.proneBlend || 0)<.001){
+        this.stanceQueued=null;
+        const started=queued.method==='dodge'?this.dodge(queued.input,queued.camera):this[queued.method](queued.camera);
+        if(started && queued.method!=='dodge')this.onDeferredStrike?.();
+      }
+    }
     const a=this.action;
     if(a) {
       a.previous=a.time;a.time+=delta;
@@ -106,11 +127,18 @@ export class CombatSystem {
     const stopping=this.character.activeAction && ['stop','runStop'].some(key=>this.character.activeAction===this.character.actions?.[key] && this.character.activeAction?.time<this.character.activeAction.getClip().duration-.05) || ['RUNNING','SPRINTING'].includes(this.character.lastState);
     // Track camera aim throughout a strike, including while standing still.
     if(current && ATTACKS[current.key])this.face(camera);
+    if(current && ATTACKS[current.key] && current.travel===undefined){
+      const speed=Math.hypot(this.physics.velocity.x,this.physics.velocity.z);
+      const stepping=!!(input && (input.forward || input.backward || input.left || input.right));
+      // Latch on the first combat step. Braking a running punch plants both
+      // feet under a pelvis that is still moving.
+      current.travel=stepping || speed>0.9;
+    }
     const dodgeSpeed=current?.direction?
       ({dodgeLeft:0.8,dodgeRight:0.8,dodgeBack:1.35,dodgeForward:2.3}[current.key] || 0)*
       Math.sin(Math.PI*THREE.MathUtils.clamp(current.time/current.duration,0,1)):0;
-    this.physics.combatMotion=current?{key:current.key,direction:current.direction || null,speed:dodgeSpeed,plant:!!ATTACKS[current.key]}:this.blocking?{key:'guard'}:null;
-    this.character.combatAction=current?{id:current.id,key:current.key,time:current.time,duration:current.duration}:
+    this.physics.combatMotion=current?{key:current.key,direction:current.direction || null,speed:dodgeSpeed,plant:!!ATTACKS[current.key] && !current.travel,travel:!!current.travel}:this.blocking?{key:'guard'}:null;
+    this.character.combatAction=current?{id:current.id,key:current.key,time:current.time,duration:current.duration,travel:!!current.travel}:
       this.blocking?{key:'guard'}:!stopping && this.mode==='combat' && this.physics.state==='IDLE' && Math.hypot(this.physics.velocity.x,this.physics.velocity.z)<0.15?{key:'combatIdle'}:null;
     if(current || this.blocking)this.character.targetFacingAngle=this.physics.facingAngle;
   }

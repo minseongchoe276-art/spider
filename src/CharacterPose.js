@@ -868,7 +868,9 @@ export function alignStrikeFootwork(c, delta, active, offset, combat) {
   const side = {jab: 0.02, cross: -0.028, hook: 0.018, heavy: -0.03, special: -0.02}[combat.key] || 0;
   const hips = find(c, 'hips');
   if (!hips?.parent) return;
-  const shift = new THREE.Vector3(side * drive, 0, 0.028 * drive).applyQuaternion(c.model.getWorldQuaternion(new THREE.Quaternion()));
+  // Side shift is the punch. Negative forward settles the pelvis back over
+  // the supporting stride instead of lunging it past the lead boot.
+  const shift = new THREE.Vector3(side * drive, 0, -0.018 * drive).applyQuaternion(c.model.getWorldQuaternion(new THREE.Quaternion()));
   const parent = hips.parent.getWorldQuaternion(new THREE.Quaternion()).invert();
   shift.applyQuaternion(parent).divide(hips.parent.getWorldScale(new THREE.Vector3()));
   hips.position.add(shift);
@@ -947,6 +949,143 @@ export function poseCombatLife(c, combat) {
     pitchModelX(c, find(c, 'spine'), 0.22 * drive - 0.24 * wind);
     pitchModelX(c, find(c, 'spine1'), 0.1 * drive - 0.12 * wind);
   }
+}
+
+function strikeDrive(combat) {
+  const phase = THREE.MathUtils.clamp((combat.time || 0) / (combat.duration || 1), 0, 1);
+  const visual = combat.key === 'heavy' ? heavyClipPhase(phase) : phase;
+  const impact = {jab: 0.28, cross: 0.57, hook: 0.43, heavy: 0.43, special: 0.56}[combat.key] ?? 0.45;
+  if (visual <= impact) return smooth01(visual / Math.max(impact, 0.05));
+  return 1 - smooth01((visual - impact) / Math.max(1 - impact, 0.05));
+}
+
+function punchSide(combat) {
+  // Jab, and the boxing-hook take shared by hook and heavy, extend the lead hand.
+  // Cross and the rear power shot extend the right.
+  return combat.key === 'cross' || combat.key === 'special' ? 'right' : 'left';
+}
+
+function shiftBone(bone, worldDelta) {
+  if (!bone?.parent || worldDelta.lengthSq() < 1e-8) return;
+  const local = worldDelta.applyQuaternion(bone.parent.getWorldQuaternion(new THREE.Quaternion()).invert())
+    .divide(bone.parent.getWorldScale(new THREE.Vector3()));
+  bone.position.add(local);
+  bone.updateMatrixWorld(true);
+}
+
+// The imported punches turn the chest off the aim and collapse the elbow
+// across the ribs. Put the chest back on the camera, drop the elbow under
+// a straight shot (outside on a hook), and sit a standing pelvis over the
+// boots. Moving punches leave the stride's pelvis alone.
+//
+// The lead arm is 57cm and the shoulder sits 21cm off the camera line.
+// A fist parked in front of that shoulder misses the aim by more than the
+// hit allows, and it cannot also reach the centre line. Land it part way
+// in, on a point the arm can actually hold.
+export function settleStrikeBalance(c, combat, moving) {
+  const key = combat?.key;
+  if (!combat?.duration || !['jab', 'cross', 'hook', 'heavy', 'special'].includes(key)) return;
+  const drive = strikeDrive(combat);
+  if (drive < 0.02) return;
+  const aim = new THREE.Vector3(Math.sin(c.targetFacingAngle || 0), 0, Math.cos(c.targetFacingAngle || 0));
+  if (aim.lengthSq() < 1e-6) return;
+  const hooking = key === 'hook' || key === 'heavy';
+  const left = find(c, 'leftshoulder'), right = find(c, 'rightshoulder');
+  if (left && right) {
+    const across = worldPosition(right).sub(worldPosition(left));
+    const facing = new THREE.Vector3().crossVectors(up, across);
+    facing.y = 0;
+    if (facing.lengthSq() > 1e-6) {
+      facing.normalize();
+      const turn = Math.atan2(up.dot(new THREE.Vector3().crossVectors(facing, aim)), facing.dot(aim));
+      const keep = hooking ? THREE.MathUtils.clamp(turn, -0.5, 0.5) : 0;
+      const fix = (turn - keep) * drive;
+      if (Math.abs(fix) > 0.012) {
+        yawWorld(find(c, 'spine'), fix * 0.34);
+        yawWorld(find(c, 'spine1'), fix * 0.40);
+        yawWorld(find(c, 'spine2'), fix * 0.26);
+      }
+    }
+  }
+  const side = punchSide(combat);
+  const arm = find(c, side + 'arm'), forearm = find(c, side + 'forearm'), hand = find(c, side + 'hand');
+  // aim (0,0,1) × up (0,1,0) = (-1,0,0), the character's right when facing +Z.
+  const characterRight = new THREE.Vector3().crossVectors(aim, up).normalize();
+  if (!moving && drive >= 0.15) {
+    const hips = find(c, 'hips'), leftFoot = find(c, 'leftfoot'), rightFoot = find(c, 'rightfoot');
+    if (hips?.parent && leftFoot && rightFoot && arm) {
+      const group = c.group.getWorldPosition(new THREE.Vector3());
+      const shoulderFwd = worldPosition(arm).sub(group).dot(aim);
+      const mid = worldPosition(leftFoot).add(worldPosition(rightFoot)).multiplyScalar(0.5);
+      const com = worldPosition(hips).sub(mid);
+      com.y = 0;
+      const forward = com.dot(aim);
+      const lateral = com.dot(characterRight);
+      // Keep the striking shoulder in front of the capsule. A deeper sit
+      // drops a straight punch short of the aim.
+      const back = Math.min(Math.max(0, forward - 0.045), 0.07, Math.max(0, shoulderFwd - 0.02)) * drive;
+      const across = THREE.MathUtils.clamp(lateral, -0.05, 0.05) * drive;
+      if (back + Math.abs(across) >= 0.004) {
+        shiftBone(hips, aim.clone().multiplyScalar(-back).addScaledVector(characterRight, -across));
+      }
+    }
+  }
+  if (!(arm && forearm && hand)) return;
+  const group = c.group.getWorldPosition(new THREE.Vector3());
+  let shoulder = worldPosition(arm);
+  const retreat = Math.abs(c.strikeMoveOffset || 0) > 2;
+  if (!hooking && !retreat) {
+    const ahead = shoulder.clone().sub(group).dot(aim);
+    const lean = Math.min(0.06, Math.max(0, 0.045 - ahead)) * drive;
+    const spine = find(c, 'spine');
+    if (lean > 0.001 && spine) shiftBone(spine, aim.clone().multiplyScalar(lean));
+    // A frozen transition may already contain the previous punch's lean.
+    // Bound the total offset, rather than adding another full drive to it.
+    const rest=c.restBonePose?.find(sample=>sample.bone===spine)?.p;
+    if(spine && rest){
+      const scale=spine.parent.getWorldScale(new THREE.Vector3());
+      const offset=spine.position.clone().sub(rest).multiply(scale).clampLength(0,.06);
+      spine.position.copy(rest).add(offset.divide(scale));spine.updateMatrixWorld(true);
+    }
+    shoulder = worldPosition(arm);
+  }
+  const wrist = worldPosition(hand);
+  const upperLen = shoulder.distanceTo(worldPosition(forearm));
+  const lowerLen = worldPosition(forearm).distanceTo(wrist);
+  const off = shoulder.clone().sub(group);
+  const shoulderFwd = off.dot(aim);
+  const shoulderLat = off.dot(characterRight);
+  const outward = characterRight.clone().multiplyScalar(side === 'right' ? 1 : -1);
+  let goal, pole;
+  if (hooking) {
+    const flat = wrist.clone().sub(shoulder);
+    flat.y = 0;
+    const sideOff = flat.dot(characterRight);
+    const goalReach = THREE.MathUtils.clamp(Math.max(flat.dot(aim), 0.36), 0.2, 0.72);
+    const goalSide = THREE.MathUtils.clamp(sideOff, -0.34, 0.42);
+    goal = shoulder.clone().addScaledVector(aim, goalReach).addScaledVector(characterRight, goalSide);
+    goal.y = wrist.y;
+    pole = outward.addScaledVector(up, -0.28);
+  } else {
+    // 40% of the shoulder offset stays, so the fist leads inside the
+    // shoulder instead of beside the head. 96% of the arm length leaves
+    // the elbow under that line.
+    const targetLat = shoulderLat * 0.40;
+    const span = (upperLen + lowerLen) * 0.96;
+    const drop = 0.025;
+    const latDelta = targetLat - shoulderLat;
+    const horiz = Math.sqrt(Math.max(0.04, span * span - drop * drop));
+    const fwdDelta = Math.sqrt(Math.max(0.04, horiz * horiz - latDelta * latDelta));
+    goal = group.clone().addScaledVector(aim, shoulderFwd + fwdDelta).addScaledVector(characterRight, targetLat);
+    goal.y = shoulder.y - drop;
+    pole = up.clone().multiplyScalar(-1).addScaledVector(outward, 0.42);
+  }
+  const upper = arm.quaternion.clone(), lower = forearm.quaternion.clone(), fist = hand.quaternion.clone();
+  c.solveLimb(arm, forearm, hand, goal, 0.97, pole);
+  arm.quaternion.slerpQuaternions(upper, arm.quaternion.clone(), drive);
+  forearm.quaternion.slerpQuaternions(lower, forearm.quaternion.clone(), drive);
+  hand.quaternion.copy(fist);
+  arm.updateMatrixWorld(true);
 }
 
 function signedKneeLead(hip, knee, foot, forward) {

@@ -1,0 +1,62 @@
+{
+  "profiles": [
+    "idle",
+    "walk",
+    "run",
+    "sprint",
+    "jump",
+    "fall",
+    "drop",
+    "swing",
+    "zip",
+    "wall",
+    "mantle",
+    "landing",
+    "roll",
+    "turnLeft",
+    "turnRight",
+    "guard",
+    "jab",
+    "cross",
+    "hook",
+    "heavy",
+    "special",
+    "hitHead",
+    "dodgeLeft",
+    "dodgeRight",
+    "dodgeBack",
+    "dodgeForward",
+    "slam",
+    "slamLand",
+    "trick"
+  ],
+  "timings": [
+    [
+      0.041666666666666664
+    ],
+    [
+      0.03333333333333333
+    ],
+    [
+      0.016666666666666666
+    ],
+    [
+      0.006944444444444444
+    ],
+    [
+      0.006944444444444444,
+      0.09,
+      0.03333333333333333,
+      0.016666666666666666
+    ]
+  ],
+  "cases": 307,
+  "frames": 3079,
+  "maxJointExcess": 5.134781488891349e-15,
+  "maxEndJointRate": 240.0000000000136,
+  "failures": [
+    "cross frame 5, dt 0.041666666666666664: torso lean 0.06192569832800376m exceeded 6cm (mantle -> cross)"
+  ],
+  "scope": "Render-state interruption robustness, including deliberately unreachable pairs. Actual physics reachability and contact quality are tested by separate gameplay suites.",
+  "currentPair": "mantle -> cross"
+}

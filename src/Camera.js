@@ -107,7 +107,7 @@ export class ThirdPersonCamera {
     if(this.mobileAutoFollow)this.mobileLookDelay=2.2;
     this.lockBehind = false;
     // Keep the camera where the player aimed it. Auto-centering after a pause
-    // makes the view drift unexpectedly; C is the deliberate recenter action.
+    // makes the view drift unexpectedly; X is the deliberate recenter action.
     this.orbitReturnTime = Infinity;
     this.yaw -= deltaX * sensitivity * this.sensitivity;
     // Input runs before combat/physics; publish aim now, not after the
@@ -187,7 +187,7 @@ export class ThirdPersonCamera {
 
   update(delta, playerPos, playerVelocity, isSwinging, cityMeshes = [], cityRaycast = null, facingAngle = null, movement = null) {
     // Camera-relative reverse/side movement must not steer its own reference.
-    // Keep that view through the stop; forward or C resumes body following.
+    // Keep that view through the stop; forward or X resumes body following.
     if (movement?.backward || movement?.left || movement?.right) this.followMovement = false;
     else if (movement?.forward) this.followMovement = true;
     if (this.isRecentering) {

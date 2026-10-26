@@ -94,14 +94,15 @@ export class AdminConsole {
 
   request() {
     if (!this.token) return;
-    const features = this.mp.serverCapabilities;
-    if (Array.isArray(features) && features.length && !features.includes('admin-overview')) {
-      clearTimeout(this.pending);
-      this.setStatus('방 서버 업데이트가 배포되면 접속 현황을 볼 수 있습니다.');
-      return;
-    }
     clearTimeout(this.pending);
-    this.pending = setTimeout(() => this.setStatus('응답이 없습니다. 서버 배포가 끝난 뒤 다시 시도하세요.'), 8000);
+    this.pending = setTimeout(() => {
+      const features = this.mp.serverCapabilities;
+      if (Array.isArray(features) && features.length && !features.includes('admin-overview')) {
+        this.setStatus('방 서버(Render) 업데이트 배포 대기 중이거나 응답이 없습니다.');
+      } else {
+        this.setStatus('응답이 없습니다. 잠시 후 다시 시도하세요.');
+      }
+    }, 8000);
     this.setStatus('현황을 불러오는 중…');
     if (!this.mp.send({ type: 'admin', token: this.token })) {
       clearTimeout(this.pending);

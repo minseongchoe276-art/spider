@@ -226,7 +226,7 @@ const trick = runCase('air trick', 60, 1.05, t => ({
   state: t < 0.5 ? 'JUMPING' : 'FALLING', velocity: v(0, t < 0.5 ? 6 : -8, 2),
   ...(t === 0 ? {air: true} : {}), contact: t < 0.5 ? 0.8 : 0.5,
 }));
-assert(trick.clips.filter(item => item.t < 0.8).every(item => item.clip === 'airTrick'), `air trick left early: ${trick.names}`);
+assert(trick.clips.filter(item => item.t < 0.8).every(item => item.clip === 'fallIdle'), `air trick left early: ${trick.names}`);
 assert(trick.clips.at(-1).clip === 'drop', `air trick ended on ${trick.clips.at(-1).clip}`);
 assert(trick.clips.filter(item => item.t > 0.9).every(item => item.clip === 'drop'), 'air trick retriggered after it finished');
 

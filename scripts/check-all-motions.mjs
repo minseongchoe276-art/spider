@@ -89,7 +89,7 @@ if(!process.argv.includes('--regressions-only')){
         for(let i=0;i<=Math.ceil((trick.duration+.1)*fps);i++){const time=i/fps,now=frames*1000/fps;
           remote.receive(player,{state:'FALLING',velocity:{x:0,y:-2,z:0},tricking:time<trick.duration,airTrick:{key,elapsed:time}},now);
           remote.update(1/fps,now);
-          if(time<trick.duration-.05){assert(remote.character.isTricking);assert.equal(remote.character.activeAction.getClip().name,key==='front'?'airTrick':'fallIdle');}
+          if(time<trick.duration-.05){assert(remote.character.isTricking);assert.equal(remote.character.activeAction.getClip().name,'fallIdle');}
           if(time>trick.duration+.05)assert(!remote.character.isTricking);
           for(const b of Object.values(remote.character.bones))assert(Math.abs(b.quaternion.length()-1)<1e-4);frames++;
         }

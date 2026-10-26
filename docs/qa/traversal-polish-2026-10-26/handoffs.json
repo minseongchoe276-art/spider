@@ -1,0 +1,281 @@
+{
+  "passed": 36,
+  "results": [
+    {
+      "case": "stationary-combat",
+      "fps": 24,
+      "maxLimbFrameDrift": 0
+    },
+    {
+      "case": "rendered-pose-handoff",
+      "fps": 24,
+      "from": "run",
+      "to": "jump",
+      "maxPosition": 0,
+      "maxAngle": 5.16191365590357e-8
+    },
+    {
+      "case": "rendered-pose-handoff",
+      "fps": 24,
+      "from": "jump",
+      "to": "swing",
+      "maxPosition": 0,
+      "maxAngle": 5.16191365590357e-8
+    },
+    {
+      "case": "rendered-pose-handoff",
+      "fps": 24,
+      "from": "swing",
+      "to": "drop",
+      "maxPosition": 0,
+      "maxAngle": 5.16191365590357e-8
+    },
+    {
+      "case": "rendered-pose-handoff",
+      "fps": 24,
+      "from": "drop",
+      "to": "wall",
+      "maxPosition": 0,
+      "maxAngle": 5.16191365590357e-8
+    },
+    {
+      "case": "rendered-pose-handoff",
+      "fps": 24,
+      "from": "wall",
+      "to": "idle",
+      "maxPosition": 0,
+      "maxAngle": 5.16191365590357e-8
+    },
+    {
+      "case": "rendered-pose-handoff",
+      "fps": 24,
+      "from": "fall",
+      "to": "land",
+      "maxPosition": 0,
+      "maxAngle": 5.960464477539063e-8
+    },
+    {
+      "case": "rendered-pose-handoff",
+      "fps": 24,
+      "from": "land",
+      "to": "run",
+      "maxPosition": 0,
+      "maxAngle": 5.16191365590357e-8
+    },
+    {
+      "case": "rendered-pose-handoff",
+      "fps": 24,
+      "from": "roll",
+      "to": "regularRun",
+      "maxPosition": 0,
+      "maxAngle": 4.2146848510894035e-8
+    },
+    {
+      "case": "stationary-combat",
+      "fps": 30,
+      "maxLimbFrameDrift": 0
+    },
+    {
+      "case": "rendered-pose-handoff",
+      "fps": 30,
+      "from": "run",
+      "to": "jump",
+      "maxPosition": 0,
+      "maxAngle": 5.16191365590357e-8
+    },
+    {
+      "case": "rendered-pose-handoff",
+      "fps": 30,
+      "from": "jump",
+      "to": "swing",
+      "maxPosition": 0,
+      "maxAngle": 5.16191365590357e-8
+    },
+    {
+      "case": "rendered-pose-handoff",
+      "fps": 30,
+      "from": "swing",
+      "to": "drop",
+      "maxPosition": 0,
+      "maxAngle": 5.16191365590357e-8
+    },
+    {
+      "case": "rendered-pose-handoff",
+      "fps": 30,
+      "from": "drop",
+      "to": "wall",
+      "maxPosition": 0,
+      "maxAngle": 5.16191365590357e-8
+    },
+    {
+      "case": "rendered-pose-handoff",
+      "fps": 30,
+      "from": "wall",
+      "to": "idle",
+      "maxPosition": 0,
+      "maxAngle": 5.16191365590357e-8
+    },
+    {
+      "case": "rendered-pose-handoff",
+      "fps": 30,
+      "from": "fall",
+      "to": "land",
+      "maxPosition": 0,
+      "maxAngle": 5.960464477539063e-8
+    },
+    {
+      "case": "rendered-pose-handoff",
+      "fps": 30,
+      "from": "land",
+      "to": "run",
+      "maxPosition": 0,
+      "maxAngle": 5.16191365590357e-8
+    },
+    {
+      "case": "rendered-pose-handoff",
+      "fps": 30,
+      "from": "roll",
+      "to": "regularRun",
+      "maxPosition": 0,
+      "maxAngle": 4.2146848510894035e-8
+    },
+    {
+      "case": "stationary-combat",
+      "fps": 60,
+      "maxLimbFrameDrift": 0
+    },
+    {
+      "case": "rendered-pose-handoff",
+      "fps": 60,
+      "from": "run",
+      "to": "jump",
+      "maxPosition": 0,
+      "maxAngle": 5.16191365590357e-8
+    },
+    {
+      "case": "rendered-pose-handoff",
+      "fps": 60,
+      "from": "jump",
+      "to": "swing",
+      "maxPosition": 0,
+      "maxAngle": 5.16191365590357e-8
+    },
+    {
+      "case": "rendered-pose-handoff",
+      "fps": 60,
+      "from": "swing",
+      "to": "drop",
+      "maxPosition": 0,
+      "maxAngle": 5.16191365590357e-8
+    },
+    {
+      "case": "rendered-pose-handoff",
+      "fps": 60,
+      "from": "drop",
+      "to": "wall",
+      "maxPosition": 0,
+      "maxAngle": 5.16191365590357e-8
+    },
+    {
+      "case": "rendered-pose-handoff",
+      "fps": 60,
+      "from": "wall",
+      "to": "idle",
+      "maxPosition": 0,
+      "maxAngle": 5.16191365590357e-8
+    },
+    {
+      "case": "rendered-pose-handoff",
+      "fps": 60,
+      "from": "fall",
+      "to": "land",
+      "maxPosition": 0,
+      "maxAngle": 5.960464477539063e-8
+    },
+    {
+      "case": "rendered-pose-handoff",
+      "fps": 60,
+      "from": "land",
+      "to": "run",
+      "maxPosition": 0,
+      "maxAngle": 5.16191365590357e-8
+    },
+    {
+      "case": "rendered-pose-handoff",
+      "fps": 60,
+      "from": "roll",
+      "to": "regularRun",
+      "maxPosition": 0,
+      "maxAngle": 4.2146848510894035e-8
+    },
+    {
+      "case": "stationary-combat",
+      "fps": 144,
+      "maxLimbFrameDrift": 0
+    },
+    {
+      "case": "rendered-pose-handoff",
+      "fps": 144,
+      "from": "run",
+      "to": "jump",
+      "maxPosition": 0,
+      "maxAngle": 5.16191365590357e-8
+    },
+    {
+      "case": "rendered-pose-handoff",
+      "fps": 144,
+      "from": "jump",
+      "to": "swing",
+      "maxPosition": 0,
+      "maxAngle": 5.16191365590357e-8
+    },
+    {
+      "case": "rendered-pose-handoff",
+      "fps": 144,
+      "from": "swing",
+      "to": "drop",
+      "maxPosition": 0,
+      "maxAngle": 5.16191365590357e-8
+    },
+    {
+      "case": "rendered-pose-handoff",
+      "fps": 144,
+      "from": "drop",
+      "to": "wall",
+      "maxPosition": 0,
+      "maxAngle": 5.16191365590357e-8
+    },
+    {
+      "case": "rendered-pose-handoff",
+      "fps": 144,
+      "from": "wall",
+      "to": "idle",
+      "maxPosition": 0,
+      "maxAngle": 5.16191365590357e-8
+    },
+    {
+      "case": "rendered-pose-handoff",
+      "fps": 144,
+      "from": "fall",
+      "to": "land",
+      "maxPosition": 0,
+      "maxAngle": 5.960464477539063e-8
+    },
+    {
+      "case": "rendered-pose-handoff",
+      "fps": 144,
+      "from": "land",
+      "to": "run",
+      "maxPosition": 0,
+      "maxAngle": 5.16191365590357e-8
+    },
+    {
+      "case": "rendered-pose-handoff",
+      "fps": 144,
+      "from": "roll",
+      "to": "regularRun",
+      "maxPosition": 0,
+      "maxAngle": 4.2146848510894035e-8
+    }
+  ]
+}

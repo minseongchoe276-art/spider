@@ -35,7 +35,8 @@ export function sanitizePose(pose) {
     .filter((shot,i,shots)=>shots.findIndex(other=>other.hand===shot.hand)===i);
   if (COMBAT.has(pose.combat?.key) && [pose.combat.time ?? 0,pose.combat.duration ?? 0].every(Number.isFinite))
     combat = {key:pose.combat.key,id:String(pose.combat.id || '').slice(0,40),
-      time:THREE.MathUtils.clamp(pose.combat.time ?? 0,0,10),duration:THREE.MathUtils.clamp(pose.combat.duration ?? 0,0,10)};
+      time:THREE.MathUtils.clamp(pose.combat.time ?? 0,0,10),duration:THREE.MathUtils.clamp(pose.combat.duration ?? 0,0,10),
+      travel:pose.combat.travel===true};
   const m=pose.mantle;
   const a=pose.animation;
   const animation=a && ANIMATIONS.has(a.key) && [a.phase,a.rate].every(Number.isFinite)
@@ -45,7 +46,7 @@ export function sanitizePose(pose) {
     ? {normal:normal(m.normal),...Object.fromEntries(['edge','start','end'].map(k=>[k,vector(m[k])])),
       elapsed:THREE.MathUtils.clamp(m.elapsed,0,2),duration:THREE.MathUtils.clamp(m.duration,.1,2),
       gap:THREE.MathUtils.clamp(m.gap,0,2),height:m.height} : null;
-  return {state:pose.state,velocity,webs,webShot,webShots,animation,
+  return {lowStance:['crouch','prone'].includes(pose.lowStance) && ['IDLE','RUNNING','SPRINTING'].includes(pose.state) && !(combat?.duration>0)?pose.lowStance:null,state:pose.state,velocity,webs,webShot,webShots,animation,
     visualYaw:Number.isFinite(pose.visualYaw)?Math.atan2(Math.sin(pose.visualYaw),Math.cos(pose.visualYaw)):null,
     contactTime:Number.isFinite(pose.contactTime)?THREE.MathUtils.clamp(pose.contactTime,0,10):null,
     wallPhase:Number.isFinite(pose.wallPhase)?((pose.wallPhase%1)+1)%1:null,
@@ -60,7 +61,7 @@ export function sanitizePose(pose) {
 
 export function capturePose(physics,character) {
   const action=character.activeAction,clip=action?.getClip();
-  return sanitizePose({state:physics.animationState || physics.state,velocity:physics.velocity,webs:physics.webs,
+  return sanitizePose({lowStance:character.lowStance,state:physics.animationState || physics.state,velocity:physics.velocity,webs:physics.webs,
     animation:clip?{key:clip.name,phase:action.time/clip.duration,
       rate:clip.name==='roll' && physics.recoveryTime>0?clip.duration/physics.recoveryTime
         :character.combatAction?.duration && action.getEffectiveTimeScale()===0
@@ -148,6 +149,7 @@ export class RemoteMotion {
     c.contactTime=fresh&&this.pose.contactTime!==null?Math.max(0,this.pose.contactTime-age):Infinity;
     c.networkWallPhase=fresh&&this.pose.wallPhase!==null?(this.pose.wallPhase+age*this.pose.wallRate)%1:null;
     c.combatAction=fresh && this.pose.combat ? {...this.pose.combat,time:this.pose.combat.time+(now-this.poseAt)/1000} : null;
+    c.lowStance=fresh?this.pose.lowStance:null;
     c.combatStance=!!(fresh && this.pose.combatStance);
     // A ground pound waits in flight until an authoritative landing pose
     // arrives. Network interpolation must not finish it before contact.

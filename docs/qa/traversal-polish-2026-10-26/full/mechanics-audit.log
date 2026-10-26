@@ -1,0 +1,15 @@
+PASS MECHANICS: A miss clears the old target marker and surface metadata
+PASS MECHANICS: Web reach is measured from the player rather than the camera
+FAIL MECHANICS: Historical attachment cannot grant repeated Space jumps in the air: document.querySelectorAll is not a function or its return value is not iterable
+FAIL MECHANICS: Jumping off a live web consumes the jump and the old attachment cannot jump again: document.querySelectorAll is not a function or its return value is not iterable
+PASS MECHANICS: Zip arrival without left mouse held releases immediately without generated tangent speed
+PASS MECHANICS: Zip arrival with left mouse held keeps exactly one original tether
+PASS MECHANICS: Zip timeout clears its visible strand and cannot grant a later air jump
+PASS MECHANICS: A wall interrupting a zip removes the persistent web in that physics step
+PASS MECHANICS: Grounded E does not replace a jump with a zip
+FAIL MECHANICS: Mouse movement keeps the aim at the fixed center and E uses that aim: document.querySelectorAll is not a function or its return value is not iterable
+PASS MECHANICS: Jumping during a grounded attack cancels it before landing
+PASS MECHANICS: High downward speed is capped before movement rather than after crossing a roof
+PASS MECHANICS: A facade visible to the camera behind an obstacle is not offered as a usable web target
+PASS MECHANICS: Swing facing carries through release rather than turning back to the old ground facing
+Mechanics audit: 11 passed, 3 failed.

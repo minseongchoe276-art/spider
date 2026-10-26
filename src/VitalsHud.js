@@ -38,7 +38,7 @@ export function updateVitalsHud(node,{health,stamina,mode,warning=false,visible=
 
 // Wire mode is the default. Combat-only strikes stay marked unavailable there,
 // and the air zip lights up only while it can actually fire.
-export function abilitySlotState({mode='web',locked=false,grounded=true,stamina=100,specialCooldown=0,zipCooling=false}={}){
+export function abilitySlotState({mode='web',locked=false,grounded=true,stamina=100,specialCooldown=0,zipCooling=false,strikeGround=grounded,busy=false,blocking=false,airTarget=true,zipBlocked=false}={}){
   const wire=mode!=='combat';
   const cool=specialCooldown>0.05;
   return {
@@ -48,18 +48,18 @@ export function abilitySlotState({mode='web',locked=false,grounded=true,stamina=
     slots:{
       mode:{active:!locked,unavailable:locked,dry:false,cooling:false},
       zip:{
-        unavailable:!wire&&!grounded,
-        active:(wire&&!grounded&&!zipCooling)||(!wire&&grounded&&stamina>=18),
+        unavailable:wire?(grounded||zipBlocked):(!strikeGround||busy),
+        active:(wire&&!grounded&&!zipCooling&&!zipBlocked)||(!wire&&strikeGround&&!busy&&stamina>=18),
         dry:!wire&&grounded&&stamina<18,
         cooling:wire&&!grounded&&zipCooling,
       },
       heavy:{
-        unavailable:wire,
-        active:!wire&&(grounded?stamina>=35&&!cool:stamina>=25),
+        unavailable:wire||busy||blocking||(grounded?!strikeGround:!airTarget),
+        active:!wire&&!busy&&!blocking&&(grounded?strikeGround&&stamina>=35&&!cool:airTarget&&stamina>=25),
         dry:!wire&&(grounded?stamina<35||cool:stamina<25),
         cooling:!wire&&grounded&&cool,
       },
-      dodge:{unavailable:wire,active:!wire&&grounded&&stamina>=18,dry:!wire&&(stamina<18||!grounded),cooling:false},
+      guard:{unavailable:wire||!strikeGround||busy,active:!wire&&strikeGround&&!busy&&stamina>=12,dry:!wire&&stamina<12,cooling:false},
     },
   };
 }

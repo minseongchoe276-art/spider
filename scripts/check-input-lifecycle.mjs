@@ -46,7 +46,17 @@ check('Remapped left/right modifiers do not double-toggle modes',()=>dom(()=>{
 check('Removed race key stays inactive while concurrent trick presses rearm correctly',()=>dom(()=>{
   const g=app();let races=0,tricks=0;g.toggleTimeTrial=()=>races++;g.physics.performAirTrick=()=>tricks++;
   for(const code of ['KeyR','KeyT']){key('keydown',code);key('keydown',code,true);key('keyup',code);key('keyup',code,true);key('keydown',code);key('keyup',code);}
-  assert.equal(races,0);assert.equal(tricks,2);
+  assert.equal(races,0);assert.equal(tricks,4);
+}));
+check('C/Z stances toggle once across devices and X retains camera recenter',()=>dom(()=>{
+  const g=app();let recentered=0;g.tpsCamera.recenterBehind=()=>recentered++;
+  key('keydown','KeyC');assert.equal(g.physics.lowStance,'crouch');
+  key('keydown','KeyC',true);assert.equal(g.physics.lowStance,'crouch');
+  key('keyup','KeyC');key('keyup','KeyC',true);key('keydown','KeyC');assert.equal(g.physics.lowStance,null);key('keyup','KeyC');
+  key('keydown','KeyZ');assert.equal(g.physics.lowStance,'prone');key('keyup','KeyZ');
+  key('keydown','KeyC');assert.equal(g.physics.lowStance,'crouch');key('keyup','KeyC');
+  key('keydown','KeyX');assert.equal(recentered,1);key('keyup','KeyX');
+  g.physics.state='FALLING';key('keydown','KeyZ');assert.equal(g.physics.lowStance,'crouch');
 }));
 check('Two devices cannot toggle off the same held web button',()=>dom(()=>{
   const g=app();g.preferences.values.settings.webToggle=true;g.physics.state='FALLING';

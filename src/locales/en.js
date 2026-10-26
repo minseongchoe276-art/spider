@@ -1,5 +1,6 @@
 // Longest phrases are matched first; numbers and rebound control keys stay intact.
 export const EN = {
+'앉기 / 일어서기':'Crouch / stand','엎드리기 / 일어서기':'Prone / stand','앉기':'Crouch','엎드리기':'Prone','앉기 / 엎드리기 · 다시 누르면 일어서기':'Crouch / prone · Press again to stand',
 '속도':'Speed',
 '구역 3곳 탐방':'Visit three districts','물품 회수 · 배달':'Collect and deliver','이동 기술 훈련':'Traversal training',
 '목표 다시 준비':'Prepare targets again','최근 임무 다시 도전':'Replay last mission',

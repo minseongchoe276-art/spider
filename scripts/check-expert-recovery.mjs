@@ -43,22 +43,24 @@ for(const front of [true,false]){
 {
   const {game:g}=practiceGame(),bindings={...BINDINGS,mode:'KeyR',guard:'KeyY',jump:'KeyZ'},notices=[];
   g.combat.getBindings=()=>bindings;g.combat.onNotice=message=>notices.push(message);g.combat.mode='web';
-  g.combat.toggle();assert.match(notices.at(-1),/Y 방어.*R로 모드 전환/);
-  g.combat.toggle();assert.match(notices.at(-1),/점프는 Z/);
-  results.push({case:'mode-notices-use-current-bindings',pass:true});
+  g.combat.toggle();assert.equal(g.combat.mode,'combat');assert.equal(notices.length,0);
+  g.combat.toggle();assert.equal(g.combat.mode,'web');assert.equal(notices.length,0);
+  results.push({case:'mode-toggle-uses-persistent-hud-without-extra-notices',pass:true});
   const previous=Object.getOwnPropertyDescriptor(globalThis,'document'),classes=new Set();
-  const hud={textContent:'',classList:{toggle(key,on){on?classes.add(key):classes.delete(key);}}},hands={textContent:''};
+  const fields=Object.fromEntries(['emblem','mode','health','stamina','health-value','stamina-value'].map(key=>['.vitals-'+key,{textContent:'',value:0}]));
+  const hud={querySelector:key=>fields[key],textContent:'',classList:{toggle(key,on){on?classes.add(key):classes.delete(key);}}},hands={textContent:''};
   Object.defineProperty(globalThis,'document',{configurable:true,value:{getElementById:id=>id==='combat-status'?hud:id==='hand-status'?hands:null}});
   try{
-    Object.assign(g,{preferences:{values:{settings:{bindings}}},practice:{active:false}});
+    Object.assign(g,{preferences:{values:{settings:{bindings}}},practice:{active:false},isPlaying:true,isPaused:false,updateAbilityBar(){}});
     g.combat.health=37.2;g.combat.stamina=12.1;g.combat.mode='combat';
-    GameApp.prototype.updateHUD.call(g,0,0,'IDLE');assert(!classes.has('hidden'));assert.match(hud.textContent,/HP 38 · 기력 13/);
-    g.combat.mode='web';GameApp.prototype.updateHUD.call(g,0,0,'IDLE');assert(classes.has('hidden'));
-    g.practice.active=true;GameApp.prototype.updateHUD.call(g,0,0,'IDLE');assert(!classes.has('hidden'));
-    g.multiplayer={room:{}};GameApp.prototype.updateHUD.call(g,0,0,'IDLE');assert(classes.has('hidden'));
+    GameApp.prototype.updateVitals.call(g);assert(!classes.has('hidden'));assert.equal(fields['.vitals-health-value'].textContent,'37 / 100');assert.equal(fields['.vitals-stamina-value'].textContent,'12 / 100');
+    g.combat.mode='web';GameApp.prototype.updateVitals.call(g);assert(!classes.has('hidden'));assert(classes.has('is-wire'));
+    g.practice.active=true;GameApp.prototype.updateVitals.call(g);assert(!classes.has('hidden'));
+    g.multiplayer={room:{}};GameApp.prototype.updateVitals.call(g);assert(!classes.has('hidden'));
+    g.isPaused=true;GameApp.prototype.updateVitals.call(g);assert(classes.has('hidden'));g.isPaused=false;
     g.physics.state='FALLING';g.physics.webs=[];g.combat.mode='combat';
     PlayerExperience.prototype.previewAnchor.call({game:g});assert.match(hands.textContent,/R로 와이어 모드 전환/);
-    results.push({case:'solo-combat-hud-and-remapped-airborne-hint',pass:true});
+    results.push({case:'persistent-vitals-and-remapped-airborne-hint',pass:true});
   }finally{if(previous)Object.defineProperty(globalThis,'document',previous);else delete globalThis.document;}
 }
 for(const blocked of [false,true]){

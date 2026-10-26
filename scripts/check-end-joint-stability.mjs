@@ -9,8 +9,9 @@ import {soleSamples} from '../src/CharacterPose.js';
 import {boneId} from '../src/MotionRetarget.js';
 import {MOTIONS} from '../src/MotionCatalog.js';
 
-const folder='docs/qa/joint-stability-2026-10-20';fs.mkdirSync(folder,{recursive:true});
+const folder=process.env.JOINT_AUDIT_DIR || 'docs/qa/joint-stability-2026-10-20';fs.mkdirSync(folder,{recursive:true});
 const {actor,clips}=await loadMotionRig(),results=[];
+const requestedKeys=process.argv.find(arg=>arg.startsWith('--keys='))?.slice(7).split(',');
 const combat=new Set(['combatIdle','jab','cross','hook','heavy','special','rightHook','guard','hitHead','slamLand']);
 const airborne=new Set(['jump','drop','jumpDown','jumpDownVariant','fall','fallIdle','fallVariant','airTrick','slam']);
 async function appearance(mode){
@@ -55,7 +56,7 @@ for(const mode of ['web','combat']){
     edges.push([a,b,restVertices[a].distanceTo(restVertices[b])]);
   }
   disposeRig(reference);
-  for(const fps of [24,30,60,144])for(const item of clips.filter(item=>!item.archived)){
+  for(const fps of [24,30,60,144])for(const item of clips.filter(item=>!item.archived && (!requestedKeys || requestedKeys.includes(item.key)))){
     const c=actor(),mesh=c.model.getObjectByProperty('isSkinnedMesh',true);mesh.geometry=geometry;
     const speed={walk:1.6,regularRun:4.8,run:6.5}[item.key] || 0;
     const state=item.key==='wall'?'WALL_RUNNING':item.key==='swing'?'SWINGING':item.key==='zip'?'WEB_ZIP'
@@ -65,7 +66,7 @@ for(const mode of ['web','combat']){
     c.wallNormal=new T.Vector3(0,0,1);c.wallDistance=.7;
     c.combatStance=combat.has(item.key);c.groundProbe=state==='WALL_RUNNING' || airborne.has(item.key)?()=>null:()=>0;
     c.fadeToAction(item.key,0);c.fadeToAction=()=>{};
-    const previous=new Map(),lengths=new Map(Object.values(c.bones).map(b=>[b,b.position.length()]));
+    const previous=new Map(),lengths=new Map(Object.values(c.bones).map(b=>[b,b.position.clone()]));
     const metrics={maxActualWrist:0,maxSkinGrowth:0,minSole:Infinity,minWallHand:Infinity,frames:0,skinFrames:0};
     const count=Math.ceil(item.clip.duration*fps),samples=new Set([.15,.5,.85].map(f=>Math.round(count*f)));
     try{
@@ -75,7 +76,14 @@ for(const mode of ['web','combat']){
         if(combat.has(item.key))c.combatAction={id:1,key:item.key,time:t,duration:item.clip.duration};
         c.group.position.addScaledVector(v,dt);c.update(dt,state,v);
         measure(c,dt,previous,metrics);metrics.frames++;
-        for(const [b,length] of lengths)if(boneId(b.name)!=='hips')assert(Math.abs(b.position.length()-length)<1e-5,'Stretched limb');
+        for(const [b,rest] of lengths){
+          const id=boneId(b.name);if(id==='hips')continue;
+          // The straight-punch balance solver translates the spine root by
+          // up to 6cm to place the shoulder ahead of the capsule. Limb segment
+          // lengths must remain fixed; this bounded torso lean is intentional.
+          if(id==='spine')assert(b.position.clone().sub(rest).multiply(b.parent.getWorldScale(new T.Vector3())).length()<.061,'Torso lean exceeded 6cm');
+          else assert(Math.abs(b.position.length()-rest.length())<1e-5,`Stretched limb: ${b.name}`);
+        }
         if(fps===60 && samples.has(frame)){
           const posed=Array.from({length:positions.count},(_,i)=>mesh.localToWorld(mesh.applyBoneTransform(i,new T.Vector3().fromBufferAttribute(positions,i))));
           assert(posed.every(p=>p.toArray().every(Number.isFinite)),'Nonfinite skin');

@@ -1,0 +1,93 @@
+{
+  "passed": 14,
+  "results": [
+    {
+      "case": "lethal-guard-stops-enemy-iterator",
+      "kind": "melee",
+      "health": 100,
+      "pass": true
+    },
+    {
+      "case": "lethal-guard-stops-enemy-iterator",
+      "kind": "shield",
+      "health": 100,
+      "pass": true
+    },
+    {
+      "case": "incoming-projectile-guard",
+      "front": true,
+      "health": 96,
+      "pass": true
+    },
+    {
+      "case": "incoming-projectile-guard",
+      "front": false,
+      "health": 90,
+      "pass": true
+    },
+    {
+      "case": "mode-toggle-uses-persistent-hud-without-extra-notices",
+      "pass": true
+    },
+    {
+      "case": "persistent-vitals-and-remapped-airborne-hint",
+      "pass": true
+    },
+    {
+      "case": "streamed-recovery-path",
+      "fps": 24,
+      "blocked": false,
+      "state": "ROLLING",
+      "pass": true
+    },
+    {
+      "case": "streamed-recovery-path",
+      "fps": 30,
+      "blocked": false,
+      "state": "ROLLING",
+      "pass": true
+    },
+    {
+      "case": "streamed-recovery-path",
+      "fps": 60,
+      "blocked": false,
+      "state": "ROLLING",
+      "pass": true
+    },
+    {
+      "case": "streamed-recovery-path",
+      "fps": 144,
+      "blocked": false,
+      "state": "ROLLING",
+      "pass": true
+    },
+    {
+      "case": "streamed-recovery-path",
+      "fps": 24,
+      "blocked": true,
+      "state": "LANDING",
+      "pass": true
+    },
+    {
+      "case": "streamed-recovery-path",
+      "fps": 30,
+      "blocked": true,
+      "state": "LANDING",
+      "pass": true
+    },
+    {
+      "case": "streamed-recovery-path",
+      "fps": 60,
+      "blocked": true,
+      "state": "LANDING",
+      "pass": true
+    },
+    {
+      "case": "streamed-recovery-path",
+      "fps": 144,
+      "blocked": true,
+      "state": "LANDING",
+      "pass": true
+    }
+  ]
+}

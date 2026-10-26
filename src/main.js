@@ -28,10 +28,11 @@ import {PlayerExperience} from './PlayerExperience.js';
 import {CombatPractice} from './CombatPractice.js';
 import {startLoadingStatus} from './LoadingStatus.js';
 import {HudLayout} from './HudLayout.js';
+import {COMBAT_GROUND_STATES} from './AttackRules.js';
 import {abilitySlotState,updateVitalsHud} from './VitalsHud.js';
 let stopLoadingStatus=()=>{};
 
-const ONE_SHOT_KEYS = new Set(['Space','KeyG','KeyE','KeyT','KeyR','KeyC','KeyV','KeyQ','ControlLeft','ControlRight']);
+const ONE_SHOT_KEYS = new Set(['Space','KeyG','KeyE','KeyT','KeyR','KeyC','KeyZ','KeyX','KeyV','KeyQ','ControlLeft','ControlRight']);
 
 export class GameApp {
   constructor() {
@@ -265,6 +266,7 @@ export class GameApp {
     this.vfx = new VFXManager(this.scene);
     this.physics = new SwingPhysics(this.scene, this.city, this.character, this.audio);
     this.combat=new CombatSystem(this.scene,this.physics,this.character,{vfx:this.vfx,audio:this.audio,onNotice:message=>this.showNotice(message),getBindings:()=>this.preferences.values.settings.bindings});
+    this.combat.onDeferredStrike=()=>this.multiplayer?.attack('punch');
     this.physics.onWebAttach=anchor=>this.vfx.spawnWebImpact(anchor);
     this.physics.onLanding = (position, impact, surfaceNormal) => {
       if (this.vfx?.spawnLandingShockwave) {
@@ -360,6 +362,24 @@ export class GameApp {
   }
 
   initInputListeners() {
+    // HUD actions use the same remappable event path as keyboard and touch.
+    for(const button of (document.querySelectorAll?.('#ability-bar button') || [])){
+      const send=down=>{
+        const action=button.dataset.ability==='heavy'?'heavy':button.dataset.ability;
+        const code=this.preferences?.values.settings?.bindings?.[action];
+        if(!code)return;
+        const event=new KeyboardEvent(down?'keydown':'keyup',{code,bubbles:true});
+        Object.defineProperty(event,'touchInput',{value:true});window.dispatchEvent(event);
+      };
+      button.addEventListener('pointerdown',event=>{
+        if(button.disabled)return;event.preventDefault();button.setPointerCapture(event.pointerId);send(true);
+        if(button.dataset.ability!=='guard')send(false);
+      });
+      button.addEventListener('pointerup',()=>send(false));
+      button.addEventListener('pointercancel',()=>send(false));
+      button.addEventListener('lostpointercapture',()=>send(false));
+      button.addEventListener('click',event=>{if(event.detail===0){send(true);send(false);}});
+    }
     // Keyboard
     window.addEventListener('blur', () => { this.clearInput(); if (this.isPlaying) this.setPaused(true); });
     document.addEventListener('visibilitychange', () => { if (document.hidden) { this.clearInput(); if (this.isPlaying) this.setPaused(true); } });
@@ -377,7 +397,7 @@ export class GameApp {
       const gameplayKey = [
         'KeyW', 'KeyA', 'KeyS', 'KeyD', 'ArrowUp', 'ArrowDown',
         'ArrowLeft', 'ArrowRight', 'Home', 'End', 'PageUp', 'PageDown', 'ShiftLeft', 'ShiftRight', 'Space',
-        'KeyG', 'KeyE', 'KeyT', 'KeyR', 'KeyF', 'KeyC', 'KeyV', 'KeyQ', 'KeyB', 'ControlLeft', 'ControlRight'
+        'KeyG', 'KeyE', 'KeyT', 'KeyR', 'KeyF', 'KeyC', 'KeyZ', 'KeyX', 'KeyV', 'KeyQ', 'KeyB', 'ControlLeft', 'ControlRight'
       ].includes(k);
       if (gameplayKey && document.getElementById?.('controls-guide') && !document.getElementById('controls-guide').classList.contains('hidden')) return;
       if (gameplayKey && (!this.isPlaying || this.isPaused || this.multiplayer?.spectating)) return;
@@ -402,8 +422,13 @@ export class GameApp {
         if(this.multiplayer?.locksCombatToggle()){this.showNotice('도망자는 에너지 와이어로만 이동합니다.');return;}
         this.combat.toggle(this.input);return;
       }
-      if(k==='ControlLeft'||k==='ControlRight'){this.combat.dodge(this.input,this.camera);return;}
-      if (!e.repeat && k === 'KeyC') {
+      // Retired procedural Ctrl evasion: never starts a pose or consumes stamina.
+      if(k==='ControlLeft'||k==='ControlRight')return;
+      if (!e.repeat && (k === 'KeyC' || k === 'KeyZ')) {
+        this.physics.toggleLowStance(k === 'KeyC' ? 'crouch' : 'prone');
+        return;
+      }
+      if (!e.repeat && k === 'KeyX') {
         this.tpsCamera.recenterBehind(this.physics.facingAngle);
       }
       if (!e.repeat && k === 'KeyV') {
@@ -862,7 +887,7 @@ export class GameApp {
     if(!bar || !this.combat)return;
     const bindings=this.preferences?.values?.settings?.bindings;
     const pad=this.gamepad?.lastPad!=null && !this.touchControls?.enabled;
-    const padLabel={mode:'Y',zip:'X',heavy:'↓',dodge:'B'};
+    const padLabel={mode:'Y',zip:'X',heavy:'↓',guard:'LB'};
     for(const slot of bar.querySelectorAll('kbd[data-key]')){
       const label=pad?padLabel[slot.dataset.key]:bindings?keyLabel(bindings[slot.dataset.key]):'';
       if(label && slot.textContent!==label)slot.textContent=label;
@@ -872,6 +897,10 @@ export class GameApp {
       locked:!!this.multiplayer?.locksCombatToggle?.(),
       grounded:GROUNDED.includes(this.physics?.state),
       stamina:this.combat.stamina,
+      strikeGround:COMBAT_GROUND_STATES.includes(this.physics?.state),
+      busy:!!this.combat.action,blocking:!!this.combat.blocking,
+      airTarget:this.combat.enemies.some(enemy=>enemy.health>0),
+      zipBlocked:this.physics?.state==='MANTLING',
       specialCooldown:this.combat.specialCooldown||0,
       zipCooling:(this.physics?.zipCooldown||0)>0 || this.physics?.state==='WEB_ZIP',
     });
@@ -883,6 +912,9 @@ export class GameApp {
     for(const [name,flags] of Object.entries(slots.slots)){
       const slot=bar.querySelector(`[data-ability="${name}"]`);
       if(!slot)continue;
+      const labels={mode:slots.mode==='web'?'전투 모드로 전환':'와이어 모드로 전환',zip:slots.mode==='web'?'공중 와이어 집':'훅 · 기력 18',heavy:GROUNDED.includes(this.physics?.state)?'강공격 · 기력 35':'공중 내려찍기 · 기력 25',guard:'방어 · 누르고 유지'};
+      slot.title=t(labels[name]);slot.setAttribute('aria-label',t(labels[name]));
+      slot.disabled=!!(flags.unavailable || flags.dry || flags.cooling);
       slot.classList.toggle('is-active',flags.active);
       slot.classList.toggle('is-unavailable',flags.unavailable);
       slot.classList.toggle('is-dry',flags.dry);

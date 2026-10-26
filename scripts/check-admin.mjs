@@ -3,7 +3,7 @@ import {createServer} from 'node:http';
 import WebSocket from 'ws';
 import {attachRooms} from './rooms.mjs';
 
-process.env.GAME_ADMIN_TOKEN='test-admin-key';
+process.env.GAME_ADMIN_TOKEN='alalal1010';
 const server=createServer((req,res)=>res.end('ok'));
 attachRooms(server);
 await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));

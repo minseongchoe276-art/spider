@@ -1,0 +1,29 @@
+<!doctype html><meta charset="utf-8"><title>낮은 자세 · 이동 공격 검수</title>
+<style>body{margin:0;font:15px system-ui;background:#edf1f5}header{padding:12px;display:flex;flex-wrap:wrap;gap:8px}canvas{display:block}button,select,input{font:inherit;margin-right:0}output{margin:0;flex-basis:100%}</style>
+<header><select id="motion" aria-label="모션"></select><button id="play">재생 / 정지</button><select id="view" aria-label="시점"><option value="front">정면</option><option value="side">측면</option><option value="back">후면</option></select><input id="frame" aria-label="프레임" type="range" min="0" max="149" value="100"><output>로딩 중</output></header>
+<script type="module">
+import * as T from 'three';
+import {Character} from '/src/Character.js';
+const data=await(await fetch('./poses.json')).json(),select=document.querySelector('#motion'),slider=document.querySelector('#frame'),view=document.querySelector('#view'),status=document.querySelector('output');
+for(const row of data){const o=document.createElement('option');o.value=o.textContent=row.key;select.append(o);}
+const renderer=new T.WebGLRenderer({antialias:true,preserveDrawingBuffer:true});renderer.setSize(innerWidth,innerHeight-70);renderer.setPixelRatio(Math.min(devicePixelRatio,2));document.body.append(renderer.domElement);
+const scene=new T.Scene();scene.background=new T.Color('#edf1f5');scene.add(new T.HemisphereLight(0xffffff,0x65778d,3));const sun=new T.DirectionalLight(0xffffff,3);sun.position.set(4,6,5);scene.add(sun);
+const grid=new T.GridHelper(10,20,0x8899aa,0xcbd3dd);scene.add(grid);
+const camera=new T.PerspectiveCamera(38,innerWidth/(innerHeight-70),.05,50);
+let ready=false,playing=false,frame=100;
+const c=new Character(scene,()=>{},()=>{ready=!!c.model;status.textContent=ready?'준비':'모델 실패';});c.group.position.y=.1;
+document.querySelector('#play').onclick=()=>playing=!playing;slider.oninput=()=>{frame=+slider.value;playing=false;};
+select.onchange=()=>{frame=100;slider.value=frame;};
+let last=0;renderer.setAnimationLoop(now=>{
+ if(!ready)return;
+ if(playing){frame=(frame+(now-last)*.06)%150;slider.value=frame;}last=now;
+ const row=data.find(r=>r.key===select.value),pose=row.frames[Math.floor(frame)];
+ c.model.position.fromArray(pose.model.p);c.model.quaternion.fromArray(pose.model.q);
+ for(const [name,...values] of pose.bones){const b=c.bones[name];if(b){b.position.fromArray(values);b.quaternion.fromArray(values,3);}}
+ c.group.updateMatrixWorld(true);
+ const stance=row.key.startsWith('prone'),target=new T.Vector3(0,stance?.45:.9,stance?-.1:0);
+ camera.position.copy(target).add(view.value==='side'?new T.Vector3(6.6,.9,.4):new T.Vector3(view.value==='back'?-.5:.5,.65,view.value==='back'?-4.3:4.3));camera.lookAt(target);
+ status.textContent=`${row.key} · ${Math.floor(frame)}/149 · 실제 Character.update 기록`;
+ renderer.render(scene,camera);
+});
+</script>

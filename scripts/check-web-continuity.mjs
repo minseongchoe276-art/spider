@@ -50,7 +50,7 @@ try{
     assetsReady:true,isPlaying:true,isPaused:false,input:press,camera,
     physics:{isSwinging:true,update(){this.isSwinging=false;},position:new THREE.Vector3(),velocity:new THREE.Vector3()},
     tpsCamera:{update(){}},preferences:{values:{}},vfx:{update(){}},timeTrial:{update(){}},
-    updateTrialHUD(){},updateHUD(){},renderer:{render(){}},scene:new THREE.Scene()});
+    updateTrialHUD(){},updateHUD(){},updateVitals(){},updateWorldMarker(){},syncHudChrome(){},renderer:{render(){}},scene:new THREE.Scene()});
   app.animate();assert(press.webHold && press.webFireHeld,'Render loop erased the physically held button after an automatic drop');
   console.log('PASS actual game render loop preserves a held button when physics loses its attachment');
 }finally{globalThis.requestAnimationFrame=oldRAF;}

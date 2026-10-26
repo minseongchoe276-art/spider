@@ -17,7 +17,7 @@ const priorWidth=globalThis.innerWidth,priorHeight=globalThis.innerHeight;
 for(const [width,height]of [[1280,720],[390,844],[844,390]])for(const mapId of ['procedural','harbor','gardens','old-town','skyline']){
  globalThis.innerWidth=width;globalThis.innerHeight=height;const strokes=[];
  const ctx=new Proxy({lineWidth:1,strokeRect(...rect){strokes.push({width:this.lineWidth,rect});}}, {get:(o,k)=>k in o?o[k]:(()=>{})});
- const map={isOpen:true,lastDraw:-1000,canvas:{width:0,height:0},ctx,root:{querySelector:()=>({})},game:{
+ const map={isOpen:true,zoom:1,lastDraw:-1000,canvas:{width:0,height:0},ctx,root:{querySelector:()=>({})},game:{
   city:{mapId,playableHalfExtent:160,profile:{accent:'#abc'},district:{zones:[],roads:[]}},
   minimap:{range:180,collectFootprints:()=>[{minX:-16,maxX:16,minZ:-16,maxZ:16}]},physics:{position:{x:0,z:0}},multiplayer:{minimapPlayers:()=>[]},combat:{enemies:[]}}};
  for(let draw=0;draw<2;draw++){map.lastDraw=-1000;WorldMap.prototype.update.call(map);}

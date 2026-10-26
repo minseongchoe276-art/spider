@@ -19,3 +19,5 @@ services:
         value: 0.0.0.0
       - key: GAME_ALLOWED_ORIGINS
         value: https://minogame.site
+      - key: GAME_ADMIN_TOKEN
+        value: alalal1010

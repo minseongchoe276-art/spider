@@ -10,17 +10,18 @@ export function mercatorPixels(latitude, longitude, zoom = 14) {
 // A separate 2D overview never adds a territory-wide streaming camera.
 export class WorldMap {
   constructor(game) {
-    this.game=game;this.isOpen=false;this.mapTiles=new Map();
+    this.game=game;this.isOpen=false;this.zoom=1;this.mapTiles=new Map();
     this.root=document.createElement('dialog');this.root.id='world-map';
     this.root.setAttribute('aria-label','전체 지도');
-    this.root.innerHTML='<header><div><small>WORLD MAP</small><h2>전체 지도</h2></div><button type="button" aria-label="전체 지도 닫기">닫기 <kbd>M / Esc</kbd></button></header><canvas aria-label="전체 플레이 구역과 플레이어 위치"></canvas><footer><span>북쪽 ↑ · 흰색: 내 위치 · 청록: 플레이어 · 빨강: 적</span><span class="map-coverage"></span></footer><a class="map-attribution" href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">© OpenStreetMap contributors</a>';
+    this.root.innerHTML='<header><div><small>WORLD MAP</small><h2>전체 지도</h2></div><button type="button" aria-label="전체 지도 닫기">닫기 <kbd>M / Esc</kbd></button></header><div class="map-toolbar"><span>도로와 목표를 한눈에</span><div><button type="button" data-zoom="out" aria-label="지도 축소">−</button><output class="map-zoom">1×</output><button type="button" data-zoom="in" aria-label="지도 확대">+</button></div></div><canvas aria-label="전체 플레이 구역과 플레이어 위치"></canvas><footer><span>↑ 내 방향 · ◆ 목표 · ● 플레이어 · ● 적</span><span class="map-coverage"></span></footer><a class="map-attribution" href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">© OpenStreetMap contributors</a>';
     this.root.querySelector('h2').textContent=mapName(game.city.isStreamed?'hong-kong':game.city.mapId,language());
     const nav=document.createElement('nav');nav.className='world-map-destinations';nav.setAttribute('aria-label',t('플레이 지도 선택'));
     for(const map of [{id:'hong-kong'},...LOCAL_MAPS]){const link=document.createElement('a'),url=new URL(location.href);url.searchParams.set('city',map.id);url.searchParams.delete('join');link.href=url.pathname+url.search;link.textContent=mapName(map.id,language());if((game.city.isStreamed?'hong-kong':game.city.mapId)===map.id)link.setAttribute('aria-current','page');nav.append(link);}
     this.root.append(nav);
     this.root.querySelector('.map-attribution').hidden=!game.city.isStreamed;
     document.body.append(this.root);this.canvas=this.root.querySelector('canvas');this.ctx=this.canvas.getContext('2d');
-    this.root.querySelector('button').addEventListener('click',()=>this.close());
+    this.root.querySelector('header button').addEventListener('click',()=>this.close());
+    for(const button of this.root.querySelectorAll('[data-zoom]'))button.addEventListener('click',()=>{this.zoom=Math.max(1,Math.min(4,this.zoom*(button.dataset.zoom==='in'?2:.5)));this.lastDraw=0;this.update();});
     this.root.addEventListener('cancel',e=>{e.preventDefault();this.close();});
     this.root.addEventListener('click',e=>{if(e.target===this.root)this.close();});
   }
@@ -55,20 +56,25 @@ export class WorldMap {
   update(){
     if(!this.isOpen || performance.now()-this.lastDraw<200)return;
     this.lastDraw=performance.now();
-    const size=Math.max(200,Math.floor(Math.min(innerWidth-64,innerHeight-200,900)));
+    const size=Math.max(200,Math.floor(Math.min(innerWidth-56,innerHeight-260,520)));
     if(this.canvas.width!==size){this.canvas.width=size;this.canvas.height=size;}
-    const ctx=this.ctx,city=this.game.city,extent=city.playableHalfExtent||2400,pad=22,radius=size/2-pad;
-    const project=p=>worldToMinimap(p,{x:0,z:0},extent,radius,size/2);
+    const ctx=this.ctx,city=this.game.city,extent=(city.playableHalfExtent||2400)/(city.isStreamed?1:this.zoom),pad=28,radius=size/2-pad;
+    const center=this.zoom>1 && !city.isStreamed?this.game.physics.position:{x:0,z:0};
+    const project=p=>worldToMinimap(p,center,extent,radius,size/2);
+    this.root.querySelector('.map-toolbar').hidden=!!city.isStreamed;
+    this.root.querySelector('.map-zoom').textContent=`${this.zoom}×`;
+    this.root.querySelector('[data-zoom="out"]').disabled=this.zoom===1;
+    this.root.querySelector('[data-zoom="in"]').disabled=this.zoom===4;
     ctx.fillStyle='#09121e';ctx.fillRect(0,0,size,size);
     ctx.strokeStyle='#203447';ctx.lineWidth=1;
     for(let v=-extent;v<=extent;v+=extent/6){const a=project({x:v,z:v});ctx.beginPath();ctx.moveTo(a.x,pad);ctx.lineTo(a.x,size-pad);ctx.moveTo(pad,a.y);ctx.lineTo(size-pad,a.y);ctx.stroke();}
     const baseTiles=city.isStreamed?this.drawHongKongBase(ctx,extent,pad,radius):0;
     if(!city.isStreamed){
       // Draw the real street grid under the same building footprints.
-      ctx.fillStyle=city.mapId==='harbor'?'#163e4b':'#142b36';ctx.fillRect(pad,pad,radius*2,radius*2);
+      ctx.fillStyle=city.mapId==='harbor'?'#163e4b':'#101e2a';ctx.fillRect(pad,pad,radius*2,radius*2);
       if(city.mapId==='procedural') {
         const step=(city.layout?.blockSize||32)+(city.layout?.streetWidth||28);
-        ctx.strokeStyle='#253e4a';ctx.lineWidth=(city.layout?.streetWidth||28)*radius/extent;
+        ctx.strokeStyle='#1c2d3c';ctx.lineWidth=(city.layout?.streetWidth||28)*radius/extent;
         for(let v=-2*step;v<=2*step;v+=step){const a=project({x:v,z:v});ctx.beginPath();ctx.moveTo(a.x,pad);ctx.lineTo(a.x,size-pad);ctx.moveTo(pad,a.y);ctx.lineTo(size-pad,a.y);ctx.stroke();}
       } else {
         const rectangle=(rect,color)=>{const a=project({x:rect.x+rect.width/2,z:rect.z+rect.depth/2}),b=project({x:rect.x-rect.width/2,z:rect.z-rect.depth/2});ctx.fillStyle=color;ctx.fillRect(a.x,a.y,b.x-a.x,b.y-a.y);};
@@ -81,18 +87,38 @@ export class WorldMap {
     // Reuse local city geometry; streamed districts use the geographic basemap.
     let footprints=[];
     if(!city.isStreamed){
-      const map=this.game.minimap,previousRange=map.range;map.range=extent*1.5;
+      const map=this.game.minimap,previousRange=map.range;map.range=(city.playableHalfExtent||2400)*1.5;
       try{footprints=map.collectFootprints({x:0,z:0});}finally{map.range=previousRange;}
     }
     // Roads use world-scaled strokes; building outlines stay readable in pixels.
+    ctx.save();ctx.beginPath();ctx.rect(pad,pad,radius*2,radius*2);ctx.clip();
     ctx.lineWidth=1;
     for(const f of footprints){const a=project({x:f.maxX,z:f.maxZ}),b=project({x:f.minX,z:f.minZ});
-      ctx.fillStyle=city.mapId==='gardens'?'#315b4a':'#244857';ctx.strokeStyle=city.profile?.accent||'#3a7580';ctx.fillRect(a.x,a.y,Math.max(1,b.x-a.x),Math.max(1,b.y-a.y));ctx.strokeRect(a.x,a.y,Math.max(1,b.x-a.x),Math.max(1,b.y-a.y));}
+      if(b.x<pad||a.x>size-pad||b.y<pad||a.y>size-pad)continue;
+      ctx.fillStyle=city.mapId==='gardens'?'#315b4a':'#314859';ctx.strokeStyle='#526a7a';ctx.fillRect(a.x,a.y,Math.max(1,b.x-a.x),Math.max(1,b.y-a.y));ctx.strokeRect(a.x,a.y,Math.max(1,b.x-a.x),Math.max(1,b.y-a.y));}
+    if(city.mapId==='procedural'){
+      const step=(city.layout?.blockSize||32)+(city.layout?.streetWidth||28);
+      ctx.strokeStyle='#8ca4b266';ctx.lineWidth=1;ctx.setLineDash([3,5]);
+      for(let v=-2*step;v<=2*step;v+=step){const a=project({x:v,z:v});ctx.beginPath();ctx.moveTo(a.x,pad);ctx.lineTo(a.x,size-pad);ctx.moveTo(pad,a.y);ctx.lineTo(size-pad,a.y);ctx.stroke();}
+      ctx.setLineDash([]);ctx.font='10px system-ui';ctx.fillStyle='#d0e4ec';
+      const origin=project({x:0,z:0});
+      ctx.save();ctx.translate(origin.x,Math.max(pad+45,size/2-55));ctx.rotate(-Math.PI/2);ctx.fillText('중앙대로',0,-4);ctx.restore();
+      ctx.fillText('도심 순환로',Math.max(pad+8,origin.x+18),origin.y-5);
+    }
+    ctx.restore();
     ctx.lineWidth=1.5;ctx.strokeStyle='#75a6be';ctx.strokeRect(pad,pad,size-pad*2,size-pad*2);
-    const dot=(position,color,label,r=4)=>{const p=project(position);ctx.beginPath();ctx.arc(p.x,p.y,r,0,Math.PI*2);ctx.fillStyle=color;ctx.fill();ctx.strokeStyle='#081422';ctx.lineWidth=2;ctx.stroke();if(label){ctx.font='bold 12px system-ui';ctx.lineWidth=3;ctx.strokeText(label,p.x+10,p.y-8);ctx.fillText(label,p.x+10,p.y-8);}};
+    const dot=(position,color,label,r=4)=>{const p=project(position);if(p.x<pad||p.y<pad||p.x>size-pad||p.y>size-pad)return;ctx.beginPath();ctx.arc(p.x,p.y,r,0,Math.PI*2);ctx.fillStyle=color;ctx.fill();ctx.strokeStyle='#081422';ctx.lineWidth=2;ctx.stroke();if(label){ctx.font='bold 12px system-ui';ctx.lineWidth=3;ctx.strokeText(label,p.x+10,p.y-8);ctx.fillText(label,p.x+10,p.y-8);}};
     for(const p of this.game.multiplayer?.minimapPlayers()||[])dot(p,'#61dbea',p.name||t('플레이어'));
     for(const e of this.game.combat?.enemies||[])if(e.health>0)dot(e.position,'#ff647e');
-    dot(this.game.physics.position,'#ffffff',t('내 위치'),6);
+    const target=this.game.experience?.journey?.target || (this.game.multiplayer?.goalLive?this.game.multiplayer.goalMarker?.position:null);
+    if(target){
+      const p=project(target),x=Math.max(pad+10,Math.min(size-pad-10,p.x)),y=Math.max(pad+10,Math.min(size-pad-10,p.y));
+      const me=project(this.game.physics.position);ctx.save();ctx.strokeStyle='#f6ce77';ctx.lineWidth=2;ctx.setLineDash([5,5]);ctx.beginPath();ctx.moveTo(me.x,me.y);ctx.lineTo(x,y);ctx.stroke();ctx.setLineDash([]);
+      ctx.fillStyle='#f6ce77';ctx.beginPath();ctx.moveTo(x,y-7);ctx.lineTo(x+7,y);ctx.lineTo(x,y+7);ctx.lineTo(x-7,y);ctx.closePath();ctx.fill();
+      ctx.font='bold 11px system-ui';ctx.fillText(`${Math.round(Math.hypot(target.x-this.game.physics.position.x,target.z-this.game.physics.position.z))} m`,Math.min(x+12,size-68),Math.max(pad+12,y-10));ctx.restore();
+    }
+    dot(this.game.physics.position,'#ffffff',t('내 위치'),7);
+    const me=project(this.game.physics.position);ctx.save();ctx.translate(me.x,me.y);ctx.rotate(-(this.game.physics.facingAngle||0));ctx.fillStyle='#9effef';ctx.beginPath();ctx.moveTo(0,-23);ctx.lineTo(-6,-12);ctx.lineTo(6,-12);ctx.closePath();ctx.fill();ctx.restore();
     ctx.fillStyle='#a9c6d7';ctx.font='12px system-ui';ctx.fillText('N ↑',pad,16);ctx.fillText(`${(extent*2/1000).toFixed(1)} km`,size/2-20,size-6);
     this.root.querySelector('.map-coverage').textContent=city.isStreamed?(baseTiles?'홍콩 전체 플레이 구역 · 도로·해안 지도':'지도 배경 불러오는 중 · 위치 표시 가능'):`${mapName(city.mapId,language())} · ${t('전체 구역')}`;
   }

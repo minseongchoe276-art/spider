@@ -2,6 +2,8 @@ import { defineConfig } from 'vite';
 import { attachRooms } from './scripts/rooms.mjs';
 import {releasePlugin} from './scripts/release-plugin.mjs';
 
+process.env.GAME_ADMIN_TOKEN ||= 'alalal1010';
+
 const urbanTilesProxy = {
   '/urban-tiles': {
     target: 'https://data.map.gov.hk',

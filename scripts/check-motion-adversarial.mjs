@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import * as T from 'three';
 import {loadMotionRig, disposeRig} from './lib/motion-rig.mjs';
+import {boneId} from '../src/MotionRetarget.js';
 import {JOINT_SPEEDS} from '../src/JointConstraints.js';
 
 const {actor}=await loadMotionRig(), c=actor();
@@ -18,7 +19,7 @@ const profiles=[
   ['slam','FALLING',1,-16,'slam'],['slamLand','LANDING',1,0,'slamLand'],['trick','FALLING',2,-4],
 ];
 const schedules=[[1/24],[1/30],[1/60],[1/144],[1/144,.09,1/30,1/60]];
-const bones=Object.values(c.bones),lengths=bones.map(b=>b.position.length());
+const bones=Object.values(c.bones),lengths=bones.map(b=>b.position.length()),restPositions=bones.map(b=>b.position.clone());
 const result={profiles:profiles.map(p=>p[0]),timings:schedules,cases:0,frames:0,maxJointExcess:0,maxEndJointRate:0,failures:[],
   scope:'Render-state interruption robustness, including deliberately unreachable pairs. Actual physics reachability and contact quality are tested by separate gameplay suites.'};
 const anchor=new T.Vector3(-3,14,8),normal=new T.Vector3(0,0,1);
@@ -44,7 +45,9 @@ function step(profile,frame,dt){
     const b=bones[i];
     assert([...b.position,...b.quaternion].every(Number.isFinite),`${label}: non-finite bone ${b.name}`);
     assert(Math.abs(b.quaternion.length()-1)<1e-4,`${label}: non-unit ${b.name}`);
-    if(!b.name.toLowerCase().endsWith('hips'))assert(Math.abs(b.position.length()-lengths[i])<1e-5,`${label}: changed limb length ${b.name}`);
+    const id=boneId(b.name);
+    if(id==='spine'){const shift=b.position.clone().sub(restPositions[i]).multiply(b.parent.getWorldScale(new T.Vector3())).length();assert(shift<.061,`${label}: torso lean ${shift}m exceeded 6cm (${result.currentPair})`);}
+    else if(id!=='hips')assert(Math.abs(b.position.length()-lengths[i])<1e-5,`${label}: changed limb length ${b.name}`);
   }
   for(const {bone,kind,rest,limit}of c.jointConstraints || []){
     const excess=rest.clone().normalize().angleTo(bone.quaternion.clone().normalize())-limit;
@@ -60,6 +63,7 @@ function step(profile,frame,dt){
 }
 try{
   for(const timing of schedules)for(const from of profiles)for(const to of profiles){
+    result.currentPair=from[0]+' -> '+to[0];
     c.stopAnimation();c.cancelAirTrick();c.networkAnimation=null;c.networkVisualYaw=null;
     c.group.position.set(0,1,.7);c.webAttachments=[];c.webShotTimer=0;c.persistentWebAnchor=null;
     last=new Map();serial++;

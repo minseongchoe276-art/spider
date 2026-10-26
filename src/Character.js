@@ -1,3 +1,4 @@
+import {poseLowStance} from './LowStance.js';
 import {poseForwardRoll} from './ForwardRoll.js';
 import {loadAppearances,updateAppearance,disposeAppearance} from './CharacterAppearance.js';
 import {createJointConstraints,constrainJoints,stabilizeEndJoints} from './JointConstraints.js';
@@ -9,7 +10,7 @@ import { retargetMotion, prepareMotion, boneId } from './MotionRetarget.js';
 import { MOTIONS, STRIDES, GROUNDED } from './MotionCatalog.js';
 import { fetchAsset, forEachConcurrent } from './AssetLoader.js';
 import { clone as cloneSkeleton } from 'three/addons/utils/SkeletonUtils.js';
-import { plantMovingFeet, poseWall, poseZipLegs, poseMantle, adaptPelvisToTerrain, footSupport, soleRotation, clearGroundSoles, fitGroundAnkle, alignCombatWrists, alignCombatGaze, alignStrikeFootwork, poseCombatLife, heavyClipPhase, leadAirborneKnees, settleHeldStance, reuseHeldGroundPose, cacheGroundPose, clearImpactBody, prepareImpactBody } from './CharacterPose.js';
+import { plantMovingFeet, poseWall, poseZipLegs, poseMantle, adaptPelvisToTerrain, footSupport, soleRotation, clearGroundSoles, fitGroundAnkle, alignCombatWrists, alignCombatGaze, alignStrikeFootwork, poseCombatLife, settleStrikeBalance, heavyClipPhase, leadAirborneKnees, settleHeldStance, reuseHeldGroundPose, cacheGroundPose, clearImpactBody, prepareImpactBody } from './CharacterPose.js';
 import {createHandPoseRig,restoreHandPose,updateWebHandPose} from './WebHandPose.js';
 
 export class Character {
@@ -329,7 +330,8 @@ export class Character {
       const holdPlant=(this.reactSettle || 0)>0.35;
       // A→B→C also interrupts A's fade-out. Letting A expire on its old
       // clock leaves total weight below one and pulls the rig toward bind.
-      if(duration>0 && (interruptedFade || holdPlant || (nextAction.isScheduled() && nextAction.getEffectiveWeight()>1e-5)))
+      const traversalHandoff=['swing','zip','wall','jump','drop','fall','land','roll'].includes(name) || ['swing','zip','wall','jump','drop','fall','land','roll'].some(key=>this.actions[key]===previousAction);
+      if(duration>0 && (traversalHandoff || interruptedFade || holdPlant || (nextAction.isScheduled() && nextAction.getEffectiveWeight()>1e-5)))
         frozenPose=this.captureTransitionPose();
       if(frozenPose){
         this.mixer.stopAllAction();
@@ -357,10 +359,20 @@ export class Character {
     }
   }
 
+  rememberRestPose() {
+    if(this.model && this.restPoseModel!==this.model){
+      this.restPoseModel=this.model;
+      this.restBonePose=Object.values(this.bones).map(bone=>({bone,p:bone.position.clone(),q:bone.quaternion.clone(),s:bone.scale.clone()}));
+    }
+  }
+
   stopAnimation() {
+    this.rememberRestPose();
     // Mixer.stopAllAction restores clip bindings, but procedural IK, body
     // tilt and contact filters live outside the mixer. A respawn must not
     // ease out of the previous life's swing, strike or planted stance.
+    this.lowStance=null;this.crouchBlend=0;this.proneBlend=0;this.crouchWeight=0;this.proneWeight=0;this.lowStancePhase=0;this.lowStanceLift=0;
+    this.strikeLegWeight=0;
     this.lastState=null;this.pendingTurn=null;this.landingAction=null;this.landingSpeed=0;
     this.bodyPitch=0;this.bodyRoll=0;this.visualYaw=this.targetFacingAngle || 0;this.idleTime=0;
     this.locomotionGait=null;this.pendingGait=null;this.gaitChangeTime=0;
@@ -392,6 +404,7 @@ export class Character {
     // release its pose as well as the action currently selected.
     if (this.mixer) {
       this.mixer.stopAllAction();
+      for(const {bone,p,q,s} of this.restBonePose || []){bone.position.copy(p);bone.quaternion.copy(q);bone.scale.copy(s);}
       this.mixer.time=0;this.transitionEndsAt=0;
       this.activeAction = null;
       return;
@@ -505,6 +518,7 @@ export class Character {
   }
 
   update(delta, state, velocity, anchorPos) {
+    this.rememberRestPose();
     updateAppearance(this,delta);
     this.poseState=state;this.wallViewWeight=THREE.MathUtils.damp(this.wallViewWeight || 0,['WALL_RUNNING','MANTLING'].includes(state)?1:0,14,delta);
     this.webMotionSpeed=velocity.length();
@@ -619,10 +633,18 @@ export class Character {
     const gait=['RUNNING','SPRINTING'].includes(state);
     const strikeKey=!!(combat?.duration && ['jab','cross','hook','heavy','special'].includes(combat.key));
     const reactKey=!!(combat && (combat.key?.startsWith('dodge') || combat.key==='hit' || combat.key==='hitHead'));
-    // Ground strikes own the entire body: authored pelvis, knee flexion and
-    // rear-foot pivot carry the punch. Physics brakes travel during contact.
-    // A roll already in recovery retains its stride until safely released.
-    const movingStrike=strikeKey && rollRecovering && gait;
+    // A traveling punch keeps a stride carrier underneath the attack legs.
+    // Replacing it with the in-place boxing take nailed the flight foot down
+    // and left the pelvis ahead of both boots. A standing punch still owns
+    // the whole clip. The choice is latched for the action so a slowing
+    // recovery does not swap bodies halfway through the fist.
+    if(strikeKey && combat.id!=null){
+      if(this.strikeTravelId!==combat.id){
+        this.strikeTravelId=combat.id;
+        this.strikeKeepsGait=!!(combat.travel) || (rollRecovering && gait) || (gait && horizontalSpeed>0.9);
+      }
+    }else if(!strikeKey){this.strikeTravelId=null;this.strikeKeepsGait=false;}
+    const movingStrike=!!(strikeKey && this.strikeKeepsGait);
     const movingGuard=combatMoving && combat?.key==='guard';
     const dodgeKey=!!combat?.key?.startsWith('dodge');
     const hitKey=combat?.key==='hit' || combat?.key==='hitHead';
@@ -650,6 +672,9 @@ export class Character {
     else if(this.isTricking && !grounded && !['WALL_RUNNING','MANTLING','WEB_ZIP'].includes(state) && this.actions.fallIdle)name='fallIdle';
     if(this.networkAnimation && this.actions[this.networkAnimation.key] &&
       (!['ROLLING','LANDING'].includes(state)||this.networkAnimation.key===name))name=this.networkAnimation.key;
+    if(this.lowStance && combatGround && !combat?.duration)name='idle';
+    if(movingStrike && !STRIDES.includes(name))
+      name=horizontalSpeed>5.2?'run':horizontalSpeed>3.2?'regularRun':'walk';
     const retreat=movingStrike && gait && horizontalSpeed>0.45 && Math.abs(this.strikeMoveOffset)>2;
     // A reversed sprint lifts the knees like a backward bound. regularRun
     // played backward reads as a fighting retreat at the same travel speed.
@@ -702,6 +727,15 @@ export class Character {
     if(name==='airTrick')this.activeAction?.setEffectiveTimeScale(
       this.activeAction.getClip().duration / AIR_TRICKS.front.duration);
     if(name==='wall')this.activeAction?.setEffectiveTimeScale(state==='MANTLING'?0:THREE.MathUtils.clamp(velocity.length()/(this.activeAction.getClip().userData.climbSpeed || 3),0,6));
+    if(this.lowStance && combatGround && !combat?.duration && name==='idle'){
+      this.activeAction.time=0;this.activeAction.setEffectiveTimeScale(0);
+    }
+    // A neutral combat stance should not shuffle both feet on a loop while
+    // contact IK tries to pin them. Use one authored guard sample; strikes,
+    // locomotion and explicit blocking keep their own animation clocks.
+    if(name==='combatIdle' && combatGround && !combat?.duration && horizontalSpeed<.15){
+      this.activeAction.time=0;this.activeAction.setEffectiveTimeScale(0);
+    }
     this.mixer.update(delta);
     if(this.networkAnimation && this.combatAction?.key!=='heavy' && this.activeAction===this.actions[this.networkAnimation.key]){
       this.activeAction.time=this.networkAnimation.time;
@@ -745,8 +779,8 @@ export class Character {
         const hip=Object.values(this.bones).find(b=>boneId(b.name)==='hips');
         const locomotionHip=hip?.quaternion.clone();
         const hipTrack=clip.tracks.find(t=>t.name===hip?.name+'.quaternion');
-        // Keep the locomotion pelvis and legs intact. Punch rotation belongs
-        // above the hips while moving; compensating both thigh frames after
+        // Keep the travel pelvis in this upper-body pass. The lower-body
+        // pass adds attack leg drive below; compensating both thighs after
         // twisting the pelvis introduced opposite calf/boot rotations.
         const layers=this.strikeLayers.get(clip);
         const token=upperAction?combat.id || combat.key:movingGuard?'movingGuard':'guard';
@@ -774,6 +808,30 @@ export class Character {
         this.movingStrikePose=new Map(layers.map(({bone})=>[bone,bone.quaternion.clone()]));
       }
     }else{this.movingStrikeToken=null;this.movingStrikePose=null;this.movingStrikeFrom=null;}
+    // Moving attacks need their authored leg drive as well as their arms.
+    // Retain a travel carrier between contacts, then weight the fighting legs
+    // through impact. Ground IK below resolves the resulting foot contacts.
+    this.strikeLegWeight=0;
+    if(movingStrike && combatGround){
+      const clip=this.actions[combatClip]?.getClip();
+      const phase=THREE.MathUtils.clamp(combat.time/combat.duration,0,1);
+      const impact=clip?.userData?.impactPhase ?? .45;
+      const drive=THREE.MathUtils.smoothstep(phase,0,Math.max(.08,impact*.65))
+        *(1-THREE.MathUtils.smoothstep(phase,Math.min(.85,impact+.16),1));
+      const weight=.86*drive;
+      this.strikeLegWeight=weight;
+      if(clip){
+        this.strikeLegLayers ||= new WeakMap();
+        if(!this.strikeLegLayers.has(clip))this.strikeLegLayers.set(clip,clip.tracks.flatMap(track=>{
+          const [id,property]=track.name.split('.'),bone=this.bones[id];
+          return bone && property==='quaternion' && /^(left|right)(upleg|leg)$/.test(boneId(id))
+            ?[{bone,sample:track.createInterpolant()}]:[];
+        }));
+        const samplePhase=combat.key==='heavy'?heavyClipPhase(phase):phase;
+        for(const {bone,sample} of this.strikeLegLayers.get(clip))
+          bone.quaternion.slerp(new THREE.Quaternion().fromArray(sample.evaluate(samplePhase*clip.duration)),weight);
+      }
+    }
     if (state !== 'LANDING') this.landingSpeed = 0;
     this.lastState = state;
     if(state !== 'LANDING')this.landingAction=null;
@@ -803,6 +861,7 @@ export class Character {
     this.group.updateMatrixWorld(true);
     alignStrikeFootwork(this, delta, !!(movingStrike && gait && horizontalSpeed>0.35), this.strikeMoveOffset || 0, combat);
     poseCombatLife(this, combat);
+    if(strikeKey && grounded)settleStrikeBalance(this, combat, !!movingStrike);
     if(!combatGround)this.combatGazeWeight=0;
     alignCombatGaze(this,delta,combatGround&&(this.combatStance||combat?.key==='guard')&&(!combat||['combatIdle','guard'].includes(combat.key)||combat.key.startsWith('dodge')));
     if ((state === 'WALL_RUNNING' || state==='MANTLING') && this.wallNormal) {
@@ -873,7 +932,8 @@ export class Character {
     this.group.updateMatrixWorld(true);
     const groundContacts=grounded && state!=='ROLLING' && !(this.rollReleaseTime>0);
     adaptPelvisToTerrain(this,delta,groundContacts);
-    const heldGround=reuseHeldGroundPose(this,delta,groundContacts);
+    const lowPose=!!this.lowStance || (this.crouchWeight || 0)+(this.proneWeight || 0)>.001;
+    const heldGround=!lowPose && reuseHeldGroundPose(this,delta,groundContacts);
     if (!heldGround && groundContacts && name === 'idle' && state === 'IDLE' && horizontalSpeed < 0.05) {
       this.plantIdleFeet(delta);
     } else {
@@ -988,6 +1048,7 @@ export class Character {
       this.model.position.y+=this.impactLift;
       this.group.updateMatrixWorld(true);
     }
+    poseLowStance(this,delta,state);
     // The next contact step starts from the rendered ankle, after the
     // anatomical clamp and sole clearance have both adjusted the IK result.
     if(grounded && this.groundFootRotations){
@@ -1003,7 +1064,8 @@ export class Character {
     // the roof handoff when the standing action started to fade in.
     this.mantleArmPose=['WALL_RUNNING','MANTLING'].includes(state) || this.mantleArmRelease>0
       ?Object.fromEntries(armBones.map(b=>[b.name,b.quaternion.clone()])):null;
-    cacheGroundPose(this,groundContacts);
+    if(lowPose){this.groundPoseInput=null;this.solvedGroundPose=null;}
+    else cacheGroundPose(this,groundContacts);
     if(state==='ROLLING'){
       this.rollRenderedPhase=this.activeAction.time/this.activeAction.getClip().duration;
       this.rollRenderedPose=new Map(Object.values(this.bones).map(bone=>[bone,{p:bone.position.clone(),q:bone.quaternion.clone()}]));

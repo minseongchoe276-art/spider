@@ -1,0 +1,18 @@
+PASS Keyboard and pad mode presses share one action until every source releases
+PASS Remapped left/right modifiers do not double-toggle modes
+PASS Removed race key stays inactive while concurrent trick presses rearm correctly
+PASS C/Z stances toggle once across devices and X retains camera recenter
+PASS Two devices cannot toggle off the same held web button
+PASS Toggle on then off between physics frames cancels both pending launches
+PASS Resume drops time without animation frames while active stalls still count
+PASS A pad resume within the animation callback also excludes suspended time
+PASS Closing solo help drops suspended time while online help preserves active time
+PASS Resuming cancels hidden key capture, but context-loss rejection leaves it available
+PASS Touch movement coexists with keyboard and pad, clearing only its own stick
+PASS Touch releases its web with desktop toggle enabled and preserves the opposite hand
+PASS Keyboard-held guard survives a touch release of the same action
+PASS Pause clears touch-owned keyboard, webs, and joystick
+PASS Space explicitly jumps from a grounded attached strand
+PASS Keyboard, pad, and touch jump off a hanging web once and clear both hands
+PASS Pause preserves adaptive resolution and clears stale frame samples
+Input lifecycle review: 17 passed, 0 failed.

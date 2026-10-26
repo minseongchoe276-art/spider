@@ -47,16 +47,18 @@ for(const fps of [24,60,144])for(const key of ['jab','cross','special'])for(cons
   for(let i=0;i<Math.ceil(fps*ATTACKS[key].duration);i++){
    combat.before(1/fps,camera);p.update(1/fps,{forward:true,sprint},camera);combat.after(1/fps);
    if(combat.action){
-    active++;assert(c.activeAction===c.actions[key],'Ground strike lost its authored lower body');
+    active++;
+    const clip=Object.entries(c.actions).find(([,action])=>action===c.activeAction)?.[0];
+    assert(['walk','regularRun','run'].includes(clip),`${key}: moving strike left the stride (${clip})`);
     if(combat.action.time>=ATTACKS[key].from && combat.action.time<=ATTACKS[key].to)
-      assert(Math.hypot(p.velocity.x,p.velocity.z)<.25,'Contact braking failed');
+      assert(Math.hypot(p.velocity.x,p.velocity.z)>1,'Moving strike braked the stride');
    }
    const hand=point(c,key==='jab'?'lefthand':'righthand').sub(c.group.position);
    if(last)maxStep=Math.max(maxStep,hand.distanceTo(last));last=hand;
    for(const {bone,rest,limit} of c.jointConstraints)assert(rest.angleTo(bone.quaternion)<=limit+1e-5,'Rendered joint exceeded anatomical bounds');
   }
   const travel=p.position.distanceTo(start);
-  assert(travel<.6,'Ground strike slid while the support feet were planted');
+  assert(travel>0.8,'Moving strike stopped the body');
   combat.cancel();
   for(let i=0;i<Math.ceil(fps*.3);i++){combat.before(1/fps,camera);p.update(1/fps,{forward:true,sprint},camera);}
   assert(Math.hypot(p.velocity.x,p.velocity.z)>2,'Held movement did not resume after recovery');

@@ -468,11 +468,22 @@ export class SwingPhysics {
     return true;
   }
 
+  toggleLowStance(stance) {
+    if(!['crouch','prone'].includes(stance) || !['IDLE','RUNNING','SPRINTING'].includes(this.state)
+      || this.isSwinging || this.webs.length || this.character.combatAction?.duration>0)return false;
+    this.lowStance=this.lowStance===stance?null:stance;
+    this.character.lowStance=this.lowStance;
+    return true;
+  }
+
   update(delta, input, camera) {
     if (![...this.position, ...this.velocity].every(Number.isFinite)) this.resetPosition('invalid');
     // Landing impact is reported for exactly one character update.
     this.character.landingSpeed = 0;
 
+    if(input.jump || input.wallRun || this.isSwinging || this.webs.length || this.character.combatAction?.duration>0
+      || !['IDLE','RUNNING','SPRINTING'].includes(this.state))this.lowStance=null;
+    this.character.lowStance=this.lowStance || null;
     const websLocked=this.webEnabled===false;
     if(websLocked){
       if(this.webs.length || this.zipAnchor || this.character.webShotTimer>0)this.clearWebAnchor();
@@ -606,6 +617,8 @@ export class SwingPhysics {
     this.character.surfaceProbe=(p,range=.8)=>groundSample(this.city,p,range);
     this.character.groundProbe=p=>this.character.surfaceProbe(p)?.height ?? null;
     this.character.mantle=this.state==='MANTLING'?this.mantle:null;
+    if(!['IDLE','RUNNING','SPRINTING'].includes(this.state))this.lowStance=null;
+    this.character.lowStance=this.lowStance || null;
     const visualState = this.animationState;
     this.character.recoveryProgress=visualState==='ROLLING' && this.recoveryTime>0
       ?this.recoveryElapsed/this.recoveryTime:null;
@@ -952,13 +965,13 @@ export class SwingPhysics {
     }
 
     if (isGrounded) {
-      const moveSpeed = input.sprint ? this.sprintSpeed : input.run ? 4.8 : input.jog ? 3.4 : this.walkSpeed;
+      const moveSpeed = this.lowStance==='prone' ? .7 : this.lowStance==='crouch' ? 1.5 : input.sprint ? this.sprintSpeed : input.run ? 4.8 : input.jog ? 3.4 : this.walkSpeed;
       const targetVelocity = combat?.direction?combat.direction.clone().multiplyScalar(combat.speed ?? 7):moveDir.clone().multiplyScalar(moveSpeed*(combat?.key==='guard'?0.35:1));
       if(combat?.direction)moveDir.copy(combat.direction);
       if (moveDir.lengthSq() > 0.001) {
         this.velocity.x = combat?.direction?targetVelocity.x:THREE.MathUtils.damp(this.velocity.x,targetVelocity.x,9,delta);
         this.velocity.z = combat?.direction?targetVelocity.z:THREE.MathUtils.damp(this.velocity.z,targetVelocity.z,9,delta);
-        this.state = input.sprint ? 'SPRINTING' : 'RUNNING';
+        this.state = input.sprint && !this.lowStance ? 'SPRINTING' : 'RUNNING';
       } else {
         this.velocity.x = THREE.MathUtils.damp(this.velocity.x, 0, combat?.plant ? 32 : 8, delta);
         this.velocity.z = THREE.MathUtils.damp(this.velocity.z, 0, combat?.plant ? 32 : 8, delta);
@@ -1159,6 +1172,9 @@ export class SwingPhysics {
   }
 
   resetPosition(reason = null) {
+    this.lowStance=null;this.character.lowStance=null;
+    this.character.crouchBlend=0;this.character.proneBlend=0;
+    this.character.crouchWeight=0;this.character.proneWeight=0;
     this.city.collisionWorld?.setTetherColliders?.([]);
     this.onReset?.();
     this.landingCarry=null;
