@@ -21,7 +21,7 @@ export const COMBAT_MOTIONS=[
   ['guard','Defend',true],
   ['slam','Attack_Ground_Pound'],['slamLand','Land_Three_Point'],
 ].map(([key,take,loop=false])=>({key,take,loop,url:'/models/sources/combat-addon.glb'}));
-COMBAT_MOTIONS.push(...[['hook','Melee_Hook'],['heavy','Punch_Cross'],['hitHead','Hit_Head']]
+COMBAT_MOTIONS.push(...[['hitHead','Hit_Head']]
   .map(([key,take])=>({key,take,loop:false,url:'/models/sources/combat-base.glb'})));
 MOTIONS.push(...COMBAT_MOTIONS);
 

@@ -1,0 +1,13 @@
+import assert from 'node:assert/strict';
+import * as THREE from 'three';
+import {geometryOnly,HongKongTerrain} from '../supabase/functions/_shared/hong-kong-terrain.js';
+const enc=new TextEncoder(),pad=(n,a)=>(n+a-1)&~(a-1);
+const binary=new Uint8Array(44);new Float32Array(binary.buffer,0,9).set([0,0,0,1,0,0,0,1,0]);new Uint16Array(binary.buffer,36,3).set([0,1,2]);
+const json={asset:{version:'2.0'},extensions:{CESIUM_RTC:{center:[7,8,9]}},scenes:[{nodes:[0]}],scene:0,nodes:[{mesh:0}],meshes:[{primitives:[{attributes:{POSITION:0},indices:1}]}],buffers:[{byteLength:42}],bufferViews:[{buffer:0,byteOffset:0,byteLength:36},{buffer:0,byteOffset:36,byteLength:6}],accessors:[{bufferView:0,componentType:5126,count:3,type:'VEC3',min:[0,0,0],max:[1,1,0]},{bufferView:1,componentType:5123,count:3,type:'SCALAR'}]};
+const text=enc.encode(JSON.stringify(json)),n=pad(text.length,4),glb=new Uint8Array(28+n+44),v=new DataView(glb.buffer);glb.set(enc.encode('glTF'));v.setUint32(4,2,true);v.setUint32(8,glb.length,true);v.setUint32(12,n,true);v.setUint32(16,0x4e4f534a,true);glb.fill(32,20,20+n);glb.set(text,20);v.setUint32(20+n,44,true);v.setUint32(24+n,0x004e4942,true);glb.set(binary,28+n);
+const feature=enc.encode(JSON.stringify({BATCH_LENGTH:0,RTC_CENTER:{byteOffset:0}})),f=pad(feature.length,8),b3dm=new Uint8Array(28+f+16+glb.length),b=new DataView(b3dm.buffer);b3dm.set(enc.encode('b3dm'));b.setUint32(4,1,true);b.setUint32(8,b3dm.length,true);b.setUint32(12,f,true);b.setUint32(16,16,true);b3dm.fill(32,28,28+f);b3dm.set(feature,28);[2,3,4].forEach((x,i)=>b.setFloat32(28+f+i*4,x,true));b3dm.set(glb,28+f+16);
+const scene=await geometryOnly(b3dm,'https://data.map.gov.hk/api/3d-data/test.b3dm','Y');scene.updateMatrixWorld(true);const vertex=new THREE.Vector3(0,1,0).applyMatrix4(scene.matrix);assert(vertex.distanceTo(new THREE.Vector3(9,11,14))<1e-6,'Binary RTC, CESIUM RTC or client Y-to-Z transform differs');
+await assert.rejects(()=>geometryOnly(new Uint8Array([1,2,3]),'https://data.map.gov.hk/api/3d-data/test.b3dm'),/Unsupported/);
+const huge=new HongKongTerrain({fetcher:async()=>new Response('tiny',{headers:{'Content-Length':String(32*1024*1024)}})});
+assert.equal((await huge.visibility({x:0,y:18,z:0},{x:0,y:18,z:2})).status,'UNKNOWN','An oversized response became clear coverage');
+console.log('PASS server geometry codec: binary and JSON RTC centers, exact client up-axis, malformed geometry and bounded response rejection');

@@ -22,7 +22,7 @@ for(const fps of [24,60,144])for(const key of ['jab','cross']){
     if(kind==='foot')ankle=Math.max(ankle,rest.angleTo(bone.quaternion)*180/Math.PI);
    }
   }
-  assert(activeFrames>fps*.3);assert(p.position.z>5,'Moving attacks stalled the player');assert(p.walkSpeed>4);
+  assert(activeFrames>fps*.3);assert(p.position.z>p.walkSpeed*(1.8-duration-.3),'Held movement failed to resume after the planted strike');assert(p.walkSpeed>4);
   assert(c.actions.rightHook && c.actions.rightHook!==c.actions.jab);
   const take=c.actions.rightHook.getClip();assert.equal(take.userData.choreography,'compact right hook');
   c.stopAnimation();c.fadeToAction('rightHook',0);c.mixer.setTime(0);const left=point(c,'lefthand'),right=point(c,'righthand');

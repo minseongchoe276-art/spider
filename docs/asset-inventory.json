@@ -1,0 +1,1342 @@
+{
+  "version": 2,
+  "scope": "Evidence inventory only; documented files require matching bytes and an existing license file; not a legal clearance",
+  "assets": [
+    {
+      "path": "public/app-icon.svg",
+      "bytes": 368,
+      "sha256": "ef0033a4cb1cd01b50f7a33c02721517a67b723e840fedf3568c0e4302bf488e",
+      "sourceFile": null,
+      "provenance": {
+        "source": null,
+        "sourceUrl": null,
+        "licenseEvidence": null,
+        "status": "needs-review",
+        "byteMatch": false,
+        "licensePresent": false
+      }
+    },
+    {
+      "path": "public/basis/basis_transcoder.js",
+      "bytes": 57529,
+      "sha256": "8478b5b6d6b74e7d3082b89f6417321d8d1dc0307f2b30d4484bb11b441696a1",
+      "sourceFile": null,
+      "provenance": {
+        "source": "Three.js 0.170.0 examples/jsm/libs/basis; byte-identical to installed package",
+        "sourceUrl": "https://github.com/mrdoob/three.js/tree/r170/examples/jsm/libs/basis",
+        "licenseEvidence": "config/licenses/Basis-Universal.txt",
+        "status": "documented",
+        "byteMatch": true,
+        "licensePresent": true
+      }
+    },
+    {
+      "path": "public/basis/basis_transcoder.wasm",
+      "bytes": 527333,
+      "sha256": "6cf17dc889352c42e9acf8897107978d127005fe3386c36a0e3845e27967630a",
+      "sourceFile": null,
+      "provenance": {
+        "source": "Three.js 0.170.0 examples/jsm/libs/basis; byte-identical to installed package",
+        "sourceUrl": "https://github.com/mrdoob/three.js/tree/r170/examples/jsm/libs/basis",
+        "licenseEvidence": "config/licenses/Basis-Universal.txt",
+        "status": "documented",
+        "byteMatch": true,
+        "licensePresent": true
+      }
+    },
+    {
+      "path": "public/manifest.webmanifest",
+      "bytes": 378,
+      "sha256": "9c95e8aaeefe0aaf31893c9e54918c7b5a928b158a3e315c17d21377f5aca172",
+      "sourceFile": null,
+      "provenance": {
+        "source": null,
+        "sourceUrl": null,
+        "licenseEvidence": null,
+        "status": "needs-review",
+        "byteMatch": false,
+        "licensePresent": false
+      }
+    },
+    {
+      "path": "public/models/appearance-combat.glb",
+      "bytes": 11316428,
+      "sha256": "97b96089238697101ebe29825eb2492aa8f15faa720a73e675fd01a4c9e3450b",
+      "sourceFile": "artifacts/변신모습.glb",
+      "provenance": {
+        "source": "Supplied appearance transferred to shared rig by scripts/build-appearances.mjs",
+        "sourceUrl": null,
+        "licenseEvidence": null,
+        "status": "needs-review",
+        "byteMatch": false,
+        "licensePresent": false
+      }
+    },
+    {
+      "path": "public/models/appearance-web.glb",
+      "bytes": 7711440,
+      "sha256": "697c4fbd6bd8279d3b5457e399c02430291edff391db5a017d20c284299582ec",
+      "sourceFile": "artifacts/사람모습.glb",
+      "provenance": {
+        "source": "Supplied appearance transferred to shared rig by scripts/build-appearances.mjs",
+        "sourceUrl": null,
+        "licenseEvidence": null,
+        "status": "needs-review",
+        "byteMatch": false,
+        "licensePresent": false
+      }
+    },
+    {
+      "path": "public/models/Boxing Hook.fbx",
+      "bytes": 424096,
+      "sha256": "b2895d3389b2b5e03e91748cfbdb92ce4cc28f440c6059716d43c0bc49b3f1db",
+      "sourceFile": null,
+      "provenance": {
+        "source": null,
+        "sourceUrl": null,
+        "licenseEvidence": null,
+        "status": "needs-review",
+        "byteMatch": false,
+        "licensePresent": false
+      }
+    },
+    {
+      "path": "public/models/Boxing Idle.fbx",
+      "bytes": 440288,
+      "sha256": "032d1877dc539c9451fdbfd4f572904adc1ea49130a719b1f44f5c75a8a48499",
+      "sourceFile": null,
+      "provenance": {
+        "source": null,
+        "sourceUrl": null,
+        "licenseEvidence": null,
+        "status": "needs-review",
+        "byteMatch": false,
+        "licensePresent": false
+      }
+    },
+    {
+      "path": "public/models/Boxing Lead Jab.fbx",
+      "bytes": 359296,
+      "sha256": "82f7cdb5ec78e4eaa252f0632de815dc618317192f3bb9d2bc96156f813ab64f",
+      "sourceFile": null,
+      "provenance": {
+        "source": null,
+        "sourceUrl": null,
+        "licenseEvidence": null,
+        "status": "needs-review",
+        "byteMatch": false,
+        "licensePresent": false
+      }
+    },
+    {
+      "path": "public/models/Boxing Stance.fbx",
+      "bytes": 546496,
+      "sha256": "689c70f906e7f689a6f6152e4919a397c243974aadb3d05518639a75834ad60c",
+      "sourceFile": null,
+      "provenance": {
+        "source": null,
+        "sourceUrl": null,
+        "licenseEvidence": null,
+        "status": "needs-review",
+        "byteMatch": false,
+        "licensePresent": false
+      }
+    },
+    {
+      "path": "public/models/Climbing Up Wall.fbx",
+      "bytes": 467296,
+      "sha256": "ab317f650965f174a1b9d95ecbffc405fa8b2aeb1a82f25f5a7edb2aba860969",
+      "sourceFile": null,
+      "provenance": {
+        "source": null,
+        "sourceUrl": null,
+        "licenseEvidence": null,
+        "status": "needs-review",
+        "byteMatch": false,
+        "licensePresent": false
+      }
+    },
+    {
+      "path": "public/models/Cross Punch.fbx",
+      "bytes": 424096,
+      "sha256": "271b49cc56a966cf694eb5d1ea656dbef01fcaeeff5d9da81f8694d460384c96",
+      "sourceFile": null,
+      "provenance": {
+        "source": null,
+        "sourceUrl": null,
+        "licenseEvidence": null,
+        "status": "needs-review",
+        "byteMatch": false,
+        "licensePresent": false
+      }
+    },
+    {
+      "path": "public/models/Falling (2).fbx",
+      "bytes": 645152,
+      "sha256": "5085f53139fe26d99eaccccf74f0b1d97f057604d3b564a982afa2fd98076b34",
+      "sourceFile": null,
+      "provenance": {
+        "source": null,
+        "sourceUrl": null,
+        "licenseEvidence": null,
+        "status": "needs-review",
+        "byteMatch": false,
+        "licensePresent": false
+      }
+    },
+    {
+      "path": "public/models/Falling Idle.fbx",
+      "bytes": 18014224,
+      "sha256": "85115e3fa9b69736f31be33fbab8023c043b1db85ad269df6af2e72235d2bc52",
+      "sourceFile": null,
+      "provenance": {
+        "source": null,
+        "sourceUrl": null,
+        "licenseEvidence": null,
+        "status": "needs-review",
+        "byteMatch": false,
+        "licensePresent": false
+      }
+    },
+    {
+      "path": "public/models/Falling To Roll.fbx",
+      "bytes": 480896,
+      "sha256": "fd5eec844d950160e56d62ada25bfda7692f80dabbf1fa71c02efa6b7fc18dbf",
+      "sourceFile": null,
+      "provenance": {
+        "source": null,
+        "sourceUrl": null,
+        "licenseEvidence": null,
+        "status": "needs-review",
+        "byteMatch": false,
+        "licensePresent": false
+      }
+    },
+    {
+      "path": "public/models/Falling.fbx",
+      "bytes": 645152,
+      "sha256": "0735d3a77f80df5439c7139f5545d3d666bc42c33f28b67dbca62645125375b8",
+      "sourceFile": null,
+      "provenance": {
+        "source": null,
+        "sourceUrl": null,
+        "licenseEvidence": null,
+        "status": "needs-review",
+        "byteMatch": false,
+        "licensePresent": false
+      }
+    },
+    {
+      "path": "public/models/Fast Run.fbx",
+      "bytes": 305232,
+      "sha256": "f94b9f6507a8a7b1e6f39b4c2845a7c1b398fe6d4d5e324fba83aabdf0058956",
+      "sourceFile": null,
+      "provenance": {
+        "source": null,
+        "sourceUrl": null,
+        "licenseEvidence": null,
+        "status": "needs-review",
+        "byteMatch": false,
+        "licensePresent": false
+      }
+    },
+    {
+      "path": "public/models/Female Stop Walking.fbx",
+      "bytes": 386288,
+      "sha256": "505b287501ee9c160522c419a46c1b6ab17b8aeabe5a9348ab8d45af2429f155",
+      "sourceFile": null,
+      "provenance": {
+        "source": null,
+        "sourceUrl": null,
+        "licenseEvidence": null,
+        "status": "needs-review",
+        "byteMatch": false,
+        "licensePresent": false
+      }
+    },
+    {
+      "path": "public/models/Front Flip.fbx",
+      "bytes": 451088,
+      "sha256": "2ae6440ac3418685ffbb7c681efc89b3e5755a0fe8510608c62b4031b6fb1a2a",
+      "sourceFile": null,
+      "provenance": {
+        "source": null,
+        "sourceUrl": null,
+        "licenseEvidence": null,
+        "status": "needs-review",
+        "byteMatch": false,
+        "licensePresent": false
+      }
+    },
+    {
+      "path": "public/models/Idle.fbx",
+      "bytes": 18041488,
+      "sha256": "bc451195e178ec6e7d4ff6da08e3e0c073c34a64fbecc2979994509978950fc6",
+      "sourceFile": null,
+      "provenance": {
+        "source": null,
+        "sourceUrl": null,
+        "licenseEvidence": null,
+        "status": "needs-review",
+        "byteMatch": false,
+        "licensePresent": false
+      }
+    },
+    {
+      "path": "public/models/Injured Idle.fbx",
+      "bytes": 1003696,
+      "sha256": "6ae92903cad77154b29be97b6d3e38349bb811b33a8bc451574359cbc921ffa9",
+      "sourceFile": null,
+      "provenance": {
+        "source": null,
+        "sourceUrl": null,
+        "licenseEvidence": null,
+        "status": "needs-review",
+        "byteMatch": false,
+        "licensePresent": false
+      }
+    },
+    {
+      "path": "public/models/Jogging.fbx",
+      "bytes": 17916608,
+      "sha256": "2145d3b311df784ade736ca8ce4298e37455f4cdb55d632eecb7a764abafe684",
+      "sourceFile": null,
+      "provenance": {
+        "source": null,
+        "sourceUrl": null,
+        "licenseEvidence": null,
+        "status": "needs-review",
+        "byteMatch": false,
+        "licensePresent": false
+      }
+    },
+    {
+      "path": "public/models/Jumping Down (1).fbx",
+      "bytes": 448320,
+      "sha256": "859d43d6961f3607bc024993aa78d8212a564917bfcaa6cb70a1393c2ab5a862",
+      "sourceFile": null,
+      "provenance": {
+        "source": null,
+        "sourceUrl": null,
+        "licenseEvidence": null,
+        "status": "needs-review",
+        "byteMatch": false,
+        "licensePresent": false
+      }
+    },
+    {
+      "path": "public/models/Jumping Down.fbx",
+      "bytes": 17928224,
+      "sha256": "569919b0a48d261e03a70f20d6bb7e70046b25efcfb4a4bb1dd0ab17d6324993",
+      "sourceFile": null,
+      "provenance": {
+        "source": null,
+        "sourceUrl": null,
+        "licenseEvidence": null,
+        "status": "needs-review",
+        "byteMatch": false,
+        "licensePresent": false
+      }
+    },
+    {
+      "path": "public/models/Lead Jab.fbx",
+      "bytes": 370096,
+      "sha256": "a07eb2721db05a7321e9da19175bf47132c9ddb170e9bcc2e5df670d2821e94d",
+      "sourceFile": null,
+      "provenance": {
+        "source": null,
+        "sourceUrl": null,
+        "licenseEvidence": null,
+        "status": "needs-review",
+        "byteMatch": false,
+        "licensePresent": false
+      }
+    },
+    {
+      "path": "public/models/Left Turn.fbx",
+      "bytes": 365856,
+      "sha256": "151c9c16b985c3828cf71a1a989026dd11a74a1f6c3323b39dd03d4281db1c93",
+      "sourceFile": null,
+      "provenance": {
+        "source": null,
+        "sourceUrl": null,
+        "licenseEvidence": null,
+        "status": "needs-review",
+        "byteMatch": false,
+        "licensePresent": false
+      }
+    },
+    {
+      "path": "public/models/Mma Kick.fbx",
+      "bytes": 443536,
+      "sha256": "66fe53f8362c66e6eeaddb4b7bc6c344cb3ea569ef94fa6badda1077975a32a6",
+      "sourceFile": null,
+      "provenance": {
+        "source": null,
+        "sourceUrl": null,
+        "licenseEvidence": null,
+        "status": "needs-review",
+        "byteMatch": false,
+        "licensePresent": false
+      }
+    },
+    {
+      "path": "public/models/Right Turn.fbx",
+      "bytes": 365856,
+      "sha256": "5679c5fe0f34cfea8f4234c804ca42cac3e85adb4876d3aeab372853670abaa3",
+      "sourceFile": null,
+      "provenance": {
+        "source": null,
+        "sourceUrl": null,
+        "licenseEvidence": null,
+        "status": "needs-review",
+        "byteMatch": false,
+        "licensePresent": false
+      }
+    },
+    {
+      "path": "public/models/Rope Swinging.fbx",
+      "bytes": 18031776,
+      "sha256": "d3b992c732bf4910284d6c23688551f56bca834ed6e45bd09d230af064ea963c",
+      "sourceFile": null,
+      "provenance": {
+        "source": null,
+        "sourceUrl": null,
+        "licenseEvidence": null,
+        "status": "needs-review",
+        "byteMatch": false,
+        "licensePresent": false
+      }
+    },
+    {
+      "path": "public/models/Run To Stop.fbx",
+      "bytes": 354368,
+      "sha256": "87604dc0e3e907a6cd575e72eb6b57e7b8f4c3edb3c1ddb2fc2a7f46169fb3eb",
+      "sourceFile": null,
+      "provenance": {
+        "source": null,
+        "sourceUrl": null,
+        "licenseEvidence": null,
+        "status": "needs-review",
+        "byteMatch": false,
+        "licensePresent": false
+      }
+    },
+    {
+      "path": "public/models/Running.fbx",
+      "bytes": 17701392,
+      "sha256": "b1563e81706ae3e80ea2e5d0f99619cc5c0dd60b34d557f9da6527b406a48cab",
+      "sourceFile": null,
+      "provenance": {
+        "source": null,
+        "sourceUrl": null,
+        "licenseEvidence": null,
+        "status": "needs-review",
+        "byteMatch": false,
+        "licensePresent": false
+      }
+    },
+    {
+      "path": "public/models/shadow-pulse-rig.glb",
+      "bytes": 7711440,
+      "sha256": "527a65e1749512e95d16045c63d7b6be4565f54dfd477be817fe4efd78422a5a",
+      "sourceFile": null,
+      "provenance": {
+        "source": null,
+        "sourceUrl": null,
+        "licenseEvidence": null,
+        "status": "needs-review",
+        "byteMatch": false,
+        "licensePresent": false
+      }
+    },
+    {
+      "path": "public/models/sources/combat-addon.glb",
+      "bytes": 3902688,
+      "sha256": "e654b9fc1fc61ee6489cb2b7425aa76678231265d24daa544c47820545f4661f",
+      "sourceFile": null,
+      "provenance": {
+        "source": "Local supplied model source group; upstream creator URL not recorded",
+        "sourceUrl": null,
+        "licenseEvidence": "public/models/sources/LICENSE-CC0.md",
+        "status": "needs-review",
+        "byteMatch": false,
+        "licensePresent": false
+      }
+    },
+    {
+      "path": "public/models/sources/combat-base.glb",
+      "bytes": 3916024,
+      "sha256": "b183369aa993af28943015ddc968ca035bbbac6161d181c89eea5f50d18a3311",
+      "sourceFile": null,
+      "provenance": {
+        "source": "Local supplied model source group; upstream creator URL not recorded",
+        "sourceUrl": null,
+        "licenseEvidence": "public/models/sources/LICENSE-CC0.md",
+        "status": "needs-review",
+        "byteMatch": false,
+        "licensePresent": false
+      }
+    },
+    {
+      "path": "public/models/sources/LICENSE-CC0.md",
+      "bytes": 294,
+      "sha256": "52fec1c484df708c16b4c27b2bf0d7f0d3994105c57adc4b9e6f95bcfd9de65f",
+      "sourceFile": null,
+      "provenance": {
+        "source": null,
+        "sourceUrl": null,
+        "licenseEvidence": null,
+        "status": "needs-review",
+        "byteMatch": false,
+        "licensePresent": false
+      }
+    },
+    {
+      "path": "public/models/sources/mesh2motion-climb.glb",
+      "bytes": 3735400,
+      "sha256": "7fa7d0e792c57b264beb2898225c0ec97090f1e72c7706dfbebd5011cd2c1345",
+      "sourceFile": null,
+      "provenance": {
+        "source": "Local supplied model source group; upstream creator URL not recorded",
+        "sourceUrl": null,
+        "licenseEvidence": "public/models/sources/LICENSE-CC0.md",
+        "status": "needs-review",
+        "byteMatch": false,
+        "licensePresent": false
+      }
+    },
+    {
+      "path": "public/models/Standing Jump.fbx",
+      "bytes": 17896912,
+      "sha256": "01c13c4f7f5038d145278556e53cd8ca6c845f3c140cec220f1ad99ea65e7f67",
+      "sourceFile": null,
+      "provenance": {
+        "source": null,
+        "sourceUrl": null,
+        "licenseEvidence": null,
+        "status": "needs-review",
+        "byteMatch": false,
+        "licensePresent": false
+      }
+    },
+    {
+      "path": "public/models/Surprise Uppercut.fbx",
+      "bytes": 602288,
+      "sha256": "869da292787412b2c4426489658d91d0b0925f4f8302cfeaff4a1f8ebdaca63e",
+      "sourceFile": null,
+      "provenance": {
+        "source": null,
+        "sourceUrl": null,
+        "licenseEvidence": null,
+        "status": "needs-review",
+        "byteMatch": false,
+        "licensePresent": false
+      }
+    },
+    {
+      "path": "public/models/Walking.fbx",
+      "bytes": 371648,
+      "sha256": "c02732ab90f678f04311f93c697fe109a5bb4655f02021d74b180d72bcd4348a",
+      "sourceFile": null,
+      "provenance": {
+        "source": null,
+        "sourceUrl": null,
+        "licenseEvidence": null,
+        "status": "needs-review",
+        "byteMatch": false,
+        "licensePresent": false
+      }
+    },
+    {
+      "path": "public/motions/airTrick.json",
+      "bytes": 192466,
+      "sha256": "6c5e5aced6649e227d281e3cb7a11946ed0cadb4a4b6b976dc186635fc0289b8",
+      "sourceFile": "public/models/Front Flip.fbx",
+      "provenance": {
+        "source": null,
+        "sourceUrl": null,
+        "licenseEvidence": null,
+        "status": "needs-review",
+        "byteMatch": false,
+        "licensePresent": false
+      }
+    },
+    {
+      "path": "public/motions/combatIdle.json",
+      "bytes": 878783,
+      "sha256": "3b61133fcfff9fb32586d2be2186cf6826cdf6322e3c87cffe61d2d061ca4d59",
+      "sourceFile": "public/models/Boxing Stance.fbx",
+      "provenance": {
+        "source": null,
+        "sourceUrl": null,
+        "licenseEvidence": null,
+        "status": "needs-review",
+        "byteMatch": false,
+        "licensePresent": false
+      }
+    },
+    {
+      "path": "public/motions/cross.json",
+      "bytes": 291240,
+      "sha256": "3a6a1f5190fc9bde742e8430ef2e1532fddadec37f9d356a93dbb50e7eb4f8cd",
+      "sourceFile": "public/models/Cross Punch.fbx",
+      "provenance": {
+        "source": null,
+        "sourceUrl": null,
+        "licenseEvidence": null,
+        "status": "needs-review",
+        "byteMatch": false,
+        "licensePresent": false
+      }
+    },
+    {
+      "path": "public/motions/drop.json",
+      "bytes": 94422,
+      "sha256": "c7dd6f8959c181f933eb9883608d32ab44b99e065c412dbf8c7a8cdcfd563dab",
+      "sourceFile": "public/models/Jumping Down (1).fbx",
+      "provenance": {
+        "source": null,
+        "sourceUrl": null,
+        "licenseEvidence": null,
+        "status": "needs-review",
+        "byteMatch": false,
+        "licensePresent": false
+      }
+    },
+    {
+      "path": "public/motions/fall.json",
+      "bytes": 876712,
+      "sha256": "b0ea2f530ae00de7a54c4656b235c0bc37485349569c5cbdb28828d9a6738a56",
+      "sourceFile": "public/models/Falling (2).fbx",
+      "provenance": {
+        "source": null,
+        "sourceUrl": null,
+        "licenseEvidence": null,
+        "status": "needs-review",
+        "byteMatch": false,
+        "licensePresent": false
+      }
+    },
+    {
+      "path": "public/motions/fallIdle.json",
+      "bytes": 876681,
+      "sha256": "4fca52f4547d2db770d4a173563167eae4a25ea22f5f1cabcddb608b9a4cb4b2",
+      "sourceFile": "public/models/Falling Idle.fbx",
+      "provenance": {
+        "source": null,
+        "sourceUrl": null,
+        "licenseEvidence": null,
+        "status": "needs-review",
+        "byteMatch": false,
+        "licensePresent": false
+      }
+    },
+    {
+      "path": "public/motions/fallVariant.json",
+      "bytes": 876719,
+      "sha256": "e64d1f19556ff00a39378d71c6ed54c1fd716e5c3a655ea7aebbbcc8c6865808",
+      "sourceFile": "public/models/Falling.fbx",
+      "provenance": {
+        "source": null,
+        "sourceUrl": null,
+        "licenseEvidence": null,
+        "status": "needs-review",
+        "byteMatch": false,
+        "licensePresent": false
+      }
+    },
+    {
+      "path": "public/motions/guard.json",
+      "bytes": 777859,
+      "sha256": "1701aed8b4c9f2078126a832a88187a7e09cdbbcce9de8e550b89a55ca24c1cf",
+      "sourceFile": "public/models/sources/combat-addon.glb",
+      "provenance": {
+        "source": null,
+        "sourceUrl": null,
+        "licenseEvidence": null,
+        "status": "needs-review",
+        "byteMatch": false,
+        "licensePresent": false
+      }
+    },
+    {
+      "path": "public/motions/heavy.json",
+      "bytes": 284197,
+      "sha256": "55094a25f3ec1c6aeae0eafe9627f0c0a101855218ff3702e2f6a40819a9743e",
+      "sourceFile": "public/models/Boxing Hook.fbx",
+      "provenance": {
+        "source": null,
+        "sourceUrl": null,
+        "licenseEvidence": null,
+        "status": "needs-review",
+        "byteMatch": false,
+        "licensePresent": false
+      }
+    },
+    {
+      "path": "public/motions/hitHead.json",
+      "bytes": 101088,
+      "sha256": "6ec3a94cd92985981de993dea6d8e05d7f59f99228c70b176632ac1f2868eeac",
+      "sourceFile": "public/models/sources/combat-base.glb",
+      "provenance": {
+        "source": null,
+        "sourceUrl": null,
+        "licenseEvidence": null,
+        "status": "needs-review",
+        "byteMatch": false,
+        "licensePresent": false
+      }
+    },
+    {
+      "path": "public/motions/hook.json",
+      "bytes": 284196,
+      "sha256": "266c4bb19d48c9815ac198474816420d0e73ad118b748e2a4efac5e3f0a42e00",
+      "sourceFile": "public/models/Boxing Hook.fbx",
+      "provenance": {
+        "source": null,
+        "sourceUrl": null,
+        "licenseEvidence": null,
+        "status": "needs-review",
+        "byteMatch": false,
+        "licensePresent": false
+      }
+    },
+    {
+      "path": "public/motions/idle.json",
+      "bytes": 781503,
+      "sha256": "78b736824feb999257f6fcbff714844e02058f79dc9ef1a6faf4815c542d61ea",
+      "sourceFile": "public/models/Idle.fbx",
+      "provenance": {
+        "source": null,
+        "sourceUrl": null,
+        "licenseEvidence": null,
+        "status": "needs-review",
+        "byteMatch": false,
+        "licensePresent": false
+      }
+    },
+    {
+      "path": "public/motions/injuredIdle.json",
+      "bytes": 1796402,
+      "sha256": "5734b429bd988ec7a19763d25a32925cb2d4e72e7c8b57470891e5ad9776b3d1",
+      "sourceFile": "public/models/Injured Idle.fbx",
+      "provenance": {
+        "source": null,
+        "sourceUrl": null,
+        "licenseEvidence": null,
+        "status": "needs-review",
+        "byteMatch": false,
+        "licensePresent": false
+      }
+    },
+    {
+      "path": "public/motions/jab.json",
+      "bytes": 279778,
+      "sha256": "c618b12f9904a0f480773a57fdafa725cd038710156e600d2b3f97a21d81454d",
+      "sourceFile": "public/models/Lead Jab.fbx",
+      "provenance": {
+        "source": null,
+        "sourceUrl": null,
+        "licenseEvidence": null,
+        "status": "needs-review",
+        "byteMatch": false,
+        "licensePresent": false
+      }
+    },
+    {
+      "path": "public/motions/jump.json",
+      "bytes": 130923,
+      "sha256": "e25b852db93f6a9af863caae27d1bf913684ac47a919b5325fbaec8f2f223169",
+      "sourceFile": "public/models/Standing Jump.fbx",
+      "provenance": {
+        "source": null,
+        "sourceUrl": null,
+        "licenseEvidence": null,
+        "status": "needs-review",
+        "byteMatch": false,
+        "licensePresent": false
+      }
+    },
+    {
+      "path": "public/motions/jumpDown.json",
+      "bytes": 461192,
+      "sha256": "2c11ea369861ddc357b89bc7e1c9c9b6df74af07ca601d874ffe12ef2b55b686",
+      "sourceFile": "public/models/Jumping Down (1).fbx",
+      "provenance": {
+        "source": null,
+        "sourceUrl": null,
+        "licenseEvidence": null,
+        "status": "needs-review",
+        "byteMatch": false,
+        "licensePresent": false
+      }
+    },
+    {
+      "path": "public/motions/jumpDownVariant.json",
+      "bytes": 529849,
+      "sha256": "158759d25cbcb08fbde55e802db881aa5b688c034cfa305c4567a8e4a6cc3edb",
+      "sourceFile": "public/models/Jumping Down.fbx",
+      "provenance": {
+        "source": null,
+        "sourceUrl": null,
+        "licenseEvidence": null,
+        "status": "needs-review",
+        "byteMatch": false,
+        "licensePresent": false
+      }
+    },
+    {
+      "path": "public/motions/land.json",
+      "bytes": 184023,
+      "sha256": "0215ac77dfcfa135455737c7bb32d68b95678fa4feda68357331e0787765dd41",
+      "sourceFile": "public/models/Standing Jump.fbx",
+      "provenance": {
+        "source": null,
+        "sourceUrl": null,
+        "licenseEvidence": null,
+        "status": "needs-review",
+        "byteMatch": false,
+        "licensePresent": false
+      }
+    },
+    {
+      "path": "public/motions/manifest.json",
+      "bytes": 124,
+      "sha256": "cc7eed4918ab6c25fe609b32222e292823057c679530b7dfe2e4cabd024e43d8",
+      "sourceFile": null,
+      "provenance": {
+        "source": null,
+        "sourceUrl": null,
+        "licenseEvidence": null,
+        "status": "needs-review",
+        "byteMatch": false,
+        "licensePresent": false
+      }
+    },
+    {
+      "path": "public/motions/regularRun.json",
+      "bytes": 149799,
+      "sha256": "c6640c6578c9a8299809707b5a2833ab4c79e20d199f1e5612f3916376d9f562",
+      "sourceFile": "public/models/Running.fbx",
+      "provenance": {
+        "source": null,
+        "sourceUrl": null,
+        "licenseEvidence": null,
+        "status": "needs-review",
+        "byteMatch": false,
+        "licensePresent": false
+      }
+    },
+    {
+      "path": "public/motions/rightHook.json",
+      "bytes": 284635,
+      "sha256": "84a40f9ae5952cbd54b60b0a4f2e2610396f9a26aca4f4893c05a6832951edd6",
+      "sourceFile": "public/models/Boxing Stance.fbx",
+      "provenance": {
+        "source": null,
+        "sourceUrl": null,
+        "licenseEvidence": null,
+        "status": "needs-review",
+        "byteMatch": false,
+        "licensePresent": false
+      }
+    },
+    {
+      "path": "public/motions/roll.json",
+      "bytes": 317697,
+      "sha256": "efce5a14f13f79a39d63abdf42057643acac1f8c12331d8d08fdf3dc923c59fe",
+      "sourceFile": "public/models/Falling To Roll.fbx",
+      "provenance": {
+        "source": null,
+        "sourceUrl": null,
+        "licenseEvidence": null,
+        "status": "needs-review",
+        "byteMatch": false,
+        "licensePresent": false
+      }
+    },
+    {
+      "path": "public/motions/run.json",
+      "bytes": 122451,
+      "sha256": "8d7af0a8c9cede36e68c3777d344b9f4bff2e09f9288cc3fb9cc3287d24bd376",
+      "sourceFile": "public/models/Fast Run.fbx",
+      "provenance": {
+        "source": null,
+        "sourceUrl": null,
+        "licenseEvidence": null,
+        "status": "needs-review",
+        "byteMatch": false,
+        "licensePresent": false
+      }
+    },
+    {
+      "path": "public/motions/runStop.json",
+      "bytes": 189898,
+      "sha256": "021c374c00a3da2809397850762abfff0705208674c9a52e8c63f7ddeb88f852",
+      "sourceFile": "public/models/Run To Stop.fbx",
+      "provenance": {
+        "source": null,
+        "sourceUrl": null,
+        "licenseEvidence": null,
+        "status": "needs-review",
+        "byteMatch": false,
+        "licensePresent": false
+      }
+    },
+    {
+      "path": "public/motions/slam.json",
+      "bytes": 442609,
+      "sha256": "cf12ed729363c0edcdc975817d2da28728144203e41f69d2a30635bb3fa1fd5b",
+      "sourceFile": "public/models/sources/combat-addon.glb",
+      "provenance": {
+        "source": null,
+        "sourceUrl": null,
+        "licenseEvidence": null,
+        "status": "needs-review",
+        "byteMatch": false,
+        "licensePresent": false
+      }
+    },
+    {
+      "path": "public/motions/slamLand.json",
+      "bytes": 156434,
+      "sha256": "736905ac5bc3f42d23d4e69a9ce0624a54586adbb979da8486d0ee9ae66bc154",
+      "sourceFile": "public/models/sources/combat-addon.glb",
+      "provenance": {
+        "source": null,
+        "sourceUrl": null,
+        "licenseEvidence": null,
+        "status": "needs-review",
+        "byteMatch": false,
+        "licensePresent": false
+      }
+    },
+    {
+      "path": "public/motions/special.json",
+      "bytes": 360647,
+      "sha256": "a1c799b58a59ff91cc0e7971827baec570f35d820d7a28de853557df14ed4c02",
+      "sourceFile": "public/models/Cross Punch.fbx",
+      "provenance": {
+        "source": null,
+        "sourceUrl": null,
+        "licenseEvidence": null,
+        "status": "needs-review",
+        "byteMatch": false,
+        "licensePresent": false
+      }
+    },
+    {
+      "path": "public/motions/stop.json",
+      "bytes": 59323,
+      "sha256": "bac1ee741bbabca18054490ca6f1a42a62709d6154aea2493e78f5df06b5a774",
+      "sourceFile": "public/models/Run To Stop.fbx",
+      "provenance": {
+        "source": null,
+        "sourceUrl": null,
+        "licenseEvidence": null,
+        "status": "needs-review",
+        "byteMatch": false,
+        "licensePresent": false
+      }
+    },
+    {
+      "path": "public/motions/swing.json",
+      "bytes": 395925,
+      "sha256": "f1b470e3cdff6754b8b6d921713902f4380d58af060b7c85adeb4408547a1f73",
+      "sourceFile": "public/models/Rope Swinging.fbx",
+      "provenance": {
+        "source": null,
+        "sourceUrl": null,
+        "licenseEvidence": null,
+        "status": "needs-review",
+        "byteMatch": false,
+        "licensePresent": false
+      }
+    },
+    {
+      "path": "public/motions/turnLeft.json",
+      "bytes": 202905,
+      "sha256": "8df7e4bd64b449a6ef6a5894e3409b017b09c43754efca7487923da2e634a1af",
+      "sourceFile": "public/models/Left Turn.fbx",
+      "provenance": {
+        "source": null,
+        "sourceUrl": null,
+        "licenseEvidence": null,
+        "status": "needs-review",
+        "byteMatch": false,
+        "licensePresent": false
+      }
+    },
+    {
+      "path": "public/motions/turnRight.json",
+      "bytes": 203018,
+      "sha256": "488003bb96ebfb2a641c817f8388d7d3f18c0320b200a31aaff84ef383121b3f",
+      "sourceFile": "public/models/Right Turn.fbx",
+      "provenance": {
+        "source": null,
+        "sourceUrl": null,
+        "licenseEvidence": null,
+        "status": "needs-review",
+        "byteMatch": false,
+        "licensePresent": false
+      }
+    },
+    {
+      "path": "public/motions/walk.json",
+      "bytes": 202167,
+      "sha256": "6e71a2e1735425ed059f41e9663dc80349f2c44aa497c10c40bca84bd1246734",
+      "sourceFile": "public/models/Walking.fbx",
+      "provenance": {
+        "source": null,
+        "sourceUrl": null,
+        "licenseEvidence": null,
+        "status": "needs-review",
+        "byteMatch": false,
+        "licensePresent": false
+      }
+    },
+    {
+      "path": "public/motions/wall.json",
+      "bytes": 398160,
+      "sha256": "d0ace3236b5b96de5beccb34c7311c92df302fd52d9f5dd6dc92cfd22fb9b594",
+      "sourceFile": "public/models/Climbing Up Wall.fbx",
+      "provenance": {
+        "source": null,
+        "sourceUrl": null,
+        "licenseEvidence": null,
+        "status": "needs-review",
+        "byteMatch": false,
+        "licensePresent": false
+      }
+    },
+    {
+      "path": "public/motions/zip.json",
+      "bytes": 24140,
+      "sha256": "271f193399831b325bb5cbbac9cb0689cff1bbbf5b6cd91aab75daf4542c9611",
+      "sourceFile": "public/models/Rope Swinging.fbx",
+      "provenance": {
+        "source": null,
+        "sourceUrl": null,
+        "licenseEvidence": null,
+        "status": "needs-review",
+        "byteMatch": false,
+        "licensePresent": false
+      }
+    },
+    {
+      "path": "public/textures/vfx/circle_01_a.png",
+      "bytes": 43706,
+      "sha256": "c14813534d65ec48b9815eca7a50215b960f65a5b82541139db7b97edf18317c",
+      "sourceFile": null,
+      "provenance": {
+        "source": null,
+        "sourceUrl": null,
+        "licenseEvidence": null,
+        "status": "needs-review",
+        "byteMatch": false,
+        "licensePresent": false
+      }
+    },
+    {
+      "path": "public/textures/vfx/circle_03_a.png",
+      "bytes": 59571,
+      "sha256": "448bae1569c618333d1982229216de8a5b2a02d382e87111faeeaf03a796f561",
+      "sourceFile": null,
+      "provenance": {
+        "source": "Kenney Particle Pack; individual file provenance not independently verified",
+        "sourceUrl": null,
+        "licenseEvidence": "public/textures/vfx/LICENSE.txt",
+        "status": "needs-review",
+        "byteMatch": false,
+        "licensePresent": false
+      }
+    },
+    {
+      "path": "public/textures/vfx/circle_05_a.png",
+      "bytes": 29451,
+      "sha256": "7ec420e3b2c11e0e2820b5f1c3fcc8ecd97aafc1b922b5f1d98343915b290c4d",
+      "sourceFile": null,
+      "provenance": {
+        "source": "Kenney Particle Pack; individual file provenance not independently verified",
+        "sourceUrl": null,
+        "licenseEvidence": "public/textures/vfx/LICENSE.txt",
+        "status": "needs-review",
+        "byteMatch": false,
+        "licensePresent": false
+      }
+    },
+    {
+      "path": "public/textures/vfx/dirt_01_a.png",
+      "bytes": 87630,
+      "sha256": "3cf9f052e24c081e882923d7a165cfbe08ac804a519b37412a795a6dde6bed35",
+      "sourceFile": null,
+      "provenance": {
+        "source": null,
+        "sourceUrl": null,
+        "licenseEvidence": null,
+        "status": "needs-review",
+        "byteMatch": false,
+        "licensePresent": false
+      }
+    },
+    {
+      "path": "public/textures/vfx/dirt_02_a.png",
+      "bytes": 109841,
+      "sha256": "3aaae4f094cb7bebb3bed023b6cd48fe53af82c2bc7c4728f92b34f6bf5dc612",
+      "sourceFile": null,
+      "provenance": {
+        "source": null,
+        "sourceUrl": null,
+        "licenseEvidence": null,
+        "status": "needs-review",
+        "byteMatch": false,
+        "licensePresent": false
+      }
+    },
+    {
+      "path": "public/textures/vfx/dust.png",
+      "bytes": 77863,
+      "sha256": "5a529ca033f2ea99f49cead4cb6618acf534d19d4472ca34e879776bd18c9cd3",
+      "sourceFile": null,
+      "provenance": {
+        "source": "Kenney Particle Pack; byte-identical to official archive entries",
+        "sourceUrl": "https://kenney.nl/assets/particle-pack",
+        "licenseEvidence": "config/licenses/Kenney-Particle-Pack.txt",
+        "status": "documented",
+        "byteMatch": true,
+        "licensePresent": true
+      }
+    },
+    {
+      "path": "public/textures/vfx/impact_white_6x4.png",
+      "bytes": 36390,
+      "sha256": "e9c617918526f839e1382e4da6b01abf62dc6ba0262ecb08f0abfefa1290d839",
+      "sourceFile": null,
+      "provenance": {
+        "source": null,
+        "sourceUrl": null,
+        "licenseEvidence": null,
+        "status": "needs-review",
+        "byteMatch": false,
+        "licensePresent": false
+      }
+    },
+    {
+      "path": "public/textures/vfx/LICENSE.txt",
+      "bytes": 645,
+      "sha256": "dabd7cc9f78caf9dd0e0c2dbf27eca9c22383bed5bf035bc26341a246b748cc6",
+      "sourceFile": null,
+      "provenance": {
+        "source": null,
+        "sourceUrl": null,
+        "licenseEvidence": null,
+        "status": "needs-review",
+        "byteMatch": false,
+        "licensePresent": false
+      }
+    },
+    {
+      "path": "public/textures/vfx/scorch_01_a.png",
+      "bytes": 56894,
+      "sha256": "822d2dff21342e26098288782ec74b4179c78bb4423fe9d18c0de89b16599eb4",
+      "sourceFile": null,
+      "provenance": {
+        "source": "Kenney Particle Pack; individual file provenance not independently verified",
+        "sourceUrl": null,
+        "licenseEvidence": "public/textures/vfx/LICENSE.txt",
+        "status": "needs-review",
+        "byteMatch": false,
+        "licensePresent": false
+      }
+    },
+    {
+      "path": "public/textures/vfx/scorch_02_a.png",
+      "bytes": 66764,
+      "sha256": "53a419bfd4f6ffbe104806e84d26d3a18d2c6a5d8d951a887090dccf8b7f3c86",
+      "sourceFile": null,
+      "provenance": {
+        "source": null,
+        "sourceUrl": null,
+        "licenseEvidence": null,
+        "status": "needs-review",
+        "byteMatch": false,
+        "licensePresent": false
+      }
+    },
+    {
+      "path": "public/textures/vfx/smoke_01_a.png",
+      "bytes": 74799,
+      "sha256": "9919fcedbc32dac9393dc7662b8dede3548a432f64776e4a83502d2f63470012",
+      "sourceFile": null,
+      "provenance": {
+        "source": null,
+        "sourceUrl": null,
+        "licenseEvidence": null,
+        "status": "needs-review",
+        "byteMatch": false,
+        "licensePresent": false
+      }
+    },
+    {
+      "path": "public/textures/vfx/smoke_04_a.png",
+      "bytes": 66951,
+      "sha256": "65e6427ee3b9279e83e9b65fb84bafba3683cb7de7f562f32ee989d96f54626c",
+      "sourceFile": null,
+      "provenance": {
+        "source": "Kenney Particle Pack; individual file provenance not independently verified",
+        "sourceUrl": null,
+        "licenseEvidence": "public/textures/vfx/LICENSE.txt",
+        "status": "needs-review",
+        "byteMatch": false,
+        "licensePresent": false
+      }
+    },
+    {
+      "path": "public/textures/vfx/smoke_07_strong_a.png",
+      "bytes": 60579,
+      "sha256": "94006c02d2d163b0ae1049e937b260f166c4c4b3029e49183731412d0a922fe2",
+      "sourceFile": null,
+      "provenance": {
+        "source": null,
+        "sourceUrl": null,
+        "licenseEvidence": null,
+        "status": "needs-review",
+        "byteMatch": false,
+        "licensePresent": false
+      }
+    },
+    {
+      "path": "public/textures/vfx/spark_01_a.png",
+      "bytes": 76005,
+      "sha256": "5c5331468ef7f09110b077580db51dc0f8d4a52d3d5d109b5c0e542bf5fd7419",
+      "sourceFile": null,
+      "provenance": {
+        "source": "Kenney Particle Pack; individual file provenance not independently verified",
+        "sourceUrl": null,
+        "licenseEvidence": "public/textures/vfx/LICENSE.txt",
+        "status": "needs-review",
+        "byteMatch": false,
+        "licensePresent": false
+      }
+    },
+    {
+      "path": "public/textures/vfx/web-impact.png",
+      "bytes": 42423,
+      "sha256": "b615e988e12bbff49ad061c59d8d08f976fab9f72ceac0224b67b4558e336857",
+      "sourceFile": null,
+      "provenance": {
+        "source": "Kenney Particle Pack; byte-identical to official archive entries",
+        "sourceUrl": "https://kenney.nl/assets/particle-pack",
+        "licenseEvidence": "config/licenses/Kenney-Particle-Pack.txt",
+        "status": "documented",
+        "byteMatch": true,
+        "licensePresent": true
+      }
+    }
+  ],
+  "unresolved": [
+    "public/app-icon.svg",
+    "public/manifest.webmanifest",
+    "public/models/appearance-combat.glb",
+    "public/models/appearance-web.glb",
+    "public/models/Boxing Hook.fbx",
+    "public/models/Boxing Idle.fbx",
+    "public/models/Boxing Lead Jab.fbx",
+    "public/models/Boxing Stance.fbx",
+    "public/models/Climbing Up Wall.fbx",
+    "public/models/Cross Punch.fbx",
+    "public/models/Falling (2).fbx",
+    "public/models/Falling Idle.fbx",
+    "public/models/Falling To Roll.fbx",
+    "public/models/Falling.fbx",
+    "public/models/Fast Run.fbx",
+    "public/models/Female Stop Walking.fbx",
+    "public/models/Front Flip.fbx",
+    "public/models/Idle.fbx",
+    "public/models/Injured Idle.fbx",
+    "public/models/Jogging.fbx",
+    "public/models/Jumping Down (1).fbx",
+    "public/models/Jumping Down.fbx",
+    "public/models/Lead Jab.fbx",
+    "public/models/Left Turn.fbx",
+    "public/models/Mma Kick.fbx",
+    "public/models/Right Turn.fbx",
+    "public/models/Rope Swinging.fbx",
+    "public/models/Run To Stop.fbx",
+    "public/models/Running.fbx",
+    "public/models/shadow-pulse-rig.glb",
+    "public/models/sources/combat-addon.glb",
+    "public/models/sources/combat-base.glb",
+    "public/models/sources/LICENSE-CC0.md",
+    "public/models/sources/mesh2motion-climb.glb",
+    "public/models/Standing Jump.fbx",
+    "public/models/Surprise Uppercut.fbx",
+    "public/models/Walking.fbx",
+    "public/motions/airTrick.json",
+    "public/motions/combatIdle.json",
+    "public/motions/cross.json",
+    "public/motions/drop.json",
+    "public/motions/fall.json",
+    "public/motions/fallIdle.json",
+    "public/motions/fallVariant.json",
+    "public/motions/guard.json",
+    "public/motions/heavy.json",
+    "public/motions/hitHead.json",
+    "public/motions/hook.json",
+    "public/motions/idle.json",
+    "public/motions/injuredIdle.json",
+    "public/motions/jab.json",
+    "public/motions/jump.json",
+    "public/motions/jumpDown.json",
+    "public/motions/jumpDownVariant.json",
+    "public/motions/land.json",
+    "public/motions/manifest.json",
+    "public/motions/regularRun.json",
+    "public/motions/rightHook.json",
+    "public/motions/roll.json",
+    "public/motions/run.json",
+    "public/motions/runStop.json",
+    "public/motions/slam.json",
+    "public/motions/slamLand.json",
+    "public/motions/special.json",
+    "public/motions/stop.json",
+    "public/motions/swing.json",
+    "public/motions/turnLeft.json",
+    "public/motions/turnRight.json",
+    "public/motions/walk.json",
+    "public/motions/wall.json",
+    "public/motions/zip.json",
+    "public/textures/vfx/circle_01_a.png",
+    "public/textures/vfx/circle_03_a.png",
+    "public/textures/vfx/circle_05_a.png",
+    "public/textures/vfx/dirt_01_a.png",
+    "public/textures/vfx/dirt_02_a.png",
+    "public/textures/vfx/impact_white_6x4.png",
+    "public/textures/vfx/LICENSE.txt",
+    "public/textures/vfx/scorch_01_a.png",
+    "public/textures/vfx/scorch_02_a.png",
+    "public/textures/vfx/smoke_01_a.png",
+    "public/textures/vfx/smoke_04_a.png",
+    "public/textures/vfx/smoke_07_strong_a.png",
+    "public/textures/vfx/spark_01_a.png"
+  ],
+  "external": [
+    {
+      "name": "Hong Kong terrain",
+      "source": "https://data.map.gov.hk/",
+      "status": "needs-review"
+    },
+    {
+      "name": "OpenStreetMap basemap",
+      "source": "https://www.openstreetmap.org/copyright",
+      "attribution": "WorldMap UI",
+      "status": "needs-review"
+    },
+    {
+      "name": "System fonts",
+      "source": "Operating system font stack; no font files bundled",
+      "status": "documented"
+    }
+  ]
+}

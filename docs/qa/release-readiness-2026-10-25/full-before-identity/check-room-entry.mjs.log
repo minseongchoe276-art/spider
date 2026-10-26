@@ -1,0 +1,4 @@
+PASS room entry recovery
+PASS enter: same room, raced membership, leave-once retry, full room stays
+PASS present room before realtime, ignore repeated join clicks
+PASS expired membership stops heartbeat and movement

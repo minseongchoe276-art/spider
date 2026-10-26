@@ -1,0 +1,13 @@
+{
+  "cases": 39072,
+  "hardCuts": 1,
+  "samples": 117217,
+  "maxWeightError": 0.7777777910232544,
+  "maxInstantPositionChange": 3.330387166045087e-7,
+  "maxInstantRotationChange": 7.300048299977715e-8,
+  "maxContributors": 2,
+  "clockRebases": 1056,
+  "failures": [
+    "hard cut idle → walk → regularRun: pose weights sum to 1.7777777910232544; bind pose leaks into the transition"
+  ]
+}

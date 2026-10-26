@@ -1,0 +1,495 @@
+{
+  "status": "PASS",
+  "total": 80,
+  "passed": 80,
+  "includesRechecks": true,
+  "animationAssetsRegenerated": false,
+  "initialFailuresResolved": [
+    "check-remote-motion.mjs",
+    "check-upgrade.mjs",
+    "check-web-continuity.mjs",
+    "check-end-joint-stability.mjs"
+  ],
+  "results": [
+    {
+      "name": "check-motions.mjs",
+      "status": "PASS",
+      "milliseconds": 1991,
+      "evidence": "check-motions.mjs.log"
+    },
+    {
+      "name": "check-pose.mjs",
+      "status": "PASS",
+      "milliseconds": 65353,
+      "evidence": "check-pose.mjs.log"
+    },
+    {
+      "name": "check-controller.mjs",
+      "status": "PASS",
+      "milliseconds": 180,
+      "evidence": "check-controller.mjs.log"
+    },
+    {
+      "name": "check-gameplay.mjs",
+      "status": "PASS",
+      "milliseconds": 1396,
+      "evidence": "check-gameplay.mjs.log"
+    },
+    {
+      "name": "check-air-tricks.mjs",
+      "status": "PASS",
+      "milliseconds": 99,
+      "evidence": "check-air-tricks.mjs.log"
+    },
+    {
+      "name": "check-dual-web.mjs",
+      "status": "PASS",
+      "milliseconds": 187,
+      "evidence": "check-dual-web.mjs.log"
+    },
+    {
+      "name": "check-pendulum.mjs",
+      "status": "PASS",
+      "milliseconds": 112,
+      "evidence": "check-pendulum.mjs.log"
+    },
+    {
+      "name": "check-mechanics-audit.mjs",
+      "status": "PASS",
+      "milliseconds": 146,
+      "evidence": "check-mechanics-audit.mjs.log"
+    },
+    {
+      "name": "check-player-audit.mjs",
+      "status": "PASS",
+      "milliseconds": 141,
+      "evidence": "final-rechecks/player-audit.log"
+    },
+    {
+      "name": "check-traversal.mjs",
+      "status": "PASS",
+      "milliseconds": 1264,
+      "evidence": "check-traversal.mjs.log"
+    },
+    {
+      "name": "check-qa.mjs",
+      "status": "PASS",
+      "milliseconds": 272,
+      "evidence": "check-qa.mjs.log"
+    },
+    {
+      "name": "check-review-2.mjs",
+      "status": "PASS",
+      "milliseconds": 337,
+      "evidence": "check-review-2.mjs.log"
+    },
+    {
+      "name": "check-combat.mjs",
+      "status": "PASS",
+      "milliseconds": 63,
+      "evidence": "check-combat.mjs.log"
+    },
+    {
+      "name": "check-web-vfx.mjs",
+      "status": "PASS",
+      "milliseconds": 70,
+      "evidence": "check-web-vfx.mjs.log"
+    },
+    {
+      "name": "check-superhero-landing-vfx.mjs",
+      "status": "PASS",
+      "milliseconds": 78,
+      "evidence": "check-superhero-landing-vfx.mjs.log"
+    },
+    {
+      "name": "check-combat-rig.mjs",
+      "status": "PASS",
+      "milliseconds": 25184,
+      "evidence": "check-combat-rig.mjs.log"
+    },
+    {
+      "name": "check-motion-timeline.mjs",
+      "status": "PASS",
+      "milliseconds": 8928,
+      "evidence": "check-motion-timeline.mjs.log"
+    },
+    {
+      "name": "check-motion-transitions.mjs",
+      "status": "PASS",
+      "milliseconds": 3885,
+      "evidence": "check-motion-transitions.mjs.log"
+    },
+    {
+      "name": "check-hong-kong-streaming.mjs",
+      "status": "PASS",
+      "milliseconds": 1091,
+      "evidence": "check-hong-kong-streaming.mjs.log"
+    },
+    {
+      "name": "check-minimap.mjs",
+      "status": "PASS",
+      "milliseconds": 73,
+      "evidence": "final-rechecks/minimap.log"
+    },
+    {
+      "name": "check-remote-motion.mjs",
+      "status": "PASS",
+      "milliseconds": 5294,
+      "evidence": "final-rechecks/remote-motion.log"
+    },
+    {
+      "name": "check-tile-textures.mjs",
+      "status": "PASS",
+      "milliseconds": 52,
+      "evidence": "check-tile-textures.mjs.log"
+    },
+    {
+      "name": "check-multiplayer.mjs",
+      "status": "PASS",
+      "milliseconds": 5307,
+      "evidence": "final-rechecks/multiplayer.log"
+    },
+    {
+      "name": "check-admin.mjs",
+      "status": "PASS",
+      "milliseconds": 270,
+      "evidence": "check-admin.mjs.log"
+    },
+    {
+      "name": "check-upgrade.mjs",
+      "status": "PASS",
+      "milliseconds": 121,
+      "evidence": "final-rechecks/upgrade.log"
+    },
+    {
+      "name": "check-upgrade-online.mjs",
+      "status": "PASS",
+      "milliseconds": 13170,
+      "evidence": "check-upgrade-online.mjs.log"
+    },
+    {
+      "name": "check-release-audit.mjs",
+      "status": "PASS",
+      "milliseconds": 4161,
+      "evidence": "final-rechecks/release-audit.log"
+    },
+    {
+      "name": "check-online-edge-cases.mjs",
+      "status": "PASS",
+      "milliseconds": 106,
+      "evidence": "final-rechecks/online-edge-cases.log"
+    },
+    {
+      "name": "check-room-reconnect.mjs",
+      "status": "PASS",
+      "milliseconds": 1382,
+      "evidence": "final-rechecks/room-reconnect.log"
+    },
+    {
+      "name": "check-hong-kong-geometry-codec.mjs",
+      "status": "PASS",
+      "milliseconds": 71,
+      "evidence": "check-hong-kong-geometry-codec.mjs.log"
+    },
+    {
+      "name": "check-swing-accessibility.mjs",
+      "status": "PASS",
+      "milliseconds": 1196,
+      "evidence": "check-swing-accessibility.mjs.log"
+    },
+    {
+      "name": "check-cross-system-regressions.mjs",
+      "status": "PASS",
+      "milliseconds": 137,
+      "evidence": "check-cross-system-regressions.mjs.log"
+    },
+    {
+      "name": "check-web-continuity.mjs",
+      "status": "PASS",
+      "milliseconds": 1170,
+      "evidence": "final-rechecks/web-continuity.log"
+    },
+    {
+      "name": "check-compact-map-and-locators.mjs",
+      "status": "PASS",
+      "milliseconds": 122,
+      "evidence": "check-compact-map-and-locators.mjs.log"
+    },
+    {
+      "name": "check-expert-audit.mjs",
+      "status": "PASS",
+      "milliseconds": 108,
+      "evidence": "check-expert-audit.mjs.log"
+    },
+    {
+      "name": "check-connection-lifecycle.mjs",
+      "status": "PASS",
+      "milliseconds": 97,
+      "evidence": "final-rechecks/connection-lifecycle.log"
+    },
+    {
+      "name": "check-camera-motion-web.mjs",
+      "status": "PASS",
+      "milliseconds": 177,
+      "evidence": "check-camera-motion-web.mjs.log"
+    },
+    {
+      "name": "check-full-game-audit.mjs",
+      "status": "PASS",
+      "milliseconds": 229,
+      "evidence": "final-rechecks/full-game-audit.log"
+    },
+    {
+      "name": "check-input-lifecycle.mjs",
+      "status": "PASS",
+      "milliseconds": 109,
+      "evidence": "final-rechecks/input-lifecycle.log"
+    },
+    {
+      "name": "check-race-removal.mjs",
+      "status": "PASS",
+      "milliseconds": 46,
+      "evidence": "final-rechecks/race-removal.log"
+    },
+    {
+      "name": "check-session-flow.mjs",
+      "status": "PASS",
+      "milliseconds": 101,
+      "evidence": "final-rechecks/session-flow.log"
+    },
+    {
+      "name": "check-visibility.mjs",
+      "status": "PASS",
+      "milliseconds": 126,
+      "evidence": "check-visibility.mjs.log"
+    },
+    {
+      "name": "check-loading-performance.mjs",
+      "status": "PASS",
+      "milliseconds": 204,
+      "evidence": "final-rechecks/loading-performance.log"
+    },
+    {
+      "name": "check-wall-ledge.mjs",
+      "status": "PASS",
+      "milliseconds": 8183,
+      "evidence": "check-wall-ledge.mjs.log"
+    },
+    {
+      "name": "check-wall-ledge-rig.mjs",
+      "status": "PASS",
+      "milliseconds": 3923,
+      "evidence": "check-wall-ledge-rig.mjs.log"
+    },
+    {
+      "name": "check-all-motions.mjs",
+      "status": "PASS",
+      "milliseconds": 26129,
+      "evidence": "check-all-motions.mjs.log"
+    },
+    {
+      "name": "check-motion-sources.mjs",
+      "status": "PASS",
+      "milliseconds": 3019,
+      "evidence": "check-motion-sources.mjs.log"
+    },
+    {
+      "name": "check-web-hand-pose.mjs",
+      "status": "PASS",
+      "milliseconds": 24697,
+      "evidence": "check-web-hand-pose.mjs.log"
+    },
+    {
+      "name": "check-silk-gait.mjs",
+      "status": "PASS",
+      "milliseconds": 141662,
+      "evidence": "check-silk-gait.mjs.log"
+    },
+    {
+      "name": "check-wall-crawl.mjs",
+      "status": "PASS",
+      "milliseconds": 73023,
+      "evidence": "check-wall-crawl.mjs.log"
+    },
+    {
+      "name": "check-natural-wall-motion.mjs",
+      "status": "PASS",
+      "milliseconds": 13743,
+      "evidence": "check-natural-wall-motion.mjs.log"
+    },
+    {
+      "name": "check-end-joint-stability.mjs",
+      "status": "PASS",
+      "milliseconds": 226152,
+      "evidence": "final-rechecks/end-joint-stability.log"
+    },
+    {
+      "name": "check-limb-continuity.mjs",
+      "status": "PASS",
+      "milliseconds": 19742,
+      "evidence": "check-limb-continuity.mjs.log"
+    },
+    {
+      "name": "check-turn-joint-stability.mjs",
+      "status": "PASS",
+      "milliseconds": 106008,
+      "evidence": "check-turn-joint-stability.mjs.log"
+    },
+    {
+      "name": "check-motion-cleanup.mjs",
+      "status": "PASS",
+      "milliseconds": 41597,
+      "evidence": "check-motion-cleanup.mjs.log"
+    },
+    {
+      "name": "check-combat-traversal.mjs",
+      "status": "PASS",
+      "milliseconds": 8706,
+      "evidence": "final-rechecks/combat-traversal.log"
+    },
+    {
+      "name": "check-combat-aim.mjs",
+      "status": "PASS",
+      "milliseconds": 139,
+      "evidence": "check-combat-aim.mjs.log"
+    },
+    {
+      "name": "check-combat-quality.mjs",
+      "status": "PASS",
+      "milliseconds": 22215,
+      "evidence": "final-rechecks/combat-quality.log"
+    },
+    {
+      "name": "check-combat-feet.mjs",
+      "status": "PASS",
+      "milliseconds": 101424,
+      "evidence": "check-combat-feet.mjs.log"
+    },
+    {
+      "name": "check-custom-matches.mjs",
+      "status": "PASS",
+      "milliseconds": 1265,
+      "evidence": "final-rechecks/custom-matches.log"
+    },
+    {
+      "name": "check-human-mode.mjs",
+      "status": "PASS",
+      "milliseconds": 12870,
+      "evidence": "check-human-mode.mjs.log"
+    },
+    {
+      "name": "check-impact-body.mjs",
+      "status": "PASS",
+      "milliseconds": 17073,
+      "evidence": "check-impact-body.mjs.log"
+    },
+    {
+      "name": "check-drop-motion.mjs",
+      "status": "PASS",
+      "milliseconds": 505,
+      "evidence": "check-drop-motion.mjs.log"
+    },
+    {
+      "name": "check-online-guard.mjs",
+      "status": "PASS",
+      "milliseconds": 3712,
+      "evidence": "check-online-guard.mjs.log"
+    },
+    {
+      "name": "check-online-motion-sync.mjs",
+      "status": "PASS",
+      "milliseconds": 25637,
+      "evidence": "check-online-motion-sync.mjs.log"
+    },
+    {
+      "name": "check-online-stance.mjs",
+      "status": "PASS",
+      "milliseconds": 2510,
+      "evidence": "check-online-stance.mjs.log"
+    },
+    {
+      "name": "check-mode-selection.mjs",
+      "status": "PASS",
+      "milliseconds": 106,
+      "evidence": "final-rechecks/mode-selection.log"
+    },
+    {
+      "name": "check-expert-recovery.mjs",
+      "status": "PASS",
+      "milliseconds": 1172,
+      "evidence": "final-rechecks/expert-recovery.log"
+    },
+    {
+      "name": "check-combat-roll-recovery.mjs",
+      "status": "PASS",
+      "milliseconds": 13530,
+      "evidence": "check-combat-roll-recovery.mjs.log"
+    },
+    {
+      "name": "check-wall-head-clearance.mjs",
+      "status": "PASS",
+      "milliseconds": 5502,
+      "evidence": "check-wall-head-clearance.mjs.log"
+    },
+    {
+      "name": "check-live-movement-camera.mjs",
+      "status": "PASS",
+      "milliseconds": 28899,
+      "evidence": "check-live-movement-camera.mjs.log"
+    },
+    {
+      "name": "check-motion-combinations.mjs",
+      "status": "PASS",
+      "milliseconds": 22815,
+      "evidence": "check-motion-combinations.mjs.log"
+    },
+    {
+      "name": "check-motion-reset.mjs",
+      "status": "PASS",
+      "milliseconds": 8684,
+      "evidence": "check-motion-reset.mjs.log"
+    },
+    {
+      "name": "check-motion-interruptions.mjs",
+      "status": "PASS",
+      "milliseconds": 15850,
+      "evidence": "check-motion-interruptions.mjs.log"
+    },
+    {
+      "name": "check-motion-adversarial.mjs",
+      "status": "PASS",
+      "milliseconds": 116371,
+      "evidence": "check-motion-adversarial.mjs.log"
+    },
+    {
+      "name": "check-motion-packet-gaps.mjs",
+      "status": "PASS",
+      "milliseconds": 4398,
+      "evidence": "check-motion-packet-gaps.mjs.log"
+    },
+    {
+      "name": "check-motion-selection.mjs",
+      "status": "PASS",
+      "milliseconds": 38482,
+      "evidence": "check-motion-selection.mjs.log"
+    },
+    {
+      "name": "check-player-journey.mjs",
+      "status": "PASS",
+      "milliseconds": 259,
+      "evidence": "final-rechecks/player-journey.log"
+    },
+    {
+      "name": "check-network-conditions.mjs",
+      "status": "PASS",
+      "milliseconds": 5582,
+      "evidence": "final-rechecks/network-conditions.log"
+    },
+    {
+      "name": "check-asset-delivery.mjs",
+      "status": "PASS",
+      "milliseconds": 193,
+      "evidence": "final-rechecks/asset-delivery.log"
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+[
+  {
+    "scenario": "wallCruise",
+    "status": "시나리오 2.50초\nWALL_RUNNING\n모션: wall\nwall · 0.59초 / 2.00초 · 속도 2.80 m/s"
+  },
+  {
+    "scenario": "parapet",
+    "status": "시나리오 2.50초\nWALL_RUNNING → MANTLING → RUNNING\n모션: wall → idle → walk\nwalk · 0.18초 / 0.97초 · 속도 3.42 m/s"
+  },
+  {
+    "scenario": "roll",
+    "status": "시나리오 2.50초\nFALLING → ROLLING\n모션: drop → fall → drop → roll\nroll · 0.92초 / 1.54초 · 속도 1.20 m/s"
+  },
+  {
+    "scenario": "dualWeb",
+    "status": "시나리오 2.50초\nFALLING → SWINGING\n모션: drop → swing\nswing · 0.50초 / 1.95초 · 속도 5.13 m/s\n연결 줄 2개 · 오른손 부착 / 왼손 부착"
+  },
+  {
+    "scenario": "stairs",
+    "status": "시나리오 2.50초\nIDLE → RUNNING\n모션: idle → walk → regularRun\nregularRun · 0.04초 / 0.70초 · 속도 3.55 m/s"
+  },
+  {
+    "scenario": "slope",
+    "status": "시나리오 2.50초\nIDLE → RUNNING\n모션: idle → walk → regularRun\nregularRun · 0.43초 / 0.70초 · 속도 4.59 m/s"
+  }
+]

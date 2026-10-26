@@ -1,0 +1,49 @@
+{
+  "passed": 8,
+  "results": [
+    {
+      "state": "ROLLING",
+      "pass": true
+    },
+    {
+      "state": "TURNING",
+      "pass": true
+    },
+    {
+      "state": "JUMPING",
+      "pass": true
+    },
+    {
+      "state": "FALLING",
+      "pass": true
+    },
+    {
+      "state": "WALL_RUNNING",
+      "pass": true
+    },
+    {
+      "fps": 24,
+      "runnerWireGuard": true,
+      "travel": 1.3752456895474365,
+      "clip": "walk",
+      "guardWeight": 0.9999999847700203,
+      "pass": true
+    },
+    {
+      "fps": 60,
+      "runnerWireGuard": true,
+      "travel": 1.3752456895474365,
+      "clip": "walk",
+      "guardWeight": 0.9999999847700203,
+      "pass": true
+    },
+    {
+      "fps": 144,
+      "runnerWireGuard": true,
+      "travel": 1.3752456895474365,
+      "clip": "walk",
+      "guardWeight": 0.9999999827421721,
+      "pass": true
+    }
+  ]
+}

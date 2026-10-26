@@ -1,5 +1,6 @@
 import { defineConfig } from 'vite';
 import { attachRooms } from './scripts/rooms.mjs';
+import {releasePlugin} from './scripts/release-plugin.mjs';
 
 const urbanTilesProxy = {
   '/urban-tiles': {
@@ -17,7 +18,7 @@ const urbanTilesProxy = {
 };
 
 export default defineConfig({
-  plugins: [{
+  plugins: [releasePlugin(),{
     name: 'game-rooms',
     configureServer(server) { attachRooms(server.httpServer); },
     configurePreviewServer(server) { attachRooms(server.httpServer); },

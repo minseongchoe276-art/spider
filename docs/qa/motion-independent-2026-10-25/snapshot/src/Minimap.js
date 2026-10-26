@@ -1,0 +1,378 @@
+import {t} from './I18n.js';
+import * as THREE from 'three';
+import {LOCAL_CITY} from './LocalCityLayout.js';
+
+const BOX = new THREE.Box3();
+const MAX_STREAMED_FOOTPRINTS = 420;
+const EARTH_RADIUS = 6378137;
+const HONG_KONG_ORIGIN = { latitude: 22.2799955, longitude: 114.165495 };
+
+// Reuse the city's triangles, including sloping streamed terrain. A tile's
+// world bounding box is not a building and must never become a solid tower.
+export function collectTerrainMeshes(city, position, range, limit = 900) {
+  const roots = city?.buildingMeshes?.length ? city.buildingMeshes
+    : [...(city?.collisionWorld?.meshes?.values?.() || [])].map(entry => entry.mesh);
+  const found = new Map();
+  for (const root of [...roots, ...(city?.mapSurfaceMeshes||[]), city?.groundMesh].filter(Boolean)) {
+    root.updateWorldMatrix(true, true);
+    root.traverseVisible(mesh => {
+      if (!mesh.isMesh || !mesh.geometry?.attributes?.position) return;
+      if (!mesh.geometry.boundingBox) mesh.geometry.computeBoundingBox();
+      const box = mesh.geometry.boundingBox.clone().applyMatrix4(mesh.matrixWorld);
+      const size = box.getSize(new THREE.Vector3());
+      if (!city?.isStreamed && mesh!==city?.groundMesh && !city?.mapSurfaceMeshes?.includes(mesh) && size.x*size.y*size.z<25) return;
+      const dx = Math.max(box.min.x-position.x, 0, position.x-box.max.x);
+      const dz = Math.max(box.min.z-position.z, 0, position.z-box.max.z);
+      if (Math.hypot(dx, dz) > range * 1.5) return;
+      found.set(mesh, { mesh, distance: Math.hypot(dx,dz),
+        triangles: (mesh.geometry.index?.count || mesh.geometry.attributes.position.count) / 3 });
+    });
+  }
+  let triangles = 0;
+  return [...found.values()].sort((a,b) => a.distance-b.distance || b.triangles-a.triangles)
+    .filter(entry => { if (triangles + entry.triangles > 350000) return false; triangles += entry.triangles; return true; })
+    .slice(0,limit).map(entry => entry.mesh);
+}
+
+export function configureTerrainCamera(camera, position, range) {
+  camera.left = -range; camera.right = range;
+  camera.top = range; camera.bottom = -range;
+  camera.near = 1; camera.far = range * 12;
+  const focus = new THREE.Vector3(position.x, position.y * 0.55, position.z);
+  // An oblique view exposes roofs and two facade sides. The compass below
+  // follows the projection instead of falsely labelling screen-up as north.
+  camera.position.copy(focus).add(new THREE.Vector3(-range*1.3,range*2.2,-range*1.8));
+  camera.lookAt(focus); camera.updateProjectionMatrix(); camera.updateMatrixWorld(true);
+}
+
+export function worldToMinimap(point, center, range, radius, canvasCenter = radius) {
+  const scale = radius / Math.max(1, range);
+  // ReorientationPlugin uses +X west and +Z north. Flip X for a true
+  // north-up map, where east is displayed on the right.
+  return { x: canvasCenter - (point.x - center.x) * scale, y: canvasCenter - (point.z - center.z) * scale };
+}
+
+export function isInsideMinimap(point, center, range, padding = 0) {
+  return Math.hypot(point.x - center.x, point.z - center.z) <= range + padding;
+}
+
+export function edgeMinimapMarker(point,center,range,radius,canvasCenter=radius){
+  const marker=worldToMinimap(point,center,range,radius,canvasCenter);
+  const dx=marker.x-canvasCenter,dy=marker.y-canvasCenter,distance=Math.hypot(dx,dy);
+  const scale=Math.min(1,radius/Math.max(distance,1e-6));
+  return {x:canvasCenter+dx*scale,y:canvasCenter+dy*scale,offscreen:scale<1};
+}
+
+export function terrainMarkerPoint(point,camera,border=.84){
+  const projected=point.clone().project(camera);
+  const scale=Math.max(1,Math.abs(projected.x)/border,Math.abs(projected.y)/border);
+  projected.x/=scale;projected.y/=scale;projected.z=THREE.MathUtils.clamp(projected.z,-.95,.95);
+  return {point:projected.unproject(camera),offscreen:scale>1};
+}
+
+export function worldToHongKongCoordinates(position) {
+  const latitude = HONG_KONG_ORIGIN.latitude + THREE.MathUtils.radToDeg(position.z / EARTH_RADIUS);
+  const longitude = HONG_KONG_ORIGIN.longitude - THREE.MathUtils.radToDeg(
+    position.x / (EARTH_RADIUS * Math.cos(THREE.MathUtils.degToRad(HONG_KONG_ORIGIN.latitude)))
+  );
+  return { latitude, longitude };
+}
+
+export function locatedPlayers(players = []) {
+  // Readiness, death, distance and reveal timers must not hide participants.
+  return players.filter(p => [p.x,p.y,p.z].every(Number.isFinite));
+}
+
+export function actorOverlayPoint(player,center,range,size,camera=null) {
+  if(camera){
+    const placed=terrainMarkerPoint(new THREE.Vector3(player.x,player.y+range*.04,player.z),camera);
+    const projected=placed.point.project(camera);
+    const raw=new THREE.Vector3(player.x,player.y+range*.04,player.z).project(camera);
+    return {x:(projected.x+1)*size/2,y:(1-projected.y)*size/2,offscreen:placed.offscreen,angle:Math.atan2(-raw.y,raw.x)};
+  }
+  const marker=edgeMinimapMarker(player,center,range,Math.max(1,size/2-16),size/2);
+  return {...marker,angle:Math.atan2(marker.y-size/2,marker.x-size/2)};
+}
+
+export class HongKongMinimap {
+  constructor({ canvas, status, coordinates, rangeLabel, title, subtitle, city, combat, players }) {
+    Object.assign(this, { canvas, status, coordinates, rangeLabel, title, subtitle, city, combat, players });
+    this.actorRoot=canvas?.parentElement?.querySelector?.('#minimap-actors');
+    this.actorLabels=new Map();
+    this.range = city?.isStreamed ? 220 : LOCAL_CITY.minimapRange;
+    this.terrainCopies = new Map();
+    try { if (canvas) this.initTerrain(); }
+    catch (error) { console.warn('3D minimap unavailable; using location map',error); }
+    if (!this.renderer) this.context = canvas?.getContext('2d');
+    this.footprints = [];
+    this.lastFootprintUpdate = -Infinity;
+    this.lastDraw = -Infinity;
+    this.resize();
+    if (!city?.isStreamed) {
+      if (this.title) this.title.textContent = city.profile?.en.toUpperCase() || 'LOCAL CITY';
+      if (this.subtitle) this.subtitle.textContent = city.profile?.tagEn.toUpperCase() || 'PROCEDURAL DISTRICT';
+    }
+    this.onResize = () => this.resize();
+    window.addEventListener('resize', this.onResize);
+  }
+
+  initTerrain() {
+    this.renderer = new THREE.WebGLRenderer({canvas:this.canvas, antialias:true, alpha:false, powerPreference:'low-power'});
+    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
+    this.renderer.setClearColor(0x091722);
+    this.mapScene = new THREE.Scene();
+    this.mapCamera = new THREE.OrthographicCamera();
+    configureTerrainCamera(this.mapCamera,this.city?.playerPosition || new THREE.Vector3(),this.range);
+    this.tileCulling = new Map();
+    // Reuse the main view's loaded geometry. A second selection camera
+    // used to double streaming demand and evict the player's nearby tiles.
+    this.mapScene.add(new THREE.HemisphereLight(0xd5faff,0x17374a,2));
+    const sun = new THREE.DirectionalLight(0xffffff,2.4); sun.position.set(-1,3,-2); this.mapScene.add(sun);
+    this.terrainMaterial = new THREE.MeshLambertMaterial({color:0x428da0,side:THREE.DoubleSide});
+    this.groundMaterial = new THREE.MeshLambertMaterial({color:0x163443,side:THREE.DoubleSide});
+    this.clipPlanes = [new THREE.Plane(new THREE.Vector3(1,0,0)),new THREE.Plane(new THREE.Vector3(-1,0,0)),
+      new THREE.Plane(new THREE.Vector3(0,0,1)),new THREE.Plane(new THREE.Vector3(0,0,-1))];
+    this.renderer.localClippingEnabled=true;
+    this.terrainMaterial.clippingPlanes=this.clipPlanes;
+    this.groundMaterial.clippingPlanes=this.clipPlanes;
+    this.markerGeometry = new THREE.ConeGeometry(this.range * 0.04,this.range * 0.1,4);
+    this.markers = new Map();
+    this.canvas.dataset.mapMode = 'terrain-3d';
+  }
+
+  syncTerrain(position) {
+    const active = new Set(collectTerrainMeshes(this.city,position,this.range));
+    for (const source of active) {
+      let copy = this.terrainCopies.get(source);
+      if (!copy) {
+        copy = new THREE.Mesh(source.geometry,this.city.mapSurfaceMeshes?.includes(source) ? source.material : source===this.city.groundMesh ? this.groundMaterial : this.terrainMaterial);
+        copy.matrixAutoUpdate = false;
+        this.terrainCopies.set(source,copy); this.mapScene.add(copy);
+      }
+      copy.matrix.copy(source.matrixWorld); copy.matrixWorldNeedsUpdate = true;
+    }
+    for (const [source,copy] of this.terrainCopies) if (!active.has(source)) {
+      this.mapScene.remove(copy); this.terrainCopies.delete(source);
+      // Geometry belongs to the city; disposing it would break the main view.
+    }
+  }
+
+  drawTerrain(position, facingAngle) {
+    configureTerrainCamera(this.mapCamera,position,this.range);
+    const origin = new THREE.Vector3(position.x,0,position.z).project(this.mapCamera);
+    const north = new THREE.Vector3(position.x,0,position.z+1).project(this.mapCamera).sub(origin);
+    const compass = this.canvas.parentElement?.querySelector('.minimap-north');
+    if (compass) compass.style.transform = `translateX(-50%) rotate(${Math.atan2(north.x,north.y)}rad)`;
+    const r = this.range*1.4;
+    this.clipPlanes[0].constant = r-position.x; this.clipPlanes[1].constant = r+position.x;
+    this.clipPlanes[2].constant = r-position.z; this.clipPlanes[3].constant = r+position.z;
+    const actors = [{id:'self',position,facing:facingAngle,color:0xffffff},
+      ...locatedPlayers(this.players?.() || [])
+        .map(p => ({id:p.id,position:p,facing:p.facing,color:p.rescue?0xff6682:p.team==='police'?0x41d9ff:0xffce67})),
+      ...(this.combat?.enemies || []).filter(e => e.health>0)
+        .map((e,i) => ({id:`enemy-${i}`,position:e.position,color:0xff536e}))];
+    const active = new Set();
+    for (const actor of actors) {
+      if(![actor.position.x,actor.position.y,actor.position.z].every(Number.isFinite))continue;
+      active.add(actor.id);
+      let marker = this.markers.get(actor.id);
+      if (!marker) {
+        marker = new THREE.Mesh(this.markerGeometry,new THREE.MeshBasicMaterial({color:actor.color,depthTest:false,depthWrite:false}));
+        marker.renderOrder = 10; this.markers.set(actor.id,marker); this.mapScene.add(marker);
+      }
+      marker.material.color.setHex(actor.color);
+      const displayed=terrainMarkerPoint(new THREE.Vector3(actor.position.x,actor.position.y+this.range*.04,actor.position.z),this.mapCamera);
+      marker.position.copy(displayed.point);
+      marker.rotation.set(Math.PI/2,0,-(displayed.offscreen?Math.atan2(actor.position.x-position.x,actor.position.z-position.z):(actor.facing || 0)));
+    }
+    for (const [id,marker] of this.markers) if (!active.has(id)) {
+      this.mapScene.remove(marker); marker.material.dispose(); this.markers.delete(id);
+    }
+    this.renderer.render(this.mapScene,this.mapCamera);
+  }
+
+  dispose() {
+    window.removeEventListener('resize',this.onResize);
+    this.renderer?.dispose(); this.terrainMaterial?.dispose(); this.groundMaterial?.dispose();
+    for (const [tiles,culling] of this.tileCulling || []) {
+      tiles.deleteCamera(this.mapCamera);tiles.autoDisableRendererCulling=culling;
+    }
+    this.markerGeometry?.dispose();
+    for (const marker of this.markers?.values() || []) marker.material.dispose();
+    this.terrainCopies.clear(); this.mapScene?.clear();
+    for(const el of this.actorLabels?.values() || [])el.remove();
+    this.actorLabels?.clear();
+  }
+
+  resize() {
+    if (!this.canvas || (!this.context && !this.renderer)) return;
+    const size = Math.max(120, Math.round(this.canvas.getBoundingClientRect().width || 220));
+    if (this.renderer) {
+      this.size=size; this.renderer.setSize(size,size,false);
+      return;
+    }
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    this.canvas.width = Math.round(size * dpr);
+    this.canvas.height = Math.round(size * dpr);
+    this.context.setTransform(dpr, 0, 0, dpr, 0, 0);
+    this.size = size;
+  }
+
+  update(position, facingAngle, nowSeconds = 0) {
+    if ((!this.context && !this.renderer) || !position) return;
+    if (nowSeconds - this.lastFootprintUpdate >= 0.6) {
+      if (this.renderer) this.syncTerrain(position);
+      else this.footprints = this.collectFootprints(position);
+      this.lastFootprintUpdate = nowSeconds;
+    }
+    if (nowSeconds - this.lastDraw < 1 / 20) return;
+    this.lastDraw = nowSeconds;
+    if (this.renderer) this.drawTerrain(position,facingAngle);
+    else this.draw(position, facingAngle);
+    this.drawActorOverlay(position);
+    this.updateLabels(position);
+  }
+
+  drawActorOverlay(position) {
+    if(!this.actorRoot)return;
+    const active=new Set();
+    for(const player of locatedPlayers(this.players?.() || [])){
+      active.add(player.id);let el=this.actorLabels.get(player.id);
+      if(!el){
+        el=document.createElement('div');el.className='minimap-player-marker';
+        const icon=document.createElement('span'),label=document.createElement('span');
+        icon.className='minimap-player-icon';label.className='minimap-player-label';
+        el.append(icon,label);this.actorRoot.append(el);this.actorLabels.set(player.id,el);
+      }
+      const placed=actorOverlayPoint(player,position,this.range,this.size,this.renderer?this.mapCamera:null);
+      const distance=Math.round(Math.hypot(player.x-position.x,player.y-position.y,player.z-position.z));
+      const name=String(player.name || t(player.team==='police'?'경찰':player.team==='runner'?'도망자':'플레이어')).slice(0,12);
+      const status=t(player.rescue?' · 구조':player.downed||player.eliminated?' · 탈락':player.connected===false?' · 마지막 위치':player.lastKnown?' · 대기 위치':'');
+      el.children[0].textContent=player.downed||player.eliminated?'×':placed.offscreen?'➤':'●';
+      el.children[0].style.transform=placed.offscreen && !player.downed && !player.eliminated?`rotate(${placed.angle}rad)`:'';
+      el.children[1].textContent=`${name} · ${distance}m${status}`;
+      el.children[1].style.maxWidth=`${Math.min(145,this.size*.55)}px`;
+      el.dataset.team=player.ally?'ally':player.team;
+      el.dataset.side=placed.x<this.size*.33?'left':placed.x>this.size*.66?'right':'center';
+      el.dataset.bottom=String(placed.y>this.size*.7);
+      el.classList.toggle('offscreen',placed.offscreen);el.classList.toggle('last-known',!!player.lastKnown);
+      el.dataset.userContent='';el.setAttribute('aria-label',`${name}, ${t('거리')} ${distance}${t('미터')}${status}${placed.offscreen?t(', 지도 범위 밖'):''}`);
+      el.style.left=`${placed.x/this.size*100}%`;el.style.top=`${placed.y/this.size*100}%`;
+    }
+    for(const[id,el]of this.actorLabels)if(!active.has(id)){el.remove();this.actorLabels.delete(id);}
+  }
+
+  collectFootprints(position) {
+    if (!this.city?.isStreamed) {
+      const buildings=(this.city?.buildings || [])
+        .map(building => ({ x:building.x,z:building.z,minX: building.x - building.size / 2, maxX: building.x + building.size / 2,
+          minZ: building.z - (building.depth||building.size) / 2, maxZ: building.z + (building.depth||building.size) / 2, height: building.height }));
+      return [...buildings,...(this.city?.landmarkFootprints||[])]
+        .filter(footprint => isInsideMinimap(footprint,position,this.range,Math.max(footprint.maxX-footprint.minX,footprint.maxZ-footprint.minZ)));
+    }
+    const entries = [...(this.city?.collisionWorld?.meshes?.values?.() || [])]
+      .filter(Boolean).map(entry => entry.mesh);
+    const source = entries.length ? entries : (this.city?.buildingMeshes || []);
+    const footprints = [];
+    for (const mesh of source) {
+      if (!mesh?.geometry) continue;
+      mesh.updateWorldMatrix(true, false);
+      if (!mesh.geometry.boundingBox) mesh.geometry.computeBoundingBox();
+      BOX.copy(mesh.geometry.boundingBox).applyMatrix4(mesh.matrixWorld);
+      const width = BOX.max.x - BOX.min.x;
+      const depth = BOX.max.z - BOX.min.z;
+      const height = BOX.max.y - BOX.min.y;
+      if (width < 0.7 || depth < 0.7 || height < 0.8 || width > this.range * 2.4 || depth > this.range * 2.4) continue;
+      const point = { x: (BOX.min.x + BOX.max.x) / 2, z: (BOX.min.z + BOX.max.z) / 2 };
+      if (!isInsideMinimap(point, position, this.range, Math.max(width, depth))) continue;
+      footprints.push({ minX: BOX.min.x, maxX: BOX.max.x, minZ: BOX.min.z, maxZ: BOX.max.z, height,
+        distanceSq: (point.x-position.x)**2+(point.z-position.z)**2 });
+    }
+    // Select after spatial filtering. Sampling the global mesh list first can
+    // skip the buildings immediately around the player as tiles stream in.
+    footprints.sort((a,b)=>a.distanceSq-b.distanceSq);
+    return footprints.slice(0,MAX_STREAMED_FOOTPRINTS);
+  }
+
+  draw(position, facingAngle = 0) {
+    const ctx = this.context;
+    const size = this.size;
+    const center = size / 2;
+    const radius = center - 5;
+    ctx.clearRect(0, 0, size, size);
+    ctx.save();
+    ctx.beginPath(); ctx.arc(center, center, radius, 0, Math.PI * 2); ctx.clip();
+    const gradient = ctx.createRadialGradient(center, center, 8, center, center, radius);
+    gradient.addColorStop(0, '#10273a'); gradient.addColorStop(1, '#07111d');
+    ctx.fillStyle = gradient; ctx.fillRect(0, 0, size, size);
+    this.drawGrid(ctx, center, radius);
+    const scale = radius / this.range;
+    for (const footprint of this.footprints) {
+      const topLeft = worldToMinimap({ x: footprint.maxX, z: footprint.maxZ }, position, this.range, radius, center);
+      const width = Math.max(1.2, (footprint.maxX - footprint.minX) * scale);
+      const height = Math.max(1.2, (footprint.maxZ - footprint.minZ) * scale);
+      const shade = THREE.MathUtils.clamp(footprint.height / 180, 0, 1);
+      ctx.fillStyle = `rgba(${Math.round(28 + shade * 20)},${Math.round(104 + shade * 74)},${Math.round(126 + shade * 92)},0.72)`;
+      ctx.strokeStyle = 'rgba(125,238,255,0.35)'; ctx.lineWidth = 0.7;
+      ctx.fillRect(topLeft.x, topLeft.y, width, height); ctx.strokeRect(topLeft.x, topLeft.y, width, height);
+    }
+    this.drawActors(ctx, position, radius, center);
+    this.drawPlayer(ctx, center, facingAngle);
+    ctx.restore();
+    ctx.strokeStyle = 'rgba(125,238,255,0.82)'; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.arc(center, center, radius - 1, 0, Math.PI * 2); ctx.stroke();
+  }
+
+  drawGrid(ctx, center, radius) {
+    ctx.strokeStyle = 'rgba(125,238,255,0.14)'; ctx.lineWidth = 1;
+    for (const fraction of [1 / 3, 2 / 3]) {
+      ctx.beginPath(); ctx.arc(center, center, radius * fraction, 0, Math.PI * 2); ctx.stroke();
+    }
+    ctx.beginPath(); ctx.moveTo(center, 0); ctx.lineTo(center, this.size);
+    ctx.moveTo(0, center); ctx.lineTo(this.size, center); ctx.stroke();
+  }
+
+  drawActors(ctx, position, radius, center) {
+    for(const player of locatedPlayers(this.players?.()||[])){
+      const marker=edgeMinimapMarker(player,position,this.range,radius-10,center);ctx.fillStyle=player.rescue?'#ff6682':player.ally?'#7cffa9':player.team==='police'?'#41d9ff':'#ffce67';ctx.beginPath();ctx.arc(marker.x,marker.y,8,0,Math.PI*2);ctx.fill();
+      ctx.strokeStyle='#ffffff';ctx.lineWidth=2.5;ctx.stroke();
+      if(player.rescue){ctx.font='bold 10px system-ui';ctx.textAlign='center';ctx.fillText(t('구조'),marker.x,marker.y-7);}
+    }
+
+    for (const enemy of this.combat?.enemies || []) {
+      if (enemy.health <= 0 || !isInsideMinimap(enemy.position, position, this.range)) continue;
+      const marker = worldToMinimap(enemy.position, position, this.range, radius, center);
+      ctx.fillStyle = '#ff4d6d'; ctx.beginPath(); ctx.arc(marker.x, marker.y, 3.5, 0, Math.PI * 2); ctx.fill();
+    }
+  }
+
+  drawPlayer(ctx, center, facingAngle) {
+    ctx.save(); ctx.translate(center, center); ctx.rotate(-facingAngle);
+    ctx.shadowColor = '#24e8ff'; ctx.shadowBlur = 10; ctx.fillStyle = '#fff';
+    ctx.strokeStyle = '#24e8ff'; ctx.lineWidth = 2; ctx.beginPath();
+    ctx.moveTo(0, -12); ctx.lineTo(8, 9); ctx.lineTo(0, 5); ctx.lineTo(-8, 9); ctx.closePath();
+    ctx.fill(); ctx.stroke(); ctx.restore();
+    ctx.fillStyle = '#24e8ff'; ctx.font = '800 10px Outfit, sans-serif'; ctx.textAlign = 'center';
+    ctx.fillText(t('나'), center, center + 24);
+  }
+
+  updateLabels(position) {
+    const streamed = Boolean(this.city?.isStreamed);
+    if (this.status) {
+      const ready = !streamed || this.city?.isReady;
+      this.status.textContent = streamed ? (ready ? 'LIVE' : 'LOADING') : 'LOCAL';
+      this.status.dataset.ready = String(ready);
+    }
+    if (this.coordinates) {
+      if (streamed) {
+        const geo = worldToHongKongCoordinates(position);
+        this.coordinates.textContent = `${geo.latitude.toFixed(6)}°N  ${geo.longitude.toFixed(6)}°E  ·  ALT ${Math.round(position.y)}m`;
+      } else {
+        const east = Math.round(-position.x), north = Math.round(position.z);
+        this.coordinates.textContent = `E ${east >= 0 ? '+' : ''}${east}m  N ${north >= 0 ? '+' : ''}${north}m  ·  ALT ${Math.round(position.y)}m`;
+      }
+    }
+    if (this.rangeLabel) this.rangeLabel.textContent = `${this.range}m`;
+    this.canvas.setAttribute('aria-label', `현재 위치 동쪽 ${Math.round(-position.x)}미터, 북쪽 ${Math.round(position.z)}미터, 고도 ${Math.round(position.y)}미터`);
+  }
+}

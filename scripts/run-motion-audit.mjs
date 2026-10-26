@@ -13,6 +13,9 @@ const suites=[
  'all-motions','motion-sources','web-hand-pose','silk-gait','wall-crawl','natural-wall-motion','end-joint-stability','limb-continuity','turn-joint-stability','motion-cleanup',
  'combat-traversal','combat-aim','combat-quality','combat-feet','moving-combat-skin','appearances','full-appearance-motions','motion-expression',
  'impact-body','drop-motion','human-mode','wall-cross-crawl',
+ 'motion-selection','motion-reset','combat-roll-recovery','wall-head-clearance','live-movement-camera',
+ 'motion-combinations','mobile-traversal','expanded-input-camera','expanded-terrain-motion','expanded-gait-stability',
+ 'motion-interruptions','motion-adversarial','motion-packet-gaps','online-guard','online-motion-sync','online-stance',
 ];
 const folder=process.env.MOTION_AUDIT_DIR || 'docs/qa/complete-motion-2026-10-19';fs.mkdirSync(folder,{recursive:true});
 const model=fs.readFileSync('public/models/shadow-pulse-rig.glb');
@@ -24,7 +27,10 @@ const manifest={date:process.env.MOTION_AUDIT_DATE || '2026-10-19',motions:MOTIO
 fs.writeFileSync(folder+'/manifest.json',JSON.stringify(manifest,null,2)+'\n');
 const tracked=[...fs.readdirSync('src').filter(n=>n.endsWith('.js')).map(n=>'src/'+n),
  ...fs.readdirSync('public/motions').filter(n=>n.endsWith('.json')).map(n=>'public/motions/'+n),
- 'public/models/shadow-pulse-rig.glb','public/models/appearance-web.glb','public/models/appearance-combat.glb'];
+ 'public/models/shadow-pulse-rig.glb','public/models/appearance-web.glb','public/models/appearance-combat.glb',
+ 'package.json','scripts/run-motion-audit.mjs',
+ ...fs.readdirSync('scripts').filter(n=>n.startsWith('check-') && n.endsWith('.mjs')).map(n=>'scripts/'+n),
+ ...fs.readdirSync('scripts/lib').filter(n=>n.endsWith('.mjs')).map(n=>'scripts/lib/'+n)];
 const fingerprint=()=>Object.fromEntries(tracked.map(path=>[path,crypto.createHash('sha256').update(fs.readFileSync(path)).digest('hex')]));
 const sourceBefore=fingerprint();
 const results=[];let next=0;

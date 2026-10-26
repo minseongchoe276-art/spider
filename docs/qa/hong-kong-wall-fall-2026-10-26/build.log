@@ -1,0 +1,58 @@
+vite v7.3.7 building client environment for production...
+transforming...
+✓ 148 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                               25.38 kB │ gzip:     7.95 kB
+dist/THIRD_PARTY_NOTICES.txt                  58.69 kB │ gzip:     7.38 kB
+dist/assets/index-DXix5Euw.css                80.41 kB │ gzip:    17.65 kB
+dist/assets/EffectsReview-ZLw-bUAh.js          3.43 kB │ gzip:     1.79 kB
+dist/assets/WebHandReview-B6_MCHTa.js          5.33 kB │ gzip:     2.46 kB
+dist/assets/CombatReview-C8XrVKXn.js           6.49 kB │ gzip:     3.16 kB
+dist/assets/MotionReview-m7JJGa38.js          14.36 kB │ gzip:     5.69 kB
+dist/assets/FBXLoader-oK7lr-Jg.js             48.13 kB │ gzip:    16.10 kB
+dist/assets/UrbanGroundCity-B8dAiUdD.js      154.54 kB │ gzip:    53.76 kB
+dist/assets/index-dKgAtvRm.js              1,288.30 kB │ gzip:   360.70 kB
+dist/assets/StreamedCollision-BtsIrZF0.js  4,340.92 kB │ gzip: 1,646.98 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 13.73s
+Precompressed static assets: {"files":78,"originalBytes":193459684,"gzipBytes":70337051,"brotliBytes":64367965}
+{
+  "releaseId": "fc9ee93df6e9deb6bed77c5ca368da190c879d2904516050488cd39472436180",
+  "groups": {
+    "bootstrap": {
+      "files": 3,
+      "bytes": 1394093,
+      "encodedBytes": 367327
+    },
+    "character": {
+      "files": 37,
+      "bytes": 39947273,
+      "encodedBytes": 26400656
+    },
+    "fallback": {
+      "files": 24,
+      "bytes": 123102072,
+      "encodedBytes": 29804667
+    },
+    "on-demand": {
+      "files": 7,
+      "bytes": 4573182,
+      "encodedBytes": 1495484
+    },
+    "support": {
+      "files": 28,
+      "bytes": 25417807,
+      "encodedBytes": 7274574
+    }
+  },
+  "checks": {
+    "bootstrap": true,
+    "character": true,
+    "total": true
+  }
+}

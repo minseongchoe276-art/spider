@@ -1,0 +1,19 @@
+PASS WEB: Mouse buttons retain two ropes and release independently (0 first)
+PASS WEB: Mouse buttons retain two ropes and release independently (2 first)
+PASS WEB: A held left button attaches while a right-button rope is already active
+PASS WEB: A missed offhand shot stays visible while the first rope remains attached
+PASS WEB: The first shot is the left hand and the second keeps both anchors
+PASS WEB: A third shot replaces only the firing hand, and the same point does not stack
+PASS WEB: A miss while the button is held keeps both ropes
+PASS WEB: A missed click emits a visible shot without creating an anchor
+PASS WEB: Two length limits stay taut, finite and bounded at 30fps
+PASS WEB: Two length limits stay taut, finite and bounded at 60fps
+PASS WEB: Two length limits stay taut, finite and bounded at 144fps
+PASS WEB: Slack webs never push outward and constraint impulses cannot add kinetic energy
+PASS WEB: One obstructed strand releases only that hand
+PASS WEB: The explicit pull API zips to the latest anchor and arrives on that tether
+PASS WEB: Clear and respawn remove both ropes and the hand-pose cache
+PASS WEB: A shot during a reel keeps the pulling strand and adds the other hand
+PASS WEB: Aimed facade shots keep a left web and a right web
+PASS WEB: Space and mouse release preserve momentum, and W keeps rope length fixed
+PASS: 18 two-hand web cases

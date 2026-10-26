@@ -25,8 +25,8 @@ check('Left jab and right straight are distinct, grounded, guarded strikes',()=>
  c.guard(true);assert.equal(c.straight(camera),false);c.guard(false);
  physics.state='FALLING';assert.equal(c.straight(camera),false);physics.state='IDLE';
  c.stamina=6;assert.equal(c.straight(camera),false);c.stamina=100;
- assert(c.heavy(camera));assert.equal(c.action.key,'hook');
- c.before(0.4,camera);assert.equal(c.attack(camera),false);assert.equal(c.action.key,'hook');c.cancel();
+ assert(c.heavy(camera));assert.equal(c.action.key,'heavy');
+ c.before(0.4,camera);assert.equal(c.attack(camera),false);assert.equal(c.action.key,'heavy');c.cancel();
 });
 check('Damage has an active window and happens only once per target',()=>{
  physics.facingAngle=0;const e=enemy();c.enemies=[e];c.start('jab',ATTACKS.jab.duration,null);c.before(0.1);c.strike(c.action,{damage:12,reach:2.3});assert.equal(e.health,53);
@@ -57,10 +57,10 @@ check('Rear power cross loads before contact, respects cooldown and deals one he
  c.action.previous=.3;c.action.time=(ATTACKS.special.from+ATTACKS.special.to)/2;c.after(0);assert.equal(e.health,52);c.after(0);assert.equal(e.health,52);
  c.cancel();assert(!c.special(camera));for(let i=0;i<40;i++)c.before(.1,camera);assert(c.special(camera));c.cancel();
 });
-check('E hook is grounded and does not force an airborne dive',()=>{
+check('Heavy is grounded and does not force an airborne dive',()=>{
  c.cancel();c.stamina=100;c.enemies=[];physics.state='FALLING';physics.velocity.y=-3;
  assert.equal(c.heavy(camera),false);assert.equal(c.action,null);assert.equal(physics.velocity.y,-3);assert.equal(c.stamina,100);
- physics.state='IDLE';assert(c.heavy(camera));assert.equal(c.action.key,'hook');c.cancel();
+ physics.state='IDLE';assert(c.heavy(camera));assert.equal(c.action.key,'heavy');c.cancel();
 });
 check('No training drone factory remains; reset clears transient combat state',()=>{
  assert.equal(c.spawnTraining,undefined);c.cancel();c.stamina=100;c.attack(camera);physics.onReset();assert.equal(c.action,null);assert.equal(c.health,100);assert.equal(c.stamina,100);assert.equal(c.enemies.length,0);

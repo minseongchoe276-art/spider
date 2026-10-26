@@ -1,0 +1,326 @@
+[
+  {
+    "fps": 24,
+    "key": "jab",
+    "moving": false,
+    "maxPhysicsError": 2.4492935982947064e-16,
+    "maxVisualError": 0.025891090655017622,
+    "maxContactSpeed": 0,
+    "centeredFist": {
+      "lateral": 0.1306788588832198,
+      "reach": 0.7203642728739716
+    }
+  },
+  {
+    "fps": 24,
+    "key": "jab",
+    "moving": true,
+    "maxPhysicsError": 2.4492935982947064e-16,
+    "maxVisualError": 0.025891090655017622,
+    "maxContactSpeed": 0.030643648703661392,
+    "centeredFist": {
+      "lateral": 0.1306788588832204,
+      "reach": 0.7203642728739715
+    }
+  },
+  {
+    "fps": 24,
+    "key": "cross",
+    "moving": false,
+    "maxPhysicsError": 2.4492935982947064e-16,
+    "maxVisualError": 0.025891090655017622,
+    "maxContactSpeed": 0,
+    "centeredFist": {
+      "lateral": 0.09564862117420436,
+      "reach": 0.738921791095665
+    }
+  },
+  {
+    "fps": 24,
+    "key": "cross",
+    "moving": true,
+    "maxPhysicsError": 2.4492935982947064e-16,
+    "maxVisualError": 0.025891090655017622,
+    "maxContactSpeed": 0,
+    "centeredFist": {
+      "lateral": 0.09564862117420447,
+      "reach": 0.7389217910956649
+    }
+  },
+  {
+    "fps": 24,
+    "key": "hook",
+    "moving": false,
+    "maxPhysicsError": 2.4492935982947064e-16,
+    "maxVisualError": 0.025891090655017622,
+    "maxContactSpeed": 0,
+    "centeredFist": null
+  },
+  {
+    "fps": 24,
+    "key": "hook",
+    "moving": true,
+    "maxPhysicsError": 2.4492935982947064e-16,
+    "maxVisualError": 0.025891090655017622,
+    "maxContactSpeed": 0,
+    "centeredFist": null
+  },
+  {
+    "fps": 24,
+    "key": "heavy",
+    "moving": false,
+    "maxPhysicsError": 2.4492935982947064e-16,
+    "maxVisualError": 0.025891090655017622,
+    "maxContactSpeed": 0,
+    "centeredFist": null
+  },
+  {
+    "fps": 24,
+    "key": "heavy",
+    "moving": true,
+    "maxPhysicsError": 2.4492935982947064e-16,
+    "maxVisualError": 0.025891090655017622,
+    "maxContactSpeed": 0,
+    "centeredFist": null
+  },
+  {
+    "fps": 24,
+    "key": "special",
+    "moving": false,
+    "maxPhysicsError": 2.4492935982947064e-16,
+    "maxVisualError": 0.025891090655017622,
+    "maxContactSpeed": 0,
+    "centeredFist": {
+      "lateral": 0.08899039200767808,
+      "reach": 0.7603968516940873
+    }
+  },
+  {
+    "fps": 24,
+    "key": "special",
+    "moving": true,
+    "maxPhysicsError": 2.4492935982947064e-16,
+    "maxVisualError": 0.025891090655017622,
+    "maxContactSpeed": 0,
+    "centeredFist": {
+      "lateral": 0.08899039200767808,
+      "reach": 0.7603968516940873
+    }
+  },
+  {
+    "fps": 60,
+    "key": "jab",
+    "moving": false,
+    "maxPhysicsError": 2.4492935982947064e-16,
+    "maxVisualError": 0.049300396528400264,
+    "maxContactSpeed": 0,
+    "centeredFist": {
+      "lateral": 0.13626303393280614,
+      "reach": 0.7132220139981768
+    }
+  },
+  {
+    "fps": 60,
+    "key": "jab",
+    "moving": true,
+    "maxPhysicsError": 2.4492935982947064e-16,
+    "maxVisualError": 0.049300396528400264,
+    "maxContactSpeed": 0.05203171821146761,
+    "centeredFist": {
+      "lateral": 0.1362630339328061,
+      "reach": 0.7132220139981768
+    }
+  },
+  {
+    "fps": 60,
+    "key": "cross",
+    "moving": false,
+    "maxPhysicsError": 2.4492935982947064e-16,
+    "maxVisualError": 0.049300396528400264,
+    "maxContactSpeed": 0,
+    "centeredFist": {
+      "lateral": 0.10729261867637013,
+      "reach": 0.7470064570338508
+    }
+  },
+  {
+    "fps": 60,
+    "key": "cross",
+    "moving": true,
+    "maxPhysicsError": 2.4492935982947064e-16,
+    "maxVisualError": 0.049300396528400264,
+    "maxContactSpeed": 0,
+    "centeredFist": {
+      "lateral": 0.10729261867636991,
+      "reach": 0.7470064570338513
+    }
+  },
+  {
+    "fps": 60,
+    "key": "hook",
+    "moving": false,
+    "maxPhysicsError": 2.4492935982947064e-16,
+    "maxVisualError": 0.049300396528400264,
+    "maxContactSpeed": 0,
+    "centeredFist": null
+  },
+  {
+    "fps": 60,
+    "key": "hook",
+    "moving": true,
+    "maxPhysicsError": 2.4492935982947064e-16,
+    "maxVisualError": 0.049300396528400264,
+    "maxContactSpeed": 0,
+    "centeredFist": null
+  },
+  {
+    "fps": 60,
+    "key": "heavy",
+    "moving": false,
+    "maxPhysicsError": 2.4492935982947064e-16,
+    "maxVisualError": 0.049300396528400264,
+    "maxContactSpeed": 0,
+    "centeredFist": null
+  },
+  {
+    "fps": 60,
+    "key": "heavy",
+    "moving": true,
+    "maxPhysicsError": 2.4492935982947064e-16,
+    "maxVisualError": 0.049300396528400264,
+    "maxContactSpeed": 0,
+    "centeredFist": null
+  },
+  {
+    "fps": 60,
+    "key": "special",
+    "moving": false,
+    "maxPhysicsError": 2.4492935982947064e-16,
+    "maxVisualError": 0.049300396528400264,
+    "maxContactSpeed": 0,
+    "centeredFist": {
+      "lateral": 0.10455644069624026,
+      "reach": 0.7584132202466506
+    }
+  },
+  {
+    "fps": 60,
+    "key": "special",
+    "moving": true,
+    "maxPhysicsError": 2.4492935982947064e-16,
+    "maxVisualError": 0.049300396528400264,
+    "maxContactSpeed": 0,
+    "centeredFist": {
+      "lateral": 0.10455644069624019,
+      "reach": 0.7584132202466511
+    }
+  },
+  {
+    "fps": 144,
+    "key": "jab",
+    "moving": false,
+    "maxPhysicsError": 2.4492935982947064e-16,
+    "maxVisualError": 0.06265695885372605,
+    "maxContactSpeed": 0,
+    "centeredFist": {
+      "lateral": 0.14537137658786617,
+      "reach": 0.7124623813626174
+    }
+  },
+  {
+    "fps": 144,
+    "key": "jab",
+    "moving": true,
+    "maxPhysicsError": 2.4492935982947064e-16,
+    "maxVisualError": 0.06265695885372605,
+    "maxContactSpeed": 0.06793288040831828,
+    "centeredFist": {
+      "lateral": 0.14537137658786659,
+      "reach": 0.7124623813626172
+    }
+  },
+  {
+    "fps": 144,
+    "key": "cross",
+    "moving": false,
+    "maxPhysicsError": 2.4492935982947064e-16,
+    "maxVisualError": 0.06265695885372605,
+    "maxContactSpeed": 0,
+    "centeredFist": {
+      "lateral": 0.11572775517521744,
+      "reach": 0.7441671649485702
+    }
+  },
+  {
+    "fps": 144,
+    "key": "cross",
+    "moving": true,
+    "maxPhysicsError": 2.4492935982947064e-16,
+    "maxVisualError": 0.06265695885372605,
+    "maxContactSpeed": 0,
+    "centeredFist": {
+      "lateral": 0.11572775517521705,
+      "reach": 0.7441671649485707
+    }
+  },
+  {
+    "fps": 144,
+    "key": "hook",
+    "moving": false,
+    "maxPhysicsError": 2.4492935982947064e-16,
+    "maxVisualError": 0.06265695885372605,
+    "maxContactSpeed": 0,
+    "centeredFist": null
+  },
+  {
+    "fps": 144,
+    "key": "hook",
+    "moving": true,
+    "maxPhysicsError": 2.4492935982947064e-16,
+    "maxVisualError": 0.06265695885372605,
+    "maxContactSpeed": 0,
+    "centeredFist": null
+  },
+  {
+    "fps": 144,
+    "key": "heavy",
+    "moving": false,
+    "maxPhysicsError": 2.4492935982947064e-16,
+    "maxVisualError": 0.06265695885372605,
+    "maxContactSpeed": 0,
+    "centeredFist": null
+  },
+  {
+    "fps": 144,
+    "key": "heavy",
+    "moving": true,
+    "maxPhysicsError": 2.4492935982947064e-16,
+    "maxVisualError": 0.06265695885372605,
+    "maxContactSpeed": 0,
+    "centeredFist": null
+  },
+  {
+    "fps": 144,
+    "key": "special",
+    "moving": false,
+    "maxPhysicsError": 2.4492935982947064e-16,
+    "maxVisualError": 0.06265695885372605,
+    "maxContactSpeed": 0,
+    "centeredFist": {
+      "lateral": 0.11759253187272561,
+      "reach": 0.7599273508456499
+    }
+  },
+  {
+    "fps": 144,
+    "key": "special",
+    "moving": true,
+    "maxPhysicsError": 2.4492935982947064e-16,
+    "maxVisualError": 0.06265695885372605,
+    "maxContactSpeed": 0,
+    "centeredFist": {
+      "lateral": 0.11759253187272559,
+      "reach": 0.7599273508456502
+    }
+  }
+]

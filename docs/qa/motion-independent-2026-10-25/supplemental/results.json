@@ -1,0 +1,25 @@
+{
+  "total": 14,
+  "completed": 3,
+  "passed": 3,
+  "results": [
+    {
+      "suite": "expanded-input-camera",
+      "pass": true,
+      "exitCode": 0,
+      "seconds": 2.26
+    },
+    {
+      "suite": "expanded-gait-stability",
+      "pass": true,
+      "exitCode": 0,
+      "seconds": 64.503
+    },
+    {
+      "suite": "online-guard",
+      "pass": true,
+      "exitCode": 0,
+      "seconds": 4.105
+    }
+  ]
+}

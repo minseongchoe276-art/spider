@@ -24,6 +24,7 @@ for(const fps of [24,60,144]){
  const view=new ThirdPersonCamera(camera,{});
  for(let frame=0;frame<fps;frame++)view.handleKeyboardLook(new Set(['End']),1/fps);
  assert(Math.abs(view.yaw+1.32)<1e-9);assert.equal(view.lockBehind,false);
+ assert.equal(camera.userData.movementYaw,view.yaw,'Combat aim must see keyboard/mouse look before the render update');
  view.handleKeyboardLook(new Set(['Home','End']),1);assert(Math.abs(view.yaw+1.32)<1e-9);
  view.handleKeyboardLook(new Set(['PageUp']),10);assert.equal(view.pitch,CAMERA_PITCH_MIN);
  view.handleKeyboardLook(new Set(['PageDown']),10);assert.equal(view.pitch,CAMERA_PITCH_MAX);

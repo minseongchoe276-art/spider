@@ -1,0 +1,22 @@
+vite v7.3.7 building client environment for production...
+transforming...
+✓ 148 modules transformed.
+rendering chunks...
+computing gzip size...
+artifacts/itchio/build/index.html                               25.13 kB │ gzip:     7.90 kB
+artifacts/itchio/build/THIRD_PARTY_NOTICES.txt                  58.69 kB │ gzip:     7.38 kB
+artifacts/itchio/build/assets/index-DjO3Ps7s.css                79.74 kB │ gzip:    17.54 kB
+artifacts/itchio/build/assets/EffectsReview-DLPNz4Vk.js          3.43 kB │ gzip:     1.79 kB
+artifacts/itchio/build/assets/WebHandReview-DeMYXVFx.js          5.33 kB │ gzip:     2.46 kB
+artifacts/itchio/build/assets/CombatReview-D4-nwcbl.js           6.49 kB │ gzip:     3.16 kB
+artifacts/itchio/build/assets/MotionReview-CN__WVPW.js          14.36 kB │ gzip:     5.69 kB
+artifacts/itchio/build/assets/FBXLoader-Dpk8rbGJ.js             48.13 kB │ gzip:    16.10 kB
+artifacts/itchio/build/assets/UrbanGroundCity-CCmKED3I.js      154.56 kB │ gzip:    53.78 kB
+artifacts/itchio/build/assets/index-Cr9XvdbD.js              1,285.96 kB │ gzip:   360.06 kB
+artifacts/itchio/build/assets/StreamedCollision-DX6IIo8r.js  4,340.34 kB │ gzip: 1,646.84 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 9.45s

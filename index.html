@@ -11,9 +11,6 @@
   <link rel="icon" href="/app-icon.svg" type="image/svg+xml">
   <title>SHADOW PULSE — 3D 도시 액션</title>
   <meta name="description" content="SHADOW PULSE에서 빌딩 사이를 질주하고, 와이어를 연결해 도시를 누비세요.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800;900&family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/src/style.css">
   <link rel="stylesheet" href="/src/player-ui.css">
 </head>
@@ -70,7 +67,7 @@
       
       <div class="telemetry-grid">
         <div class="telemetry-item">
-          <span class="tele-label">속도 (SPEED)</span>
+          <span class="tele-label">속도</span>
           <div class="tele-val-box">
             <span id="speed-display" class="tele-val">0</span>
             <span class="tele-unit">KM/H</span>
@@ -79,7 +76,7 @@
         </div>
 
         <div class="telemetry-item">
-          <span class="tele-label">고도 (ALTITUDE)</span>
+          <span class="tele-label">고도</span>
           <div class="tele-val-box">
             <span id="alt-display" class="tele-val">0</span>
             <span class="tele-unit">M</span>
@@ -102,8 +99,8 @@
         <canvas id="minimap-canvas" role="img" aria-label="현재 위치 미니맵"></canvas>
         <div id="minimap-actors" aria-label="플레이어 위치 표시"></div>
         <span class="minimap-north" aria-hidden="true">N ↑</span>
-        <span class="minimap-legend">3D · <b>나</b> <i>경찰</i> <em>도망자</em></span>
-        <span class="minimap-range-label"><b id="minimap-range">600m</b> RANGE</span>
+        <span class="minimap-legend"><b>나</b> <i>경찰</i> <em>도망자</em></span>
+        <span class="minimap-range-label"><b id="minimap-range">600m</b> 반경</span>
       </div>
       <output id="minimap-coordinates" aria-live="off">E +0m&nbsp; N +0m&nbsp; ·&nbsp; ALT 0m</output>
     </aside>
@@ -111,64 +108,74 @@
     <!-- Web Status Pill -->
     <div id="web-status-pill" class="glass-panel">
       <div id="web-status-dot" class="status-dot"></div>
-      <span id="web-status-text">PULSE READY</span>
+      <span id="web-status-text">와이어 준비</span>
     </div>
 
     <!-- Instructions / Controls Card (Bottom-Left) -->
     <div id="combat-status" class="hidden" role="status">전투 모드</div>
     <aside id="controls-guide" class="glass-panel hidden" role="dialog" aria-label="조작 가이드">
       <div class="guide-header">
-        <h3>🎮 조작 가이드</h3>
+        <h3>조작 가이드</h3>
         <span class="guide-hint">마우스 잠금 또는 휠 버튼 드래그</span>
         <button id="btn-close-guide" type="button" aria-label="조작 가이드 닫기">닫기</button>
       </div>
       <div class="guide-list">
-        <div class="guide-row touch-guide-row"><span class="key-badge">터치 조작</span><span class="guide-desc">왼쪽 스틱으로 이동하고 끝까지 밀면 질주합니다. 거미줄 버튼을 한 번 누르면 앞쪽 건물에 연결되고, 다시 누르면 놓습니다. 초록 표시는 연결 가능한 지점입니다. 카메라는 진행 방향을 부드럽게 따라갑니다. 오른쪽 화면을 밀면 직접 시점을 조절하며 수동 조작이 우선합니다. 점프 버튼은 줄을 놓고 도약합니다. 전투·보조 와이어·벽 이동·묘기는 더보기에서 엽니다.</span></div>
-        <div class="guide-row"><span class="key-badge">경찰과 도망자</span><span class="guide-desc">2~8명. 6명 이하는 경찰 1명, 7~8명은 경찰 2명. 시작 8초는 공격 없음. 경찰 주먹 25, 에너지 와이어 15. 도망자는 공격할 수 없습니다. 도망자가 모두 쓰러지면 경찰 승리. 이동 목표 3개를 완료하거나 3~5분 생존하면 도망자 승리. 쓰러진 팀원 곁에 3초 유지하면 구조합니다. 탈락하면 관전합니다.</span></div>
-        <div class="guide-row"><span class="key-badge">Q</span><span class="guide-desc">전투 / 에너지 와이어 전환. 도망자는 경기 중 에너지 와이어로 고정됩니다.</span></div>
-        <div class="guide-row"><span class="key-badge">G</span><span class="guide-desc">강한 스트레이트 · 기력 35 · 재사용 4초</span></div>
-        <div class="guide-row"><span class="key-badge">Ctrl + 방향</span><span class="guide-desc">짧은 회피 · 전방 숙이기</span></div>
-
-        <div class="guide-row">
+<details class="guide-group" open><summary>이동 · 카메라</summary>
+<div class="guide-row">
           <span class="key-badge">W A S D</span>
           <span class="guide-desc">카메라가 보는 쪽이 앞, 화면 오른쪽이 <span data-action-key="right">D</span></span>
         </div>
-        <div class="guide-row"><span class="key-badge">Shift</span><span class="guide-desc">누르는 동안 질주</span></div>
-        <div class="guide-row">
+<div class="guide-row"><span class="key-badge">Shift</span><span class="guide-desc">누르는 동안 질주</span></div>
+<div class="guide-row">
           <span class="key-badge">Space</span>
           <span class="guide-desc">점프 · 벽 점프 · 줄에서 뛰어내리기</span>
         </div>
-        <div class="guide-row">
-          <span class="key-badge">좌클릭</span>
-          <span class="guide-desc key-accent">조준점이 가리키는 표면에 에너지 와이어 부착 · Space로 점프 · 떼면 관성 비행 · 땅의 전투는 잽</span>
-        </div>
-        <div class="guide-row">
-          <span class="key-badge">우클릭</span>
-          <span class="guide-desc key-accent">반대 손에서 같은 진자 스윙. 꾹 누르면 매달리고, 떼면 그 손만 놓습니다. 땅의 전투는 오른손 스트레이트</span>
-        </div>
-        <div class="guide-row"><span class="key-badge">B</span><span class="guide-desc">누르는 동안 방어. 온라인: 지상에서 캐릭터 정면 좌우 60°의 피해 60% 감소(주먹 10 / 와이어 6). 후방·공중은 감소하지 않습니다. 기력 12 이상일 때 가능. 도망자는 와이어 모드에서도 B 방어 가능</span></div>
-        <div class="guide-row">
-          <span class="key-badge">E</span>
-          <span class="guide-desc">공중에서 한 번 눌러 짧게 이동 (최대 12m) · 지상 출발은 좌/우클릭 · 전투 모드에서는 훅</span>
-        </div>
-        <div class="guide-row">
-          <span class="key-badge">T</span>
-          <span class="guide-desc">높은 곳에서 줄을 놓고 <span data-action-key="trick">T</span>: 앞구르기. 동작을 마친 뒤 다시 사용할 수 있습니다.</span>
-        </div>
-        <div class="guide-row">
+<div class="guide-row">
           <span class="key-badge">마우스 이동</span>
           <span class="guide-desc">카메라 회전</span>
         </div>
-        <div class="guide-row"><span class="key-badge">F + W</span><span class="guide-desc">벽 기어가기</span></div>
-        <div class="guide-row"><span class="key-badge">C</span><span class="guide-desc">카메라를 등 뒤로 정렬</span></div>
-        <div class="guide-row"><span class="key-badge">Home · End / PgUp · PgDn</span><span class="guide-desc">키보드로 좌우 / 위아래 조준</span></div>
-        <div class="guide-row"><span class="key-badge">V</span><span class="guide-desc">근접 · 기본 · 원거리 시점 전환</span></div>
-        <div class="guide-row"><span class="key-badge">M</span><span class="guide-desc">전체 지도 열기 · 닫기</span></div>
-        <div class="guide-row">
+<div class="guide-row"><span class="key-badge">C</span><span class="guide-desc">카메라를 등 뒤로 정렬</span></div>
+<div class="guide-row"><span class="key-badge">Home · End / PgUp · PgDn</span><span class="guide-desc">키보드로 좌우 / 위아래 조준</span></div>
+<div class="guide-row"><span class="key-badge">V</span><span class="guide-desc">근접 · 기본 · 원거리 시점 전환</span></div>
+<div class="guide-row"><span class="key-badge">M</span><span class="guide-desc">전체 지도 열기 · 닫기</span></div>
+<div class="guide-row">
           <span class="key-badge">마우스 휠</span>
           <span class="guide-desc">카메라 거리 줌 인/아웃</span>
         </div>
-        <div class="guide-row"><span class="key-badge">Esc · H · M</span><span class="guide-desc">메뉴 · 도움말 · 전체 지도</span></div>
+<div class="guide-row"><span class="key-badge">Esc · H · M</span><span class="guide-desc">메뉴 · 도움말 · 전체 지도</span></div>
+</details>
+<details class="guide-group"><summary>와이어 · 공중 이동</summary>
+<div class="guide-row"><span class="key-badge">Q</span><span class="guide-desc">전투 / 에너지 와이어 전환. 도망자는 경기 중 에너지 와이어로 고정됩니다.</span></div>
+<div class="guide-row">
+          <span class="key-badge">좌클릭</span>
+          <span class="guide-desc key-accent">조준점이 가리키는 표면에 에너지 와이어 부착 · Space로 점프 · 떼면 관성 비행 · 땅의 전투는 잽</span>
+        </div>
+<div class="guide-row">
+          <span class="key-badge">우클릭</span>
+          <span class="guide-desc key-accent">반대 손에서 같은 진자 스윙. 꾹 누르면 매달리고, 떼면 그 손만 놓습니다. 땅의 전투는 오른손 스트레이트</span>
+        </div>
+<div class="guide-row">
+          <span class="key-badge">E</span>
+          <span class="guide-desc">공중에서 한 번 눌러 짧게 이동 (최대 12m) · 지상 출발은 좌/우클릭 · 전투 모드에서는 훅</span>
+        </div>
+<div class="guide-row">
+          <span class="key-badge">T</span>
+          <span class="guide-desc">높은 곳에서 줄을 놓고 <span data-action-key="trick">T</span>: 앞구르기. 동작을 마친 뒤 다시 사용할 수 있습니다.</span>
+        </div>
+<div class="guide-row"><span class="key-badge">F + W</span><span class="guide-desc">벽 기어가기</span></div>
+</details>
+<details class="guide-group"><summary>전투</summary>
+<div class="guide-row"><span class="key-badge">G</span><span class="guide-desc">강한 스트레이트 · 기력 35 · 재사용 4초</span></div>
+<div class="guide-row"><span class="key-badge">Ctrl + 방향</span><span class="guide-desc">짧은 회피 · 전방 숙이기</span></div>
+<div class="guide-row"><span class="key-badge">B</span><span class="guide-desc">누르는 동안 방어. 온라인: 지상에서 캐릭터 정면 좌우 60°의 피해 60% 감소(주먹 10 / 와이어 6). 후방·공중은 감소하지 않습니다. 기력 12 이상일 때 가능. 도망자는 와이어 모드에서도 B 방어 가능</span></div>
+</details>
+<details class="guide-group"><summary>경기 규칙</summary>
+<div class="guide-row"><span class="key-badge">경찰과 도망자</span><span class="guide-desc">2~8명. 6명 이하는 경찰 1명, 7~8명은 경찰 2명. 시작 8초는 공격 없음. 경찰 주먹 25, 에너지 와이어 15. 도망자는 공격할 수 없습니다. 도망자가 모두 쓰러지면 경찰 승리. 이동 목표 3개를 완료하거나 3~5분 생존하면 도망자 승리. 쓰러진 팀원 곁에 3초 유지하면 구조합니다. 탈락하면 관전합니다.</span></div>
+</details>
+<details class="guide-group"><summary>터치 조작</summary>
+<div class="guide-row touch-guide-row"><span class="key-badge">터치 조작</span><span class="guide-desc">왼쪽 스틱으로 이동하고 끝까지 밀면 질주합니다. 거미줄 버튼을 한 번 누르면 앞쪽 건물에 연결되고, 다시 누르면 놓습니다. 초록 표시는 연결 가능한 지점입니다. 카메라는 진행 방향을 부드럽게 따라갑니다. 오른쪽 화면을 밀면 직접 시점을 조절하며 수동 조작이 우선합니다. 점프 버튼은 줄을 놓고 도약합니다. 전투·보조 와이어·벽 이동·묘기는 더보기에서 엽니다.</span></div>
+</details>
+
       </div>
     </aside>
 
@@ -182,12 +189,12 @@
       <button id="match-help" type="button" aria-label="조작 가이드 열기">? <span>조작</span></button>
     </div>
     <div id="gameplay-quickbar" aria-label="기본 조작">
-      <span><kbd>W A S D</kbd> 이동</span><span><kbd>SPACE</kbd> 점프</span><span><kbd>T</kbd> 공중 묘기</span><span><kbd>Q</kbd> 모드</span><span><kbd>H</kbd> 조작키</span><span><kbd>ESC</kbd> 메뉴</span>
+      <span><kbd>W A S D</kbd> 이동</span><span><kbd>SPACE</kbd> 점프</span><span><kbd>Q</kbd> 전투 / 와이어</span><span><kbd>H</kbd> 조작키</span><span><kbd>ESC</kbd> 메뉴</span>
     </div>
 
     <div id="online-overlay" class="overlay" role="dialog" aria-modal="true" aria-labelledby="online-title">
       <div class="lobby-shell">
-        <div class="lobby-topline"><span class="lobby-brand"><span class="brand-mark">✳</span> WEB <b>RUNNER</b></span><span class="lobby-edition">HONG KONG · OPEN WORLD</span><span id="online-status">서버 연결 중…</span><button class="lobby-fullscreen" type="button" data-fullscreen aria-pressed="false">전체화면</button></div>
+        <div class="lobby-topline"><span class="lobby-brand">SHADOW <b>PULSE</b></span><span class="lobby-edition">HONG KONG · OPEN WORLD</span><span id="online-status">서버 연결 중…</span><button class="lobby-fullscreen" type="button" data-fullscreen aria-pressed="false">전체화면</button></div>
         <div class="lobby-stage">
           <div class="lobby-hero">
             <span class="lobby-eyebrow"><i></i> YOUR CITY. YOUR MOVE.</span>
@@ -200,7 +207,7 @@
                 <a href="?city=procedural" data-city="procedural"><b>로컬 도시</b><small>빠르게 시작</small></a>
               </div>
             </nav>
-            <div class="lobby-hero-actions"><button id="play-solo" class="hero-play" type="button"><span class="play-triangle">▶</span><span><b>혼자 플레이</b><small><span data-current-city>홍콩</span>에서 시작</small></span><span class="action-arrow">↗</span></button></div>
+            <div class="lobby-hero-actions"><button id="play-solo" class="hero-play" type="button"><span class="play-triangle">▶</span><span><b>혼자 플레이</b><small><span data-current-city>홍콩</span>에서 시작</small></span><span class="action-arrow" aria-hidden="true">→</span></button></div>
             <div class="lobby-statline"><span>01 / EXPLORE</span><span>02 / CHASE</span><span>03 / SWING</span></div>
           </div>
           <div class="online-card">
@@ -208,23 +215,23 @@
         <section id="lobby-panel">
           <label class="online-field">플레이어 이름<input id="player-name" maxlength="16" value="Pulse" autocomplete="nickname"></label>
           <div class="mode-heading">게임 모드 <span>선택</span></div>
-          <div class="mode-picker" role="tablist" aria-label="게임 모드">
-            <button class="mode-option selected" type="button" role="tab" data-mode="tag" aria-selected="true"><span class="mode-icon">⌖</span><b>경찰과 도망자</b><small>인원별 3~5분 추격전</small></button>
-            <button class="mode-option" type="button" role="tab" data-mode="custom" aria-selected="false"><span class="mode-icon">⚔</span><b>사용자 설정</b><small>1대1 · 팀전 · 개인전 / 최대 8명</small></button>
-            <button class="mode-option" type="button" role="tab" data-mode="free" aria-selected="false"><span class="mode-icon">↗</span><b>자유 플레이</b><small>함께 도시 탐험</small></button>
+          <div class="mode-picker" role="group" aria-label="게임 모드">
+            <button class="mode-option selected" type="button" aria-pressed="true" data-mode="tag"><span class="mode-icon">⌖</span><b>경찰과 도망자</b><small>인원별 3~5분 추격전</small></button>
+            <button class="mode-option" type="button" aria-pressed="false" data-mode="custom"><span class="mode-icon">⚔</span><b>사용자 설정</b><small>1대1 · 팀전 · 개인전 / 최대 8명</small></button>
+            <button class="mode-option" type="button" aria-pressed="false" data-mode="free"><span class="mode-icon">↗</span><b>자유 플레이</b><small>함께 도시 탐험</small></button>
           </div>
           <select id="room-mode" class="visually-hidden" aria-label="게임 모드"><option value="tag">경찰과 도망자 · 목표 탈출 / 생존</option><option value="custom">사용자 설정 경기</option><option value="free">자유 플레이 · 제한 없음</option></select>
-          <div class="online-grid"><label class="online-field">방 이름<input id="room-name" maxlength="24" value="새로운 도시 여행"></label><label class="online-field">정원<select id="room-capacity"><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option selected>8</option></select></label></div>
+          <div class="online-grid"><label class="online-field">방 이름<input id="room-name" maxlength="24" value="함께 탐험"></label><label class="online-field">정원<select id="room-capacity"><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option selected>8</option></select></label></div>
 
           <label id="custom-options" class="online-field hidden">경기 방식<select id="custom-format"><option value="teams">팀전 · 1대1 / 다수 대 다수</option><option value="ffa">개인전 · 마지막 1명 생존</option></select></label>
           <details class="attack-guide"><summary>공통 공격 판정 · 주먹 / 거미줄</summary><p>HP 100. 주먹: 수평 2.6m 이내 · 높이 차 2.2m 이내 · 정면 좌우 약 49° · 피해 25 · 간격 0.56초. 거미줄: 수평 22m 이내 · 높이 차 8m 이내 · 정면 좌우 약 33°와 화면 조준 영역 모두 충족 · 피해 15 · 간격 1.6초.</p><p>벽·건물 뒤, 같은 팀, 탈락자는 공격할 수 없습니다. 경찰과 도망자에서는 경찰만 공격합니다. 주먹은 실제 타격 순간, 거미줄은 발사 요청 순간의 서버 수신 위치로 판정합니다. 공격 한 번에 표시된 상대 한 명만 피격됩니다. 기력 12 이상에서 B를 누른 지상 정면 방어는 피해를 60% 줄입니다(주먹 10 / 거미줄 6). 후방·공중에는 적용되지 않으며 방어 중에는 공격할 수 없습니다. 서버 명중 확인 후에만 HP가 감소합니다. Q로 전투/거미줄 모드를 전환하세요.</p></details>
-          <button id="create-room" class="online-primary" type="button">새 방 만들기 <span>↗</span></button>
+          <button id="create-room" class="online-primary" type="button">새 방 만들기 <span aria-hidden="true">→</span></button>
           <div class="online-divider"><span>또는 바로 합류</span></div>
           <div class="online-inline"><input id="room-code" maxlength="6" placeholder="초대 코드 6자리" aria-label="방 코드"><button id="join-code" type="button">코드 입장</button></div>
-          <div class="room-list-heading"><h3>열린 방</h3><span>LIVE ROOMS</span></div><div id="room-list" class="room-list"></div>
+          <div class="room-list-heading"><h3>열린 방</h3><span>최대 8명</span></div><div id="room-list" class="room-list"></div>
         </section>
         <section id="room-panel" class="hidden">
-          <span class="room-kicker">YOUR SQUAD / 대기실</span>
+          <span class="room-kicker">대기실</span>
           <h2 id="room-title"></h2><p id="room-details"></p>
           <div class="room-code-line">초대 코드 <strong id="room-code-display"></strong><button id="room-copy" type="button">복사</button><button id="room-invite" type="button">초대 링크 복사</button></div>
           <div id="player-list" class="player-list"></div>
@@ -252,18 +259,18 @@
     <!-- Start / Click to Play Overlay -->
     <div id="overlay-click-to-play" class="overlay hidden" role="dialog" aria-modal="true" aria-labelledby="game-title">
       <div class="overlay-card">
-        <span class="pause-eyebrow">SHADOW PULSE / SYSTEM MENU</span>
-        <h1 id="game-title">잠시 <em>멈춤</em></h1>
-        <h2>도시는 기다리고 있습니다.</h2>
-        <p class="overlay-tagline">다시 뛰어들 준비가 되면 계속하세요.</p>
+        <span class="pause-eyebrow">SHADOW PULSE</span>
+        <h1 id="game-title">일시정지</h1>
+        <h2>메뉴</h2>
+        <p class="overlay-tagline">설정은 변경 즉시 적용됩니다.</p>
         
         <div class="start-instruction">
-          <div class="mouse-icon">🖱️</div>
-          <span><span data-action-key="mode">Q</span> 전투/와이어 모드 전환 · 전투 모드에서는 와이어 불가 · 좌클릭 꾹: 조준한 표면에 에너지 와이어 · 우클릭 꾹: 반대 손 스윙 · 떼기: 관성 비행 · <span data-action-key="zip">E</span>: 공중 집 1회 (12m) · <span data-action-key="guard">B</span> 방어 · <span data-action-key="dodge">Ctrl</span> 회피<br>Esc 메뉴 · M 전체 지도 · <span id="world-limit">구역 원점 기준 ±2.4km</span></span>
+          <span><kbd>Esc</kbd> 계속 플레이<br>플레이 중: <kbd>H</kbd> 조작 가이드 · <kbd>M</kbd> 전체 지도</span>
+          <small id="world-limit">구역 원점 기준 ±2.4km</small>
         </div>
 
         <p class="touch-menu-hint">왼쪽 이동 · 카메라 자동 추적<br>거미줄 한 번으로 연결 / 다시 눌러 놓기 · 점프로 도약</p>
-        <button id="btn-start-game" class="start-btn"><span>계속 플레이</span><b>↗</b></button>
+        <button id="btn-start-game" class="start-btn"><span>계속 플레이</span><b aria-hidden="true">→</b></button>
         <button id="btn-start-drag" type="button">마우스 잠금 없이 계속</button>
         <div class="pause-secondary"><button type="button" data-fullscreen aria-pressed="false">전체화면</button><button id="btn-restart" class="hidden" type="button">시작점 복귀</button><button id="btn-leave-match" type="button">로비로 돌아가기</button><button id="open-admin-pause" type="button">관리자</button></div>
         <div class="pause-settings"><span class="settings-title">설정</span><button id="reduced-motion" type="button" aria-pressed="false">화면 효과 줄이기 <span class="setting-value">꺼짐</span></button>
@@ -273,11 +280,14 @@
         <div id="extended-settings" class="pause-settings"></div>
         <details class="player-progress"><summary>위치 · 에너지 와이어</summary><label for="web-theme">에너지 와이어 색상</label><select id="web-theme"><option value="white">기본 흰색</option></select><button id="btn-save-position" type="button">안전 위치 저장</button><button id="btn-restore-position" type="button">저장 위치로 복귀</button></details>
         <details class="player-progress" id="exploration-menu"><summary>탐험 안내 · 임무</summary><p id="journey-summary"></p><p id="journey-feedback" role="status"></p><p id="journey-result"></p><p>혼자 플레이에서 진행합니다. 언제든 중단하거나 다시 시작할 수 있습니다.</p><button id="btn-tutorial" type="button">기초 안내 다시 시작</button><button id="btn-tutorial-skip" type="button">기초 안내 닫기</button><button id="btn-lesson-practice" type="button">훈련 표적 시작</button><button id="btn-mission-rooftops" type="button">옥상 3곳 탐사</button><button id="btn-mission-discover" type="button">구역 3곳 탐방</button><button id="btn-mission-travel" type="button">도시 500m 순찰</button><button id="btn-mission-delivery" type="button">물품 회수 · 배달</button><button id="btn-mission-technique" type="button">이동 기술 훈련</button><button id="btn-mission-retry" type="button" hidden>목표 다시 준비</button><button id="btn-mission-repeat" type="button" disabled>최근 임무 다시 도전</button><button id="btn-mission-stop" type="button">임무 중단</button></details>
+        <details class="player-progress"><summary>기기 · 연결 진단</summary><p>성능·연결·안내·임무·경기 결과를 이 기기에만 기록합니다. 위치·이름·계정 정보는 포함하지 않습니다.</p><button id="btn-export-diagnostics" type="button">진단 기록 다운로드</button></details>
         <details class="player-progress"><summary>전투 연습</summary><p>현재 위치의 안전한 바닥에서 시작합니다. 온라인 경기에서는 사용할 수 없습니다.</p><select id="practice-type" aria-label="전투 연습 종류"><option value="dummy">훈련 표적</option><option value="melee">근접 상대</option><option value="ranged">원거리 상대</option><option value="shield">방패 상대</option><option value="mixed">혼합 상대</option></select><button id="btn-practice" type="button">연습 시작</button><button id="btn-practice-stop" type="button">연습 종료</button></details>
         <p class="data-credit">도시 데이터: 홍콩 Lands Department<br><a href="?city=procedural">로컬 도시로 플레이</a></p>
+        <p class="license-credit"><a href="./THIRD_PARTY_NOTICES.txt" target="_blank" rel="noopener">오픈소스 고지</a></p>
       </div>
     </div>
 
+    <p id="connection-warning" role="status" hidden></p>
     <!-- Initial Loading Screen -->
     <div id="loading-screen" class="overlay">
       <div class="loading-box glass-panel">

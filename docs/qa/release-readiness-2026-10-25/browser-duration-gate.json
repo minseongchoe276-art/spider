@@ -1,0 +1,27 @@
+{
+  "status": "FAIL",
+  "minimumSeconds": 1800,
+  "p95LimitMs": 34,
+  "checks": [
+    {
+      "name": "Current build",
+      "pass": true
+    },
+    {
+      "name": "Real active duration",
+      "pass": false
+    },
+    {
+      "name": "Frame samples",
+      "pass": true
+    },
+    {
+      "name": "P95 frame budget",
+      "pass": true
+    }
+  ],
+  "heap": "Reported heap trend requires GC-aware review",
+  "thermal": "Requires physical device observation",
+  "battery": "Requires physical device observation",
+  "scope": "Duration and frame-budget gate only; not a complete physical-device qualification"
+}

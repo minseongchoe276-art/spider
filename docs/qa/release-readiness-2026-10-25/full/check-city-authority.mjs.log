@@ -1,0 +1,4 @@
+PASS PostgreSQL authority exactly matches all 184 rendered/Node collision boxes
+PASS authenticated SQL rejects off-map spawns, filters objectives before selection, corrects even a first off-map move and preserves its movement budget
+PASS existing RLS, authenticated RPC, worker-only damage permissions and Hong Kong bounds are preserved
+PASS real WebSocket clients receive off-map corrections and can still make the next valid move

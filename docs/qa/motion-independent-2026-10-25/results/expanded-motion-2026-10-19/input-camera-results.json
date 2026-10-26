@@ -1,0 +1,4616 @@
+{
+  "cases": 526,
+  "failed": 0,
+  "results": [
+    {
+      "name": "three input owners KeyW, release 0,1,2",
+      "pass": true,
+      "detail": {
+        "owners": 3
+      }
+    },
+    {
+      "name": "three input owners KeyW, release 0,2,1",
+      "pass": true,
+      "detail": {
+        "owners": 3
+      }
+    },
+    {
+      "name": "three input owners KeyW, release 1,0,2",
+      "pass": true,
+      "detail": {
+        "owners": 3
+      }
+    },
+    {
+      "name": "three input owners KeyW, release 1,2,0",
+      "pass": true,
+      "detail": {
+        "owners": 3
+      }
+    },
+    {
+      "name": "three input owners KeyW, release 2,0,1",
+      "pass": true,
+      "detail": {
+        "owners": 3
+      }
+    },
+    {
+      "name": "three input owners KeyW, release 2,1,0",
+      "pass": true,
+      "detail": {
+        "owners": 3
+      }
+    },
+    {
+      "name": "three input owners KeyS, release 0,1,2",
+      "pass": true,
+      "detail": {
+        "owners": 3
+      }
+    },
+    {
+      "name": "three input owners KeyS, release 0,2,1",
+      "pass": true,
+      "detail": {
+        "owners": 3
+      }
+    },
+    {
+      "name": "three input owners KeyS, release 1,0,2",
+      "pass": true,
+      "detail": {
+        "owners": 3
+      }
+    },
+    {
+      "name": "three input owners KeyS, release 1,2,0",
+      "pass": true,
+      "detail": {
+        "owners": 3
+      }
+    },
+    {
+      "name": "three input owners KeyS, release 2,0,1",
+      "pass": true,
+      "detail": {
+        "owners": 3
+      }
+    },
+    {
+      "name": "three input owners KeyS, release 2,1,0",
+      "pass": true,
+      "detail": {
+        "owners": 3
+      }
+    },
+    {
+      "name": "three input owners KeyA, release 0,1,2",
+      "pass": true,
+      "detail": {
+        "owners": 3
+      }
+    },
+    {
+      "name": "three input owners KeyA, release 0,2,1",
+      "pass": true,
+      "detail": {
+        "owners": 3
+      }
+    },
+    {
+      "name": "three input owners KeyA, release 1,0,2",
+      "pass": true,
+      "detail": {
+        "owners": 3
+      }
+    },
+    {
+      "name": "three input owners KeyA, release 1,2,0",
+      "pass": true,
+      "detail": {
+        "owners": 3
+      }
+    },
+    {
+      "name": "three input owners KeyA, release 2,0,1",
+      "pass": true,
+      "detail": {
+        "owners": 3
+      }
+    },
+    {
+      "name": "three input owners KeyA, release 2,1,0",
+      "pass": true,
+      "detail": {
+        "owners": 3
+      }
+    },
+    {
+      "name": "three input owners KeyD, release 0,1,2",
+      "pass": true,
+      "detail": {
+        "owners": 3
+      }
+    },
+    {
+      "name": "three input owners KeyD, release 0,2,1",
+      "pass": true,
+      "detail": {
+        "owners": 3
+      }
+    },
+    {
+      "name": "three input owners KeyD, release 1,0,2",
+      "pass": true,
+      "detail": {
+        "owners": 3
+      }
+    },
+    {
+      "name": "three input owners KeyD, release 1,2,0",
+      "pass": true,
+      "detail": {
+        "owners": 3
+      }
+    },
+    {
+      "name": "three input owners KeyD, release 2,0,1",
+      "pass": true,
+      "detail": {
+        "owners": 3
+      }
+    },
+    {
+      "name": "three input owners KeyD, release 2,1,0",
+      "pass": true,
+      "detail": {
+        "owners": 3
+      }
+    },
+    {
+      "name": "three input owners ShiftLeft, release 0,1,2",
+      "pass": true,
+      "detail": {
+        "owners": 3
+      }
+    },
+    {
+      "name": "three input owners ShiftLeft, release 0,2,1",
+      "pass": true,
+      "detail": {
+        "owners": 3
+      }
+    },
+    {
+      "name": "three input owners ShiftLeft, release 1,0,2",
+      "pass": true,
+      "detail": {
+        "owners": 3
+      }
+    },
+    {
+      "name": "three input owners ShiftLeft, release 1,2,0",
+      "pass": true,
+      "detail": {
+        "owners": 3
+      }
+    },
+    {
+      "name": "three input owners ShiftLeft, release 2,0,1",
+      "pass": true,
+      "detail": {
+        "owners": 3
+      }
+    },
+    {
+      "name": "three input owners ShiftLeft, release 2,1,0",
+      "pass": true,
+      "detail": {
+        "owners": 3
+      }
+    },
+    {
+      "name": "three input owners KeyF, release 0,1,2",
+      "pass": true,
+      "detail": {
+        "owners": 3
+      }
+    },
+    {
+      "name": "three input owners KeyF, release 0,2,1",
+      "pass": true,
+      "detail": {
+        "owners": 3
+      }
+    },
+    {
+      "name": "three input owners KeyF, release 1,0,2",
+      "pass": true,
+      "detail": {
+        "owners": 3
+      }
+    },
+    {
+      "name": "three input owners KeyF, release 1,2,0",
+      "pass": true,
+      "detail": {
+        "owners": 3
+      }
+    },
+    {
+      "name": "three input owners KeyF, release 2,0,1",
+      "pass": true,
+      "detail": {
+        "owners": 3
+      }
+    },
+    {
+      "name": "three input owners KeyF, release 2,1,0",
+      "pass": true,
+      "detail": {
+        "owners": 3
+      }
+    },
+    {
+      "name": "three input owners KeyB, release 0,1,2",
+      "pass": true,
+      "detail": {
+        "owners": 3
+      }
+    },
+    {
+      "name": "three input owners KeyB, release 0,2,1",
+      "pass": true,
+      "detail": {
+        "owners": 3
+      }
+    },
+    {
+      "name": "three input owners KeyB, release 1,0,2",
+      "pass": true,
+      "detail": {
+        "owners": 3
+      }
+    },
+    {
+      "name": "three input owners KeyB, release 1,2,0",
+      "pass": true,
+      "detail": {
+        "owners": 3
+      }
+    },
+    {
+      "name": "three input owners KeyB, release 2,0,1",
+      "pass": true,
+      "detail": {
+        "owners": 3
+      }
+    },
+    {
+      "name": "three input owners KeyB, release 2,1,0",
+      "pass": true,
+      "detail": {
+        "owners": 3
+      }
+    },
+    {
+      "name": "dual-web jump/rearm close, 0,1,2, toggle false",
+      "pass": true,
+      "detail": {
+        "jumpVelocity": 26
+      }
+    },
+    {
+      "name": "dual-web jump/rearm close, 0,1,2, toggle true",
+      "pass": true,
+      "detail": {
+        "jumpVelocity": 26
+      }
+    },
+    {
+      "name": "dual-web jump/rearm close, 0,2,1, toggle false",
+      "pass": true,
+      "detail": {
+        "jumpVelocity": 26
+      }
+    },
+    {
+      "name": "dual-web jump/rearm close, 0,2,1, toggle true",
+      "pass": true,
+      "detail": {
+        "jumpVelocity": 26
+      }
+    },
+    {
+      "name": "dual-web jump/rearm close, 1,0,2, toggle false",
+      "pass": true,
+      "detail": {
+        "jumpVelocity": 26
+      }
+    },
+    {
+      "name": "dual-web jump/rearm close, 1,0,2, toggle true",
+      "pass": true,
+      "detail": {
+        "jumpVelocity": 26
+      }
+    },
+    {
+      "name": "dual-web jump/rearm close, 1,2,0, toggle false",
+      "pass": true,
+      "detail": {
+        "jumpVelocity": 26
+      }
+    },
+    {
+      "name": "dual-web jump/rearm close, 1,2,0, toggle true",
+      "pass": true,
+      "detail": {
+        "jumpVelocity": 26
+      }
+    },
+    {
+      "name": "dual-web jump/rearm close, 2,0,1, toggle false",
+      "pass": true,
+      "detail": {
+        "jumpVelocity": 26
+      }
+    },
+    {
+      "name": "dual-web jump/rearm close, 2,0,1, toggle true",
+      "pass": true,
+      "detail": {
+        "jumpVelocity": 26
+      }
+    },
+    {
+      "name": "dual-web jump/rearm close, 2,1,0, toggle false",
+      "pass": true,
+      "detail": {
+        "jumpVelocity": 26
+      }
+    },
+    {
+      "name": "dual-web jump/rearm close, 2,1,0, toggle true",
+      "pass": true,
+      "detail": {
+        "jumpVelocity": 26
+      }
+    },
+    {
+      "name": "dual-web jump/rearm follow, 0,1,2, toggle false",
+      "pass": true,
+      "detail": {
+        "jumpVelocity": 26
+      }
+    },
+    {
+      "name": "dual-web jump/rearm follow, 0,1,2, toggle true",
+      "pass": true,
+      "detail": {
+        "jumpVelocity": 26
+      }
+    },
+    {
+      "name": "dual-web jump/rearm follow, 0,2,1, toggle false",
+      "pass": true,
+      "detail": {
+        "jumpVelocity": 26
+      }
+    },
+    {
+      "name": "dual-web jump/rearm follow, 0,2,1, toggle true",
+      "pass": true,
+      "detail": {
+        "jumpVelocity": 26
+      }
+    },
+    {
+      "name": "dual-web jump/rearm follow, 1,0,2, toggle false",
+      "pass": true,
+      "detail": {
+        "jumpVelocity": 26
+      }
+    },
+    {
+      "name": "dual-web jump/rearm follow, 1,0,2, toggle true",
+      "pass": true,
+      "detail": {
+        "jumpVelocity": 26
+      }
+    },
+    {
+      "name": "dual-web jump/rearm follow, 1,2,0, toggle false",
+      "pass": true,
+      "detail": {
+        "jumpVelocity": 26
+      }
+    },
+    {
+      "name": "dual-web jump/rearm follow, 1,2,0, toggle true",
+      "pass": true,
+      "detail": {
+        "jumpVelocity": 26
+      }
+    },
+    {
+      "name": "dual-web jump/rearm follow, 2,0,1, toggle false",
+      "pass": true,
+      "detail": {
+        "jumpVelocity": 26
+      }
+    },
+    {
+      "name": "dual-web jump/rearm follow, 2,0,1, toggle true",
+      "pass": true,
+      "detail": {
+        "jumpVelocity": 26
+      }
+    },
+    {
+      "name": "dual-web jump/rearm follow, 2,1,0, toggle false",
+      "pass": true,
+      "detail": {
+        "jumpVelocity": 26
+      }
+    },
+    {
+      "name": "dual-web jump/rearm follow, 2,1,0, toggle true",
+      "pass": true,
+      "detail": {
+        "jumpVelocity": 26
+      }
+    },
+    {
+      "name": "dual-web jump/rearm swing, 0,1,2, toggle false",
+      "pass": true,
+      "detail": {
+        "jumpVelocity": 26
+      }
+    },
+    {
+      "name": "dual-web jump/rearm swing, 0,1,2, toggle true",
+      "pass": true,
+      "detail": {
+        "jumpVelocity": 26
+      }
+    },
+    {
+      "name": "dual-web jump/rearm swing, 0,2,1, toggle false",
+      "pass": true,
+      "detail": {
+        "jumpVelocity": 26
+      }
+    },
+    {
+      "name": "dual-web jump/rearm swing, 0,2,1, toggle true",
+      "pass": true,
+      "detail": {
+        "jumpVelocity": 26
+      }
+    },
+    {
+      "name": "dual-web jump/rearm swing, 1,0,2, toggle false",
+      "pass": true,
+      "detail": {
+        "jumpVelocity": 26
+      }
+    },
+    {
+      "name": "dual-web jump/rearm swing, 1,0,2, toggle true",
+      "pass": true,
+      "detail": {
+        "jumpVelocity": 26
+      }
+    },
+    {
+      "name": "dual-web jump/rearm swing, 1,2,0, toggle false",
+      "pass": true,
+      "detail": {
+        "jumpVelocity": 26
+      }
+    },
+    {
+      "name": "dual-web jump/rearm swing, 1,2,0, toggle true",
+      "pass": true,
+      "detail": {
+        "jumpVelocity": 26
+      }
+    },
+    {
+      "name": "dual-web jump/rearm swing, 2,0,1, toggle false",
+      "pass": true,
+      "detail": {
+        "jumpVelocity": 26
+      }
+    },
+    {
+      "name": "dual-web jump/rearm swing, 2,0,1, toggle true",
+      "pass": true,
+      "detail": {
+        "jumpVelocity": 26
+      }
+    },
+    {
+      "name": "dual-web jump/rearm swing, 2,1,0, toggle false",
+      "pass": true,
+      "detail": {
+        "jumpVelocity": 26
+      }
+    },
+    {
+      "name": "dual-web jump/rearm swing, 2,1,0, toggle true",
+      "pass": true,
+      "detail": {
+        "jumpVelocity": 26
+      }
+    },
+    {
+      "name": "opposing direction mask 0",
+      "pass": true,
+      "detail": {
+        "velocity": [
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "name": "opposing direction mask 1",
+      "pass": true,
+      "detail": {
+        "velocity": [
+          -5.328585689218247e-16,
+          0,
+          4.351120415231737
+        ]
+      }
+    },
+    {
+      "name": "opposing direction mask 2",
+      "pass": true,
+      "detail": {
+        "velocity": [
+          5.328585689218247e-16,
+          0,
+          -4.351120415231737
+        ]
+      }
+    },
+    {
+      "name": "opposing direction mask 3",
+      "pass": true,
+      "detail": {
+        "velocity": [
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "name": "opposing direction mask 4",
+      "pass": true,
+      "detail": {
+        "velocity": [
+          4.351120415231737,
+          0,
+          5.328585689218247e-16
+        ]
+      }
+    },
+    {
+      "name": "opposing direction mask 5",
+      "pass": true,
+      "detail": {
+        "velocity": [
+          3.0767067513695867,
+          0,
+          3.0767067513695867
+        ]
+      }
+    },
+    {
+      "name": "opposing direction mask 6",
+      "pass": true,
+      "detail": {
+        "velocity": [
+          3.0767067513695867,
+          0,
+          -3.0767067513695867
+        ]
+      }
+    },
+    {
+      "name": "opposing direction mask 7",
+      "pass": true,
+      "detail": {
+        "velocity": [
+          4.351120415231737,
+          0,
+          5.328585689218247e-16
+        ]
+      }
+    },
+    {
+      "name": "opposing direction mask 8",
+      "pass": true,
+      "detail": {
+        "velocity": [
+          -4.351120415231737,
+          0,
+          -5.328585689218247e-16
+        ]
+      }
+    },
+    {
+      "name": "opposing direction mask 9",
+      "pass": true,
+      "detail": {
+        "velocity": [
+          -3.0767067513695867,
+          0,
+          3.0767067513695867
+        ]
+      }
+    },
+    {
+      "name": "opposing direction mask 10",
+      "pass": true,
+      "detail": {
+        "velocity": [
+          -3.0767067513695867,
+          0,
+          -3.0767067513695867
+        ]
+      }
+    },
+    {
+      "name": "opposing direction mask 11",
+      "pass": true,
+      "detail": {
+        "velocity": [
+          -4.351120415231737,
+          0,
+          -5.328585689218247e-16
+        ]
+      }
+    },
+    {
+      "name": "opposing direction mask 12",
+      "pass": true,
+      "detail": {
+        "velocity": [
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "name": "opposing direction mask 13",
+      "pass": true,
+      "detail": {
+        "velocity": [
+          -9.661428135813692e-16,
+          0,
+          4.351120415231737
+        ]
+      }
+    },
+    {
+      "name": "opposing direction mask 14",
+      "pass": true,
+      "detail": {
+        "velocity": [
+          4.830714067906846e-16,
+          0,
+          -4.351120415231737
+        ]
+      }
+    },
+    {
+      "name": "opposing direction mask 15",
+      "pass": true,
+      "detail": {
+        "velocity": [
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "name": "camera 24fps open close->close pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.9336828143729815
+      }
+    },
+    {
+      "name": "camera 24fps open close->close pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.25177350372779944
+      }
+    },
+    {
+      "name": "camera 24fps open close->close pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.5909669255873897
+      }
+    },
+    {
+      "name": "camera 24fps open close->follow pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.9336828143729815
+      }
+    },
+    {
+      "name": "camera 24fps open close->follow pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.25177350372779944
+      }
+    },
+    {
+      "name": "camera 24fps open close->follow pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.5909669255873897
+      }
+    },
+    {
+      "name": "camera 24fps open close->swing pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.9336828143729815
+      }
+    },
+    {
+      "name": "camera 24fps open close->swing pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.25177350372779944
+      }
+    },
+    {
+      "name": "camera 24fps open close->swing pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.5909669255873897
+      }
+    },
+    {
+      "name": "camera 24fps open follow->close pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.9810136862860694
+      }
+    },
+    {
+      "name": "camera 24fps open follow->close pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.23871954022090291
+      }
+    },
+    {
+      "name": "camera 24fps open follow->close pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.6141247976467524
+      }
+    },
+    {
+      "name": "camera 24fps open follow->follow pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.9810136862860694
+      }
+    },
+    {
+      "name": "camera 24fps open follow->follow pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.23871954022090291
+      }
+    },
+    {
+      "name": "camera 24fps open follow->follow pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.6141247976467524
+      }
+    },
+    {
+      "name": "camera 24fps open follow->swing pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.9810136862860694
+      }
+    },
+    {
+      "name": "camera 24fps open follow->swing pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.23871954022090291
+      }
+    },
+    {
+      "name": "camera 24fps open follow->swing pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.6141247976467524
+      }
+    },
+    {
+      "name": "camera 24fps open swing->close pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.9914830870036307
+      }
+    },
+    {
+      "name": "camera 24fps open swing->close pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.24700123219367978
+      }
+    },
+    {
+      "name": "camera 24fps open swing->close pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.6221349250298015
+      }
+    },
+    {
+      "name": "camera 24fps open swing->follow pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.9914830870036307
+      }
+    },
+    {
+      "name": "camera 24fps open swing->follow pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.24700123219367978
+      }
+    },
+    {
+      "name": "camera 24fps open swing->follow pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.6221349250298015
+      }
+    },
+    {
+      "name": "camera 24fps open swing->swing pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.9914830870036307
+      }
+    },
+    {
+      "name": "camera 24fps open swing->swing pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.24700123219367978
+      }
+    },
+    {
+      "name": "camera 24fps open swing->swing pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.6221349250298015
+      }
+    },
+    {
+      "name": "camera 24fps wall close->close pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.9336828143729815
+      }
+    },
+    {
+      "name": "camera 24fps wall close->close pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.25177350372779944
+      }
+    },
+    {
+      "name": "camera 24fps wall close->close pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.5909669255873897
+      }
+    },
+    {
+      "name": "camera 24fps wall close->follow pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.9336828143729815
+      }
+    },
+    {
+      "name": "camera 24fps wall close->follow pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.25177350372779944
+      }
+    },
+    {
+      "name": "camera 24fps wall close->follow pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.5909669255873897
+      }
+    },
+    {
+      "name": "camera 24fps wall close->swing pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.9336828143729815
+      }
+    },
+    {
+      "name": "camera 24fps wall close->swing pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.25177350372779944
+      }
+    },
+    {
+      "name": "camera 24fps wall close->swing pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.5909669255873897
+      }
+    },
+    {
+      "name": "camera 24fps wall follow->close pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.9810136862860694
+      }
+    },
+    {
+      "name": "camera 24fps wall follow->close pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.23871954022090291
+      }
+    },
+    {
+      "name": "camera 24fps wall follow->close pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.6141247976467524
+      }
+    },
+    {
+      "name": "camera 24fps wall follow->follow pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.9810136862860694
+      }
+    },
+    {
+      "name": "camera 24fps wall follow->follow pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.23871954022090291
+      }
+    },
+    {
+      "name": "camera 24fps wall follow->follow pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.6141247976467524
+      }
+    },
+    {
+      "name": "camera 24fps wall follow->swing pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.9810136862860694
+      }
+    },
+    {
+      "name": "camera 24fps wall follow->swing pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.23871954022090291
+      }
+    },
+    {
+      "name": "camera 24fps wall follow->swing pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.6141247976467524
+      }
+    },
+    {
+      "name": "camera 24fps wall swing->close pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.9914830870036307
+      }
+    },
+    {
+      "name": "camera 24fps wall swing->close pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.24700123219367978
+      }
+    },
+    {
+      "name": "camera 24fps wall swing->close pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.6221349250298015
+      }
+    },
+    {
+      "name": "camera 24fps wall swing->follow pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.9914830870036307
+      }
+    },
+    {
+      "name": "camera 24fps wall swing->follow pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.24700123219367978
+      }
+    },
+    {
+      "name": "camera 24fps wall swing->follow pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.6221349250298015
+      }
+    },
+    {
+      "name": "camera 24fps wall swing->swing pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.9914830870036307
+      }
+    },
+    {
+      "name": "camera 24fps wall swing->swing pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.24700123219367978
+      }
+    },
+    {
+      "name": "camera 24fps wall swing->swing pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.6221349250298015
+      }
+    },
+    {
+      "name": "camera 24fps ceiling close->close pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.9336828143729815
+      }
+    },
+    {
+      "name": "camera 24fps ceiling close->close pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.25177350372779944
+      }
+    },
+    {
+      "name": "camera 24fps ceiling close->close pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.7736142651757205
+      }
+    },
+    {
+      "name": "camera 24fps ceiling close->follow pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.9336828143729815
+      }
+    },
+    {
+      "name": "camera 24fps ceiling close->follow pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.25177350372779944
+      }
+    },
+    {
+      "name": "camera 24fps ceiling close->follow pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.7736142651757205
+      }
+    },
+    {
+      "name": "camera 24fps ceiling close->swing pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.9336828143729815
+      }
+    },
+    {
+      "name": "camera 24fps ceiling close->swing pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.25177350372779944
+      }
+    },
+    {
+      "name": "camera 24fps ceiling close->swing pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.7736142651757205
+      }
+    },
+    {
+      "name": "camera 24fps ceiling follow->close pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.9810136862860694
+      }
+    },
+    {
+      "name": "camera 24fps ceiling follow->close pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.23871954022090291
+      }
+    },
+    {
+      "name": "camera 24fps ceiling follow->close pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.7736142651757205
+      }
+    },
+    {
+      "name": "camera 24fps ceiling follow->follow pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.9810136862860694
+      }
+    },
+    {
+      "name": "camera 24fps ceiling follow->follow pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.23871954022090291
+      }
+    },
+    {
+      "name": "camera 24fps ceiling follow->follow pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.7736142651757205
+      }
+    },
+    {
+      "name": "camera 24fps ceiling follow->swing pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.9810136862860694
+      }
+    },
+    {
+      "name": "camera 24fps ceiling follow->swing pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.23871954022090291
+      }
+    },
+    {
+      "name": "camera 24fps ceiling follow->swing pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.7736142651757205
+      }
+    },
+    {
+      "name": "camera 24fps ceiling swing->close pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.9914830870036307
+      }
+    },
+    {
+      "name": "camera 24fps ceiling swing->close pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.24700123219367978
+      }
+    },
+    {
+      "name": "camera 24fps ceiling swing->close pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.7736142651757205
+      }
+    },
+    {
+      "name": "camera 24fps ceiling swing->follow pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.9914830870036307
+      }
+    },
+    {
+      "name": "camera 24fps ceiling swing->follow pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.24700123219367978
+      }
+    },
+    {
+      "name": "camera 24fps ceiling swing->follow pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.7736142651757205
+      }
+    },
+    {
+      "name": "camera 24fps ceiling swing->swing pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.9914830870036307
+      }
+    },
+    {
+      "name": "camera 24fps ceiling swing->swing pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.24700123219367978
+      }
+    },
+    {
+      "name": "camera 24fps ceiling swing->swing pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.7736142651757205
+      }
+    },
+    {
+      "name": "camera 24fps corner close->close pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.42307823859758703
+      }
+    },
+    {
+      "name": "camera 24fps corner close->close pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.09975015186918748
+      }
+    },
+    {
+      "name": "camera 24fps corner close->close pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.25944286865701555
+      }
+    },
+    {
+      "name": "camera 24fps corner close->follow pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.42307823859758703
+      }
+    },
+    {
+      "name": "camera 24fps corner close->follow pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.09975015186918748
+      }
+    },
+    {
+      "name": "camera 24fps corner close->follow pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.25944286865701555
+      }
+    },
+    {
+      "name": "camera 24fps corner close->swing pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.42307823859758703
+      }
+    },
+    {
+      "name": "camera 24fps corner close->swing pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.09975015186918748
+      }
+    },
+    {
+      "name": "camera 24fps corner close->swing pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.25944286865701555
+      }
+    },
+    {
+      "name": "camera 24fps corner follow->close pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.42307823859758703
+      }
+    },
+    {
+      "name": "camera 24fps corner follow->close pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.09975015186918748
+      }
+    },
+    {
+      "name": "camera 24fps corner follow->close pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.25944286865701555
+      }
+    },
+    {
+      "name": "camera 24fps corner follow->follow pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.42307823859758703
+      }
+    },
+    {
+      "name": "camera 24fps corner follow->follow pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.09975015186918748
+      }
+    },
+    {
+      "name": "camera 24fps corner follow->follow pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.25944286865701555
+      }
+    },
+    {
+      "name": "camera 24fps corner follow->swing pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.42307823859758703
+      }
+    },
+    {
+      "name": "camera 24fps corner follow->swing pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.09975015186918748
+      }
+    },
+    {
+      "name": "camera 24fps corner follow->swing pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.25944286865701555
+      }
+    },
+    {
+      "name": "camera 24fps corner swing->close pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.42307823859758703
+      }
+    },
+    {
+      "name": "camera 24fps corner swing->close pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.09975015186918748
+      }
+    },
+    {
+      "name": "camera 24fps corner swing->close pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.25944286865701555
+      }
+    },
+    {
+      "name": "camera 24fps corner swing->follow pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.42307823859758703
+      }
+    },
+    {
+      "name": "camera 24fps corner swing->follow pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.09975015186918748
+      }
+    },
+    {
+      "name": "camera 24fps corner swing->follow pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.25944286865701555
+      }
+    },
+    {
+      "name": "camera 24fps corner swing->swing pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.42307823859758703
+      }
+    },
+    {
+      "name": "camera 24fps corner swing->swing pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.09975015186918748
+      }
+    },
+    {
+      "name": "camera 24fps corner swing->swing pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 11,
+        "maxObstruction": 0,
+        "maxStep": 0.25944286865701555
+      }
+    },
+    {
+      "name": "camera 30fps open close->close pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.9107909553120928
+      }
+    },
+    {
+      "name": "camera 30fps open close->close pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.23712023621162867
+      }
+    },
+    {
+      "name": "camera 30fps open close->close pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.5741806209626676
+      }
+    },
+    {
+      "name": "camera 30fps open close->follow pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.9107909553120928
+      }
+    },
+    {
+      "name": "camera 30fps open close->follow pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.23712023621162867
+      }
+    },
+    {
+      "name": "camera 30fps open close->follow pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.5741806209626676
+      }
+    },
+    {
+      "name": "camera 30fps open close->swing pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.9107909553120928
+      }
+    },
+    {
+      "name": "camera 30fps open close->swing pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.23712023621162867
+      }
+    },
+    {
+      "name": "camera 30fps open close->swing pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.5741806209626676
+      }
+    },
+    {
+      "name": "camera 30fps open follow->close pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.9466758205696938
+      }
+    },
+    {
+      "name": "camera 30fps open follow->close pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.2282551171475021
+      }
+    },
+    {
+      "name": "camera 30fps open follow->close pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.5921039172003564
+      }
+    },
+    {
+      "name": "camera 30fps open follow->follow pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.9466758205696938
+      }
+    },
+    {
+      "name": "camera 30fps open follow->follow pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.2282551171475021
+      }
+    },
+    {
+      "name": "camera 30fps open follow->follow pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.5921039172003564
+      }
+    },
+    {
+      "name": "camera 30fps open follow->swing pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.9466758205696938
+      }
+    },
+    {
+      "name": "camera 30fps open follow->swing pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.2282551171475021
+      }
+    },
+    {
+      "name": "camera 30fps open follow->swing pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.5921039172003564
+      }
+    },
+    {
+      "name": "camera 30fps open swing->close pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.9531131247827795
+      }
+    },
+    {
+      "name": "camera 30fps open swing->close pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.23221355886671902
+      }
+    },
+    {
+      "name": "camera 30fps open swing->close pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.5967326141293473
+      }
+    },
+    {
+      "name": "camera 30fps open swing->follow pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.9531131247827795
+      }
+    },
+    {
+      "name": "camera 30fps open swing->follow pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.23221355886671902
+      }
+    },
+    {
+      "name": "camera 30fps open swing->follow pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.5967326141293473
+      }
+    },
+    {
+      "name": "camera 30fps open swing->swing pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.9531131247827795
+      }
+    },
+    {
+      "name": "camera 30fps open swing->swing pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.23221355886671902
+      }
+    },
+    {
+      "name": "camera 30fps open swing->swing pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.5967326141293473
+      }
+    },
+    {
+      "name": "camera 30fps wall close->close pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.9107909553120928
+      }
+    },
+    {
+      "name": "camera 30fps wall close->close pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.23712023621162867
+      }
+    },
+    {
+      "name": "camera 30fps wall close->close pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.5741806209626676
+      }
+    },
+    {
+      "name": "camera 30fps wall close->follow pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.9107909553120928
+      }
+    },
+    {
+      "name": "camera 30fps wall close->follow pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.23712023621162867
+      }
+    },
+    {
+      "name": "camera 30fps wall close->follow pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.5741806209626676
+      }
+    },
+    {
+      "name": "camera 30fps wall close->swing pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.9107909553120928
+      }
+    },
+    {
+      "name": "camera 30fps wall close->swing pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.23712023621162867
+      }
+    },
+    {
+      "name": "camera 30fps wall close->swing pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.5741806209626676
+      }
+    },
+    {
+      "name": "camera 30fps wall follow->close pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.9466758205696938
+      }
+    },
+    {
+      "name": "camera 30fps wall follow->close pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.2282551171475021
+      }
+    },
+    {
+      "name": "camera 30fps wall follow->close pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.5921039172003564
+      }
+    },
+    {
+      "name": "camera 30fps wall follow->follow pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.9466758205696938
+      }
+    },
+    {
+      "name": "camera 30fps wall follow->follow pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.2282551171475021
+      }
+    },
+    {
+      "name": "camera 30fps wall follow->follow pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.5921039172003564
+      }
+    },
+    {
+      "name": "camera 30fps wall follow->swing pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.9466758205696938
+      }
+    },
+    {
+      "name": "camera 30fps wall follow->swing pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.2282551171475021
+      }
+    },
+    {
+      "name": "camera 30fps wall follow->swing pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.5921039172003564
+      }
+    },
+    {
+      "name": "camera 30fps wall swing->close pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.9531131247827795
+      }
+    },
+    {
+      "name": "camera 30fps wall swing->close pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.23221355886671902
+      }
+    },
+    {
+      "name": "camera 30fps wall swing->close pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.5967326141293473
+      }
+    },
+    {
+      "name": "camera 30fps wall swing->follow pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.9531131247827795
+      }
+    },
+    {
+      "name": "camera 30fps wall swing->follow pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.23221355886671902
+      }
+    },
+    {
+      "name": "camera 30fps wall swing->follow pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.5967326141293473
+      }
+    },
+    {
+      "name": "camera 30fps wall swing->swing pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.9531131247827795
+      }
+    },
+    {
+      "name": "camera 30fps wall swing->swing pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.23221355886671902
+      }
+    },
+    {
+      "name": "camera 30fps wall swing->swing pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.5967326141293473
+      }
+    },
+    {
+      "name": "camera 30fps ceiling close->close pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.9107909553120928
+      }
+    },
+    {
+      "name": "camera 30fps ceiling close->close pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.23712023621162867
+      }
+    },
+    {
+      "name": "camera 30fps ceiling close->close pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.7508942119814536
+      }
+    },
+    {
+      "name": "camera 30fps ceiling close->follow pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.9107909553120928
+      }
+    },
+    {
+      "name": "camera 30fps ceiling close->follow pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.23712023621162867
+      }
+    },
+    {
+      "name": "camera 30fps ceiling close->follow pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.7508942119814536
+      }
+    },
+    {
+      "name": "camera 30fps ceiling close->swing pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.9107909553120928
+      }
+    },
+    {
+      "name": "camera 30fps ceiling close->swing pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.23712023621162867
+      }
+    },
+    {
+      "name": "camera 30fps ceiling close->swing pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.7508942119814536
+      }
+    },
+    {
+      "name": "camera 30fps ceiling follow->close pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.9466758205696938
+      }
+    },
+    {
+      "name": "camera 30fps ceiling follow->close pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.2282551171475021
+      }
+    },
+    {
+      "name": "camera 30fps ceiling follow->close pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.7508942119814536
+      }
+    },
+    {
+      "name": "camera 30fps ceiling follow->follow pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.9466758205696938
+      }
+    },
+    {
+      "name": "camera 30fps ceiling follow->follow pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.2282551171475021
+      }
+    },
+    {
+      "name": "camera 30fps ceiling follow->follow pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.7508942119814536
+      }
+    },
+    {
+      "name": "camera 30fps ceiling follow->swing pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.9466758205696938
+      }
+    },
+    {
+      "name": "camera 30fps ceiling follow->swing pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.2282551171475021
+      }
+    },
+    {
+      "name": "camera 30fps ceiling follow->swing pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.7508942119814536
+      }
+    },
+    {
+      "name": "camera 30fps ceiling swing->close pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.9531131247827795
+      }
+    },
+    {
+      "name": "camera 30fps ceiling swing->close pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.23221355886671902
+      }
+    },
+    {
+      "name": "camera 30fps ceiling swing->close pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.7508942119814536
+      }
+    },
+    {
+      "name": "camera 30fps ceiling swing->follow pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.9531131247827795
+      }
+    },
+    {
+      "name": "camera 30fps ceiling swing->follow pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.23221355886671902
+      }
+    },
+    {
+      "name": "camera 30fps ceiling swing->follow pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.7508942119814536
+      }
+    },
+    {
+      "name": "camera 30fps ceiling swing->swing pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.9531131247827795
+      }
+    },
+    {
+      "name": "camera 30fps ceiling swing->swing pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.23221355886671902
+      }
+    },
+    {
+      "name": "camera 30fps ceiling swing->swing pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.7508942119814536
+      }
+    },
+    {
+      "name": "camera 30fps corner close->close pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.37797331297708986
+      }
+    },
+    {
+      "name": "camera 30fps corner close->close pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.08936769813287274
+      }
+    },
+    {
+      "name": "camera 30fps corner close->close pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.23270019694906627
+      }
+    },
+    {
+      "name": "camera 30fps corner close->follow pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.37797331297708986
+      }
+    },
+    {
+      "name": "camera 30fps corner close->follow pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.08936769813287274
+      }
+    },
+    {
+      "name": "camera 30fps corner close->follow pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.23270019694906627
+      }
+    },
+    {
+      "name": "camera 30fps corner close->swing pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.37797331297708986
+      }
+    },
+    {
+      "name": "camera 30fps corner close->swing pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.08936769813287274
+      }
+    },
+    {
+      "name": "camera 30fps corner close->swing pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.23270019694906627
+      }
+    },
+    {
+      "name": "camera 30fps corner follow->close pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.37797331297708986
+      }
+    },
+    {
+      "name": "camera 30fps corner follow->close pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.08936769813287274
+      }
+    },
+    {
+      "name": "camera 30fps corner follow->close pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.23270019694906627
+      }
+    },
+    {
+      "name": "camera 30fps corner follow->follow pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.37797331297708986
+      }
+    },
+    {
+      "name": "camera 30fps corner follow->follow pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.08936769813287274
+      }
+    },
+    {
+      "name": "camera 30fps corner follow->follow pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.23270019694906627
+      }
+    },
+    {
+      "name": "camera 30fps corner follow->swing pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.37797331297708986
+      }
+    },
+    {
+      "name": "camera 30fps corner follow->swing pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.08936769813287274
+      }
+    },
+    {
+      "name": "camera 30fps corner follow->swing pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.23270019694906627
+      }
+    },
+    {
+      "name": "camera 30fps corner swing->close pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.37797331297708986
+      }
+    },
+    {
+      "name": "camera 30fps corner swing->close pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.08936769813287274
+      }
+    },
+    {
+      "name": "camera 30fps corner swing->close pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.23270019694906627
+      }
+    },
+    {
+      "name": "camera 30fps corner swing->follow pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.37797331297708986
+      }
+    },
+    {
+      "name": "camera 30fps corner swing->follow pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.08936769813287274
+      }
+    },
+    {
+      "name": "camera 30fps corner swing->follow pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.23270019694906627
+      }
+    },
+    {
+      "name": "camera 30fps corner swing->swing pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.37797331297708986
+      }
+    },
+    {
+      "name": "camera 30fps corner swing->swing pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.08936769813287274
+      }
+    },
+    {
+      "name": "camera 30fps corner swing->swing pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 14,
+        "maxObstruction": 0,
+        "maxStep": 0.23270019694906627
+      }
+    },
+    {
+      "name": "camera 60fps open close->close pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.6820043037194987
+      }
+    },
+    {
+      "name": "camera 60fps open close->close pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.16741695195697415
+      }
+    },
+    {
+      "name": "camera 60fps open close->close pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.4273132089047695
+      }
+    },
+    {
+      "name": "camera 60fps open close->follow pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.6820043037194987
+      }
+    },
+    {
+      "name": "camera 60fps open close->follow pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.16741695195697415
+      }
+    },
+    {
+      "name": "camera 60fps open close->follow pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.4273132089047695
+      }
+    },
+    {
+      "name": "camera 60fps open close->swing pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.6820043037194987
+      }
+    },
+    {
+      "name": "camera 60fps open close->swing pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.16741695195697415
+      }
+    },
+    {
+      "name": "camera 60fps open close->swing pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.4273132089047695
+      }
+    },
+    {
+      "name": "camera 60fps open follow->close pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.6950094903208867
+      }
+    },
+    {
+      "name": "camera 60fps open follow->close pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.1666150918842637
+      }
+    },
+    {
+      "name": "camera 60fps open follow->close pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.43446081830180855
+      }
+    },
+    {
+      "name": "camera 60fps open follow->follow pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.6950094903208867
+      }
+    },
+    {
+      "name": "camera 60fps open follow->follow pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.1666150918842637
+      }
+    },
+    {
+      "name": "camera 60fps open follow->follow pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.43446081830180855
+      }
+    },
+    {
+      "name": "camera 60fps open follow->swing pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.6950094903208867
+      }
+    },
+    {
+      "name": "camera 60fps open follow->swing pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.1666150918842637
+      }
+    },
+    {
+      "name": "camera 60fps open follow->swing pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.43446081830180855
+      }
+    },
+    {
+      "name": "camera 60fps open swing->close pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.696201770332986
+      }
+    },
+    {
+      "name": "camera 60fps open swing->close pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.16702093035717905
+      }
+    },
+    {
+      "name": "camera 60fps open swing->close pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.4352358894445618
+      }
+    },
+    {
+      "name": "camera 60fps open swing->follow pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.696201770332986
+      }
+    },
+    {
+      "name": "camera 60fps open swing->follow pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.16702093035717905
+      }
+    },
+    {
+      "name": "camera 60fps open swing->follow pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.4352358894445618
+      }
+    },
+    {
+      "name": "camera 60fps open swing->swing pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.696201770332986
+      }
+    },
+    {
+      "name": "camera 60fps open swing->swing pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.16702093035717905
+      }
+    },
+    {
+      "name": "camera 60fps open swing->swing pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.4352358894445618
+      }
+    },
+    {
+      "name": "camera 60fps wall close->close pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.6820043037194987
+      }
+    },
+    {
+      "name": "camera 60fps wall close->close pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.16741695195697415
+      }
+    },
+    {
+      "name": "camera 60fps wall close->close pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.4273132089047695
+      }
+    },
+    {
+      "name": "camera 60fps wall close->follow pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.6820043037194987
+      }
+    },
+    {
+      "name": "camera 60fps wall close->follow pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.16741695195697415
+      }
+    },
+    {
+      "name": "camera 60fps wall close->follow pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.4273132089047695
+      }
+    },
+    {
+      "name": "camera 60fps wall close->swing pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.6820043037194987
+      }
+    },
+    {
+      "name": "camera 60fps wall close->swing pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.16741695195697415
+      }
+    },
+    {
+      "name": "camera 60fps wall close->swing pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.4273132089047695
+      }
+    },
+    {
+      "name": "camera 60fps wall follow->close pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.6950094903208867
+      }
+    },
+    {
+      "name": "camera 60fps wall follow->close pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.1666150918842637
+      }
+    },
+    {
+      "name": "camera 60fps wall follow->close pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.43446081830180855
+      }
+    },
+    {
+      "name": "camera 60fps wall follow->follow pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.6950094903208867
+      }
+    },
+    {
+      "name": "camera 60fps wall follow->follow pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.1666150918842637
+      }
+    },
+    {
+      "name": "camera 60fps wall follow->follow pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.43446081830180855
+      }
+    },
+    {
+      "name": "camera 60fps wall follow->swing pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.6950094903208867
+      }
+    },
+    {
+      "name": "camera 60fps wall follow->swing pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.1666150918842637
+      }
+    },
+    {
+      "name": "camera 60fps wall follow->swing pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.43446081830180855
+      }
+    },
+    {
+      "name": "camera 60fps wall swing->close pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.696201770332986
+      }
+    },
+    {
+      "name": "camera 60fps wall swing->close pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.16702093035717905
+      }
+    },
+    {
+      "name": "camera 60fps wall swing->close pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.4352358894445618
+      }
+    },
+    {
+      "name": "camera 60fps wall swing->follow pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.696201770332986
+      }
+    },
+    {
+      "name": "camera 60fps wall swing->follow pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.16702093035717905
+      }
+    },
+    {
+      "name": "camera 60fps wall swing->follow pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.4352358894445618
+      }
+    },
+    {
+      "name": "camera 60fps wall swing->swing pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.696201770332986
+      }
+    },
+    {
+      "name": "camera 60fps wall swing->swing pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.16702093035717905
+      }
+    },
+    {
+      "name": "camera 60fps wall swing->swing pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.4352358894445618
+      }
+    },
+    {
+      "name": "camera 60fps ceiling close->close pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.6820043037194987
+      }
+    },
+    {
+      "name": "camera 60fps ceiling close->close pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.16741695195697415
+      }
+    },
+    {
+      "name": "camera 60fps ceiling close->close pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.5551411809651905
+      }
+    },
+    {
+      "name": "camera 60fps ceiling close->follow pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.6820043037194987
+      }
+    },
+    {
+      "name": "camera 60fps ceiling close->follow pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.16741695195697415
+      }
+    },
+    {
+      "name": "camera 60fps ceiling close->follow pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.5551411809651905
+      }
+    },
+    {
+      "name": "camera 60fps ceiling close->swing pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.6820043037194987
+      }
+    },
+    {
+      "name": "camera 60fps ceiling close->swing pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.16741695195697415
+      }
+    },
+    {
+      "name": "camera 60fps ceiling close->swing pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.5551411809651905
+      }
+    },
+    {
+      "name": "camera 60fps ceiling follow->close pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.6950094903208867
+      }
+    },
+    {
+      "name": "camera 60fps ceiling follow->close pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.1666150918842637
+      }
+    },
+    {
+      "name": "camera 60fps ceiling follow->close pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.5551411809651905
+      }
+    },
+    {
+      "name": "camera 60fps ceiling follow->follow pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.6950094903208867
+      }
+    },
+    {
+      "name": "camera 60fps ceiling follow->follow pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.1666150918842637
+      }
+    },
+    {
+      "name": "camera 60fps ceiling follow->follow pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.5551411809651905
+      }
+    },
+    {
+      "name": "camera 60fps ceiling follow->swing pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.6950094903208867
+      }
+    },
+    {
+      "name": "camera 60fps ceiling follow->swing pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.1666150918842637
+      }
+    },
+    {
+      "name": "camera 60fps ceiling follow->swing pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.5551411809651905
+      }
+    },
+    {
+      "name": "camera 60fps ceiling swing->close pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.696201770332986
+      }
+    },
+    {
+      "name": "camera 60fps ceiling swing->close pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.16702093035717905
+      }
+    },
+    {
+      "name": "camera 60fps ceiling swing->close pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.5551411809651905
+      }
+    },
+    {
+      "name": "camera 60fps ceiling swing->follow pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.696201770332986
+      }
+    },
+    {
+      "name": "camera 60fps ceiling swing->follow pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.16702093035717905
+      }
+    },
+    {
+      "name": "camera 60fps ceiling swing->follow pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.5551411809651905
+      }
+    },
+    {
+      "name": "camera 60fps ceiling swing->swing pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.696201770332986
+      }
+    },
+    {
+      "name": "camera 60fps ceiling swing->swing pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.16702093035717905
+      }
+    },
+    {
+      "name": "camera 60fps ceiling swing->swing pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.5551411809651905
+      }
+    },
+    {
+      "name": "camera 60fps corner close->close pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.23391383728032855
+      }
+    },
+    {
+      "name": "camera 60fps corner close->close pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.05567288547806283
+      }
+    },
+    {
+      "name": "camera 60fps corner close->close pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.14515494442635124
+      }
+    },
+    {
+      "name": "camera 60fps corner close->follow pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.23391383728032855
+      }
+    },
+    {
+      "name": "camera 60fps corner close->follow pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.05567288547806283
+      }
+    },
+    {
+      "name": "camera 60fps corner close->follow pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.14515494442635124
+      }
+    },
+    {
+      "name": "camera 60fps corner close->swing pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.23391383728032855
+      }
+    },
+    {
+      "name": "camera 60fps corner close->swing pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.05567288547806283
+      }
+    },
+    {
+      "name": "camera 60fps corner close->swing pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.14515494442635124
+      }
+    },
+    {
+      "name": "camera 60fps corner follow->close pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.23391383728032855
+      }
+    },
+    {
+      "name": "camera 60fps corner follow->close pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.05567288547806283
+      }
+    },
+    {
+      "name": "camera 60fps corner follow->close pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.14515494442635124
+      }
+    },
+    {
+      "name": "camera 60fps corner follow->follow pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.23391383728032855
+      }
+    },
+    {
+      "name": "camera 60fps corner follow->follow pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.05567288547806283
+      }
+    },
+    {
+      "name": "camera 60fps corner follow->follow pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.14515494442635124
+      }
+    },
+    {
+      "name": "camera 60fps corner follow->swing pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.23391383728032855
+      }
+    },
+    {
+      "name": "camera 60fps corner follow->swing pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.05567288547806283
+      }
+    },
+    {
+      "name": "camera 60fps corner follow->swing pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.14515494442635124
+      }
+    },
+    {
+      "name": "camera 60fps corner swing->close pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.23391383728032855
+      }
+    },
+    {
+      "name": "camera 60fps corner swing->close pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.05567288547806283
+      }
+    },
+    {
+      "name": "camera 60fps corner swing->close pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.14515494442635124
+      }
+    },
+    {
+      "name": "camera 60fps corner swing->follow pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.23391383728032855
+      }
+    },
+    {
+      "name": "camera 60fps corner swing->follow pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.05567288547806283
+      }
+    },
+    {
+      "name": "camera 60fps corner swing->follow pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.14515494442635124
+      }
+    },
+    {
+      "name": "camera 60fps corner swing->swing pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.23391383728032855
+      }
+    },
+    {
+      "name": "camera 60fps corner swing->swing pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.05567288547806283
+      }
+    },
+    {
+      "name": "camera 60fps corner swing->swing pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 27,
+        "maxObstruction": 0,
+        "maxStep": 0.14515494442635124
+      }
+    },
+    {
+      "name": "camera 144fps open close->close pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.3613080758256761
+      }
+    },
+    {
+      "name": "camera 144fps open close->close pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.08696755307561257
+      }
+    },
+    {
+      "name": "camera 144fps open close->close pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.22594637810001508
+      }
+    },
+    {
+      "name": "camera 144fps open close->follow pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.3613080758256761
+      }
+    },
+    {
+      "name": "camera 144fps open close->follow pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.08696755307561257
+      }
+    },
+    {
+      "name": "camera 144fps open close->follow pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.22594637810001508
+      }
+    },
+    {
+      "name": "camera 144fps open close->swing pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.3613080758256761
+      }
+    },
+    {
+      "name": "camera 144fps open close->swing pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.08696755307561257
+      }
+    },
+    {
+      "name": "camera 144fps open close->swing pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.22594637810001508
+      }
+    },
+    {
+      "name": "camera 144fps open follow->close pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.3641576393888709
+      }
+    },
+    {
+      "name": "camera 144fps open follow->close pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.08726616636731359
+      }
+    },
+    {
+      "name": "camera 144fps open follow->close pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.2276322106981748
+      }
+    },
+    {
+      "name": "camera 144fps open follow->follow pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.3641576393888709
+      }
+    },
+    {
+      "name": "camera 144fps open follow->follow pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.08726616636731359
+      }
+    },
+    {
+      "name": "camera 144fps open follow->follow pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.2276322106981748
+      }
+    },
+    {
+      "name": "camera 144fps open follow->swing pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.3641576393888709
+      }
+    },
+    {
+      "name": "camera 144fps open follow->swing pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.08726616636731359
+      }
+    },
+    {
+      "name": "camera 144fps open follow->swing pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.2276322106981748
+      }
+    },
+    {
+      "name": "camera 144fps open swing->close pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.3642683430334202
+      }
+    },
+    {
+      "name": "camera 144fps open swing->close pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.08729466184990888
+      }
+    },
+    {
+      "name": "camera 144fps open swing->close pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.2277018980516707
+      }
+    },
+    {
+      "name": "camera 144fps open swing->follow pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.3642683430334202
+      }
+    },
+    {
+      "name": "camera 144fps open swing->follow pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.08729466184990888
+      }
+    },
+    {
+      "name": "camera 144fps open swing->follow pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.2277018980516707
+      }
+    },
+    {
+      "name": "camera 144fps open swing->swing pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.3642683430334202
+      }
+    },
+    {
+      "name": "camera 144fps open swing->swing pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.08729466184990888
+      }
+    },
+    {
+      "name": "camera 144fps open swing->swing pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.2277018980516707
+      }
+    },
+    {
+      "name": "camera 144fps wall close->close pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.3613080758256761
+      }
+    },
+    {
+      "name": "camera 144fps wall close->close pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.08696755307561257
+      }
+    },
+    {
+      "name": "camera 144fps wall close->close pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.22594637810001508
+      }
+    },
+    {
+      "name": "camera 144fps wall close->follow pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.3613080758256761
+      }
+    },
+    {
+      "name": "camera 144fps wall close->follow pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.08696755307561257
+      }
+    },
+    {
+      "name": "camera 144fps wall close->follow pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.22594637810001508
+      }
+    },
+    {
+      "name": "camera 144fps wall close->swing pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.3613080758256761
+      }
+    },
+    {
+      "name": "camera 144fps wall close->swing pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.08696755307561257
+      }
+    },
+    {
+      "name": "camera 144fps wall close->swing pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.22594637810001508
+      }
+    },
+    {
+      "name": "camera 144fps wall follow->close pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.3641576393888709
+      }
+    },
+    {
+      "name": "camera 144fps wall follow->close pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.08726616636731359
+      }
+    },
+    {
+      "name": "camera 144fps wall follow->close pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.2276322106981748
+      }
+    },
+    {
+      "name": "camera 144fps wall follow->follow pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.3641576393888709
+      }
+    },
+    {
+      "name": "camera 144fps wall follow->follow pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.08726616636731359
+      }
+    },
+    {
+      "name": "camera 144fps wall follow->follow pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.2276322106981748
+      }
+    },
+    {
+      "name": "camera 144fps wall follow->swing pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.3641576393888709
+      }
+    },
+    {
+      "name": "camera 144fps wall follow->swing pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.08726616636731359
+      }
+    },
+    {
+      "name": "camera 144fps wall follow->swing pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.2276322106981748
+      }
+    },
+    {
+      "name": "camera 144fps wall swing->close pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.3642683430334202
+      }
+    },
+    {
+      "name": "camera 144fps wall swing->close pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.08729466184990888
+      }
+    },
+    {
+      "name": "camera 144fps wall swing->close pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.2277018980516707
+      }
+    },
+    {
+      "name": "camera 144fps wall swing->follow pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.3642683430334202
+      }
+    },
+    {
+      "name": "camera 144fps wall swing->follow pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.08729466184990888
+      }
+    },
+    {
+      "name": "camera 144fps wall swing->follow pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.2277018980516707
+      }
+    },
+    {
+      "name": "camera 144fps wall swing->swing pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.3642683430334202
+      }
+    },
+    {
+      "name": "camera 144fps wall swing->swing pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.08729466184990888
+      }
+    },
+    {
+      "name": "camera 144fps wall swing->swing pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.2277018980516707
+      }
+    },
+    {
+      "name": "camera 144fps ceiling close->close pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.3613080758256761
+      }
+    },
+    {
+      "name": "camera 144fps ceiling close->close pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.08696755307561257
+      }
+    },
+    {
+      "name": "camera 144fps ceiling close->close pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.291381996678081
+      }
+    },
+    {
+      "name": "camera 144fps ceiling close->follow pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.3613080758256761
+      }
+    },
+    {
+      "name": "camera 144fps ceiling close->follow pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.08696755307561257
+      }
+    },
+    {
+      "name": "camera 144fps ceiling close->follow pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.291381996678081
+      }
+    },
+    {
+      "name": "camera 144fps ceiling close->swing pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.3613080758256761
+      }
+    },
+    {
+      "name": "camera 144fps ceiling close->swing pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.08696755307561257
+      }
+    },
+    {
+      "name": "camera 144fps ceiling close->swing pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.291381996678081
+      }
+    },
+    {
+      "name": "camera 144fps ceiling follow->close pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.3641576393888709
+      }
+    },
+    {
+      "name": "camera 144fps ceiling follow->close pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.08726616636731359
+      }
+    },
+    {
+      "name": "camera 144fps ceiling follow->close pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.291381996678081
+      }
+    },
+    {
+      "name": "camera 144fps ceiling follow->follow pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.3641576393888709
+      }
+    },
+    {
+      "name": "camera 144fps ceiling follow->follow pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.08726616636731359
+      }
+    },
+    {
+      "name": "camera 144fps ceiling follow->follow pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.291381996678081
+      }
+    },
+    {
+      "name": "camera 144fps ceiling follow->swing pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.3641576393888709
+      }
+    },
+    {
+      "name": "camera 144fps ceiling follow->swing pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.08726616636731359
+      }
+    },
+    {
+      "name": "camera 144fps ceiling follow->swing pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.291381996678081
+      }
+    },
+    {
+      "name": "camera 144fps ceiling swing->close pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.3642683430334202
+      }
+    },
+    {
+      "name": "camera 144fps ceiling swing->close pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.08729466184990888
+      }
+    },
+    {
+      "name": "camera 144fps ceiling swing->close pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.291381996678081
+      }
+    },
+    {
+      "name": "camera 144fps ceiling swing->follow pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.3642683430334202
+      }
+    },
+    {
+      "name": "camera 144fps ceiling swing->follow pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.08729466184990888
+      }
+    },
+    {
+      "name": "camera 144fps ceiling swing->follow pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.291381996678081
+      }
+    },
+    {
+      "name": "camera 144fps ceiling swing->swing pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.3642683430334202
+      }
+    },
+    {
+      "name": "camera 144fps ceiling swing->swing pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.08729466184990888
+      }
+    },
+    {
+      "name": "camera 144fps ceiling swing->swing pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.291381996678081
+      }
+    },
+    {
+      "name": "camera 144fps corner close->close pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.10992230811921042
+      }
+    },
+    {
+      "name": "camera 144fps corner close->close pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.026267149962942726
+      }
+    },
+    {
+      "name": "camera 144fps corner close->close pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.06851085227110709
+      }
+    },
+    {
+      "name": "camera 144fps corner close->follow pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.10992230811921042
+      }
+    },
+    {
+      "name": "camera 144fps corner close->follow pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.026267149962942726
+      }
+    },
+    {
+      "name": "camera 144fps corner close->follow pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.06851085227110709
+      }
+    },
+    {
+      "name": "camera 144fps corner close->swing pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.10992230811921042
+      }
+    },
+    {
+      "name": "camera 144fps corner close->swing pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.026267149962942726
+      }
+    },
+    {
+      "name": "camera 144fps corner close->swing pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.06851085227110709
+      }
+    },
+    {
+      "name": "camera 144fps corner follow->close pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.10992230811921042
+      }
+    },
+    {
+      "name": "camera 144fps corner follow->close pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.026267149962942726
+      }
+    },
+    {
+      "name": "camera 144fps corner follow->close pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.06851085227110709
+      }
+    },
+    {
+      "name": "camera 144fps corner follow->follow pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.10992230811921042
+      }
+    },
+    {
+      "name": "camera 144fps corner follow->follow pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.026267149962942726
+      }
+    },
+    {
+      "name": "camera 144fps corner follow->follow pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.06851085227110709
+      }
+    },
+    {
+      "name": "camera 144fps corner follow->swing pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.10992230811921042
+      }
+    },
+    {
+      "name": "camera 144fps corner follow->swing pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.026267149962942726
+      }
+    },
+    {
+      "name": "camera 144fps corner follow->swing pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.06851085227110709
+      }
+    },
+    {
+      "name": "camera 144fps corner swing->close pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.10992230811921042
+      }
+    },
+    {
+      "name": "camera 144fps corner swing->close pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.026267149962942726
+      }
+    },
+    {
+      "name": "camera 144fps corner swing->close pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.06851085227110709
+      }
+    },
+    {
+      "name": "camera 144fps corner swing->follow pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.10992230811921042
+      }
+    },
+    {
+      "name": "camera 144fps corner swing->follow pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.026267149962942726
+      }
+    },
+    {
+      "name": "camera 144fps corner swing->follow pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.06851085227110709
+      }
+    },
+    {
+      "name": "camera 144fps corner swing->swing pitch-0.52",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.10992230811921042
+      }
+    },
+    {
+      "name": "camera 144fps corner swing->swing pitch0",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.026267149962942726
+      }
+    },
+    {
+      "name": "camera 144fps corner swing->swing pitch0.58",
+      "pass": true,
+      "detail": {
+        "frames": 65,
+        "maxObstruction": 0,
+        "maxStep": 0.06851085227110709
+      }
+    }
+  ]
+}

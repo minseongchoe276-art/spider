@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "measuredActiveSeconds": 10,
+  "reconnects": 0,
+  "city": "procedural",
+  "touch": false,
+  "viewport": [
+    1280,
+    720
+  ],
+  "quality": "balanced",
+  "pixelRatio": 1.5,
+  "startupMs": 429,
+  "renderer": {
+    "calls": 4,
+    "triangles": 50576,
+    "geometries": 47,
+    "textures": 11
+  },
+  "latencyMs": null,
+  "network": {
+    "p95Ms": null,
+    "jitterMs": 0,
+    "stalled": false,
+    "degraded": false,
+    "reconnect": false
+  },
+  "recentSamples": [
+    {
+      "seconds": 5,
+      "fps": 60,
+      "slowFrames": 0,
+      "worstMs": 30
+    },
+    {
+      "seconds": 10,
+      "fps": 60,
+      "slowFrames": 0,
+      "worstMs": 19
+    }
+  ]
+}

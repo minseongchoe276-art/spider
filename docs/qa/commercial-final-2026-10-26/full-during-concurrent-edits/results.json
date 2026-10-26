@@ -1,0 +1,354 @@
+{
+  "checkedAt": "2026-10-25T20:36:30.646Z",
+  "status": "RUNNING",
+  "sourceChanged": [],
+  "total": 110,
+  "completed": 49,
+  "passed": 46,
+  "failed": 3,
+  "results": [
+    {
+      "suite": "check-controller.mjs",
+      "status": "PASS",
+      "code": 0,
+      "timedOut": false,
+      "seconds": 0.37
+    },
+    {
+      "suite": "check-gameplay.mjs",
+      "status": "PASS",
+      "code": 0,
+      "timedOut": false,
+      "seconds": 5.181
+    },
+    {
+      "suite": "check-air-tricks.mjs",
+      "status": "PASS",
+      "code": 0,
+      "timedOut": false,
+      "seconds": 1.207
+    },
+    {
+      "suite": "check-dual-web.mjs",
+      "status": "PASS",
+      "code": 0,
+      "timedOut": false,
+      "seconds": 0.599
+    },
+    {
+      "suite": "check-pendulum.mjs",
+      "status": "PASS",
+      "code": 0,
+      "timedOut": false,
+      "seconds": 0.47
+    },
+    {
+      "suite": "check-mechanics-audit.mjs",
+      "status": "PASS",
+      "code": 0,
+      "timedOut": false,
+      "seconds": 0.336
+    },
+    {
+      "suite": "check-motions.mjs",
+      "status": "PASS",
+      "code": 0,
+      "timedOut": false,
+      "seconds": 8.363
+    },
+    {
+      "suite": "check-player-audit.mjs",
+      "status": "PASS",
+      "code": 0,
+      "timedOut": false,
+      "seconds": 0.339
+    },
+    {
+      "suite": "check-qa.mjs",
+      "status": "FAIL",
+      "code": 1,
+      "timedOut": false,
+      "seconds": 0.942
+    },
+    {
+      "suite": "check-review-2.mjs",
+      "status": "FAIL",
+      "code": 1,
+      "timedOut": false,
+      "seconds": 0.943
+    },
+    {
+      "suite": "check-combat.mjs",
+      "status": "PASS",
+      "code": 0,
+      "timedOut": false,
+      "seconds": 0.159
+    },
+    {
+      "suite": "check-web-vfx.mjs",
+      "status": "PASS",
+      "code": 0,
+      "timedOut": false,
+      "seconds": 0.164
+    },
+    {
+      "suite": "check-superhero-landing-vfx.mjs",
+      "status": "PASS",
+      "code": 0,
+      "timedOut": false,
+      "seconds": 0.224
+    },
+    {
+      "suite": "check-traversal.mjs",
+      "status": "PASS",
+      "code": 0,
+      "timedOut": false,
+      "seconds": 3.198
+    },
+    {
+      "suite": "check-motion-timeline.mjs",
+      "status": "PASS",
+      "code": 0,
+      "timedOut": false,
+      "seconds": 25.514
+    },
+    {
+      "suite": "check-motion-transitions.mjs",
+      "status": "PASS",
+      "code": 0,
+      "timedOut": false,
+      "seconds": 9.13
+    },
+    {
+      "suite": "check-hong-kong-streaming.mjs",
+      "status": "PASS",
+      "code": 0,
+      "timedOut": false,
+      "seconds": 3.925
+    },
+    {
+      "suite": "check-minimap.mjs",
+      "status": "PASS",
+      "code": 0,
+      "timedOut": false,
+      "seconds": 0.137
+    },
+    {
+      "suite": "check-remote-motion.mjs",
+      "status": "PASS",
+      "code": 0,
+      "timedOut": false,
+      "seconds": 13.003
+    },
+    {
+      "suite": "check-tile-textures.mjs",
+      "status": "PASS",
+      "code": 0,
+      "timedOut": false,
+      "seconds": 0.096
+    },
+    {
+      "suite": "check-multiplayer.mjs",
+      "status": "PASS",
+      "code": 0,
+      "timedOut": false,
+      "seconds": 5.437
+    },
+    {
+      "suite": "check-admin.mjs",
+      "status": "PASS",
+      "code": 0,
+      "timedOut": false,
+      "seconds": 0.462
+    },
+    {
+      "suite": "check-upgrade.mjs",
+      "status": "PASS",
+      "code": 0,
+      "timedOut": false,
+      "seconds": 0.524
+    },
+    {
+      "suite": "check-combat-rig.mjs",
+      "status": "PASS",
+      "code": 0,
+      "timedOut": false,
+      "seconds": 65.511
+    },
+    {
+      "suite": "check-release-audit.mjs",
+      "status": "PASS",
+      "code": 0,
+      "timedOut": false,
+      "seconds": 5.022
+    },
+    {
+      "suite": "check-online-edge-cases.mjs",
+      "status": "FAIL",
+      "code": 1,
+      "timedOut": false,
+      "seconds": 0.191
+    },
+    {
+      "suite": "check-room-reconnect.mjs",
+      "status": "PASS",
+      "code": 0,
+      "timedOut": false,
+      "seconds": 1.467
+    },
+    {
+      "suite": "check-hong-kong-geometry-codec.mjs",
+      "status": "PASS",
+      "code": 0,
+      "timedOut": false,
+      "seconds": 0.288
+    },
+    {
+      "suite": "check-upgrade-online.mjs",
+      "status": "PASS",
+      "code": 0,
+      "timedOut": false,
+      "seconds": 13.893
+    },
+    {
+      "suite": "check-cross-system-regressions.mjs",
+      "status": "PASS",
+      "code": 0,
+      "timedOut": false,
+      "seconds": 0.662
+    },
+    {
+      "suite": "check-swing-accessibility.mjs",
+      "status": "PASS",
+      "code": 0,
+      "timedOut": false,
+      "seconds": 7.57
+    },
+    {
+      "suite": "check-web-continuity.mjs",
+      "status": "PASS",
+      "code": 0,
+      "timedOut": false,
+      "seconds": 7.032
+    },
+    {
+      "suite": "check-compact-map-and-locators.mjs",
+      "status": "PASS",
+      "code": 0,
+      "timedOut": false,
+      "seconds": 0.462
+    },
+    {
+      "suite": "check-expert-audit.mjs",
+      "status": "PASS",
+      "code": 0,
+      "timedOut": false,
+      "seconds": 0.248
+    },
+    {
+      "suite": "check-connection-lifecycle.mjs",
+      "status": "PASS",
+      "code": 0,
+      "timedOut": false,
+      "seconds": 0.197
+    },
+    {
+      "suite": "check-camera-motion-web.mjs",
+      "status": "PASS",
+      "code": 0,
+      "timedOut": false,
+      "seconds": 0.378
+    },
+    {
+      "suite": "check-full-game-audit.mjs",
+      "status": "PASS",
+      "code": 0,
+      "timedOut": false,
+      "seconds": 0.444
+    },
+    {
+      "suite": "check-race-removal.mjs",
+      "status": "PASS",
+      "code": 0,
+      "timedOut": false,
+      "seconds": 0.099
+    },
+    {
+      "suite": "check-input-lifecycle.mjs",
+      "status": "PASS",
+      "code": 0,
+      "timedOut": false,
+      "seconds": 0.258
+    },
+    {
+      "suite": "check-session-flow.mjs",
+      "status": "PASS",
+      "code": 0,
+      "timedOut": false,
+      "seconds": 0.213
+    },
+    {
+      "suite": "check-visibility.mjs",
+      "status": "PASS",
+      "code": 0,
+      "timedOut": false,
+      "seconds": 0.278
+    },
+    {
+      "suite": "check-loading-performance.mjs",
+      "status": "PASS",
+      "code": 0,
+      "timedOut": false,
+      "seconds": 0.36
+    },
+    {
+      "suite": "check-wall-ledge-rig.mjs",
+      "status": "PASS",
+      "code": 0,
+      "timedOut": false,
+      "seconds": 9.066
+    },
+    {
+      "suite": "check-wall-ledge.mjs",
+      "status": "PASS",
+      "code": 0,
+      "timedOut": false,
+      "seconds": 17.973
+    },
+    {
+      "suite": "check-motion-sources.mjs",
+      "status": "PASS",
+      "code": 0,
+      "timedOut": false,
+      "seconds": 6.579
+    },
+    {
+      "suite": "check-all-motions.mjs",
+      "status": "PASS",
+      "code": 0,
+      "timedOut": false,
+      "seconds": 161.158
+    },
+    {
+      "suite": "check-pose.mjs",
+      "status": "PASS",
+      "code": 0,
+      "timedOut": false,
+      "seconds": 272.064
+    },
+    {
+      "suite": "check-web-hand-pose.mjs",
+      "status": "PASS",
+      "code": 0,
+      "timedOut": false,
+      "seconds": 164.202
+    },
+    {
+      "suite": "check-natural-wall-motion.mjs",
+      "status": "PASS",
+      "code": 0,
+      "timedOut": false,
+      "seconds": 34.777
+    }
+  ]
+}

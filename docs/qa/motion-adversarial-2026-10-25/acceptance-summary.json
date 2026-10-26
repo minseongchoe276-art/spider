@@ -1,0 +1,41 @@
+{
+  "absolutePerfectionProven": false,
+  "definedMatrixPassed": true,
+  "registeredMotions": 33,
+  "passed": 64,
+  "total": 64,
+  "supplementalPassed": 6,
+  "supplementalTotal": 6,
+  "sourceStable": true,
+  "productFilesCompared": 166,
+  "productChanges": [
+    "src/CombatReview.js",
+    "src/CombatReviewPose.js",
+    "package.json"
+  ],
+  "validationFilesCompared": 142,
+  "validationChanges": [
+    "scripts/check-motion-selection.mjs",
+    "scripts/run-motion-audit.mjs"
+  ],
+  "interruptedTransitions": 39072,
+  "hardCuts": 33792,
+  "transitionSamples": 151008,
+  "maxWeightError": 2.9802322387695312e-8,
+  "runtimeCases": 4205,
+  "runtimeFrames": 42050,
+  "runtimeMaxJointExcessRadians": 7.271960811294775e-15,
+  "runtimeMaxEndJointDegreesPerSecond": 240.00000000043914,
+  "packetGapCases": 44,
+  "packetGapFrames": 396,
+  "buildPassed": true,
+  "latestSelectionPassed": true,
+  "latestSelectionCases": 153,
+  "currentFinalSourceStable": true,
+  "currentFinalChanged": [],
+  "runtimePackageStable": true,
+  "runnerOnlyAddsSelection": true,
+  "currentBuildPassed": true,
+  "gameplayCodeMatchesVerifiedSnapshot": true,
+  "finalAcceptancePassed": true
+}

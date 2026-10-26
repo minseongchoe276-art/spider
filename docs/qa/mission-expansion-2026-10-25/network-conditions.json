@@ -1,0 +1,18 @@
+{
+  "environment": "isolated-local-websocket-proxy",
+  "oneWayDelayMs": [
+    90,
+    150
+  ],
+  "droppedApplicationUpdates": 134,
+  "players": 8,
+  "cases": [
+    "eight clients join, ready and start under delay/jitter",
+    "all eight maintain finite accepted movement despite dropped application updates",
+    "disconnected eighth player resumes the same seat and running round",
+    "host departure transfers ownership under impaired delivery"
+  ],
+  "roundTripMs": 251,
+  "status": "PASS",
+  "forwardedMessages": 1178
+}

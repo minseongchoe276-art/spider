@@ -1,0 +1,38 @@
+{
+  "checkedAt": "2026-10-25T09:13:32.681Z",
+  "overall": "FUNCTIONAL_GATES_PASS_WITH_KNOWN_VISUAL_DEFECT_AND_RELEASE_VERIFICATION_GAPS",
+  "automated": {
+    "total": 106,
+    "passed": 106,
+    "failed": 0,
+    "status": "PASS"
+  },
+  "extraSuites": [
+    {
+      "script": "check-mobile-traversal.mjs",
+      "status": "PASS",
+      "log": "mobile-traversal-extra.log"
+    },
+    {
+      "script": "check-districts-and-language.mjs",
+      "status": "PASS",
+      "log": "districts-extra.log"
+    }
+  ],
+  "sourceChangesDuringSuite": [],
+  "build": "PASS_WITH_CHUNK_SIZE_WARNING",
+  "httpDelivery": "PASS",
+  "knownNpmVulnerabilities": 0,
+  "confirmedDefects": [
+    {
+      "id": "F-01",
+      "severity": "P2",
+      "name": "Procedural world-map road stroke width leaks into building outlines",
+      "evidence": "map-defect.json",
+      "fixed": false
+    }
+  ],
+  "productionModified": false,
+  "gameCodeModified": false,
+  "report": "REPORT.md"
+}

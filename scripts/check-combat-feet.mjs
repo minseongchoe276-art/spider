@@ -6,13 +6,22 @@ import {ATTACKS} from '../src/Combat.js';
 import {groundSoleNormal,soleSamples} from '../src/CharacterPose.js';
 import {JOINT_SPEEDS} from '../src/JointConstraints.js';
 const {actor}=await loadMotionRig(),results=[];
+const caseFilter=process.argv.find(arg=>arg.startsWith('--case='))?.slice(7);
 for(const fps of [24,60,144])for(const speed of [0,4.4,6.5])for(const key of ['combatIdle','jab','cross','hook','special']){
+ if(caseFilter && !caseFilter.split(',').includes(`${fps}:${speed}:${key}`))continue;
  const c=actor(),dt=1/fps,velocity=new T.Vector3(0,0,speed),state=speed?'RUNNING':'IDLE';
  let maxContactTilt=0,maxFlatTilt=0,maxLateralRoll=0,maxHeelPitch=0,maxBootStep=0,contacts=0,forefootContacts=0,minimumSole=Infinity,minSkinClearance=Infinity,maxSupportGap=0;
  const previous=new Map();
  try{
   c.combatStance=true;
-  const update=()=>{c.group.position.z+=speed*dt;c.update(dt,state,velocity);c.group.updateMatrixWorld(true);};
+  const update=()=>{
+   // Match the controller's planted-strike braking. Forcing the capsule to
+   // travel at full sprint while the strike plants a foot is not live input.
+   const planting=!!ATTACKS[c.combatAction?.key];
+   velocity.z=T.MathUtils.damp(velocity.z,planting?0:speed,planting?32:9,dt);
+   c.group.position.addScaledVector(velocity,dt);
+   c.update(dt,planting?'IDLE':state,velocity);c.group.updateMatrixWorld(true);
+  };
   for(let i=0;i<fps/2;i++){c.combatAction={key:'combatIdle'};update();}
   const duration=ATTACKS[key]?.duration || 1.2;
   for(let i=0;i<=Math.ceil(duration*fps)+Math.ceil(fps*.3);i++){
@@ -53,7 +62,8 @@ for(const fps of [24,60,144])for(const speed of [0,4.4,6.5])for(const key of ['c
 // This reproduces switching from a held jab to G, which previously raised
 // the rear ankle above 0.6m as cached mixer values stopped resetting the IK.
 const heldResults=[];
-for(const fps of [24,60,144])for(const key of ['combatIdle','jab','cross','hook','special'])for(const phase of [.15,.3,.56,.75,.98]){
+if(!process.argv.includes('--continuous-only'))for(const fps of [24,60,144])for(const key of ['combatIdle','jab','cross','hook','special'])for(const phase of [.15,.3,.56,.75,.98]){
+ if(caseFilter && !caseFilter.split(',').includes(`${fps}:${speed}:${key}`))continue;
  const c=actor(),dt=1/fps,velocity=new T.Vector3();
  try{
   c.combatAction={id:1,key:'jab',time:.58*.72,duration:.72};

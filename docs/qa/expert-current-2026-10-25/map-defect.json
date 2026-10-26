@@ -1,0 +1,23 @@
+{
+  "status": "CONFIRMED_DEFECT",
+  "viewport": [
+    1280,
+    720
+  ],
+  "canvas": {
+    "width": 520,
+    "height": 520
+  },
+  "building": {
+    "rectangle": [
+      236.2,
+      236.2,
+      47.60000000000002,
+      47.60000000000002
+    ],
+    "lineWidth": 41.65,
+    "color": "#65e8ed"
+  },
+  "roadStrokeLeaksIntoBuilding": true,
+  "explanation": "WorldMap.update leaves the procedural road lineWidth active when outlining building footprints."
+}

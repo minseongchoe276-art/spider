@@ -5,7 +5,6 @@ import { SwingPhysics } from './SwingPhysics.js';
 import { City } from './City.js';
 import { StreamedCollision } from './StreamedCollision.js';
 import { AIR_TRICKS } from './AirTricks.js';
-import { fetchAsset } from './AssetLoader.js';
 import { boneId } from './MotionRetarget.js';
 
 export function updateDualWebReview(physics,input,camera,old,elapsed) {
@@ -74,12 +73,6 @@ export function startMotionReview() {
   const status = panel.querySelector('output'), select = panel.querySelector('#motion'), slider = panel.querySelector('input');
   let playing = true, side = false, mode = 'clip', elapsed = 0, history = [], scenario = 'movement', actionHistory = [], breakOn = '';
   const character = new Character(scene, (n, s) => { status.textContent = `${n}% ${s}`; }, async () => {
-    // These retained candidates are review-only and never selected by gameplay.
-    for(const key of ['candidateFront','candidateStylish'])try{
-      const data=JSON.parse(new TextDecoder().decode(await fetchAsset(`/motions/${key}.json`)));
-      const clip=THREE.AnimationClip.parse(data);clip.userData=data.userData;
-      const action=character.mixer.clipAction(clip);action.setLoop(THREE.LoopOnce,1);action.clampWhenFinished=true;character.actions[key]=action;
-    }catch(error){console.warn('Could not load preserved review motion',key,error);}
     select.replaceChildren(...Object.keys(character.actions).map(k => {
       const o = document.createElement('option'); o.value = k; o.textContent = k; return o;
     }));

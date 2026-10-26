@@ -1,0 +1,834 @@
+{
+  "version": 1,
+  "sourceId": "30dff266699553bccf08a9f64956ae970dbcb32cd4e1d3ee6aa441b3f0468971",
+  "codeId": "db300491835b6f3f42e3d6143b2d4a2fc240230cf00038733e69ef99226a9603",
+  "assetId": "d4a95589541b7ed8b5859e7cba2907fde40e6b9100481dea3d4e025d367a22ed",
+  "backendId": "02bbabf44940a7b413d75a2fcba3920f1156e8386deeaad73780224e3033c74c",
+  "databaseId": "e1df60763ddcd1a1d8507dbd924aede64394fc5ebee2f592d3bd682e15dbe0fa",
+  "revision": "d3c9fafd22f3cc485fdfc5d8404e1fab6ad38916",
+  "releaseId": "5fa6fbc88792f19edf541447bf3871a23c94d23673fa7497b6c142e0e7bf0810",
+  "entries": [
+    {
+      "url": "/app-icon.svg",
+      "role": "support",
+      "bytes": 368,
+      "gzipBytes": null,
+      "brotliBytes": null,
+      "sha256": "ef0033a4cb1cd01b50f7a33c02721517a67b723e840fedf3568c0e4302bf488e"
+    },
+    {
+      "url": "/assets/CombatReview-Bv5dH1zb.js",
+      "role": "on-demand",
+      "bytes": 6486,
+      "gzipBytes": 3163,
+      "brotliBytes": 2963,
+      "sha256": "43f32930da61b95177f37c8cd110bd6d0a1215868493d19f5317ab2532322333"
+    },
+    {
+      "url": "/assets/EffectsReview-BWB6ZFiu.js",
+      "role": "on-demand",
+      "bytes": 3427,
+      "gzipBytes": 1793,
+      "brotliBytes": 1659,
+      "sha256": "46e900f8a648359d3983d0ba531463104ae64ced5d08154cc593fcc0afff50bf"
+    },
+    {
+      "url": "/assets/FBXLoader-54ovkxhi.js",
+      "role": "on-demand",
+      "bytes": 48125,
+      "gzipBytes": 16098,
+      "brotliBytes": 15505,
+      "sha256": "ac0abb009be02a577d81208b5271a74cd3dd32bab69b70b4f44178c7a1d4633b"
+    },
+    {
+      "url": "/assets/index-DdNydt_f.js",
+      "role": "bootstrap",
+      "bytes": 1283675,
+      "gzipBytes": 359240,
+      "brotliBytes": 323686,
+      "sha256": "4a7dda7f152fa063c5e559a15b806c43b1990daf65b5f6e7dd115db6aef2bb8d"
+    },
+    {
+      "url": "/assets/index-DQG3J0pq.css",
+      "role": "bootstrap",
+      "bytes": 78948,
+      "gzipBytes": 17416,
+      "brotliBytes": 16753,
+      "sha256": "2079eec35f9b224f9cf365374039f836c9e6ae66103762103541145d95f88fa3"
+    },
+    {
+      "url": "/assets/MotionReview-OG3Z1Fwp.js",
+      "role": "on-demand",
+      "bytes": 14358,
+      "gzipBytes": 5686,
+      "brotliBytes": 5407,
+      "sha256": "8977dfc5102ca5ed66b3bc3807a13a426edca305527a41189097e47ed4432d2e"
+    },
+    {
+      "url": "/assets/StreamedCollision-DFPMxN1p.js",
+      "role": "on-demand",
+      "bytes": 4340340,
+      "gzipBytes": 1646837,
+      "brotliBytes": 1415996,
+      "sha256": "df2beb6519e92fe4e49d68b5975bad150496bba13a289f79a7cd285b00c9e0bd"
+    },
+    {
+      "url": "/assets/UrbanGroundCity-DTqVP0a-.js",
+      "role": "on-demand",
+      "bytes": 154536,
+      "gzipBytes": 53759,
+      "brotliBytes": 51375,
+      "sha256": "3162078f4fba9f9db3e27b7e24a9a5e3b378549d7e610be85c09199f7bb9d92b"
+    },
+    {
+      "url": "/assets/WebHandReview-B5tKDe94.js",
+      "role": "on-demand",
+      "bytes": 5331,
+      "gzipBytes": 2462,
+      "brotliBytes": 2283,
+      "sha256": "2133bd0c1c614afc3a916ce0e7236a53867e664aeab087626b39134db9ee2542"
+    },
+    {
+      "url": "/basis/basis_transcoder.js",
+      "role": "support",
+      "bytes": 57529,
+      "gzipBytes": 15169,
+      "brotliBytes": 14721,
+      "sha256": "8478b5b6d6b74e7d3082b89f6417321d8d1dc0307f2b30d4484bb11b441696a1"
+    },
+    {
+      "url": "/basis/basis_transcoder.wasm",
+      "role": "support",
+      "bytes": 527333,
+      "gzipBytes": 247619,
+      "brotliBytes": 229701,
+      "sha256": "6cf17dc889352c42e9acf8897107978d127005fe3386c36a0e3845e27967630a"
+    },
+    {
+      "url": "/index.html",
+      "role": "bootstrap",
+      "bytes": 25249,
+      "gzipBytes": null,
+      "brotliBytes": null,
+      "sha256": "c369d2aa5206fa9230cc978929220152e32f1d00a3f4557d8b55990050fa60cf"
+    },
+    {
+      "url": "/manifest.webmanifest",
+      "role": "support",
+      "bytes": 378,
+      "gzipBytes": null,
+      "brotliBytes": null,
+      "sha256": "9c95e8aaeefe0aaf31893c9e54918c7b5a928b158a3e315c17d21377f5aca172"
+    },
+    {
+      "url": "/models/appearance-combat.glb",
+      "role": "character",
+      "bytes": 11316428,
+      "gzipBytes": 9129029,
+      "brotliBytes": 9169961,
+      "sha256": "97b96089238697101ebe29825eb2492aa8f15faa720a73e675fd01a4c9e3450b"
+    },
+    {
+      "url": "/models/appearance-web.glb",
+      "role": "character",
+      "bytes": 7711440,
+      "gzipBytes": 6724699,
+      "brotliBytes": 6744068,
+      "sha256": "697c4fbd6bd8279d3b5457e399c02430291edff391db5a017d20c284299582ec"
+    },
+    {
+      "url": "/models/Boxing Hook.fbx",
+      "role": "fallback",
+      "bytes": 424096,
+      "gzipBytes": 78620,
+      "brotliBytes": 49777,
+      "sha256": "b2895d3389b2b5e03e91748cfbdb92ce4cc28f440c6059716d43c0bc49b3f1db"
+    },
+    {
+      "url": "/models/Boxing Idle.fbx",
+      "role": "support",
+      "bytes": 440288,
+      "gzipBytes": 82163,
+      "brotliBytes": 51654,
+      "sha256": "032d1877dc539c9451fdbfd4f572904adc1ea49130a719b1f44f5c75a8a48499"
+    },
+    {
+      "url": "/models/Boxing Lead Jab.fbx",
+      "role": "support",
+      "bytes": 359296,
+      "gzipBytes": 61844,
+      "brotliBytes": 40308,
+      "sha256": "82f7cdb5ec78e4eaa252f0632de815dc618317192f3bb9d2bc96156f813ab64f"
+    },
+    {
+      "url": "/models/Boxing Stance.fbx",
+      "role": "fallback",
+      "bytes": 546496,
+      "gzipBytes": 125143,
+      "brotliBytes": 75586,
+      "sha256": "689c70f906e7f689a6f6152e4919a397c243974aadb3d05518639a75834ad60c"
+    },
+    {
+      "url": "/models/Climbing Up Wall.fbx",
+      "role": "fallback",
+      "bytes": 467296,
+      "gzipBytes": 100683,
+      "brotliBytes": 58536,
+      "sha256": "ab317f650965f174a1b9d95ecbffc405fa8b2aeb1a82f25f5a7edb2aba860969"
+    },
+    {
+      "url": "/models/Cross Punch.fbx",
+      "role": "fallback",
+      "bytes": 424096,
+      "gzipBytes": 77572,
+      "brotliBytes": 48731,
+      "sha256": "271b49cc56a966cf694eb5d1ea656dbef01fcaeeff5d9da81f8694d460384c96"
+    },
+    {
+      "url": "/models/Falling (2).fbx",
+      "role": "fallback",
+      "bytes": 645152,
+      "gzipBytes": 187013,
+      "brotliBytes": 101708,
+      "sha256": "5085f53139fe26d99eaccccf74f0b1d97f057604d3b564a982afa2fd98076b34"
+    },
+    {
+      "url": "/models/Falling Idle.fbx",
+      "role": "fallback",
+      "bytes": 18014224,
+      "gzipBytes": 4875918,
+      "brotliBytes": 4259095,
+      "sha256": "85115e3fa9b69736f31be33fbab8023c043b1db85ad269df6af2e72235d2bc52"
+    },
+    {
+      "url": "/models/Falling To Roll.fbx",
+      "role": "fallback",
+      "bytes": 480896,
+      "gzipBytes": 106032,
+      "brotliBytes": 60950,
+      "sha256": "fd5eec844d950160e56d62ada25bfda7692f80dabbf1fa71c02efa6b7fc18dbf"
+    },
+    {
+      "url": "/models/Falling.fbx",
+      "role": "fallback",
+      "bytes": 645152,
+      "gzipBytes": 187018,
+      "brotliBytes": 101622,
+      "sha256": "0735d3a77f80df5439c7139f5545d3d666bc42c33f28b67dbca62645125375b8"
+    },
+    {
+      "url": "/models/Fast Run.fbx",
+      "role": "fallback",
+      "bytes": 305232,
+      "gzipBytes": 47017,
+      "brotliBytes": 32264,
+      "sha256": "f94b9f6507a8a7b1e6f39b4c2845a7c1b398fe6d4d5e324fba83aabdf0058956"
+    },
+    {
+      "url": "/models/Female Stop Walking.fbx",
+      "role": "support",
+      "bytes": 386288,
+      "gzipBytes": 71736,
+      "brotliBytes": 45945,
+      "sha256": "505b287501ee9c160522c419a46c1b6ab17b8aeabe5a9348ab8d45af2429f155"
+    },
+    {
+      "url": "/models/Front Flip.fbx",
+      "role": "fallback",
+      "bytes": 451088,
+      "gzipBytes": 95789,
+      "brotliBytes": 56002,
+      "sha256": "2ae6440ac3418685ffbb7c681efc89b3e5755a0fe8510608c62b4031b6fb1a2a"
+    },
+    {
+      "url": "/models/Idle.fbx",
+      "role": "fallback",
+      "bytes": 18041488,
+      "gzipBytes": 4853600,
+      "brotliBytes": 4248635,
+      "sha256": "bc451195e178ec6e7d4ff6da08e3e0c073c34a64fbecc2979994509978950fc6"
+    },
+    {
+      "url": "/models/Injured Idle.fbx",
+      "role": "fallback",
+      "bytes": 1003696,
+      "gzipBytes": 342012,
+      "brotliBytes": 184368,
+      "sha256": "6ae92903cad77154b29be97b6d3e38349bb811b33a8bc451574359cbc921ffa9"
+    },
+    {
+      "url": "/models/Jogging.fbx",
+      "role": "support",
+      "bytes": 17916608,
+      "gzipBytes": 4814174,
+      "brotliBytes": 4226952,
+      "sha256": "2145d3b311df784ade736ca8ce4298e37455f4cdb55d632eecb7a764abafe684"
+    },
+    {
+      "url": "/models/Jumping Down (1).fbx",
+      "role": "fallback",
+      "bytes": 448320,
+      "gzipBytes": 90422,
+      "brotliBytes": 55945,
+      "sha256": "859d43d6961f3607bc024993aa78d8212a564917bfcaa6cb70a1393c2ab5a862"
+    },
+    {
+      "url": "/models/Jumping Down.fbx",
+      "role": "fallback",
+      "bytes": 17928224,
+      "gzipBytes": 4817818,
+      "brotliBytes": 4229801,
+      "sha256": "569919b0a48d261e03a70f20d6bb7e70046b25efcfb4a4bb1dd0ab17d6324993"
+    },
+    {
+      "url": "/models/Lead Jab.fbx",
+      "role": "fallback",
+      "bytes": 370096,
+      "gzipBytes": 64195,
+      "brotliBytes": 41737,
+      "sha256": "a07eb2721db05a7321e9da19175bf47132c9ddb170e9bcc2e5df670d2821e94d"
+    },
+    {
+      "url": "/models/Left Turn.fbx",
+      "role": "fallback",
+      "bytes": 365856,
+      "gzipBytes": 68386,
+      "brotliBytes": 41845,
+      "sha256": "151c9c16b985c3828cf71a1a989026dd11a74a1f6c3323b39dd03d4281db1c93"
+    },
+    {
+      "url": "/models/Mma Kick.fbx",
+      "role": "support",
+      "bytes": 443536,
+      "gzipBytes": 93196,
+      "brotliBytes": 54188,
+      "sha256": "66fe53f8362c66e6eeaddb4b7bc6c344cb3ea569ef94fa6badda1077975a32a6"
+    },
+    {
+      "url": "/models/Right Turn.fbx",
+      "role": "fallback",
+      "bytes": 365856,
+      "gzipBytes": 68384,
+      "brotliBytes": 42288,
+      "sha256": "5679c5fe0f34cfea8f4234c804ca42cac3e85adb4876d3aeab372853670abaa3"
+    },
+    {
+      "url": "/models/Rope Swinging.fbx",
+      "role": "fallback",
+      "bytes": 18031776,
+      "gzipBytes": 4883313,
+      "brotliBytes": 4261276,
+      "sha256": "d3b992c732bf4910284d6c23688551f56bca834ed6e45bd09d230af064ea963c"
+    },
+    {
+      "url": "/models/Run To Stop.fbx",
+      "role": "fallback",
+      "bytes": 354368,
+      "gzipBytes": 64336,
+      "brotliBytes": 40690,
+      "sha256": "87604dc0e3e907a6cd575e72eb6b57e7b8f4c3edb3c1ddb2fc2a7f46169fb3eb"
+    },
+    {
+      "url": "/models/Running.fbx",
+      "role": "fallback",
+      "bytes": 17701392,
+      "gzipBytes": 4745131,
+      "brotliBytes": 4195666,
+      "sha256": "b1563e81706ae3e80ea2e5d0f99619cc5c0dd60b34d557f9da6527b406a48cab"
+    },
+    {
+      "url": "/models/shadow-pulse-rig.glb",
+      "role": "character",
+      "bytes": 7711440,
+      "gzipBytes": 6705249,
+      "brotliBytes": 6717208,
+      "sha256": "527a65e1749512e95d16045c63d7b6be4565f54dfd477be817fe4efd78422a5a"
+    },
+    {
+      "url": "/models/sources/combat-addon.glb",
+      "role": "fallback",
+      "bytes": 3902688,
+      "gzipBytes": 1782982,
+      "brotliBytes": 1587901,
+      "sha256": "e654b9fc1fc61ee6489cb2b7425aa76678231265d24daa544c47820545f4661f"
+    },
+    {
+      "url": "/models/sources/combat-base.glb",
+      "role": "fallback",
+      "bytes": 3916024,
+      "gzipBytes": 2056294,
+      "brotliBytes": 1760602,
+      "sha256": "b183369aa993af28943015ddc968ca035bbbac6161d181c89eea5f50d18a3311"
+    },
+    {
+      "url": "/models/sources/LICENSE-CC0.md",
+      "role": "support",
+      "bytes": 294,
+      "gzipBytes": null,
+      "brotliBytes": null,
+      "sha256": "52fec1c484df708c16b4c27b2bf0d7f0d3994105c57adc4b9e6f95bcfd9de65f"
+    },
+    {
+      "url": "/models/sources/mesh2motion-climb.glb",
+      "role": "support",
+      "bytes": 3735400,
+      "gzipBytes": 1776588,
+      "brotliBytes": 1583864,
+      "sha256": "7fa7d0e792c57b264beb2898225c0ec97090f1e72c7706dfbebd5011cd2c1345"
+    },
+    {
+      "url": "/models/Standing Jump.fbx",
+      "role": "fallback",
+      "bytes": 17896912,
+      "gzipBytes": 4809256,
+      "brotliBytes": 4226834,
+      "sha256": "01c13c4f7f5038d145278556e53cd8ca6c845f3c140cec220f1ad99ea65e7f67"
+    },
+    {
+      "url": "/models/Surprise Uppercut.fbx",
+      "role": "support",
+      "bytes": 602288,
+      "gzipBytes": 137773,
+      "brotliBytes": 78000,
+      "sha256": "869da292787412b2c4426489658d91d0b0925f4f8302cfeaff4a1f8ebdaca63e"
+    },
+    {
+      "url": "/models/Walking.fbx",
+      "role": "fallback",
+      "bytes": 371648,
+      "gzipBytes": 70313,
+      "brotliBytes": 42808,
+      "sha256": "c02732ab90f678f04311f93c697fe109a5bb4655f02021d74b180d72bcd4348a"
+    },
+    {
+      "url": "/motions/airTrick.json",
+      "role": "character",
+      "bytes": 192466,
+      "gzipBytes": 67822,
+      "brotliBytes": 67954,
+      "sha256": "6c5e5aced6649e227d281e3cb7a11946ed0cadb4a4b6b976dc186635fc0289b8"
+    },
+    {
+      "url": "/motions/combatIdle.json",
+      "role": "character",
+      "bytes": 878783,
+      "gzipBytes": 197979,
+      "brotliBytes": 201063,
+      "sha256": "3b61133fcfff9fb32586d2be2186cf6826cdf6322e3c87cffe61d2d061ca4d59"
+    },
+    {
+      "url": "/motions/cross.json",
+      "role": "character",
+      "bytes": 291240,
+      "gzipBytes": 72821,
+      "brotliBytes": 72908,
+      "sha256": "3a6a1f5190fc9bde742e8430ef2e1532fddadec37f9d356a93dbb50e7eb4f8cd"
+    },
+    {
+      "url": "/motions/drop.json",
+      "role": "character",
+      "bytes": 94422,
+      "gzipBytes": 25774,
+      "brotliBytes": 25597,
+      "sha256": "c7dd6f8959c181f933eb9883608d32ab44b99e065c412dbf8c7a8cdcfd563dab"
+    },
+    {
+      "url": "/motions/fall.json",
+      "role": "character",
+      "bytes": 876712,
+      "gzipBytes": 292089,
+      "brotliBytes": 294581,
+      "sha256": "b0ea2f530ae00de7a54c4656b235c0bc37485349569c5cbdb28828d9a6738a56"
+    },
+    {
+      "url": "/motions/fallIdle.json",
+      "role": "character",
+      "bytes": 876681,
+      "gzipBytes": 291597,
+      "brotliBytes": 293518,
+      "sha256": "4fca52f4547d2db770d4a173563167eae4a25ea22f5f1cabcddb608b9a4cb4b2"
+    },
+    {
+      "url": "/motions/fallVariant.json",
+      "role": "character",
+      "bytes": 876719,
+      "gzipBytes": 292106,
+      "brotliBytes": 294602,
+      "sha256": "e64d1f19556ff00a39378d71c6ed54c1fd716e5c3a655ea7aebbbcc8c6865808"
+    },
+    {
+      "url": "/motions/guard.json",
+      "role": "character",
+      "bytes": 777859,
+      "gzipBytes": 26079,
+      "brotliBytes": 22046,
+      "sha256": "1701aed8b4c9f2078126a832a88187a7e09cdbbcce9de8e550b89a55ca24c1cf"
+    },
+    {
+      "url": "/motions/heavy.json",
+      "role": "character",
+      "bytes": 284197,
+      "gzipBytes": 72173,
+      "brotliBytes": 72219,
+      "sha256": "55094a25f3ec1c6aeae0eafe9627f0c0a101855218ff3702e2f6a40819a9743e"
+    },
+    {
+      "url": "/motions/hitHead.json",
+      "role": "character",
+      "bytes": 101088,
+      "gzipBytes": 32215,
+      "brotliBytes": 31985,
+      "sha256": "6ec3a94cd92985981de993dea6d8e05d7f59f99228c70b176632ac1f2868eeac"
+    },
+    {
+      "url": "/motions/hook.json",
+      "role": "character",
+      "bytes": 284196,
+      "gzipBytes": 72175,
+      "brotliBytes": 72229,
+      "sha256": "266c4bb19d48c9815ac198474816420d0e73ad118b748e2a4efac5e3f0a42e00"
+    },
+    {
+      "url": "/motions/idle.json",
+      "role": "character",
+      "bytes": 781503,
+      "gzipBytes": 260859,
+      "brotliBytes": 262141,
+      "sha256": "78b736824feb999257f6fcbff714844e02058f79dc9ef1a6faf4815c542d61ea"
+    },
+    {
+      "url": "/motions/injuredIdle.json",
+      "role": "character",
+      "bytes": 1796402,
+      "gzipBytes": 581698,
+      "brotliBytes": 571310,
+      "sha256": "5734b429bd988ec7a19763d25a32925cb2d4e72e7c8b57470891e5ad9776b3d1"
+    },
+    {
+      "url": "/motions/jab.json",
+      "role": "character",
+      "bytes": 279778,
+      "gzipBytes": 69731,
+      "brotliBytes": 69891,
+      "sha256": "c618b12f9904a0f480773a57fdafa725cd038710156e600d2b3f97a21d81454d"
+    },
+    {
+      "url": "/motions/jump.json",
+      "role": "character",
+      "bytes": 130923,
+      "gzipBytes": 46859,
+      "brotliBytes": 46670,
+      "sha256": "e25b852db93f6a9af863caae27d1bf913684ac47a919b5325fbaec8f2f223169"
+    },
+    {
+      "url": "/motions/jumpDown.json",
+      "role": "character",
+      "bytes": 461192,
+      "gzipBytes": 120615,
+      "brotliBytes": 121535,
+      "sha256": "2c11ea369861ddc357b89bc7e1c9c9b6df74af07ca601d874ffe12ef2b55b686"
+    },
+    {
+      "url": "/motions/jumpDownVariant.json",
+      "role": "character",
+      "bytes": 529849,
+      "gzipBytes": 183853,
+      "brotliBytes": 184729,
+      "sha256": "158759d25cbcb08fbde55e802db881aa5b688c034cfa305c4567a8e4a6cc3edb"
+    },
+    {
+      "url": "/motions/land.json",
+      "role": "character",
+      "bytes": 184023,
+      "gzipBytes": 65599,
+      "brotliBytes": 65456,
+      "sha256": "0215ac77dfcfa135455737c7bb32d68b95678fa4feda68357331e0787765dd41"
+    },
+    {
+      "url": "/motions/manifest.json",
+      "role": "character",
+      "bytes": 124,
+      "gzipBytes": null,
+      "brotliBytes": null,
+      "sha256": "cc7eed4918ab6c25fe609b32222e292823057c679530b7dfe2e4cabd024e43d8"
+    },
+    {
+      "url": "/motions/regularRun.json",
+      "role": "character",
+      "bytes": 149799,
+      "gzipBytes": 48540,
+      "brotliBytes": 48392,
+      "sha256": "c6640c6578c9a8299809707b5a2833ab4c79e20d199f1e5612f3916376d9f562"
+    },
+    {
+      "url": "/motions/rightHook.json",
+      "role": "character",
+      "bytes": 284635,
+      "gzipBytes": 27180,
+      "brotliBytes": 25979,
+      "sha256": "84a40f9ae5952cbd54b60b0a4f2e2610396f9a26aca4f4893c05a6832951edd6"
+    },
+    {
+      "url": "/motions/roll.json",
+      "role": "character",
+      "bytes": 317697,
+      "gzipBytes": 106907,
+      "brotliBytes": 107138,
+      "sha256": "efce5a14f13f79a39d63abdf42057643acac1f8c12331d8d08fdf3dc923c59fe"
+    },
+    {
+      "url": "/motions/run.json",
+      "role": "character",
+      "bytes": 122451,
+      "gzipBytes": 32930,
+      "brotliBytes": 32771,
+      "sha256": "8d7af0a8c9cede36e68c3777d344b9f4bff2e09f9288cc3fb9cc3287d24bd376"
+    },
+    {
+      "url": "/motions/runStop.json",
+      "role": "character",
+      "bytes": 189898,
+      "gzipBytes": 64492,
+      "brotliBytes": 64409,
+      "sha256": "021c374c00a3da2809397850762abfff0705208674c9a52e8c63f7ddeb88f852"
+    },
+    {
+      "url": "/motions/slam.json",
+      "role": "character",
+      "bytes": 442609,
+      "gzipBytes": 86976,
+      "brotliBytes": 85983,
+      "sha256": "cf12ed729363c0edcdc975817d2da28728144203e41f69d2a30635bb3fa1fd5b"
+    },
+    {
+      "url": "/motions/slamLand.json",
+      "role": "character",
+      "bytes": 156434,
+      "gzipBytes": 34740,
+      "brotliBytes": 34317,
+      "sha256": "736905ac5bc3f42d23d4e69a9ce0624a54586adbb979da8486d0ee9ae66bc154"
+    },
+    {
+      "url": "/motions/special.json",
+      "role": "character",
+      "bytes": 360647,
+      "gzipBytes": 88659,
+      "brotliBytes": 88965,
+      "sha256": "a1c799b58a59ff91cc0e7971827baec570f35d820d7a28de853557df14ed4c02"
+    },
+    {
+      "url": "/motions/stop.json",
+      "role": "character",
+      "bytes": 59323,
+      "gzipBytes": 19886,
+      "brotliBytes": 19766,
+      "sha256": "bac1ee741bbabca18054490ca6f1a42a62709d6154aea2493e78f5df06b5a774"
+    },
+    {
+      "url": "/motions/swing.json",
+      "role": "character",
+      "bytes": 395925,
+      "gzipBytes": 140840,
+      "brotliBytes": 141588,
+      "sha256": "f1b470e3cdff6754b8b6d921713902f4380d58af060b7c85adeb4408547a1f73"
+    },
+    {
+      "url": "/motions/turnLeft.json",
+      "role": "character",
+      "bytes": 202905,
+      "gzipBytes": 68946,
+      "brotliBytes": 68921,
+      "sha256": "8df7e4bd64b449a6ef6a5894e3409b017b09c43754efca7487923da2e634a1af"
+    },
+    {
+      "url": "/motions/turnRight.json",
+      "role": "character",
+      "bytes": 203018,
+      "gzipBytes": 68985,
+      "brotliBytes": 68994,
+      "sha256": "488003bb96ebfb2a641c817f8388d7d3f18c0320b200a31aaff84ef383121b3f"
+    },
+    {
+      "url": "/motions/walk.json",
+      "role": "character",
+      "bytes": 202167,
+      "gzipBytes": 70374,
+      "brotliBytes": 70269,
+      "sha256": "6e71a2e1735425ed059f41e9663dc80349f2c44aa497c10c40bca84bd1246734"
+    },
+    {
+      "url": "/motions/wall.json",
+      "role": "character",
+      "bytes": 398160,
+      "gzipBytes": 134728,
+      "brotliBytes": 135286,
+      "sha256": "d0ace3236b5b96de5beccb34c7311c92df302fd52d9f5dd6dc92cfd22fb9b594"
+    },
+    {
+      "url": "/motions/zip.json",
+      "role": "character",
+      "bytes": 24140,
+      "gzipBytes": 6056,
+      "brotliBytes": 6083,
+      "sha256": "271f193399831b325bb5cbbac9cb0689cff1bbbf5b6cd91aab75daf4542c9611"
+    },
+    {
+      "url": "/textures/vfx/circle_01_a.png",
+      "role": "support",
+      "bytes": 43706,
+      "gzipBytes": null,
+      "brotliBytes": null,
+      "sha256": "c14813534d65ec48b9815eca7a50215b960f65a5b82541139db7b97edf18317c"
+    },
+    {
+      "url": "/textures/vfx/circle_03_a.png",
+      "role": "support",
+      "bytes": 59571,
+      "gzipBytes": null,
+      "brotliBytes": null,
+      "sha256": "448bae1569c618333d1982229216de8a5b2a02d382e87111faeeaf03a796f561"
+    },
+    {
+      "url": "/textures/vfx/circle_05_a.png",
+      "role": "support",
+      "bytes": 29451,
+      "gzipBytes": null,
+      "brotliBytes": null,
+      "sha256": "7ec420e3b2c11e0e2820b5f1c3fcc8ecd97aafc1b922b5f1d98343915b290c4d"
+    },
+    {
+      "url": "/textures/vfx/dirt_01_a.png",
+      "role": "support",
+      "bytes": 87630,
+      "gzipBytes": null,
+      "brotliBytes": null,
+      "sha256": "3cf9f052e24c081e882923d7a165cfbe08ac804a519b37412a795a6dde6bed35"
+    },
+    {
+      "url": "/textures/vfx/dirt_02_a.png",
+      "role": "support",
+      "bytes": 109841,
+      "gzipBytes": null,
+      "brotliBytes": null,
+      "sha256": "3aaae4f094cb7bebb3bed023b6cd48fe53af82c2bc7c4728f92b34f6bf5dc612"
+    },
+    {
+      "url": "/textures/vfx/dust.png",
+      "role": "support",
+      "bytes": 77863,
+      "gzipBytes": null,
+      "brotliBytes": null,
+      "sha256": "5a529ca033f2ea99f49cead4cb6618acf534d19d4472ca34e879776bd18c9cd3"
+    },
+    {
+      "url": "/textures/vfx/impact_white_6x4.png",
+      "role": "support",
+      "bytes": 36390,
+      "gzipBytes": null,
+      "brotliBytes": null,
+      "sha256": "e9c617918526f839e1382e4da6b01abf62dc6ba0262ecb08f0abfefa1290d839"
+    },
+    {
+      "url": "/textures/vfx/LICENSE.txt",
+      "role": "support",
+      "bytes": 645,
+      "gzipBytes": null,
+      "brotliBytes": null,
+      "sha256": "dabd7cc9f78caf9dd0e0c2dbf27eca9c22383bed5bf035bc26341a246b748cc6"
+    },
+    {
+      "url": "/textures/vfx/scorch_01_a.png",
+      "role": "support",
+      "bytes": 56894,
+      "gzipBytes": null,
+      "brotliBytes": null,
+      "sha256": "822d2dff21342e26098288782ec74b4179c78bb4423fe9d18c0de89b16599eb4"
+    },
+    {
+      "url": "/textures/vfx/scorch_02_a.png",
+      "role": "support",
+      "bytes": 66764,
+      "gzipBytes": null,
+      "brotliBytes": null,
+      "sha256": "53a419bfd4f6ffbe104806e84d26d3a18d2c6a5d8d951a887090dccf8b7f3c86"
+    },
+    {
+      "url": "/textures/vfx/smoke_01_a.png",
+      "role": "support",
+      "bytes": 74799,
+      "gzipBytes": null,
+      "brotliBytes": null,
+      "sha256": "9919fcedbc32dac9393dc7662b8dede3548a432f64776e4a83502d2f63470012"
+    },
+    {
+      "url": "/textures/vfx/smoke_04_a.png",
+      "role": "support",
+      "bytes": 66951,
+      "gzipBytes": null,
+      "brotliBytes": null,
+      "sha256": "65e6427ee3b9279e83e9b65fb84bafba3683cb7de7f562f32ee989d96f54626c"
+    },
+    {
+      "url": "/textures/vfx/smoke_07_strong_a.png",
+      "role": "support",
+      "bytes": 60579,
+      "gzipBytes": null,
+      "brotliBytes": null,
+      "sha256": "94006c02d2d163b0ae1049e937b260f166c4c4b3029e49183731412d0a922fe2"
+    },
+    {
+      "url": "/textures/vfx/spark_01_a.png",
+      "role": "support",
+      "bytes": 76005,
+      "gzipBytes": null,
+      "brotliBytes": null,
+      "sha256": "5c5331468ef7f09110b077580db51dc0f8d4a52d3d5d109b5c0e542bf5fd7419"
+    },
+    {
+      "url": "/textures/vfx/web-impact.png",
+      "role": "support",
+      "bytes": 42423,
+      "gzipBytes": null,
+      "brotliBytes": null,
+      "sha256": "b615e988e12bbff49ad061c59d8d08f976fab9f72ceac0224b67b4558e336857"
+    }
+  ],
+  "groups": {
+    "bootstrap": {
+      "files": 3,
+      "bytes": 1387872,
+      "encodedBytes": 365688
+    },
+    "character": {
+      "files": 37,
+      "bytes": 39947273,
+      "encodedBytes": 26400656
+    },
+    "fallback": {
+      "files": 24,
+      "bytes": 123102072,
+      "encodedBytes": 29804667
+    },
+    "on-demand": {
+      "files": 7,
+      "bytes": 4572603,
+      "encodedBytes": 1495188
+    },
+    "support": {
+      "files": 27,
+      "bytes": 25359118,
+      "encodedBytes": 7215885
+    }
+  },
+  "totalBytes": 194368938,
+  "limits": {
+    "bootstrapEncodedBytes": 600000,
+    "characterEncodedBytes": 30000000,
+    "totalBytes": 250000000
+  },
+  "checks": {
+    "bootstrap": true,
+    "character": true,
+    "total": true
+  }
+}

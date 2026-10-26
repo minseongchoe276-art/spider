@@ -1,7 +1,7 @@
 import { BINDINGS, SETTING_LIMITS, keyLabel, rebind } from './PlayerSettings.js';
 const labels={forward:'앞으로',backward:'뒤로',left:'왼쪽',right:'오른쪽',sprint:'질주',jump:'점프',wall:'벽 이동',zip:'와이어 당기기 / 훅',trick:'공중 묘기',mode:'전투 / 에너지 와이어',guard:'방어',heavy:'강공격',dodge:'회피',recenter:'카메라 정렬',camera:'시점'};
 const ranges={sensitivity:'마우스 / 스틱 감도',fov:'시야각',shake:'카메라 흔들림',speedFov:'속도 시야각 변화',follow:'자동 추적',speedLines:'속도선',effectsVolume:'효과음',environmentVolume:'환경음',musicVolume:'음악',hudScale:'HUD 크기'};
-const switches={invertY:'세로축 반전',webToggle:'에너지 와이어 클릭으로 유지 / 해제',sprintToggle:'질주 키로 유지 / 해제',autoQuality:'성능에 맞춰 해상도 조절',trajectory:'비행 방향 미리 보기'};
+const switches={invertY:'세로축 반전',webToggle:'에너지 와이어 클릭으로 유지 / 해제',sprintToggle:'질주 키로 유지 / 해제',autoQuality:'성능에 맞춰 해상도 조절',trajectory:'비행 방향 미리 보기',showPerformance:'성능 정보 표시'};
 export class SettingsPanel {
   constructor(game) {
     this.game=game;const root=document.getElementById('extended-settings');if(!root)return;
@@ -10,8 +10,8 @@ export class SettingsPanel {
     for(const [key,label] of Object.entries(ranges)) {
       const row=document.createElement('label');row.className='setting-row';const title=document.createElement('span');title.textContent=label;
       const slider=document.createElement('input');slider.type='range';slider.id=`setting-${key}`;slider.min=SETTING_LIMITS[key][0];slider.max=SETTING_LIMITS[key][1];slider.step=key==='fov'?1:.05;
-      const value=document.createElement('output');slider.setAttribute('aria-label',label);slider.value=game.preferences.values.settings[key];value.value=slider.value;
-      slider.addEventListener('input',()=>{game.preferences.values.settings[key]=Number(slider.value);value.value=slider.value;game.applyPreferences();});slider.addEventListener('change',()=>this.save());
+      const value=document.createElement('output');slider.setAttribute('aria-label',label);slider.value=game.preferences.values.settings[key];value.value=this.formatValue(key,slider.value);
+      slider.addEventListener('input',()=>{game.preferences.values.settings[key]=Number(slider.value);value.value=this.formatValue(key,slider.value);game.applyPreferences();});slider.addEventListener('change',()=>this.save());
       row.append(title,slider,value);(key.includes('Volume')?audio:camera).append(row);
     }
     for(const [key,label] of Object.entries(switches)) {
@@ -36,6 +36,12 @@ export class SettingsPanel {
     },true);
     const theme=document.getElementById('web-theme');theme?.addEventListener('change',()=>{game.progression.data.theme=theme.value;game.progression.dirty=true;game.progression.save();game.applyWebTheme();});
     this.refresh();
+  }
+  formatValue(key,value){
+    const n=Number(value);
+    if(key==='fov')return `${Math.round(n)}°`;
+    if(key==='sensitivity')return `${n.toFixed(2)}×`;
+    return `${Math.round(n*100)}%`;
   }
   save(){if(!this.game.preferences.save())this.game.showNotice('설정을 저장할 수 없어 이번 실행에만 적용합니다.');this.refresh();}
   cancel(){this.pending=null;this.refresh();}

@@ -1,0 +1,10 @@
+import assert from 'node:assert/strict';
+import {SupabaseRooms} from '../src/SupabaseRooms.js';
+globalThis.WebSocket={OPEN:1,CLOSED:3};
+const t=Object.create(SupabaseRooms.prototype),events=[];let finish;
+Object.assign(t,{readyState:1,city:'hong-kong',roomCode:'OLD',channel:null,controlQueue:Promise.resolve(),client:{functions:{invoke:()=>new Promise(r=>finish=r)}},command:async()=>({type:'left'}),emit:e=>events.push(e),fail:e=>{throw e;}});
+t.send(JSON.stringify({type:'attack',kind:'punch',facing:0}));
+t.send(JSON.stringify({type:'leave'}));await t.controlQueue;
+assert.equal(t.roomCode,null,'Slow geometry prevented leaving the match');assert.deepEqual(events,[{type:'left'}]);
+finish({data:{type:'hit',health:75},error:null});await new Promise(r=>setTimeout(r,0));assert.deepEqual(events,[{type:'left'}],'A late attack result affected a later session');assert.equal(t.attackInFlight,0);
+console.log('PASS Hong Kong transport: independent attack requests, immediate room leave, ignored stale result and released concurrency slot');

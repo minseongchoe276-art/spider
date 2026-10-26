@@ -84,9 +84,11 @@ export class WorldMap {
       const map=this.game.minimap,previousRange=map.range;map.range=extent*1.5;
       try{footprints=map.collectFootprints({x:0,z:0});}finally{map.range=previousRange;}
     }
+    // Roads use world-scaled strokes; building outlines stay readable in pixels.
+    ctx.lineWidth=1;
     for(const f of footprints){const a=project({x:f.maxX,z:f.maxZ}),b=project({x:f.minX,z:f.minZ});
       ctx.fillStyle=city.mapId==='gardens'?'#315b4a':'#244857';ctx.strokeStyle=city.profile?.accent||'#3a7580';ctx.fillRect(a.x,a.y,Math.max(1,b.x-a.x),Math.max(1,b.y-a.y));ctx.strokeRect(a.x,a.y,Math.max(1,b.x-a.x),Math.max(1,b.y-a.y));}
-    ctx.strokeStyle='#75a6be';ctx.strokeRect(pad,pad,size-pad*2,size-pad*2);
+    ctx.lineWidth=1.5;ctx.strokeStyle='#75a6be';ctx.strokeRect(pad,pad,size-pad*2,size-pad*2);
     const dot=(position,color,label,r=4)=>{const p=project(position);ctx.beginPath();ctx.arc(p.x,p.y,r,0,Math.PI*2);ctx.fillStyle=color;ctx.fill();ctx.strokeStyle='#081422';ctx.lineWidth=2;ctx.stroke();if(label){ctx.font='bold 12px system-ui';ctx.lineWidth=3;ctx.strokeText(label,p.x+10,p.y-8);ctx.fillText(label,p.x+10,p.y-8);}};
     for(const p of this.game.multiplayer?.minimapPlayers()||[])dot(p,'#61dbea',p.name||t('플레이어'));
     for(const e of this.game.combat?.enemies||[])if(e.health>0)dot(e.position,'#ff647e');

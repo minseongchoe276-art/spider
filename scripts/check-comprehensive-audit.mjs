@@ -16,7 +16,7 @@ const suites=[...new Set([
 ])];
 const folder=process.env.COMPREHENSIVE_AUDIT_DIR||'docs/qa/comprehensive-2026-10-19';fs.mkdirSync(folder,{recursive:true});
 const walk=dir=>fs.readdirSync(dir,{withFileTypes:true}).flatMap(entry=>entry.isDirectory()?walk(`${dir}/${entry.name}`):[`${dir}/${entry.name}`]);
-const snapshot=()=>Object.fromEntries(['src','scripts','public/models','public/motions','supabase/functions','supabase/migrations'].flatMap(walk).concat(['package.json','package-lock.json','index.html','vite.config.js']).sort().map(path=>[path,createHash('sha256').update(fs.readFileSync(path)).digest('hex')]));
+const snapshot=()=>Object.fromEntries(['src','scripts','public','config','supabase/functions','supabase/migrations'].flatMap(walk).concat(['package.json','package-lock.json','index.html','vite.config.js','vite.itch.config.js']).sort().map(path=>[path,createHash('sha256').update(fs.readFileSync(path)).digest('hex')]));
 const before=snapshot(),results=[];let next=0,status='RUNNING',changed=[];
 function save(){fs.writeFileSync(`${folder}/results.json`,JSON.stringify({checkedAt:new Date().toISOString(),status,sourceChanged:changed,total:suites.length,completed:results.length,passed:results.filter(r=>r.status==='PASS').length,failed:results.filter(r=>r.status!=='PASS').length,results},null,2)+'\n');}
 async function worker(){while(next<suites.length){

@@ -46,12 +46,20 @@ for(const fps of [24,60,144])for(const key of ['jab','cross','special'])for(cons
   let active=0,maxStep=0,last=null;
   for(let i=0;i<Math.ceil(fps*ATTACKS[key].duration);i++){
    combat.before(1/fps,camera);p.update(1/fps,{forward:true,sprint},camera);combat.after(1/fps);
-   if(combat.action)active++;
+   if(combat.action){
+    active++;assert(c.activeAction===c.actions[key],'Ground strike lost its authored lower body');
+    if(combat.action.time>=ATTACKS[key].from && combat.action.time<=ATTACKS[key].to)
+      assert(Math.hypot(p.velocity.x,p.velocity.z)<.25,'Contact braking failed');
+   }
    const hand=point(c,key==='jab'?'lefthand':'righthand').sub(c.group.position);
    if(last)maxStep=Math.max(maxStep,hand.distanceTo(last));last=hand;
    for(const {bone,rest,limit} of c.jointConstraints)assert(rest.angleTo(bone.quaternion)<=limit+1e-5,'Rendered joint exceeded anatomical bounds');
   }
-  const travel=p.position.distanceTo(start);assert(travel>ATTACKS[key].duration*3,'Attack stalled movement');
+  const travel=p.position.distanceTo(start);
+  assert(travel<.6,'Ground strike slid while the support feet were planted');
+  combat.cancel();
+  for(let i=0;i<Math.ceil(fps*.3);i++){combat.before(1/fps,camera);p.update(1/fps,{forward:true,sprint},camera);}
+  assert(Math.hypot(p.velocity.x,p.velocity.z)>2,'Held movement did not resume after recovery');
   assert(active>fps*ATTACKS[key].duration*.7);assert(maxStep<25/fps,`Visible hand snapped: ${maxStep}m at ${fps}fps`);
   results.push({fps,key,sprint,travel,maxHandStep:maxStep,pass:true});
  }finally{disposeRig(c);}
@@ -88,7 +96,7 @@ for(const key of ['jab','cross','special']){
 const {PlayerExperience}=await import('../src/PlayerExperience.js');
 const oldDocument=globalThis.document,oldWindow=globalThis.window;
 try{
- globalThis.document={getElementById:()=>null};globalThis.window={addEventListener(){}};
+ globalThis.document={getElementById:()=>null,createElement:()=>({setAttribute(){},append(){}})};globalThis.window={addEventListener(){}};
  const notices=[],game={scene:new THREE.Scene(),physics:{},character:{},combat:{},city:{},audio:{playSurfaceStep(){}},showNotice:m=>notices.push(m),showStuntNotice:m=>notices.push(m)};
  const experience=new PlayerExperience(game,{getItem:()=>null,setItem(){}});
  game.physics.onStuntCallback('스윙 연결',80);game.character.onAirTrickComplete('front');game.physics.onLanding(new THREE.Vector3(),10);

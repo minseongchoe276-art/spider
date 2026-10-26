@@ -1,52 +1,67 @@
 {
-  "builtAt": "2026-10-22T13:22:13.083Z",
-  "files": 98,
-  "uncompressedBytes": 195120071,
-  "zipBytes": 72515996,
-  "zipSha256": "2eef28e8d3f3a5cd174aaa4f17b477307888d6ba80cca4f4064d7a287618945d",
+  "builtAt": "2026-10-25T20:43:18.145Z",
+  "files": 100,
+  "uncompressedBytes": 194464530,
+  "zipBytes": 72267352,
+  "zipSha256": "8a9534fe34891380ba3842e42edba2529eab7da53a64ae6f20166bd46ab7d401",
   "onlineTransport": "Supabase; free roam and tag; custom matches omitted",
   "defaultCity": "procedural",
   "hongKongProxy": "https://minogame.site/urban-tiles",
   "entries": [
     {
       "name": "THIRD_PARTY_NOTICES.txt",
-      "bytes": 43906,
-      "sha256": "d2b792df8e8868398798a42ada9831c5f763a03371218e529ea78441e9799565"
+      "bytes": 58689,
+      "sha256": "634345d0dbe0ccee845d44aad1ee12c509e9b85ad21313214f40a2bcd2e645d2"
     },
     {
       "name": "app-icon.svg",
-      "bytes": 516,
-      "sha256": "7b70f6784071b327ae6b7a6982f1725e46ebdf20aa9cc8cd316d163e014fb169"
+      "bytes": 368,
+      "sha256": "ef0033a4cb1cd01b50f7a33c02721517a67b723e840fedf3568c0e4302bf488e"
     },
     {
-      "name": "assets/CombatReview-BRR-g2iV.js",
-      "bytes": 6049,
-      "sha256": "94884e01a800338a24c0dbc37a42cbf44e686cc3eefad46136a9f4afef3236be"
+      "name": "assets/CombatReview-DwwJB_58.js",
+      "bytes": 6486,
+      "sha256": "82dd4456377f0cbc8134d1e60444d492f68551fbccbe069f9ae7f578bf9b90b7"
     },
     {
-      "name": "assets/EffectsReview-B4otvMC_.js",
+      "name": "assets/EffectsReview-CSWXN4JC.js",
       "bytes": 3427,
-      "sha256": "62431dabaeed44f58fc00ed20b4012b28f60758d7775db8b6362572026a9ce12"
+      "sha256": "2d028f5af4f64a39118174db17f0f67c6367fc9122b82b5bb0f81380ff5eaa17"
     },
     {
-      "name": "assets/MotionReview-C6Su5b1R.js",
-      "bytes": 14659,
-      "sha256": "f2d4f9ace828f27cd648c71f96f85221a5be11526277883ff090b56c577d1faa"
+      "name": "assets/FBXLoader-DPHbGopc.js",
+      "bytes": 48125,
+      "sha256": "3192e4016a29ed3ef2137f53850f123395f2c60fbc3569efc5e36cf8f6be2a64"
     },
     {
-      "name": "assets/WebHandReview-RRbYNgZ1.js",
+      "name": "assets/MotionReview-CZUxl-fU.js",
+      "bytes": 14358,
+      "sha256": "65dfd8d11f9c20841a9ddd6a3f9d655aa60b262941ded2db128e6c0ce10e3313"
+    },
+    {
+      "name": "assets/StreamedCollision-CWYQd99q.js",
+      "bytes": 4340919,
+      "sha256": "3e1b60d8a5ff2e39676d106ed2d2b1d8e34a97b4207e0d655425aff5536d625f"
+    },
+    {
+      "name": "assets/UrbanGroundCity-NyeGcx6g.js",
+      "bytes": 154558,
+      "sha256": "a4e8287fe881a24a2568c94ec623c14f86abb2092ff50c3ebcb640d65389702f"
+    },
+    {
+      "name": "assets/WebHandReview-Bh5iA8Sw.js",
       "bytes": 5331,
-      "sha256": "1c846f6b9759ad738e037bd890e67b01d72b076c6250a1942c42f5aba0dc9a41"
+      "sha256": "4ea3b3712cb3d2589ea32d9d13f8554468baf1c98efda712a5aeb08fb05a4e24"
     },
     {
-      "name": "assets/index-DcHGqJvq.css",
-      "bytes": 64176,
-      "sha256": "88b73ff8c75ba6efeec82221afcb628a5f003f427fe67341bfb1f4fb9f6b7a51"
+      "name": "assets/index-BnUyYzPW.js",
+      "bytes": 1290112,
+      "sha256": "7087c2d06ebd72fc5810372f60eda2943ea9a30f68bec80262478f96fb9fc972"
     },
     {
-      "name": "assets/index-pwKXS6RS.js",
-      "bytes": 5783542,
-      "sha256": "e7e474c4354d82cf5374ddf183c46104f2e1a9de4be0bb1fe774b3ca49af5cdd"
+      "name": "assets/index-DRSFlL8j.css",
+      "bytes": 84020,
+      "sha256": "2a99f8f0daad0c0f130e039936c7b3552c4094d34aee66631886630a089a4d8a"
     },
     {
       "name": "basis/basis_transcoder.js",
@@ -60,8 +75,8 @@
     },
     {
       "name": "index.html",
-      "bytes": 23966,
-      "sha256": "2afacc16ee1af8d380579194ae228b28c47bf6a2c87512c363412403007fd4f8"
+      "bytes": 25128,
+      "sha256": "2be41acc9955bedde811905bf1cda7d87c83493c87c166ed07695d8d45aa1259"
     },
     {
       "name": "manifest.webmanifest",
@@ -246,182 +261,177 @@
     {
       "name": "motions/airTrick.json",
       "bytes": 192466,
-      "sha256": "48c66a584280e4f8261070e1159629f04ae18b038bc2c25080ec5cdb8e5c83cf"
-    },
-    {
-      "name": "motions/candidateFront.json",
-      "bytes": 332259,
-      "sha256": "bcf862b51ac96207f006252b4917cff25c8ee39f3009b9b26d2ea2a8bfff4d2f"
-    },
-    {
-      "name": "motions/candidateStylish.json",
-      "bytes": 434145,
-      "sha256": "85e2450c1db7e2d35a41417e220b4dbc7f27a54312cfa3f1b75e7fd400ea2d78"
+      "sha256": "6c5e5aced6649e227d281e3cb7a11946ed0cadb4a4b6b976dc186635fc0289b8"
     },
     {
       "name": "motions/combatIdle.json",
       "bytes": 878783,
-      "sha256": "c7f192d8e737b6c5673dceec29e4756c9b3cfb66d2933c1c8c8c70c057e6529a"
+      "sha256": "3b61133fcfff9fb32586d2be2186cf6826cdf6322e3c87cffe61d2d061ca4d59"
     },
     {
       "name": "motions/cross.json",
       "bytes": 291240,
-      "sha256": "54cb875c07d78d999d5446a2d29cfd358cb0fd643f7d550bd2716294a029d484"
+      "sha256": "3a6a1f5190fc9bde742e8430ef2e1532fddadec37f9d356a93dbb50e7eb4f8cd"
     },
     {
       "name": "motions/drop.json",
       "bytes": 94422,
-      "sha256": "7ba1a69ee3a7e49b2bbca5e884c186c7ad3eb6eba9d2a629d34699a42b8d3035"
+      "sha256": "c7dd6f8959c181f933eb9883608d32ab44b99e065c412dbf8c7a8cdcfd563dab"
     },
     {
       "name": "motions/fall.json",
       "bytes": 876712,
-      "sha256": "1f32f7bd0e00a00acb5b7543466228439af9c957bb03d3eed3064a50ccce5e9a"
+      "sha256": "b0ea2f530ae00de7a54c4656b235c0bc37485349569c5cbdb28828d9a6738a56"
     },
     {
       "name": "motions/fallIdle.json",
       "bytes": 876681,
-      "sha256": "023f7aab5ea30c13b53619ba51bf638f9fef5d5e07b36cc5307ae1e344e5d37b"
+      "sha256": "4fca52f4547d2db770d4a173563167eae4a25ea22f5f1cabcddb608b9a4cb4b2"
     },
     {
       "name": "motions/fallVariant.json",
       "bytes": 876719,
-      "sha256": "cc8047cac173030621987dd40a29f2460a18f2bd803afc2889973e314a3a6fdb"
+      "sha256": "e64d1f19556ff00a39378d71c6ed54c1fd716e5c3a655ea7aebbbcc8c6865808"
     },
     {
       "name": "motions/guard.json",
       "bytes": 777859,
-      "sha256": "72298eacbfd769c44f4296b7d634ec2efa4a5caac4b42b395b0e0e678db86440"
+      "sha256": "1701aed8b4c9f2078126a832a88187a7e09cdbbcce9de8e550b89a55ca24c1cf"
     },
     {
       "name": "motions/heavy.json",
       "bytes": 284197,
-      "sha256": "969eebd73bcb5cfb53e65a87714786105905e000b025374ea02281a8d781453d"
+      "sha256": "55094a25f3ec1c6aeae0eafe9627f0c0a101855218ff3702e2f6a40819a9743e"
     },
     {
       "name": "motions/hitHead.json",
       "bytes": 101088,
-      "sha256": "d04d5dff34862da7444b88593fd102d88b739c6fd3268e1782c880b9e769b909"
+      "sha256": "6ec3a94cd92985981de993dea6d8e05d7f59f99228c70b176632ac1f2868eeac"
     },
     {
       "name": "motions/hook.json",
       "bytes": 284196,
-      "sha256": "f5d466d23375a9f75838cd77f11be00d6ad0c3b483c4e52b14fa0a13551557b6"
+      "sha256": "266c4bb19d48c9815ac198474816420d0e73ad118b748e2a4efac5e3f0a42e00"
     },
     {
       "name": "motions/idle.json",
       "bytes": 781503,
-      "sha256": "61a3d2f13e922faa90648723d2d132a8f398b40bfa83454a4f35bb4f50bbeb51"
+      "sha256": "78b736824feb999257f6fcbff714844e02058f79dc9ef1a6faf4815c542d61ea"
     },
     {
       "name": "motions/injuredIdle.json",
       "bytes": 1796402,
-      "sha256": "6c469b44c2241200d4b050e99f644b387504de1f61eecbedadeba314c82b587d"
+      "sha256": "5734b429bd988ec7a19763d25a32925cb2d4e72e7c8b57470891e5ad9776b3d1"
     },
     {
       "name": "motions/jab.json",
       "bytes": 279778,
-      "sha256": "15ed5a0656ee5b4e003a684132bb3591ba805b9c32f5e678a7cfd6f28efa96a0"
+      "sha256": "c618b12f9904a0f480773a57fdafa725cd038710156e600d2b3f97a21d81454d"
     },
     {
       "name": "motions/jump.json",
       "bytes": 130923,
-      "sha256": "34e6c909a966168ef01c0eac76f42982d361dc10a7e5e3841ba6f7c0ddbec7ea"
+      "sha256": "e25b852db93f6a9af863caae27d1bf913684ac47a919b5325fbaec8f2f223169"
     },
     {
       "name": "motions/jumpDown.json",
       "bytes": 461192,
-      "sha256": "f3bb8bd7ba66f269e05ca9ae5101cd15d21497d4463758cc212679ddc10bc94f"
+      "sha256": "2c11ea369861ddc357b89bc7e1c9c9b6df74af07ca601d874ffe12ef2b55b686"
     },
     {
       "name": "motions/jumpDownVariant.json",
       "bytes": 529849,
-      "sha256": "aecd7674906ed86be59dfbf369f290f536edd7a3673eec3ef216e0b415efa59e"
+      "sha256": "158759d25cbcb08fbde55e802db881aa5b688c034cfa305c4567a8e4a6cc3edb"
     },
     {
       "name": "motions/land.json",
       "bytes": 184023,
-      "sha256": "e243cba9faa1b89914973b0d0419aba5c1399eb5501e2734ccb2eaa29717cfe0"
+      "sha256": "0215ac77dfcfa135455737c7bb32d68b95678fa4feda68357331e0787765dd41"
     },
     {
       "name": "motions/manifest.json",
       "bytes": 124,
-      "sha256": "7002ea717f3e736991cd97f69681a108bef1c71d5a82ba749a31ecf59b9cf702"
+      "sha256": "cc7eed4918ab6c25fe609b32222e292823057c679530b7dfe2e4cabd024e43d8"
     },
     {
       "name": "motions/regularRun.json",
       "bytes": 149799,
-      "sha256": "6aa1567baf292db238224224d1c4b06fc707c9023cf05685331092278d3f99ff"
+      "sha256": "c6640c6578c9a8299809707b5a2833ab4c79e20d199f1e5612f3916376d9f562"
     },
     {
       "name": "motions/rightHook.json",
       "bytes": 284635,
-      "sha256": "fba6f3cdbdf8d7fe46f46be7d63176bd54c6f0b0524c6f767096f55d536d9b5d"
+      "sha256": "84a40f9ae5952cbd54b60b0a4f2e2610396f9a26aca4f4893c05a6832951edd6"
     },
     {
       "name": "motions/roll.json",
       "bytes": 317697,
-      "sha256": "fe8a969772cc91c6a2af7d8092b6db40021e65967e9cf651c51d0d1d8fd77110"
+      "sha256": "efce5a14f13f79a39d63abdf42057643acac1f8c12331d8d08fdf3dc923c59fe"
     },
     {
       "name": "motions/run.json",
       "bytes": 122451,
-      "sha256": "31a99479d2551301717f7d070c9fcee85b6a5dcd5cb084b7f25d383bcababe73"
+      "sha256": "8d7af0a8c9cede36e68c3777d344b9f4bff2e09f9288cc3fb9cc3287d24bd376"
     },
     {
       "name": "motions/runStop.json",
       "bytes": 189898,
-      "sha256": "0d2cbb1bf687d17f43ff791c181ac4bc8bead9869c400d430dfef486a075cd70"
+      "sha256": "021c374c00a3da2809397850762abfff0705208674c9a52e8c63f7ddeb88f852"
     },
     {
       "name": "motions/slam.json",
       "bytes": 442609,
-      "sha256": "b12f1141d3b2d13974f91335d918918bc2ffb9a24699aa2b6f7307ddfa19708a"
+      "sha256": "cf12ed729363c0edcdc975817d2da28728144203e41f69d2a30635bb3fa1fd5b"
     },
     {
       "name": "motions/slamLand.json",
       "bytes": 156434,
-      "sha256": "c3dadf1c0c2c845018cf0c5a9f684249b286348e4ace6eae994b21806eac98d7"
+      "sha256": "736905ac5bc3f42d23d4e69a9ce0624a54586adbb979da8486d0ee9ae66bc154"
     },
     {
       "name": "motions/special.json",
       "bytes": 360647,
-      "sha256": "e4945855e4cfbd70101f90728c9bb526fea7dc270b3189f7e2b3be8d9d9555c7"
+      "sha256": "a1c799b58a59ff91cc0e7971827baec570f35d820d7a28de853557df14ed4c02"
     },
     {
       "name": "motions/stop.json",
       "bytes": 59323,
-      "sha256": "6c9681699516bc40b4279de3832354e041744adcd6984a6532d1da731448ed53"
+      "sha256": "bac1ee741bbabca18054490ca6f1a42a62709d6154aea2493e78f5df06b5a774"
     },
     {
       "name": "motions/swing.json",
       "bytes": 395925,
-      "sha256": "b3707fab07e4c016e61ad92e4df44598ff8d74efbe615b466215d59fc448cb38"
+      "sha256": "f1b470e3cdff6754b8b6d921713902f4380d58af060b7c85adeb4408547a1f73"
     },
     {
       "name": "motions/turnLeft.json",
       "bytes": 202905,
-      "sha256": "c3261c378008972d9523c88507969a6eff8fa2ca0c401fc71bcdef0204e42704"
+      "sha256": "8df7e4bd64b449a6ef6a5894e3409b017b09c43754efca7487923da2e634a1af"
     },
     {
       "name": "motions/turnRight.json",
       "bytes": 203018,
-      "sha256": "53a9c26a7fd384da9dd67161b247a933eccc6168e07a486d992bc00c53b1aeaf"
+      "sha256": "488003bb96ebfb2a641c817f8388d7d3f18c0320b200a31aaff84ef383121b3f"
     },
     {
       "name": "motions/walk.json",
       "bytes": 202167,
-      "sha256": "6919a309bdcac3e751a5d9bf556de4c8788217fecc650a243195c1747bf3cc11"
+      "sha256": "6e71a2e1735425ed059f41e9663dc80349f2c44aa497c10c40bca84bd1246734"
     },
     {
       "name": "motions/wall.json",
       "bytes": 398160,
-      "sha256": "043bd0e055d1cedb5cb5be4b723480a4119fe4edeb1a68d3dd2649a30da9f8e8"
+      "sha256": "d0ace3236b5b96de5beccb34c7311c92df302fd52d9f5dd6dc92cfd22fb9b594"
     },
     {
       "name": "motions/zip.json",
       "bytes": 24140,
-      "sha256": "b1b35449021dfaeab2cc0cb412688e4d68e6573b878918f3e197af551786b96f"
+      "sha256": "271f193399831b325bb5cbbac9cb0689cff1bbbf5b6cd91aab75daf4542c9611"
+    },
+    {
+      "name": "release.json",
+      "bytes": 24914,
+      "sha256": "f44359a781e89b1026f68b429f3ad60c9264722c7afb4214beb76936ac2f9bf9"
     },
     {
       "name": "textures/vfx/LICENSE.txt",

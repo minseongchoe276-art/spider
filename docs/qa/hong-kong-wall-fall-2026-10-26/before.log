@@ -1,0 +1,3 @@
+FAIL A real streamed facade with open railing gaps reaches a supported roof at 24/30/60/144 FPS: 24fps stayed WALL_RUNNING at y=19.3
+FAIL Visual LOD eviction preserves a nearby climbing facade, then releases it after departure: Climbing wall disappeared while the player was beside it
+FAIL An under-map fall restores the most recent supported position rather than an obsolete origin: Did not recover to the last supported feet

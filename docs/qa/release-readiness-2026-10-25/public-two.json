@@ -1,0 +1,11 @@
+{
+  "status": "PASS",
+  "checkedAt": "2026-10-25T09:32:37.144Z",
+  "scope": "Two actual public WebSocket clients from one verification machine; not two humans or real browser spectator cameras",
+  "cases": [
+    "two-player FFA start",
+    "HP persists across resume to same identity",
+    "elimination and winner propagated to both clients",
+    "temporary room cleaned up"
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "cases": 1,
+  "samples": 4,
+  "maxWeightError": 0.08641971960479822,
+  "maxInstantPositionChange": 5.621934917599044e-9,
+  "maxInstantRotationChange": 5.16191365590357e-8,
+  "maxContributors": 3,
+  "clockRebases": 0,
+  "failures": [
+    "idle → walk → regularRun (0.04/0.07, clock 0): pose weights sum to 0.9135802803952018; bind pose leaks into the transition"
+  ]
+}

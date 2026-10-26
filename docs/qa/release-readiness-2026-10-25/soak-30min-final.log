@@ -1,0 +1,390 @@
+{"elapsedSeconds":60.2,"rooms":1,"clients":8,"rounds":2,"reconnects":1,"steps":6603,"movesReceived":70400,"heapMB":17.39,"rssMB":77.67,"lastTickMs":219.287}
+{"elapsedSeconds":120.2,"rooms":1,"clients":8,"rounds":3,"reconnects":2,"steps":13224,"movesReceived":140992,"heapMB":14.74,"rssMB":71.2,"lastTickMs":213.018}
+{"elapsedSeconds":180.2,"rooms":1,"clients":8,"rounds":4,"reconnects":3,"steps":19845,"movesReceived":211584,"heapMB":15.53,"rssMB":71.23,"lastTickMs":206.057}
+{"elapsedSeconds":240.2,"rooms":1,"clients":8,"rounds":5,"reconnects":4,"steps":26472,"movesReceived":282240,"heapMB":15.46,"rssMB":61.14,"lastTickMs":204.79}
+{"elapsedSeconds":300.2,"rooms":1,"clients":8,"rounds":6,"reconnects":5,"steps":33108,"movesReceived":353024,"heapMB":15.34,"rssMB":63.05,"lastTickMs":209.093}
+{"elapsedSeconds":360.2,"rooms":1,"clients":8,"rounds":7,"reconnects":6,"steps":39735,"movesReceived":423680,"heapMB":17.84,"rssMB":61.97,"lastTickMs":208.214}
+{"elapsedSeconds":420.2,"rooms":1,"clients":8,"rounds":8,"reconnects":7,"steps":46371,"movesReceived":494464,"heapMB":17.93,"rssMB":57.86,"lastTickMs":213.177}
+{"elapsedSeconds":480.2,"rooms":1,"clients":8,"rounds":9,"reconnects":8,"steps":53004,"movesReceived":565184,"heapMB":17.89,"rssMB":57.27,"lastTickMs":209.957}
+{"elapsedSeconds":540.2,"rooms":1,"clients":8,"rounds":10,"reconnects":9,"steps":59673,"movesReceived":636288,"heapMB":18.96,"rssMB":57.25,"lastTickMs":213.115}
+{"elapsedSeconds":600.2,"rooms":1,"clients":8,"rounds":11,"reconnects":10,"steps":66297,"movesReceived":707008,"heapMB":16.48,"rssMB":64.22,"lastTickMs":209.986}
+{"elapsedSeconds":660.3,"rooms":1,"clients":8,"rounds":12,"reconnects":11,"steps":72945,"movesReceived":777920,"heapMB":17.85,"rssMB":64.72,"lastTickMs":205.742}
+{"elapsedSeconds":720.3,"rooms":1,"clients":8,"rounds":13,"reconnects":12,"steps":79602,"movesReceived":848888,"heapMB":18.7,"rssMB":63.55,"lastTickMs":206.237}
+{"elapsedSeconds":780.3,"rooms":1,"clients":8,"rounds":14,"reconnects":13,"steps":86253,"movesReceived":919760,"heapMB":19.62,"rssMB":63.95,"lastTickMs":208.889}
+{"elapsedSeconds":840.3,"rooms":1,"clients":8,"rounds":15,"reconnects":14,"steps":92916,"movesReceived":990864,"heapMB":16.42,"rssMB":64.08,"lastTickMs":207.198}
+{"elapsedSeconds":900.3,"rooms":1,"clients":8,"rounds":16,"reconnects":15,"steps":99582,"movesReceived":1061968,"heapMB":18,"rssMB":64.22,"lastTickMs":203.999}
+{"elapsedSeconds":960.3,"rooms":1,"clients":8,"rounds":17,"reconnects":16,"steps":106224,"movesReceived":1132744,"heapMB":19.28,"rssMB":63.73,"lastTickMs":209.324}
+{"elapsedSeconds":1020.3,"rooms":1,"clients":8,"rounds":18,"reconnects":17,"steps":112857,"movesReceived":1203480,"heapMB":20.57,"rssMB":64.16,"lastTickMs":210.042}
+{"elapsedSeconds":1080.3,"rooms":1,"clients":8,"rounds":19,"reconnects":18,"steps":119484,"movesReceived":1274112,"heapMB":19.03,"rssMB":65.91,"lastTickMs":209.988}
+{"elapsedSeconds":1140.4,"rooms":1,"clients":8,"rounds":20,"reconnects":19,"steps":126123,"movesReceived":1344896,"heapMB":27.45,"rssMB":78.69,"lastTickMs":208.346}
+{"elapsedSeconds":1200.4,"rooms":1,"clients":8,"rounds":21,"reconnects":20,"steps":132774,"movesReceived":1415832,"heapMB":19.61,"rssMB":77.23,"lastTickMs":209.73}
+{"elapsedSeconds":1260.4,"rooms":1,"clients":8,"rounds":22,"reconnects":21,"steps":139443,"movesReceived":1487000,"heapMB":25.52,"rssMB":77.63,"lastTickMs":203.107}
+{"elapsedSeconds":1320.4,"rooms":1,"clients":8,"rounds":23,"reconnects":22,"steps":146109,"movesReceived":1558080,"heapMB":27.88,"rssMB":70.92,"lastTickMs":210.754}
+{"elapsedSeconds":1380.4,"rooms":1,"clients":8,"rounds":24,"reconnects":23,"steps":152757,"movesReceived":1628920,"heapMB":16.82,"rssMB":74.75,"lastTickMs":213.069}
+{"elapsedSeconds":1440.4,"rooms":1,"clients":8,"rounds":25,"reconnects":24,"steps":159399,"movesReceived":1699760,"heapMB":17.7,"rssMB":68.2,"lastTickMs":214.429}
+{"elapsedSeconds":1500.4,"rooms":1,"clients":8,"rounds":26,"reconnects":25,"steps":166047,"movesReceived":1770736,"heapMB":18.93,"rssMB":77.63,"lastTickMs":216.982}
+{"elapsedSeconds":1560.4,"rooms":1,"clients":8,"rounds":27,"reconnects":26,"steps":172803,"movesReceived":1842800,"heapMB":25.22,"rssMB":65.84,"lastTickMs":195.623}
+{"elapsedSeconds":1620.4,"rooms":1,"clients":8,"rounds":28,"reconnects":27,"steps":179649,"movesReceived":1915768,"heapMB":23.84,"rssMB":74.48,"lastTickMs":196.843}
+{"elapsedSeconds":1680.4,"rooms":1,"clients":8,"rounds":29,"reconnects":28,"steps":186504,"movesReceived":1988920,"heapMB":22.79,"rssMB":77.22,"lastTickMs":199.378}
+{"elapsedSeconds":1740.5,"rooms":1,"clients":8,"rounds":30,"reconnects":29,"steps":193350,"movesReceived":2061944,"heapMB":22.09,"rssMB":78.36,"lastTickMs":200.498}
+{
+  "status": "PASS",
+  "scope": "Real-time Node physics + 8 WebSocket clients; not 8 human players or browser/GPU soak",
+  "requestedSeconds": 1800,
+  "elapsedSeconds": 1800.122,
+  "rounds": 30,
+  "reconnects": 29,
+  "steps": 200124,
+  "movesReceived": 2134192,
+  "maxRooms": 1,
+  "samples": [
+    {
+      "elapsedSeconds": 60.2,
+      "rooms": 1,
+      "clients": 8,
+      "rounds": 2,
+      "reconnects": 1,
+      "steps": 6603,
+      "movesReceived": 70400,
+      "heapMB": 17.39,
+      "rssMB": 77.67,
+      "lastTickMs": 219.287
+    },
+    {
+      "elapsedSeconds": 120.2,
+      "rooms": 1,
+      "clients": 8,
+      "rounds": 3,
+      "reconnects": 2,
+      "steps": 13224,
+      "movesReceived": 140992,
+      "heapMB": 14.74,
+      "rssMB": 71.2,
+      "lastTickMs": 213.018
+    },
+    {
+      "elapsedSeconds": 180.2,
+      "rooms": 1,
+      "clients": 8,
+      "rounds": 4,
+      "reconnects": 3,
+      "steps": 19845,
+      "movesReceived": 211584,
+      "heapMB": 15.53,
+      "rssMB": 71.23,
+      "lastTickMs": 206.057
+    },
+    {
+      "elapsedSeconds": 240.2,
+      "rooms": 1,
+      "clients": 8,
+      "rounds": 5,
+      "reconnects": 4,
+      "steps": 26472,
+      "movesReceived": 282240,
+      "heapMB": 15.46,
+      "rssMB": 61.14,
+      "lastTickMs": 204.79
+    },
+    {
+      "elapsedSeconds": 300.2,
+      "rooms": 1,
+      "clients": 8,
+      "rounds": 6,
+      "reconnects": 5,
+      "steps": 33108,
+      "movesReceived": 353024,
+      "heapMB": 15.34,
+      "rssMB": 63.05,
+      "lastTickMs": 209.093
+    },
+    {
+      "elapsedSeconds": 360.2,
+      "rooms": 1,
+      "clients": 8,
+      "rounds": 7,
+      "reconnects": 6,
+      "steps": 39735,
+      "movesReceived": 423680,
+      "heapMB": 17.84,
+      "rssMB": 61.97,
+      "lastTickMs": 208.214
+    },
+    {
+      "elapsedSeconds": 420.2,
+      "rooms": 1,
+      "clients": 8,
+      "rounds": 8,
+      "reconnects": 7,
+      "steps": 46371,
+      "movesReceived": 494464,
+      "heapMB": 17.93,
+      "rssMB": 57.86,
+      "lastTickMs": 213.177
+    },
+    {
+      "elapsedSeconds": 480.2,
+      "rooms": 1,
+      "clients": 8,
+      "rounds": 9,
+      "reconnects": 8,
+      "steps": 53004,
+      "movesReceived": 565184,
+      "heapMB": 17.89,
+      "rssMB": 57.27,
+      "lastTickMs": 209.957
+    },
+    {
+      "elapsedSeconds": 540.2,
+      "rooms": 1,
+      "clients": 8,
+      "rounds": 10,
+      "reconnects": 9,
+      "steps": 59673,
+      "movesReceived": 636288,
+      "heapMB": 18.96,
+      "rssMB": 57.25,
+      "lastTickMs": 213.115
+    },
+    {
+      "elapsedSeconds": 600.2,
+      "rooms": 1,
+      "clients": 8,
+      "rounds": 11,
+      "reconnects": 10,
+      "steps": 66297,
+      "movesReceived": 707008,
+      "heapMB": 16.48,
+      "rssMB": 64.22,
+      "lastTickMs": 209.986
+    },
+    {
+      "elapsedSeconds": 660.3,
+      "rooms": 1,
+      "clients": 8,
+      "rounds": 12,
+      "reconnects": 11,
+      "steps": 72945,
+      "movesReceived": 777920,
+      "heapMB": 17.85,
+      "rssMB": 64.72,
+      "lastTickMs": 205.742
+    },
+    {
+      "elapsedSeconds": 720.3,
+      "rooms": 1,
+      "clients": 8,
+      "rounds": 13,
+      "reconnects": 12,
+      "steps": 79602,
+      "movesReceived": 848888,
+      "heapMB": 18.7,
+      "rssMB": 63.55,
+      "lastTickMs": 206.237
+    },
+    {
+      "elapsedSeconds": 780.3,
+      "rooms": 1,
+      "clients": 8,
+      "rounds": 14,
+      "reconnects": 13,
+      "steps": 86253,
+      "movesReceived": 919760,
+      "heapMB": 19.62,
+      "rssMB": 63.95,
+      "lastTickMs": 208.889
+    },
+    {
+      "elapsedSeconds": 840.3,
+      "rooms": 1,
+      "clients": 8,
+      "rounds": 15,
+      "reconnects": 14,
+      "steps": 92916,
+      "movesReceived": 990864,
+      "heapMB": 16.42,
+      "rssMB": 64.08,
+      "lastTickMs": 207.198
+    },
+    {
+      "elapsedSeconds": 900.3,
+      "rooms": 1,
+      "clients": 8,
+      "rounds": 16,
+      "reconnects": 15,
+      "steps": 99582,
+      "movesReceived": 1061968,
+      "heapMB": 18,
+      "rssMB": 64.22,
+      "lastTickMs": 203.999
+    },
+    {
+      "elapsedSeconds": 960.3,
+      "rooms": 1,
+      "clients": 8,
+      "rounds": 17,
+      "reconnects": 16,
+      "steps": 106224,
+      "movesReceived": 1132744,
+      "heapMB": 19.28,
+      "rssMB": 63.73,
+      "lastTickMs": 209.324
+    },
+    {
+      "elapsedSeconds": 1020.3,
+      "rooms": 1,
+      "clients": 8,
+      "rounds": 18,
+      "reconnects": 17,
+      "steps": 112857,
+      "movesReceived": 1203480,
+      "heapMB": 20.57,
+      "rssMB": 64.16,
+      "lastTickMs": 210.042
+    },
+    {
+      "elapsedSeconds": 1080.3,
+      "rooms": 1,
+      "clients": 8,
+      "rounds": 19,
+      "reconnects": 18,
+      "steps": 119484,
+      "movesReceived": 1274112,
+      "heapMB": 19.03,
+      "rssMB": 65.91,
+      "lastTickMs": 209.988
+    },
+    {
+      "elapsedSeconds": 1140.4,
+      "rooms": 1,
+      "clients": 8,
+      "rounds": 20,
+      "reconnects": 19,
+      "steps": 126123,
+      "movesReceived": 1344896,
+      "heapMB": 27.45,
+      "rssMB": 78.69,
+      "lastTickMs": 208.346
+    },
+    {
+      "elapsedSeconds": 1200.4,
+      "rooms": 1,
+      "clients": 8,
+      "rounds": 21,
+      "reconnects": 20,
+      "steps": 132774,
+      "movesReceived": 1415832,
+      "heapMB": 19.61,
+      "rssMB": 77.23,
+      "lastTickMs": 209.73
+    },
+    {
+      "elapsedSeconds": 1260.4,
+      "rooms": 1,
+      "clients": 8,
+      "rounds": 22,
+      "reconnects": 21,
+      "steps": 139443,
+      "movesReceived": 1487000,
+      "heapMB": 25.52,
+      "rssMB": 77.63,
+      "lastTickMs": 203.107
+    },
+    {
+      "elapsedSeconds": 1320.4,
+      "rooms": 1,
+      "clients": 8,
+      "rounds": 23,
+      "reconnects": 22,
+      "steps": 146109,
+      "movesReceived": 1558080,
+      "heapMB": 27.88,
+      "rssMB": 70.92,
+      "lastTickMs": 210.754
+    },
+    {
+      "elapsedSeconds": 1380.4,
+      "rooms": 1,
+      "clients": 8,
+      "rounds": 24,
+      "reconnects": 23,
+      "steps": 152757,
+      "movesReceived": 1628920,
+      "heapMB": 16.82,
+      "rssMB": 74.75,
+      "lastTickMs": 213.069
+    },
+    {
+      "elapsedSeconds": 1440.4,
+      "rooms": 1,
+      "clients": 8,
+      "rounds": 25,
+      "reconnects": 24,
+      "steps": 159399,
+      "movesReceived": 1699760,
+      "heapMB": 17.7,
+      "rssMB": 68.2,
+      "lastTickMs": 214.429
+    },
+    {
+      "elapsedSeconds": 1500.4,
+      "rooms": 1,
+      "clients": 8,
+      "rounds": 26,
+      "reconnects": 25,
+      "steps": 166047,
+      "movesReceived": 1770736,
+      "heapMB": 18.93,
+      "rssMB": 77.63,
+      "lastTickMs": 216.982
+    },
+    {
+      "elapsedSeconds": 1560.4,
+      "rooms": 1,
+      "clients": 8,
+      "rounds": 27,
+      "reconnects": 26,
+      "steps": 172803,
+      "movesReceived": 1842800,
+      "heapMB": 25.22,
+      "rssMB": 65.84,
+      "lastTickMs": 195.623
+    },
+    {
+      "elapsedSeconds": 1620.4,
+      "rooms": 1,
+      "clients": 8,
+      "rounds": 28,
+      "reconnects": 27,
+      "steps": 179649,
+      "movesReceived": 1915768,
+      "heapMB": 23.84,
+      "rssMB": 74.48,
+      "lastTickMs": 196.843
+    },
+    {
+      "elapsedSeconds": 1680.4,
+      "rooms": 1,
+      "clients": 8,
+      "rounds": 29,
+      "reconnects": 28,
+      "steps": 186504,
+      "movesReceived": 1988920,
+      "heapMB": 22.79,
+      "rssMB": 77.22,
+      "lastTickMs": 199.378
+    },
+    {
+      "elapsedSeconds": 1740.5,
+      "rooms": 1,
+      "clients": 8,
+      "rounds": 30,
+      "reconnects": 29,
+      "steps": 193350,
+      "movesReceived": 2061944,
+      "heapMB": 22.09,
+      "rssMB": 78.36,
+      "lastTickMs": 200.498
+    }
+  ]
+}

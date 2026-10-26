@@ -110,6 +110,9 @@ export class ThirdPersonCamera {
     // makes the view drift unexpectedly; C is the deliberate recenter action.
     this.orbitReturnTime = Infinity;
     this.yaw -= deltaX * sensitivity * this.sensitivity;
+    // Input runs before combat/physics; publish aim now, not after the
+    // follow-camera render update, or a moving punch trails by one frame.
+    this.camera.userData.movementYaw=this.yaw;
     this.pitch += deltaY * sensitivity * this.sensitivity * (this.invertY?-1:1);
     this.clampPitch();
   }
@@ -295,9 +298,9 @@ export class ThirdPersonCamera {
     this.modeChanged = false;
     this.camera.lookAt(this.lookAtTarget);
     // A wall can safely retract the boom into the local model. Keep the world
-    // readable on a phone; hysteresis prevents flicker along a facade seam.
+    // readable on every input device; hysteresis prevents flicker along a facade seam.
     const bodyDistance=this.camera.position.distanceTo(center);
-    this.localAvatarOccluded=!!this.mobileAutoFollow&&bodyDistance<(this.localAvatarOccluded?1.35:.95);
+    this.localAvatarOccluded=bodyDistance<(this.localAvatarOccluded?1.35:.95);
 
   }
 }

@@ -1,0 +1,392 @@
+{
+  "completed": 64,
+  "total": 64,
+  "passed": 64,
+  "failed": 0,
+  "results": [
+    {
+      "suite": "third-person-only",
+      "pass": true,
+      "exitCode": 0,
+      "seconds": 0.086
+    },
+    {
+      "suite": "motions",
+      "pass": true,
+      "exitCode": 0,
+      "seconds": 2.498
+    },
+    {
+      "suite": "controller",
+      "pass": true,
+      "exitCode": 0,
+      "seconds": 0.196
+    },
+    {
+      "suite": "gameplay",
+      "pass": true,
+      "exitCode": 0,
+      "seconds": 1.191
+    },
+    {
+      "suite": "air-tricks",
+      "pass": true,
+      "exitCode": 0,
+      "seconds": 0.096
+    },
+    {
+      "suite": "dual-web",
+      "pass": true,
+      "exitCode": 0,
+      "seconds": 0.138
+    },
+    {
+      "suite": "pendulum",
+      "pass": true,
+      "exitCode": 0,
+      "seconds": 0.129
+    },
+    {
+      "suite": "physics-invariants",
+      "pass": true,
+      "exitCode": 0,
+      "seconds": 0.199
+    },
+    {
+      "suite": "mechanics-audit",
+      "pass": true,
+      "exitCode": 0,
+      "seconds": 0.213
+    },
+    {
+      "suite": "traversal",
+      "pass": true,
+      "exitCode": 0,
+      "seconds": 1.315
+    },
+    {
+      "suite": "qa",
+      "pass": true,
+      "exitCode": 0,
+      "seconds": 0.299
+    },
+    {
+      "suite": "review-2",
+      "pass": true,
+      "exitCode": 0,
+      "seconds": 0.531
+    },
+    {
+      "suite": "combat",
+      "pass": true,
+      "exitCode": 0,
+      "seconds": 0.101
+    },
+    {
+      "suite": "combat-rig",
+      "pass": true,
+      "exitCode": 0,
+      "seconds": 29.38
+    },
+    {
+      "suite": "motion-timeline",
+      "pass": true,
+      "exitCode": 0,
+      "seconds": 10.175
+    },
+    {
+      "suite": "motion-transitions",
+      "pass": true,
+      "exitCode": 0,
+      "seconds": 4.491
+    },
+    {
+      "suite": "remote-motion",
+      "pass": true,
+      "exitCode": 0,
+      "seconds": 5.502
+    },
+    {
+      "suite": "swing-accessibility",
+      "pass": true,
+      "exitCode": 0,
+      "seconds": 1.354
+    },
+    {
+      "suite": "cross-system-regressions",
+      "pass": true,
+      "exitCode": 0,
+      "seconds": 0.196
+    },
+    {
+      "suite": "web-continuity",
+      "pass": true,
+      "exitCode": 0,
+      "seconds": 1.293
+    },
+    {
+      "suite": "expert-audit",
+      "pass": true,
+      "exitCode": 0,
+      "seconds": 0.197
+    },
+    {
+      "suite": "camera-motion-web",
+      "pass": true,
+      "exitCode": 0,
+      "seconds": 0.29
+    },
+    {
+      "suite": "full-game-audit",
+      "pass": true,
+      "exitCode": 0,
+      "seconds": 0.306
+    },
+    {
+      "suite": "input-lifecycle",
+      "pass": true,
+      "exitCode": 0,
+      "seconds": 0.27
+    },
+    {
+      "suite": "wall-ledge",
+      "pass": true,
+      "exitCode": 0,
+      "seconds": 9.188
+    },
+    {
+      "suite": "wall-ledge-rig",
+      "pass": true,
+      "exitCode": 0,
+      "seconds": 4.338
+    },
+    {
+      "suite": "pose",
+      "pass": true,
+      "exitCode": 0,
+      "seconds": 75.315
+    },
+    {
+      "suite": "motion-sources",
+      "pass": true,
+      "exitCode": 0,
+      "seconds": 3.664
+    },
+    {
+      "suite": "all-motions",
+      "pass": true,
+      "exitCode": 0,
+      "seconds": 30.371
+    },
+    {
+      "suite": "web-hand-pose",
+      "pass": true,
+      "exitCode": 0,
+      "seconds": 29.599
+    },
+    {
+      "suite": "wall-crawl",
+      "pass": true,
+      "exitCode": 0,
+      "seconds": 99.692
+    },
+    {
+      "suite": "natural-wall-motion",
+      "pass": true,
+      "exitCode": 0,
+      "seconds": 18.352
+    },
+    {
+      "suite": "silk-gait",
+      "pass": true,
+      "exitCode": 0,
+      "seconds": 178.751
+    },
+    {
+      "suite": "limb-continuity",
+      "pass": true,
+      "exitCode": 0,
+      "seconds": 19.489
+    },
+    {
+      "suite": "turn-joint-stability",
+      "pass": true,
+      "exitCode": 0,
+      "seconds": 105.214
+    },
+    {
+      "suite": "motion-cleanup",
+      "pass": true,
+      "exitCode": 0,
+      "seconds": 38.545
+    },
+    {
+      "suite": "end-joint-stability",
+      "pass": true,
+      "exitCode": 0,
+      "seconds": 222.656
+    },
+    {
+      "suite": "combat-aim",
+      "pass": true,
+      "exitCode": 0,
+      "seconds": 0.145
+    },
+    {
+      "suite": "combat-traversal",
+      "pass": true,
+      "exitCode": 0,
+      "seconds": 7.23
+    },
+    {
+      "suite": "combat-quality",
+      "pass": true,
+      "exitCode": 0,
+      "seconds": 22.504
+    },
+    {
+      "suite": "moving-combat-skin",
+      "pass": true,
+      "exitCode": 0,
+      "seconds": 10.353
+    },
+    {
+      "suite": "appearances",
+      "pass": true,
+      "exitCode": 0,
+      "seconds": 2.511
+    },
+    {
+      "suite": "full-appearance-motions",
+      "pass": true,
+      "exitCode": 0,
+      "seconds": 24.019
+    },
+    {
+      "suite": "motion-expression",
+      "pass": true,
+      "exitCode": 0,
+      "seconds": 8.917
+    },
+    {
+      "suite": "impact-body",
+      "pass": true,
+      "exitCode": 0,
+      "seconds": 17.717
+    },
+    {
+      "suite": "drop-motion",
+      "pass": true,
+      "exitCode": 0,
+      "seconds": 0.546
+    },
+    {
+      "suite": "human-mode",
+      "pass": true,
+      "exitCode": 0,
+      "seconds": 13.25
+    },
+    {
+      "suite": "wall-cross-crawl",
+      "pass": true,
+      "exitCode": 0,
+      "seconds": 1.409
+    },
+    {
+      "suite": "combat-feet",
+      "pass": true,
+      "exitCode": 0,
+      "seconds": 100.744
+    },
+    {
+      "suite": "motion-reset",
+      "pass": true,
+      "exitCode": 0,
+      "seconds": 9.035
+    },
+    {
+      "suite": "wall-head-clearance",
+      "pass": true,
+      "exitCode": 0,
+      "seconds": 5.515
+    },
+    {
+      "suite": "combat-roll-recovery",
+      "pass": true,
+      "exitCode": 0,
+      "seconds": 12.939
+    },
+    {
+      "suite": "motion-combinations",
+      "pass": true,
+      "exitCode": 0,
+      "seconds": 23.417
+    },
+    {
+      "suite": "mobile-traversal",
+      "pass": true,
+      "exitCode": 0,
+      "seconds": 0.297
+    },
+    {
+      "suite": "expanded-input-camera",
+      "pass": true,
+      "exitCode": 0,
+      "seconds": 0.62
+    },
+    {
+      "suite": "live-movement-camera",
+      "pass": true,
+      "exitCode": 0,
+      "seconds": 29.855
+    },
+    {
+      "suite": "expanded-gait-stability",
+      "pass": true,
+      "exitCode": 0,
+      "seconds": 13.377
+    },
+    {
+      "suite": "motion-interruptions",
+      "pass": true,
+      "exitCode": 0,
+      "seconds": 16.152
+    },
+    {
+      "suite": "expanded-terrain-motion",
+      "pass": true,
+      "exitCode": 0,
+      "seconds": 73.425
+    },
+    {
+      "suite": "motion-packet-gaps",
+      "pass": true,
+      "exitCode": 0,
+      "seconds": 4.281
+    },
+    {
+      "suite": "online-guard",
+      "pass": true,
+      "exitCode": 0,
+      "seconds": 3.749
+    },
+    {
+      "suite": "online-motion-sync",
+      "pass": true,
+      "exitCode": 0,
+      "seconds": 25.552
+    },
+    {
+      "suite": "online-stance",
+      "pass": true,
+      "exitCode": 0,
+      "seconds": 2.541
+    },
+    {
+      "suite": "motion-adversarial",
+      "pass": true,
+      "exitCode": 0,
+      "seconds": 112.155
+    }
+  ]
+}

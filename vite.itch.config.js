@@ -1,4 +1,5 @@
 import { defineConfig } from 'vite';
+import {releasePlugin} from './scripts/release-plugin.mjs';
 
 // A separate build keeps the normal same-origin deployment unchanged.
 export default defineConfig({
@@ -6,7 +7,7 @@ export default defineConfig({
   publicDir: 'public',
   build: { outDir: 'artifacts/itchio/build', emptyOutDir: true },
   define: { 'import.meta.env.VITE_WS_URL': JSON.stringify('') },
-  plugins: [{
+  plugins: [releasePlugin(),{
     name: 'itch-portable-assets',
     enforce: 'pre',
     transform(code, id) {

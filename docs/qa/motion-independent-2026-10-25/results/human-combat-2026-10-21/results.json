@@ -1,0 +1,149 @@
+{
+  "status": "PASS",
+  "results": [
+    {
+      "fps": 24,
+      "guard": false,
+      "yaw": 0,
+      "headYawError": 0.00001619921597029155,
+      "clip": "regularRun"
+    },
+    {
+      "fps": 24,
+      "guard": false,
+      "yaw": 1.5707963267948966,
+      "headYawError": 0.00001635595011380828,
+      "clip": "regularRun"
+    },
+    {
+      "fps": 24,
+      "guard": false,
+      "yaw": 3.141592653589793,
+      "headYawError": 0.000016176701413239816,
+      "clip": "regularRun"
+    },
+    {
+      "fps": 24,
+      "guard": true,
+      "yaw": 0,
+      "headYawError": 0.000007917571076845593,
+      "clip": "walk"
+    },
+    {
+      "fps": 24,
+      "guard": true,
+      "yaw": 1.5707963267948966,
+      "headYawError": 0.000008054484469784713,
+      "clip": "walk"
+    },
+    {
+      "fps": 24,
+      "guard": true,
+      "yaw": 3.141592653589793,
+      "headYawError": 0.000007871404088081626,
+      "clip": "walk"
+    },
+    {
+      "fps": 60,
+      "guard": false,
+      "yaw": 0,
+      "headYawError": 0.00001619921597029155,
+      "clip": "regularRun"
+    },
+    {
+      "fps": 60,
+      "guard": false,
+      "yaw": 1.5707963267948966,
+      "headYawError": 0.00001635595011380828,
+      "clip": "regularRun"
+    },
+    {
+      "fps": 60,
+      "guard": false,
+      "yaw": 3.141592653589793,
+      "headYawError": 0.000016176701413239816,
+      "clip": "regularRun"
+    },
+    {
+      "fps": 60,
+      "guard": true,
+      "yaw": 0,
+      "headYawError": 0.000007917571076845593,
+      "clip": "walk"
+    },
+    {
+      "fps": 60,
+      "guard": true,
+      "yaw": 1.5707963267948966,
+      "headYawError": 0.000008054484469784713,
+      "clip": "walk"
+    },
+    {
+      "fps": 60,
+      "guard": true,
+      "yaw": 3.141592653589793,
+      "headYawError": 0.000007871404088081626,
+      "clip": "walk"
+    },
+    {
+      "fps": 144,
+      "guard": false,
+      "yaw": 0,
+      "headYawError": 0.00001619921597029155,
+      "clip": "regularRun"
+    },
+    {
+      "fps": 144,
+      "guard": false,
+      "yaw": 1.5707963267948966,
+      "headYawError": 0.00001635595011380828,
+      "clip": "regularRun"
+    },
+    {
+      "fps": 144,
+      "guard": false,
+      "yaw": 3.141592653589793,
+      "headYawError": 0.000016176701413239816,
+      "clip": "regularRun"
+    },
+    {
+      "fps": 144,
+      "guard": true,
+      "yaw": 0,
+      "headYawError": 0.000007917571076845593,
+      "clip": "walk"
+    },
+    {
+      "fps": 144,
+      "guard": true,
+      "yaw": 1.5707963267948966,
+      "headYawError": 0.000008054484469784713,
+      "clip": "walk"
+    },
+    {
+      "fps": 144,
+      "guard": true,
+      "yaw": 3.141592653589793,
+      "headYawError": 0.000007871404088081626,
+      "clip": "walk"
+    },
+    {
+      "fps": 24,
+      "input": "B+W",
+      "travel": 1.3752456895474365,
+      "clip": "walk"
+    },
+    {
+      "fps": 60,
+      "input": "B+W",
+      "travel": 1.3752456895474365,
+      "clip": "walk"
+    },
+    {
+      "fps": 144,
+      "input": "B+W",
+      "travel": 1.3752456895474365,
+      "clip": "walk"
+    }
+  ]
+}

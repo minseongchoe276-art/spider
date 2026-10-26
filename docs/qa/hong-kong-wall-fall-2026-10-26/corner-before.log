@@ -1,0 +1,4 @@
+FAIL A real streamed facade with open railing gaps reaches a supported roof at 24/30/60/144 FPS: 24fps stayed RUNNING at y=20.11333333300569
+PASS Visual LOD eviction preserves a nearby climbing facade, then releases it after departure
+PASS An under-map fall restores the most recent supported position rather than an obsolete origin
+PASS The recovery floor stays available across an unloaded district and is released when superseded

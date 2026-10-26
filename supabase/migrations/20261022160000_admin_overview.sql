@@ -27,9 +27,8 @@ create table if not exists game.admin_global (
   window_start timestamptz not null default clock_timestamp()
 );
 insert into game.admin_global(id) values (true) on conflict (id) do nothing;
-insert into game.admin_credential(token_sha256)
-values ('9ddf127c808cc89e8af9734aeaac18f3f2d85f1cb3b1c76525898a3461ee90a6')
-on conflict (id) do nothing;
+-- No shared bootstrap credential. An operator must provision their own verifier
+-- through a privileged connection before administrator access becomes available.
 
 create or replace function game.sha256_hex(p_text text) returns text
 language plpgsql immutable set search_path = ''

@@ -1,0 +1,59 @@
+{
+  "status": "PASS",
+  "cases": [
+    {
+      "encoding": "br",
+      "originalBytes": 1286480,
+      "transferredBytes": 324559,
+      "byteExact": true,
+      "headMatches": true
+    },
+    {
+      "encoding": "gzip",
+      "originalBytes": 1286480,
+      "transferredBytes": 360249,
+      "byteExact": true,
+      "headMatches": true
+    },
+    {
+      "encoding": "identity",
+      "originalBytes": 1286480,
+      "transferredBytes": 1286480,
+      "byteExact": true,
+      "headMatches": true
+    }
+  ],
+  "binaryCases": [
+    {
+      "path": "/models/shadow-pulse-rig.glb",
+      "encoding": "br",
+      "originalBytes": 7711440,
+      "transferredBytes": 6717208,
+      "byteExact": true
+    },
+    {
+      "path": "/models/shadow-pulse-rig.glb",
+      "encoding": "gzip",
+      "originalBytes": 7711440,
+      "transferredBytes": 6705249,
+      "byteExact": true
+    },
+    {
+      "path": "/models/Idle.fbx",
+      "encoding": "br",
+      "originalBytes": 18041488,
+      "transferredBytes": 4248635,
+      "byteExact": true
+    },
+    {
+      "path": "/models/Idle.fbx",
+      "encoding": "gzip",
+      "originalBytes": 18041488,
+      "transferredBytes": 4853600,
+      "byteExact": true
+    }
+  ],
+  "refusal406": true,
+  "missing404": true,
+  "hiddenFile403": true
+}

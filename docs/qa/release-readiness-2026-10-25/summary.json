@@ -1,0 +1,77 @@
+{
+  "checkedAt": "2026-10-25T09:49:56.325Z",
+  "status": "IMPLEMENTED_AND_LOCAL_TESTED_RELEASE_APPROVAL_PENDING",
+  "sourceId": "30dff266699553bccf08a9f64956ae970dbcb32cd4e1d3ee6aa441b3f0468971",
+  "releaseId": "5fa6fbc88792f19edf541447bf3871a23c94d23673fa7497b6c142e0e7bf0810",
+  "automated": {
+    "total": 107,
+    "passed": 107,
+    "failed": 0,
+    "sourceChanged": [],
+    "extraSuites": 2
+  },
+  "build": "PASS_WITH_LARGE_CHUNK_WARNING",
+  "itchBuild": "PASS",
+  "allAssetHttpHashes": "PASS",
+  "knownNpmVulnerabilities": 0,
+  "soak": {
+    "status": "PASS",
+    "elapsedSeconds": 1800.122,
+    "rounds": 30,
+    "reconnects": 29,
+    "steps": 200124,
+    "movesReceived": 2134192,
+    "scope": "Real-time Node physics + 8 WebSocket clients; not 8 human players or browser/GPU soak",
+    "heapMB": [
+      14.74,
+      27.88
+    ],
+    "rssMB": [
+      57.25,
+      78.69
+    ]
+  },
+  "browser": {
+    "seconds": 405,
+    "p95Ms": 19,
+    "sourceMatches": true,
+    "physicalDeviceTest": false
+  },
+  "publicProtocol": {
+    "twoPlayers": "PASS",
+    "eightAndThreePlayers": "PASS",
+    "scope": "Temporary protocol clients from one verification machine"
+  },
+  "operatingEdge": "PASS",
+  "operatingDatabase": {
+    "status": "FAIL",
+    "compared": 16,
+    "different": [
+      "game:sha256_hex:p_text text",
+      "public:game_admin_overview:p_token text",
+      "public:game_can_receive:p_topic text",
+      "public:game_command:p_action text, p_data jsonb",
+      "public:game_list:",
+      "public:game_move_pose:p_data jsonb",
+      "public:game_presence_ping:p_city text, p_activity text",
+      "public:game_resume:",
+      "public:game_state:p_code text"
+    ]
+  },
+  "releaseBudgets": {
+    "bootstrap": true,
+    "character": true,
+    "total": true
+  },
+  "assetInventory": {
+    "files": 88,
+    "rightsClearance": "PENDING"
+  },
+  "remaining": [
+    "Deploy final frontend and room-server versions; reconcile operating DB migration/privilege differences",
+    "Physical iOS/Android/low-end PC qualification including 30-60 active minutes, thermal and battery observations",
+    "Actual new-player and independent match-balance observations",
+    "Asset provenance and redistribution evidence"
+  ],
+  "report": "REPORT.md"
+}

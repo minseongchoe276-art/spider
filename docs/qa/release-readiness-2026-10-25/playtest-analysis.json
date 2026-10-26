@@ -1,0 +1,61 @@
+{
+  "sessions": 2,
+  "performance": [
+    {
+      "sourceId": "30dff266699553bccf08a9f64956ae970dbcb32cd4e1d3ee6aa441b3f0468971",
+      "city": "procedural",
+      "touch": false,
+      "viewport": [
+        1280,
+        720
+      ],
+      "quality": "balanced",
+      "sessions": 1,
+      "activeSeconds": 405,
+      "p95Ms": [
+        19
+      ],
+      "longSessions": 0
+    },
+    {
+      "sourceId": "14703d764f275f5d51b26e584812273b9419744e018686429475b785099a164a",
+      "city": "procedural",
+      "touch": false,
+      "viewport": [
+        1280,
+        720
+      ],
+      "quality": "balanced",
+      "sessions": 1,
+      "activeSeconds": 586,
+      "p95Ms": [
+        19
+      ],
+      "longSessions": 0
+    }
+  ],
+  "lessons": [
+    {
+      "group": [
+        "14703d764f275f5d51b26e584812273b9419744e018686429475b785099a164a",
+        "walk"
+      ],
+      "completed": 0,
+      "abandoned": 1,
+      "durationSeconds": 0
+    }
+  ],
+  "missions": [
+    {
+      "group": [
+        "14703d764f275f5d51b26e584812273b9419744e018686429475b785099a164a",
+        "travel"
+      ],
+      "completed": 0,
+      "abandoned": 1,
+      "durationSeconds": 0
+    }
+  ],
+  "balance": [],
+  "scope": "Local observations only. A session is not a verified unique/new human; match records are correlated participant observations, not independent matches. Device sensors and asset rights are not inferred."
+}

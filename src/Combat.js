@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import {GROUNDED} from './MotionCatalog.js';
 import {COMBAT_GROUND_STATES} from './AttackRules.js';
 import {MATCH} from './MatchRules.js';
-import {BINDINGS,keyLabel} from './PlayerSettings.js';
+import {BINDINGS} from './PlayerSettings.js';
 const canStrike=p=>COMBAT_GROUND_STATES.includes(p.state);
 
 export const ATTACKS={
@@ -10,7 +10,7 @@ export const ATTACKS={
   cross:{duration:0.82,from:0.42,to:0.52,damage:17,reach:1.9},
   hook:{duration:0.9,from:0.342,to:0.432,damage:32,reach:2.1},
   special:{duration:1.2,from:0.62,to:0.74,damage:48,reach:2.0},
-  heavy:{duration:0.9,from:0.342,to:0.432,damage:32,reach:2.1},
+  heavy:{duration:1.05,from:0.52,to:0.7,damage:32,reach:2.1},
 };
 const grounded=p=>GROUNDED.includes(p.state);
 const forward=p=>new THREE.Vector3(Math.sin(p.facingAngle),0,Math.cos(p.facingAngle));
@@ -32,14 +32,14 @@ export class CombatSystem {
     input.webZipHeld=false;
     this.physics.webEnabled=this.mode==='web';this.physics.clearPendingInput?.();
     if(this.mode==='combat')this.physics.clearWebAnchor?.();
-    const bindings=this.getBindings();
-    this.onNotice(this.mode==='web'?`에너지 와이어 모드 · 조준한 표면에 좌·우클릭으로 연결 / 점프는 ${keyLabel(bindings.jump)} / 떼면 관성 비행`:`전투 모드 · 지상 좌클릭 잽 / 우클릭 스트레이트 · ${keyLabel(bindings.guard)} 방어 · 와이어는 ${keyLabel(bindings.mode)}로 모드 전환 후 사용`);
+    // The persistent mode label and action controls already confirm the switch.
     return this.mode;
   }
   face(camera) {
-    const p=this.physics,closest=this.enemies.filter(e=>e.health>0&&e.position.distanceTo(p.position)<5)
-      .sort((a,b)=>a.position.distanceToSquared(p.position)-b.position.distanceToSquared(p.position))[0];
-    const dir=closest?closest.position.clone().sub(p.position):camera?.getWorldDirection(new THREE.Vector3());
+    // Use the same horizontal aim as movement, even at near-vertical pitch.
+    // A nearby off-screen enemy must not silently pull a punch sideways.
+    const p=this.physics,yaw=camera?.userData?.movementYaw;
+    const dir=Number.isFinite(yaw)?new THREE.Vector3(Math.sin(yaw),0,Math.cos(yaw)):camera?.getWorldDirection(new THREE.Vector3());
     if(dir && Math.hypot(dir.x,dir.z)>0.01) {p.facingAngle=Math.atan2(dir.x,dir.z);this.character.targetFacingAngle=p.facingAngle;}
   }
   start(key,duration,camera) {
@@ -59,7 +59,7 @@ export class CombatSystem {
   heavy(camera) {
     if(this.mode!=='combat' || this.action || this.stamina<18 || !canStrike(this.physics))return false;
     this.stamina-=18;this.blocking=false;
-    this.start('hook',ATTACKS.hook.duration,camera);
+    this.start('heavy',ATTACKS.heavy.duration,camera);
     return true;
   }
   special(camera) {
@@ -104,11 +104,12 @@ export class CombatSystem {
     if(input)this.guard(!!input.guard);
     const current=this.action;
     const stopping=this.character.activeAction && ['stop','runStop'].some(key=>this.character.activeAction===this.character.actions?.[key] && this.character.activeAction?.time<this.character.activeAction.getClip().duration-.05) || ['RUNNING','SPRINTING'].includes(this.character.lastState);
-    // Moving strikes retain the locomotion legs and layer the upper body.
+    // Track camera aim throughout a strike, including while standing still.
+    if(current && ATTACKS[current.key])this.face(camera);
     const dodgeSpeed=current?.direction?
       ({dodgeLeft:0.8,dodgeRight:0.8,dodgeBack:1.35,dodgeForward:2.3}[current.key] || 0)*
       Math.sin(Math.PI*THREE.MathUtils.clamp(current.time/current.duration,0,1)):0;
-    this.physics.combatMotion=current?{key:current.key,direction:current.direction || null,speed:dodgeSpeed}:this.blocking?{key:'guard'}:null;
+    this.physics.combatMotion=current?{key:current.key,direction:current.direction || null,speed:dodgeSpeed,plant:!!ATTACKS[current.key]}:this.blocking?{key:'guard'}:null;
     this.character.combatAction=current?{id:current.id,key:current.key,time:current.time,duration:current.duration}:
       this.blocking?{key:'guard'}:!stopping && this.mode==='combat' && this.physics.state==='IDLE' && Math.hypot(this.physics.velocity.x,this.physics.velocity.z)<0.15?{key:'combatIdle'}:null;
     if(current || this.blocking)this.character.targetFacingAngle=this.physics.facingAngle;

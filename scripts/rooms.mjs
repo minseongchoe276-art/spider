@@ -9,8 +9,6 @@ import {attackGate,canAttack,opponents,guardedDamage,COMBAT_GROUND_STATES} from 
 import {LOCAL_CITY} from '../src/LocalCityLayout.js';
 
 export const ROOM_FEATURES=['custom-matches','named-targets','attack-results','directional-guard','motion-phase','admin-overview'];
-// GAME_ADMIN_TOKEN replaces this verifier. The password itself is not in the repository.
-const BUILTIN_ADMIN_SHA256='9ddf127c808cc89e8af9734aeaac18f3f2d85f1cb3b1c76525898a3461ee90a6';
 const rooms = new Map();
 const clients = new Set();
 const adminStrikes=[];
@@ -28,8 +26,11 @@ const sha256 = value => createHash('sha256').update(String(value)).digest();
 const sameHash = (left, right) => Buffer.isBuffer(left) && Buffer.isBuffer(right) && left.length===right.length && left.length>0 && timingSafeEqual(left, right);
 function adminAuthorized(token){
   if(typeof token!=='string' || token.length<1 || token.length>128) return false;
+  // Never inherit a shared administrator credential from a published build.
+  const configured=process.env.GAME_ADMIN_TOKEN;
+  if(typeof configured!=='string'||configured.length<1||configured.length>128)return false;
   const given=sha256(token);
-  const expected=process.env.GAME_ADMIN_TOKEN ? sha256(process.env.GAME_ADMIN_TOKEN) : Buffer.from(BUILTIN_ADMIN_SHA256,'hex');
+  const expected=sha256(configured);
   return sameHash(given, expected);
 }
 function adminLocked(ws){

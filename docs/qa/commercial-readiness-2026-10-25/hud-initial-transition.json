@@ -1,0 +1,774 @@
+[
+  {
+    "language": "ko",
+    "outside": [],
+    "overlaps": [],
+    "rows": [
+      {
+        "id": "hand-status",
+        "rect": {
+          "bottom": 779,
+          "left": 409.9921875,
+          "right": 644.0078125,
+          "top": 749.8046875
+        },
+        "text": "좌클릭 준비 · 우클릭 준비 · 당기기: 공중 전용",
+        "visible": true
+      },
+      {
+        "id": "gameplay-quickbar",
+        "rect": {
+          "bottom": 824,
+          "left": 357.2578125,
+          "right": 696.7421875,
+          "top": 789
+        },
+        "text": "W A S D 이동SPACE 점프Q 전투 / 와이어H 조작키ESC 메뉴",
+        "visible": true
+      },
+      {
+        "id": "hud-top-left",
+        "rect": {
+          "bottom": 824,
+          "left": 20,
+          "right": 214,
+          "top": 737.609375
+        },
+        "text": "SHADOW PULSE\n          NEON CORE · SHADOW PULSE\n        \n      \n      \n      \n        \n          속도\n          \n            0\n            KM/H\n          \n          \n        \n\n        \n          고도\n          \n            95\n            M",
+        "visible": true
+      },
+      {
+        "id": "web-status-pill",
+        "rect": {
+          "bottom": 725,
+          "left": 20,
+          "right": 110.09375,
+          "top": 695
+        },
+        "text": "와이어 준비",
+        "visible": true
+      },
+      {
+        "id": "minimap-panel",
+        "rect": {
+          "bottom": 683,
+          "left": 517.2734375,
+          "right": 816,
+          "top": 322.09375
+        },
+        "text": "네온 도심추천 · 균형형\n        로컬\n      \n      \n        \n        \n        N ↑\n        나 경찰 도망자\n        180m 반경\n      \n      E -100m  N +96m  ·  ALT 95m",
+        "visible": true
+      },
+      {
+        "id": "match-hud",
+        "rect": {
+          "bottom": 81,
+          "left": 24,
+          "right": 816,
+          "top": 21
+        },
+        "text": "네온 도심 · 자유 탐험\n      혼자 플레이자유 탐험M · 전체 지도1명\n      전체화면\n      ? 조작",
+        "visible": true
+      }
+    ],
+    "scale": "1",
+    "viewport": [
+      840,
+      844
+    ]
+  },
+  {
+    "language": "ko",
+    "outside": [],
+    "overlaps": [
+      {
+        "a": "hand-status",
+        "b": "minimap-panel",
+        "height": 4.1953125,
+        "width": 66.4453125
+      }
+    ],
+    "rows": [
+      {
+        "id": "hand-status",
+        "rect": {
+          "bottom": 559.3515625,
+          "left": 216.5546875,
+          "right": 433.4453125,
+          "top": 531.7578125
+        },
+        "text": "좌클릭 준비 · 우클릭 준비 · 당기기: 공중 전용",
+        "visible": true
+      },
+      {
+        "id": "hud-top-left",
+        "rect": {
+          "bottom": 704.6171875,
+          "left": 15.3828125,
+          "right": 195.546875,
+          "top": 618.2265625
+        },
+        "text": "SHADOW PULSE\n          NEON CORE · SHADOW PULSE\n        \n      \n      \n      \n        \n          속도\n          \n            0\n            KM/H\n          \n          \n        \n\n        \n          고도\n          \n            95\n            M",
+        "visible": true
+      },
+      {
+        "id": "web-status-pill",
+        "rect": {
+          "bottom": 601.3515625,
+          "left": 15.3828125,
+          "right": 105.4765625,
+          "top": 571.3515625
+        },
+        "text": "와이어 준비",
+        "visible": true
+      },
+      {
+        "id": "minimap-panel",
+        "rect": {
+          "bottom": 535.953125,
+          "left": 367,
+          "right": 635.2265625,
+          "top": 213.03125
+        },
+        "text": "네온 도심추천 · 균형형\n        로컬\n      \n      \n        \n        \n        N ↑\n        나 경찰 도망자\n        180m 반경\n      \n      E -100m  N +96m  ·  ALT 95m",
+        "visible": true
+      },
+      {
+        "id": "match-hud",
+        "rect": {
+          "bottom": 89,
+          "left": 8,
+          "right": 642,
+          "top": 8
+        },
+        "text": "네온 도심 · 자유 탐험\n      혼자 플레이자유 탐험M · 전체 지도1명\n      전체화면\n      ? 조작",
+        "visible": true
+      }
+    ],
+    "scale": "1",
+    "viewport": [
+      650,
+      720
+    ]
+  },
+  {
+    "language": "ko",
+    "outside": [],
+    "overlaps": [],
+    "rows": [
+      {
+        "id": "hand-status",
+        "rect": {
+          "bottom": 655,
+          "left": 314.71875,
+          "right": 548.734375,
+          "top": 625.8046875
+        },
+        "text": "좌클릭 준비 · 우클릭 준비 · 당기기: 공중 전용",
+        "visible": true
+      },
+      {
+        "id": "gameplay-quickbar",
+        "rect": {
+          "bottom": 700,
+          "left": 261.984375,
+          "right": 601.46875,
+          "top": 665
+        },
+        "text": "W A S D 이동SPACE 점프Q 전투 / 와이어H 조작키ESC 메뉴",
+        "visible": true
+      },
+      {
+        "id": "hud-top-left",
+        "rect": {
+          "bottom": 700.390625,
+          "left": 19.609375,
+          "right": 212.453125,
+          "top": 614
+        },
+        "text": "SHADOW PULSE\n          NEON CORE · SHADOW PULSE\n        \n      \n      \n      \n        \n          속도\n          \n            0\n            KM/H\n          \n          \n        \n\n        \n          고도\n          \n            95\n            M",
+        "visible": true
+      },
+      {
+        "id": "web-status-pill",
+        "rect": {
+          "bottom": 602.640625,
+          "left": 19.609375,
+          "right": 109.703125,
+          "top": 572.640625
+        },
+        "text": "와이어 준비",
+        "visible": true
+      },
+      {
+        "id": "minimap-panel",
+        "rect": {
+          "bottom": 550.6796875,
+          "left": 323.1640625,
+          "right": 627.7734375,
+          "top": 191.375
+        },
+        "text": "네온 도심추천 · 균형형\n        로컬\n      \n      \n        \n        \n        N ↑\n        나 경찰 도망자\n        180m 반경\n      \n      E -100m  N +96m  ·  ALT 95m",
+        "visible": true
+      },
+      {
+        "id": "match-hud",
+        "rect": {
+          "bottom": 135,
+          "left": 24,
+          "right": 627,
+          "top": 21
+        },
+        "text": "네온 도심 · 자유 탐험\n      혼자 플레이자유 탐험M · 전체 지도1명\n      전체화면\n      ? 조작",
+        "visible": true
+      }
+    ],
+    "scale": "1",
+    "viewport": [
+      651,
+      720
+    ]
+  },
+  {
+    "language": "ko",
+    "outside": [],
+    "overlaps": [],
+    "rows": [
+      {
+        "id": "hand-status",
+        "rect": {
+          "bottom": 655,
+          "left": 464.9921875,
+          "right": 699.0078125,
+          "top": 625.8046875
+        },
+        "text": "좌클릭 준비 · 우클릭 준비 · 당기기: 공중 전용",
+        "visible": true
+      },
+      {
+        "id": "gameplay-quickbar",
+        "rect": {
+          "bottom": 700,
+          "left": 412.2578125,
+          "right": 751.7421875,
+          "top": 665
+        },
+        "text": "W A S D 이동SPACE 점프Q 전투 / 와이어H 조작키ESC 메뉴",
+        "visible": true
+      },
+      {
+        "id": "hud-top-left",
+        "rect": {
+          "bottom": 700,
+          "left": 20,
+          "right": 214,
+          "top": 613.609375
+        },
+        "text": "SHADOW PULSE\n          NEON CORE · SHADOW PULSE\n        \n      \n      \n      \n        \n          속도\n          \n            0\n            KM/H\n          \n          \n        \n\n        \n          고도\n          \n            95\n            M",
+        "visible": true
+      },
+      {
+        "id": "web-status-pill",
+        "rect": {
+          "bottom": 601.265625,
+          "left": 20,
+          "right": 110.09375,
+          "top": 571.265625
+        },
+        "text": "와이어 준비",
+        "visible": true
+      },
+      {
+        "id": "minimap-panel",
+        "rect": {
+          "bottom": 558.8515625,
+          "left": 606,
+          "right": 926,
+          "top": 176.671875
+        },
+        "text": "네온 도심추천 · 균형형\n        로컬\n      \n      \n        \n        \n        N ↑\n        나 경찰 도망자\n        180m 반경\n      \n      E -100m  N +96m  ·  ALT 95m",
+        "visible": true
+      },
+      {
+        "id": "match-hud",
+        "rect": {
+          "bottom": 81,
+          "left": 24,
+          "right": 926,
+          "top": 21
+        },
+        "text": "네온 도심 · 자유 탐험\n      혼자 플레이자유 탐험M · 전체 지도1명\n      전체화면\n      ? 조작",
+        "visible": true
+      }
+    ],
+    "scale": "1",
+    "viewport": [
+      950,
+      720
+    ]
+  },
+  {
+    "language": "ko",
+    "outside": [],
+    "overlaps": [],
+    "rows": [
+      {
+        "id": "hand-status",
+        "rect": {
+          "bottom": 655,
+          "left": 465.4921875,
+          "right": 699.5078125,
+          "top": 625.8046875
+        },
+        "text": "좌클릭 준비 · 우클릭 준비 · 당기기: 공중 전용",
+        "visible": true
+      },
+      {
+        "id": "gameplay-quickbar",
+        "rect": {
+          "bottom": 700,
+          "left": 412.7578125,
+          "right": 752.2421875,
+          "top": 665
+        },
+        "text": "W A S D 이동SPACE 점프Q 전투 / 와이어H 조작키ESC 메뉴",
+        "visible": true
+      },
+      {
+        "id": "hud-top-left",
+        "rect": {
+          "bottom": 700,
+          "left": 20,
+          "right": 214,
+          "top": 613.609375
+        },
+        "text": "SHADOW PULSE\n          NEON CORE · SHADOW PULSE\n        \n      \n      \n      \n        \n          속도\n          \n            0\n            KM/H\n          \n          \n        \n\n        \n          고도\n          \n            95\n            M",
+        "visible": true
+      },
+      {
+        "id": "web-status-pill",
+        "rect": {
+          "bottom": 601.0078125,
+          "left": 20,
+          "right": 110.09375,
+          "top": 571.0078125
+        },
+        "text": "와이어 준비",
+        "visible": true
+      },
+      {
+        "id": "minimap-panel",
+        "rect": {
+          "bottom": 558.9921875,
+          "left": 607,
+          "right": 927,
+          "top": 176.8125
+        },
+        "text": "네온 도심추천 · 균형형\n        로컬\n      \n      \n        \n        \n        N ↑\n        나 경찰 도망자\n        180m 반경\n      \n      E -100m  N +96m  ·  ALT 95m",
+        "visible": true
+      },
+      {
+        "id": "match-hud",
+        "rect": {
+          "bottom": 81,
+          "left": 24,
+          "right": 927,
+          "top": 21
+        },
+        "text": "네온 도심 · 자유 탐험\n      혼자 플레이자유 탐험M · 전체 지도1명\n      전체화면\n      ? 조작",
+        "visible": true
+      }
+    ],
+    "scale": "1",
+    "viewport": [
+      951,
+      720
+    ]
+  },
+  {
+    "language": "ko",
+    "outside": [],
+    "overlaps": [],
+    "rows": [
+      {
+        "id": "hand-status",
+        "rect": {
+          "bottom": 655,
+          "left": 489.9921875,
+          "right": 724.0078125,
+          "top": 625.8046875
+        },
+        "text": "좌클릭 준비 · 우클릭 준비 · 당기기: 공중 전용",
+        "visible": true
+      },
+      {
+        "id": "gameplay-quickbar",
+        "rect": {
+          "bottom": 700,
+          "left": 437.2578125,
+          "right": 776.7421875,
+          "top": 665
+        },
+        "text": "W A S D 이동SPACE 점프Q 전투 / 와이어H 조작키ESC 메뉴",
+        "visible": true
+      },
+      {
+        "id": "hud-top-left",
+        "rect": {
+          "bottom": 700,
+          "left": 20,
+          "right": 214,
+          "top": 613.609375
+        },
+        "text": "SHADOW PULSE\n          NEON CORE · SHADOW PULSE\n        \n      \n      \n      \n        \n          속도\n          \n            0\n            KM/H\n          \n          \n        \n\n        \n          고도\n          \n            95\n            M",
+        "visible": true
+      },
+      {
+        "id": "web-status-pill",
+        "rect": {
+          "bottom": 601,
+          "left": 20,
+          "right": 110.09375,
+          "top": 571
+        },
+        "text": "와이어 준비",
+        "visible": true
+      },
+      {
+        "id": "minimap-panel",
+        "rect": {
+          "bottom": 559,
+          "left": 656,
+          "right": 976,
+          "top": 176.8203125
+        },
+        "text": "네온 도심추천 · 균형형\n        로컬\n      \n      \n        \n        \n        N ↑\n        나 경찰 도망자\n        180m 반경\n      \n      E -100m  N +96m  ·  ALT 95m",
+        "visible": true
+      },
+      {
+        "id": "match-hud",
+        "rect": {
+          "bottom": 81,
+          "left": 24,
+          "right": 976,
+          "top": 21
+        },
+        "text": "네온 도심 · 자유 탐험\n      혼자 플레이자유 탐험M · 전체 지도1명\n      전체화면\n      ? 조작",
+        "visible": true
+      }
+    ],
+    "scale": "1",
+    "viewport": [
+      1000,
+      720
+    ]
+  },
+  {
+    "language": "ko",
+    "outside": [],
+    "overlaps": [],
+    "rows": [
+      {
+        "id": "hand-status",
+        "rect": {
+          "bottom": 655,
+          "left": 490.4921875,
+          "right": 724.5078125,
+          "top": 625.8046875
+        },
+        "text": "좌클릭 준비 · 우클릭 준비 · 당기기: 공중 전용",
+        "visible": true
+      },
+      {
+        "id": "gameplay-quickbar",
+        "rect": {
+          "bottom": 700,
+          "left": 408.34375,
+          "right": 806.6484375,
+          "top": 665
+        },
+        "text": "W A S D 이동SPACE 점프Q 전투 / 와이어H 조작키ESC 메뉴",
+        "visible": true
+      },
+      {
+        "id": "hud-top-left",
+        "rect": {
+          "bottom": 700,
+          "left": 20,
+          "right": 214,
+          "top": 613.609375
+        },
+        "text": "SHADOW PULSE\n          NEON CORE · SHADOW PULSE\n        \n      \n      \n      \n        \n          속도\n          \n            0\n            KM/H\n          \n          \n        \n\n        \n          고도\n          \n            95\n            M",
+        "visible": true
+      },
+      {
+        "id": "web-status-pill",
+        "rect": {
+          "bottom": 601,
+          "left": 20,
+          "right": 110.09375,
+          "top": 571
+        },
+        "text": "와이어 준비",
+        "visible": true
+      },
+      {
+        "id": "minimap-panel",
+        "rect": {
+          "bottom": 559,
+          "left": 657,
+          "right": 977,
+          "top": 176.8203125
+        },
+        "text": "네온 도심추천 · 균형형\n        로컬\n      \n      \n        \n        \n        N ↑\n        나 경찰 도망자\n        180m 반경\n      \n      E -100m  N +96m  ·  ALT 95m",
+        "visible": true
+      },
+      {
+        "id": "match-hud",
+        "rect": {
+          "bottom": 81,
+          "left": 24,
+          "right": 977,
+          "top": 21
+        },
+        "text": "네온 도심 · 자유 탐험\n      혼자 플레이자유 탐험M · 전체 지도1명\n      전체화면\n      ? 조작",
+        "visible": true
+      }
+    ],
+    "scale": "1",
+    "viewport": [
+      1001,
+      720
+    ]
+  },
+  {
+    "language": "ko",
+    "outside": [],
+    "overlaps": [],
+    "rows": [
+      {
+        "id": "hand-status",
+        "rect": {
+          "bottom": 655,
+          "left": 629.9921875,
+          "right": 864.0078125,
+          "top": 625.8046875
+        },
+        "text": "좌클릭 준비 · 우클릭 준비 · 당기기: 공중 전용",
+        "visible": true
+      },
+      {
+        "id": "gameplay-quickbar",
+        "rect": {
+          "bottom": 700,
+          "left": 547.84375,
+          "right": 946.1484375,
+          "top": 665
+        },
+        "text": "W A S D 이동SPACE 점프Q 전투 / 와이어H 조작키ESC 메뉴",
+        "visible": true
+      },
+      {
+        "id": "hud-top-left",
+        "rect": {
+          "bottom": 700,
+          "left": 20,
+          "right": 214,
+          "top": 613.609375
+        },
+        "text": "SHADOW PULSE\n          NEON CORE · SHADOW PULSE\n        \n      \n      \n      \n        \n          속도\n          \n            0\n            KM/H\n          \n          \n        \n\n        \n          고도\n          \n            95\n            M",
+        "visible": true
+      },
+      {
+        "id": "web-status-pill",
+        "rect": {
+          "bottom": 601,
+          "left": 20,
+          "right": 110.09375,
+          "top": 571
+        },
+        "text": "와이어 준비",
+        "visible": true
+      },
+      {
+        "id": "minimap-panel",
+        "rect": {
+          "bottom": 559,
+          "left": 936,
+          "right": 1256,
+          "top": 176.8203125
+        },
+        "text": "네온 도심추천 · 균형형\n        로컬\n      \n      \n        \n        \n        N ↑\n        나 경찰 도망자\n        180m 반경\n      \n      E -100m  N +96m  ·  ALT 95m",
+        "visible": true
+      },
+      {
+        "id": "match-hud",
+        "rect": {
+          "bottom": 81,
+          "left": 24,
+          "right": 1256,
+          "top": 21
+        },
+        "text": "네온 도심 · 자유 탐험\n      혼자 플레이자유 탐험M · 전체 지도1명\n      전체화면\n      ? 조작",
+        "visible": true
+      }
+    ],
+    "scale": "1",
+    "viewport": [
+      1280,
+      720
+    ]
+  },
+  {
+    "language": "ko",
+    "outside": [],
+    "overlaps": [],
+    "rows": [
+      {
+        "id": "hand-status",
+        "rect": {
+          "bottom": 683.6953125,
+          "left": 86.5546875,
+          "right": 303.4453125,
+          "top": 656.1015625
+        },
+        "text": "좌클릭 준비 · 우클릭 준비 · 당기기: 공중 전용",
+        "visible": true
+      },
+      {
+        "id": "hud-top-left",
+        "rect": {
+          "bottom": 829.453125,
+          "left": 14.546875,
+          "right": 192.1875,
+          "top": 743.0625
+        },
+        "text": "SHADOW PULSE\n          NEON CORE · SHADOW PULSE\n        \n      \n      \n      \n        \n          속도\n          \n            0\n            KM/H\n          \n          \n        \n\n        \n          고도\n          \n            95\n            M",
+        "visible": true
+      },
+      {
+        "id": "web-status-pill",
+        "rect": {
+          "bottom": 725.6953125,
+          "left": 14.546875,
+          "right": 104.640625,
+          "top": 695.6953125
+        },
+        "text": "와이어 준비",
+        "visible": true
+      },
+      {
+        "id": "minimap-panel",
+        "rect": {
+          "bottom": 655.75,
+          "left": 145.4921875,
+          "right": 376.90625,
+          "top": 369.640625
+        },
+        "text": "네온 도심추천 · 균형형\n        로컬\n      \n      \n        \n        \n        N ↑\n        나 경찰 도망자\n        180m 반경\n      \n      E -100m  N +96m  ·  ALT 95m",
+        "visible": true
+      },
+      {
+        "id": "match-hud",
+        "rect": {
+          "bottom": 130,
+          "left": 8,
+          "right": 382,
+          "top": 8
+        },
+        "text": "네온 도심 · 자유 탐험\n      혼자 플레이자유 탐험M · 전체 지도1명\n      전체화면\n      ? 조작",
+        "visible": true
+      }
+    ],
+    "scale": "1",
+    "viewport": [
+      390,
+      844
+    ]
+  },
+  {
+    "language": "ko",
+    "outside": [],
+    "overlaps": [
+      {
+        "a": "minimap-panel",
+        "b": "match-hud",
+        "height": 53.359375,
+        "width": 186.4453125
+      }
+    ],
+    "rows": [
+      {
+        "id": "hand-status",
+        "rect": {
+          "bottom": 325,
+          "left": 409.8515625,
+          "right": 643.8671875,
+          "top": 295.8046875
+        },
+        "text": "좌클릭 준비 · 우클릭 준비 · 당기기: 공중 전용",
+        "visible": true
+      },
+      {
+        "id": "gameplay-quickbar",
+        "rect": {
+          "bottom": 370,
+          "left": 357.1171875,
+          "right": 696.6015625,
+          "top": 335
+        },
+        "text": "W A S D 이동SPACE 점프Q 전투 / 와이어H 조작키ESC 메뉴",
+        "visible": true
+      },
+      {
+        "id": "hud-top-left",
+        "rect": {
+          "bottom": 371.0703125,
+          "left": 18.9296875,
+          "right": 209.71875,
+          "top": 284.6796875
+        },
+        "text": "SHADOW PULSE\n          NEON CORE · SHADOW PULSE\n        \n      \n      \n      \n        \n          속도\n          \n            0\n            KM/H\n          \n          \n        \n\n        \n          고도\n          \n            95\n            M",
+        "visible": true
+      },
+      {
+        "id": "web-status-pill",
+        "rect": {
+          "bottom": 274.1171875,
+          "left": 18.9296875,
+          "right": 109.0234375,
+          "top": 244.1171875
+        },
+        "text": "와이어 준비",
+        "visible": true
+      },
+      {
+        "id": "minimap-panel",
+        "rect": {
+          "bottom": 216.2265625,
+          "left": 633.5546875,
+          "right": 822.140625,
+          "top": 27.640625
+        },
+        "text": "네온 도심추천 · 균형형\n        로컬\n      \n      \n        \n        \n        N ↑\n        나 경찰 도망자\n        180m 반경\n      \n      E -100m  N +96m  ·  ALT 95m",
+        "visible": true
+      },
+      {
+        "id": "match-hud",
+        "rect": {
+          "bottom": 81,
+          "left": 24,
+          "right": 820,
+          "top": 21
+        },
+        "text": "네온 도심 · 자유 탐험\n      혼자 플레이자유 탐험M · 전체 지도1명\n      전체화면\n      ? 조작",
+        "visible": true
+      }
+    ],
+    "scale": "1",
+    "viewport": [
+      844,
+      390
+    ]
+  }
+]

@@ -1,4 +1,4 @@
-import {groundSoleNormal} from '../src/CharacterPose.js';
+import {groundSoleNormal,heavyClipPhase} from '../src/CharacterPose.js';
 import fs from 'node:fs';
 import assert from 'node:assert/strict';
 import * as THREE from 'three';
@@ -45,7 +45,10 @@ function finite(c) {
 }
 
 for(const key of ['jab','cross','hook','heavy','special'].filter(key=>available.has(key))) {
- const c=actor(),clip=c.actions[key].getClip(),hit=ATTACKS[key],impact=hit.duration*clip.userData.impactPhase;
+ const c=actor(),clip=c.actions[key].getClip(),hit=ATTACKS[key];
+ let fraction=clip.userData.impactPhase;
+ if(key==='heavy'){fraction=1;for(let i=0;i<=1000;i++){const u=i/1000;if(heavyClipPhase(u)>=clip.userData.impactPhase){fraction=u;break;}}}
+ const impact=hit.duration*fraction;
  assert(impact>=hit.from&&impact<=hit.to,`${key}: gameplay hit window misses the authored impact (${impact.toFixed(3)}s)`);
  c.mixer.stopAllAction();
 }

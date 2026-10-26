@@ -1,0 +1,27 @@
+{
+  "checks": [
+    {
+      "selection": "rightHook",
+      "active": "rightHook",
+      "state": "IDLE"
+    },
+    {
+      "selection": "heavy",
+      "active": "heavy",
+      "state": "IDLE",
+      "gameplayPhase": 0.543
+    },
+    {
+      "selection": "slamLand",
+      "active": "slamLand",
+      "state": "LANDING"
+    },
+    {
+      "selection": "heavy",
+      "active": "run",
+      "state": "SPRINTING",
+      "upperBody": "heavy"
+    }
+  ],
+  "errors": []
+}

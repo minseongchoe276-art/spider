@@ -3,7 +3,11 @@ import {localGameDb} from './lib/local-game-db.mjs';
 
 const db=await localGameDb();
 try{
-  await db.admin.query(`update game.admin_credential set token_sha256=encode(digest(convert_to('test-admin-key','UTF8'),'sha256'),'hex')`);
+  assert.equal((await db.admin.query('select count(*)::int as count from game.admin_credential')).rows[0].count,0);
+  const unconfigured=await db.actor();
+  assert.equal((await unconfigured.client.query(`select public.game_admin_overview('test-admin-key') as result`)).rows[0].result.ok,false);
+  await db.admin.query(`insert into game.admin_credential(token_sha256) values(encode(digest(convert_to('test-admin-key','UTF8'),'sha256'),'hex'))`);
+  // Keep the unconfigured probe out of the presence count assertions below.
   const lobby=await db.actor();
   const solo=await db.actor();
   const host=await db.actor();

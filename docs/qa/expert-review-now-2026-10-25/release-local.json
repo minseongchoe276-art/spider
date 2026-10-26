@@ -1,0 +1,430 @@
+{
+  "status": "PASS",
+  "checkedAt": "2026-10-25T10:50:46.079Z",
+  "sourceId": "30dff266699553bccf08a9f64956ae970dbcb32cd4e1d3ee6aa441b3f0468971",
+  "releaseId": "5fa6fbc88792f19edf541447bf3871a23c94d23673fa7497b6c142e0e7bf0810",
+  "byteScope": "all published uncompressed entries",
+  "databaseScope": "Expected migration source fingerprint; not proof of applied operating DB state",
+  "checks": [
+    {
+      "name": "Local source matches the built artifact",
+      "status": "PASS"
+    },
+    {
+      "name": "Build asset budgets pass",
+      "status": "PASS"
+    },
+    {
+      "name": "Published release manifest matches the expected build",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /app-icon.svg",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /assets/CombatReview-Bv5dH1zb.js",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /assets/EffectsReview-BWB6ZFiu.js",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /assets/FBXLoader-54ovkxhi.js",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /assets/index-DdNydt_f.js",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /assets/index-DQG3J0pq.css",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /assets/MotionReview-OG3Z1Fwp.js",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /assets/StreamedCollision-DFPMxN1p.js",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /assets/UrbanGroundCity-DTqVP0a-.js",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /assets/WebHandReview-B5tKDe94.js",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /basis/basis_transcoder.js",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /basis/basis_transcoder.wasm",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /index.html",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /manifest.webmanifest",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /models/appearance-combat.glb",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /models/appearance-web.glb",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /models/Boxing Hook.fbx",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /models/Boxing Idle.fbx",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /models/Boxing Lead Jab.fbx",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /models/Boxing Stance.fbx",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /models/Climbing Up Wall.fbx",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /models/Cross Punch.fbx",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /models/Falling (2).fbx",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /models/Falling Idle.fbx",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /models/Falling To Roll.fbx",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /models/Falling.fbx",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /models/Fast Run.fbx",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /models/Female Stop Walking.fbx",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /models/Front Flip.fbx",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /models/Idle.fbx",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /models/Injured Idle.fbx",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /models/Jogging.fbx",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /models/Jumping Down (1).fbx",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /models/Jumping Down.fbx",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /models/Lead Jab.fbx",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /models/Left Turn.fbx",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /models/Mma Kick.fbx",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /models/Right Turn.fbx",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /models/Rope Swinging.fbx",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /models/Run To Stop.fbx",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /models/Running.fbx",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /models/shadow-pulse-rig.glb",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /models/sources/combat-addon.glb",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /models/sources/combat-base.glb",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /models/sources/LICENSE-CC0.md",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /models/sources/mesh2motion-climb.glb",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /models/Standing Jump.fbx",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /models/Surprise Uppercut.fbx",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /models/Walking.fbx",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /motions/airTrick.json",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /motions/combatIdle.json",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /motions/cross.json",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /motions/drop.json",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /motions/fall.json",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /motions/fallIdle.json",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /motions/fallVariant.json",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /motions/guard.json",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /motions/heavy.json",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /motions/hitHead.json",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /motions/hook.json",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /motions/idle.json",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /motions/injuredIdle.json",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /motions/jab.json",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /motions/jump.json",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /motions/jumpDown.json",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /motions/jumpDownVariant.json",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /motions/land.json",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /motions/manifest.json",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /motions/regularRun.json",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /motions/rightHook.json",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /motions/roll.json",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /motions/run.json",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /motions/runStop.json",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /motions/slam.json",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /motions/slamLand.json",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /motions/special.json",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /motions/stop.json",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /motions/swing.json",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /motions/turnLeft.json",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /motions/turnRight.json",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /motions/walk.json",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /motions/wall.json",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /motions/zip.json",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /textures/vfx/circle_01_a.png",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /textures/vfx/circle_03_a.png",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /textures/vfx/circle_05_a.png",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /textures/vfx/dirt_01_a.png",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /textures/vfx/dirt_02_a.png",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /textures/vfx/dust.png",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /textures/vfx/impact_white_6x4.png",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /textures/vfx/LICENSE.txt",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /textures/vfx/scorch_01_a.png",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /textures/vfx/scorch_02_a.png",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /textures/vfx/smoke_01_a.png",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /textures/vfx/smoke_04_a.png",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /textures/vfx/smoke_07_strong_a.png",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /textures/vfx/spark_01_a.png",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /textures/vfx/web-impact.png",
+      "status": "PASS"
+    },
+    {
+      "name": "Room service is ready",
+      "status": "PASS"
+    },
+    {
+      "name": "Room authority matches the expected backend",
+      "status": "PASS",
+      "detail": {
+        "expected": "02bbabf44940a7b413d75a2fcba3920f1156e8386deeaad73780224e3033c74c",
+        "observed": "02bbabf44940a7b413d75a2fcba3920f1156e8386deeaad73780224e3033c74c"
+      }
+    },
+    {
+      "name": "Room service expects the same database migrations",
+      "status": "PASS"
+    }
+  ]
+}

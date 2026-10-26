@@ -1,0 +1,25 @@
+{
+  "status": "CONDITIONAL_NOT_RELEASE_APPROVED",
+  "checkedAt": "2026-10-25T10:55:16.571Z",
+  "domainsReviewed": 35,
+  "suites": {
+    "total": 107,
+    "passed": 107,
+    "failed": 0
+  },
+  "extraSuites": 2,
+  "sourceChanged": [],
+  "localReleaseChecks": 104,
+  "knownDependencyVulnerabilities": 0,
+  "confirmedDefects": [
+    {
+      "id": "F-01",
+      "priority": "P2",
+      "description": "HUD overlap at 840x844 desktop viewport"
+    }
+  ],
+  "releasePublic": "FAIL",
+  "realDevicesQualified": false,
+  "newHumanPlaytestsConducted": false,
+  "report": "REPORT.md"
+}

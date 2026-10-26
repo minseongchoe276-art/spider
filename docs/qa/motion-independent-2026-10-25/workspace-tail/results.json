@@ -1,0 +1,43 @@
+{
+  "results": [
+    {
+      "suite": "mobile-traversal",
+      "pass": true,
+      "exitCode": 0
+    },
+    {
+      "suite": "session-flow",
+      "pass": true,
+      "exitCode": 0
+    },
+    {
+      "suite": "multiplayer",
+      "pass": true,
+      "exitCode": 0
+    },
+    {
+      "suite": "input-lifecycle",
+      "pass": true,
+      "exitCode": 0
+    }
+  ],
+  "before": {
+    "src/MobileTraversal.js": "86c965b9c2e705fcee6f4bc0eb07d4771fef4c1fc88c4d6b968de0cc48a8fe8e",
+    "src/Multiplayer.js": "517c2b576dde5bf363d4e3f848d42b390fdd0ecad85352112431a63caf5872e8",
+    "src/Character.js": "aa2268437efa32e9636983aaf3f2a364ac935dae521f3b9382d75920eb05e716",
+    "src/CharacterPose.js": "02de3020d191f11a24265d54d9503ed250ab52dc8c09f7942a6091f605446f4a",
+    "src/SwingPhysics.js": "8e33f24f21d5779fde00014932df260c7351488b223675642ab468b94b980412",
+    "src/Camera.js": "fbecf9d20235a2a379fd33b790d8b653c42e37c544a018a9c3e952b6bb3f6d11",
+    "src/main.js": "0453ec87a1ccf8c0dce98b917d2e960760c512e3664bae60ea73d734ae73dd01"
+  },
+  "after": {
+    "src/MobileTraversal.js": "86c965b9c2e705fcee6f4bc0eb07d4771fef4c1fc88c4d6b968de0cc48a8fe8e",
+    "src/Multiplayer.js": "517c2b576dde5bf363d4e3f848d42b390fdd0ecad85352112431a63caf5872e8",
+    "src/Character.js": "aa2268437efa32e9636983aaf3f2a364ac935dae521f3b9382d75920eb05e716",
+    "src/CharacterPose.js": "02de3020d191f11a24265d54d9503ed250ab52dc8c09f7942a6091f605446f4a",
+    "src/SwingPhysics.js": "8e33f24f21d5779fde00014932df260c7351488b223675642ab468b94b980412",
+    "src/Camera.js": "fbecf9d20235a2a379fd33b790d8b653c42e37c544a018a9c3e952b6bb3f6d11",
+    "src/main.js": "0453ec87a1ccf8c0dce98b917d2e960760c512e3664bae60ea73d734ae73dd01"
+  },
+  "stable": true
+}

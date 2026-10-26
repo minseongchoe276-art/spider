@@ -477,7 +477,10 @@ export function plantMovingFeet(c,delta) {
       // only the boot while keeping that long rear reach rolls its outer edge.
       if(side==='right' && ['combatIdle','jab','cross','rightHook','hook','heavy','special'].includes(clip.name)){
         const forward=new THREE.Vector3(0,0,1).applyQuaternion(c.model.getWorldQuaternion(new THREE.Quaternion())).projectOnPlane(support.normal).normalize();
-        plant.position.addScaledVector(forward,.10);
+        // Braking into a full-body punch needs a slightly shorter rear
+        // support than a travelling guard, keeping the boot off its outer edge.
+        const strike=!!c.combatAction?.duration && (c.groundMotionVelocity?.lengthSq() || 0)>.0025 && ['jab','cross','hook','heavy','special'].includes(c.combatAction.key);
+        plant.position.addScaledVector(forward,strike ? .22 : .10);
       }
       plant.position.y=surface+0.11;
     }
@@ -766,6 +769,11 @@ export function poseZipLegs(c,delta) {
     const pole=new THREE.Vector3(sign*0.12,0,1).applyQuaternion(c.model.quaternion);
     c.solveLimb(hip,knee,foot,worldPosition(foot).lerp(goal,c.zipPoseWeight),0.97,pole);
   }
+  const hang = Math.sin((c.webVisualTime || 0) * 2.15);
+  const sway = Math.sin((c.webVisualTime || 0) * 1.35 + 0.6);
+  pitchModelX(c, find(c, 'spine'), 0.07 * hang);
+  pitchModelX(c, find(c, 'spine1'), 0.04 * hang);
+  rollModelZ(c, find(c, 'spine'), 0.05 * sway);
 }
 
 // Read the anatomical forward axis from the skin bind pose rather than
@@ -857,7 +865,7 @@ export function alignStrikeFootwork(c, delta, active, offset, combat) {
   if (!(active && Math.abs(offset) < 0.45 && combat?.duration && ['jab', 'cross', 'hook', 'heavy', 'special'].includes(combat.key))) return;
   const phase = THREE.MathUtils.clamp(combat.time / combat.duration, 0, 1);
   const drive = Math.sin(Math.PI * THREE.MathUtils.clamp(phase / 0.48, 0, 1));
-  const side = {jab: 0.02, cross: -0.028, hook: 0.018, heavy: -0.02, special: -0.02}[combat.key] || 0;
+  const side = {jab: 0.02, cross: -0.028, hook: 0.018, heavy: -0.03, special: -0.02}[combat.key] || 0;
   const hips = find(c, 'hips');
   if (!hips?.parent) return;
   const shift = new THREE.Vector3(side * drive, 0, 0.028 * drive).applyQuaternion(c.model.getWorldQuaternion(new THREE.Quaternion()));
@@ -865,4 +873,199 @@ export function alignStrikeFootwork(c, delta, active, offset, combat) {
   shift.applyQuaternion(parent).divide(hips.parent.getWorldScale(new THREE.Vector3()));
   hips.position.add(shift);
   hips.updateMatrixWorld(true);
+}
+
+function smooth01(t) {
+  const x = THREE.MathUtils.clamp(t, 0, 1);
+  return x * x * (3 - 2 * x);
+}
+
+function rollModelZ(c, bone, angle) {
+  if (!bone || Math.abs(angle) < 1e-4) return;
+  // Model +Z is the facing axis. Positive roll lifts the character's left (+X).
+  const axis = new THREE.Vector3(0, 0, 1).applyQuaternion(c.model.getWorldQuaternion(new THREE.Quaternion())).normalize();
+  const world = bone.getWorldQuaternion(new THREE.Quaternion());
+  world.premultiply(new THREE.Quaternion().setFromAxisAngle(axis, angle));
+  bone.quaternion.copy(bone.parent.getWorldQuaternion(new THREE.Quaternion()).invert().multiply(world)).normalize();
+  bone.updateMatrixWorld(true);
+}
+
+// A heavy shot stays in the chamber, then drives the hook through. The clip
+// phase waits until the shoulders have loaded, and meets the hook at its impact.
+export function heavyClipPhase(t) {
+  const u = THREE.MathUtils.clamp(t, 0, 1);
+  if (u < 0.40) return 0.18 * smooth01(u / 0.40);
+  if (u < 0.70) return 0.18 + 0.54 * smooth01((u - 0.40) / 0.30);
+  return 0.72 + 0.28 * smooth01((u - 0.70) / 0.30);
+}
+
+// Dodge, hit, guard and heavy read through the body. The sourced clips for
+// those actions are a still stance, a tiny flinch, or the same hook.
+export function poseCombatLife(c, combat) {
+  const key = combat?.key;
+  if (!key) return;
+  const duration = combat.duration || 1;
+  const t = THREE.MathUtils.clamp((combat.time || 0) / duration, 0, 1);
+  if (key.startsWith('dodge')) {
+    const envelope = Math.sin(Math.PI * t);
+    if (key === 'dodgeLeft' || key === 'dodgeRight') {
+      const sign = key === 'dodgeLeft' ? 1 : -1;
+      rollModelZ(c, find(c, 'spine'), -0.34 * sign * envelope);
+      rollModelZ(c, find(c, 'spine1'), -0.18 * sign * envelope);
+      rollModelZ(c, find(c, 'head'), 0.16 * sign * envelope);
+    } else if (key === 'dodgeBack') {
+      pitchModelX(c, find(c, 'spine'), -0.28 * envelope);
+      pitchModelX(c, find(c, 'spine1'), -0.14 * envelope);
+    } else {
+      pitchModelX(c, find(c, 'spine'), 0.36 * envelope);
+      pitchModelX(c, find(c, 'spine1'), 0.16 * envelope);
+    }
+    return;
+  }
+  if (key === 'hit' || key === 'hitHead') {
+    const snap = t < 0.2 ? smooth01(t / 0.2) : 1 - smooth01((t - 0.2) / 0.8);
+    pitchModelX(c, find(c, 'spine'), -0.32 * snap);
+    pitchModelX(c, find(c, 'spine1'), -0.16 * snap);
+    pitchModelX(c, find(c, 'head'), -0.2 * snap);
+    return;
+  }
+  if (key === 'guard') {
+    const time = c.idleTime || 0;
+    const breath = Math.sin(time * 2.2);
+    const sway = Math.sin(time * 1.15);
+    pitchModelX(c, find(c, 'spine'), 0.045 * breath);
+    rollModelZ(c, find(c, 'spine1'), 0.04 * sway);
+    return;
+  }
+  if (key === 'heavy') {
+    const wind = t < 0.4 ? smooth01(t / 0.4) : 1 - smooth01((t - 0.4) / 0.18);
+    const drive = t < 0.4 ? 0 : smooth01((t - 0.4) / 0.28) * (1 - smooth01(THREE.MathUtils.clamp((t - 0.78) / 0.22, 0, 1)));
+    // The hook clip is already turning by this fraction. Heavy squares the
+    // chest and leans back through the chamber, then drives into the same hit.
+    yawWorld(find(c, 'spine'), 0.34 * wind);
+    yawWorld(find(c, 'spine1'), 0.18 * wind);
+    pitchModelX(c, find(c, 'spine'), 0.22 * drive - 0.24 * wind);
+    pitchModelX(c, find(c, 'spine1'), 0.1 * drive - 0.12 * wind);
+  }
+}
+
+function signedKneeLead(hip, knee, foot, forward) {
+  const hipP = hip.getWorldPosition(new THREE.Vector3());
+  const kneeP = knee.getWorldPosition(new THREE.Vector3());
+  const footP = foot.getWorldPosition(new THREE.Vector3());
+  const span = footP.clone().sub(hipP);
+  const thigh = kneeP.clone().sub(hipP);
+  const shin = footP.clone().sub(kneeP);
+  if (span.lengthSq() < 0.04) return null;
+  const along = THREE.MathUtils.clamp(thigh.dot(span) / span.lengthSq(), 0, 1);
+  const lead = kneeP.clone().sub(hipP.clone().addScaledVector(span, along));
+  return {signed: lead.dot(forward), thigh, shin, flex: thigh.angleTo(shin), hipP, kneeP, footP};
+}
+
+// A trailing leg on a swing or a trick exit can sit just behind the hip-foot
+// chord. One push lands short of the chord, so repeat it. Aim only the shin
+// afterwards. A two-bone solve puts the knee back on the limb pole.
+export function leadAirborneKnees(c) {
+  const hips = find(c, 'hips');
+  if (!hips) return;
+  const upright = new THREE.Vector3(0, 1, 0).applyQuaternion(hips.getWorldQuaternion(new THREE.Quaternion()));
+  if (upright.y < 0.55) return;
+  const forward = new THREE.Vector3(0, 0, 1).applyQuaternion(c.model.getWorldQuaternion(new THREE.Quaternion()));
+  forward.y = 0;
+  if (forward.lengthSq() < 1e-8) return;
+  forward.normalize();
+  for (const side of ['left', 'right']) {
+    const hip = find(c, side + 'upleg'), knee = find(c, side + 'leg'), foot = find(c, side + 'foot');
+    if (!hip || !knee || !foot) continue;
+    const home = foot.getWorldPosition(new THREE.Vector3());
+    const sole = foot.getWorldQuaternion(new THREE.Quaternion());
+    let spent = 0;
+    for (let pass = 0; pass < 3 && spent < 0.8; pass++) {
+      const sample = signedKneeLead(hip, knee, foot, forward);
+      if (!sample || sample.flex < 0.1 || sample.signed >= 0.03) break;
+      let axis = new THREE.Vector3().crossVectors(sample.thigh, forward);
+      if (axis.lengthSq() < 1e-8) axis = new THREE.Vector3().crossVectors(sample.thigh, up);
+      if (axis.lengthSq() < 1e-8) break;
+      axis.normalize();
+      if (new THREE.Vector3().crossVectors(axis, sample.thigh).dot(forward) < 0) axis.negate();
+      const turn = THREE.MathUtils.clamp((0.045 - sample.signed) / Math.max(0.12, sample.thigh.length()), 0.015, 0.45);
+      spent += turn;
+      const world = new THREE.Quaternion().setFromAxisAngle(axis, turn).multiply(hip.getWorldQuaternion(new THREE.Quaternion()));
+      hip.quaternion.copy(hip.parent.getWorldQuaternion(new THREE.Quaternion()).invert().multiply(world)).normalize();
+      hip.updateMatrixWorld(true);
+      const kneeNow = knee.getWorldPosition(new THREE.Vector3());
+      const from = foot.getWorldPosition(new THREE.Vector3()).sub(kneeNow);
+      const to = home.clone().sub(kneeNow);
+      if (from.lengthSq() > 1e-8 && to.lengthSq() > 1e-8) {
+        const shinWorld = new THREE.Quaternion().setFromUnitVectors(from.normalize(), to.normalize()).multiply(knee.getWorldQuaternion(new THREE.Quaternion()));
+        knee.quaternion.copy(knee.parent.getWorldQuaternion(new THREE.Quaternion()).invert().multiply(shinWorld)).normalize();
+        knee.updateMatrixWorld(true);
+      }
+      const after = signedKneeLead(hip, knee, foot, forward);
+      if (!after || after.signed < sample.signed + 0.003) break;
+    }
+    foot.quaternion.copy(foot.parent.getWorldQuaternion(new THREE.Quaternion()).invert().multiply(sole)).normalize();
+    foot.updateMatrixWorld(true);
+  }
+}
+
+// A held stride is one frozen frame. A running frame can leave a foot at
+// knee height for the whole dodge. Ease that foot down into the lean, and
+// keep the planted leg in the pose the next clip blends from.
+export function settleHeldStance(c, delta) {
+  const combat = c.combatAction;
+  const key = combat?.key;
+  const dodge = !!key?.startsWith('dodge');
+  const hit = key === 'hit' || key === 'hitHead';
+  if (!dodge && !hit) { c.reactSettle = 0; c.reactSettleId = null; return; }
+  if ((c.activeAction?.getEffectiveTimeScale?.() ?? 1) > 0.02) { c.reactSettle = 0; return; }
+  const stride = c.activeAction?.getClip()?.name;
+  if (!['walk', 'regularRun', 'run'].includes(stride)) return;
+  if (c.reactSettleId !== combat.id) { c.reactSettleId = combat.id; c.reactSettle = 0; }
+  c.reactSettle = Math.min(1, (c.reactSettle || 0) + delta / 0.16);
+  const weight = smooth01(c.reactSettle);
+  if (weight < 0.02) return;
+  const moved = [];
+  for (const side of ['left', 'right']) {
+    const hip = find(c, side + 'upleg'), knee = find(c, side + 'leg'), foot = find(c, side + 'foot');
+    if (!hip || !knee || !foot) continue;
+    const current = foot.getWorldPosition(new THREE.Vector3());
+    const support = footSupport(c, current);
+    const goal = current.clone();
+    // The floor probe plus 11cm is the collision sole. This rig's ankle bone
+    // stands about 9cm above the group once the grounded model drops 10cm,
+    // so the probe target alone sinks that bone through the other boot.
+    const ankle = c.group.position.y + 0.09;
+    goal.y = Math.max(support ? support.height + 0.11 : c.group.position.y + 0.11, ankle);
+    if (current.y < goal.y + 0.02) continue;
+    const hipP = hip.getWorldPosition(new THREE.Vector3());
+    const reach = (hipP.distanceTo(knee.getWorldPosition(new THREE.Vector3())) + knee.getWorldPosition(new THREE.Vector3()).distanceTo(current)) * 0.92;
+    const vertical = Math.abs(goal.y - hipP.y);
+    if (vertical < reach) {
+      const flatReach = Math.sqrt(reach * reach - vertical * vertical);
+      const dx = goal.x - hipP.x, dz = goal.z - hipP.z;
+      const flat = Math.hypot(dx, dz);
+      if (flat > flatReach && flat > 1e-4) {
+        const scale = flatReach / flat;
+        goal.x = hipP.x + dx * scale;
+        goal.z = hipP.z + dz * scale;
+      }
+    }
+    const target = current.clone().lerp(goal, weight);
+    // Keep the knee on the plane it already has. A forward pole threw it
+    // past the foot on the way down.
+    c.solveLimb(hip, knee, foot, target, 0.995, null);
+    const rotation = support ? soleRotation(c, side, support.normal) : null;
+    if (rotation) {
+      foot.quaternion.copy(foot.parent.getWorldQuaternion(new THREE.Quaternion()).invert().multiply(rotation)).normalize();
+      foot.updateMatrixWorld(true);
+    }
+    moved.push(hip, knee, foot);
+  }
+  if (!moved.length || !c.animationPose) return;
+  for (const sample of c.animationPose) {
+    if (!moved.includes(sample.bone)) continue;
+    sample.p.copy(sample.bone.position);
+    sample.q.copy(sample.bone.quaternion);
+  }
 }

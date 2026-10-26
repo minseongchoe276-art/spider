@@ -1,0 +1,17 @@
+[
+  {
+    "command": "node node_modules/vite/bin/vite.js build",
+    "exitCode": 0,
+    "seconds": 2.84
+  },
+  {
+    "command": "node scripts/compress-assets.mjs",
+    "exitCode": 0,
+    "seconds": 0.91
+  },
+  {
+    "command": "node scripts/check-asset-delivery.mjs --http",
+    "exitCode": 0,
+    "seconds": 0.17
+  }
+]

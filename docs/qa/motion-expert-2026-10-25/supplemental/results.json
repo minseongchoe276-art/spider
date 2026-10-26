@@ -1,0 +1,49 @@
+{
+  "total": 13,
+  "completed": 7,
+  "passed": 7,
+  "results": [
+    {
+      "suite": "expanded-input-camera",
+      "pass": true,
+      "exitCode": 0,
+      "seconds": 1.407
+    },
+    {
+      "suite": "expanded-terrain-motion",
+      "pass": true,
+      "exitCode": 0,
+      "seconds": 139.377
+    },
+    {
+      "suite": "expanded-gait-stability",
+      "pass": true,
+      "exitCode": 0,
+      "seconds": 16.503
+    },
+    {
+      "suite": "online-guard",
+      "pass": true,
+      "exitCode": 0,
+      "seconds": 3.96
+    },
+    {
+      "suite": "online-motion-sync",
+      "pass": true,
+      "exitCode": 0,
+      "seconds": 114.717
+    },
+    {
+      "suite": "online-stance",
+      "pass": true,
+      "exitCode": 0,
+      "seconds": 8.637
+    },
+    {
+      "suite": "expert-recovery",
+      "pass": true,
+      "exitCode": 0,
+      "seconds": 5.421
+    }
+  ]
+}

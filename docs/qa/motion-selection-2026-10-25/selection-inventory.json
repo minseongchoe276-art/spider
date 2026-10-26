@@ -1,0 +1,383 @@
+{
+  "count": 33,
+  "results": [
+    {
+      "key": "idle",
+      "source": "/models/Idle.fbx",
+      "take": null,
+      "loop": true,
+      "duration": 4,
+      "trim": null,
+      "derivative": null,
+      "authored": false,
+      "impactPhase": null
+    },
+    {
+      "key": "walk",
+      "source": "/models/Walking.fbx",
+      "take": null,
+      "loop": true,
+      "duration": 0.9666666388511658,
+      "trim": null,
+      "derivative": null,
+      "authored": false,
+      "impactPhase": null
+    },
+    {
+      "key": "regularRun",
+      "source": "/models/Running.fbx",
+      "take": null,
+      "loop": true,
+      "duration": 0.699999988079071,
+      "trim": null,
+      "derivative": null,
+      "authored": false,
+      "impactPhase": null
+    },
+    {
+      "key": "run",
+      "source": "/models/Fast Run.fbx",
+      "take": null,
+      "loop": true,
+      "duration": 0.5333333611488342,
+      "trim": null,
+      "derivative": null,
+      "authored": false,
+      "impactPhase": null
+    },
+    {
+      "key": "stop",
+      "source": "/models/Run To Stop.fbx",
+      "take": null,
+      "loop": false,
+      "duration": 0.2333332896232605,
+      "trim": null,
+      "derivative": null,
+      "authored": false,
+      "impactPhase": null
+    },
+    {
+      "key": "runStop",
+      "source": "/models/Run To Stop.fbx",
+      "take": null,
+      "loop": false,
+      "duration": 0.8999999761581421,
+      "trim": null,
+      "derivative": null,
+      "authored": false,
+      "impactPhase": null
+    },
+    {
+      "key": "zip",
+      "source": "/models/Rope Swinging.fbx",
+      "take": null,
+      "loop": true,
+      "duration": 1,
+      "trim": null,
+      "derivative": null,
+      "authored": false,
+      "impactPhase": null
+    },
+    {
+      "key": "turnLeft",
+      "source": "/models/Left Turn.fbx",
+      "take": null,
+      "loop": false,
+      "duration": 0.9333333373069763,
+      "trim": null,
+      "derivative": null,
+      "authored": false,
+      "impactPhase": null
+    },
+    {
+      "key": "turnRight",
+      "source": "/models/Right Turn.fbx",
+      "take": null,
+      "loop": false,
+      "duration": 0.9333333373069763,
+      "trim": null,
+      "derivative": null,
+      "authored": false,
+      "impactPhase": null
+    },
+    {
+      "key": "jump",
+      "source": "/models/Standing Jump.fbx",
+      "take": null,
+      "loop": false,
+      "duration": 0.5999999642372131,
+      "trim": null,
+      "derivative": null,
+      "authored": false,
+      "impactPhase": null
+    },
+    {
+      "key": "land",
+      "source": "/models/Standing Jump.fbx",
+      "take": null,
+      "loop": false,
+      "duration": 0.8666666746139526,
+      "trim": null,
+      "derivative": null,
+      "authored": false,
+      "impactPhase": null
+    },
+    {
+      "key": "jumpDown",
+      "source": "/models/Jumping Down (1).fbx",
+      "take": null,
+      "loop": false,
+      "duration": 2.299999952316284,
+      "trim": null,
+      "derivative": null,
+      "authored": false,
+      "impactPhase": null
+    },
+    {
+      "key": "drop",
+      "source": "/models/Jumping Down (1).fbx",
+      "take": null,
+      "loop": false,
+      "duration": 0.3999999761581421,
+      "trim": null,
+      "derivative": null,
+      "authored": false,
+      "impactPhase": null
+    },
+    {
+      "key": "jumpDownVariant",
+      "source": "/models/Jumping Down.fbx",
+      "take": null,
+      "loop": false,
+      "duration": 2.633333444595337,
+      "trim": null,
+      "derivative": null,
+      "authored": false,
+      "impactPhase": null
+    },
+    {
+      "key": "swing",
+      "source": "/models/Rope Swinging.fbx",
+      "take": null,
+      "loop": true,
+      "duration": 1.951990008354187,
+      "trim": null,
+      "derivative": null,
+      "authored": false,
+      "impactPhase": null
+    },
+    {
+      "key": "fall",
+      "source": "/models/Falling (2).fbx",
+      "take": null,
+      "loop": true,
+      "duration": 4.5,
+      "trim": null,
+      "derivative": null,
+      "authored": false,
+      "impactPhase": null
+    },
+    {
+      "key": "fallVariant",
+      "source": "/models/Falling.fbx",
+      "take": null,
+      "loop": true,
+      "duration": 4.5,
+      "trim": null,
+      "derivative": null,
+      "authored": false,
+      "impactPhase": null
+    },
+    {
+      "key": "fallIdle",
+      "source": "/models/Falling Idle.fbx",
+      "take": null,
+      "loop": true,
+      "duration": 4.5,
+      "trim": null,
+      "derivative": null,
+      "authored": false,
+      "impactPhase": null
+    },
+    {
+      "key": "roll",
+      "source": "/models/Falling To Roll.fbx",
+      "take": null,
+      "loop": false,
+      "duration": 1.5425641536712646,
+      "trim": null,
+      "derivative": null,
+      "authored": false,
+      "impactPhase": null
+    },
+    {
+      "key": "injuredIdle",
+      "source": "/models/Injured Idle.fbx",
+      "take": null,
+      "loop": true,
+      "duration": 9.333333015441895,
+      "trim": null,
+      "derivative": null,
+      "authored": false,
+      "impactPhase": null
+    },
+    {
+      "key": "wall",
+      "source": "/models/Climbing Up Wall.fbx",
+      "take": null,
+      "loop": true,
+      "duration": 2,
+      "trim": null,
+      "derivative": null,
+      "authored": true,
+      "impactPhase": null
+    },
+    {
+      "key": "combatIdle",
+      "source": "/models/Boxing Stance.fbx",
+      "take": null,
+      "loop": true,
+      "duration": 4.400000095367432,
+      "trim": null,
+      "derivative": null,
+      "authored": true,
+      "impactPhase": null
+    },
+    {
+      "key": "jab",
+      "source": "/models/Lead Jab.fbx",
+      "take": null,
+      "loop": false,
+      "duration": 1.3333333730697632,
+      "trim": null,
+      "derivative": null,
+      "authored": true,
+      "impactPhase": 0.28
+    },
+    {
+      "key": "guard",
+      "source": "/models/sources/combat-addon.glb",
+      "take": "Defend",
+      "loop": true,
+      "duration": 2,
+      "trim": null,
+      "derivative": "compact boxing guard",
+      "authored": false,
+      "impactPhase": 0.5
+    },
+    {
+      "key": "slam",
+      "source": "/models/sources/combat-addon.glb",
+      "take": "Attack_Ground_Pound",
+      "loop": false,
+      "duration": 2.7083332538604736,
+      "trim": null,
+      "derivative": null,
+      "authored": false,
+      "impactPhase": null
+    },
+    {
+      "key": "slamLand",
+      "source": "/models/sources/combat-addon.glb",
+      "take": "Land_Three_Point",
+      "loop": false,
+      "duration": 0.8839285373687744,
+      "trim": null,
+      "derivative": null,
+      "authored": false,
+      "impactPhase": null
+    },
+    {
+      "key": "hitHead",
+      "source": "/models/sources/combat-base.glb",
+      "take": "Hit_Head",
+      "loop": false,
+      "duration": 0.5416666865348816,
+      "trim": null,
+      "derivative": null,
+      "authored": false,
+      "impactPhase": null
+    },
+    {
+      "key": "rightHook",
+      "source": "/models/Boxing Stance.fbx",
+      "take": null,
+      "loop": false,
+      "duration": 0.68,
+      "trim": null,
+      "derivative": "compact right hook",
+      "authored": false,
+      "impactPhase": 0.58
+    },
+    {
+      "key": "cross",
+      "source": "/models/Cross Punch.fbx",
+      "take": null,
+      "loop": false,
+      "duration": 1.433333396911621,
+      "trim": [
+        0.27,
+        1.73
+      ],
+      "derivative": null,
+      "authored": true,
+      "impactPhase": 0.57
+    },
+    {
+      "key": "hook",
+      "source": "/models/Boxing Hook.fbx",
+      "take": null,
+      "loop": false,
+      "duration": 1.399999976158142,
+      "trim": [
+        0,
+        1.4
+      ],
+      "derivative": null,
+      "authored": true,
+      "impactPhase": 0.43
+    },
+    {
+      "key": "heavy",
+      "source": "/models/Boxing Hook.fbx",
+      "take": null,
+      "loop": false,
+      "duration": 1.399999976158142,
+      "trim": [
+        0,
+        1.4
+      ],
+      "derivative": null,
+      "authored": true,
+      "impactPhase": 0.43
+    },
+    {
+      "key": "airTrick",
+      "source": "/models/Front Flip.fbx",
+      "take": null,
+      "loop": false,
+      "duration": 0.9333332777023315,
+      "trim": [
+        0.5,
+        1.43
+      ],
+      "derivative": null,
+      "authored": true,
+      "impactPhase": null
+    },
+    {
+      "key": "special",
+      "source": "/models/Cross Punch.fbx",
+      "take": null,
+      "loop": false,
+      "duration": 1.7999999523162842,
+      "trim": [
+        0.1,
+        1.9
+      ],
+      "derivative": null,
+      "authored": true,
+      "impactPhase": 0.56
+    }
+  ]
+}

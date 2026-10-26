@@ -1,0 +1,176 @@
+{
+  "checkedAt": "2026-10-25T09:29:09.050Z",
+  "project": "zzencpfytpdbjmqvtquc",
+  "query": "select n.nspname as schema, p.proname as name, pg_get_function_identity_arguments(p.oid) as signature, md5(pg_get_functiondef(p.oid)) as definition_md5, p.prosecdef as security_definer, p.proconfig as settings, has_function_privilege('anon',p.oid,'execute') as anon_execute, has_function_privilege('authenticated',p.oid,'execute') as authenticated_execute, has_function_privilege('service_role',p.oid,'execute') as service_execute from pg_proc p join pg_namespace n on n.oid=p.pronamespace where p.prokind='f' and (n.nspname='game' or (n.nspname='public' and p.proname like 'game_%')) order by n.nspname,p.proname,signature;",
+  "rows": [
+    {
+      "schema": "game",
+      "name": "arena_points",
+      "signature": "x double precision, y double precision, z double precision, radius double precision, roofs jsonb",
+      "definition_md5": "f825c4a0113349dafbbe2a45f15b9bc4",
+      "security_definer": false,
+      "settings": [
+        "search_path=\"\""
+      ],
+      "anon_execute": false,
+      "authenticated_execute": false,
+      "service_execute": false
+    },
+    {
+      "schema": "game",
+      "name": "blocked",
+      "signature": "ax double precision, ay double precision, az double precision, bx double precision, by double precision, bz double precision",
+      "definition_md5": "803624f14833ba565ca82a7abefcac99",
+      "security_definer": true,
+      "settings": [
+        "search_path=\"\""
+      ],
+      "anon_execute": false,
+      "authenticated_execute": false,
+      "service_execute": false
+    },
+    {
+      "schema": "game",
+      "name": "cleanup",
+      "signature": "",
+      "definition_md5": "31ce84a94c854cdbbcce85c4af94eab3",
+      "security_definer": true,
+      "settings": [
+        "search_path=\"\""
+      ],
+      "anon_execute": true,
+      "authenticated_execute": true,
+      "service_execute": true
+    },
+    {
+      "schema": "game",
+      "name": "now_ms",
+      "signature": "",
+      "definition_md5": "836b7b06558b52499900b605e54120d8",
+      "security_definer": false,
+      "settings": [
+        "search_path=\"\""
+      ],
+      "anon_execute": true,
+      "authenticated_execute": true,
+      "service_execute": true
+    },
+    {
+      "schema": "game",
+      "name": "publish",
+      "signature": "p_code text",
+      "definition_md5": "c7b526de8b7e99a59d4072ea926407a0",
+      "security_definer": true,
+      "settings": [
+        "search_path=\"\""
+      ],
+      "anon_execute": true,
+      "authenticated_execute": true,
+      "service_execute": true
+    },
+    {
+      "schema": "game",
+      "name": "state",
+      "signature": "p_code text",
+      "definition_md5": "fcb08d20c54d1bb9bfd6ae40e483b846",
+      "security_definer": true,
+      "settings": [
+        "search_path=\"\""
+      ],
+      "anon_execute": false,
+      "authenticated_execute": false,
+      "service_execute": false
+    },
+    {
+      "schema": "public",
+      "name": "game_can_receive",
+      "signature": "p_topic text",
+      "definition_md5": "0e0ed5ca00f5eb3981819c79d506ec7a",
+      "security_definer": true,
+      "settings": [
+        "search_path=\"\""
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true,
+      "service_execute": true
+    },
+    {
+      "schema": "public",
+      "name": "game_command",
+      "signature": "p_action text, p_data jsonb",
+      "definition_md5": "2862e12ff2da7dd898635037dc26eb63",
+      "security_definer": true,
+      "settings": [
+        "search_path=\"\""
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true,
+      "service_execute": true
+    },
+    {
+      "schema": "public",
+      "name": "game_list",
+      "signature": "",
+      "definition_md5": "971f11f48b287c11eae4b0f862f6d642",
+      "security_definer": true,
+      "settings": [
+        "search_path=\"\""
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true,
+      "service_execute": true
+    },
+    {
+      "schema": "public",
+      "name": "game_move_pose",
+      "signature": "p_data jsonb",
+      "definition_md5": "8d16d71706f3444d98101c34b1c8d461",
+      "security_definer": true,
+      "settings": [
+        "search_path=\"\""
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true,
+      "service_execute": true
+    },
+    {
+      "schema": "public",
+      "name": "game_resolve_terrain_hit",
+      "signature": "p_hit_id uuid, p_status text, p_version text",
+      "definition_md5": "65b3cdcbb92ce21880d7ab76d6b56b67",
+      "security_definer": true,
+      "settings": [
+        "search_path=\"\""
+      ],
+      "anon_execute": false,
+      "authenticated_execute": false,
+      "service_execute": true
+    },
+    {
+      "schema": "public",
+      "name": "game_resume",
+      "signature": "",
+      "definition_md5": "3ca3d0070659f8eb725bad51e9383ec6",
+      "security_definer": true,
+      "settings": [
+        "search_path=\"\""
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true,
+      "service_execute": true
+    },
+    {
+      "schema": "public",
+      "name": "game_state",
+      "signature": "p_code text",
+      "definition_md5": "98c0dcdebc2b19ef2afdcdd8148ffe6a",
+      "security_definer": true,
+      "settings": [
+        "search_path=\"\""
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true,
+      "service_execute": true
+    }
+  ]
+}

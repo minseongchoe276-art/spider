@@ -4,18 +4,24 @@ import {Progression} from './Progression.js';
 import {PerformanceBudget} from './PerformanceBudget.js';
 import {keyLabel} from './PlayerSettings.js';
 import {SoloJourney} from './SoloJourney.js';
+import {PlayDiagnostics} from './PlayDiagnostics.js';
+import {PlayStudy} from './PlayStudy.js';
 export class PlayerExperience {
   constructor(game,storage) {
     this.game=game;game.progression=new Progression(storage);this.saveTime=0;this.previewTime=0;this.visitTime=0;
     this.performance=new PerformanceBudget();this.performanceActive=false;
-    this.journey=new SoloJourney(game,storage);
+    this.study=new PlayStudy();this.journey=new SoloJourney(game,storage);this.diagnostics=new PlayDiagnostics();
+    for(const [name,type]of [['resize','resize'],['webglcontextlost','context-lost'],['webglcontextrestored','context-restored']])
+      (name==='resize'?window:game.canvas)?.addEventListener?.(name,()=>this.diagnostics.record(type));
+    document.addEventListener?.('visibilitychange',()=>this.diagnostics.record(document.hidden?'hidden':'visible'));
+    document.getElementById('btn-export-diagnostics')?.addEventListener('click',()=>this.exportDiagnostics());
     const geometry=new THREE.BufferGeometry().setFromPoints(Array.from({length:17},()=>new THREE.Vector3()));
     this.trajectory=new THREE.Line(geometry,new THREE.LineDashedMaterial({color:0x94f7e0,dashSize:1,gapSize:.8,transparent:true,opacity:.65}));
     this.trajectory.frustumCulled=false;this.trajectory.visible=false;game.scene.add(this.trajectory);
     const previousLanding=game.physics.onLanding;
     game.physics.onLanding=(position,impact,normal)=>{previousLanding?.(position,impact,normal);game.audio.playSurfaceStep?.('landing',Math.min(1,impact/30));};
     const previousRecovery=game.physics.onRecovery;
-    game.physics.onRecovery=reason=>{game.progression.resetTravel();this.journey.resetSample();previousRecovery?.(reason);};
+    game.physics.onRecovery=reason=>{this.diagnostics.record('recovery');game.progression.resetTravel();this.journey.resetSample();previousRecovery?.(reason);};
     const previousReset=game.physics.onReset;
     game.physics.onReset=()=>{game.progression.resetTravel();this.journey.resetSample();previousReset?.();};
     game.physics.onStuntCallback=(name,points)=>{if(!points)game.showStuntNotice(name,0);};
@@ -60,8 +66,14 @@ export class PlayerExperience {
     if(summary)summary.textContent='안전한 위치를 저장하고 다시 돌아올 수 있습니다.';
     const select=document.getElementById('web-theme');if(select){select.replaceChildren();for(const r of [{id:'white',label:'기본 흰색'},...g.progression.unlocked]){const option=document.createElement('option');option.value=r.id;option.textContent=r.label;select.append(option);}select.value=d.theme;}
   }
+  exportDiagnostics(){
+    const blob=new Blob([JSON.stringify(this.diagnostics.report(this.game),null,2)],{type:'application/json'});
+    const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='shadow-pulse-diagnostics.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
+  }
   update(delta,elapsed) {
-    const g=this.game,p=g.physics,s=g.preferences.values.settings,active=g.isPlaying&&!g.isPaused&&!g.multiplayer?.spectating&&!g.gameplaySuspended;
+    const g=this.game,p=g.physics,s=g.preferences.values.settings,active=g.isPlaying&&!g.isPaused&&!g.multiplayer?.spectating&&!g.gameplaySuspended&&!g.contextLost&&!document.hidden;
+    if(this.diagnosticsActive!==active){this.diagnostics?.record(active?'resume':'pause');this.diagnosticsActive=active;}
+    if(active){this.study?.tick(elapsed);this.diagnostics?.sample(elapsed,g);}
     this.journey?.update(delta);
     const ceiling={low:1,balanced:1.5,high:2}[g.preferences.values.quality];
     // Menus and hidden tabs are not gameplay performance samples. Preserve
@@ -96,7 +108,7 @@ export class PlayerExperience {
   }
   previewAnchor(){const g=this.game,p=g.physics,marker=document.getElementById('anchor-preview'),hands=document.getElementById('hand-status');
     const inCombat=g.combat.mode==='combat';
-    const zipStatus=GROUNDED.includes(p.state)?'집: 공중 전용':p.state==='WEB_ZIP'?'집 이동 중':p.zipCooldown>0?'집 대기':'집 준비';
+    const zipStatus=GROUNDED.includes(p.state)?'당기기: 공중 전용':p.state==='WEB_ZIP'?'당기는 중':p.zipCooldown>0?'당기기 대기':'당기기 준비';
     if(hands)hands.textContent=inCombat?(GROUNDED.includes(p.state)?`전투 모드 · ${keyLabel(g.preferences.values.settings.bindings.guard)} 방어`:`공중 · 전투 모드 · ${keyLabel(g.preferences.values.settings.bindings.mode)}로 와이어 모드 전환`):
       `${p.webs.some(w=>w.button===0)?'좌클릭 연결':'좌클릭 준비'} · ${p.webs.some(w=>w.button===2)?'우클릭 연결':'우클릭 준비'} · ${zipStatus}`;
     // Availability belongs on the fixed reticle, not a moving world marker.

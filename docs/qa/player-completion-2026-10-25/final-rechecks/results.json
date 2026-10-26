@@ -1,0 +1,136 @@
+{
+  "total": 26,
+  "passed": 26,
+  "results": [
+    {
+      "name": "check-player-journey.mjs",
+      "status": "PASS",
+      "milliseconds": 259
+    },
+    {
+      "name": "check-asset-delivery.mjs",
+      "status": "PASS",
+      "milliseconds": 193
+    },
+    {
+      "name": "check-mode-selection.mjs",
+      "status": "PASS",
+      "milliseconds": 106
+    },
+    {
+      "name": "check-session-flow.mjs",
+      "status": "PASS",
+      "milliseconds": 101
+    },
+    {
+      "name": "check-input-lifecycle.mjs",
+      "status": "PASS",
+      "milliseconds": 109
+    },
+    {
+      "name": "check-touch-controls.mjs",
+      "status": "PASS",
+      "milliseconds": 37
+    },
+    {
+      "name": "check-mobile-traversal.mjs",
+      "status": "PASS",
+      "milliseconds": 184
+    },
+    {
+      "name": "check-upgrade.mjs",
+      "status": "PASS",
+      "milliseconds": 121
+    },
+    {
+      "name": "check-remote-motion.mjs",
+      "status": "PASS",
+      "milliseconds": 5294
+    },
+    {
+      "name": "check-web-continuity.mjs",
+      "status": "PASS",
+      "milliseconds": 1170
+    },
+    {
+      "name": "check-loading-performance.mjs",
+      "status": "PASS",
+      "milliseconds": 204
+    },
+    {
+      "name": "check-minimap.mjs",
+      "status": "PASS",
+      "milliseconds": 73
+    },
+    {
+      "name": "check-districts-and-language.mjs",
+      "status": "PASS",
+      "milliseconds": 280
+    },
+    {
+      "name": "check-expert-recovery.mjs",
+      "status": "PASS",
+      "milliseconds": 1172
+    },
+    {
+      "name": "check-combat-quality.mjs",
+      "status": "PASS",
+      "milliseconds": 22215
+    },
+    {
+      "name": "check-combat-traversal.mjs",
+      "status": "PASS",
+      "milliseconds": 8706
+    },
+    {
+      "name": "check-multiplayer.mjs",
+      "status": "PASS",
+      "milliseconds": 5307
+    },
+    {
+      "name": "check-online-edge-cases.mjs",
+      "status": "PASS",
+      "milliseconds": 106
+    },
+    {
+      "name": "check-room-reconnect.mjs",
+      "status": "PASS",
+      "milliseconds": 1382
+    },
+    {
+      "name": "check-connection-lifecycle.mjs",
+      "status": "PASS",
+      "milliseconds": 97
+    },
+    {
+      "name": "check-custom-matches.mjs",
+      "status": "PASS",
+      "milliseconds": 1265
+    },
+    {
+      "name": "check-full-game-audit.mjs",
+      "status": "PASS",
+      "milliseconds": 229
+    },
+    {
+      "name": "check-release-audit.mjs",
+      "status": "PASS",
+      "milliseconds": 4161
+    },
+    {
+      "name": "check-player-audit.mjs",
+      "status": "PASS",
+      "milliseconds": 141
+    },
+    {
+      "name": "check-race-removal.mjs",
+      "status": "PASS",
+      "milliseconds": 46
+    },
+    {
+      "name": "check-network-conditions.mjs",
+      "status": "PASS",
+      "milliseconds": 5582
+    }
+  ]
+}

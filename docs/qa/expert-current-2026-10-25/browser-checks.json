@@ -1,0 +1,72 @@
+{
+  "checkedAt": "2026-10-25T09:13:09.894Z",
+  "environment": "IAB desktop browser; development server on 127.0.0.1:5173",
+  "logicalDesktopViewport": [
+    1280,
+    720
+  ],
+  "desktopCaptureSize": [
+    1093,
+    720
+  ],
+  "mobileViewports": [
+    [
+      390,
+      844
+    ],
+    [
+      844,
+      390
+    ]
+  ],
+  "touchMode": "development touchReview; not physical touch hardware",
+  "manualChecks": [
+    {
+      "name": "Korean Neon Core solo entry, keyboard movement, jump, Q mode, V view, C recenter, pause",
+      "status": "OBSERVED"
+    },
+    {
+      "name": "Help open/close and world-map open/close",
+      "status": "OBSERVED"
+    },
+    {
+      "name": "Patrol mission start and distance progression",
+      "status": "OBSERVED"
+    },
+    {
+      "name": "Mobile wire tap starts attachment and ascent; auxiliary controls expand",
+      "status": "OBSERVED"
+    },
+    {
+      "name": "Rooftop mission direction, distance and altitude visible on portrait and landscape",
+      "status": "OBSERVED"
+    },
+    {
+      "name": "English Sunset Harbor map and mixed combat practice, HP and stamina",
+      "status": "OBSERVED"
+    },
+    {
+      "name": "Diagnostic JSON download",
+      "status": "OBSERVED"
+    },
+    {
+      "name": "Neon Core world-map building outlines",
+      "status": "CONFIRMED_DEFECT",
+      "evidence": "map-defect.json"
+    }
+  ],
+  "limitations": [
+    "No physical iOS/Android device or gamepad used",
+    "No real public-internet multiplayer round created",
+    "No full Hong Kong manual traversal",
+    "No long-session thermal or leak test"
+  ],
+  "screenshots": [
+    "combat-practice-en.jpg",
+    "harbor-map-en.jpg",
+    "mobile-landscape.jpg",
+    "mobile-objective.jpg",
+    "mobile-touch.jpg",
+    "world-map-defect.jpg"
+  ]
+}

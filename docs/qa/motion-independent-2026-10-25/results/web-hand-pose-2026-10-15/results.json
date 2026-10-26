@@ -1,0 +1,186 @@
+{
+  "fps": [
+    24,
+    30,
+    60,
+    144
+  ],
+  "results": [
+    {
+      "name": "24fps left: anatomical third-person shooting, held grip and clean release",
+      "status": "PASS",
+      "detail": {
+        "thumb": 0.9716780609169273,
+        "index": 0.9998143653000237,
+        "middle": 0.5403473886856143,
+        "ring": 0.5554927733630187,
+        "pinky": 0.9998344056875375
+      }
+    },
+    {
+      "name": "24fps left: a missed shot articulates, expires and never attaches",
+      "status": "PASS"
+    },
+    {
+      "name": "24fps right: anatomical third-person shooting, held grip and clean release",
+      "status": "PASS",
+      "detail": {
+        "thumb": 0.9790800720046922,
+        "index": 0.9999524636496134,
+        "middle": 0.5446340787911812,
+        "ring": 0.5430094976980556,
+        "pinky": 0.9999085983325119
+      }
+    },
+    {
+      "name": "24fps right: a missed shot articulates, expires and never attaches",
+      "status": "PASS"
+    },
+    {
+      "name": "30fps left: anatomical third-person shooting, held grip and clean release",
+      "status": "PASS",
+      "detail": {
+        "thumb": 0.9716780611825376,
+        "index": 0.9998143653015559,
+        "middle": 0.5403473879933013,
+        "ring": 0.5554927726919189,
+        "pinky": 0.9998344056889895
+      }
+    },
+    {
+      "name": "30fps left: a missed shot articulates, expires and never attaches",
+      "status": "PASS"
+    },
+    {
+      "name": "30fps right: anatomical third-person shooting, held grip and clean release",
+      "status": "PASS",
+      "detail": {
+        "thumb": 0.9790800719532355,
+        "index": 0.9999524636495488,
+        "middle": 0.5446340792353347,
+        "ring": 0.5430094981464383,
+        "pinky": 0.9999085983323807
+      }
+    },
+    {
+      "name": "30fps right: a missed shot articulates, expires and never attaches",
+      "status": "PASS"
+    },
+    {
+      "name": "60fps left: anatomical third-person shooting, held grip and clean release",
+      "status": "PASS",
+      "detail": {
+        "thumb": 0.9716780618237731,
+        "index": 0.9998143653019166,
+        "middle": 0.540347384866792,
+        "ring": 0.5554927697853679,
+        "pinky": 0.9998344056898081
+      }
+    },
+    {
+      "name": "60fps left: a missed shot articulates, expires and never attaches",
+      "status": "PASS"
+    },
+    {
+      "name": "60fps right: anatomical third-person shooting, held grip and clean release",
+      "status": "PASS",
+      "detail": {
+        "thumb": 0.9790800718725476,
+        "index": 0.999952463649523,
+        "middle": 0.5446340797401911,
+        "ring": 0.5430094986027985,
+        "pinky": 0.9999085983323205
+      }
+    },
+    {
+      "name": "60fps right: a missed shot articulates, expires and never attaches",
+      "status": "PASS"
+    },
+    {
+      "name": "144fps left: anatomical third-person shooting, held grip and clean release",
+      "status": "PASS",
+      "detail": {
+        "thumb": 0.9716780621575126,
+        "index": 0.9998143653021615,
+        "middle": 0.5403473832827153,
+        "ring": 0.5554927683084129,
+        "pinky": 0.9998344056902737
+      }
+    },
+    {
+      "name": "144fps left: a missed shot articulates, expires and never attaches",
+      "status": "PASS"
+    },
+    {
+      "name": "144fps right: anatomical third-person shooting, held grip and clean release",
+      "status": "PASS",
+      "detail": {
+        "thumb": 0.9790800718267534,
+        "index": 0.999952463649515,
+        "middle": 0.5446340800048131,
+        "ring": 0.5430094988332556,
+        "pinky": 0.9999085983322991
+      }
+    },
+    {
+      "name": "144fps right: a missed shot articulates, expires and never attaches",
+      "status": "PASS"
+    },
+    {
+      "name": "24fps: both hands can shoot and release independently",
+      "status": "PASS"
+    },
+    {
+      "name": "24fps: web fingers cannot overwrite combat or wall contact fingers",
+      "status": "PASS"
+    },
+    {
+      "name": "24fps: remote hit/miss/dual hand gestures and stale cleanup use independent skin",
+      "status": "PASS"
+    },
+    {
+      "name": "30fps: both hands can shoot and release independently",
+      "status": "PASS"
+    },
+    {
+      "name": "30fps: web fingers cannot overwrite combat or wall contact fingers",
+      "status": "PASS"
+    },
+    {
+      "name": "30fps: remote hit/miss/dual hand gestures and stale cleanup use independent skin",
+      "status": "PASS"
+    },
+    {
+      "name": "60fps: both hands can shoot and release independently",
+      "status": "PASS"
+    },
+    {
+      "name": "60fps: web fingers cannot overwrite combat or wall contact fingers",
+      "status": "PASS"
+    },
+    {
+      "name": "60fps: remote hit/miss/dual hand gestures and stale cleanup use independent skin",
+      "status": "PASS"
+    },
+    {
+      "name": "144fps: both hands can shoot and release independently",
+      "status": "PASS"
+    },
+    {
+      "name": "144fps: web fingers cannot overwrite combat or wall contact fingers",
+      "status": "PASS"
+    },
+    {
+      "name": "144fps: remote hit/miss/dual hand gestures and stale cleanup use independent skin",
+      "status": "PASS"
+    },
+    {
+      "name": "Remote shot capture validates handedness, expiry, target and payload size",
+      "status": "PASS"
+    },
+    {
+      "name": "A new remote character never inherits the local firing fingers",
+      "status": "PASS"
+    }
+  ]
+}

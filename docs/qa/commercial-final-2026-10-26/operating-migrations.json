@@ -1,0 +1,14 @@
+{
+  "checkedAt": "2026-10-25T20:19:03.904Z",
+  "scope": "Read-only operating metadata; no changes",
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\"migrations\":[{\"version\":\"20261012112311\",\"name\":\"game_rooms_realtime\"},{\"version\":\"20261012113252\",\"name\":\"resume_game_room\"},{\"version\":\"20261012115026\",\"name\":\"fix_room_cleanup\"},{\"version\":\"20261012120054\",\"name\":\"game_move_pose\"},{\"version\":\"20261012235149\",\"name\":\"gameplay_experience\"},{\"version\":\"20261012235545\",\"name\":\"arena_correction\"},{\"version\":\"20261013053751\",\"name\":\"verified_movement_and_continuous_rescue\"},{\"version\":\"20261013063126\",\"name\":\"authoritative_hong_kong_hits\"}]}"
+      }
+    ],
+    "structuredContent": null,
+    "isError": false
+  }
+}

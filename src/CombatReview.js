@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import {Character} from './Character.js';
-import {CombatSystem,ATTACKS} from './Combat.js';
+import {CombatSystem} from './Combat.js';
+import {sampleCombatReviewPose} from './CombatReviewPose.js';
 import {SwingPhysics} from './SwingPhysics.js';
 import {City} from './City.js';
 import {VFXManager} from './VFX.js';
@@ -13,12 +14,12 @@ export function startCombatReview() {
   const floor=new THREE.Mesh(new THREE.PlaneGeometry(50,50),new THREE.MeshStandardMaterial({color:0x829398}));floor.rotation.x=-Math.PI/2;scene.add(floor,new THREE.GridHelper(50,50));
   const camera=new THREE.PerspectiveCamera(45,innerWidth/innerHeight,0.05,200);camera.position.set(4,3.5,7);camera.lookAt(0,1.2,0);
   const panel=document.createElement('section');panel.style.cssText='position:fixed;top:16px;left:16px;padding:16px;border-radius:12px;background:#ffffffed;color:#17232d;max-width:330px';
-  panel.innerHTML='<strong>전투 모드 · 모션 검증</strong><p><button id="combat-jab">잽</button> <button id="combat-cross">오른손 스트레이트</button> <button id="combat-hook">훅</button> <button id="combat-special">오른손 강타</button></p><p><button id="combat-guard">방어 전환</button> <button id="combat-left">좌 회피</button> <button id="combat-right">우 회피</button> <button id="combat-back">뒤 회피</button> <button id="combat-forward">앞 회피</button></p><p><button id="combat-mode">Q 모드 전환</button></p><p>모션 <select id="combat-clip"></select> <button id="combat-pose">중간 자세 보기</button></p><p>자세 구간 <input id="combat-phase" type="number" min="0" max="1" step="0.05" value="0.5" style="width:65px"> <button id="combat-sample">구간 보기</button></p><p>재생 속도 <select id="combat-speed"><option value="1">실제 속도</option><option value="0.35">느리게 확인</option></select></p><output id="combat-output">모션 로딩 중</output><p><a href="/">홍콩 게임으로 돌아가기</a></p>';
+  panel.innerHTML='<strong>전투 모드 · 모션 검증</strong><p><button id="combat-jab">잽</button> <button id="combat-cross">오른손 스트레이트</button> <button id="combat-hook">강한 훅</button> <button id="combat-special">오른손 강타</button></p><p><button id="combat-guard">방어 전환</button> <button id="combat-left">좌 회피</button> <button id="combat-right">우 회피</button> <button id="combat-back">뒤 회피</button> <button id="combat-forward">앞 회피</button></p><p><button id="combat-mode">Q 모드 전환</button></p><p>모션 <select id="combat-clip"></select> <button id="combat-pose">타격·기준 자세 보기</button></p><p>행동 시간 구간 <input id="combat-phase" type="number" min="0" max="1" step="0.05" value="0.5" style="width:65px"> <button id="combat-sample">구간 보기</button></p><p>재생 속도 <select id="combat-speed"><option value="1">실제 속도</option><option value="0.35">느리게 확인</option></select></p><output id="combat-output">모션 로딩 중</output><p><a href="/">홍콩 게임으로 돌아가기</a></p>';
   document.body.append(panel);const output=panel.querySelector('output');
   const movement=document.createElement('select');movement.id='combat-movement';movement.setAttribute('aria-label','이동 속도');
   movement.innerHTML='<option value="0">제자리</option><option value="4.4">달리며 공격</option><option value="6.5">질주하며 공격</option>';
   panel.append(movement);
-  const labels={combatIdle:'복싱 대기 자세',jab:'리드 잽',cross:'오른손 스트레이트',rightHook:'이전 오른손 훅',hook:'훅',special:'오른손 강타',guard:'단단한 가드',dodgeLeft:'좌측 상체 회피',dodgeRight:'우측 상체 회피',dodgeBack:'짧은 뒤 회피',dodgeForward:'낮은 앞 회피'};
+  const labels={combatIdle:'복싱 대기 자세',jab:'리드 잽',cross:'오른손 스트레이트',rightHook:'이전 오른손 훅',hook:'훅 원본',heavy:'강한 훅',special:'오른손 강타',guard:'단단한 가드',dodgeLeft:'좌측 상체 회피',dodgeRight:'우측 상체 회피',dodgeBack:'짧은 뒤 회피',dodgeForward:'낮은 앞 회피'};
   let ready=false,pose=false,history=[],lastMotion;
   const character=new Character(scene,()=>{},()=>{ready=true;output.textContent='준비 완료';panel.querySelector('select').replaceChildren(...['combatIdle','jab','cross','rightHook','hook','heavy','special','guard','slam','slamLand','hitHead'].map(key=>{const o=document.createElement('option');o.value=key;o.textContent=labels[key] || key;return o;}));});
   scene.add(camera);
@@ -36,7 +37,14 @@ export function startCombatReview() {
   panel.querySelector('#combat-guard').onclick=()=>{pose=false;combat.guard(!combat.blocking);};
   for(const dir of ['left','right','back','forward'])panel.querySelector('#combat-'+dir).onclick=()=>{control();combat.dodge({[dir]:true},camera);};
   panel.querySelector('#combat-mode').onclick=()=>{pose=false;combat.toggle(input);};
-  const showPose=(phase)=>{if(!ready)return;combat.cancel();pose=true;physics.position.set(0,.1,0);character.group.position.copy(physics.position);character.model.rotation.set(0,Math.PI,0);character.model.position.set(0,-.1,0);character.stopAnimation();const key=panel.querySelector('select').value;character.fadeToAction(key,0);const fraction=phase ?? character.actions[key].getClip().userData.impactPhase ?? .45;character.mixer.setTime(character.actions[key].getClip().duration*fraction);{const duration=ATTACKS[key==='rightHook'?'cross':key]?.duration || 1;character.targetFacingAngle=character.visualYaw=Math.PI;const speed=Number(movement.value),velocity=new THREE.Vector3(0,0,-speed),state=speed>5?'SPRINTING':speed?'RUNNING':key==='slam'?'FALLING':'IDLE';character.combatAction={id:++combat.serial,key:key==='rightHook'?'cross':key,duration,time:fraction*duration};for(let i=0;i<(speed?45:1);i++){character.group.position.addScaledVector(velocity,1/60);character.update(speed?1/60:0,state,velocity);}}output.textContent='전투 동작: '+(labels[key] || key);};
+  const showPose=(phase)=>{
+    if(!ready)return;
+    combat.cancel();pose=true;physics.position.set(0,.1,0);character.group.position.copy(physics.position);
+    character.model.rotation.set(0,Math.PI,0);character.model.position.set(0,-.1,0);
+    const key=panel.querySelector('#combat-clip').value;
+    const sample=sampleCombatReviewPose(character,{key,phase,speed:Number(movement.value),id:++combat.serial});
+    output.textContent=`전투 동작: ${labels[key] || key} · 행동 시간 ${(sample.fraction*100).toFixed(1)}% · ${sample.state} · 기본 모션 ${sample.active}`;
+  };
   panel.querySelector('#combat-pose').onclick=()=>showPose();
   panel.querySelector('#combat-sample').onclick=()=>showPose(THREE.MathUtils.clamp(Number(panel.querySelector('#combat-phase').value),0,1));
   const clock=new THREE.Clock();renderer.setAnimationLoop(()=>{

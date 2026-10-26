@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import {resolveBody} from './MovementCollision.js';
+import {createTrainingOpponent,poseTrainingOpponent} from './TrainingOpponent.js';
 export class CombatPractice {
   constructor(game){this.game=game;this.projectiles=[];this.active=false;
     document.getElementById('btn-practice')?.addEventListener('click',()=>this.start(document.getElementById('practice-type').value));
@@ -23,22 +24,20 @@ export class CombatPractice {
     g.canvas?.focus();
     g.showNotice('전투 연습 · 붉은 예고는 회피, 근접 공격은 정면 방어 · 방패에는 훅 / 강공격');
   }
-  spawn(type,position){const scene=this.game.scene,group=new THREE.Group(),color={dummy:0x93b6c2,melee:0xe67860,ranged:0x9ba2ff,shield:0xe7c178}[type]||0xe67860;
-    const body=new THREE.Mesh(new THREE.CapsuleGeometry(.32,.8,5,8),new THREE.MeshStandardMaterial({color,roughness:.7}));body.position.y=.95;group.add(body);
-    const head=new THREE.Mesh(new THREE.SphereGeometry(.22,12,8),new THREE.MeshStandardMaterial({color:0xd7e8ed}));head.position.y=1.73;group.add(head);
+  spawn(type,position){const scene=this.game.scene,{group,body,shield,pose}=createTrainingOpponent(type);
     const ring=new THREE.Mesh(new THREE.RingGeometry(.5,.62,24),new THREE.MeshBasicMaterial({color:0xff526d,side:THREE.DoubleSide,transparent:true,opacity:.8}));ring.rotation.x=-Math.PI/2;ring.position.y=.04;ring.visible=false;group.add(ring);
     const bar=new THREE.Mesh(new THREE.PlaneGeometry(.8,.07),new THREE.MeshBasicMaterial({color:0x96ffe8,side:THREE.DoubleSide}));bar.position.y=2.08;group.add(bar);
-    let shield;if(type==='shield'){shield=new THREE.Mesh(new THREE.BoxGeometry(.65,.9,.1),new THREE.MeshStandardMaterial({color:0x5e7080,metalness:.5}));shield.position.set(0,1,.42);group.add(shield);}
-    group.position.copy(position);scene.add(group);const enemy={type,position,spawn:position.clone(),mesh:group,body,ring,bar,shield,health:type==='shield'?140:100,maxHealth:type==='shield'?140:100,cooldown:1.5,windup:0,flash:0,stagger:0,facing:0};this.game.combat.enemies.push(enemy);return enemy;}
+    group.position.copy(position);scene.add(group);const enemy={type,position,spawn:position.clone(),mesh:group,body,ring,bar,shield,pose,health:type==='shield'?140:100,maxHealth:type==='shield'?140:100,cooldown:1.5,windup:0,flash:0,stagger:0,facing:0};this.game.combat.enemies.push(enemy);return enemy;}
   update(delta){const g=this.game;if(!this.active||g.multiplayer?.room)return;
     if(!g.combat.enemies.length){this.stop();return;}
     for(const e of g.combat.enemies){if(e.health<=0)continue;
       e.flash=Math.max(0,e.flash-delta);e.stagger=Math.max(0,e.stagger-delta);e.cooldown=Math.max(0,e.cooldown-delta);
-      e.body.material.emissive.setHex(e.flash>0?0xffffff:e.windup>0?0x771124:0);e.bar.scale.x=e.health/e.maxHealth;e.bar.quaternion.copy(e.mesh.quaternion).invert().multiply(g.camera.quaternion);e.ring.visible=e.windup>0;
+      poseTrainingOpponent(e,delta,!!g.preferences?.values.reducedMotion);
+      e.bar.scale.x=e.health/e.maxHealth;e.bar.quaternion.copy(e.mesh.quaternion).invert().multiply(g.camera.quaternion);e.ring.visible=e.windup>0;
       const offset=g.physics.position.clone().sub(e.position),distance=offset.length();e.facing=Math.atan2(offset.x,offset.z);e.mesh.rotation.y=e.facing;
       if(e.type==='dummy'||e.stagger>0)continue;
       if(distance>45){e.windup=0;continue;}
-      if(e.windup>0){e.windup-=delta;e.ring.scale.setScalar(1+Math.max(0,e.windup));if(e.windup<=0){e.cooldown=e.type==='ranged'?2.5:1.25;
+      if(e.windup>0){e.windup-=delta;e.ring.scale.setScalar(1+Math.max(0,e.windup));if(e.windup<=0){e.cooldown=e.type==='ranged'?2.5:1.25;e.strike=.3;
           if(e.type==='ranged')this.fire(e);else if(distance<2.5&&!g.combat.obstructed(e.position.clone().add(new THREE.Vector3(0,1,0)),g.physics.position.clone().add(new THREE.Vector3(0,1,0)))){
             g.combat.receiveDamage(e.type==='shield'?20:12,e);
             // Reset replaces the enemy array while this loop still owns the

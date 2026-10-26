@@ -1,0 +1,57 @@
+vite v7.3.7 building client environment for production...
+transforming...
+✓ 147 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                               25.25 kB │ gzip:     7.87 kB
+dist/assets/index-DQG3J0pq.css                78.95 kB │ gzip:    17.42 kB
+dist/assets/EffectsReview-BWB6ZFiu.js          3.43 kB │ gzip:     1.79 kB
+dist/assets/WebHandReview-B5tKDe94.js          5.33 kB │ gzip:     2.46 kB
+dist/assets/CombatReview-Bv5dH1zb.js           6.49 kB │ gzip:     3.16 kB
+dist/assets/MotionReview-OG3Z1Fwp.js          14.36 kB │ gzip:     5.69 kB
+dist/assets/FBXLoader-54ovkxhi.js             48.13 kB │ gzip:    16.10 kB
+dist/assets/UrbanGroundCity-DTqVP0a-.js      154.54 kB │ gzip:    53.76 kB
+dist/assets/index-DdNydt_f.js              1,283.68 kB │ gzip:   359.24 kB
+dist/assets/StreamedCollision-DFPMxN1p.js  4,340.34 kB │ gzip: 1,646.84 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 3.98s
+Precompressed static assets: {"files":78,"originalBytes":193453013,"gzipBytes":70335223,"brotliBytes":64366159}
+{
+  "releaseId": "5fa6fbc88792f19edf541447bf3871a23c94d23673fa7497b6c142e0e7bf0810",
+  "groups": {
+    "bootstrap": {
+      "files": 3,
+      "bytes": 1387872,
+      "encodedBytes": 365688
+    },
+    "character": {
+      "files": 37,
+      "bytes": 39947273,
+      "encodedBytes": 26400656
+    },
+    "fallback": {
+      "files": 24,
+      "bytes": 123102072,
+      "encodedBytes": 29804667
+    },
+    "on-demand": {
+      "files": 7,
+      "bytes": 4572603,
+      "encodedBytes": 1495188
+    },
+    "support": {
+      "files": 27,
+      "bytes": 25359118,
+      "encodedBytes": 7215885
+    }
+  },
+  "checks": {
+    "bootstrap": true,
+    "character": true,
+    "total": true
+  }
+}

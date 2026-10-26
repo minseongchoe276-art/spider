@@ -1,0 +1,16 @@
+PASS remote appearance: no capsule, deferred full rig, shared suit material, independent skeleton
+PASS remote skill coverage: directional dodges, landing, hit reactions and held airborne slam
+PASS remote real rig 30fps: strides, independent bones, swing/release, stale pose, leave cleanup
+PASS remote real rig 60fps: strides, independent bones, swing/release, stale pose, leave cleanup
+PASS remote real rig 144fps: strides, independent bones, swing/release, stale pose, leave cleanup
+PASS transport: ordered ready/start, idempotent connection cleanup, bounded pose payloads
+file:///Users/choeminseong/Desktop/%E1%84%80%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%B7/src/Multiplayer.js:17
+const $ = id => document.getElementById(id);
+                         ^
+
+ReferenceError: document is not defined
+    at $ (file:///Users/choeminseong/Desktop/%E1%84%80%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%B7/src/Multiplayer.js:17:26)
+    at Multiplayer.update (file:///Users/choeminseong/Desktop/%E1%84%80%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%B7/src/Multiplayer.js:457:24)
+    at file:///Users/choeminseong/Desktop/%E1%84%80%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%B7/scripts/check-remote-motion.mjs:154:8
+
+Node.js v22.19.0

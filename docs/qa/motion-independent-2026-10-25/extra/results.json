@@ -1,0 +1,37 @@
+{
+  "total": 5,
+  "completed": 5,
+  "passed": 5,
+  "results": [
+    {
+      "suite": "online-guard",
+      "pass": true,
+      "exitCode": 0,
+      "seconds": 4.426
+    },
+    {
+      "suite": "online-stance",
+      "pass": true,
+      "exitCode": 0,
+      "seconds": 7.175
+    },
+    {
+      "suite": "expert-recovery",
+      "pass": true,
+      "exitCode": 0,
+      "seconds": 3.486
+    },
+    {
+      "suite": "mantle-balcony",
+      "pass": true,
+      "exitCode": 0,
+      "seconds": 9.853
+    },
+    {
+      "suite": "online-motion-sync",
+      "pass": true,
+      "exitCode": 0,
+      "seconds": 71.822
+    }
+  ]
+}

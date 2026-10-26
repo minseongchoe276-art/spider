@@ -1,0 +1,76 @@
+{
+  "results": [
+    {
+      "command": "node scripts/check-mission-expansion.mjs",
+      "exitCode": 0,
+      "seconds": 0.06
+    },
+    {
+      "command": "node scripts/check-player-journey.mjs",
+      "exitCode": 0,
+      "seconds": 0.23
+    },
+    {
+      "command": "node scripts/check-session-flow.mjs",
+      "exitCode": 0,
+      "seconds": 0.1
+    },
+    {
+      "command": "node scripts/check-input-lifecycle.mjs",
+      "exitCode": 0,
+      "seconds": 0.1
+    },
+    {
+      "command": "node scripts/check-minimap.mjs",
+      "exitCode": 0,
+      "seconds": 0.07
+    },
+    {
+      "command": "node scripts/check-districts-and-language.mjs",
+      "exitCode": 0,
+      "seconds": 0.26
+    },
+    {
+      "command": "node scripts/check-loading-performance.mjs",
+      "exitCode": 0,
+      "seconds": 0.2
+    },
+    {
+      "command": "node scripts/check-touch-controls.mjs",
+      "exitCode": 0,
+      "seconds": 0.03
+    },
+    {
+      "command": "node scripts/check-full-game-audit.mjs",
+      "exitCode": 0,
+      "seconds": 0.22
+    }
+  ],
+  "network": {
+    "environment": "isolated-local-websocket-proxy",
+    "oneWayDelayMs": [
+      90,
+      150
+    ],
+    "droppedApplicationUpdates": 134,
+    "players": 8,
+    "cases": [
+      "eight clients join, ready and start under delay/jitter",
+      "all eight maintain finite accepted movement despite dropped application updates",
+      "disconnected eighth player resumes the same seat and running round",
+      "host departure transfers ownership under impaired delivery"
+    ],
+    "roundTripMs": 251,
+    "status": "PASS",
+    "forwardedMessages": 1178
+  },
+  "sourceHashes": {
+    "src/SoloJourney.js": "06e069af7f3f8dbf0a899fc1b9fb344c77c9b02d5daec8527101cc996ed3e06e",
+    "src/MissionRules.js": "9a9537a942d2d2872b6f62a39b912924da2203c6d8b145c0231d8003ab5c377f",
+    "src/LoadingStatus.js": "25ad96bf4bfc7363a9ef07239316a447df30264085dbc3e58cca6ede2ed4fd52",
+    "src/main.js": "5bdbf062ddd906ba058d806562b3f944f1bb63611645a6ddfbef48dce25811b8",
+    "src/locales/en.js": "c1ed350ad103273ea9627325fd4af123f3f746d1fca2085773f7d8b97d819d4e",
+    "index.html": "d38c23244917643f7a6effe1078b00e0a513078c4f08f8a1443a2d3b762183f9",
+    "src/player-ui.css": "fcb045b9ca49356c88edf7c0874640a00c87ab2fef135f28eb6024228740eafc"
+  }
+}

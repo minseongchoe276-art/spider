@@ -6,6 +6,7 @@ import {attachRooms} from './rooms.mjs';
 import {SwingPhysics} from '../src/SwingPhysics.js';
 
 const duration=Number(process.argv[2]||1800000),started=Date.now();
+assert(Number.isFinite(duration)&&duration>=5000,'Soak duration must be at least 5000ms');
 const server=createServer(),api=attachRooms(server),sockets=[],samples=[];
 await new Promise(r=>server.listen(0,'127.0.0.1',r));
 let movesReceived=0,rounds=0,steps=0,reconnects=0,maxRooms=0;
@@ -20,13 +21,13 @@ const p=new SwingPhysics(new THREE.Scene(),{buildingMeshes:[],colliders:[],check
   {group:new THREE.Group(),update(){},fireWeb(){},stopAnimation(){}},silent);
 p.findBestAnchor=()=>new THREE.Vector3(0,60,0);
 function resetPhysics(){p.clearWebAnchor();p.position.set(-12,44,0);p.previousFixedPosition.copy(p.position);p.renderPosition.copy(p.position);p.velocity.set(0,0,0);p.state='FALLING';p.startSwing(camera);}
-let players=await Promise.all(Array.from({length:8},connect)),room;
+let players=await Promise.all(Array.from({length:8},connect)),room,members=[];
 async function newRound(){
   if(room){for(const ws of players)send(ws,{type:'leave'});await wait(players[0],e=>e.type==='left');await sleep(30);assert.equal(api.rooms.size,0,'Room leaked after last player left');}
   for(const ws of players)ws.events=[];
   send(players[0],{type:'create',mode:'free',capacity:8,city:'procedural'});
-  const joined=await wait(players[0],e=>e.type==='joined');room=api.rooms.get(joined.code);
-  for(const ws of players.slice(1))send(ws,{type:'join',code:room.code,city:'procedural'});
+  const joined=await wait(players[0],e=>e.type==='joined');room=api.rooms.get(joined.code);members=[joined];
+  for(const ws of players.slice(1)){send(ws,{type:'join',code:room.code,city:'procedural'});members.push(await wait(ws,e=>e.type==='joined'));}
   await wait(players[0],e=>e.type==='room'&&e.room.count===8);
   for(const ws of players)send(ws,{type:'ready',ready:true});
   await wait(players[0],e=>e.type==='room'&&e.players.every(p=>p.ready));send(players[0],{type:'start'});
@@ -38,7 +39,10 @@ try{
     const now=Date.now(),tick=performance.now();
     if(now>=nextRound){
       // Recreate one disconnected peer before the next full room cycle.
-      players[7].terminate();await sleep(30);players[7]=await connect();reconnects++;
+      players[7].terminate();await sleep(30);players[7]=await connect();
+      send(players[7],{type:'resume',code:room.code,token:members[7].resumeToken});
+      const resumed=await wait(players[7],e=>e.type==='joined');assert.equal(resumed.id,members[7].id);
+      members[7]=resumed;await wait(players[7],e=>e.type==='room'&&e.room.phase==='playing');reconnects++;
       await newRound();nextRound=now+60000;
     }
     const seconds=(now-started)/1000;
@@ -52,5 +56,5 @@ try{
   }
   assert(movesReceived>1000);assert.equal(api.rooms.size,1);assert.equal(api.wss.clients.size,8);
   for(const ws of players)send(ws,{type:'leave'});await sleep(100);assert.equal(api.rooms.size,0);
-  console.log(JSON.stringify({status:'PASS',scope:'30-minute real-time Node physics + 8 WebSocket clients; not 8 human players or browser/GPU soak',elapsedSeconds:(Date.now()-started)/1000,rounds,reconnects,steps,movesReceived,maxRooms,samples},null,2));
+  console.log(JSON.stringify({status:'PASS',scope:'Real-time Node physics + 8 WebSocket clients; not 8 human players or browser/GPU soak',requestedSeconds:duration/1000,elapsedSeconds:(Date.now()-started)/1000,rounds,reconnects,steps,movesReceived,maxRooms,samples},null,2));
 }finally{for(const ws of sockets)ws.terminate();await new Promise(r=>server.close(r));}

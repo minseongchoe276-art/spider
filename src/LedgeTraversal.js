@@ -54,7 +54,7 @@ export function resolveTraversal(city,start,end) {
 
 export function planMantle(city,start,normal,height) {
   if(!Number.isFinite(height) || ![...start,...normal].every(Number.isFinite) || normal.lengthSq()<0.9)return null;
-  if(Math.abs(normal.y)>0.2 || height-start.y>0.95 || height-start.y< -0.2)return null;
+  if(Math.abs(normal.y)>0.2 || height-start.y>0.95 || height-start.y< -(city.collisionWorld?1.35:.2))return null;
   const origin=start.clone();origin.y=height-0.15;
   const hit=city.raycast?.(origin,normal.clone().negate(),1.2)
     || city.collisionWorld?.raycast?.(origin,normal.clone().negate(),1.2);

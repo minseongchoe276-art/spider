@@ -1,0 +1,16 @@
+PASS POSTGRES: 8 authenticated players join, prepare, and start with two police
+PASS POSTGRES: One jitter allowance cannot finance repeated 18m teleports
+PASS POSTGRES: Normal 48m/s and a 500ms delayed move remain accepted
+PASS POSTGRES: Private tables/schema and anonymous RPC calls remain inaccessible
+PASS POSTGRES: A failed transaction rolls back its accepted move and budget
+PASS POSTGRES: Parallel moves serialize their shared allowance
+PASS POSTGRES: Continuous rescue restarts after a gap instead of completing from two packets
+PASS POSTGRES: Opposing attack and movement use real connection locks without deadlock
+PASS POSTGRES: Pausing a defender does not grant damage immunity at the last confirmed position
+PASS POSTGRES: SQL and JavaScript arena validation reject duplicate/nearby targets consistently
+PASS POSTGRES: 2-player SQL match uses the correct duration and police count
+PASS POSTGRES: 3-player SQL match uses the correct duration and police count
+PASS POSTGRES: 4-player SQL match uses the correct duration and police count
+PASS POSTGRES: 5-player SQL match uses the correct duration and police count
+PASS POSTGRES: 6-player SQL match uses the correct duration and police count
+PASS POSTGRES: 7-player SQL match uses the correct duration and police count

@@ -1,0 +1,2 @@
+PASS asset delivery: encoding preferences, refusal, fallback, byte-exact Brotli/gzip and bounded static compression
+PASS real HTTP: Brotli/gzip/identity decode identically, HEAD sizes match, refusal/404/hidden-file protection

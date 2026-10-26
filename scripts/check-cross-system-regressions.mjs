@@ -109,7 +109,7 @@ await check('Zip HUD reports movement and cooldown rather than false readiness',
   const hands={textContent:''};document.getElementById=id=>id==='hand-status'?hands:null;
   const experience=Object.create(PlayerExperience.prototype);experience.game={physics:{state:'WEB_ZIP',webs:[],zipCooldown:.2},
     combat:{mode:'web'},preferences:{values:{settings:cleanSettings()}}};
-  experience.previewAnchor();assert(hands.textContent.includes('집 이동 중'));
-  experience.game.physics.state='FALLING';experience.previewAnchor();assert(hands.textContent.includes('집 대기'));
+  experience.previewAnchor();assert(hands.textContent.includes('당기는 중'));
+  experience.game.physics.state='FALLING';experience.previewAnchor();assert(hands.textContent.includes('당기기 대기'));
 }));
 console.log(JSON.stringify({results},null,2));if(results.some(r=>r.status==='FAIL'))process.exitCode=1;

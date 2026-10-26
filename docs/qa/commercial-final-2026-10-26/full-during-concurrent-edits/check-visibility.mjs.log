@@ -1,0 +1,4 @@
+PASS participant markers retain pending, eliminated, disconnected and distant positions; invalid interpolation falls back to server coordinates
+PASS 3D and fallback projections keep far/high/behind-map markers inside large and narrow map bounds
+PASS overlay labels show name/distance/status and remove stale room participants
+PASS brighter daytime materials use sRGB textures and preserve every authoritative city collider

@@ -22,6 +22,7 @@ function reset() {
     endJointPose: null, endJointModel: null, movingPlants: null, movingGuardWeight: 0,
     movingStrikeToken: null, movingStrikePose: null, movingStrikeFrom: null,
     strikeHipYaw: 0, strikeStrideScale: null, strikeMoveOffset: 0,
+    reactStride: null, reactToken: null, reactSettle: 0, reactSettleId: null,
     webAttachments: [], webShotTimer: 0, networkAnimation: null, contactTime: 0,
     wallNormal: null, mantle: null, pendingTurn: null, landingSpeed: 0,
   });
@@ -153,7 +154,7 @@ for (const fps of [60, 30]) {
 }
 
 for (const key of ['jab', 'cross', 'hook', 'heavy', 'special', 'guard']) {
-  const duration = {jab: 0.72, cross: 0.82, hook: 0.9, heavy: 0.9, special: 1.2, guard: 0.4}[key];
+  const duration = {jab: 0.72, cross: 0.82, hook: 0.9, heavy: 1.05, special: 1.2, guard: 0.4}[key];
   const result = runCase(`${key} sprint 60`, 60, duration, t => ({
     state: 'SPRINTING', velocity: v(0, 0, speed), stance: true,
     combat: key === 'guard' ? {key} : (t < duration ? {id: 3, key, time: t, duration} : null),

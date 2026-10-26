@@ -45,8 +45,9 @@ pass('30/60/144 FPS smooth follow, angular-speed limit, manual priority/grace, s
 const closeCamera=new ThirdPersonCamera(new THREE.PerspectiveCamera());closeCamera.mobileAutoFollow=true;
 closeCamera.safeDistance=()=>.6;closeCamera.placeBehind(new THREE.Vector3(),0);closeCamera.update(1/60,new THREE.Vector3(),new THREE.Vector3(),false);assert(closeCamera.localAvatarOccluded);
 closeCamera.safeDistance=()=>10;for(let i=0;i<120;i++)closeCamera.update(1/60,new THREE.Vector3(),new THREE.Vector3(),false);assert(!closeCamera.localAvatarOccluded);
-closeCamera.mobileAutoFollow=false;closeCamera.safeDistance=()=>.6;closeCamera.update(1/60,new THREE.Vector3(),new THREE.Vector3(),false);assert(!closeCamera.localAvatarOccluded);
-pass('Mobile wall retraction clears the local body from view and restores it after clearance; desktop visibility unchanged');
+closeCamera.mobileAutoFollow=false;closeCamera.safeDistance=()=>.6;closeCamera.update(1/60,new THREE.Vector3(),new THREE.Vector3(),false);assert(closeCamera.localAvatarOccluded,'A compressed desktop camera must also keep the world visible');
+closeCamera.safeDistance=()=>10;for(let i=0;i<120;i++)closeCamera.update(1/60,new THREE.Vector3(),new THREE.Vector3(),false);assert(!closeCamera.localAvatarOccluded,'Desktop avatar must return after the camera clears the wall');
+pass('Mobile and desktop wall retraction clear the local body from view and restore it after clearance');
 
 const cls={add(){},remove(){},toggle(){}},events=[];
 const game={isPlaying:true,isPaused:false,input:{},physics:{webs:[],state:'IDLE',setWebAimPoint(){}},combat:{mode:'web'},audio:{ensureContext(){}},tpsCamera:{handleMouseMove(){}},syncHeldInput(){}};

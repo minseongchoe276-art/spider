@@ -1,0 +1,35 @@
+import assert from 'node:assert/strict';
+import {DisplayMode,displayState} from '../src/DisplayMode.js';
+import {GameApp} from '../src/main.js';
+const originals=Object.fromEntries(['document','window','navigator'].map(key=>[key,Object.getOwnPropertyDescriptor(globalThis,key)]));
+let checks=0;
+try{
+  const attrs={},button={textContent:'',setAttribute:(key,value)=>attrs[key]=value};
+  const dialog={open:false,showModal(){this.open=true;},close(){this.open=false;}};
+  const doc={documentElement:{},fullscreenElement:null,body:{classList:{toggle(){}}},querySelectorAll:()=>[button],getElementById:id=>id==='fullscreen-help'?dialog:null};
+  const win={matchMedia:()=>({matches:false}),innerWidth:900,innerHeight:600};
+  for(const [key,value] of Object.entries({document:doc,window:win,navigator:{}}))Object.defineProperty(globalThis,key,{configurable:true,writable:true,value});
+  const game={isPlaying:true,isPaused:false,clearInput(){this.cleared=true;},resizeViewport(){this.resized=true;},setPaused(value){this.isPaused=value;},canvas:{focus(){}}};
+  const mode=Object.create(DisplayMode.prototype);Object.assign(mode,{game,pending:false});
+  doc.documentElement.requestFullscreen=async function(){assert.equal(this,doc.documentElement);doc.fullscreenElement=this;};
+  doc.exitFullscreen=async function(){assert.equal(this,doc);doc.fullscreenElement=null;};
+  assert(await mode.toggle());assert(displayState().fullscreen);assert.equal(button.textContent,'화면 복귀');assert.equal(attrs['aria-pressed'],'true');assert(game.cleared&&game.resized);checks++;
+  assert(await mode.toggle());assert(!displayState().expanded);assert.equal(button.textContent,'전체화면');checks++;
+  doc.fullscreenElement=doc.documentElement;mode.sync();doc.fullscreenElement=null;mode.sync();assert.equal(attrs['aria-pressed'],'false');checks++;
+  delete doc.documentElement.requestFullscreen;delete doc.exitFullscreen;
+  doc.documentElement.webkitRequestFullscreen=async()=>{doc.webkitFullscreenElement=doc.documentElement;};
+  doc.webkitExitFullscreen=async()=>{doc.webkitFullscreenElement=null;};
+  assert(await mode.toggle());assert(displayState().fullscreen);assert(await mode.toggle());assert(!displayState().fullscreen);checks++;
+  delete doc.documentElement.webkitRequestFullscreen;
+  assert.equal(await mode.toggle(),false);assert(dialog.open&&game.isPaused);mode.closeHelp();assert(!dialog.open&&!game.isPaused);checks++;
+  doc.documentElement.requestFullscreen=async()=>{throw Error('Permission denied');};
+  assert.equal(await mode.toggle(),false);assert(dialog.open);assert.equal(mode.pending,false);assert.equal(game.displayTransition,false);mode.closeHelp();checks++;
+  navigator.standalone=true;assert(displayState().expanded);mode.sync();assert.equal(button.textContent,'앱 화면');navigator.standalone=false;checks++;
+  let resolve;doc.documentElement.requestFullscreen=()=>new Promise(r=>{resolve=r;});
+  const pending=mode.toggle();assert.equal(await mode.toggle(),false);resolve();await pending;assert.equal(mode.pending,false);checks++;
+  const sizes=[],viewport={canvas:{parentElement:{getBoundingClientRect:()=>({width:390,height:844})}},camera:{updateProjectionMatrix(){}},renderer:{setSize:(...args)=>sizes.push(args)},speedLines:{resize(){}},minimap:{resize(){}}};
+  GameApp.prototype.resizeViewport.call(viewport);assert.deepEqual(sizes,[[390,844,false]]);assert.equal(viewport.camera.aspect,390/844);
+  GameApp.prototype.resizeViewport.call(viewport);assert.equal(sizes.length,1);
+  viewport.canvas.parentElement.getBoundingClientRect=()=>({width:844,height:390});GameApp.prototype.resizeViewport.call(viewport);assert.equal(viewport.camera.aspect,844/390);assert.deepEqual(sizes[1],[844,390,false]);checks++;
+  console.log(`PASS ${checks} display cases: native enter/exit, browser Escape, WebKit, denied/unsupported fallback, standalone, rapid presses, portrait/landscape renderer sizing`);
+}finally{for(const [key,descriptor] of Object.entries(originals)){if(descriptor)Object.defineProperty(globalThis,key,descriptor);else delete globalThis[key];}}

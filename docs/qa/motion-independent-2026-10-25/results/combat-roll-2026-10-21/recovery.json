@@ -1,0 +1,212 @@
+[
+  {
+    "fps": 24,
+    "case": "guard-to-roll",
+    "maxTuckAsymmetry": 2.387235008078046e-7,
+    "maxContactGap": 0.04000000058954091,
+    "pass": true
+  },
+  {
+    "fps": 24,
+    "key": "guard",
+    "case": "moving-combat-start-and-speed-changes",
+    "pass": true
+  },
+  {
+    "fps": 24,
+    "key": "jab",
+    "case": "moving-combat-start-and-speed-changes",
+    "pass": true
+  },
+  {
+    "fps": 24,
+    "key": "cross",
+    "case": "moving-combat-start-and-speed-changes",
+    "pass": true
+  },
+  {
+    "fps": 24,
+    "key": "hook",
+    "case": "moving-combat-start-and-speed-changes",
+    "pass": true
+  },
+  {
+    "fps": 24,
+    "key": "special",
+    "case": "moving-combat-start-and-speed-changes",
+    "pass": true
+  },
+  {
+    "fps": 24,
+    "horizontal": 0,
+    "case": "fall-to-roll",
+    "exitProgress": 0.8805684548681694,
+    "pass": true
+  },
+  {
+    "fps": 24,
+    "horizontal": 4,
+    "case": "fall-to-roll",
+    "exitProgress": 0.8805684548681694,
+    "pass": true
+  },
+  {
+    "fps": 24,
+    "horizontal": 8,
+    "case": "fall-to-roll",
+    "exitProgress": 0.8805684548681694,
+    "pass": true
+  },
+  {
+    "fps": 24,
+    "obstacle": "wall",
+    "case": "blocked-or-unsupported-roll-path",
+    "pass": true
+  },
+  {
+    "fps": 24,
+    "obstacle": "gap",
+    "case": "blocked-or-unsupported-roll-path",
+    "pass": true
+  },
+  {
+    "fps": 60,
+    "case": "guard-to-roll",
+    "maxTuckAsymmetry": 1.9140844953517723e-7,
+    "maxContactGap": 0.04000000071543004,
+    "pass": true
+  },
+  {
+    "fps": 60,
+    "key": "guard",
+    "case": "moving-combat-start-and-speed-changes",
+    "pass": true
+  },
+  {
+    "fps": 60,
+    "key": "jab",
+    "case": "moving-combat-start-and-speed-changes",
+    "pass": true
+  },
+  {
+    "fps": 60,
+    "key": "cross",
+    "case": "moving-combat-start-and-speed-changes",
+    "pass": true
+  },
+  {
+    "fps": 60,
+    "key": "hook",
+    "case": "moving-combat-start-and-speed-changes",
+    "pass": true
+  },
+  {
+    "fps": 60,
+    "key": "special",
+    "case": "moving-combat-start-and-speed-changes",
+    "pass": true
+  },
+  {
+    "fps": 60,
+    "horizontal": 0,
+    "case": "fall-to-roll",
+    "exitProgress": 0.8751661944088555,
+    "pass": true
+  },
+  {
+    "fps": 60,
+    "horizontal": 4,
+    "case": "fall-to-roll",
+    "exitProgress": 0.8751661944088555,
+    "pass": true
+  },
+  {
+    "fps": 60,
+    "horizontal": 8,
+    "case": "fall-to-roll",
+    "exitProgress": 0.8751661944088555,
+    "pass": true
+  },
+  {
+    "fps": 60,
+    "obstacle": "wall",
+    "case": "blocked-or-unsupported-roll-path",
+    "pass": true
+  },
+  {
+    "fps": 60,
+    "obstacle": "gap",
+    "case": "blocked-or-unsupported-roll-path",
+    "pass": true
+  },
+  {
+    "fps": 144,
+    "case": "guard-to-roll",
+    "maxTuckAsymmetry": 1.7981999695100885e-7,
+    "maxContactGap": 0.04000000071543014,
+    "pass": true
+  },
+  {
+    "fps": 144,
+    "key": "guard",
+    "case": "moving-combat-start-and-speed-changes",
+    "pass": true
+  },
+  {
+    "fps": 144,
+    "key": "jab",
+    "case": "moving-combat-start-and-speed-changes",
+    "pass": true
+  },
+  {
+    "fps": 144,
+    "key": "cross",
+    "case": "moving-combat-start-and-speed-changes",
+    "pass": true
+  },
+  {
+    "fps": 144,
+    "key": "hook",
+    "case": "moving-combat-start-and-speed-changes",
+    "pass": true
+  },
+  {
+    "fps": 144,
+    "key": "special",
+    "case": "moving-combat-start-and-speed-changes",
+    "pass": true
+  },
+  {
+    "fps": 144,
+    "horizontal": 0,
+    "case": "fall-to-roll",
+    "exitProgress": 0.8805684548681694,
+    "pass": true
+  },
+  {
+    "fps": 144,
+    "horizontal": 4,
+    "case": "fall-to-roll",
+    "exitProgress": 0.8805684548681694,
+    "pass": true
+  },
+  {
+    "fps": 144,
+    "horizontal": 8,
+    "case": "fall-to-roll",
+    "exitProgress": 0.8805684548681694,
+    "pass": true
+  },
+  {
+    "fps": 144,
+    "obstacle": "wall",
+    "case": "blocked-or-unsupported-roll-path",
+    "pass": true
+  },
+  {
+    "fps": 144,
+    "obstacle": "gap",
+    "case": "blocked-or-unsupported-roll-path",
+    "pass": true
+  }
+]

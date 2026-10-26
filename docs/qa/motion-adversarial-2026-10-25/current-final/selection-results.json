@@ -1,0 +1,1068 @@
+{
+  "motions": 33,
+  "cases": 153,
+  "results": [
+    {
+      "fps": 24,
+      "state": "IDLE",
+      "speed": 0,
+      "y": 0,
+      "selected": "idle"
+    },
+    {
+      "fps": 24,
+      "state": "RUNNING",
+      "speed": 1.6,
+      "y": 0,
+      "selected": "walk"
+    },
+    {
+      "fps": 24,
+      "state": "RUNNING",
+      "speed": 4.8,
+      "y": 0,
+      "selected": "regularRun"
+    },
+    {
+      "fps": 24,
+      "state": "SPRINTING",
+      "speed": 6.5,
+      "y": 0,
+      "selected": "run"
+    },
+    {
+      "fps": 24,
+      "state": "TURNING",
+      "speed": 0,
+      "y": 0,
+      "selected": "turnLeft"
+    },
+    {
+      "fps": 24,
+      "state": "TURNING",
+      "speed": 0,
+      "y": 0,
+      "selected": "turnRight"
+    },
+    {
+      "fps": 24,
+      "state": "JUMPING",
+      "speed": 0,
+      "y": 7,
+      "selected": "jump"
+    },
+    {
+      "fps": 24,
+      "state": "FALLING",
+      "speed": 0,
+      "y": -3,
+      "selected": "drop"
+    },
+    {
+      "fps": 24,
+      "state": "FALLING",
+      "speed": 0,
+      "y": -18,
+      "selected": "fall"
+    },
+    {
+      "fps": 24,
+      "state": "LANDING",
+      "speed": 0,
+      "y": 0,
+      "selected": "land"
+    },
+    {
+      "fps": 24,
+      "state": "ROLLING",
+      "speed": 0,
+      "y": 0,
+      "selected": "roll"
+    },
+    {
+      "fps": 24,
+      "state": "SWINGING",
+      "speed": 10,
+      "y": -2,
+      "selected": "swing"
+    },
+    {
+      "fps": 24,
+      "state": "WEB_ZIP",
+      "speed": 12,
+      "y": 6,
+      "selected": "zip"
+    },
+    {
+      "fps": 24,
+      "state": "WALL_RUNNING",
+      "speed": 0,
+      "y": 2.8,
+      "selected": "wall"
+    },
+    {
+      "fps": 24,
+      "state": "RUNNING",
+      "speed": 1.6,
+      "selected": "stop",
+      "recovered": "idle"
+    },
+    {
+      "fps": 24,
+      "state": "RUNNING",
+      "speed": 4.8,
+      "selected": "stop",
+      "recovered": "idle"
+    },
+    {
+      "fps": 24,
+      "state": "SPRINTING",
+      "speed": 6.5,
+      "selected": "runStop",
+      "recovered": "idle"
+    },
+    {
+      "fps": 24,
+      "state": "IDLE",
+      "combat": "jab",
+      "selected": "jab"
+    },
+    {
+      "fps": 24,
+      "state": "IDLE",
+      "combat": "cross",
+      "selected": "cross"
+    },
+    {
+      "fps": 24,
+      "state": "IDLE",
+      "combat": "hook",
+      "selected": "hook"
+    },
+    {
+      "fps": 24,
+      "state": "IDLE",
+      "combat": "special",
+      "selected": "special"
+    },
+    {
+      "fps": 24,
+      "state": "IDLE",
+      "combat": "heavy",
+      "selected": "heavy"
+    },
+    {
+      "fps": 24,
+      "state": "IDLE",
+      "combat": "guard",
+      "selected": "guard"
+    },
+    {
+      "fps": 24,
+      "state": "IDLE",
+      "combat": "combatIdle",
+      "selected": "combatIdle"
+    },
+    {
+      "fps": 24,
+      "state": "IDLE",
+      "combat": "hitHead",
+      "selected": "hitHead"
+    },
+    {
+      "fps": 24,
+      "state": "IDLE",
+      "combat": "dodgeLeft",
+      "selected": "combatIdle"
+    },
+    {
+      "fps": 24,
+      "state": "IDLE",
+      "combat": "dodgeRight",
+      "selected": "combatIdle"
+    },
+    {
+      "fps": 24,
+      "state": "IDLE",
+      "combat": "dodgeBack",
+      "selected": "combatIdle"
+    },
+    {
+      "fps": 24,
+      "state": "IDLE",
+      "combat": "dodgeForward",
+      "selected": "combatIdle"
+    },
+    {
+      "fps": 24,
+      "state": "FALLING",
+      "combat": "slam",
+      "selected": "slam"
+    },
+    {
+      "fps": 24,
+      "state": "LANDING",
+      "combat": "slamLand",
+      "selected": "slamLand"
+    },
+    {
+      "fps": 30,
+      "state": "IDLE",
+      "speed": 0,
+      "y": 0,
+      "selected": "idle"
+    },
+    {
+      "fps": 30,
+      "state": "RUNNING",
+      "speed": 1.6,
+      "y": 0,
+      "selected": "walk"
+    },
+    {
+      "fps": 30,
+      "state": "RUNNING",
+      "speed": 4.8,
+      "y": 0,
+      "selected": "regularRun"
+    },
+    {
+      "fps": 30,
+      "state": "SPRINTING",
+      "speed": 6.5,
+      "y": 0,
+      "selected": "run"
+    },
+    {
+      "fps": 30,
+      "state": "TURNING",
+      "speed": 0,
+      "y": 0,
+      "selected": "turnLeft"
+    },
+    {
+      "fps": 30,
+      "state": "TURNING",
+      "speed": 0,
+      "y": 0,
+      "selected": "turnRight"
+    },
+    {
+      "fps": 30,
+      "state": "JUMPING",
+      "speed": 0,
+      "y": 7,
+      "selected": "jump"
+    },
+    {
+      "fps": 30,
+      "state": "FALLING",
+      "speed": 0,
+      "y": -3,
+      "selected": "drop"
+    },
+    {
+      "fps": 30,
+      "state": "FALLING",
+      "speed": 0,
+      "y": -18,
+      "selected": "fall"
+    },
+    {
+      "fps": 30,
+      "state": "LANDING",
+      "speed": 0,
+      "y": 0,
+      "selected": "land"
+    },
+    {
+      "fps": 30,
+      "state": "ROLLING",
+      "speed": 0,
+      "y": 0,
+      "selected": "roll"
+    },
+    {
+      "fps": 30,
+      "state": "SWINGING",
+      "speed": 10,
+      "y": -2,
+      "selected": "swing"
+    },
+    {
+      "fps": 30,
+      "state": "WEB_ZIP",
+      "speed": 12,
+      "y": 6,
+      "selected": "zip"
+    },
+    {
+      "fps": 30,
+      "state": "WALL_RUNNING",
+      "speed": 0,
+      "y": 2.8,
+      "selected": "wall"
+    },
+    {
+      "fps": 30,
+      "state": "RUNNING",
+      "speed": 1.6,
+      "selected": "stop",
+      "recovered": "idle"
+    },
+    {
+      "fps": 30,
+      "state": "RUNNING",
+      "speed": 4.8,
+      "selected": "stop",
+      "recovered": "idle"
+    },
+    {
+      "fps": 30,
+      "state": "SPRINTING",
+      "speed": 6.5,
+      "selected": "runStop",
+      "recovered": "idle"
+    },
+    {
+      "fps": 30,
+      "state": "IDLE",
+      "combat": "jab",
+      "selected": "jab"
+    },
+    {
+      "fps": 30,
+      "state": "IDLE",
+      "combat": "cross",
+      "selected": "cross"
+    },
+    {
+      "fps": 30,
+      "state": "IDLE",
+      "combat": "hook",
+      "selected": "hook"
+    },
+    {
+      "fps": 30,
+      "state": "IDLE",
+      "combat": "special",
+      "selected": "special"
+    },
+    {
+      "fps": 30,
+      "state": "IDLE",
+      "combat": "heavy",
+      "selected": "heavy"
+    },
+    {
+      "fps": 30,
+      "state": "IDLE",
+      "combat": "guard",
+      "selected": "guard"
+    },
+    {
+      "fps": 30,
+      "state": "IDLE",
+      "combat": "combatIdle",
+      "selected": "combatIdle"
+    },
+    {
+      "fps": 30,
+      "state": "IDLE",
+      "combat": "hitHead",
+      "selected": "hitHead"
+    },
+    {
+      "fps": 30,
+      "state": "IDLE",
+      "combat": "dodgeLeft",
+      "selected": "combatIdle"
+    },
+    {
+      "fps": 30,
+      "state": "IDLE",
+      "combat": "dodgeRight",
+      "selected": "combatIdle"
+    },
+    {
+      "fps": 30,
+      "state": "IDLE",
+      "combat": "dodgeBack",
+      "selected": "combatIdle"
+    },
+    {
+      "fps": 30,
+      "state": "IDLE",
+      "combat": "dodgeForward",
+      "selected": "combatIdle"
+    },
+    {
+      "fps": 30,
+      "state": "FALLING",
+      "combat": "slam",
+      "selected": "slam"
+    },
+    {
+      "fps": 30,
+      "state": "LANDING",
+      "combat": "slamLand",
+      "selected": "slamLand"
+    },
+    {
+      "fps": 60,
+      "state": "IDLE",
+      "speed": 0,
+      "y": 0,
+      "selected": "idle"
+    },
+    {
+      "fps": 60,
+      "state": "RUNNING",
+      "speed": 1.6,
+      "y": 0,
+      "selected": "walk"
+    },
+    {
+      "fps": 60,
+      "state": "RUNNING",
+      "speed": 4.8,
+      "y": 0,
+      "selected": "regularRun"
+    },
+    {
+      "fps": 60,
+      "state": "SPRINTING",
+      "speed": 6.5,
+      "y": 0,
+      "selected": "run"
+    },
+    {
+      "fps": 60,
+      "state": "TURNING",
+      "speed": 0,
+      "y": 0,
+      "selected": "turnLeft"
+    },
+    {
+      "fps": 60,
+      "state": "TURNING",
+      "speed": 0,
+      "y": 0,
+      "selected": "turnRight"
+    },
+    {
+      "fps": 60,
+      "state": "JUMPING",
+      "speed": 0,
+      "y": 7,
+      "selected": "jump"
+    },
+    {
+      "fps": 60,
+      "state": "FALLING",
+      "speed": 0,
+      "y": -3,
+      "selected": "drop"
+    },
+    {
+      "fps": 60,
+      "state": "FALLING",
+      "speed": 0,
+      "y": -18,
+      "selected": "fall"
+    },
+    {
+      "fps": 60,
+      "state": "LANDING",
+      "speed": 0,
+      "y": 0,
+      "selected": "land"
+    },
+    {
+      "fps": 60,
+      "state": "ROLLING",
+      "speed": 0,
+      "y": 0,
+      "selected": "roll"
+    },
+    {
+      "fps": 60,
+      "state": "SWINGING",
+      "speed": 10,
+      "y": -2,
+      "selected": "swing"
+    },
+    {
+      "fps": 60,
+      "state": "WEB_ZIP",
+      "speed": 12,
+      "y": 6,
+      "selected": "zip"
+    },
+    {
+      "fps": 60,
+      "state": "WALL_RUNNING",
+      "speed": 0,
+      "y": 2.8,
+      "selected": "wall"
+    },
+    {
+      "fps": 60,
+      "state": "RUNNING",
+      "speed": 1.6,
+      "selected": "stop",
+      "recovered": "idle"
+    },
+    {
+      "fps": 60,
+      "state": "RUNNING",
+      "speed": 4.8,
+      "selected": "stop",
+      "recovered": "idle"
+    },
+    {
+      "fps": 60,
+      "state": "SPRINTING",
+      "speed": 6.5,
+      "selected": "runStop",
+      "recovered": "idle"
+    },
+    {
+      "fps": 60,
+      "state": "IDLE",
+      "combat": "jab",
+      "selected": "jab"
+    },
+    {
+      "fps": 60,
+      "state": "IDLE",
+      "combat": "cross",
+      "selected": "cross"
+    },
+    {
+      "fps": 60,
+      "state": "IDLE",
+      "combat": "hook",
+      "selected": "hook"
+    },
+    {
+      "fps": 60,
+      "state": "IDLE",
+      "combat": "special",
+      "selected": "special"
+    },
+    {
+      "fps": 60,
+      "state": "IDLE",
+      "combat": "heavy",
+      "selected": "heavy"
+    },
+    {
+      "fps": 60,
+      "state": "IDLE",
+      "combat": "guard",
+      "selected": "guard"
+    },
+    {
+      "fps": 60,
+      "state": "IDLE",
+      "combat": "combatIdle",
+      "selected": "combatIdle"
+    },
+    {
+      "fps": 60,
+      "state": "IDLE",
+      "combat": "hitHead",
+      "selected": "hitHead"
+    },
+    {
+      "fps": 60,
+      "state": "IDLE",
+      "combat": "dodgeLeft",
+      "selected": "combatIdle"
+    },
+    {
+      "fps": 60,
+      "state": "IDLE",
+      "combat": "dodgeRight",
+      "selected": "combatIdle"
+    },
+    {
+      "fps": 60,
+      "state": "IDLE",
+      "combat": "dodgeBack",
+      "selected": "combatIdle"
+    },
+    {
+      "fps": 60,
+      "state": "IDLE",
+      "combat": "dodgeForward",
+      "selected": "combatIdle"
+    },
+    {
+      "fps": 60,
+      "state": "FALLING",
+      "combat": "slam",
+      "selected": "slam"
+    },
+    {
+      "fps": 60,
+      "state": "LANDING",
+      "combat": "slamLand",
+      "selected": "slamLand"
+    },
+    {
+      "fps": 144,
+      "state": "IDLE",
+      "speed": 0,
+      "y": 0,
+      "selected": "idle"
+    },
+    {
+      "fps": 144,
+      "state": "RUNNING",
+      "speed": 1.6,
+      "y": 0,
+      "selected": "walk"
+    },
+    {
+      "fps": 144,
+      "state": "RUNNING",
+      "speed": 4.8,
+      "y": 0,
+      "selected": "regularRun"
+    },
+    {
+      "fps": 144,
+      "state": "SPRINTING",
+      "speed": 6.5,
+      "y": 0,
+      "selected": "run"
+    },
+    {
+      "fps": 144,
+      "state": "TURNING",
+      "speed": 0,
+      "y": 0,
+      "selected": "turnLeft"
+    },
+    {
+      "fps": 144,
+      "state": "TURNING",
+      "speed": 0,
+      "y": 0,
+      "selected": "turnRight"
+    },
+    {
+      "fps": 144,
+      "state": "JUMPING",
+      "speed": 0,
+      "y": 7,
+      "selected": "jump"
+    },
+    {
+      "fps": 144,
+      "state": "FALLING",
+      "speed": 0,
+      "y": -3,
+      "selected": "drop"
+    },
+    {
+      "fps": 144,
+      "state": "FALLING",
+      "speed": 0,
+      "y": -18,
+      "selected": "fall"
+    },
+    {
+      "fps": 144,
+      "state": "LANDING",
+      "speed": 0,
+      "y": 0,
+      "selected": "land"
+    },
+    {
+      "fps": 144,
+      "state": "ROLLING",
+      "speed": 0,
+      "y": 0,
+      "selected": "roll"
+    },
+    {
+      "fps": 144,
+      "state": "SWINGING",
+      "speed": 10,
+      "y": -2,
+      "selected": "swing"
+    },
+    {
+      "fps": 144,
+      "state": "WEB_ZIP",
+      "speed": 12,
+      "y": 6,
+      "selected": "zip"
+    },
+    {
+      "fps": 144,
+      "state": "WALL_RUNNING",
+      "speed": 0,
+      "y": 2.8,
+      "selected": "wall"
+    },
+    {
+      "fps": 144,
+      "state": "RUNNING",
+      "speed": 1.6,
+      "selected": "stop",
+      "recovered": "idle"
+    },
+    {
+      "fps": 144,
+      "state": "RUNNING",
+      "speed": 4.8,
+      "selected": "stop",
+      "recovered": "idle"
+    },
+    {
+      "fps": 144,
+      "state": "SPRINTING",
+      "speed": 6.5,
+      "selected": "runStop",
+      "recovered": "idle"
+    },
+    {
+      "fps": 144,
+      "state": "IDLE",
+      "combat": "jab",
+      "selected": "jab"
+    },
+    {
+      "fps": 144,
+      "state": "IDLE",
+      "combat": "cross",
+      "selected": "cross"
+    },
+    {
+      "fps": 144,
+      "state": "IDLE",
+      "combat": "hook",
+      "selected": "hook"
+    },
+    {
+      "fps": 144,
+      "state": "IDLE",
+      "combat": "special",
+      "selected": "special"
+    },
+    {
+      "fps": 144,
+      "state": "IDLE",
+      "combat": "heavy",
+      "selected": "heavy"
+    },
+    {
+      "fps": 144,
+      "state": "IDLE",
+      "combat": "guard",
+      "selected": "guard"
+    },
+    {
+      "fps": 144,
+      "state": "IDLE",
+      "combat": "combatIdle",
+      "selected": "combatIdle"
+    },
+    {
+      "fps": 144,
+      "state": "IDLE",
+      "combat": "hitHead",
+      "selected": "hitHead"
+    },
+    {
+      "fps": 144,
+      "state": "IDLE",
+      "combat": "dodgeLeft",
+      "selected": "combatIdle"
+    },
+    {
+      "fps": 144,
+      "state": "IDLE",
+      "combat": "dodgeRight",
+      "selected": "combatIdle"
+    },
+    {
+      "fps": 144,
+      "state": "IDLE",
+      "combat": "dodgeBack",
+      "selected": "combatIdle"
+    },
+    {
+      "fps": 144,
+      "state": "IDLE",
+      "combat": "dodgeForward",
+      "selected": "combatIdle"
+    },
+    {
+      "fps": 144,
+      "state": "FALLING",
+      "combat": "slam",
+      "selected": "slam"
+    },
+    {
+      "fps": 144,
+      "state": "LANDING",
+      "combat": "slamLand",
+      "selected": "slamLand"
+    },
+    {
+      "preview": "combatIdle",
+      "key": "combatIdle",
+      "fraction": 0.45,
+      "state": "IDLE",
+      "active": "combatIdle",
+      "clipPhase": 0.45
+    },
+    {
+      "preview": "jab",
+      "key": "jab",
+      "fraction": 0.28,
+      "state": "IDLE",
+      "active": "jab",
+      "clipPhase": 0.28
+    },
+    {
+      "preview": "cross",
+      "key": "cross",
+      "fraction": 0.57,
+      "state": "IDLE",
+      "active": "cross",
+      "clipPhase": 0.57
+    },
+    {
+      "preview": "rightHook",
+      "key": "rightHook",
+      "fraction": 0.58,
+      "state": "IDLE",
+      "active": "rightHook",
+      "clipPhase": 0.58
+    },
+    {
+      "preview": "hook",
+      "key": "hook",
+      "fraction": 0.43,
+      "state": "IDLE",
+      "active": "hook",
+      "clipPhase": 0.43
+    },
+    {
+      "preview": "heavy",
+      "key": "heavy",
+      "fraction": 0.5425865565193817,
+      "state": "IDLE",
+      "active": "heavy",
+      "clipPhase": 0.43000000006271333
+    },
+    {
+      "preview": "special",
+      "key": "special",
+      "fraction": 0.56,
+      "state": "IDLE",
+      "active": "special",
+      "clipPhase": 0.56
+    },
+    {
+      "preview": "guard",
+      "key": "guard",
+      "fraction": 0.5,
+      "state": "IDLE",
+      "active": "guard",
+      "clipPhase": 0.5
+    },
+    {
+      "preview": "slam",
+      "key": "slam",
+      "fraction": 0.45,
+      "state": "FALLING",
+      "active": "slam",
+      "clipPhase": 0.45000000000000007
+    },
+    {
+      "preview": "slamLand",
+      "key": "slamLand",
+      "fraction": 0.45,
+      "state": "LANDING",
+      "active": "slamLand",
+      "clipPhase": 0.45
+    },
+    {
+      "preview": "hitHead",
+      "key": "hitHead",
+      "fraction": 0.45,
+      "state": "IDLE",
+      "active": "hitHead",
+      "clipPhase": 0.45
+    },
+    {
+      "preview": "jab",
+      "speed": 0,
+      "explicitPhase": 0.5,
+      "key": "jab",
+      "fraction": 0.5,
+      "state": "IDLE",
+      "active": "jab"
+    },
+    {
+      "preview": "cross",
+      "speed": 0,
+      "explicitPhase": 0.5,
+      "key": "cross",
+      "fraction": 0.5,
+      "state": "IDLE",
+      "active": "cross"
+    },
+    {
+      "preview": "heavy",
+      "speed": 0,
+      "explicitPhase": 0.5,
+      "key": "heavy",
+      "fraction": 0.5,
+      "state": "IDLE",
+      "active": "heavy"
+    },
+    {
+      "preview": "special",
+      "speed": 0,
+      "explicitPhase": 0.5,
+      "key": "special",
+      "fraction": 0.5,
+      "state": "IDLE",
+      "active": "special"
+    },
+    {
+      "preview": "slam",
+      "speed": 0,
+      "explicitPhase": 0.5,
+      "key": "slam",
+      "fraction": 0.5,
+      "state": "FALLING",
+      "active": "slam"
+    },
+    {
+      "preview": "slamLand",
+      "speed": 0,
+      "explicitPhase": 0.5,
+      "key": "slamLand",
+      "fraction": 0.5,
+      "state": "LANDING",
+      "active": "slamLand"
+    },
+    {
+      "preview": "jab",
+      "speed": 4.4,
+      "explicitPhase": 0.5,
+      "key": "jab",
+      "fraction": 0.5,
+      "state": "RUNNING",
+      "active": "regularRun"
+    },
+    {
+      "preview": "cross",
+      "speed": 4.4,
+      "explicitPhase": 0.5,
+      "key": "cross",
+      "fraction": 0.5,
+      "state": "RUNNING",
+      "active": "regularRun"
+    },
+    {
+      "preview": "heavy",
+      "speed": 4.4,
+      "explicitPhase": 0.5,
+      "key": "heavy",
+      "fraction": 0.5,
+      "state": "RUNNING",
+      "active": "regularRun"
+    },
+    {
+      "preview": "special",
+      "speed": 4.4,
+      "explicitPhase": 0.5,
+      "key": "special",
+      "fraction": 0.5,
+      "state": "RUNNING",
+      "active": "regularRun"
+    },
+    {
+      "preview": "slam",
+      "speed": 4.4,
+      "explicitPhase": 0.5,
+      "key": "slam",
+      "fraction": 0.5,
+      "state": "FALLING",
+      "active": "slam"
+    },
+    {
+      "preview": "slamLand",
+      "speed": 4.4,
+      "explicitPhase": 0.5,
+      "key": "slamLand",
+      "fraction": 0.5,
+      "state": "LANDING",
+      "active": "slamLand"
+    },
+    {
+      "preview": "jab",
+      "speed": 6.5,
+      "explicitPhase": 0.5,
+      "key": "jab",
+      "fraction": 0.5,
+      "state": "SPRINTING",
+      "active": "run"
+    },
+    {
+      "preview": "cross",
+      "speed": 6.5,
+      "explicitPhase": 0.5,
+      "key": "cross",
+      "fraction": 0.5,
+      "state": "SPRINTING",
+      "active": "run"
+    },
+    {
+      "preview": "heavy",
+      "speed": 6.5,
+      "explicitPhase": 0.5,
+      "key": "heavy",
+      "fraction": 0.5,
+      "state": "SPRINTING",
+      "active": "run"
+    },
+    {
+      "preview": "special",
+      "speed": 6.5,
+      "explicitPhase": 0.5,
+      "key": "special",
+      "fraction": 0.5,
+      "state": "SPRINTING",
+      "active": "run"
+    },
+    {
+      "preview": "slam",
+      "speed": 6.5,
+      "explicitPhase": 0.5,
+      "key": "slam",
+      "fraction": 0.5,
+      "state": "FALLING",
+      "active": "slam"
+    },
+    {
+      "preview": "slamLand",
+      "speed": 6.5,
+      "explicitPhase": 0.5,
+      "key": "slamLand",
+      "fraction": 0.5,
+      "state": "LANDING",
+      "active": "slamLand"
+    }
+  ]
+}

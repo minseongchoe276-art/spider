@@ -1,0 +1,183 @@
+{
+  "motions": [
+    {
+      "key": "idle",
+      "duration": 4,
+      "tracks": 66
+    },
+    {
+      "key": "walk",
+      "duration": 0.9666666388511658,
+      "tracks": 66
+    },
+    {
+      "key": "regularRun",
+      "duration": 0.699999988079071,
+      "tracks": 66
+    },
+    {
+      "key": "run",
+      "duration": 0.5333333611488342,
+      "tracks": 66
+    },
+    {
+      "key": "stop",
+      "duration": 0.2333332896232605,
+      "tracks": 66
+    },
+    {
+      "key": "runStop",
+      "duration": 0.8999999761581421,
+      "tracks": 66
+    },
+    {
+      "key": "zip",
+      "duration": 1,
+      "tracks": 66
+    },
+    {
+      "key": "turnLeft",
+      "duration": 0.9333333373069763,
+      "tracks": 66
+    },
+    {
+      "key": "turnRight",
+      "duration": 0.9333333373069763,
+      "tracks": 66
+    },
+    {
+      "key": "jump",
+      "duration": 0.5999999642372131,
+      "tracks": 66
+    },
+    {
+      "key": "land",
+      "duration": 0.8666666746139526,
+      "tracks": 66
+    },
+    {
+      "key": "jumpDown",
+      "duration": 2.299999952316284,
+      "tracks": 66
+    },
+    {
+      "key": "drop",
+      "duration": 0.3999999761581421,
+      "tracks": 66
+    },
+    {
+      "key": "jumpDownVariant",
+      "duration": 2.633333444595337,
+      "tracks": 66
+    },
+    {
+      "key": "swing",
+      "duration": 1.951990008354187,
+      "tracks": 66
+    },
+    {
+      "key": "fall",
+      "duration": 4.5,
+      "tracks": 66
+    },
+    {
+      "key": "fallVariant",
+      "duration": 4.5,
+      "tracks": 66
+    },
+    {
+      "key": "fallIdle",
+      "duration": 4.5,
+      "tracks": 66
+    },
+    {
+      "key": "roll",
+      "duration": 1.5425641536712646,
+      "tracks": 66
+    },
+    {
+      "key": "injuredIdle",
+      "duration": 9.333333015441895,
+      "tracks": 66
+    },
+    {
+      "key": "wall",
+      "duration": 2,
+      "tracks": 66
+    },
+    {
+      "key": "combatIdle",
+      "duration": 4.400000095367432,
+      "tracks": 66
+    },
+    {
+      "key": "jab",
+      "duration": 1.3333333730697632,
+      "tracks": 66
+    },
+    {
+      "key": "guard",
+      "duration": 2,
+      "tracks": 66,
+      "derivative": "coordinated target-rig fighting stance",
+      "choreography": "compact boxing guard"
+    },
+    {
+      "key": "slam",
+      "duration": 2.7083332538604736,
+      "tracks": 53
+    },
+    {
+      "key": "slamLand",
+      "duration": 0.8839285373687744,
+      "tracks": 53
+    },
+    {
+      "key": "hitHead",
+      "duration": 0.5416666865348816,
+      "tracks": 53
+    },
+    {
+      "key": "rightHook",
+      "duration": 0.68,
+      "tracks": 66,
+      "derivative": "coordinated target-rig fighting stance",
+      "choreography": "compact right hook"
+    },
+    {
+      "key": "cross",
+      "duration": 1.433333396911621,
+      "tracks": 66
+    },
+    {
+      "key": "hook",
+      "duration": 1.399999976158142,
+      "tracks": 66
+    },
+    {
+      "key": "heavy",
+      "duration": 1.399999976158142,
+      "tracks": 66
+    },
+    {
+      "key": "airTrick",
+      "duration": 0.9333332777023315,
+      "tracks": 66
+    },
+    {
+      "key": "special",
+      "duration": 1.7999999523162842,
+      "tracks": 66
+    }
+  ],
+  "identicalTrackGroups": [
+    [
+      "fall",
+      "fallVariant"
+    ],
+    [
+      "hook",
+      "heavy"
+    ]
+  ]
+}

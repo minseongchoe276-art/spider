@@ -1,7 +1,6 @@
 import {language} from './I18n.js';
 import {localMap,mapName} from './MapCatalog.js';
 import {selectedCity} from './CitySelection.js';
-import {districtLayout} from './DistrictLayout.js';
 
 export function showLobbyView(view,focus=false){
   const shell=document.querySelector?.('.lobby-shell');if(!shell)return;
@@ -13,11 +12,12 @@ export function showLobbyView(view,focus=false){
 export function initLobbySelection(){
   const shell=document.querySelector('.lobby-shell'),hero=shell?.querySelector('.lobby-hero');
   if(!hero||shell.dataset.simplified)return;shell.dataset.simplified='true';
-  const en=language()==='en',city=selectedCity(location.search),profile=localMap(city);
+  const en=language()==='en',city=selectedCity(location.search);
   let chosen=city,chosenUrl=new URL(location.href);
   const header=shell.querySelector('.lobby-topline'),nav=document.body.querySelector(':scope > .language-switch');
   if(nav)header.append(nav);
-  const title=hero.querySelector('h1');title.textContent=en?'Make the city yours.':'오늘은 어디로 갈까요?';
+  const title=hero.querySelector('h1');title.textContent=en?'City exploration':'도시 탐험';
+  hero.querySelector('p').textContent=en?'Choose a district and start exploring.':'지도를 고르고 탐험을 시작하세요.';
   const picker=hero.querySelector('.city-picker'),options=picker.querySelector('.city-options');
   const details=document.createElement('details');details.className='map-selector';
   const summary=document.createElement('summary');
@@ -26,19 +26,16 @@ export function initLobbySelection(){
   const change=document.createElement('span');change.className='map-change';change.textContent=en?'Change map':'지도 변경';
   summary.append(caption,name,change);details.append(summary,options);
   picker.replaceChildren(details);
-  const scene=document.createElement('div');scene.className='district-silhouette';scene.setAttribute('aria-hidden','true');scene.style.setProperty('--district-color',city==='hong-kong'?'#85c5de':profile.accent);
-  const drawSilhouette=id=>{
-    scene.replaceChildren();
-    const heights=id==='hong-kong'||id==='procedural'?[26,42,34,72,48,92,58,39,66,31]:districtLayout(id).buildings.map(b=>Math.max(10,b.height/2.1));
-    for(const height of heights){const building=document.createElement('span');building.style.height=`${height}%`;scene.append(building);}
-  };
-  drawSilhouette(city);hero.insertBefore(scene,picker);
+  const description=document.createElement('p');description.className='selected-map-description';
+  description.setAttribute('aria-live','polite');
+  const describe=id=>id==='hong-kong'?(en?'Hong Kong terrain · Internet connection required':'홍콩의 실제 지형 · 인터넷 연결 필요'):localMap(id)[en?'descriptionEn':'description'];
+  description.textContent=describe(city);picker.append(description);
   for(const link of options.querySelectorAll('a[data-city]'))link.addEventListener('click',event=>{
     if(event.ctrlKey||event.metaKey||event.shiftKey||event.altKey)return;
     event.preventDefault();chosen=link.dataset.city;chosenUrl=new URL(link.href);
-    name.textContent=mapName(chosen,language());details.open=false;drawSilhouette(chosen);
-    scene.style.setProperty('--district-color',chosen==='hong-kong'?'#85c5de':localMap(chosen).accent);
-    for(const option of options.querySelectorAll('a')){if(option===link)option.setAttribute('aria-current','true');else option.removeAttribute('aria-current');}
+    name.textContent=mapName(chosen,language());details.open=false;description.textContent=describe(chosen);
+    for(const label of play.querySelectorAll('[data-current-city]'))label.textContent=mapName(chosen,language());
+    for(const option of options.querySelectorAll('a')){if(option===link)option.setAttribute('aria-current','page');else option.removeAttribute('aria-current');}
     summary.focus();
   });
   const play=document.getElementById('play-solo');

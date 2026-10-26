@@ -42,7 +42,7 @@ for(const fps of [24,60,144]){
    const speed=[.05,.2,.26,1.5,4.4,6.5][Math.floor(i/(fps/6))%6];
    c.combatAction=key==='guard'?{key}:{key,id:1,time:i/fps,duration:1.2};
    c.group.position.z+=speed*dt;c.update(dt,'RUNNING',new T.Vector3(0,0,speed));
-   assert(['walk','regularRun','run'].some(k=>c.activeAction===c.actions[k]),'Strike/guard replaced the legs at gait startup');
+   assert(key==='guard'?['walk','regularRun','run'].some(k=>c.activeAction===c.actions[k]):c.activeAction===c.actions[key],'Guard must retain gait; strikes must own the authored lower body');
    for(const {bone,rest,limit} of c.jointConstraints)assert(rest.angleTo(bone.quaternion)<limit+1e-5,'Attack folded endpoint '+bone.name);
   }results.push({fps,key,case:'moving-combat-start-and-speed-changes',pass:true});}finally{disposeRig(c);}
  }

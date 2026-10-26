@@ -1,3 +1,4 @@
+import {NetworkHealth} from './NetworkHealth.js';
 import {mobileStartingView} from './MobileTraversal.js';
 import {showLobbyView} from './LobbySelection.js';
 import {t,language} from './I18n.js';
@@ -13,7 +14,7 @@ import {PURSUIT,arenaContains} from './PursuitRules.js';
 import {PlayerPositionMarkers} from './PlayerPositionMarkers.js';
 import {AdminConsole} from './AdminConsole.js';
 
-const $ = id => document.getElementById(id);
+const $ = id => globalThis.document?.getElementById(id);
 const label = mode => mode === 'tag' ? '경찰과 도망자' : mode==='custom'?'사용자 설정 경기':'자유 플레이';
 const make = (tag, className, value) => { const el=document.createElement(tag);el.className=className;if(className==='user-content')el.dataset.userContent='';el.textContent=value;return el; };
 
@@ -49,10 +50,11 @@ export class Multiplayer {
       return;
     }
     $('online-status').textContent='서버 연결 중…';
-    this.serverCapabilities=null;
+    this.serverCapabilities=null;this.networkHealth=new NetworkHealth();
     const socket=this.ws;
     this.ws.onopen=()=>{
       if(this.ws!==socket)return;
+      this.networkHealth.received(performance.now());
       this.reportPresence();
       clearInterval(this.presenceTimer);
       this.presenceTimer=setInterval(()=>{if(this.ws===socket)this.reportPresence();},15000);
@@ -76,9 +78,10 @@ export class Multiplayer {
         const url=new URL(location.href);url.searchParams.delete('join');history.replaceState(null,'',url.pathname+url.search+url.hash);
       }
     };
-    this.ws.onmessage=event=>{if(this.ws!==socket)return;try{this.message(JSON.parse(event.data));}catch(error){console.error(error);}};
+    this.ws.onmessage=event=>{if(this.ws!==socket)return;try{const data=JSON.parse(event.data);this.networkHealth.received(performance.now());this.message(data);}catch(error){console.error(error);}};
     this.ws.onclose=()=>{
       if(this.ws!==socket)return;
+      if(this.room){this.reconnectPending=true;this.game.experience?.diagnostics?.record?.('disconnected');}
       clearInterval(this.presenceTimer);this.presenceTimer=null;
       $('online-status').textContent=this.ws?.fatal?'방 연결 설정을 확인하세요':'연결이 끊겼습니다. 다시 연결 중…';
       this.room=null;this.id=null;this.players=[];this.lastPhase=null;this.setSpectating(false);this.pendingPunch=null;this.arena=null;this.pulseUntil=0;
@@ -95,7 +98,7 @@ export class Multiplayer {
       document.querySelectorAll('.mode-option').forEach(option=>{
         const selected=option.dataset.mode===mode;
         option.classList.toggle('selected',selected);
-        option.setAttribute('aria-selected',String(selected));
+        option.setAttribute('aria-pressed',String(selected));
       });
     };
     $('room-mode').addEventListener('change',syncMode);
@@ -134,8 +137,8 @@ export class Multiplayer {
     if(data.type==='error')return this.game.showNotice(data.message);
     if(data.type==='switch-city')return this.switchCity(data.code,data.city);
     if(data.type==='rooms')return this.renderList(data.rooms);
-    if(data.type==='joined'){this.id=data.id;if(data.resumeToken)try{sessionStorage.setItem('web-runner-room-resume',JSON.stringify({code:data.code,token:data.resumeToken}));}catch{}return;}
-    if(data.type==='pong'){this.latency=Math.max(0,performance.now()-data.stamp);return;}
+    if(data.type==='joined'){this.id=data.id;if(this.reconnectPending){this.game.experience?.diagnostics?.record?.('reconnect');this.reconnectPending=false;}if(data.resumeToken)try{sessionStorage.setItem('web-runner-room-resume',JSON.stringify({code:data.code,token:data.resumeToken}));}catch{}return;}
+    if(data.type==='pong'){const now=performance.now();if(this.networkHealth?.pong(data.stamp,now))this.latency=now-data.stamp;return;}
     if(data.type==='correction'){
       if(this.room?.phase==='playing' && !this.solo && !this.spectating)this.applyServerPosition(data);
       return;
@@ -157,6 +160,7 @@ export class Multiplayer {
       this.spawnAnchor=data.spawnAnchor||null;this.vulnerableAt=data.vulnerableAt || 0;this.arena=data.arena||null;this.pulseUntil=data.pulseUntil||0;
       if(Number.isFinite(data.serverNow))this.clockOffset=data.serverNow-Date.now();
       this.lastPhase=data.room.phase;
+      this.game.experience?.study?.matchState(data.room,data.players,this.id,data.winner);
       if(data.room.phase!=='playing')this.setSpectating(false);
       else {
         const me=this.players.find(p=>p.id===this.id);
@@ -268,14 +272,14 @@ export class Multiplayer {
   renderHud() {
     if(this.solo){
       $('pursuit-hud').textContent='';$('spectate-next')?.classList.add('hidden');
-      $('match-role').textContent='혼자 플레이';
-      $('match-health').textContent='자유 탐험';
+      $('match-role').textContent='자유 탐험';
+      $('match-health').textContent='';
       $('match-timer').textContent='M · 전체 지도';
-      $('match-count').textContent='1명';
+      $('match-count').textContent='';
       return;
     }
     const me=this.players.find(p=>p.id===this.id);if(!me||!this.room)return;
-    const district=document.querySelector('.hud-district');if(district)district.textContent=`${this.room.city==='procedural'?'LOCAL CITY':'HONG KONG'} · ${label(this.room.mode)}`;
+    const district=document.querySelector('.hud-district');if(district)district.textContent=`${t(this.room.city==='procedural'?'네온 도심':'홍콩')} · ${label(this.room.mode)}`;
     $('match-role').textContent=this.room.mode==='custom'?teamName(me.team):this.room.mode==='free'?'자유 플레이':me.team==='police'?'경찰 · 추격':'도망자 · 생존';
     $('match-health').textContent=isCombatMode(this.room.mode)?`HP ${me.health}/100${me.eliminated?' · 관전 중':Number.isFinite(this.game.combat?.stamina)?` · 기력 ${Math.floor(this.game.combat.stamina)}`:''}`:'피해 없음';
     $('match-count').textContent=`${this.players.length}명${Number.isFinite(this.ws?.lastRpcMs??this.latency)?' · '+Math.round(this.ws?.lastRpcMs??this.latency)+'ms':''}`;
@@ -377,10 +381,10 @@ export class Multiplayer {
     }
     game.applyPreferences();
     this.render();
-    game.showNotice('혼자 플레이 시작! 화면을 클릭해 카메라를 조작하세요. M 키로 전체 지도를 확인하세요.');
+    game.showNotice('화면 클릭: 카메라 조작 · H: 조작 가이드 · M: 전체 지도');
   }
   finish(){this.pendingPunch=null;clearInterval(this.beginTimer);this.beginTimer=null;this.setSpectating(false);this.game.isPlaying=false;this.game.clearInput();this.game.setPaused(true);this.game.clickToPlayOverlay?.classList.add('hidden');this.clearAvatars();}
-  leaveLocal(){this.game.character.group.visible=true;this.rescueStarted=null;this.rescueTarget=null;this.goalLive=false;if(this.goalMarker)this.goalMarker.visible=false;$('pursuit-hud').textContent='';$('spectate-next')?.classList.add('hidden');try{sessionStorage.removeItem('web-runner-room-resume');}catch{}this.arena=null;this.pulseUntil=0;this.game.practice?.stop();this.room=null;this.pendingPunch=null;clearInterval(this.beginTimer);this.beginTimer=null;this.spectating=false;this.solo=false;clearInterval(this.soloStartTimer);this.soloStartTimer=null;this.players=[];this.id=null;this.lastPhase=null;this.game.isPlaying=false;this.game.clearInput();this.game.setPaused(true);this.game.clickToPlayOverlay?.classList.add('hidden');this.clearAvatars();showLobbyView('solo');this.render();this.reportPresence();this.send({type:'list'});}
+  leaveLocal(){if(this.game.experience?.study)this.game.experience.study.match=null;this.game.character.group.visible=true;this.rescueStarted=null;this.rescueTarget=null;this.goalLive=false;if(this.goalMarker)this.goalMarker.visible=false;$('pursuit-hud').textContent='';$('spectate-next')?.classList.add('hidden');try{sessionStorage.removeItem('web-runner-room-resume');}catch{}this.arena=null;this.pulseUntil=0;this.game.practice?.stop();this.room=null;this.pendingPunch=null;clearInterval(this.beginTimer);this.beginTimer=null;this.spectating=false;this.solo=false;clearInterval(this.soloStartTimer);this.soloStartTimer=null;this.players=[];this.id=null;this.lastPhase=null;this.game.isPlaying=false;this.game.clearInput();this.game.setPaused(true);this.game.clickToPlayOverlay?.classList.add('hidden');this.clearAvatars();showLobbyView('solo');this.render();this.reportPresence();this.send({type:'list'});}
   attack(kind,hand='left'){
     if(kind==='web'&&this.game.combat?.mode==='combat')return false;
     const me=this.players.find(p=>p.id===this.id);
@@ -442,9 +446,18 @@ export class Multiplayer {
   update(delta) {
     if(this.game.combat)this.game.combat.allowGuardInWeb=this.room?.phase==='playing'&&this.room.mode==='tag'&&this.players.find(p=>p.id===this.id)?.team==='runner'&&!this.spectating;
     this.feedback?.update(this);
+    const networkNow=performance.now();
+    if(this.networkHealth&&!(this.ws instanceof SupabaseRooms)&&this.ws?.readyState===WebSocket.OPEN&&!document.hidden){
+      if(this.lastNetworkTick&&networkNow-this.lastNetworkTick>10000){this.networkHealth.received(networkNow);this.networkHealth.lastPing=null;}
+      this.lastNetworkTick=networkNow;
+      const health=this.networkHealth.snapshot(networkNow);
+      const status=$('connection-warning');if(status){status.hidden=!this.room||!health.degraded;}
+      if(status){const message=t(health.stalled?'연결 응답을 기다리는 중…':'연결 지연이 큽니다. 명중 확인이 늦을 수 있습니다.');if(status.textContent!==message)status.textContent=message;}
+      if(health.reconnect){this.ws.close(4000,'Heartbeat timeout');return;}
+      if(networkNow-(this.lastPing||0)>5000&&this.networkHealth.lastPing===null){this.lastPing=networkNow;this.networkHealth.ping(networkNow);this.send({type:'ping',stamp:networkNow});}
+    }else{const status=$('connection-warning');if(status)status.hidden=true;}
     if(this.room?.phase!=='playing'){if(this.feedback){this.feedback.pendingUntil=0;this.feedback.cooldowns={};if(this.feedback.marker)this.feedback.marker.hidden=true;}this.positionMarkers?.update([],this.game.physics.position,false);return;}
     const now=performance.now();
-    if(!(this.ws instanceof SupabaseRooms)&&now-(this.lastPing||0)>5000){this.lastPing=now;this.send({type:'ping',stamp:now});}
     const me=this.players.find(p=>p.id===this.id);
     if(this.arena&&!this.spectating&&this.game.isPlaying&&!this.game.isPaused)this.constrainArena(delta);
     // Queued combos start inside CombatSystem rather than the click handler.

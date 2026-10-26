@@ -1,0 +1,67 @@
+
+> shadow-pulse@1.0.0 prebuild
+> node scripts/build-motions.mjs
+
+PASS: compiled motions match current model and FBX sources
+
+> shadow-pulse@1.0.0 build
+> vite build && node scripts/compress-assets.mjs && node scripts/build-release-manifest.mjs
+
+vite v7.3.7 building client environment for production...
+transforming...
+✓ 149 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                               25.38 kB │ gzip:     7.95 kB
+dist/THIRD_PARTY_NOTICES.txt                  58.69 kB │ gzip:     7.38 kB
+dist/assets/index-BGUY8PV7.css                84.72 kB │ gzip:    18.36 kB
+dist/assets/EffectsReview-DYp4Lk8g.js          3.43 kB │ gzip:     1.80 kB
+dist/assets/WebHandReview-Ccol_euT.js          5.33 kB │ gzip:     2.47 kB
+dist/assets/CombatReview-tOETMYj7.js           6.49 kB │ gzip:     3.16 kB
+dist/assets/MotionReview-B0irlUrY.js          14.36 kB │ gzip:     5.69 kB
+dist/assets/FBXLoader-C5FE2K-1.js             48.13 kB │ gzip:    16.10 kB
+dist/assets/UrbanGroundCity-3xs_S7BJ.js      154.54 kB │ gzip:    53.76 kB
+dist/assets/index-B4JXHG3k.js              1,289.95 kB │ gzip:   361.01 kB
+dist/assets/StreamedCollision-BxRcKibD.js  4,340.92 kB │ gzip: 1,646.98 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 8.35s
+Precompressed static assets: {"files":78,"originalBytes":193465633,"gzipBytes":70338082,"brotliBytes":64369225}
+{
+  "releaseId": "0c2dfd2a3c2e019fb1a88e1178491283f59c6aa8bfa86366552c4b94378a823e",
+  "groups": {
+    "bootstrap": {
+      "files": 3,
+      "bytes": 1400042,
+      "encodedBytes": 368578
+    },
+    "character": {
+      "files": 37,
+      "bytes": 39947273,
+      "encodedBytes": 26400656
+    },
+    "fallback": {
+      "files": 24,
+      "bytes": 123102072,
+      "encodedBytes": 29804667
+    },
+    "on-demand": {
+      "files": 7,
+      "bytes": 4573182,
+      "encodedBytes": 1495493
+    },
+    "support": {
+      "files": 28,
+      "bytes": 25417807,
+      "encodedBytes": 7274574
+    }
+  },
+  "checks": {
+    "bootstrap": true,
+    "character": true,
+    "total": true
+  }
+}

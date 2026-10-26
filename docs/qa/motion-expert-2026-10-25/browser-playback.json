@@ -1,0 +1,464 @@
+[
+  {
+    "appearance": "combat",
+    "duration": 4,
+    "elapsed": 4.016567999999995,
+    "finite": true,
+    "frames": 241,
+    "key": "idle",
+    "phases": [
+      0.15,
+      0.45,
+      0.8
+    ],
+    "view": "back"
+  },
+  {
+    "appearance": "combat",
+    "duration": 0.9666666388511658,
+    "elapsed": 0.9825999999999984,
+    "finite": true,
+    "frames": 58,
+    "key": "walk",
+    "phases": [
+      0.15,
+      0.45,
+      0.8
+    ],
+    "view": "back"
+  },
+  {
+    "appearance": "combat",
+    "duration": 0.699999988079071,
+    "elapsed": 0.7165999999999985,
+    "finite": true,
+    "frames": 42,
+    "key": "regularRun",
+    "phases": [
+      0.15,
+      0.45,
+      0.8
+    ],
+    "view": "back"
+  },
+  {
+    "appearance": "combat",
+    "duration": 0.5333333611488342,
+    "elapsed": 0.5500000000000002,
+    "finite": true,
+    "frames": 34,
+    "key": "run",
+    "phases": [
+      0.15,
+      0.45,
+      0.8
+    ],
+    "view": "back"
+  },
+  {
+    "appearance": "combat",
+    "duration": 0.2333332896232605,
+    "elapsed": 0.23340000000000144,
+    "finite": true,
+    "frames": 15,
+    "key": "stop",
+    "phases": [
+      0.15,
+      0.45,
+      0.8
+    ],
+    "view": "back"
+  },
+  {
+    "appearance": "combat",
+    "duration": 0.8999999761581421,
+    "elapsed": 0.8999999999999997,
+    "finite": true,
+    "frames": 55,
+    "key": "runStop",
+    "phases": [
+      0.15,
+      0.45,
+      0.8
+    ],
+    "view": "back"
+  },
+  {
+    "appearance": "combat",
+    "duration": 1,
+    "elapsed": 1.016700000000004,
+    "finite": true,
+    "frames": 62,
+    "key": "zip",
+    "phases": [
+      0.15,
+      0.45,
+      0.8
+    ],
+    "view": "back"
+  },
+  {
+    "appearance": "combat",
+    "duration": 0.9333333373069764,
+    "elapsed": 0.949899999999994,
+    "finite": true,
+    "frames": 58,
+    "key": "turnLeft",
+    "phases": [
+      0.15,
+      0.45,
+      0.8
+    ],
+    "view": "back"
+  },
+  {
+    "appearance": "combat",
+    "duration": 0.9333333373069764,
+    "elapsed": 0.933399999999994,
+    "finite": true,
+    "frames": 57,
+    "key": "turnRight",
+    "phases": [
+      0.15,
+      0.45,
+      0.8
+    ],
+    "view": "back"
+  },
+  {
+    "appearance": "combat",
+    "duration": 0.5999999642372131,
+    "elapsed": 0.6000000000000001,
+    "finite": true,
+    "frames": 37,
+    "key": "jump",
+    "phases": [
+      0.15,
+      0.45,
+      0.8
+    ],
+    "view": "back"
+  },
+  {
+    "appearance": "combat",
+    "duration": 0.8666666746139526,
+    "elapsed": 0.8666999999999971,
+    "finite": true,
+    "frames": 53,
+    "key": "land",
+    "phases": [
+      0.15,
+      0.45,
+      0.8
+    ],
+    "view": "back"
+  },
+  {
+    "appearance": "combat",
+    "duration": 2.299999952316284,
+    "elapsed": 2.316600000000003,
+    "finite": true,
+    "frames": 140,
+    "key": "jumpDown",
+    "phases": [
+      0.15,
+      0.45,
+      0.8
+    ],
+    "view": "back"
+  },
+  {
+    "appearance": "combat",
+    "duration": 0.3999999761581421,
+    "elapsed": 0.4166999999999973,
+    "finite": true,
+    "frames": 26,
+    "key": "drop",
+    "phases": [
+      0.15,
+      0.45,
+      0.8
+    ],
+    "view": "back"
+  },
+  {
+    "appearance": "combat",
+    "duration": 2.633333444595337,
+    "elapsed": 2.649899999999991,
+    "finite": true,
+    "frames": 159,
+    "key": "jumpDownVariant",
+    "phases": [
+      0.15,
+      0.45,
+      0.8
+    ],
+    "view": "back"
+  },
+  {
+    "appearance": "combat",
+    "duration": 1.951990008354187,
+    "elapsed": 1.9666000000000048,
+    "finite": true,
+    "frames": 119,
+    "key": "swing",
+    "phases": [
+      0.15,
+      0.45,
+      0.8
+    ],
+    "view": "back"
+  },
+  {
+    "appearance": "combat",
+    "duration": 4.5,
+    "elapsed": 4.516499999999998,
+    "finite": true,
+    "frames": 272,
+    "key": "fall",
+    "phases": [
+      0.15,
+      0.45,
+      0.8
+    ],
+    "view": "back"
+  },
+  {
+    "appearance": "combat",
+    "duration": 4.5,
+    "elapsed": 4.516599999999987,
+    "finite": true,
+    "frames": 271,
+    "key": "fallVariant",
+    "phases": [
+      0.15,
+      0.45,
+      0.8
+    ],
+    "view": "back"
+  },
+  {
+    "appearance": "combat",
+    "duration": 4.5,
+    "elapsed": 4.51659999999999,
+    "finite": true,
+    "frames": 272,
+    "key": "fallIdle",
+    "phases": [
+      0.15,
+      0.45,
+      0.8
+    ],
+    "view": "back"
+  },
+  {
+    "appearance": "combat",
+    "duration": 1.5425641536712646,
+    "elapsed": 1.5499999999999985,
+    "finite": true,
+    "frames": 94,
+    "key": "roll",
+    "phases": [
+      0.15,
+      0.45,
+      0.8
+    ],
+    "view": "back"
+  },
+  {
+    "appearance": "combat",
+    "duration": 9.333333015441896,
+    "elapsed": 9.349300000000005,
+    "finite": true,
+    "frames": 559,
+    "key": "injuredIdle",
+    "phases": [
+      0.15,
+      0.45,
+      0.8
+    ],
+    "view": "back"
+  },
+  {
+    "appearance": "combat",
+    "duration": 2,
+    "elapsed": 2.016600000000003,
+    "finite": true,
+    "frames": 122,
+    "key": "wall",
+    "phases": [
+      0.15,
+      0.45,
+      0.8
+    ],
+    "view": "back"
+  },
+  {
+    "appearance": "combat",
+    "duration": 4.400000095367432,
+    "elapsed": 4.416499999999994,
+    "finite": true,
+    "frames": 266,
+    "key": "combatIdle",
+    "phases": [
+      0.15,
+      0.45,
+      0.8
+    ],
+    "view": "back"
+  },
+  {
+    "appearance": "combat",
+    "duration": 1.3333333730697632,
+    "elapsed": 1.3498999999999932,
+    "finite": true,
+    "frames": 82,
+    "key": "jab",
+    "phases": [
+      0.15,
+      0.45,
+      0.8
+    ],
+    "view": "back"
+  },
+  {
+    "appearance": "combat",
+    "duration": 2,
+    "elapsed": 2.0166000000000053,
+    "finite": true,
+    "frames": 122,
+    "key": "guard",
+    "phases": [
+      0.15,
+      0.45,
+      0.8
+    ],
+    "view": "back"
+  },
+  {
+    "appearance": "combat",
+    "duration": 2.7083332538604736,
+    "elapsed": 2.715799999999986,
+    "finite": true,
+    "frames": 164,
+    "key": "slam",
+    "phases": [
+      0.15,
+      0.45,
+      0.8
+    ],
+    "view": "back"
+  },
+  {
+    "appearance": "combat",
+    "duration": 0.8839285373687744,
+    "elapsed": 0.8999999999999997,
+    "finite": true,
+    "frames": 55,
+    "key": "slamLand",
+    "phases": [
+      0.15,
+      0.45,
+      0.8
+    ],
+    "view": "back"
+  },
+  {
+    "appearance": "combat",
+    "duration": 0.5416666865348816,
+    "elapsed": 0.5500999999999915,
+    "finite": true,
+    "frames": 34,
+    "key": "hitHead",
+    "phases": [
+      0.15,
+      0.45,
+      0.8
+    ],
+    "view": "back"
+  },
+  {
+    "appearance": "combat",
+    "duration": 0.68,
+    "elapsed": 0.6832000000000117,
+    "finite": true,
+    "frames": 42,
+    "key": "rightHook",
+    "phases": [
+      0.15,
+      0.45,
+      0.8
+    ],
+    "view": "back"
+  },
+  {
+    "appearance": "combat",
+    "duration": 1.433333396911621,
+    "elapsed": 1.4341000000000057,
+    "finite": true,
+    "frames": 87,
+    "key": "cross",
+    "phases": [
+      0.15,
+      0.45,
+      0.8
+    ],
+    "view": "back"
+  },
+  {
+    "appearance": "combat",
+    "duration": 1.399999976158142,
+    "elapsed": 1.4165999999999903,
+    "finite": true,
+    "frames": 86,
+    "key": "hook",
+    "phases": [
+      0.15,
+      0.45,
+      0.8
+    ],
+    "view": "back"
+  },
+  {
+    "appearance": "combat",
+    "duration": 1.399999976158142,
+    "elapsed": 1.3999999999999986,
+    "finite": true,
+    "frames": 85,
+    "key": "heavy",
+    "phases": [
+      0.15,
+      0.45,
+      0.8
+    ],
+    "view": "back"
+  },
+  {
+    "appearance": "combat",
+    "duration": 0.9333332777023317,
+    "elapsed": 0.933399999999994,
+    "finite": true,
+    "frames": 57,
+    "key": "airTrick",
+    "phases": [
+      0.15,
+      0.45,
+      0.8
+    ],
+    "view": "back"
+  },
+  {
+    "appearance": "combat",
+    "duration": 1.7999999523162842,
+    "elapsed": 1.7999999999999987,
+    "finite": true,
+    "frames": 107,
+    "key": "special",
+    "phases": [
+      0.15,
+      0.45,
+      0.8
+    ],
+    "view": "back"
+  }
+]

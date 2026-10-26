@@ -36,6 +36,13 @@ function assertPrivate(value){
   }
 }
 try{
+  const configured=process.env.GAME_ADMIN_TOKEN;
+  delete process.env.GAME_ADMIN_TOKEN;
+  const probe=await connect();
+  send(probe,{type:'admin',token:configured});
+  assert.equal((await wait(probe,event=>event.type==='admin')).ok,false,'Unset admin configuration accepted a credential');
+  process.env.GAME_ADMIN_TOKEN=configured;
+  probe.close();await new Promise(resolve=>probe.once('close',resolve));
   const [host,friend,solo,lobby]=await Promise.all([connect(),connect(),connect(),connect()]);
   assert((await wait(host,event=>event.type==='welcome')).features.includes('admin-overview'));
   send(host,{type:'create',name:'운영 방',mode:'tag',capacity:4,city:'hong-kong',playerName:'호스트'});

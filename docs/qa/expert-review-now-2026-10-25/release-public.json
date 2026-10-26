@@ -1,0 +1,39 @@
+{
+  "status": "FAIL",
+  "checkedAt": "2026-10-25T10:47:26.006Z",
+  "sourceId": "30dff266699553bccf08a9f64956ae970dbcb32cd4e1d3ee6aa441b3f0468971",
+  "releaseId": "5fa6fbc88792f19edf541447bf3871a23c94d23673fa7497b6c142e0e7bf0810",
+  "byteScope": "bootstrap entries only",
+  "databaseScope": "Expected migration source fingerprint; not proof of applied operating DB state",
+  "checks": [
+    {
+      "name": "Local source matches the built artifact",
+      "status": "PASS"
+    },
+    {
+      "name": "Build asset budgets pass",
+      "status": "PASS"
+    },
+    {
+      "name": "Published artifact is identifiable",
+      "status": "FAIL",
+      "detail": "HTTP 404: https://minogame.site/release.json"
+    },
+    {
+      "name": "Room service is ready",
+      "status": "PASS"
+    },
+    {
+      "name": "Room authority matches the expected backend",
+      "status": "FAIL",
+      "detail": {
+        "expected": "02bbabf44940a7b413d75a2fcba3920f1156e8386deeaad73780224e3033c74c",
+        "observed": null
+      }
+    },
+    {
+      "name": "Room service expects the same database migrations",
+      "status": "FAIL"
+    }
+  ]
+}

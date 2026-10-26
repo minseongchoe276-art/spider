@@ -1,0 +1,4 @@
+PASS closing during authentication cannot resurrect a transport or background timers
+PASS a late join response cannot restore a closed room
+PASS queued room commands are cancelled when their transport closes
+PASS closing during channel removal prevents a replacement subscription

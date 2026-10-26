@@ -1,0 +1,19 @@
+node:internal/modules/run_main:123
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Room leaked after last player left
+
+1 !== 0
+
+    at newRound (file:///Users/choeminseong/Desktop/%E1%84%80%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%B7/scripts/soak-release-audit.mjs:25:125)
+    at async file:///Users/choeminseong/Desktop/%E1%84%80%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%B7/scripts/soak-release-audit.mjs:42:7 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: 1,
+  expected: 0,
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+
+Node.js v22.19.0

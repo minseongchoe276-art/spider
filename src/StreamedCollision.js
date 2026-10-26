@@ -18,6 +18,7 @@ export class StreamedCollision {
       this.controller.enableSnapToGround(0.15);
       this.controller.setMaxSlopeClimbAngle(Math.PI / 4);
       this.controller.setMinSlopeSlideAngle(Math.PI / 3);
+      this.retentionShape = new RAPIER.Ball(3);
       this.ready = true;
     });
   }
@@ -31,6 +32,7 @@ export class StreamedCollision {
 
   setActiveMeshes(meshes) { this.activeMeshes = new Set(meshes.map(mesh=>mesh.uuid)); }
   setTetherColliders(handles) { this.tetherColliders=new Set(handles); }
+  setRecoveryCollider(collider) { this.recoveryHandle=collider?.handle; }
 
   dispose() {
     this.disposed = true;
@@ -68,6 +70,12 @@ export class StreamedCollision {
   update(center, { budgetMs = 3, maxIndices = 6000 } = {}) {
     this.center.copy(center);
     if (!this.ready) return;
+    // A wall grip has no downward foot contact. Protect nearby solid geometry
+    // through visual LOD gaps as well as the last verified recovery surface.
+    const nearby=new Set();
+    this.world.intersectionsWithShape({x:center.x,y:center.y+.8,z:center.z},
+      {x:0,y:0,z:0,w:1},this.retentionShape,c=>{nearby.add(c.handle);return true;},
+      undefined,undefined,this.body);
     // Long-lived meshes can extend beyond the neighbourhood initially baked.
     // Refresh them before the player reaches the edge, keeping the old surface
     // until its replacement is ready.
@@ -97,7 +105,8 @@ export class StreamedCollision {
             {x:center.x,y:center.y+1,z:center.z},{x:0,y:-1,z:0}),2,false,
             undefined,undefined,this.body,undefined,c => activeHandles.has(c.handle)) : null;
           const replaced = replacement && Math.abs(replacement.timeOfImpact-support.timeOfImpact)<0.25;
-          if (now-entry.inactiveSince>2000 && !this.tetherColliders?.has(entry.collider.handle) && (!holdsPlayer || replaced)) {
+          if(replaced&&this.recoveryHandle===entry.collider.handle)this.recoveryHandle=replacement.collider.handle;
+          if (now-entry.inactiveSince>2000 && entry.collider.handle!==this.recoveryHandle && !this.tetherColliders?.has(entry.collider.handle) && (!nearby.has(entry.collider.handle) || (holdsPlayer && replaced)) && (!holdsPlayer || replaced)) {
             this.world.removeCollider(entry.collider,true); this.meshes.delete(id);
           }
         }
@@ -163,6 +172,7 @@ export class StreamedCollision {
           // Collider construction itself remains synchronous in Rapier.
           const collider=indices.length ? this.world.createCollider(RAPIER.ColliderDesc.trimesh(
             new Float32Array(vertices),new Uint32Array(indices))) : null;
+          if(previous && this.recoveryHandle===previous.collider.handle)this.recoveryHandle=collider?.handle;
           if (previous) this.world.removeCollider(previous.collider,true);
           if (collider) this.meshes.set(mesh.uuid,{collider,mesh,queued:false,
             coverageCenter:job.center,center:new THREE.Box3().setFromObject(mesh).getCenter(new THREE.Vector3())});
@@ -176,7 +186,7 @@ export class StreamedCollision {
     // memory; dispose distant geometry before evicting local support surfaces.
     if (this.meshes.size > 350) {
       for (const [id, entry] of this.meshes) {
-        if (entry && entry.coverageCenter.distanceTo(center) > 900 && !this.tetherColliders?.has(entry.collider.handle)) {
+        if (entry && entry.coverageCenter.distanceTo(center) > 900 && !nearby.has(entry.collider.handle) && entry.collider.handle!==this.recoveryHandle && !this.tetherColliders?.has(entry.collider.handle)) {
           this.world.removeCollider(entry.collider, true); this.meshes.delete(id);
         }
       }
@@ -226,7 +236,7 @@ export class StreamedCollision {
       pointY:position.y+0.25-hit.timeOfImpact } : null;
     if (!hit || hit.normal.y < Math.cos(Math.PI / 4)) return null;
     const height=position.y + 0.25 - hit.timeOfImpact;
-    return {height,normal:new THREE.Vector3(hit.normal.x,hit.normal.y,hit.normal.z).normalize(),
+    return {height,collider:hit.collider,normal:new THREE.Vector3(hit.normal.x,hit.normal.y,hit.normal.z).normalize(),
       point:new THREE.Vector3(position.x,height,position.z)};
   }
 

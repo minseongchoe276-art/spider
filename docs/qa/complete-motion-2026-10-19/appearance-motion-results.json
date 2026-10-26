@@ -264,26 +264,6 @@
     },
     {
       "mode": "combat",
-      "key": "hook",
-      "samples": 13,
-      "finite": true,
-      "maxExtent": 2.6452379163327397,
-      "maxEdgeGrowth": 0.09002195385697916,
-      "worstPhase": 0.6666666666666666,
-      "pass": true
-    },
-    {
-      "mode": "combat",
-      "key": "heavy",
-      "samples": 13,
-      "finite": true,
-      "maxExtent": 2.6452379163327397,
-      "maxEdgeGrowth": 0.09002195385697916,
-      "worstPhase": 0.6666666666666666,
-      "pass": true
-    },
-    {
-      "mode": "combat",
       "key": "hitHead",
       "samples": 13,
       "finite": true,
@@ -310,6 +290,26 @@
       "maxExtent": 2.648735987922582,
       "maxEdgeGrowth": 0.07900849279029244,
       "worstPhase": 0.5833333333333334,
+      "pass": true
+    },
+    {
+      "mode": "combat",
+      "key": "hook",
+      "samples": 13,
+      "finite": true,
+      "maxExtent": 2.6452379163327397,
+      "maxEdgeGrowth": 0.09002195385697916,
+      "worstPhase": 0.6666666666666666,
+      "pass": true
+    },
+    {
+      "mode": "combat",
+      "key": "heavy",
+      "samples": 13,
+      "finite": true,
+      "maxExtent": 2.6452379163327397,
+      "maxEdgeGrowth": 0.09002195385697916,
+      "worstPhase": 0.6666666666666666,
       "pass": true
     },
     {
@@ -594,26 +594,6 @@
     },
     {
       "mode": "web",
-      "key": "hook",
-      "samples": 13,
-      "finite": true,
-      "maxExtent": 2.6306073767411617,
-      "maxEdgeGrowth": 0.04192455768933581,
-      "worstPhase": 0.4166666666666667,
-      "pass": true
-    },
-    {
-      "mode": "web",
-      "key": "heavy",
-      "samples": 13,
-      "finite": true,
-      "maxExtent": 2.6306073767411617,
-      "maxEdgeGrowth": 0.04192455768933581,
-      "worstPhase": 0.4166666666666667,
-      "pass": true
-    },
-    {
-      "mode": "web",
       "key": "hitHead",
       "samples": 13,
       "finite": true,
@@ -640,6 +620,26 @@
       "maxExtent": 2.650230411397071,
       "maxEdgeGrowth": 0.06865597986611793,
       "worstPhase": 0.5833333333333334,
+      "pass": true
+    },
+    {
+      "mode": "web",
+      "key": "hook",
+      "samples": 13,
+      "finite": true,
+      "maxExtent": 2.6306073767411617,
+      "maxEdgeGrowth": 0.04192455768933581,
+      "worstPhase": 0.4166666666666667,
+      "pass": true
+    },
+    {
+      "mode": "web",
+      "key": "heavy",
+      "samples": 13,
+      "finite": true,
+      "maxExtent": 2.6306073767411617,
+      "maxEdgeGrowth": 0.04192455768933581,
+      "worstPhase": 0.4166666666666667,
       "pass": true
     },
     {
