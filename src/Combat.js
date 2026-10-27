@@ -177,6 +177,13 @@ export class CombatSystem {
       if(e.health===0){e.mesh.visible=false;this.onNotice('대상 제압');}
     }
   }
+  reactToHit(amount,{hitRegion=null}={}) {
+    if(this.mode!=='combat' || !grounded(this.physics))return false;
+    this.cancel();
+    const key=amount>=24 && this.character.actions?.hitHeavy?'hitHeavy':hitRegion==='body' || (!hitRegion && amount<16)?'hitBody':'hitHead';
+    const duration={hitHead:.65,hitBody:.85,hitHeavy:1.05}[key];
+    this.start(key,duration,null);return true;
+  }
   receiveDamage(amount,enemy) {
     if(this.invulnerable>0)return 0;
     const d=enemy.position.clone().sub(this.physics.position).setY(0).normalize();
@@ -184,7 +191,7 @@ export class CombatSystem {
     if(guarded) {this.stamina-=12;amount=Math.ceil(amount*MATCH.guard.damageMultiplier);this.audio?.playCombatHit?.(false);}
     this.health=Math.max(0,this.health-amount);
     if(!guarded){this.invulnerable=0.65;this.cancel();
-      if(this.mode==='combat' && grounded(this.physics))this.start('hitHead',0.4,null);}
+      this.reactToHit(amount,enemy);}
     if(this.health===0) {this.physics.resetPosition?.();this.health=100;this.stamina=100;this.cancel();this.clearEnemies();this.onNotice('시작 위치에서 회복');}
     return amount;
   }

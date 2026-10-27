@@ -193,6 +193,7 @@ export class Multiplayer {
         const attacker=this.players.find(p=>p.id===data.attacker);
         this.feedback?.show(`${data.blocked?'정면 방어 · ':''}${attacker?.name||'상대'}의 ${data.kind==='web'?'거미줄':'주먹'} 명중 −${data.damage??MATCH[data.kind]?.damage??0} · 내 HP ${data.health}${data.eliminated?' · 탈락 / 관전':''}`);
         this.game.tpsCamera?.triggerShake?.(.18);
+        if(!data.blocked && !data.eliminated)this.game.combat?.reactToHit?.(data.damage ?? MATCH[data.kind]?.damage ?? 0,{hitRegion:data.kind==='web'?'body':'head'});
         if(data.eliminated){this.setSpectating(true);this.game.physics.clearWebAnchor();this.game.clearInput();this.game.combat?.cancel();this.pendingPunch=null;}
       }
       else if(data.attacker===this.id){

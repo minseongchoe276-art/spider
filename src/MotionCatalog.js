@@ -30,7 +30,7 @@ MOTIONS.push(...COMBAT_MOTIONS);
 const imported = {
  combatIdle:{file:'Boxing Stance',loop:true},
  jab:{file:'Lead Jab',impactPhase:.28},
- cross:{file:'Lead Jab (3)',trim:[.1,.8],mirror:true,impactPhase:.57},
+ cross:{file:'Punching',compactBody:false,impactPhase:.54},
  // The source has a long idle tail. Use the complete swing and recovery,
  // then play that section slower so the fist does not snap out and back.
  hook:{file:'Boxing Hook',trim:[0,1.4],impactPhase:.43},
@@ -38,6 +38,9 @@ const imported = {
  airTrick:{file:'Front Flip',trim:[.5,1.43]},
  // Aerial backflip: the source starts airborne and finishes upright.
  backTrick:{file:'Stylish Flip'},
+ hitHead:{file:'Light Hit To Head'},
+ hitBody:{file:'Hit To Body'},
+ hitHeavy:{file:'Big Hit To Head'},
  special:{file:'Cross Punch',trim:[.1,1.9],impactPhase:.56},
 };
 MOTIONS.push({key:'rightHook',url:'/models/Boxing Stance.fbx',loop:false});

@@ -35,6 +35,7 @@
     "test:end-joints": "node scripts/build-motions.mjs && node scripts/check-end-joint-stability.mjs",
     "test:natural-wall": "node scripts/check-natural-wall-motion.mjs && node scripts/check-wall-crawl.mjs && node scripts/check-wall-ledge-rig.mjs",
     "test:motion-cleanup": "node scripts/build-motions.mjs && node scripts/check-motion-cleanup.mjs",
+    "test:punch-reactions": "node scripts/build-motions.mjs && node scripts/check-imported-punch-reactions.mjs",
     "test:combat-feet": "node scripts/check-combat-feet.mjs",
     "test:moving-combat": "node scripts/check-moving-combat-skin.mjs && node scripts/check-combat-quality.mjs && node scripts/check-combat-traversal.mjs",
     "test:complete-motion": "node scripts/build-motions.mjs && node scripts/run-motion-audit.mjs",

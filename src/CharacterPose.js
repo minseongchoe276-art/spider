@@ -939,6 +939,7 @@ export function heavyClipPhase(t) {
 export function poseCombatLife(c, combat) {
   const key = combat?.key;
   if (!key) return;
+  if (['hitHead','hitBody','hitHeavy'].includes(key) && c.actions[key]?.getClip().userData?.authoredMixamo) return;
   const duration = combat.duration || 1;
   const t = THREE.MathUtils.clamp((combat.time || 0) / duration, 0, 1);
   if (key.startsWith('dodge')) {
@@ -957,7 +958,7 @@ export function poseCombatLife(c, combat) {
     }
     return;
   }
-  if (key === 'hit' || key === 'hitHead') {
+  if (key === 'hit' || key === 'hitHead' || key === 'hitBody' || key === 'hitHeavy') {
     const snap = t < 0.2 ? smooth01(t / 0.2) : 1 - smooth01((t - 0.2) / 0.8);
     pitchModelX(c, find(c, 'spine'), -0.32 * snap);
     pitchModelX(c, find(c, 'spine1'), -0.16 * snap);
@@ -1188,7 +1189,7 @@ export function settleHeldStance(c, delta) {
   const combat = c.combatAction;
   const key = combat?.key;
   const dodge = !!key?.startsWith('dodge');
-  const hit = key === 'hit' || key === 'hitHead';
+  const hit = key === 'hit' || key === 'hitHead' || key === 'hitBody' || key === 'hitHeavy';
   if (!dodge && !hit) { c.reactSettle = 0; c.reactSettleId = null; return; }
   if ((c.activeAction?.getEffectiveTimeScale?.() ?? 1) > 0.02) { c.reactSettle = 0; return; }
   const stride = c.activeAction?.getClip()?.name;

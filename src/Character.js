@@ -655,7 +655,7 @@ export class Character {
     const combatMoving=combatGround && legsMoving;
     const gait=['RUNNING','SPRINTING'].includes(state);
     const strikeKey=!!(combat?.duration && ['jab','cross','hook','heavy','special'].includes(combat.key));
-    const reactKey=!!(combat && (combat.key?.startsWith('dodge') || combat.key==='hit' || combat.key==='hitHead'));
+    const reactKey=!!(combat && (combat.key?.startsWith('dodge') || combat.key==='hit' || combat.key==='hitHead' || combat.key==='hitBody' || combat.key==='hitHeavy'));
     // A traveling punch keeps a stride carrier underneath the attack legs.
     // Replacing it with the in-place boxing take nailed the flight foot down
     // and left the pelvis ahead of both boots. A standing punch still owns
@@ -671,7 +671,7 @@ export class Character {
     const movingStrike=!!(strikeKey && ['IDLE','RUNNING','SPRINTING'].includes(state) && this.strikeKeepsGait);
     const movingGuard=combatMoving && combat?.key==='guard';
     const dodgeKey=!!combat?.key?.startsWith('dodge');
-    const hitKey=combat?.key==='hit' || combat?.key==='hitHead';
+    const hitKey=combat?.key==='hit' || combat?.key==='hitHead' || combat?.key==='hitBody' || combat?.key==='hitHeavy';
     const playingKey=Object.entries(this.actions).find(([,action])=>action===this.activeAction)?.[0];
     // The dodge sine starts at zero. Waiting for speed let the run fade into
     // a walk before the latch, and that swap was the foot pop.

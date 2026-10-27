@@ -59,7 +59,7 @@ export const EN = {
 '강한 스트레이트 · 기력 35 · 재사용 4초':'Power straight · 35 stamina · 4s cooldown','Ctrl + 방향':'Ctrl + Direction','짧은 회피 · 전방 숙이기':'Quick evasion · Forward duck',
 '카메라가 보는 쪽이 앞, 화면 오른쪽이':'Forward follows the camera; screen right is','누르는 동안 질주':'Hold to sprint','점프 · 벽 점프 · 줄에서 뛰어내리기':'Jump · Wall jump · Leap off wire',
 '조준점이 가리키는 표면에 에너지 와이어 부착 · Space로 점프 · 떼면 관성 비행 · 땅의 전투는 잽':'Attach wire to the aimed surface · Space to jump · Release to coast · Jab in grounded combat',
-'반대 손에서 같은 진자 스윙. 꾹 누르면 매달리고, 떼면 그 손만 놓습니다. 땅의 전투는 오른손 스트레이트':'Swing from the other hand. Hold to hang; release to detach that hand. Right straight in grounded combat.',
+'반대 손에서 같은 진자 스윙. 꾹 누르면 매달리고, 떼면 그 손만 놓습니다. 땅의 전투는 오른손 펀칭':'Swing from the other hand. Hold to hang; release to detach that hand. Right-hand punch in grounded combat.',
 '누르는 동안 방어. 온라인: 지상에서 캐릭터 정면 좌우 60°의 피해 60% 감소(주먹 10 / 와이어 6). 후방·공중은 감소하지 않습니다. 기력 12 이상일 때 가능. 와이어 모드의 F는 벽 타기':'Hold to guard. Online: grounded frontal ±60° guard reduces damage by 60% (punch 10 / wire 6). No protection from behind or in the air. Requires 12 stamina. In wire mode, F controls wall traversal.',
 '공중에서 한 번 눌러 짧게 이동 (최대 12m) · 지상 출발은 좌/우클릭 · 전투 모드에서는 훅':'Tap in the air to zip up to 12m · Use left/right click from the ground · Hook in combat mode',
 '높은 곳에서 줄을 놓고':'Release the wire high in the air and press',': 백플립. T: 앞구르기. 동작을 마친 뒤 다시 사용할 수 있습니다.':': backflip. T: forward flip. Available again after the motion finishes.',
@@ -108,7 +108,7 @@ Object.assign(EN,{
 '탈출 준비':'Escape progress','이동 목표':'Movement objective','쓰러진 팀원 곁에서 3초 유지하면 구조':'Stay beside a downed teammate for 3s to revive','관전 중 · 팀원이 가까이 오면 구조 가능':'Spectating · A nearby teammate can revive you','추격 중 · 상대 방향과 거리를 확인하세요':'Chasing · Check opponent direction and distance','고도':'Altitude','의 ':'’s ','전환':'Switch','연결':'Attached','준비':'Ready','까지':'until','공격':'Attack',
 '게임 화면':'Game view','일시정지':'Pause','도움말':'Help','구역':'District','높이 차':'Height difference','남은':'Remaining','시간':'hours','분':'min',
 '에너지 와이어 모드 · 조준한 표면에 좌·우클릭으로 연결 / 점프는':'Wire mode · Left/right click to tether to the aimed surface / Jump:',
-'/ 떼면 관성 비행':'/ Release to coast','전투 모드 · 지상 좌클릭 잽 / 우클릭 스트레이트 ·':'Combat mode · Grounded left click: jab / right click: straight ·','와이어는':'For wire,','로 모드 전환 후 사용':'to switch mode first','로 와이어 모드 전환':'to switch to wire mode',
+'/ 떼면 관성 비행':'/ Release to coast','전투 모드 · 지상 좌클릭 잽 / 우클릭 펀칭 ·':'Combat mode · Grounded left click: jab / right click: punch ·','와이어는':'For wire,','로 모드 전환 후 사용':'to switch mode first','로 와이어 모드 전환':'to switch to wire mode',
 '근접 시점':'Close view','기본 시점':'Default view','원거리 시점':'Distant view','카메라: 근접':'Camera: Close','카메라: 기본':'Camera: Default','카메라: 원거리':'Camera: Distant',
 });
 Object.assign(EN,{
@@ -125,7 +125,7 @@ export const EN_TEMPLATES=[
  [/^구역 원점 기준 (.+)$/,'District bounds $1'],
  [/^구역 경계 (.+)m · 중심 방향으로 돌아가세요$/,'District boundary $1m · Return toward the center'],
  [/^에너지 와이어 모드 · 조준한 표면에 좌·우클릭으로 연결 \/ 점프는 (.+) \/ 떼면 관성 비행$/,'Wire mode · Left/right click to tether · $1 to jump · Release to coast'],
- [/^전투 모드 · 지상 좌클릭 잽 \/ 우클릭 스트레이트 · (.+) 방어 · 와이어는 (.+)로 모드 전환 후 사용$/,'Combat mode · Grounded left click: jab / right click: straight · $1 guard · $2 to switch to wire'],
+ [/^전투 모드 · 지상 좌클릭 잽 \/ 우클릭 펀칭 · (.+) 방어 · 와이어는 (.+)로 모드 전환 후 사용$/,'Combat mode · Grounded left click: jab / right click: punch · $1 guard · $2 to switch to wire'],
  [/^(.+) 재사용까지 (.+)초$/,'$1 cooldown: $2s'],
  [/^시작 보호 (.+)초 · 아직 피해 없음$/,'Spawn protection $1s · No damage yet'],
  [/^내 HP (.+) · 경찰의 주먹 25 \/ 거미줄 15 · F 지상 정면 방어: 10 \/ 6 피해 · 벽 뒤 피해 없음$/,'Your HP $1 · Cops: punch 25 / wire 15 · F grounded frontal guard: 10 / 6 damage · Walls block attacks'],

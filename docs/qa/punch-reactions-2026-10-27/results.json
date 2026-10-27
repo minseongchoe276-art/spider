@@ -1,0 +1,79 @@
+{
+  "results": [
+    {
+      "key": "cross",
+      "speed": 0,
+      "maxStep": 0.229,
+      "minFoot": 0.119
+    },
+    {
+      "key": "hitHead",
+      "speed": 0,
+      "maxStep": 0.225,
+      "minFoot": 0.121
+    },
+    {
+      "key": "hitBody",
+      "speed": 0,
+      "maxStep": 0.223,
+      "minFoot": 0.121
+    },
+    {
+      "key": "hitHeavy",
+      "speed": 0,
+      "maxStep": 0.223,
+      "minFoot": 0.121
+    },
+    {
+      "key": "cross",
+      "speed": 4.4,
+      "maxStep": 0.087,
+      "minFoot": 0.127
+    },
+    {
+      "key": "hitHead",
+      "speed": 4.4,
+      "maxStep": 0.033,
+      "minFoot": 0.127
+    },
+    {
+      "key": "hitBody",
+      "speed": 4.4,
+      "maxStep": 0.057,
+      "minFoot": 0.127
+    },
+    {
+      "key": "hitHeavy",
+      "speed": 4.4,
+      "maxStep": 0.065,
+      "minFoot": 0.127
+    },
+    {
+      "key": "cross",
+      "speed": 6.5,
+      "maxStep": 0.084,
+      "minFoot": 0.121
+    },
+    {
+      "key": "hitHead",
+      "speed": 6.5,
+      "maxStep": 0.023,
+      "minFoot": 0.121
+    },
+    {
+      "key": "hitBody",
+      "speed": 6.5,
+      "maxStep": 0.063,
+      "minFoot": 0.121
+    },
+    {
+      "key": "hitHeavy",
+      "speed": 6.5,
+      "maxStep": 0.053,
+      "minFoot": 0.121
+    }
+  ],
+  "serverHitSelection": true,
+  "guardExclusion": true,
+  "airborneExclusion": true
+}

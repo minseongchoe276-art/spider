@@ -8,7 +8,7 @@ const ANIMATIONS=new Set(MOTIONS.map(m=>m.key));
 const STATES = new Set(['IDLE','RUNNING','SPRINTING','JUMPING','FALLING','SWINGING','WEB_ZIP',
   'WALL_RUNNING','MANTLING','LANDING','ROLLING','TURNING']);
 const COMBAT = new Set(['combatIdle','jab','cross','hook','heavy','guard','dodge',
-  'dodgeLeft','dodgeRight','dodgeBack','dodgeForward','slam','slamLand','special','hit','hitHead','rightHook']);
+  'dodgeLeft','dodgeRight','dodgeBack','dodgeForward','slam','slamLand','special','hit','hitHead','hitBody','hitHeavy','rightHook']);
 const vector = v => v && [v.x,v.y,v.z].every(n => Number.isFinite(n) && Math.abs(n)<=10000)
   ? {x:v.x,y:v.y,z:v.z} : null;
 const normal = value => {

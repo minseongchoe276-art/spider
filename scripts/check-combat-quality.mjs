@@ -8,7 +8,7 @@ import {City} from '../src/City.js';
 const {actor}=await loadMotionRig(),results=[];
 const sample=(c,key,phase)=>{c.stopAnimation();c.fadeToAction(key,0);c.activeAction.time=c.activeAction.getClip().duration*phase;c.mixer.update(0);c.group.updateMatrixWorld(true);return {left:point(c,'lefthand'),right:point(c,'righthand'),elbow:point(c,'rightforearm')};};
 const c=actor();try{
- for(const [key,file] of [['jab','Lead Jab'],['cross','Lead Jab (3)'],['special','Cross Punch']]){
+ for(const [key,file] of [['jab','Lead Jab'],['cross','Punching'],['special','Cross Punch']]){
   const clip=c.actions[key].getClip();
   assert.equal(clip.userData.source,`/models/${file}.fbx`);
   assert.equal(clip.userData.authoredMixamo,true);
