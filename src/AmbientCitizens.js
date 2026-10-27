@@ -67,6 +67,7 @@ export class AmbientCitizens{
 
  open(position,direction,distance=.75){
   const side=new T.Vector3(direction.z,0,-direction.x);
+  if(this.obstacleRay?.(position.clone().addScaledVector(up,.85),direction,distance))return false;
   for(const offset of [-.22,.22]){
    const from=position.clone().addScaledVector(side,offset);
    from.y+=.85;

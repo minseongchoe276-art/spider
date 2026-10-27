@@ -30,10 +30,11 @@ import {startLoadingStatus} from './LoadingStatus.js';
 import {HudLayout} from './HudLayout.js';
 import {COMBAT_GROUND_STATES} from './AttackRules.js';
 import {AmbientCitizens} from './AmbientCitizens.js';
+import {VehicleSystem} from './VehicleSystem.js';
 import {abilitySlotState,updateVitalsHud} from './VitalsHud.js';
 let stopLoadingStatus=()=>{};
 
-const ONE_SHOT_KEYS = new Set(['Space','KeyG','KeyE','KeyT','KeyR','KeyC','KeyX','KeyV','KeyQ','ControlLeft','ControlRight']);
+const ONE_SHOT_KEYS = new Set(['Space','KeyG','KeyE','KeyT','KeyR','KeyC','KeyX','KeyV','KeyQ','KeyB','ControlLeft','ControlRight']);
 
 export class GameApp {
   constructor() {
@@ -266,7 +267,7 @@ export class GameApp {
     this.physics = new SwingPhysics(this.scene, this.city, this.character, this.audio);
     this.combat=new CombatSystem(this.scene,this.physics,this.character,{vfx:this.vfx,audio:this.audio,onNotice:message=>this.showNotice(message),getBindings:()=>this.preferences.values.settings.bindings,onImpact:strength=>this.tpsCamera?.triggerShake?.(strength)});
     if(selectedCity(location.search)==='hong-kong'){
-      this.citizens=new AmbientCitizens({scene:this.scene,city:this.city,player:this.physics,camera:this.camera,onNotice:message=>this.showNotice(message),onPlayerHit:(amount,n)=>{this.combat.receiveDamage(amount,n);this.audio?.playCombatHit?.(false);},onError:error=>console.warn('Citizen assets unavailable',error)});
+      this.citizens=new AmbientCitizens({scene:this.scene,city:this.city,player:this.physics,camera:this.camera,onNotice:message=>this.showNotice(message),onPlayerHit:(amount,n)=>{if(this.vehicle?.driving)return;this.combat.receiveDamage(amount,n);this.audio?.playCombatHit?.(false);},onError:error=>console.warn('Citizen assets unavailable',error)});
       this.combat.getTargets=()=>[...this.combat.enemies,...this.citizens.targets];
     }
     this.combat.onDeferredStrike=()=>this.multiplayer?.attack('punch');
@@ -282,6 +283,8 @@ export class GameApp {
       // Random camera offsets on every landing made ordinary movement jitter.
     };
     this.tpsCamera = new ThirdPersonCamera(this.camera, this.canvas);
+    this.vehicle=new VehicleSystem({scene:this.scene,city:this.city,physics:this.physics,character:this.character,cameraRig:this.tpsCamera,combat:this.combat,onControlReset:()=>this.clearInput(),onNotice:message=>this.showNotice(message),allowed:()=>!this.multiplayer?.room,getCitizens:()=>this.citizens?.targets||[]});
+    if(this.citizens)this.citizens.obstacleRay=(origin,direction,distance)=>this.vehicle.blocksRay(origin,direction,distance);
     this.worldMap = new WorldMap(this);
     this.hongKongAudit=createHongKongAudit(this);
     this.minimap = new HongKongMinimap({
@@ -420,6 +423,8 @@ export class GameApp {
         // press. A second device or modifier alias must not toggle it twice.
         if(wasHeld && ONE_SHOT_KEYS.has(k))return;
       }
+      if(k==='KeyB'){this.vehicle?.interact();return;}
+      if(this.vehicle?.driving && !['KeyW','KeyS','KeyA','KeyD','ArrowUp','ArrowDown','ArrowLeft','ArrowRight','ShiftLeft','ShiftRight','Space','Escape','KeyM','KeyH'].includes(k))return;
       if(k==='KeyQ'){
         if(this.multiplayer?.locksCombatToggle()){this.showNotice('도망자는 에너지 와이어로만 이동합니다.');return;}
         this.combat.toggle(this.input);this.syncHeldInput();return;
@@ -433,6 +438,7 @@ export class GameApp {
         const mode = this.tpsCamera.cycleMode();
         this.showCameraMode(mode);
       }
+      if(this.vehicle?.driving && k==='Space')return;
       if (k === 'Space') {
         this.input.jump = true;
         const swinging = this.physics.isSwinging;
@@ -484,7 +490,7 @@ export class GameApp {
 
     // Mouse Buttons
     window.addEventListener('mousedown', (e) => {
-      if (e.sourceCapabilities?.firesTouchEvents) return;
+      if (e.sourceCapabilities?.firesTouchEvents || this.vehicle?.driving) return;
       if (!this.isPlaying || this.isPaused || this.multiplayer?.spectating) return;
       if (document.getElementById?.('controls-guide') && !document.getElementById('controls-guide').classList.contains('hidden')) return;
       if (e.target !== this.canvas) return;
@@ -845,6 +851,7 @@ export class GameApp {
   restartGame() {
     if (this.multiplayer?.room) return;
     this.clearInput();
+    if(this.vehicle?.driving){this.vehicle.exitPoint=this.city.getRooftopSpawn();this.vehicle.finishExit();}
     this.physics.resetPosition();
     this.resetCamera();
     this.showNotice('시작점으로 돌아왔습니다. 계속하기를 눌러 플레이하세요.');
@@ -869,8 +876,8 @@ export class GameApp {
       const wire=this.combat.mode==='web' && !spectating;
       const fighting=!!(this.practice?.active || this.combat.mode==='combat') && !spectating;
       const visible=playing && (wire || fighting || spectating || health<100 || (!!room && ['tag','custom'].includes(room.mode)));
-      updateVitalsHud(combatHud,{health,stamina:this.combat.stamina,mode:me?.eliminated?'spectating':this.combat.mode,
-        warning:this.combat.enemies.some(e=>e.windup>0),visible,translate:t});
+      updateVitalsHud(combatHud,{health,stamina:this.combat.stamina,mode:me?.eliminated?'spectating':this.vehicle?.driving?'driving':this.combat.mode,
+        warning:!this.vehicle?.driving&&this.combat.enemies.some(e=>e.windup>0),visible,translate:t});
       document.body?.classList?.toggle('combat-hud-active',fighting && playing);
       document.body?.classList?.toggle('wire-hud',wire && playing);
       document.body?.classList?.toggle('skills-hud',playing && !spectating);
@@ -1031,23 +1038,27 @@ export class GameApp {
       if(!this.helpOpen && ['Home','End','PageUp','PageDown'].some(key=>this.heldKeys?.has(key)))
         this.tpsCamera.handleKeyboardLook(this.heldKeys,delta);
       // 1. Update Physics and Character
-      this.combat?.before(delta,this.camera,this.input);
-      this.physics.update(delta, this.input, this.camera);
-      this.combat?.after(delta);
-      this.practice?.update(delta);
+      if(!this.vehicle?.driving){
+        this.combat?.before(delta,this.camera,this.input);
+        this.physics.update(delta, this.input, this.camera);
+        this.combat?.after(delta);
+        this.practice?.update(delta);
+      }
+      this.vehicle?.update(delta,{...this.input,jump:!!(this.heldKeys?.has('Space')||this.touchHeldKeys?.has('Space')||this.gamepadHeldKeys?.has('Space'))});
+      this.vehicle?.resolvePedestrian();
       // Mouse release owns held input; a temporarily lost anchor can reconnect.
 
       // 2. Update 3rd Person Follow Camera
-      this.tpsCamera.stanceDrop=.44*(this.character?.crouchWeight || 0);
+      this.tpsCamera.stanceDrop=this.vehicle?.driving?0:.44*(this.character?.crouchWeight || 0);
       this.tpsCamera.update(
         delta,
-        this.physics.renderPosition,
+        this.vehicle?.driving?this.vehicle.cameraTarget:this.physics.renderPosition,
         this.physics.velocity,
         this.physics.isSwinging,
         this.city.getCameraCollisionMeshes?.(this.physics.renderPosition) || this.city.buildingMeshes,
         this.city.raycast?.bind(this.city),
         this.physics.facingAngle,
-        this.input
+        this.vehicle?.driving?{forward:true}:this.input
       );
       this.citizens?.update(delta);
       // 3. Update Visuals & FX
@@ -1059,6 +1070,7 @@ export class GameApp {
       // 4. Update HUD
       this.updateHUD(speedKmh, this.physics.position.y, this.physics.state);
     } else {
+      this.vehicle?.update(0,{},false);
       document.body?.classList?.toggle('hud-swing', false);
       document.body?.classList?.toggle('hud-web', false);
     }
@@ -1075,7 +1087,7 @@ export class GameApp {
     this.hongKongAudit?.update(this.clock.elapsedTime);
 
     // Render 3D Scene
-    if(this.character?.model)this.character.model.visible=!this.tpsCamera?.localAvatarOccluded;
+    if(this.character?.model)this.character.model.visible=this.vehicle?.driving||!this.tpsCamera?.localAvatarOccluded;
     if (this.assetsReady && !this.contextLost && !globalThis.document?.hidden) {
       const interactive=this.isPlaying&&!this.isPaused&&!this.gameplaySuspended;
       const now=performance.now();

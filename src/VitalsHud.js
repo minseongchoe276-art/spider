@@ -25,7 +25,7 @@ export function updateVitalsHud(node,{health,stamina,mode,warning=false,visible=
   node.classList.toggle('is-wire',mode==='web'&&!warning);
   node.classList.toggle('is-combat',mode==='combat'&&!warning);
   const title=node.querySelector('.vitals-mode');
-  const text=translate(warning?'공격 예고! · 방어 / 이동':mode==='spectating'?'관전 중':mode==='combat'?'전투 모드':'와이어 모드');
+  const text=translate(warning?'공격 예고! · 방어 / 이동':mode==='spectating'?'관전 중':mode==='combat'?'전투 모드':mode==='driving'?'운전 중':'와이어 모드');
   if(title.textContent!==text)title.textContent=text;
   for(const [key,input] of [['health',health],['stamina',stamina]]){
     const value=Math.max(0,Math.min(100,Math.floor(Number.isFinite(input)?input:0)));

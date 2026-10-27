@@ -71,6 +71,16 @@ export class StreamedCollision {
     };
   }
 
+  vehicleBlocked(from, to, yaw, pitch=0, roll=0) {
+    if(!this.ready)return true;
+    this.vehicleShape ||= new RAPIER.Cuboid(1.33,.45,2.35);
+    const rotation=new THREE.Quaternion().setFromEuler(new THREE.Euler(pitch,yaw,roll,'YXZ'));
+    const start={x:from.x,y:from.y+.9,z:from.z},end={x:to.x,y:to.y+.9,z:to.z};
+    if(this.world.intersectionWithShape(end,rotation,this.vehicleShape,undefined,undefined,this.body))return true;
+    const travel={x:to.x-from.x,y:to.y-from.y,z:to.z-from.z};
+    return !!this.world.castShape(start,rotation,travel,this.vehicleShape,.025,1,true,undefined,undefined,this.body);
+  }
+
   update(center, { budgetMs = 3, maxIndices = 6000 } = {}) {
     this.center.copy(center);
     if (!this.ready) return;

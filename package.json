@@ -85,7 +85,9 @@
     "test:commercial-hardening": "node scripts/check-commercial-hardening.mjs",
     "test:hong-kong:wall-fall": "node scripts/check-hong-kong-wall-fall.mjs",
     "test:combat:steering": "node scripts/check-strike-steering.mjs",
-    "test:stances": "node scripts/check-low-stance.mjs && node scripts/check-input-lifecycle.mjs && node scripts/check-stance-combat.mjs && node scripts/check-low-stance-online.mjs"
+    "test:stances": "node scripts/check-low-stance.mjs && node scripts/check-input-lifecycle.mjs && node scripts/check-stance-combat.mjs && node scripts/check-low-stance-online.mjs",
+    "test:vehicle": "node scripts/check-vehicle.mjs",
+    "build:vehicle": "node scripts/build-vehicle.mjs"
   },
   "dependencies": {
     "@dimforge/rapier3d-compat": "^0.21.0",
@@ -96,7 +98,11 @@
     "ws": "^8.22.0"
   },
   "devDependencies": {
+    "@gltf-transform/core": "^4.5.1",
+    "@gltf-transform/extensions": "^4.5.1",
+    "@gltf-transform/functions": "^4.5.1",
     "embedded-postgres": "17.10.0-beta.17",
+    "meshoptimizer": "^1.3.0",
     "vite": "^7.3.7"
   }
 }

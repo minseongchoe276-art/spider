@@ -34,6 +34,12 @@ function key(type,code,pad=false,touch=false){const event=new Event(type,{cancel
 function mouse(g,type,button,pad=false,touch=false){const event=new Event(type,{cancelable:true});Object.defineProperties(event,{button:{value:button},target:{value:g.canvas},gamepadInput:{value:pad},touchInput:{value:touch},clientX:{value:400},clientY:{value:300}});window.dispatchEvent(event);}
 function fakeClock(g){let now=0,last=0;g.clock={elapsedTime:0,getDelta(){const d=now-last;last=now;this.elapsedTime+=d;return d;}};return seconds=>{now+=seconds;};}
 
+check('Vehicle B toggles once across devices and driving owns movement without combat or jump',()=>dom(()=>{
+ const g=app();let interactions=0,toggles=0,zips=0,punches=0;g.vehicle={driving:true,interact:()=>interactions++};g.combat.toggle=()=>toggles++;g.combat.attack=()=>punches++;g.physics.performAirJump=()=>zips++;
+ key('keydown','KeyB');key('keydown','KeyB',true);assert.equal(interactions,1);key('keyup','KeyB');key('keyup','KeyB',true);
+ for(const code of ['KeyQ','KeyE','KeyG','Space']){key('keydown',code);key('keyup',code);}mouse(g,'mousedown',0);assert.equal(toggles+zips+punches,0);assert(!g.input.jump);
+ key('keydown','KeyW');key('keydown','KeyA');assert(g.input.forward&&g.input.left);key('keyup','KeyW');key('keyup','KeyA');g.vehicle.driving=false;key('keydown','KeyQ');assert.equal(toggles,1);
+}));
 check('Keyboard and pad mode presses share one action until every source releases',()=>dom(()=>{
   const g=app();let calls=0;g.combat.toggle=()=>calls++;
   key('keydown','KeyQ');key('keydown','KeyQ',true);assert.equal(calls,1);

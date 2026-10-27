@@ -20,5 +20,6 @@ export function softwareNotices(){
   }
   sections.push('Basis Universal transcoder (unmodified files supplied by Three.js)\n'+fs.readFileSync(path.join(root,'config/licenses/Basis-Universal.txt'),'utf8'));
   sections.push('Kenney Particle Pack\n'+fs.readFileSync(path.join(root,'config/licenses/Kenney-Particle-Pack.txt'),'utf8'));
+  sections.push('BMW vehicle model attribution\n'+fs.readFileSync(path.join(root,'public/vehicles/CREDITS.txt'),'utf8'));
   return {text:sections.join('\n\n----------------------------------------\n\n')+'\n',packages};
 }
