@@ -7,6 +7,7 @@ export class StreamedCollision {
   constructor() {
     this.ready = false;
     this.meshes = new Map();
+    this.colliderToMesh = new Map();
     this.pending = [];
     this.center = new THREE.Vector3();
     this.initialized = initialized.then(() => {
@@ -38,6 +39,7 @@ export class StreamedCollision {
     this.disposed = true;
     this.pending.length = 0;
     this.meshes.clear();
+    this.colliderToMesh.clear();
     this.job = null;
     this.world?.free();
     this.ready = false;
@@ -59,11 +61,13 @@ export class StreamedCollision {
     );
     if (!hit) return null;
     const normal = new THREE.Vector3(hit.normal.x,hit.normal.y,hit.normal.z);
+    const mesh = this.colliderToMesh.get(hit.collider.handle) || null;
     return {
       distance: hit.timeOfImpact,
       point: origin.clone().addScaledVector(dir,hit.timeOfImpact),
       normal,
       collider: hit.collider,
+      mesh,
     };
   }
 
@@ -107,7 +111,7 @@ export class StreamedCollision {
           const replaced = replacement && Math.abs(replacement.timeOfImpact-support.timeOfImpact)<0.25;
           if(replaced&&this.recoveryHandle===entry.collider.handle)this.recoveryHandle=replacement.collider.handle;
           if (now-entry.inactiveSince>2000 && entry.collider.handle!==this.recoveryHandle && !this.tetherColliders?.has(entry.collider.handle) && (!nearby.has(entry.collider.handle) || (holdsPlayer && replaced)) && (!holdsPlayer || replaced)) {
-            this.world.removeCollider(entry.collider,true); this.meshes.delete(id);
+            this.world.removeCollider(entry.collider,true); this.colliderToMesh.delete(entry.collider.handle); this.meshes.delete(id);
           }
         }
       }
@@ -173,9 +177,15 @@ export class StreamedCollision {
           const collider=indices.length ? this.world.createCollider(RAPIER.ColliderDesc.trimesh(
             new Float32Array(vertices),new Uint32Array(indices))) : null;
           if(previous && this.recoveryHandle===previous.collider.handle)this.recoveryHandle=collider?.handle;
-          if (previous) this.world.removeCollider(previous.collider,true);
-          if (collider) this.meshes.set(mesh.uuid,{collider,mesh,queued:false,
-            coverageCenter:job.center,center:new THREE.Box3().setFromObject(mesh).getCenter(new THREE.Vector3())});
+          if (previous) {
+            this.world.removeCollider(previous.collider,true);
+            this.colliderToMesh.delete(previous.collider.handle);
+          }
+          if (collider) {
+            this.meshes.set(mesh.uuid,{collider,mesh,queued:false,
+              coverageCenter:job.center,center:new THREE.Box3().setFromObject(mesh).getCenter(new THREE.Vector3())});
+            this.colliderToMesh.set(collider.handle, mesh);
+          }
           else this.meshes.delete(mesh.uuid);
           this.world.step();
           this.job=null;
@@ -187,7 +197,9 @@ export class StreamedCollision {
     if (this.meshes.size > 350) {
       for (const [id, entry] of this.meshes) {
         if (entry && entry.coverageCenter.distanceTo(center) > 900 && !nearby.has(entry.collider.handle) && entry.collider.handle!==this.recoveryHandle && !this.tetherColliders?.has(entry.collider.handle)) {
-          this.world.removeCollider(entry.collider, true); this.meshes.delete(id);
+          this.world.removeCollider(entry.collider, true);
+          this.colliderToMesh.delete(entry.collider.handle);
+          this.meshes.delete(id);
         }
       }
     }

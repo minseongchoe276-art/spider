@@ -81,6 +81,11 @@ export class UrbanGroundCity {
   addTileset(tilesetConfig, index) {
     const { url, reorientation } = tilesetConfig;
     const tiles = new TilesRenderer(url);
+    const surfaceType = index === 0 ? 'terrain' : (index === 1 ? 'building' : 'infrastructure');
+    tiles.tilesetIndex = index;
+    tiles.surfaceType = surfaceType;
+    tiles.group.userData.tilesetIndex = index;
+    tiles.group.userData.surfaceType = surfaceType;
     // Low error target ensures buildings and textures refine fully into complete geometry
     tiles.errorTarget = index === 1 ? 12 : (index === 2 ? 16 : 20);
     tiles.userData = { baseErrorTarget: tiles.errorTarget, retryAt: 0, retries: 0 };
@@ -126,6 +131,17 @@ export class UrbanGroundCity {
     const meshes = [];
     this.root.traverseVisible(object => {
       if (object.isMesh) {
+        if (!object.userData.surfaceType) {
+          let cur = object.parent;
+          while (cur && cur !== this.root) {
+            if (cur.userData?.surfaceType) {
+              object.userData.surfaceType = cur.userData.surfaceType;
+              break;
+            }
+            cur = cur.parent;
+          }
+          if (!object.userData.surfaceType) object.userData.surfaceType = 'terrain';
+        }
         meshes.push(object);
         if (!this.collisionWorld.meshes.has(object.uuid) &&
             (!object.userData.collisionCheckedAt ||

@@ -190,7 +190,7 @@ export class AmbientCitizens{
 
  alarm(origin,radius=14,except=null){
   for(const n of this.slots){
-   if(!n.active || n===except || n.position.distanceTo(origin)>radius || n.state==='HURT')continue;
+   if(!n.active || n===except || n.position.distanceTo(origin)>radius || ['HURT','DEFEND','ATTACK'].includes(n.state))continue;
    const line=origin.clone().sub(n.position);
    line.y=0;
    const distance=line.length();
@@ -278,7 +278,7 @@ export class AmbientCitizens{
     if(l>.01 && l<1.3)repel.addScaledVector(d,(1.3-l)/l);
    }
   }
-  if(repel.lengthSq()>.01){
+  if(['WALK','FLEE'].includes(n.state)&&repel.lengthSq()>.01){
    n.targetYaw=Math.atan2(Math.sin(n.targetYaw)+repel.x,Math.cos(n.targetYaw)+repel.z);
   }
 

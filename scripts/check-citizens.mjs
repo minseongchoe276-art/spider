@@ -33,6 +33,8 @@ for(const fps of [24,60,144]){
 }
 // A tree canopy / small low roof must not be mistaken for a street.
 {const {manager,city}=fixture(),base=city.raycast,box=new T.Box3(new T.Vector3(-3,2,-3),new T.Vector3(3,8,3));city.raycast=(origin,direction,distance)=>{const p=new T.Ray(origin,direction).intersectBox(box,new T.Vector3()),ground=base(origin,direction,distance);if(p&&p.distanceTo(origin)<=distance&&(!ground||p.distanceTo(origin)<ground.distance))return {point:p,distance:p.distanceTo(origin),normal:new T.Vector3(0,1,0)};return ground;};assert(!manager.streetPatch(new T.Vector3(0,8.01,0),new T.Vector3(0,0,1)));manager.dispose();}
+// Official layer metadata excludes building roofs and water from pedestrian routes.
+{const {manager}=fixture();const hit={point:new T.Vector3(0,8,0),normal:new T.Vector3(0,1,0),mesh:{userData:{surfaceType:'building'}}};assert.equal(manager.isStreetSurface(hit),false);hit.mesh.userData.surfaceType='terrain';assert.equal(manager.isStreetSurface(hit),true);hit.point.y=0;assert.equal(manager.isStreetSurface(hit),false);manager.dispose();}
 // A camera covering every candidate must never see a civilian pop into existence.
 {const {manager}=fixture();manager.visible=()=>true;for(let i=0;i<120;i++)manager.update(1/30);assert.equal(manager.targets.length,0);manager.dispose();}
 // Unavailable terrain is never replaced by an invisible fallback floor.
