@@ -498,3 +498,7 @@ button.ability:focus-visible { outline: 2px solid #a6fff2; outline-offset: 3px; 
 @media(max-height:550px) { #world-map { width: min(680px, calc(100vw - 24px)); } #world-map canvas { float: left; margin-right: 15px; } #world-map .world-map-destinations { max-width: 240px; } }
 #ability-bar[data-mode="combat"] [data-ability="zip"] .ability-art { background-position: 66.667% 50%; filter: hue-rotate(45deg); }
 #ability-bar[data-mode="combat"] [data-ability="zip"]:disabled .ability-art { filter: hue-rotate(45deg) grayscale(.8) brightness(.38); }
+
+/* Contextual F action: show the wall or guard slot for the current mode. */
+#ability-bar .ability[hidden] { display: none; }
+[data-ability="wall"] .ability-art { background-position: 33.333% 50%; }

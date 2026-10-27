@@ -15,7 +15,7 @@ const skin=(await new GLTFLoader().parseAsync(JSON.stringify(json),'')).scene.ge
 const actor=()=>{const c=rig.actor();c.model.getObjectByProperty('isSkinnedMesh',true).geometry=skin;return c;};
 const camera=new T.PerspectiveCamera();camera.userData.movementYaw=0;
 const silent=new Proxy({},{get:()=>()=>{}});
-for(const fps of [24,60,144])for(const stance of ['crouch','prone'])for(const moving of [false,true]){
+for(const fps of [24,60,144])for(const stance of ['crouch'])for(const moving of [false,true]){
  const c=actor(),p=new SwingPhysics(c.scene,{buildingMeshes:[],colliders:[],checkCollision(){return {collided:false};},getRooftopSpawn:()=>new T.Vector3(0,.1,0)},c,silent);
  p.state='IDLE';p.position.set(0,.1,0);p.renderPosition.copy(p.position);p.previousFixedPosition.copy(p.position);
  const dt=1/fps,tick=input=>p.update(dt,input,camera);
@@ -35,10 +35,10 @@ for(const fps of [24,60,144])for(const stance of ['crouch','prone'])for(const mo
   let minSkinY=Infinity;
   for(let vertex=0;vertex<vertices.count;vertex++)minSkinY=Math.min(minSkinY,mesh.localToWorld(mesh.applyBoneTransform(vertex,new T.Vector3().fromBufferAttribute(vertices,vertex))).y);
   assert(minSkinY>-.015,`${stance}: skin penetrated floor by ${-minSkinY}m`);
-  assert(height<standing-(stance==='prone'?.9:.3),`${stance}: head did not lower (${height})`);
-  if(stance==='crouch')assert(point(c,'leftfoot').x>point(c,'rightfoot').x+.15,'Crouching crossed the legs');
+  assert(height<standing-.3,`${stance}: head did not lower (${height})`);
+  assert(point(c,'leftfoot').x>point(c,'rightfoot').x+.15,'Crouching crossed the legs');
   assert(height>.08,`${stance}: head penetrated floor`);
-  assert(speed<=(stance==='prone'?.71:1.51),'Sprint bypassed low-stance speed');
+  assert(speed<=1.51,'Sprint bypassed low-stance speed');
   assert(maxStep<6/fps,`${stance} ${fps}fps moving=${moving}: transition snapped ${maxStep}`);
   assert.equal(capturePose(p,c).lowStance,stance);
   const held=point(c,'hips');for(let i=0;i<fps;i++)tick({});
@@ -50,7 +50,7 @@ for(const fps of [24,60,144])for(const stance of ['crouch','prone'])for(const mo
   assert(!p.toggleLowStance(stance),'Airborne stance was accepted');
   p.state='IDLE';p.toggleLowStance(stance);c.combatAction={key:'jab',duration:.72,time:0};tick({});
   assert.equal(c.lowStance,null,'Attack did not stand up');
-  p.resetPosition();assert.equal(c.crouchWeight,0);assert.equal(c.proneWeight,0);
+  p.resetPosition();assert.equal(c.crouchWeight,0);
   results.push({fps,stance,moving,standing,height,speed,maxStep,minSkinY});
  }finally{disposeRig(c);}
 }
@@ -58,43 +58,42 @@ for(const fps of [24,144]){
  const c=actor(),dt=1/fps;let maxStep=0,last;
  try{
   for(let i=0;i<fps/2;i++)c.update(dt,'IDLE',new T.Vector3());
-  for(const stance of ['crouch','prone','crouch',null]){
+  for(const stance of ['crouch',null]){
    c.lowStance=stance;
    for(let i=0;i<fps;i++){
     c.update(dt,'IDLE',new T.Vector3());const head=point(c,'head');
     if(last)maxStep=Math.max(maxStep,last.distanceTo(head));last=head;
-    assert(head.y>.08,'Direct C/Z transition put the head underground');
-    for(const {bone,rest,limit} of c.jointConstraints)assert(rest.angleTo(bone.quaternion)<=limit+1e-5,'Direct C/Z transition violated joint limit');
+    assert(head.y>.08,'Direct crouch transition put the head underground');
+    for(const {bone,rest,limit} of c.jointConstraints)assert(rest.angleTo(bone.quaternion)<=limit+1e-5,'Direct crouch transition violated joint limit');
    }
   }
-  assert(maxStep<6/fps,`Direct C/Z transition snapped ${maxStep}m`);
+  assert(maxStep<6/fps,`Direct crouch transition snapped ${maxStep}m`);
   assert(point(c,'head').y>1.55,'Direct transitions did not recover standing');
-  results.push({fps,transition:'crouch-prone-crouch-stand',maxStep});
+  results.push({fps,transition:'crouch-stand',maxStep});
  }finally{disposeRig(c);}
 }
 for(const fps of [24,60,144])for(const key of ['jab','cross','hook','heavy','special']){
  const a=actor(),b=actor(),dt=1/fps,v=new T.Vector3(0,0,4.4);
  try{
   for(let i=0;i<fps*.4;i++){a.update(dt,'RUNNING',v);b.update(dt,'RUNNING',v);}
-  let maxDifference=0,peakWeight=0;
+  let maxFootDeviation=0;
   for(let i=0;i<fps*.8;i++){
    a.combatAction={id:1,key,time:i*dt,duration:.8};a.update(dt,'RUNNING',v);b.update(dt,'RUNNING',v);
-   peakWeight=Math.max(peakWeight,a.strikeLegWeight || 0);
-   maxDifference=Math.max(maxDifference,...['leftupleg','rightupleg','leftleg','rightleg'].map(id=>joint(a,id).quaternion.angleTo(joint(b,id).quaternion)));
+   maxFootDeviation=Math.max(maxFootDeviation,...['leftfoot','rightfoot'].map(id=>point(a,id).distanceTo(point(b,id))));
   }
-  assert(peakWeight>.8 && maxDifference>.12,`${key}: moving attack still has ordinary walking legs`);
-  results.push({fps,key,maxDifference,peakWeight});
+  assert(maxFootDeviation<.08,`${key}: in-place attack moved the carrier feet ${maxFootDeviation}m`);
+  results.push({fps,key,maxFootDeviation});
  }finally{disposeRig(a);disposeRig(b);}
 }
-assert.equal(BINDINGS.crouch,'KeyC');assert.equal(BINDINGS.prone,'KeyZ');assert.equal(BINDINGS.recenter,'KeyX');
-const saved=cleanSettings({bindings:{...BINDINGS,recenter:'KeyC',crouch:undefined,prone:undefined}});
-const legacyBindings={...BINDINGS,forward:'KeyI',recenter:'KeyC'};delete legacyBindings.crouch;delete legacyBindings.prone;
+assert.equal(BINDINGS.crouch,undefined);assert.equal(BINDINGS.recenter,'KeyX');
+const saved=cleanSettings({bindings:{...BINDINGS,recenter:'KeyC',crouch:undefined}});
+const legacyBindings={...BINDINGS,forward:'KeyI',recenter:'KeyC'};delete legacyBindings.crouch;
 const migrated=cleanSettings({bindings:legacyBindings});
 assert.equal(migrated.bindings.forward,'KeyI','Stance upgrade erased an unrelated saved remap');
-assert.equal(migrated.bindings.crouch,'KeyC');assert.equal(migrated.bindings.prone,'KeyZ');assert.equal(migrated.bindings.recenter,'KeyX');
-assert.equal(canonicalKey('KeyC',saved),'KeyC');assert.equal(canonicalKey('KeyX',saved),'KeyX');
-for(const state of ['FALLING','SWINGING','ROLLING'])assert.equal(sanitizePose({state,velocity:{x:0,y:0,z:0},lowStance:'prone'}).lowStance,null);
+assert.equal(migrated.bindings.crouch,undefined);assert.equal(migrated.bindings.recenter,'KeyC');
+assert.equal(canonicalKey('KeyC',saved),'KeyX');assert.equal(canonicalKey('KeyX',saved),null);
+for(const state of ['FALLING','SWINGING','ROLLING'])assert.equal(sanitizePose({state,velocity:{x:0,y:0,z:0},lowStance:'crouch'}).lowStance,null);
 assert.equal(sanitizePose({state:'IDLE',velocity:{x:0,y:0,z:0},lowStance:'invalid'}).lowStance,null);
 fs.mkdirSync('docs/qa/stance-combat-2026-10-26',{recursive:true});
 fs.writeFileSync('docs/qa/stance-combat-2026-10-26/results.json',JSON.stringify(results,null,2)+'\n');
-console.log(`PASS ${results.length} rig cases: attack legs, low stances, input, sprint limits, jumps, interruptions, reset, network validation at 24/60/144 FPS`);
+console.log(`PASS ${results.length} rig cases: attack legs, crouch, input, sprint limits, jumps, interruptions, reset, network validation at 24/60/144 FPS`);

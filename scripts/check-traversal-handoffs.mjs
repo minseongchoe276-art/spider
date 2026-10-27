@@ -33,6 +33,18 @@ for(const fps of [24,30,60,144]){
  }
  disposeRig(c);
 }
+// Exercise Character.update itself: outgoing upper-body layers must survive
+// restoring the clean mixer sample at the first airborne frame.
+for(const fps of [24,30,60,144]){
+ const c=actor();c.groundProbe=()=>0;c.combatStance=true;
+ for(let i=0;i<fps;i++){c.group.position.z+=4.8/fps;c.update(1/fps,'RUNNING',new T.Vector3(0,0,4.8));}
+ const arms=Object.values(c.bones).filter(b=>/^(left|right)(arm|forearm)$/.test(b.name.replace(/^mixamorig:?/i,'').toLowerCase()));
+ const before=arms.map(b=>b.quaternion.clone().normalize());
+ c.update(1/fps,'JUMPING',new T.Vector3(0,26,4.8));
+ const maxArmStep=Math.max(...arms.map((b,i)=>T.MathUtils.radToDeg(before[i].angleTo(b.quaternion.clone().normalize()))));
+ assert(maxArmStep*fps<900,`${fps}fps rendered combat arms snapped on jump: ${maxArmStep} degrees`);
+ results.push({case:'rendered-combat-run-to-jump',fps,maxArmStep,armDegreesPerSecond:maxArmStep*fps});disposeRig(c);
+}
 assert(abilitySlotState({mode:'web',grounded:true}).slots.zip.unavailable);
 assert(abilitySlotState({mode:'combat',stamina:11}).slots.guard.dry);
 assert(!abilitySlotState({mode:'combat',stamina:12}).slots.guard.dry);

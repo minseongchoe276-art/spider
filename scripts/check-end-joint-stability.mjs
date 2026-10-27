@@ -13,7 +13,7 @@ const folder=process.env.JOINT_AUDIT_DIR || 'docs/qa/joint-stability-2026-10-20'
 const {actor,clips}=await loadMotionRig(),results=[];
 const requestedKeys=process.argv.find(arg=>arg.startsWith('--keys='))?.slice(7).split(',');
 const combat=new Set(['combatIdle','jab','cross','hook','heavy','special','rightHook','guard','hitHead','slamLand']);
-const airborne=new Set(['jump','drop','jumpDown','jumpDownVariant','fall','fallIdle','fallVariant','airTrick','slam']);
+const airborne=new Set(['jump','drop','jumpDown','jumpDownVariant','fall','fallIdle','fallVariant','airTrick','backTrick','slam']);
 async function appearance(mode){
   const raw=fs.readFileSync(`public/models/appearance-${mode}.glb`),size=raw.readUInt32LE(12),data=JSON.parse(raw.subarray(20,20+size));
   data.buffers[0].uri='data:application/octet-stream;base64,'+raw.subarray(28+size).toString('base64');

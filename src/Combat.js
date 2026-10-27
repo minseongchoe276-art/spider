@@ -22,14 +22,17 @@ export class CombatSystem {
     this.blocking=false;this.health=100;this.stamina=100;this.invulnerable=0;
     this.specialCooldown=0;this.enemies=[];this.serial=0;this.hurtCount=0;this.hits=0;this.elapsed=0;this.physics.webEnabled=true;this.physics.onReset=()=>{this.cancel();this.clearEnemies();this.health=this.stamina=100;this.specialCooldown=0;};
   }
-  cancel(){this.stanceQueued=null;this.queued=null;this.action=null;this.blocking=false;this.character.combatAction=null;this.physics.combatMotion=null;}
+  cancel(){this.pendingModeInput=null;this.stanceQueued=null;this.queued=null;this.action=null;this.blocking=false;this.character.combatAction=null;this.physics.combatMotion=null;}
   clearHeld(){this.blocking=false;this.stanceQueued=null;}
   toggle(input={}) {
+    // Complete an authored strike before changing its stance or mixer target.
+    if(this.action && ATTACKS[this.action.key]){this.pendingModeInput=this.pendingModeInput?null:input;return this.mode;}
+    this.pendingModeInput=null;
     this.mode=this.mode==='combat'?'web':'combat';this.cancel();
     this.character.combatStance=this.mode==='combat';
     input.webTap=input.webHold=input.webFireHeld=false;
     input.webTapRight=input.webHoldRight=input.webFireHeldRight=false;
-    input.webZipHeld=false;
+    input.webZipHeld=false;input.wallRun=false;input.guard=false;
     this.physics.webEnabled=this.mode==='web';this.physics.clearPendingInput?.();
     if(this.mode==='combat')this.physics.clearWebAnchor?.();
     // The persistent mode label and action controls already confirm the switch.
@@ -48,7 +51,7 @@ export class CombatSystem {
   }
   standBefore(method,camera,input=null) {
     const c=this.character;
-    if(!this.physics.lowStance && (c.crouchBlend || 0)+(c.proneBlend || 0)<.001)return false;
+    if(!this.physics.lowStance && (c.crouchBlend || 0)<.001)return false;
     this.physics.lowStance=null;c.lowStance=null;
     this.stanceQueued={method,camera,input:input?{...input}:null,expires:this.elapsed+1.2};
     return true;
@@ -66,7 +69,7 @@ export class CombatSystem {
     this.stamina-=7;this.start('cross',ATTACKS.cross.duration,camera);return true;
   }
   heavy(camera) {
-    if(this.mode!=='combat' || this.action || this.stamina<18 || !canStrike(this.physics))return false;
+    if(this.mode!=='combat' || this.action || this.blocking || this.stamina<18 || !canStrike(this.physics))return false;
     if(this.standBefore('heavy',camera))return false;
     this.stamina-=18;this.blocking=false;
     this.start('heavy',ATTACKS.heavy.duration,camera);
@@ -107,7 +110,7 @@ export class CombatSystem {
     if(this.stanceQueued){
       const queued=this.stanceQueued;
       if(queued.expires<this.elapsed || !canStrike(this.physics))this.stanceQueued=null;
-      else if(!this.physics.lowStance && (this.character.crouchBlend || 0)+(this.character.proneBlend || 0)<.001){
+      else if(!this.physics.lowStance && (this.character.crouchBlend || 0)<.001){
         this.stanceQueued=null;
         const started=queued.method==='dodge'?this.dodge(queued.input,queued.camera):this[queued.method](queued.camera);
         if(started && queued.method!=='dodge')this.onDeferredStrike?.();
@@ -121,18 +124,19 @@ export class CombatSystem {
         this.action=null;
       }
     }
+    if(this.pendingModeInput && !this.action){const modeInput=this.pendingModeInput;this.toggle(modeInput);}
     if(this.queued && !this.action){const next=this.queued;this.queued=null;if(next.expires>=this.elapsed)this[next.method](next.camera);}
     if(input)this.guard(!!input.guard);
     const current=this.action;
     const stopping=this.character.activeAction && ['stop','runStop'].some(key=>this.character.activeAction===this.character.actions?.[key] && this.character.activeAction?.time<this.character.activeAction.getClip().duration-.05) || ['RUNNING','SPRINTING'].includes(this.character.lastState);
     // Track camera aim throughout a strike, including while standing still.
     if(current && ATTACKS[current.key])this.face(camera);
-    if(current && ATTACKS[current.key] && current.travel===undefined){
+    if(current && ATTACKS[current.key]){
       const speed=Math.hypot(this.physics.velocity.x,this.physics.velocity.z);
       const stepping=!!(input && (input.forward || input.backward || input.left || input.right));
-      // Latch on the first combat step. Braking a running punch plants both
-      // feet under a pelvis that is still moving.
-      current.travel=stepping || speed>0.9;
+      // Promote a planted strike when movement starts, then keep its carrier
+      // until recovery so braking cannot replace both legs mid-punch.
+      current.travel=!!current.travel || stepping || speed>0.9;
     }
     const dodgeSpeed=current?.direction?
       ({dodgeLeft:0.8,dodgeRight:0.8,dodgeBack:1.35,dodgeForward:2.3}[current.key] || 0)*
@@ -166,7 +170,7 @@ export class CombatSystem {
       const target=e.position.clone().add(new THREE.Vector3(0,1,0)),d=target.clone().sub(origin);
       if(Math.abs(d.y)>1.5 || Math.hypot(d.x,d.z)>hit.reach || (!hit.radial && d.clone().setY(0).normalize().dot(f)<0.45) || this.obstructed(origin,target))continue;
       action.hits.add(e);
-      if(e.type==='shield' && !['hook','heavy','special','slamLand'].includes(action.key)){e.flash=.1;e.stagger=.08;this.audio?.playCombatHit?.(false);this.onNotice('방패 방어 · 훅이나 강공격으로 돌파하세요.');continue;}
+      if(e.type==='shield' && !['hook','heavy','special','slamLand'].includes(action.key)){e.flash=.1;e.stagger=.08;this.audio?.playCombatHit?.(false);this.onNotice('방패 방어 · E 훅으로 돌파하세요.');continue;}
       e.health=Math.max(0,e.health-hit.damage);e.flash=0.15;e.stagger=0.45;this.hits++;
       this.onHit(hit.damage);
       this.vfx?.spawnWebImpact(target);this.audio?.playCombatHit?.(hit.damage>=24);

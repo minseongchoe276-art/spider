@@ -7,7 +7,7 @@ const silent=new Proxy({},{get:()=>()=>{}}),camera=new THREE.PerspectiveCamera()
 function player(){
   const p=new SwingPhysics(new THREE.Scene(),{colliders:[],buildingMeshes:[],checkCollision:()=>({collided:false}),getRooftopSpawn:()=>new THREE.Vector3(0,.1,0)},
     {group:new THREE.Group(),update(){},stopAnimation(){},fireWeb(){},requestTurn(){}},silent);
-  p.position.set(0,500,0);p.state='FALLING';return p;
+  p.position.set(0,500,0);p.state='FALLING';p.webEnabled=true;return p;
 }
 const report={rates:[24,30,60,90,120,144,240],parameters:{gravity:28,jumpImpulse:26,speedCap:48,fixedStep:1/120},ballistics:[],pendulum:[],randomDualConstraints:{samples:10000,maxStretch:0,maxOutwardSpeed:0,maxKineticGain:0},groundContact:[],collisions:[]};
 let reference=null;

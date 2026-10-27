@@ -75,6 +75,6 @@ for(const fps of [24,60,144])for(const yaw of [0,1.4,-2.3]) {
   assert.equal(view.yaw,yaw,'A mode change silently recentered behind a differently facing body');
   view.recenterBehind(yaw+1);
   for(let n=0;n<fps;n++)view.update(1/fps,pos,velocity,false,[],null,yaw+1);
-  assert(Math.abs(view.yaw-yaw-1)<.01,'Explicit C recenter stopped working');
+  assert(Math.abs(view.yaw-yaw-1)<.01,'Explicit X recenter stopped working');
 }
-console.log('PASS 24/60/144fps view round trips preserve facade aim and C still recenters');
+console.log('PASS 24/60/144fps view round trips preserve facade aim and X still recenters');

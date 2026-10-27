@@ -3,6 +3,7 @@ import fs from 'node:fs';
 import * as T from 'three';
 import {loadMotionRig,disposeRig} from './lib/motion-rig.mjs';
 import {RemoteMotion,capturePose,sanitizePose} from '../src/RemoteMotion.js';
+import {ATTACKS} from '../src/Combat.js';
 import {MOTIONS} from '../src/MotionCatalog.js';
 const {actor}=await loadMotionRig(),folder=process.env.ONLINE_QA_DIR||'docs/qa/eight-player-2026-10-21';fs.mkdirSync(folder,{recursive:true});
 const results=[],states=['IDLE','RUNNING','SPRINTING','WALL_RUNNING','SWINGING','JUMPING','ROLLING','LANDING'];
@@ -60,6 +61,22 @@ try{
    assert(Math.abs(r.character.activeAction.time-expected)<1e-5,key+' lost manual combat clock');
    if(key==='dodgeLeft')assert(packet.animation.rate>6,'Dodge clock was silently clamped');
   }finally{r.dispose();disposeRig(c);}
+ }
+ // A moving action has two clocks: the source gait and the combat layer.
+ // Local smoothing speed must not replace the transmitted gait, including E.
+ for(const key of ['jab','cross','heavy','guard'])for(const fps of [24,60,144]){
+  const c=actor(),v=new T.Vector3(4.4,0,0);c.combatStance=true;
+  try{
+   for(let i=0;i<35;i++){c.combatAction=key==='guard'?{key}:{id:9,key,time:.3,duration:ATTACKS[key].duration,travel:true};c.group.position.addScaledVector(v,1/60);c.update(1/60,'RUNNING',v);}
+   const packet=capturePose({state:'RUNNING',velocity:v,webs:[]},c),player={id:key,x:c.group.position.x,y:.1,z:0,facing:0};
+   const r=new RemoteMotion(new T.Scene(),c,{...player,x:player.x-1},city);
+   try{r.receive(player,packet,1000);for(let frame=0;frame<Math.ceil(.1*fps);frame++){
+    const age=frame/fps;r.update(1/fps,1000+age*1000);
+    const clip=r.character.activeAction.getClip();assert.equal(clip.name,packet.animation.key,key+' gait was replaced by smoothing speed');
+    const expected=(packet.animation.phase*clip.duration+age*packet.animation.rate)%clip.duration;
+    assert(Math.abs(r.character.activeAction.time-expected)<1e-5,key+' moving gait lost its source clock');
+   }}finally{r.dispose();}
+  }finally{disposeRig(c);}
  }
  for(const [team,color]of [['red',0xff536e],['blue',0x45cfff]]){
   const r=new RemoteMotion(new T.Scene(),sources[0],{id:team,x:0,y:.1,z:0,facing:0,team},city);

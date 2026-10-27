@@ -22,7 +22,7 @@ export class CombatPractice {
     this.active=true;this.origin=origin;g.combat.cancel();g.combat.health=g.combat.stamina=100;
     if(g.combat.mode!=='combat')g.combat.toggle(g.input);g.clearInput();g.setPaused(false);
     g.canvas?.focus();
-    g.showNotice('전투 연습 · 붉은 예고는 회피, 근접 공격은 정면 방어 · 방패에는 훅 / 강공격');
+    g.showNotice('전투 연습 · 붉은 예고는 이동, 근접 공격은 F 정면 방어 · 방패에는 E 훅');
   }
   spawn(type,position){const scene=this.game.scene,{group,body,shield,pose}=createTrainingOpponent(type);
     const ring=new THREE.Mesh(new THREE.RingGeometry(.5,.62,24),new THREE.MeshBasicMaterial({color:0xff526d,side:THREE.DoubleSide,transparent:true,opacity:.8}));ring.rotation.x=-Math.PI/2;ring.position.y=.04;ring.visible=false;group.add(ring);

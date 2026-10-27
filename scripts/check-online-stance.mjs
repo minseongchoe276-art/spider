@@ -14,7 +14,8 @@ for(const fps of [24,60,144]){
  combat.allowGuardInWeb=true;p.position.set(0,.1,0);p.state='IDLE';
  try{
   for(let f=0;f<fps;f++){const input={guard:true,forward:true};combat.before(1/fps,camera,input);p.update(1/fps,input,camera);combat.after(1/fps);}
-  assert(combat.blocking);assert.equal(combat.mode,'web');assert.equal(c.activeAction,c.actions.walk);assert(c.movingGuardWeight>.9,'Runner moved without the visible upper-body guard');assert(p.position.z>.5&&p.position.z<2);
+  assert(combat.blocking);assert.equal(combat.mode,'web');assert.equal(c.activeAction,c.actions.walk);assert(c.movingGuardWeight>.9,'Runner moved without the visible upper-body guard');// Web-mode guard retains 35% of the current 7m/s base speed.
+  assert(p.position.z>1.8&&p.position.z<2.5);
   p.state='JUMPING';combat.before(1/fps,camera,{guard:true});assert(!combat.blocking,'Runner retained airborne guard');
   results.push({fps,runnerWireGuard:true,travel:p.position.z,clip:'walk',guardWeight:c.movingGuardWeight,pass:true});
  }finally{disposeRig(c);}

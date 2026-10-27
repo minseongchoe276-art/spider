@@ -217,7 +217,7 @@ export class ThirdPersonCamera {
     this.camera.updateProjectionMatrix();
 
     // 2. Camera distance & height offset
-    const heightOffset = this.isAiming ? 1.4 : 1.7;
+    const heightOffset = Math.max(.45,(this.isAiming ? 1.4 : 1.7)-(this.stanceDrop || 0));
     const modeDistance = this.mode === 'close'
       ? THREE.MathUtils.clamp(this.targetDistance * 0.72, this.minDistance, 5.2)
       : this.mode === 'swing'

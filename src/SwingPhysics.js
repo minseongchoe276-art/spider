@@ -30,9 +30,13 @@ export class SwingPhysics {
     this.gravity = 28.0; // Superhero gravity (snappy and punchy)
     this.walkSpeed = 4.4;
     this.sprintSpeed = 6.5;
+    this.webWalkSpeed = 7;
+    this.webRunSpeed = 9;
+    this.webSprintSpeed = 12;
     this.groundAcceleration = 30.0;
     this.groundDeceleration = 24.0;
     this.jumpForce = 26.0;
+    this.combatJumpForce = 8.0;
     this.maxSpeed = 48.0; // ~170 km/h cap
 
     // Web Swing State
@@ -92,6 +96,15 @@ export class SwingPhysics {
   }
 
   // Find optimal anchor point on building facade in front of player/camera
+  groundMoveSpeed(input) {
+    if(this.lowStance==='crouch')return 1.5;
+    const web=this.webEnabled!==false && !this.character?.combatStance;
+    if(input.sprint)return web?this.webSprintSpeed:this.sprintSpeed;
+    if(input.run)return web?this.webRunSpeed:4.8;
+    if(input.jog)return web?5.5:3.4;
+    return web?this.webWalkSpeed:this.walkSpeed;
+  }
+
   setWebAimPoint(clientX, clientY, rect, pointerLocked = false) {
     if (pointerLocked || !rect?.width || !rect?.height) {
       this.webAimNdc.set(0, 0);
@@ -455,7 +468,9 @@ export class SwingPhysics {
     const trick = AIR_TRICKS[key];
     if (!Object.hasOwn(AIR_TRICKS, key) || this.character.isTricking) return false;
     if (this.character.webShotTimer>0 || this.webs.length || !['FALLING', 'JUMPING'].includes(this.state) || this.isSwinging) {
-      if (this.state === 'SWINGING') this.onStuntCallback?.('줄을 놓고 R로 공중 백플립을 연결하세요', 0);
+      if (this.state === 'SWINGING') this.onStuntCallback?.(key === 'back'
+        ? '줄을 놓고 R로 공중 백플립을 연결하세요'
+        : '줄을 놓고 T로 공중 묘기를 연결하세요', 0);
       return false;
     }
     if (this.character.contactTime < trick.duration + .15 || this.position.y < 3) {
@@ -469,7 +484,7 @@ export class SwingPhysics {
   }
 
   toggleLowStance(stance) {
-    if(!['crouch','prone'].includes(stance) || !['IDLE','RUNNING','SPRINTING'].includes(this.state)
+    if(stance!=='crouch' || !['IDLE','RUNNING','SPRINTING'].includes(this.state)
       || this.isSwinging || this.webs.length || this.character.combatAction?.duration>0)return false;
     this.lowStance=this.lowStance===stance?null:stance;
     this.character.lowStance=this.lowStance;
@@ -899,7 +914,7 @@ export class SwingPhysics {
     if (isGrounded && ['LANDING','ROLLING'].includes(this.state)) {
       if (this.recoveryElapsed > this.recoveryTime * (this.state==='ROLLING'?.88:.45) &&
           (input.jump || input.forward || input.backward || input.left || input.right)) {
-        if(this.landingCarry && (input.forward||input.backward||input.left||input.right)){const carry=this.landingCarry.clone().clampLength(0,input.sprint?this.sprintSpeed:this.walkSpeed);this.velocity.x=carry.x;this.velocity.z=carry.z;}
+        if(this.landingCarry && (input.forward||input.backward||input.left||input.right)){const carry=this.landingCarry.clone().clampLength(0,this.groundMoveSpeed(input));this.velocity.x=carry.x;this.velocity.z=carry.z;}
         this.state = 'IDLE'; this.recoveryTime = 0;this.landingCarry=null;
       }
     }
@@ -965,7 +980,7 @@ export class SwingPhysics {
     }
 
     if (isGrounded) {
-      const moveSpeed = this.lowStance==='prone' ? .7 : this.lowStance==='crouch' ? 1.5 : input.sprint ? this.sprintSpeed : input.run ? 4.8 : input.jog ? 3.4 : this.walkSpeed;
+      const moveSpeed = this.groundMoveSpeed(input);
       const targetVelocity = combat?.direction?combat.direction.clone().multiplyScalar(combat.speed ?? 7):moveDir.clone().multiplyScalar(moveSpeed*(combat?.key==='guard'?0.35:1));
       if(combat?.direction)moveDir.copy(combat.direction);
       if (moveDir.lengthSq() > 0.001) {
@@ -987,13 +1002,15 @@ export class SwingPhysics {
       // Jump
       if (input.jump) {
         this.jumpBuffer = 0; this.coyoteTime = 0;
-        this.velocity.y = this.jumpForce;
+        const isCombat = !this.webEnabled || !!this.character?.combatStance;
+        this.velocity.y = isCombat ? this.combatJumpForce : this.jumpForce;
         this.state = 'JUMPING';
         this.audio.playJump();
       }
     } else {
       if (input.jump && this.coyoteTime > 0) {
-        this.velocity.y = this.jumpForce; this.state = 'JUMPING';
+        const isCombat = !this.webEnabled || !!this.character?.combatStance;
+        this.velocity.y = isCombat ? this.combatJumpForce : this.jumpForce; this.state = 'JUMPING';
         this.jumpBuffer = 0; this.coyoteTime = 0; this.audio.playJump();
       }
       // In air
@@ -1086,14 +1103,18 @@ export class SwingPhysics {
       }
       if (airborne){this.landingCarry=this.velocity.clone().setY(0);this.onLanding?.(this.position.clone(), impact, groundNormal);}
       const moving = input.forward || input.backward || input.left || input.right;
-      if (airborne && impact > 7) {
+      const isCombat = !this.webEnabled || !!this.character?.combatStance;
+      const landingThreshold = isCombat ? 11 : 7;
+      if (airborne && impact > landingThreshold) {
         const horizontal = Math.hypot(this.velocity.x, this.velocity.z);
         const rollFacing=horizontal>.5?Math.atan2(this.velocity.x,this.velocity.z):this.facingAngle;
         const rollPoints=this.character.actions?.roll?.getClip().userData?.rootMotion || [];
         const rollDistance=Math.max(2.5,(rollPoints.at(-1)?.distance || 0)-(rollPoints[0]?.distance || 0))+.35;
         const direction=new THREE.Vector3(Math.sin(rollFacing),0,Math.cos(rollFacing));
         const rollEnd=this.position.clone().addScaledVector(direction,rollDistance);
-        let canRoll=!sweepBody(this.position,rollEnd,this.city.colliders);
+        // A vertical or slow descent has no forward travel to carry through
+        // a roll. Use the compact landing even when the impact is strong.
+        let canRoll=horizontal>=4.5 && !sweepBody(this.position,rollEnd,this.city.colliders);
         let rollPrevious=this.position.clone();
         for(let distance=.4;canRoll && distance<rollDistance+.4;distance+=.4){
           const sample=this.position.clone().addScaledVector(direction,Math.min(distance,rollDistance));
@@ -1173,8 +1194,8 @@ export class SwingPhysics {
 
   resetPosition(reason = null) {
     this.lowStance=null;this.character.lowStance=null;
-    this.character.crouchBlend=0;this.character.proneBlend=0;
-    this.character.crouchWeight=0;this.character.proneWeight=0;
+    this.character.crouchBlend=0;
+    this.character.crouchWeight=0;
     this.city.collisionWorld?.setTetherColliders?.([]);
     this.onReset?.();
     this.landingCarry=null;

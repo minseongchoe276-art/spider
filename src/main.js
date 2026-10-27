@@ -32,7 +32,7 @@ import {COMBAT_GROUND_STATES} from './AttackRules.js';
 import {abilitySlotState,updateVitalsHud} from './VitalsHud.js';
 let stopLoadingStatus=()=>{};
 
-const ONE_SHOT_KEYS = new Set(['Space','KeyG','KeyE','KeyT','KeyR','KeyC','KeyZ','KeyX','KeyV','KeyQ','ControlLeft','ControlRight']);
+const ONE_SHOT_KEYS = new Set(['Space','KeyG','KeyE','KeyT','KeyR','KeyC','KeyX','KeyV','KeyQ','ControlLeft','ControlRight']);
 
 export class GameApp {
   constructor() {
@@ -365,7 +365,7 @@ export class GameApp {
     // HUD actions use the same remappable event path as keyboard and touch.
     for(const button of (document.querySelectorAll?.('#ability-bar button') || [])){
       const send=down=>{
-        const action=button.dataset.ability==='heavy'?'heavy':button.dataset.ability;
+        const action=['wall','guard'].includes(button.dataset.ability)?'wall':button.dataset.ability;
         const code=this.preferences?.values.settings?.bindings?.[action];
         if(!code)return;
         const event=new KeyboardEvent(down?'keydown':'keyup',{code,bubbles:true});
@@ -373,7 +373,7 @@ export class GameApp {
       };
       button.addEventListener('pointerdown',event=>{
         if(button.disabled)return;event.preventDefault();button.setPointerCapture(event.pointerId);send(true);
-        if(button.dataset.ability!=='guard')send(false);
+        if(!['wall','guard'].includes(button.dataset.ability))send(false);
       });
       button.addEventListener('pointerup',()=>send(false));
       button.addEventListener('pointercancel',()=>send(false));
@@ -397,7 +397,7 @@ export class GameApp {
       const gameplayKey = [
         'KeyW', 'KeyA', 'KeyS', 'KeyD', 'ArrowUp', 'ArrowDown',
         'ArrowLeft', 'ArrowRight', 'Home', 'End', 'PageUp', 'PageDown', 'ShiftLeft', 'ShiftRight', 'Space',
-        'KeyG', 'KeyE', 'KeyT', 'KeyR', 'KeyF', 'KeyC', 'KeyZ', 'KeyX', 'KeyV', 'KeyQ', 'KeyB', 'ControlLeft', 'ControlRight'
+        'KeyG', 'KeyE', 'KeyT', 'KeyR', 'KeyF', 'KeyC', 'KeyX', 'KeyV', 'KeyQ', 'KeyB', 'ControlLeft', 'ControlRight'
       ].includes(k);
       if (gameplayKey && document.getElementById?.('controls-guide') && !document.getElementById('controls-guide').classList.contains('hidden')) return;
       if (gameplayKey && (!this.isPlaying || this.isPaused || this.multiplayer?.spectating)) return;
@@ -416,18 +416,12 @@ export class GameApp {
         // press. A second device or modifier alias must not toggle it twice.
         if(wasHeld && ONE_SHOT_KEYS.has(k))return;
       }
-      if(k==='KeyB'){this.combat.guard(true);return;}
-      if(k==='KeyG'){if(GROUNDED.includes(this.physics.state)){if(this.combat.special(this.camera))this.multiplayer?.attack('punch');}else this.combat.airStrike?.(this.camera);return;}
       if(k==='KeyQ'){
         if(this.multiplayer?.locksCombatToggle()){this.showNotice('도망자는 에너지 와이어로만 이동합니다.');return;}
-        this.combat.toggle(this.input);return;
+        this.combat.toggle(this.input);this.syncHeldInput();return;
       }
       // Retired procedural Ctrl evasion: never starts a pose or consumes stamina.
       if(k==='ControlLeft'||k==='ControlRight')return;
-      if (!e.repeat && (k === 'KeyC' || k === 'KeyZ')) {
-        this.physics.toggleLowStance(k === 'KeyC' ? 'crouch' : 'prone');
-        return;
-      }
       if (!e.repeat && k === 'KeyX') {
         this.tpsCamera.recenterBehind(this.physics.facingAngle);
       }
@@ -460,14 +454,12 @@ export class GameApp {
           this.physics.clearPendingInput();
         }
       }
-      if (k === 'KeyF') this.input.wallRun = true;
+      if (k === 'KeyF' && this.combat?.mode==='combat') this.combat.guard(true);
       if (k === 'KeyE') {
-        const groundedCombat = this.combat?.mode==='combat' && GROUNDED.includes(this.physics.state);
-        if (groundedCombat) {
+        if (this.combat?.mode==='combat') {
           if (this.combat.heavy(this.camera)) this.multiplayer?.attack('punch');
         } else this.physics.performAirJump(this.camera, this.physics.webAimNdc);
       }
-      if (k === 'KeyR' || k === 'KeyT') this.physics.performAirTrick(this.input);
       if (k === 'KeyM' && !e.repeat && this.isPlaying) { e.preventDefault(); this.worldMap.toggle(); return; }
       if (k === 'KeyH' && !e.repeat) this.toggleHelp();
       if (k === 'Escape' && !e.repeat) this.togglePause();
@@ -479,7 +471,7 @@ export class GameApp {
       sources?.delete(e.code);
       if(!sources || ![...sources.values()].includes(k))
         (e.touchInput?this.touchHeldKeys:e.gamepadInput?this.gamepadHeldKeys:this.heldKeys)?.delete(k);
-      if(k==='KeyB' && !this.heldKeys.has(k) && !this.gamepadHeldKeys?.has(k) && !this.touchHeldKeys?.has(k))this.combat?.guard(false);
+      if(k==='KeyF' && !this.heldKeys.has(k) && !this.gamepadHeldKeys?.has(k) && !this.touchHeldKeys?.has(k))this.combat?.guard(false);
       this.syncHeldInput();
       // Jump is a one-shot request consumed by physics, not a held button.
       // Clearing it on keyup loses taps completed between two render frames.
@@ -774,8 +766,8 @@ export class GameApp {
     this.input.left = !!pad.left || !!touch.left || held('KeyA','ArrowLeft');
     this.input.right = !!pad.right || !!touch.right || held('KeyD','ArrowRight');
     this.input.sprint = !!touch.sprint || (this.preferences?.values.settings.sprintToggle?!!this.sprintLatched:held('ShiftLeft','ShiftRight'));
-    this.input.wallRun = held('KeyF');
-    this.input.guard = held('KeyB');
+    this.input.wallRun = this.combat?.mode !== 'combat' && held('KeyF');
+    this.input.guard = this.combat?.mode === 'combat' && held('KeyF');
     this.input.webZipHeld = held('KeyE') && this.combat?.mode !== 'combat';
     this.input.strafe = Number(this.input.right) - Number(this.input.left);
   }
@@ -887,7 +879,7 @@ export class GameApp {
     if(!bar || !this.combat)return;
     const bindings=this.preferences?.values?.settings?.bindings;
     const pad=this.gamepad?.lastPad!=null && !this.touchControls?.enabled;
-    const padLabel={mode:'Y',zip:'X',heavy:'↓',guard:'LB'};
+    const padLabel={mode:'Y',zip:'X',wall:'LB',guard:'LB'};
     for(const slot of bar.querySelectorAll('kbd[data-key]')){
       const label=pad?padLabel[slot.dataset.key]:bindings?keyLabel(bindings[slot.dataset.key]):'';
       if(label && slot.textContent!==label)slot.textContent=label;
@@ -899,21 +891,17 @@ export class GameApp {
       stamina:this.combat.stamina,
       strikeGround:COMBAT_GROUND_STATES.includes(this.physics?.state),
       busy:!!this.combat.action,blocking:!!this.combat.blocking,
-      airTarget:this.combat.enemies.some(enemy=>enemy.health>0),
       zipBlocked:this.physics?.state==='MANTLING',
-      specialCooldown:this.combat.specialCooldown||0,
       zipCooling:(this.physics?.zipCooldown||0)>0 || this.physics?.state==='WEB_ZIP',
     });
     if(bar.dataset.mode!==slots.mode)bar.dataset.mode=slots.mode;
     if(bar.getAttribute('aria-label')!==slots.label)bar.setAttribute('aria-label',slots.label);
-    const heavy=bar.querySelector('[data-ability="heavy"]');
-    const time=heavy?.querySelector('.ability-time');
-    if(time && time.textContent!==slots.heavyTime)time.textContent=slots.heavyTime;
     for(const [name,flags] of Object.entries(slots.slots)){
       const slot=bar.querySelector(`[data-ability="${name}"]`);
       if(!slot)continue;
-      const labels={mode:slots.mode==='web'?'전투 모드로 전환':'와이어 모드로 전환',zip:slots.mode==='web'?'공중 와이어 집':'훅 · 기력 18',heavy:GROUNDED.includes(this.physics?.state)?'강공격 · 기력 35':'공중 내려찍기 · 기력 25',guard:'방어 · 누르고 유지'};
+      const labels={mode:slots.mode==='web'?'전투 모드로 전환':'와이어 모드로 전환',zip:slots.mode==='web'?'공중 와이어 집':'훅 · 기력 18',wall:'벽 타기 · 누르고 이동',guard:'방어 · 누르고 유지'};
       slot.title=t(labels[name]);slot.setAttribute('aria-label',t(labels[name]));
+      slot.hidden=(name==='guard' && slots.mode==='web') || (name==='wall' && slots.mode==='combat');
       slot.disabled=!!(flags.unavailable || flags.dry || flags.cooling);
       slot.classList.toggle('is-active',flags.active);
       slot.classList.toggle('is-unavailable',flags.unavailable);
@@ -1042,6 +1030,7 @@ export class GameApp {
       // Mouse release owns held input; a temporarily lost anchor can reconnect.
 
       // 2. Update 3rd Person Follow Camera
+      this.tpsCamera.stanceDrop=.44*(this.character?.crouchWeight || 0);
       this.tpsCamera.update(
         delta,
         this.physics.renderPosition,

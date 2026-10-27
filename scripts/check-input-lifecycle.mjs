@@ -1,5 +1,7 @@
 import assert from 'node:assert/strict';
 import * as THREE from 'three';
+import {GamepadInput} from '../src/GamepadInput.js';
+import {CombatSystem} from '../src/Combat.js';
 import {GameApp} from '../src/main.js';
 import {SwingPhysics} from '../src/SwingPhysics.js';
 import {PlayerExperience} from '../src/PlayerExperience.js';
@@ -43,20 +45,54 @@ check('Remapped left/right modifiers do not double-toggle modes',()=>dom(()=>{
   key('keydown','ShiftLeft');key('keydown','ShiftRight');assert.equal(calls,1);
   key('keyup','ShiftLeft');assert(g.heldKeys.has('KeyQ'));key('keyup','ShiftRight');assert(!g.heldKeys.has('KeyQ'));
 }));
-check('Removed race key stays inactive while concurrent trick presses rearm correctly',()=>dom(()=>{
-  const g=app();let races=0,tricks=0;g.toggleTimeTrial=()=>races++;g.physics.performAirTrick=()=>tricks++;
+check('Retired trick keys stay inactive across keyboard and pad',()=>dom(()=>{
+  const g=app();let races=0;const tricks=[];g.toggleTimeTrial=()=>races++;g.physics.performAirTrick=key=>tricks.push(key);
   for(const code of ['KeyR','KeyT']){key('keydown',code);key('keydown',code,true);key('keyup',code);key('keyup',code,true);key('keydown',code);key('keyup',code);}
-  assert.equal(races,0);assert.equal(tricks,4);
+  assert.equal(races,0);assert.deepEqual(tricks,[]);
 }));
-check('C/Z stances toggle once across devices and X retains camera recenter',()=>dom(()=>{
+check('Retired crouch remains inactive and X retains camera recenter',()=>dom(()=>{
   const g=app();let recentered=0;g.tpsCamera.recenterBehind=()=>recentered++;
-  key('keydown','KeyC');assert.equal(g.physics.lowStance,'crouch');
-  key('keydown','KeyC',true);assert.equal(g.physics.lowStance,'crouch');
-  key('keyup','KeyC');key('keyup','KeyC',true);key('keydown','KeyC');assert.equal(g.physics.lowStance,null);key('keyup','KeyC');
-  key('keydown','KeyZ');assert.equal(g.physics.lowStance,'prone');key('keyup','KeyZ');
-  key('keydown','KeyC');assert.equal(g.physics.lowStance,'crouch');key('keyup','KeyC');
+  for(const code of ['KeyC','KeyG','KeyR','KeyT','KeyB','ControlLeft']){
+    key('keydown',code);key('keydown',code,true);key('keyup',code);key('keyup',code,true);
+    assert(!g.physics.lowStance);
+  }
   key('keydown','KeyX');assert.equal(recentered,1);key('keyup','KeyX');
-  g.physics.state='FALLING';key('keydown','KeyZ');assert.equal(g.physics.lowStance,'crouch');
+}));
+check('E and F have strict mode ownership on ground and in air',()=>dom(()=>{
+  const g=app();let zip=0,heavy=0;g.physics.performAirJump=()=>zip++;g.combat.heavy=()=>heavy++;
+  let guard=false;g.combat.guard=value=>guard=value;
+  key('keydown','KeyF');assert(g.input.wallRun&&!g.input.guard&&!guard);key('keyup','KeyF');
+  key('keydown','KeyE');key('keyup','KeyE');assert.equal(zip,1);assert.equal(heavy,0);
+  g.combat.mode='combat';key('keydown','KeyF');assert(g.input.guard&&!g.input.wallRun&&guard);key('keyup','KeyF');assert(!guard);
+  for(const state of ['IDLE','FALLING']){g.physics.state=state;key('keydown','KeyE');key('keyup','KeyE');}
+  assert.equal(zip,1,'Combat E invoked the aerial web ability');assert.equal(heavy,2,'Combat decides grounded strike eligibility');
+}));
+check('Q completes the current strike, clears held web actions and preserves momentum',()=>dom(()=>{
+  const g=app();g.combat=new CombatSystem(g.scene,g.physics,g.character);g.combat.toggle(g.input);
+  g.physics.velocity.set(1,2,3);assert(g.combat.attack(g.camera));
+  key('keydown','KeyQ');key('keyup','KeyQ');assert.equal(g.combat.mode,'combat');assert.equal(g.combat.action.key,'jab');
+  for(let i=0;i<10;i++)g.combat.before(.1,g.camera,g.input);
+  assert.equal(g.combat.mode,'web');assert(!g.combat.action);assert.deepEqual(g.physics.velocity.toArray(),[1,2,3]);
+  g.input.webHold=g.input.webFireHeld=g.input.webHoldRight=g.input.webFireHeldRight=true;
+  key('keydown','KeyQ');key('keyup','KeyQ');assert.equal(g.combat.mode,'combat');
+  assert(!g.input.webHold&&!g.input.webHoldRight&&!g.input.webFireHeld&&!g.input.webFireHeldRight);
+}));
+check('Actual combat keys select distinct clips and reject attacks while guarding or airborne',()=>dom(()=>{
+  const g=app();g.combat=new CombatSystem(g.scene,g.physics,g.character);g.combat.toggle(g.input);
+  for(const [button,clip]of [[0,'jab'],[2,'cross']]){mouse(g,'mousedown',button);assert.equal(g.combat.action.key,clip);mouse(g,'mouseup',button);g.combat.cancel();}
+  key('keydown','KeyE');assert.equal(g.combat.action.key,'heavy');key('keyup','KeyE');g.combat.cancel();
+  key('keydown','KeyF');assert(g.combat.blocking);key('keydown','KeyE');assert(!g.combat.action);key('keyup','KeyE');key('keyup','KeyF');
+  g.physics.state='FALLING';key('keydown','KeyE');assert(!g.combat.action);key('keyup','KeyE');
+}));
+check('Pad B / LB / D-pad share F without releasing another held source',()=>dom(()=>{
+  const originalEvent=globalThis.KeyboardEvent;
+  globalThis.KeyboardEvent=class extends Event{constructor(type,options){super(type,options);this.code=options.code;}};
+  try{const g=app();g.combat.mode='combat';const pad=new GamepadInput(g);
+    pad.action(4,true);pad.action(1,true);pad.action(12,true);assert(g.input.guard);
+    pad.action(4,false);assert(g.input.guard);pad.action(1,false);assert(g.input.guard);
+    pad.action(12,false);assert(!g.input.guard);assert.equal(pad.keySources.size,0);
+    for(const button of [5,13]){pad.action(button,true);pad.action(button,false);}assert.equal(pad.keySources.size,0);
+  }finally{globalThis.KeyboardEvent=originalEvent;}
 }));
 check('Two devices cannot toggle off the same held web button',()=>dom(()=>{
   const g=app();g.preferences.values.settings.webToggle=true;g.physics.state='FALLING';
@@ -107,9 +143,9 @@ check('Touch releases its web with desktop toggle enabled and preserves the oppo
   mouse(g,'mouseup',2,false,true);assert(!g.input.webHoldRight);
 }));
 check('Keyboard-held guard survives a touch release of the same action',()=>dom(()=>{
-  const g=app();let guarded=false;g.combat.guard=value=>guarded=value;
-  key('keydown','KeyB');key('keydown','KeyB',false,true);key('keyup','KeyB',false,true);
-  assert(guarded&&g.input.guard);key('keyup','KeyB');assert(!guarded&&!g.input.guard);
+  const g=app();g.combat.mode='combat';let guarded=false;g.combat.guard=value=>guarded=value;
+  key('keydown','KeyF');key('keydown','KeyF',false,true);key('keyup','KeyF',false,true);
+  assert(guarded&&g.input.guard);key('keyup','KeyF');assert(!guarded&&!g.input.guard);
 }));
 check('Pause clears touch-owned keyboard, webs, and joystick',()=>dom(()=>{
   const g=app();key('keydown','KeyF',false,true);mouse(g,'mousedown',0,false,true);g.touchDirections={forward:true};g.syncHeldInput();

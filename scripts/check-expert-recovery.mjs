@@ -76,13 +76,13 @@ for(const blocked of [false,true]){
       supportHeight(pos){const h=world.groundAt(pos,.6);return h!==null&&Math.abs(pos.y-h-.1)<.3?h:null;},checkCollision:()=>({collided:false})};
     for(const fps of [24,30,60,144]){
       const character={group:new T.Group(),update(){},fireWeb(){}},p=new SwingPhysics(new T.Scene(),city,character,audio);
-      p.webEnabled=false;p.position.set(0,3,0);p.velocity.set(0,-10,0);p.state='FALLING';
+      p.webEnabled=false;p.position.set(0,3,0);p.velocity.set(0,-10,6);p.state='FALLING';
       for(let i=0;i<fps*2;i++){
         p.update(1/fps,{},new T.PerspectiveCamera());
         if(['ROLLING','LANDING'].includes(p.state))break;
       }
       assert.equal(p.state,blocked?'LANDING':'ROLLING','Actual triangle wall must select a compact recovery');
-      assert.equal(p.velocity.x,0);assert.equal(p.velocity.z,0,'Path validation mutated the actual velocity');
+      assert(Math.abs(p.velocity.x)<.01);assert(p.velocity.z>=-.01,'Path validation reversed the actual velocity');
       results.push({case:'streamed-recovery-path',fps,blocked,state:p.state,pass:true});
     }
   }finally{world.dispose();for(const mesh of meshes){mesh.geometry.dispose();mesh.material.dispose();}}

@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import {selectMixamoTake} from './MixamoMotion.js';
+import {selectMixamoTake,compactStraightBody} from './MixamoMotion.js';
 import {choreographCombat} from './CombatChoreography.js';
 
 const meshBones={pelvis:'hips',neck_01:'neck',spine_01:'spine',spine_02:'spine1',spine_03:'spine2'};
@@ -35,7 +35,7 @@ export function prepareMotion(clip, key, bones, item={}) {
   // Standing Jump includes anticipation and landing. Physics drives
   // takeoff immediately, so use only the airborne portion here.
   if (key === 'jump') clip = THREE.AnimationUtils.subclip(clip, 'jump', 24, 43, 30);
-  if (key === 'land') clip = THREE.AnimationUtils.subclip(clip, 'land', 44, 71, 30);
+  if (key === 'land' && !item.authoredMixamo) clip = THREE.AnimationUtils.subclip(clip, 'land', 44, 71, 30);
   if(key==='slamLand'){
     // Land_Three_Point starts six metres above the floor. Gameplay selects
     // this action after contact, so retain only impact compression/recovery.
@@ -64,7 +64,7 @@ export function prepareMotion(clip, key, bones, item={}) {
     }
     clip.duration=1;
   }
-  if ((!item.authoredMixamo || ['wall','airTrick'].includes(key)) && ['swing','jump','drop','zip','wall','airTrick','combatIdle','jab','cross','hook','heavy','guard','dodgeLeft','dodgeRight','dodgeBack','dodgeForward','slam','slamLand','hit','hitHead'].includes(key)) {
+  if ((!item.authoredMixamo || ['wall','airTrick','backTrick'].includes(key)) && ['swing','jump','drop','zip','wall','airTrick','backTrick','combatIdle','jab','cross','hook','heavy','guard','dodgeLeft','dodgeBack','dodgeForward','slam','slamLand','hit','hitHead'].includes(key)) {
     const hips = Object.values(bones).find(b => boneId(b.name) === 'hips');
     const positionTrack = clip.tracks.find(t => t.name === `${hips.name}.position`);
     const crouch=['dodgeForward','slamLand'].includes(key);
@@ -82,6 +82,8 @@ export function prepareMotion(clip, key, bones, item={}) {
     const base=combatBases.get(Object.values(bones).find(b=>boneId(b.name)==='hips'));
     if(base)clip=choreographCombat(base,key,bones,boneId);
   }
+  if(item.authoredMixamo && ['jab','cross'].includes(key))
+    clip=compactStraightBody(clip,combatBases.get(Object.values(bones).find(b=>boneId(b.name)==='hips')),key,boneId);
   if (key === 'turnLeft' || key === 'turnRight') {
     // Let the controller own heading; remove authored pelvis yaw so it is
     // not added a second time to the model's turn.

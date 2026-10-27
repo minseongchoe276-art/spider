@@ -26,9 +26,9 @@ function key(type,code,pad=false){const e=new Event(type,{cancelable:true});Obje
 function mouse(g,type,button,pad=false){const e=new Event(type,{cancelable:true});Object.defineProperties(e,{button:{value:button},target:{value:g.canvas},gamepadInput:{value:pad},clientX:{value:400},clientY:{value:300}});window.dispatchEvent(e);}
 
 check('Aliases obey modifier remaps; help and mute cannot be swallowed',()=>{
-  const settings=cleanSettings();rebind(settings,'guard','ShiftLeft');
-  assert.equal(canonicalKey('ShiftRight',settings),'KeyB');
-  assert.equal(canonicalKey('KeyB',settings),'ShiftLeft');
+  const settings=cleanSettings();rebind(settings,'wall','ShiftLeft');
+  assert.equal(canonicalKey('ShiftRight',settings),'KeyF');
+  assert.equal(canonicalKey('KeyF',settings),'ShiftLeft');
   rebind(settings,'jump','ControlLeft');assert.equal(canonicalKey('ControlRight',settings),'Space');
   rebind(settings,'wall','AltLeft');assert.equal(canonicalKey('AltRight',settings),'KeyF');
   assert(!rebind(settings,'forward','KeyH'));assert(!rebind(settings,'forward','KeyM'));

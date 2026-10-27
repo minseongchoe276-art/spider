@@ -79,7 +79,11 @@ for(const key of ['jab','cross'].filter(key=>available.has(key))) {
   sample(0);const hand=key==='jab'?'left':'right',other=hand==='left'?'right':'left';
   const start=position(c,hand+'hand'),feet=['left','right'].map(side=>position(c,side+'foot'));
   sample(clip.duration*clip.userData.impactPhase);
-  assert(position(c,hand+'hand').z-start.z>(key==='jab'?.25:.45),key+': fist stopped short of the target');
+  const travel=position(c,hand+'hand').sub(start);
+  // Compact authored straights travel inward as well as forward. Measure the
+  // fist path and keep a forward component, rather than requiring the old
+  // wide stance's entire reach on the world Z axis.
+  assert(travel.length()>(key==='jab'?.25:.45) && travel.z>travel.length()*.5,key+': fist stopped short of the target');
   assert(position(c,other+'hand').y>position(c,'head').y-(key==='jab'?.35:.25),key+': opposite guard was dropped');
   const support=key==='jab'?1:0;
   assert(position(c,['left','right'][support]+'foot').distanceTo(feet[support])<.38,key+': supporting foot slid beyond an authored boxing step');

@@ -25,7 +25,7 @@ export function updateVitalsHud(node,{health,stamina,mode,warning=false,visible=
   node.classList.toggle('is-wire',mode==='web'&&!warning);
   node.classList.toggle('is-combat',mode==='combat'&&!warning);
   const title=node.querySelector('.vitals-mode');
-  const text=translate(warning?'공격 예고! · 방어 / 회피':mode==='spectating'?'관전 중':mode==='combat'?'전투 모드':'와이어 모드');
+  const text=translate(warning?'공격 예고! · 방어 / 이동':mode==='spectating'?'관전 중':mode==='combat'?'전투 모드':'와이어 모드');
   if(title.textContent!==text)title.textContent=text;
   for(const [key,input] of [['health',health],['stamina',stamina]]){
     const value=Math.max(0,Math.min(100,Math.floor(Number.isFinite(input)?input:0)));
@@ -36,29 +36,21 @@ export function updateVitalsHud(node,{health,stamina,mode,warning=false,visible=
   }
 }
 
-// Wire mode is the default. Combat-only strikes stay marked unavailable there,
-// and the air zip lights up only while it can actually fire.
-export function abilitySlotState({mode='web',locked=false,grounded=true,stamina=100,specialCooldown=0,zipCooling=false,strikeGround=grounded,busy=false,blocking=false,airTarget=true,zipBlocked=false}={}){
+// Each mode exposes E plus its contextual F action.
+export function abilitySlotState({mode='web',locked=false,grounded=true,stamina=100,zipCooling=false,strikeGround=grounded,busy=false,blocking=false,zipBlocked=false}={}){
   const wire=mode!=='combat';
-  const cool=specialCooldown>0.05;
   return {
     mode:wire?'web':'combat',
     label:wire?'와이어 기술':'전투 기술',
-    heavyTime:!wire&&grounded&&cool?specialCooldown.toFixed(1):'',
     slots:{
       mode:{active:!locked,unavailable:locked,dry:false,cooling:false},
       zip:{
-        unavailable:wire?(grounded||zipBlocked):(!strikeGround||busy),
-        active:(wire&&!grounded&&!zipCooling&&!zipBlocked)||(!wire&&strikeGround&&!busy&&stamina>=18),
+        unavailable:wire?(grounded||zipBlocked):(!strikeGround||busy||blocking),
+        active:(wire&&!grounded&&!zipCooling&&!zipBlocked)||(!wire&&strikeGround&&!busy&&!blocking&&stamina>=18),
         dry:!wire&&grounded&&stamina<18,
         cooling:wire&&!grounded&&zipCooling,
       },
-      heavy:{
-        unavailable:wire||busy||blocking||(grounded?!strikeGround:!airTarget),
-        active:!wire&&!busy&&!blocking&&(grounded?strikeGround&&stamina>=35&&!cool:airTarget&&stamina>=25),
-        dry:!wire&&(grounded?stamina<35||cool:stamina<25),
-        cooling:!wire&&grounded&&cool,
-      },
+      wall:{unavailable:!wire,active:wire,dry:false,cooling:false},
       guard:{unavailable:wire||!strikeGround||busy,active:!wire&&strikeGround&&!busy&&stamina>=12,dry:!wire&&stamina<12,cooling:false},
     },
   };

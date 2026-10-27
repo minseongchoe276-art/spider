@@ -46,7 +46,7 @@ export function sanitizePose(pose) {
     ? {normal:normal(m.normal),...Object.fromEntries(['edge','start','end'].map(k=>[k,vector(m[k])])),
       elapsed:THREE.MathUtils.clamp(m.elapsed,0,2),duration:THREE.MathUtils.clamp(m.duration,.1,2),
       gap:THREE.MathUtils.clamp(m.gap,0,2),height:m.height} : null;
-  return {lowStance:['crouch','prone'].includes(pose.lowStance) && ['IDLE','RUNNING','SPRINTING'].includes(pose.state) && !(combat?.duration>0)?pose.lowStance:null,state:pose.state,velocity,webs,webShot,webShots,animation,
+  return {lowStance:pose.lowStance==='crouch' && ['IDLE','RUNNING','SPRINTING'].includes(pose.state) && !(combat?.duration>0)?pose.lowStance:null,state:pose.state,velocity,webs,webShot,webShots,animation,
     visualYaw:Number.isFinite(pose.visualYaw)?Math.atan2(Math.sin(pose.visualYaw),Math.cos(pose.visualYaw)):null,
     contactTime:Number.isFinite(pose.contactTime)?THREE.MathUtils.clamp(pose.contactTime,0,10):null,
     wallPhase:Number.isFinite(pose.wallPhase)?((pose.wallPhase%1)+1)%1:null,

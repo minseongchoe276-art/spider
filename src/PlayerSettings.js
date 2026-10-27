@@ -1,7 +1,6 @@
 export const BINDINGS = {
   forward:'KeyW', backward:'KeyS', left:'KeyA', right:'KeyD', sprint:'ShiftLeft',
-  jump:'Space', wall:'KeyF', zip:'KeyE', trick:'KeyR', mode:'KeyQ', guard:'KeyB',
-  heavy:'KeyG', dodge:'ControlLeft', recenter:'KeyX', camera:'KeyV', crouch:'KeyC', prone:'KeyZ',
+  jump:'Space', wall:'KeyF', zip:'KeyE', mode:'KeyQ', recenter:'KeyX', camera:'KeyV',
 };
 export const SETTING_LIMITS = {
   sensitivity:[0.3,3,1], fov:[55,95,64], shake:[0,1,0.5], speedFov:[0,1,1],
@@ -19,23 +18,8 @@ export function cleanSettings(saved={}) {
   for(const key of ['invertY','webToggle','sprintToggle','aimAssist','autoQuality','trajectory','showPerformance'])
     if(typeof saved[key]==='boolean')result[key]=saved[key];
   result.aimAssist=false;
-  // Keep remaps bijective. Invalid or duplicate input restores the whole map.
-  let stored=saved.bindings;
-  if(stored && !Object.hasOwn(stored,'crouch') && !Object.hasOwn(stored,'prone')){
-    const oldKeys=Object.keys(BINDINGS).filter(key=>!['crouch','prone'].includes(key));
-    const legacy=Object.fromEntries(oldKeys.map(key=>[key,stored[key] ?? (key==='recenter'?'KeyC':BINDINGS[key])]));
-    if(Object.values(legacy).every(validBinding) && new Set(Object.values(legacy)).size===oldKeys.length){
-      // New stance shortcuts should not erase unrelated saved remaps.
-      stored={...legacy,crouch:'KeyC',prone:'KeyZ'};
-      const used=new Set(['KeyC','KeyZ']);
-      const free=Object.values(BINDINGS).concat(Array.from('ABCDEFGHIJKLMNOPQRSTUVWXYZ',key=>'Key'+key));
-      for(const key of oldKeys){
-        const desired=key==='recenter' && legacy[key]==='KeyC'?'KeyX':legacy[key];
-        stored[key]=!used.has(desired)?desired:free.find(code=>validBinding(code)&&!used.has(code));
-        used.add(stored[key]);
-      }
-    }
-  }
+  // Retain active saved remaps; retired actions no longer reserve keys.
+  const stored=saved.bindings;
   const map=Object.fromEntries(Object.keys(BINDINGS).map(k=>[k,stored?.[k]??BINDINGS[k]]));
   if(Object.keys(BINDINGS).every(k=>validBinding(map[k])) && new Set(Object.values(map)).size===Object.keys(BINDINGS).length)
     result.bindings=Object.fromEntries(Object.keys(BINDINGS).map(k=>[k,map[k]]));

@@ -1,0 +1,11 @@
+import fs from 'node:fs';import crypto from 'node:crypto';import {spawn} from 'node:child_process';
+const dir='docs/qa/moving-actions-2026-10-27';fs.mkdirSync(dir,{recursive:true});
+const replay=process.argv.includes('--replay');
+const suites=replay?[['moving-action-input'],['input-lifecycle'],['motion-reset'],['online-motion-sync'],['motion-packet-gaps']]:[['moving-actions'],['moving-action-input'],['moving-actions-before-after'],['strike-steering'],['combat-traversal'],['combat-quality'],['combat-roll-recovery'],['motion-combinations'],['motion-reset'],['end-joint-stability','--keys=jab,cross,heavy,guard,combatIdle'],['moving-combat-skin'],['online-motion-sync'],['web-continuity'],['input-lifecycle'],['low-stance']];
+const paths=['src/Character.js','src/CharacterPose.js','src/Combat.js','src/SwingPhysics.js','src/CombatMotionScenario.js','src/CombatReview.js'];
+const hash=()=>Object.fromEntries(paths.map(p=>[p,crypto.createHash('sha256').update(fs.readFileSync(p)).digest('hex')]));
+const before=hash(),results=[];let next=0;
+async function worker(){while(next<suites.length){const [name,...args]=suites[next++],start=Date.now(),file=fs.openSync(dir+'/'+(replay?'replay-':'')+name+'.log','w');const code=await new Promise(resolve=>{const child=spawn(process.execPath,['scripts/check-'+name+'.mjs',...args],{stdio:['ignore',file,file],env:{...process.env,ONLINE_QA_DIR:dir+(replay?'/replay-online':'/online')}});child.on('close',resolve);child.on('error',()=>resolve(-1));});fs.closeSync(file);results.push({suite:name,pass:code===0,code,seconds:(Date.now()-start)/1000});fs.writeFileSync(dir+(replay?'/replay-validation.json':'/validation.json'),JSON.stringify({completed:results.length,total:suites.length,results},null,2));console.log(`${code===0?'PASS':'FAIL'} ${name}`);}}
+await Promise.all([worker(),worker()]);const after=hash(),changed=paths.filter(p=>before[p]!==after[p]);
+fs.writeFileSync(dir+(replay?'/replay-validation.json':'/validation.json'),JSON.stringify({completed:results.length,total:suites.length,passed:results.filter(r=>r.pass).length,results,sourceStable:!changed.length,changed,sourceHashes:after},null,2));
+if(changed.length||results.some(r=>!r.pass))process.exitCode=1;

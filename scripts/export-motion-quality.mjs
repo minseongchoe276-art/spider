@@ -15,7 +15,7 @@ const sourceHashes=fingerprint();
 const {actor,clips}=await loadMotionRig();
 const fractions=[0,.12,.28,.45,.62,.8,.98],results=[];
 const combat=new Set(['combatIdle','jab','cross','hook','heavy','special','rightHook','guard','hitHead','slamLand']);
-const air=new Set(['jump','drop','jumpDown','jumpDownVariant','fall','fallIdle','fallVariant','airTrick','slam','swing','zip']);
+const air=new Set(['jump','drop','jumpDown','jumpDownVariant','fall','fallIdle','fallVariant','airTrick','backTrick','slam','swing','zip']);
 const keys=['head','hips','lefthand','righthand','leftfoot','rightfoot'];
 for(const mode of ['web','combat']){
  // Both gameplay modes now use the same published skin. Keep two mode rows

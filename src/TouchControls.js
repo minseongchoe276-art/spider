@@ -34,14 +34,12 @@ export class TouchControls {
       ${action('data-mouse="0" class="touch-web touch-primary" aria-label="거미줄 연결 · 한 번 누르기"','wire','거미줄')}
       ${action('data-key="jump" class="touch-jump" aria-label="점프 / 줄에서 뛰어내리기"','jump','점프')}
       ${action('data-key="zip" class="touch-zip" aria-label="와이어 집 / 전투 훅"','zip','집')}
-      ${action('data-key="guard" class="touch-guard" aria-label="방어 · 누르고 유지" hidden','guard','방어')}
-      ${action('data-key="heavy" class="touch-heavy" aria-label="강공격" hidden','heavy','강공격')}
+      ${action('data-key="wall" class="touch-guard" aria-label="방어 · 누르고 유지" hidden','guard','방어')}
       <button data-ui="more" class="touch-more" aria-label="보조 동작과 시점 메뉴" aria-expanded="false" aria-controls="touch-extra">···<span>더보기</span></button></div>
       <div id="touch-extra" class="touch-extra" role="group" aria-label="보조 동작과 시점" hidden>
       ${action('data-mouse="2" class="touch-web touch-offhand" aria-label="오른손 와이어 · 누른 채 드래그로 조준"','offhand','오른손')}
       ${action('data-key="wall" class="touch-wall" aria-label="벽 이동 · 이동 스틱을 앞으로 유지"','wall','벽 이동')}
-      ${action('data-key="trick" class="touch-trick" aria-label="공중 묘기"','trick','묘기')}
-      <button data-key="camera">시점</button><button data-key="crouch">앉기</button><button data-key="prone">엎드리기</button><button data-key="recenter">시점 정렬</button><button data-ui="help">조작 안내</button></div>`;
+      <button data-key="camera">시점</button><button data-key="recenter">시점 정렬</button><button data-ui="help">조작 안내</button></div>`;
     document.getElementById('game-container').append(this.root);
     this.stick=this.root.querySelector('.touch-stick');this.knob=this.root.querySelector('.touch-stick-knob');
     this.moveZone=this.root.querySelector('.touch-move-zone');
@@ -198,10 +196,10 @@ export class TouchControls {
     if(this.layoutKey===layoutKey)return;
     this.layoutKey=layoutKey;
     this.root.dataset.combat=String(combat);
-    for(const [action,visible]of [['wall',!combat],['guard',!!(combat||g.combat?.allowGuardInWeb)&&grounded],['trick',!combat],['heavy',combat&&grounded]]){
-      const button=this.root.querySelector(`[data-key="${action}"]`);
+    for(const [action,visible]of [['wall',!combat],['guard',combat&&grounded]]){
+      const button=this.root.querySelector(`.touch-${action}`);
       if(button && button.hidden===visible){
-        if(!visible)for(const [id,p]of this.pointers)if(p.kind==='key'&&p.action===action)this.up({pointerId:id});
+        if(!visible)for(const [id,p]of this.pointers)if(p.kind==='key'&&p.action===button.dataset.key)this.up({pointerId:id});
         button.hidden=!visible;
       }
     }

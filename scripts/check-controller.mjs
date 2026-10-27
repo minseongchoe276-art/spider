@@ -12,31 +12,31 @@ function controller() {
   const character = { group:new THREE.Group(), update(){}, requestTurn(){},stopAnimation(){},toggleHand(){},fireWeb(){} };
   const city = {colliders:[], buildingMeshes:[],checkCollision:()=>({collided:false})};
   const p = new SwingPhysics(new THREE.Scene(),city,character,silent);
-  p.position.set(0,0.1,0); p.state='IDLE'; return p;
+  p.position.set(0,0.1,0); p.state='IDLE'; p.webEnabled=true; return p;
 }
 function advance(p,i,seconds,dt=1/60) { for(let t=0;t<seconds-1e-8;t+=dt)p.update(dt,i,camera); }
 const p=controller(), i=input();
 advance(p,i,3); assert.equal(p.velocity.length(),0); assert.equal(p.state,'IDLE');
-i.forward=true; advance(p,i,2); assert.equal(p.state,'RUNNING'); assert(Math.abs(p.velocity.length()-4.4)<0.01);
-i.sprint=true; advance(p,i,2); assert.equal(p.state,'SPRINTING'); assert(Math.abs(p.velocity.length()-6.5)<0.01);
+i.forward=true; advance(p,i,2); assert.equal(p.state,'RUNNING'); assert(Math.abs(p.velocity.length()-7)<0.01);
+i.sprint=true; advance(p,i,2); assert.equal(p.state,'SPRINTING'); assert(Math.abs(p.velocity.length()-12)<0.01);
 i.forward=false; advance(p,i,2); assert.equal(p.state,'IDLE'); assert.equal(p.velocity.length(),0);
 i.jump=true; p.update(1/60,i,camera); assert.equal(p.state,'JUMPING'); assert(p.velocity.y>0); assert.equal(p.velocity.z,0);
 advance(p,i,4); assert.equal(p.state,'IDLE'); assert.equal(p.position.y,0.1); assert.equal(p.velocity.length(),0);
 // Jump from a roof must not immediately be snapped back; walking off it falls.
 const roof=controller(); roof.city.colliders=[{minX:-2,maxX:2,minZ:-2,maxZ:2,minY:0,maxY:10}]; roof.position.set(0,10.1,0);
 const ri=input(); ri.jump=true; roof.update(1/60,ri,camera); assert(roof.position.y>10.2); advance(roof,ri,3); assert.equal(roof.position.y,10.1);
-ri.forward=true; advance(roof,ri,1.5); assert.equal(roof.state,'FALLING');
+ri.forward=true; advance(roof,ri,.6); assert.equal(roof.state,'FALLING');
 // High-speed descent must not tunnel through the rooftop.
 roof.position.set(0,11,0);roof.velocity.set(0,-100,0);roof.state='FALLING';ri.forward=false;roof.update(0.1,ri,camera);assert.equal(roof.position.y,10.1);
 const release=controller();release.isSwinging=true;release.velocity.set(20,0,0);release.releaseSwing(false);assert.equal(release.velocity.y,0);assert.equal(release.velocity.x,20);
 // Distinct recovery, turning, speed stages and web-zip states.
-const stages=controller(), si=input();si.forward=true;si.jog=true;advance(stages,si,2);assert(Math.abs(stages.velocity.length()-3.4)<0.01);
-si.jog=false;si.run=true;advance(stages,si,2);assert(Math.abs(stages.velocity.length()-4.8)<0.01);
+const stages=controller(), si=input();si.forward=true;si.jog=true;advance(stages,si,2);assert(Math.abs(stages.velocity.length()-5.5)<0.01);
+si.jog=false;si.run=true;advance(stages,si,2);assert(Math.abs(stages.velocity.length()-9)<0.01);
 const turn=controller();assert(turn.turnOnSpot('left'));advance(turn,input(),1.1);assert.equal(turn.state,'IDLE');assert(Math.abs(turn.facingAngle+Math.PI/2)<0.01);assert.equal(turn.position.length(),0.1);
 const land=controller();land.city.colliders=[{minX:-3,maxX:3,minZ:1,maxZ:2,minY:0,maxY:3}];land.position.y=0.3;land.velocity.y=-15;land.state='FALLING';land.update(1/60,input(),camera);assert.equal(land.state,'LANDING');advance(land,input(),1.5);assert.equal(land.state,'IDLE');
 const roll=controller();roll.character.actions={roll:{getClip:()=>({duration:1,userData:{rootMotion:[{time:0,distance:0},{time:1,distance:2}]}})}};
-roll.position.y=0.3;roll.velocity.set(0,-30,4);roll.state='FALLING';roll.update(1/60,input(),camera);assert.equal(roll.state,'ROLLING');advance(roll,input(),1.5);assert.equal(roll.state,'IDLE');assert(Math.abs(roll.position.z-2)<0.1);assert.equal(roll.velocity.length(),0);
-const verticalLand=controller();verticalLand.position.y=0.3;verticalLand.velocity.y=-30;verticalLand.state='FALLING';verticalLand.update(1/60,input(),camera);assert.equal(verticalLand.state,'ROLLING','A vertical fall with a clear supported path uses the current forward-roll recovery');advance(verticalLand,input(),2);assert.equal(verticalLand.state,'IDLE');
+roll.position.y=0.3;roll.velocity.set(0,-30,6);roll.state='FALLING';roll.update(1/60,input(),camera);assert.equal(roll.state,'ROLLING');advance(roll,input(),1.5);assert.equal(roll.state,'IDLE');assert(Math.abs(roll.position.z-2)<0.1);assert.equal(roll.velocity.length(),0);
+const verticalLand=controller();verticalLand.position.y=0.3;verticalLand.velocity.y=-30;verticalLand.state='FALLING';verticalLand.update(1/60,input(),camera);assert.equal(verticalLand.state,'LANDING','A vertical fall must recover without a forward roll');advance(verticalLand,input(),2);assert.equal(verticalLand.state,'IDLE');
 const zip=controller();zip.state='FALLING';zip.position.y=2;
 assert.equal(zip.performAirJump(camera),false);assert.equal(zip.canAirJump,true,'A missed zip target must not consume the air ability');
 const facade=new THREE.Mesh(new THREE.BoxGeometry(10,20,2),new THREE.MeshBasicMaterial());facade.position.set(0,10,20);facade.updateMatrixWorld(true);zip.city.buildingMeshes=[facade];
@@ -120,7 +120,7 @@ for(const dt of [1/30,1/60,1/144]) {
   const before=v.currentPos.clone();v.triggerShake(1);v.update(0,new THREE.Vector3(),new THREE.Vector3(),false,[]);
   assert(v.currentPos.equals(before),'Camera shake leaked into follow state');
 }
-for(const dt of [1/30,1/60,1/144]) { const a=controller();const ai=input();ai.forward=true;advance(a,ai,2,dt);assert(Math.abs(a.velocity.length()-4.4)<0.01); }
+for(const dt of [1/30,1/60,1/144]) { const a=controller();const ai=input();ai.forward=true;advance(a,ai,2,dt);assert(Math.abs(a.velocity.length()-7)<0.01); }
 const climber=controller();climber.city.checkCollision=City.prototype.checkCollision;
 climber.city.raycast=City.prototype.raycast;
 climber.city.colliders=[{minX:-4,maxX:4,minY:0,maxY:60,minZ:2,maxZ:8}];
@@ -147,6 +147,9 @@ for(const dt of [1/30,1/60,1/144]) {
   for(let t=0;t<4-1e-8;t+=dt) {
     const before=edge.position.clone();edge.update(dt,held,facadeCamera);
     sawMantle ||= edge.state==='MANTLING';maxFrameTravel=Math.max(maxFrameTravel,before.distanceTo(edge.position));
+    // Stop at roof arrival; continuing at the faster web-mode speed runs
+    // off this six-metre fixture and measures an unrelated second landing.
+    if(sawMantle && ['IDLE','RUNNING'].includes(edge.state))break;
   }
   assert(sawMantle,'Continuous climb skipped its animated edge traversal');
   assert(maxFrameTravel<0.3,'Roof transition teleported the capsule');
@@ -206,7 +209,7 @@ c.update(1/60,'LANDING',new THREE.Vector3());assert.equal(c.activeAction,c.actio
 c.update(1/60,'ROLLING',new THREE.Vector3());assert.equal(c.activeAction,c.actions.roll);
 c.pendingTurn='left';c.update(1/60,'TURNING',new THREE.Vector3());assert.equal(c.activeAction,c.actions.turnLeft);
 c.update(1/60,'FALLING',new THREE.Vector3(0,-5,0));assert.equal(c.activeAction,c.actions.drop);
-c.update(1/60,'FALLING',new THREE.Vector3(0,-20,0));assert.equal(c.activeAction,c.actions.fall);
+for(let n=0;n<16;n++)c.update(1/60,'FALLING',new THREE.Vector3(0,-20,0));assert.equal(c.activeAction,c.actions.fall);
 c.wallNormal=new THREE.Vector3(0,0,1);c.update(1/60,'WALL_RUNNING',new THREE.Vector3(0,6.5,0));
 assert(new THREE.Vector3(0,1,0).applyQuaternion(c.model.quaternion).dot(new THREE.Vector3(0,1,0))>0.99,'Wall-running spine lies across wall');
 c.triggerAirTrick();for(let n=0;n<120;n++)c.update(1/60,'FALLING',new THREE.Vector3(0,-10,0));assert.equal(c.trickRotation,0);assert(Math.abs(c.model.rotation.x)<0.01);

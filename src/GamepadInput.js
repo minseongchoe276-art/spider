@@ -1,8 +1,20 @@
 import {deadzone} from './PlayerSettings.js';
 export class GamepadInput {
   constructor(game){this.game=game;this.buttons=new Set();this.lastPad=null;this.axes={};}
-  key(code,down){const event=new KeyboardEvent(down?'keydown':'keyup',{code,bubbles:true});
-    Object.defineProperty(event,'gamepadInput',{value:true});window.dispatchEvent(event);}
+  key(code,down,source=code){
+    this.keySources??=new Map();
+    if(down){
+      if(this.keySources.has(source))return;
+      const held=[...this.keySources.values()].includes(code);this.keySources.set(source,code);
+      if(held)return;
+    }else{
+      const original=this.keySources.get(source);if(!original)return;
+      this.keySources.delete(source);code=original;
+      if([...this.keySources.values()].includes(code))return;
+    }
+    const event=new KeyboardEvent(down?'keydown':'keyup',{code,bubbles:true});
+    Object.defineProperty(event,'gamepadInput',{value:true});window.dispatchEvent(event);
+  }
   mouse(button,down){const canvas=this.game.canvas,rect=canvas.getBoundingClientRect();
     const event=new MouseEvent(down?'mousedown':'mouseup',{button,clientX:rect.x+rect.width/2,clientY:rect.y+rect.height/2,bubbles:true});
     Object.defineProperty(event,'gamepadInput',{value:true});
@@ -10,8 +22,8 @@ export class GamepadInput {
   release(){for(const b of this.buttons)this.action(b,false);this.buttons.clear();this.axes={};this.game.gamepadDirections={};this.game.syncHeldInput();}
   action(button,down){const g=this.game,bindings=g.preferences.values.settings.bindings;
     if([6,7].includes(button))this.mouse(button===7?0:2,down);
-    else {const map={0:'jump',1:'guard',2:'zip',3:'mode',4:'guard',5:'trick',10:'sprint',11:'recenter',12:'wall',13:'heavy',14:'camera'};
-      const code=button===9?'Escape':bindings[map[button]];if(code)this.key(code,down);}}
+    else {const map={0:'jump',1:'wall',2:'zip',3:'mode',4:'wall',10:'sprint',11:'recenter',12:'wall',14:'camera'};
+      const code=button===9?'Escape':bindings[map[button]];if(code || this.keySources?.has(button))this.key(code,down,button);}}
   update(delta) {
     const pad=Array.from(navigator.getGamepads?.()||[]).find(p=>p?.mapping==='standard');
     if(!pad){if(this.lastPad!==null){this.release();this.game.showNotice('게임패드 연결이 끊겼습니다.');}this.lastPad=null;return;}

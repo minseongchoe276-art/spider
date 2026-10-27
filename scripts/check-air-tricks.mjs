@@ -41,10 +41,10 @@ assert(p.performAirTrick('front'));c.update(.2,'FALLING',p.velocity);c.update(.1
 assert(p.performAirTrick('front'));c.update(.2,'FALLING',p.velocity);c.update(.1,'SWINGING',p.velocity);assert.equal(p.stuntScore,0);
 function finish(key){assert(p.performAirTrick(key));c.update(AIR_TRICKS[key].duration+.01,'FALLING',p.velocity);}
 finish('front');let score=p.stuntScore;finish('front');assert.equal(p.stuntScore-score,0);
-for(const key of ['back','left','right','spin','cork'])assert(!p.performAirTrick(key));
+for(const key of ['left','right','spin','cork'])assert(!p.performAirTrick(key));
 assert(p.performAirTrick('front'));
 const pose=capturePose(p,c);assert.equal(pose.airTrick.key,'front');
 assert.equal(sanitizePose({...pose,airTrick:{key:'toString',elapsed:0}}).airTrick,null);
 assert.equal(sanitizePose({...pose,airTrick:{key:'front',elapsed:NaN}}).airTrick,null);
 p.resetPosition();assert.equal(c.airTrick,null);assert.equal(p.airTrickChain.size,0);
-console.log('Air tricks: Retained front animation at 30/60/144 FPS, exactly-once completion without points, interruptions, selection, repeats and pose validation passed.');
+console.log('Air tricks: Front and back flips at 30/60/144 FPS, exactly-once completion without points, interruptions, selection, repeats and pose validation passed.');

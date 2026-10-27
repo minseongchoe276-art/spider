@@ -14,10 +14,11 @@ function check(name,run){try{results.push({name,status:'PASS',detail:run()});con
 const removed=['hit','dodgeBack','dodgeLeft','dodgeRight','dodgeForward','femaleStop','jog'];
 check('Requested motions are absent from catalog, generated assets and loaded actors',()=>{
  const c=actor();try{for(const key of removed){assert(!MOTIONS.some(m=>m.key===key));assert(!fs.existsSync(`public/motions/${key}.json`));assert(!c.actions[key]);}
- assert.equal(c.actions.cross.getClip().userData.source,'/models/Cross Punch.fbx');
+ assert.equal(c.actions.cross.getClip().userData.source,'/models/Jab Cross.fbx');
  assert.equal(c.actions.cross.getClip().userData.authoredMixamo,true);
- assert.deepEqual(Object.keys(AIR_TRICKS),['front']);
- for(const key of ['back','left','right','spin','cork']){assert(!c.triggerAirTrick(key));assert.equal(sanitizePose({state:'FALLING',velocity:{x:0,y:-2,z:0},tricking:true,airTrick:{key,elapsed:0}}).airTrick,null);}
+ assert.equal(c.actions.backTrick.getClip().userData.source,'/models/Stylish Flip.fbx');
+ assert.deepEqual(Object.keys(AIR_TRICKS),['front','back']);
+ for(const key of ['left','right','spin','cork']){assert(!c.triggerAirTrick(key));assert.equal(sanitizePose({state:'FALLING',velocity:{x:0,y:-2,z:0},tricking:true,airTrick:{key,elapsed:0}}).airTrick,null);}
  assert.equal(selectAirTrick({sprint:true,left:true}),'front');return {removed,retainedAirTricks:Object.keys(AIR_TRICKS)};}finally{disposeRig(c);}
 });
 check('Every retained compiled motion respects ankle, wrist and toe limits between keyframes',()=>{

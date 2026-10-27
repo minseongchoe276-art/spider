@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import {Character} from './Character.js';
 import {boneId} from './MotionRetarget.js';
 import {restoreHandPose} from './WebHandPose.js';
+import {attachReviewFloor} from './ReviewFloor.js';
 
 export function startWebHandReview(){
   document.body.replaceChildren();document.body.style.cssText='margin:0;overflow:hidden;font:15px system-ui;background:#dbe7ef';
@@ -14,8 +15,11 @@ export function startWebHandReview(){
   const sampleControls=document.createElement('p');sampleControls.innerHTML='<label>검사 시각 <input id="web-time" type="number" min="0.01" max="2.5" step="0.01" placeholder="자동" style="width:65px">초</label> <label>배경 <select id="web-background"><option value="day">낮</option><option value="night">밤</option></select></label>';panel.append(sampleControls);
   document.body.append(panel);const status=panel.querySelector('output');let ready=false,playing=false,elapsed=0,released=false;
   const c=new Character(scene,()=>{},()=>{ready=true;sample();});
+  // This stage has a real flat floor. Match the gameplay support contract;
+  // without it, combined web/combat previews bypass all ground foot solving.
+  attachReviewFloor(c);
   function reset(){
-    restoreHandPose(c.webFingerRig);c.stopAnimation();c.webGestures={};c.webAttachments=[];c.webHandWeights={};c.webHandTargets={};c.webLaunchTimers={};c.persistentWebAnchor=null;c.webShotAnchor=null;c.webShotTimer=0;c.webShotIsMiss=false;c.combatAction=null;
+    restoreHandPose(c.webFingerRig);c.stopAnimation();c.webGestures={};c.webShotBody=null;c.webAttachments=[];c.webHandWeights={};c.webHandTargets={};c.webLaunchTimers={};c.persistentWebAnchor=null;c.webShotAnchor=null;c.webShotTimer=0;c.webShotIsMiss=false;c.combatAction=null;
     c.group.position.set(0,.1,0);c.visualYaw=c.targetFacingAngle=Math.PI;c.model.rotation.set(0,Math.PI,0);c.model.position.set(0,0,0);c.lastState=null;elapsed=0;released=false;
     for(const side of panel.querySelector('#web-hand').value==='both'?['left','right']:[panel.querySelector('#web-hand').value]){
       const target=new THREE.Vector3(side==='left'?-2:2,4,-10);

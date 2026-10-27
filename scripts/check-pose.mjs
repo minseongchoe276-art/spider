@@ -165,7 +165,9 @@ for(const dt of [1/30,1/60,1/144]) {
       c.group.position.z+=1.6*dt;c.group.position.y=gz*c.group.position.z+0.1;
       c.update(dt,'RUNNING',new THREE.Vector3(0,gz*1.6,1.6));finite(c);
       for(const side of ['left','right']) {
-        const plant=c.movingPlants?.[side];if(!plant || plant.age<0.1)continue;
+        // A fast stride can plant for less than 100ms; acquisition is fully
+      // weighted after 65ms in plantMovingFeet.
+      const plant=c.movingPlants?.[side];if(!plant || plant.age<0.065)continue;
         const foot=position(c,side+'foot');
         const clearance=Math.min(...soleSamples(c,side).map(({mesh,vertex})=>{const p=mesh.localToWorld(mesh.applyBoneTransform(vertex,new THREE.Vector3().fromBufferAttribute(mesh.geometry.attributes.position,vertex)));return p.y-gx*p.x-gz*p.z;}));
         maxHeightError=Math.max(maxHeightError,Math.abs(clearance));
@@ -229,7 +231,9 @@ for(const fps of [30,60,144])for(const mode of ['slope','stairs']) {
   for(let n=0;n<fps*3.5;n++) {
     p.update(1/fps,i,camera);finite(c);
     for(const side of ['left','right']) {
-      const plant=c.movingPlants?.[side];if(!plant || plant.age<0.1)continue;
+      // A fast stride can plant for less than 100ms; acquisition is fully
+      // weighted after 65ms in plantMovingFeet.
+      const plant=c.movingPlants?.[side];if(!plant || plant.age<0.065)continue;
       const foot=position(c,side+'foot'),ground=c.surfaceProbe(new THREE.Vector3(foot.x,c.group.position.y+0.45,foot.z));
       if(ground){
         const clearance=Math.min(...soleSamples(c,side).map(({mesh,vertex})=>{const v=mesh.localToWorld(mesh.applyBoneTransform(vertex,new THREE.Vector3().fromBufferAttribute(mesh.geometry.attributes.position,vertex)));const support=c.surfaceProbe(new THREE.Vector3(v.x,c.group.position.y+.45,v.z));return support?v.y-support.height:Infinity;}));

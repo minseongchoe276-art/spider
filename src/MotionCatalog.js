@@ -5,14 +5,15 @@ export const MOTIONS = [
   ['stop','Run To Stop'], ['runStop','Run To Stop'],
   ['zip','Rope Swinging',true],
   ['turnLeft','Left Turn'], ['turnRight','Right Turn'],
-  ['jump','Standing Jump'], ['land','Standing Jump'],
+  ['jump','Standing Jump'],
   ['jumpDown','Jumping Down (1)'], ['drop','Jumping Down (1)'],
   ['jumpDownVariant','Jumping Down'], ['swing','Rope Swinging',true],
-  ['fall','Falling (2)',true], ['fallVariant','Falling',true],
-  ['fallIdle','Falling Idle',true], ['roll','Falling To Roll'],
+  ['fall','Falling Idle Neutral',true], ['fallVariant','Falling',true],
+  ['fallIdle','Falling Idle Neutral',true], ['roll','Falling To Roll'],
   ['injuredIdle','Injured Idle',true],
 ].map(([key,file,loop=false]) => ({key,url:`/models/${file}.fbx`,loop}));
 MOTIONS.push({key:'wall',url:'/models/Climbing Up Wall.fbx',loop:true,authoredMixamo:true});
+MOTIONS.push({key:'land',url:'/models/Falling To Landing.fbx',loop:false,authoredMixamo:true,trim:[.23,1.067]});
 export const STRIDES = ['walk','regularRun','run'];
 export const GROUNDED = ['IDLE','RUNNING','SPRINTING','TURNING','LANDING','ROLLING'];
 
@@ -29,12 +30,14 @@ MOTIONS.push(...COMBAT_MOTIONS);
 const imported = {
  combatIdle:{file:'Boxing Stance',loop:true},
  jab:{file:'Lead Jab',impactPhase:.28},
- cross:{file:'Cross Punch',trim:[.27,1.73],impactPhase:.57},
+ cross:{file:'Jab Cross',trim:[.4,.93],impactPhase:.57},
  // The source has a long idle tail. Use the complete swing and recovery,
  // then play that section slower so the fist does not snap out and back.
  hook:{file:'Boxing Hook',trim:[0,1.4],impactPhase:.43},
  heavy:{file:'Boxing Hook',trim:[0,1.4],impactPhase:.43},
  airTrick:{file:'Front Flip',trim:[.5,1.43]},
+ // Aerial backflip: the source starts airborne and finishes upright.
+ backTrick:{file:'Stylish Flip'},
  special:{file:'Cross Punch',trim:[.1,1.9],impactPhase:.56},
 };
 MOTIONS.push({key:'rightHook',url:'/models/Boxing Stance.fbx',loop:false});

@@ -61,7 +61,7 @@ if(!process.argv.includes('--regressions-only')){
     }finally{disposeRig(c);}
   });
   fs.writeFileSync(folder+'/coverage.json',JSON.stringify(coverage,null,2)+'\n');
-  for(const fps of fpsList)for(const [key,trick] of Object.entries(AIR_TRICKS))check(`${fps}fps complete procedural ${key} trick, interruption and repeat`,()=>{
+  for(const fps of fpsList)for(const [key,trick] of Object.entries(AIR_TRICKS))check(`${fps}fps complete authored ${key} trick, interruption and repeat`,()=>{
     const c=actor();try{let completed=0;c.onAirTrickComplete=()=>completed++;c.group.position.y=20;assert(c.triggerAirTrick(key));
       for(let i=0;i<Math.ceil((trick.duration+.3)*fps);i++){c.update(1/fps,'FALLING',new THREE.Vector3(0,-1,2));for(const b of Object.values(c.bones))assert(Math.abs(b.quaternion.length()-1)<1e-4);}
       assert.equal(completed,1);assert(!c.isTricking);assert(c.model.position.length()<.01,'Torso pivot offset survived the trick');
@@ -89,7 +89,7 @@ if(!process.argv.includes('--regressions-only')){
         for(let i=0;i<=Math.ceil((trick.duration+.1)*fps);i++){const time=i/fps,now=frames*1000/fps;
           remote.receive(player,{state:'FALLING',velocity:{x:0,y:-2,z:0},tricking:time<trick.duration,airTrick:{key,elapsed:time}},now);
           remote.update(1/fps,now);
-          if(time<trick.duration-.05){assert(remote.character.isTricking);assert.equal(remote.character.activeAction.getClip().name,'fallIdle');}
+          if(time<trick.duration-.05){assert(remote.character.isTricking);assert.equal(remote.character.activeAction.getClip().name,key==='back'?'backTrick':'airTrick');}
           if(time>trick.duration+.05)assert(!remote.character.isTricking);
           for(const b of Object.values(remote.character.bones))assert(Math.abs(b.quaternion.length()-1)<1e-4);frames++;
         }

@@ -413,11 +413,22 @@ export function plantMovingFeet(c,delta) {
   const sample=contacts[Math.min(contacts.length-1,Math.round(time/clip.duration*(contacts.length-1)))];
   const speed=c.plantVelocityRoot?root.distanceTo(c.plantVelocityRoot)/Math.max(delta,1e-5):0;
   c.plantVelocityRoot=root.clone();
+  const directional=c.combatStance && Math.abs(c.combatStepYaw || 0)>.08
+    && ['IDLE','RUNNING','SPRINTING'].includes(c.poseState);
+  const laneAxis=directional?new THREE.Vector3(Math.cos(c.targetFacingAngle || 0),0,-Math.sin(c.targetFacingAngle || 0)):null;
+  const laneCenter=directional?worldPosition(find(c,'hips')):null;
+  const keepLane=(side,target)=>{
+    if(!laneAxis)return target;
+    const lateral=target.clone().sub(laneCenter).dot(laneAxis);
+    const safe=side==='left'?Math.max(.065,lateral):Math.min(-.065,lateral);
+    return target.addScaledVector(laneAxis,safe-lateral);
+  };
   const bounded=(side,target)=>{
+    keepLane(side,target);
     const previous=c.plantLastFeet[side],limit=(10+2*speed)*delta;
     if(previous && previous.distanceTo(target)>limit)
       target.copy(previous.clone().add(target.clone().sub(previous).setLength(limit)));
-    return target;
+    return keepLane(side,target);
   };
   for(const side of ['left','right']) {
     const hip=find(c,side+'upleg'),knee=find(c,side+'leg'),foot=find(c,side+'foot');
@@ -439,7 +450,8 @@ export function plantMovingFeet(c,delta) {
     // A side-step turns the pelvis after the plant was taken. Holding that
     // old contact drags the foot across the new thigh and folds the knee back.
     const turned=plant && Math.abs(Math.atan2(Math.sin((c.strikeHipYaw || 0)-(plant.yaw || 0)), Math.cos((c.strikeHipYaw || 0)-(plant.yaw || 0))))>0.4;
-    const stance=sample[side] && supported && action.getEffectiveWeight()>=0.8 && reachable && !changedSupport && !turned;
+    const crossed=plant && laneAxis && (plant.position.clone().sub(laneCenter).dot(laneAxis)*(side==='left'?1:-1)<.065);
+    const stance=sample[side] && supported && action.getEffectiveWeight()>=0.8 && reachable && !changedSupport && !turned && !crossed;
     const yaw=(c.targetFacingAngle || 0)+(c.strikeHipYaw || 0);
     const kneePole=Math.abs(c.strikeHipYaw || 0)>0.15
       ?new THREE.Vector3(Math.sin(yaw),0.2,Math.cos(yaw))
@@ -480,7 +492,13 @@ export function plantMovingFeet(c,delta) {
         // Braking into a full-body punch needs a slightly shorter rear
         // support than a travelling guard, keeping the boot off its outer edge.
         const strike=!!c.combatAction?.duration && (c.groundMotionVelocity?.lengthSq() || 0)>.0025 && ['jab','cross','hook','heavy','special'].includes(c.combatAction.key);
-        plant.position.addScaledVector(forward,strike ? .22 : .10);
+        // Compact straights retain the boxing pelvis but inherited the source's
+        // long rear reach. A flat sole then required more ankle inversion than
+        // the rig allows, so the final joint clamp rolled the entire boot onto
+        // its outer edge. Shorten this support at acquisition, never by moving
+        // an already planted foot or by relaxing the anatomical joint limit.
+        const compactStraight=['jab','cross'].includes(clip.name);
+        plant.position.addScaledVector(forward,compactStraight ? .35 : strike ? .22 : .10);
       }
       plant.position.y=surface+0.11;
     }
@@ -666,6 +684,19 @@ export function poseWall(c,delta,velocity) {
     }
     const start=worldPosition(effector),pole=normal.clone().multiplyScalar(hand?.4:-1)
       .addScaledVector(right,sign*(hand?.5:.18)).addScaledVector(up,hand?-.45:0);
+    if(!hand){
+      // Prepare the knee's roof-transfer plane while still climbing. Waiting
+      // until MANTLING switched an otherwise planted leg in a single frame.
+      const heights=Object.values(c.wallGripHeights || {}).filter(Number.isFinite);
+      const probe=root.clone().addScaledVector(normal,-(c.wallDistance ?? .7)-.35);probe.y+=4.3;
+      const ahead=c.surfaceProbe?.(probe,4.4);
+      if(ahead?.normal.y>.85 && ahead.height>root.y+.9 && ahead.height<root.y+4.2)heights.push(ahead.height);
+      if(heights.length){
+        const roof=Math.max(...heights),transfer=THREE.MathUtils.smoothstep(root.y,roof-3.4,roof-1.8);
+        const roofPole=up.clone().multiplyScalar(.8).addScaledVector(normal,-.35).addScaledVector(right,sign*.3);
+        pole.lerp(roofPole,transfer);
+      }
+    }
     const goal=start.lerp(target,c.wallPoseWeight);
     c.solveLimb(upper,lower,effector,goal,.985,pole);
     if(hand){
@@ -827,42 +858,44 @@ function pitchModelX(c, bone, angle) {
   bone.updateMatrixWorld(true);
 }
 
-// Moving punches keep the chest on the aim. Side steps turn the pelvis toward
-// the travel, then the spine brings the chest back. A retreat reverses the
-// stride and leans the chest back instead of twisting it past a half turn.
+// Combat strides follow travel while the pelvis and chest stay on the aim.
+// Redirected foot targets share the existing contact / ankle solver.
 export function alignStrikeFootwork(c, delta, active, offset, combat) {
-  const strafe = active && Math.abs(offset) > 0.28 && Math.abs(offset) <= 2;
-  const target = strafe ? offset : 0;
-  c.strikeHipYaw = THREE.MathUtils.damp(c.strikeHipYaw || 0, target, active ? 11 : 14, delta);
-  if (Math.abs(c.strikeHipYaw) > 0.012) {
-    yawWorld(find(c, 'hips'), c.strikeHipYaw);
-    // The whole twist comes back through the waist. Stopping it at the neck
-    // left the shoulders turned toward a right step, because a jab already
-    // cocks the chest that way and the leftover yaw sat on top of it.
-    const back = -c.strikeHipYaw;
-    yawWorld(find(c, 'spine'), back * 0.30);
-    yawWorld(find(c, 'spine1'), back * 0.42);
-    const spine2 = find(c, 'spine2');
-    yawWorld(spine2, back * 0.28);
-    const left = find(c, 'leftshoulder'), right = find(c, 'rightshoulder');
-    if (left && right) {
-      const across = right.getWorldPosition(new THREE.Vector3()).sub(left.getWorldPosition(new THREE.Vector3()));
-      const facing = new THREE.Vector3().crossVectors(up, across);
-      facing.y = 0;
-      const aim = new THREE.Vector3(Math.sin(c.targetFacingAngle || 0), 0, Math.cos(c.targetFacingAngle || 0));
-      if (facing.lengthSq() > 1e-6) {
-        facing.normalize();
-        const turn = Math.atan2(up.dot(new THREE.Vector3().crossVectors(facing, aim)), facing.dot(aim));
-        yawWorld(spine2, THREE.MathUtils.clamp(turn, -0.45, 0.45));
-      }
+  // Redirect the stride targets, not the entire pelvis. Rotating a running
+  // pelvis 90 degrees and counter-twisting the waist made side punches knot
+  // the legs and cross the arms in front of the chest.
+  c.strikeHipYaw=0;
+  const retreat=Math.abs(offset)>2;
+  const wanted=active?(retreat?offset-Math.sign(offset)*Math.PI:offset):0;
+  const previous=c.combatStepYaw || 0;
+  c.combatStepYaw=previous+Math.atan2(Math.sin(wanted-previous),Math.cos(wanted-previous))*(1-Math.exp(-14*Math.max(0,delta)));
+  if((active || (c.combatStance && c.poseState==='IDLE')) && Math.abs(c.combatStepYaw)>.04){
+    const aim=new THREE.Vector3(Math.sin(c.targetFacingAngle || 0),0,Math.cos(c.targetFacingAngle || 0));
+    const left=new THREE.Vector3().crossVectors(up,aim).normalize();
+    const pelvis=find(c,'hips'),center=pelvis && worldPosition(pelvis);
+    const sin=Math.sin(c.combatStepYaw),cos=Math.cos(c.combatStepYaw);
+    if(center)for(const side of ['left','right']){
+      const upper=find(c,side+'upleg'),lower=find(c,side+'leg'),foot=find(c,side+'foot');
+      if(!(upper&&lower&&foot))continue;
+      const socket=worldPosition(upper),position=worldPosition(foot),r=position.clone().sub(socket);
+      const f=r.dot(aim),l=r.dot(left);
+      const target=socket.clone().addScaledVector(aim,f*cos-l*sin).addScaledVector(left,f*sin+l*cos);
+      target.y=position.y;
+      // Keep separate lanes under the hips during a lateral step; the rear
+      // foot must never be sent through the other ankle by a rotated stride.
+      const lateral=target.clone().sub(center).dot(left);
+      const safe=side==='left'?THREE.MathUtils.clamp(lateral,.065,.48):THREE.MathUtils.clamp(lateral,-.48,-.065);
+      target.addScaledVector(left,safe-lateral);
+      const rotation=foot.getWorldQuaternion(new THREE.Quaternion());
+      c.solveLimb(upper,lower,foot,target,.985,aim.clone().addScaledVector(left,side==='left'?.12:-.12));
+      fitGroundAnkle(c,side,foot,rotation);
     }
-  } else c.strikeHipYaw = 0;
-  if (active && Math.abs(offset) > 2) {
-    // Model +X pitch drops the facing +Z axis. Negative pitch leans the chest back.
-    pitchModelX(c, find(c, 'spine'), -0.2);
-    pitchModelX(c, find(c, 'spine1'), -0.12);
   }
-  if (!(active && Math.abs(offset) < 0.45 && combat?.duration && ['jab', 'cross', 'hook', 'heavy', 'special'].includes(combat.key))) return;
+  if(active && retreat && !['jab','cross'].includes(combat?.key)){
+    pitchModelX(c,find(c,'spine'),-.07);
+    pitchModelX(c,find(c,'spine1'),-.04);
+  }
+  if (!(active && Math.abs(offset) < 0.45 && combat?.duration && ['hook', 'heavy', 'special'].includes(combat.key))) return;
   const phase = THREE.MathUtils.clamp(combat.time / combat.duration, 0, 1);
   const drive = Math.sin(Math.PI * THREE.MathUtils.clamp(phase / 0.48, 0, 1));
   const side = {jab: 0.02, cross: -0.028, hook: 0.018, heavy: -0.03, special: -0.02}[combat.key] || 0;
@@ -973,10 +1006,9 @@ function shiftBone(bone, worldDelta) {
   bone.updateMatrixWorld(true);
 }
 
-// The imported punches turn the chest off the aim and collapse the elbow
-// across the ribs. Put the chest back on the camera, drop the elbow under
-// a straight shot (outside on a hook), and sit a standing pelvis over the
-// boots. Moving punches leave the stride's pelvis alone.
+// Jab and cross have one baked body track: never add torso yaw, spine lean
+// or pelvis shifts to them here. Legacy power/hook actions keep their balance
+// pass; the shared arm solve only aligns the striking fist with the aim.
 //
 // The lead arm is 57cm and the shoulder sits 21cm off the camera line.
 // A fist parked in front of that shoulder misses the aim by more than the
@@ -990,8 +1022,9 @@ export function settleStrikeBalance(c, combat, moving) {
   const aim = new THREE.Vector3(Math.sin(c.targetFacingAngle || 0), 0, Math.cos(c.targetFacingAngle || 0));
   if (aim.lengthSq() < 1e-6) return;
   const hooking = key === 'hook' || key === 'heavy';
+  const authoredStraight=key==='jab'||key==='cross';
   const left = find(c, 'leftshoulder'), right = find(c, 'rightshoulder');
-  if (left && right) {
+  if (!authoredStraight && left && right) {
     const across = worldPosition(right).sub(worldPosition(left));
     const facing = new THREE.Vector3().crossVectors(up, across);
     facing.y = 0;
@@ -1011,7 +1044,7 @@ export function settleStrikeBalance(c, combat, moving) {
   const arm = find(c, side + 'arm'), forearm = find(c, side + 'forearm'), hand = find(c, side + 'hand');
   // aim (0,0,1) × up (0,1,0) = (-1,0,0), the character's right when facing +Z.
   const characterRight = new THREE.Vector3().crossVectors(aim, up).normalize();
-  if (!moving && drive >= 0.15) {
+  if (!authoredStraight && !moving && drive >= 0.15) {
     const hips = find(c, 'hips'), leftFoot = find(c, 'leftfoot'), rightFoot = find(c, 'rightfoot');
     if (hips?.parent && leftFoot && rightFoot && arm) {
       const group = c.group.getWorldPosition(new THREE.Vector3());
@@ -1034,7 +1067,7 @@ export function settleStrikeBalance(c, combat, moving) {
   const group = c.group.getWorldPosition(new THREE.Vector3());
   let shoulder = worldPosition(arm);
   const retreat = Math.abs(c.strikeMoveOffset || 0) > 2;
-  if (!hooking && !retreat) {
+  if (!authoredStraight && !hooking && !retreat) {
     const ahead = shoulder.clone().sub(group).dot(aim);
     const lean = Math.min(0.06, Math.max(0, 0.045 - ahead)) * drive;
     const spine = find(c, 'spine');

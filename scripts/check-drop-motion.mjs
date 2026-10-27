@@ -8,14 +8,16 @@ for(const fps of [24,60,144])for(const yaw of [0,Math.PI/2,Math.PI]){
  let minHeight=Infinity;
  try{
   // Real state selection: do not force an action or its sampling clock.
-  for(let i=0;i<fps*.65;i++){
+  for(let i=0;i<Math.ceil(fps*.2);i++){
    c.update(1/fps,'FALLING',new T.Vector3(0,-2,0));
    assert.equal(c.activeAction,c.actions.drop);
    const height=point(c,'head').y-Math.min(point(c,'leftfoot').y,point(c,'rightfoot').y);
    minHeight=Math.min(minHeight,height);
    assert(height>1.2,'Ledge fall replayed a grounded crouch/takeoff');
   }
-  c.update(1/fps,'FALLING',new T.Vector3(0,-15,0));assert.equal(c.activeAction,c.actions.fall);
+  for(let i=0;i<Math.ceil(fps*.1);i++)c.update(1/fps,'FALLING',new T.Vector3(0,-15,0));
+  assert.equal(c.activeAction,c.actions.fall);
+  assert(point(c,'head').y>point(c,'hips').y+.2,'Fast fall pitched into a forward tumble');
   results.push({fps,yaw,minimumHeadToFeet:minHeight,pass:true});
  }finally{disposeRig(c);}
 }

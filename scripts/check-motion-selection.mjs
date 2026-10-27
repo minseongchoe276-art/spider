@@ -13,7 +13,7 @@ const cases = [
   ['RUNNING',4.8,0,'regularRun'], ['SPRINTING',6.5,0,'run'],
   ['TURNING',0,0,'turnLeft','left'], ['TURNING',0,0,'turnRight','right'],
   ['JUMPING',0,7,'jump'], ['FALLING',0,-3,'drop'],
-  ['FALLING',0,-18,'fall'], ['LANDING',0,0,'land'],
+  ['FALLING',0,-18,'drop'], ['LANDING',0,0,'land'],
   ['ROLLING',0,0,'roll'], ['SWINGING',10,-2,'swing'],
   ['WEB_ZIP',12,6,'zip'], ['WALL_RUNNING',0,2.8,'wall'],
 ];
@@ -29,7 +29,8 @@ for (const fps of [24,30,60,144]) {
       const anchor=new THREE.Vector3(0,18,8),v=new THREE.Vector3(0,y,speed);
       for (let i=0;i<Math.ceil(fps*.4);i++) {
         c.update(1/fps,state,v,['SWINGING','WEB_ZIP'].includes(state)?anchor:null);
-        assert.equal(c.activeAction?.getClip().name,key,`${fps} FPS ${state}`);
+        const expected=state==='FALLING' && i/fps>=.24?'fall':key;
+        assert.equal(c.activeAction?.getClip().name,expected,`${fps} FPS ${state}`);
       }
       results.push({fps,state,speed,y,selected:key});
     } finally {disposeRig(c);}

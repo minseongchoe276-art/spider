@@ -1,5 +1,30 @@
 # SHADOW PULSE motion review — 2026-10-10
 
+## 2026-10-27 fall and landing update
+
+- The former fast-fall pose pitched the body forward, and impact above 7
+  automatically entered the forward roll. A near-vertical drop therefore
+  looked like a forward tumble on landing.
+- Mixamo `Falling Idle` now supplies the upright falling loop, paired with
+  `Falling To Landing` for a feet-first recovery. Both were downloaded as FBX
+  Binary without skin at 60 FPS and preserved in `public/models/`.
+- The traversal sequence is `Jumping Down` (first 0.24 seconds) → `Falling Idle`
+  → `Falling To Landing`. A forward roll remains available when horizontal
+  travel is at least 4.5 m/s and the path ahead has support and clearance.
+- The aerial tricks remain `R` for Stylish Flip (backflip) and `T` for Front
+  Flip; each returns to the falling loop before the landing decision.
+
+## 2026-10-26 aerial flip update
+
+- `T` plays the existing Mixamo Front Flip take; `R` plays Mixamo Stylish Flip
+  (aerial backflip), downloaded as FBX Binary without skin at 60 FPS.
+- Both takes are retargeted to the 65-joint game rig. The controller keeps
+  flight momentum authoritative, fades from the aerial pose to the authored
+  flip, then resumes falling or landing. The fallback rig retains its
+  procedural rotation when a motion asset is unavailable.
+- `Stylish Flip.fbx` is preserved in `public/models/`; its shipped animation
+  is `public/motions/backTrick.json`.
+
 Latest full inventory and regression review: [2026-10-15 all motions](docs/qa/all-motions-2026-10-15/REPORT.md), including all 39 registered clips, the embedded fallback, two preserved candidates, six procedural tricks, and first-person combat.
 
 ## Implemented

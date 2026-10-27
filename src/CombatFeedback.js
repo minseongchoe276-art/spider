@@ -35,7 +35,7 @@ export class CombatFeedback {
     if(this.game.combat?.blocking){out.textContent=online.serverCapabilities?.includes('directional-guard')
       ?`정면 방어 중 · 지상 좌우 60° · 피해 60% 감소 · 주먹 10 / 와이어 6 · 후방·공중 미적용`
       :'방어 자세 · 서버 방어 기능 업데이트 대기';return;}
-    if(!canAttack(online.room,me)){out.textContent=`내 HP ${me.health}/100 · 경찰의 주먹 25 / 거미줄 15 · B 지상 정면 방어: 10 / 6 피해 · 벽 뒤 피해 없음`;return;}
+    if(!canAttack(online.room,me)){out.textContent=`내 HP ${me.health}/100 · 경찰의 주먹 25 / 거미줄 15 · F 지상 정면 방어: 10 / 6 피해 · 벽 뒤 피해 없음`;return;}
     if(kind==='punch'&&!GROUNDED.includes(this.game.physics?.state)){out.textContent='전투 모드 · 착지 후 주먹 공격 · 와이어는 Q로 모드 전환 후 사용';return;}
     if(grace){out.textContent=`시작 보호 ${Math.ceil(grace/1000)}초 · 아직 피해 없음`;return;}
     const remain=Math.max(0,(this.cooldowns[kind]||0)-now);
