@@ -61,17 +61,17 @@
           </div>
           <div class="tele-bar"><div id="speed-bar-fill" class="tele-fill"></div></div>
         </div>
-
-        <div class="telemetry-item">
-          <span class="tele-label">고도</span>
-          <div class="tele-val-box">
-            <span id="alt-display" class="tele-val">0</span>
-            <span class="tele-unit">M</span>
-          </div>
-          <div class="tele-bar"><div id="alt-bar-fill" class="tele-fill"></div></div>
-        </div>
       </div>
     </header>
+
+    <aside id="alt-readout" aria-label="고도">
+      <span class="tele-label">고도</span>
+      <div class="tele-val-box">
+        <span id="alt-display" class="tele-val">0</span>
+        <span class="tele-unit">M</span>
+      </div>
+      <div class="tele-bar"><div id="alt-bar-fill" class="tele-fill"></div></div>
+    </aside>
 
     <div id="session-hud" class="glass-panel">
       <output id="performance-status" aria-label="렌더링 성능"></output>

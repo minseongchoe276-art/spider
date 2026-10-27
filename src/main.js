@@ -808,7 +808,7 @@ export class GameApp {
     this.physics.aimAssist=false;
     this.physics.softBoundary=true;
     this.audio.configure?.(settings);
-    for(const id of ['hud-top-left','minimap-panel','session-hud']){const el=document.getElementById(id);if(el)el.style.scale=String(settings.hudScale);}
+    for(const id of ['hud-top-left','alt-readout','minimap-panel','session-hud']){const el=document.getElementById(id);if(el)el.style.scale=String(settings.hudScale);}
     this.hudLayout?.schedule();
     if (this.audio.isMuted !== muted) this.audio.toggleMute();
     const motionButton = document.getElementById('reduced-motion');

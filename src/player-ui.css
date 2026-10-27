@@ -90,10 +90,26 @@ input, textarea { user-select: text; -webkit-user-select: text; }
 /* Compact, opaque-backed instruments remain legible against sky and roads. */
 body.in-game #hud-top-left {
   left: max(20px,env(safe-area-inset-left)); bottom: max(20px,env(safe-area-inset-bottom));
-  width: 194px; padding: 12px 14px; background: #101a24e8; border: 1px solid var(--ui-line); border-radius: 4px;
+  width: max-content; min-width: 88px; padding: 12px 14px; background: #101a24e8; border: 1px solid var(--ui-line); border-radius: 4px;
   opacity: 1; transform-origin: bottom left;
 }
-#hud-top-left .telemetry-grid { grid-template-columns: 1fr 1fr; gap: 18px; }
+/* Altitude sits under the top bar, clear of the bottom-left speed readout. */
+#alt-readout {
+  position: absolute; z-index: 21; display: none; pointer-events: none;
+  top: max(68px, calc(env(safe-area-inset-top) + 56px));
+  right: max(20px, env(safe-area-inset-right));
+  min-width: 72px; margin: 0; padding: 0; text-align: right;
+  transform-origin: top right;
+  text-shadow: 0 1px 4px #000, 0 1px 10px #000;
+}
+#alt-readout .tele-label { display: block; color: #e0e6eb; font: 500 10px/1.3 var(--font-family); letter-spacing: .12em; }
+#alt-readout .tele-val-box { display: flex; justify-content: flex-end; align-items: baseline; gap: 4px; margin: 1px 0 0; }
+#alt-readout .tele-val { color: #fff; font: 600 24px/1 var(--font-family); font-variant-numeric: tabular-nums; letter-spacing: -.035em; }
+#alt-readout .tele-unit { color: #c6d0d8; font: 500 10px/1 var(--font-family); }
+#alt-readout .tele-bar { display: none; }
+body.in-game.hud-swing:not(.hud-covered) #alt-readout { display: block; }
+body:has(#connection-warning:not([hidden])) #alt-readout { top: max(124px, calc(env(safe-area-inset-top) + 112px)); }
+#hud-top-left .telemetry-grid { grid-template-columns: minmax(0, 1fr); }
 #hud-top-left .tele-label { color: #cbd4dc; font: 500 12px/1.4 var(--font-family); letter-spacing: 0; text-shadow: none; }
 #hud-top-left .tele-val { font: 600 28px/1.2 var(--font-family); font-variant-numeric: tabular-nums; letter-spacing: -.035em; text-shadow: none; }
 #hud-top-left .tele-unit { font-size: 10px; color: #c6d0d8; }
@@ -166,7 +182,7 @@ body.in-game #combat-status:not(.hidden) { display: block !important; position: 
   #overlay-click-to-play .overlay-card { margin: auto; padding: 22px 18px; }
   .setting-row { gap: 8px; grid-template-columns: minmax(100px,1fr) minmax(65px,110px) 45px; }
   #hand-status { font-size: 11px; white-space: normal; text-align: center; bottom: 64px; }
-  body:not(.touch-device).in-game #hud-top-left { width: 170px; left: 12px; bottom: 12px; }
+  body:not(.touch-device).in-game #hud-top-left { width: max-content; left: 12px; bottom: 12px; }
   body:not(.touch-device).in-game #web-status-pill { left: 12px; bottom: 112px; }
   #game-container #gameplay-quickbar { display: none; }
   .guide-row { grid-template-columns: 88px minmax(0,1fr); gap: 10px; }
@@ -433,7 +449,7 @@ body.touch-device .vitals-row output { min-width: 52px; font-size: 10px; }
 
 /* Menus, help, the world map, and the lobby take the screen. Play chrome stays out. */
 body.hud-covered #solo-objective,
-body.hud-covered :is(#ability-bar, #world-marker, #hud-top-left, #minimap-panel, #crosshair, #speed-wash, #hurt-vignette, #match-hud),
+body.hud-covered :is(#ability-bar, #world-marker, #hud-top-left, #alt-readout, #minimap-panel, #crosshair, #speed-wash, #hurt-vignette, #match-hud),
 body.hud-covered.in-game #combat-status.vitals-hud:not(.hidden),
 body.hud-covered.in-game.hud-web:not(.touch-device) #web-status-pill { display: none !important; }
 

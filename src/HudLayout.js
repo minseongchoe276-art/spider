@@ -42,6 +42,27 @@ export class HudLayout {
         node.style.transformOrigin=origin;
         if(id==='hud-top-left')node.style.top=`${Math.max(74,(header?.bottom??rootBounds.top)-rootBounds.top+12)}px`;
       }
+      const alt=document.getElementById('alt-readout'),mapNode=document.getElementById('minimap-panel');
+      if(alt&&shown(mapNode)&&document.body.classList.contains('hud-swing')){
+        const mapBox=mapNode.getBoundingClientRect();
+        const altBox=alt.getBoundingClientRect();
+        const altWidth=Math.max(72,altBox.width),altHeight=Math.max(32,altBox.height);
+        let cssTop=Math.round(mapBox.top-rootBounds.top);
+        let cssRight=Math.round(rootBounds.right-mapBox.left+10);
+        const proposed={left:rootBounds.right-cssRight-altWidth,right:rootBounds.right-cssRight,top:rootBounds.top+cssTop,bottom:rootBounds.top+cssTop+altHeight};
+        const hits=node=>{
+          if(!shown(node))return false;
+          const box=node.getBoundingClientRect();
+          return proposed.left<box.right+8&&proposed.right>box.left-8&&proposed.top<box.bottom+8&&proposed.bottom>box.top-8;
+        };
+        if(hits(document.getElementById('hud-top-left'))||hits(document.getElementById('match-hud'))){
+          cssTop=Math.round(mapBox.bottom-rootBounds.top+8);
+          cssRight=Math.round(rootBounds.right-mapBox.right);
+        }
+        alt.style.top=`${cssTop}px`;
+        alt.style.right=`${cssRight}px`;
+        alt.style.transformOrigin='top right';
+      }else if(alt){alt.style.top='';alt.style.right='';}
       const toolbar=this.root.querySelector('.touch-toolbar'),map=document.getElementById('minimap-panel');
       if(toolbar&&map){
         const inset=width-(map.getBoundingClientRect().left-this.root.getBoundingClientRect().left)+12;
@@ -96,6 +117,8 @@ export class HudLayout {
         const node=document.getElementById(id);if(!node)continue;
         node.style.width='';node.style.top='';node.style.transformOrigin='';
       }
+      const alt=document.getElementById('alt-readout');
+      if(alt){alt.style.top='';alt.style.right='';}
       for(const id of ['combat-status','pursuit-hud','connection-warning','game-notice','boundary-warning']){
         const node=document.getElementById(id);if(!node)continue;
         for(const key of ['position','left','right','top','bottom','width','maxWidth','transform'])node.style[key]='';
