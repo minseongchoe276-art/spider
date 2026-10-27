@@ -26,7 +26,7 @@ await check('Hong Kong layers share a city-owned budget without overwriting the 
   assert(first.tilesets.every(t=>t.lruCache===first.tileCache));
   assert(second.tilesets.every(t=>t.lruCache===second.tileCache));
   assert.notEqual(first.tileCache,second.tileCache);
-  assert.equal(first.tileCache.maxBytesSize,384*1024*1024);
+  assert.equal(first.tileCache.maxBytesSize,800*1024*1024);
   first.dispose();second.dispose();
   await Promise.all([first.collisionWorld.initialized,second.collisionWorld.initialized]);
 });
@@ -40,13 +40,13 @@ await check('Streamed spawn is refreshed after a menu-time LOD change',()=>{
 });
 await check('Streamed startup waits for idle queues and a stable support surface',()=>{
   const city=Object.create(UrbanGroundCity.prototype);city.loadedRoots=3;
-  city.tilesets=[{stats:{queued:1}}];city.collisionWorld={pending:[],job:null};
+  city.buildingMeshes=[{}];city.tilesets=[{stats:{queued:1}}];city.collisionWorld={pending:[],job:null};
   const spawn=new THREE.Vector3(0,20,0);
   assert(!city.startupSurfaceSettled(spawn,0));assert(!city.startupSurfaceSettled(spawn,1000));
   city.tilesets[0].stats.queued=0;
-  assert(!city.startupSurfaceSettled(spawn,1200));assert(city.startupSurfaceSettled(spawn,1600));
-  spawn.y=5;assert(!city.startupSurfaceSettled(spawn,1700));
-  assert(!city.startupSurfaceSettled(spawn,2000));assert(city.startupSurfaceSettled(spawn,2400));
+  assert(!city.startupSurfaceSettled(spawn,1200));assert(city.startupSurfaceSettled(spawn,1800));
+  spawn.y=5;assert(!city.startupSurfaceSettled(spawn,1900));
+  assert(!city.startupSurfaceSettled(spawn,2200));assert(city.startupSurfaceSettled(spawn,2500));
 });
 function player() {
   return new SwingPhysics(new THREE.Scene(),
