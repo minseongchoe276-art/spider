@@ -1,8 +1,8 @@
 {
-  "files": 34,
-  "animatedTakes": 43,
+  "files": 38,
+  "animatedTakes": 47,
   "emptyTakes": 7,
-  "frames": 5430,
+  "frames": 5743,
   "results": [
     {
       "file": "public/models/Boxing Hook.fbx",
@@ -87,7 +87,6 @@
       "take": "mixamo.com",
       "status": "PASS",
       "usedBy": [
-        "cross",
         "special"
       ],
       "archived": false,
@@ -103,10 +102,8 @@
       "file": "public/models/Falling (2).fbx",
       "take": "mixamo.com",
       "status": "PASS",
-      "usedBy": [
-        "fall"
-      ],
-      "archived": false,
+      "usedBy": [],
+      "archived": true,
       "duration": 4.5,
       "frames": 271,
       "bones": 65,
@@ -116,13 +113,28 @@
       ]
     },
     {
-      "file": "public/models/Falling Idle.fbx",
+      "file": "public/models/Falling Idle Neutral.fbx",
       "take": "mixamo.com",
       "status": "PASS",
       "usedBy": [
+        "fall",
         "fallIdle"
       ],
       "archived": false,
+      "duration": 0.6833333373069763,
+      "frames": 43,
+      "bones": 65,
+      "hipRange": [
+        1.1918141233218906,
+        1.1921614858633793
+      ]
+    },
+    {
+      "file": "public/models/Falling Idle.fbx",
+      "take": "mixamo.com",
+      "status": "PASS",
+      "usedBy": [],
+      "archived": true,
       "duration": 4.5,
       "frames": 271,
       "bones": 65,
@@ -137,6 +149,22 @@
       "status": "EMPTY",
       "duration": 0,
       "tracks": 0
+    },
+    {
+      "file": "public/models/Falling To Landing.fbx",
+      "take": "mixamo.com",
+      "status": "PASS",
+      "usedBy": [
+        "land"
+      ],
+      "archived": false,
+      "duration": 1.0666667222976685,
+      "frames": 66,
+      "bones": 65,
+      "hipRange": [
+        0.7642173968529364,
+        1.9718884061586248
+      ]
     },
     {
       "file": "public/models/Falling To Roll.fbx",
@@ -253,6 +281,22 @@
       "hipRange": [
         1.14622697805549,
         1.207003601712358
+      ]
+    },
+    {
+      "file": "public/models/Jab Cross.fbx",
+      "take": "mixamo.com",
+      "status": "PASS",
+      "usedBy": [
+        "cross"
+      ],
+      "archived": false,
+      "duration": 2.133333444595337,
+      "frames": 130,
+      "bones": 65,
+      "hipRange": [
+        0.9814330064492489,
+        1.165178313199919
       ]
     },
     {
@@ -447,8 +491,7 @@
       "take": "mixamo.com",
       "status": "PASS",
       "usedBy": [
-        "jump",
-        "land"
+        "jump"
       ],
       "archived": false,
       "duration": 2.366666555404663,
@@ -465,6 +508,22 @@
       "status": "EMPTY",
       "duration": 0,
       "tracks": 0
+    },
+    {
+      "file": "public/models/Stylish Flip.fbx",
+      "take": "mixamo.com",
+      "status": "PASS",
+      "usedBy": [
+        "backTrick"
+      ],
+      "archived": false,
+      "duration": 1.2000000476837158,
+      "frames": 74,
+      "bones": 65,
+      "hipRange": [
+        1.4200239100801557,
+        4.008722548480104
+      ]
     },
     {
       "file": "public/models/Surprise Uppercut.fbx",

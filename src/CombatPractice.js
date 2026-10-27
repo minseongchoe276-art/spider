@@ -26,15 +26,17 @@ export class CombatPractice {
   }
   spawn(type,position){const scene=this.game.scene,{group,body,shield,pose}=createTrainingOpponent(type);
     const ring=new THREE.Mesh(new THREE.RingGeometry(.5,.62,24),new THREE.MeshBasicMaterial({color:0xff526d,side:THREE.DoubleSide,transparent:true,opacity:.8}));ring.rotation.x=-Math.PI/2;ring.position.y=.04;ring.visible=false;group.add(ring);
-    const bar=new THREE.Mesh(new THREE.PlaneGeometry(.8,.07),new THREE.MeshBasicMaterial({color:0x96ffe8,side:THREE.DoubleSide}));bar.position.y=2.08;group.add(bar);
-    group.position.copy(position);scene.add(group);const enemy={type,position,spawn:position.clone(),mesh:group,body,ring,bar,shield,pose,health:type==='shield'?140:100,maxHealth:type==='shield'?140:100,cooldown:1.5,windup:0,flash:0,stagger:0,facing:0};this.game.combat.enemies.push(enemy);return enemy;}
+    const barTrack=new THREE.Mesh(new THREE.PlaneGeometry(.94,.13),new THREE.MeshBasicMaterial({color:0x101c2b,side:THREE.DoubleSide}));barTrack.position.y=2.23;group.add(barTrack);
+    const bar=new THREE.Mesh(new THREE.PlaneGeometry(.88,.065).translate(.44,0,0),new THREE.MeshBasicMaterial({color:0xe6657b,side:THREE.DoubleSide}));bar.position.set(-.44,0,.004);barTrack.add(bar);
+    group.position.copy(position);scene.add(group);const enemy={type,position,spawn:position.clone(),mesh:group,body,ring,bar,barTrack,shield,pose,health:type==='shield'?140:100,maxHealth:type==='shield'?140:100,cooldown:1.5,windup:0,flash:0,stagger:0,facing:0};this.game.combat.enemies.push(enemy);return enemy;}
   update(delta){const g=this.game;if(!this.active||g.multiplayer?.room)return;
     if(!g.combat.enemies.length){this.stop();return;}
     for(const e of g.combat.enemies){if(e.health<=0)continue;
       e.flash=Math.max(0,e.flash-delta);e.stagger=Math.max(0,e.stagger-delta);e.cooldown=Math.max(0,e.cooldown-delta);
       poseTrainingOpponent(e,delta,!!g.preferences?.values.reducedMotion);
-      e.bar.scale.x=e.health/e.maxHealth;e.bar.quaternion.copy(e.mesh.quaternion).invert().multiply(g.camera.quaternion);e.ring.visible=e.windup>0;
+      e.bar.scale.x=THREE.MathUtils.clamp(e.health/e.maxHealth,0,1);e.bar.material.color.setHex(e.health/e.maxHealth<=.25?0xffb66b:0xe6657b);e.ring.visible=e.windup>0;
       const offset=g.physics.position.clone().sub(e.position),distance=offset.length();e.facing=Math.atan2(offset.x,offset.z);e.mesh.rotation.y=e.facing;
+      e.barTrack.quaternion.copy(e.mesh.quaternion).invert().multiply(g.camera.quaternion);
       if(e.type==='dummy'||e.stagger>0)continue;
       if(distance>45){e.windup=0;continue;}
       if(e.windup>0){e.windup-=delta;e.ring.scale.setScalar(1+Math.max(0,e.windup));if(e.windup<=0){e.cooldown=e.type==='ranged'?2.5:1.25;e.strike=.3;

@@ -1,7 +1,7 @@
 {
-  "motions": 33,
-  "cases": 99,
-  "samples": 15309,
+  "motions": 34,
+  "cases": 102,
+  "samples": 13569,
   "report": [
     {
       "key": "idle",
@@ -214,27 +214,6 @@
       "maxStep": 0.0324
     },
     {
-      "key": "land",
-      "fps": 30,
-      "frames": 28,
-      "maxFrame": 10,
-      "maxStep": 0.0727
-    },
-    {
-      "key": "land",
-      "fps": 60,
-      "frames": 54,
-      "maxFrame": 20,
-      "maxStep": 0.0372
-    },
-    {
-      "key": "land",
-      "fps": 144,
-      "frames": 126,
-      "maxFrame": 48,
-      "maxStep": 0.0158
-    },
-    {
       "key": "jumpDown",
       "fps": 30,
       "frames": 70,
@@ -321,23 +300,23 @@
     {
       "key": "fall",
       "fps": 30,
-      "frames": 136,
-      "maxFrame": 132,
-      "maxStep": 0.0711
+      "frames": 22,
+      "maxFrame": 18,
+      "maxStep": 0.014
     },
     {
       "key": "fall",
       "fps": 60,
-      "frames": 271,
-      "maxFrame": 263,
-      "maxStep": 0.0357
+      "frames": 43,
+      "maxFrame": 35,
+      "maxStep": 0.007
     },
     {
       "key": "fall",
       "fps": 144,
-      "frames": 649,
-      "maxFrame": 630,
-      "maxStep": 0.0149
+      "frames": 100,
+      "maxFrame": 82,
+      "maxStep": 0.003
     },
     {
       "key": "fallVariant",
@@ -363,23 +342,23 @@
     {
       "key": "fallIdle",
       "fps": 30,
-      "frames": 136,
-      "maxFrame": 132,
-      "maxStep": 0.0711
+      "frames": 22,
+      "maxFrame": 18,
+      "maxStep": 0.014
     },
     {
       "key": "fallIdle",
       "fps": 60,
-      "frames": 271,
-      "maxFrame": 263,
-      "maxStep": 0.0357
+      "frames": 43,
+      "maxFrame": 35,
+      "maxStep": 0.007
     },
     {
       "key": "fallIdle",
       "fps": 144,
-      "frames": 649,
-      "maxFrame": 630,
-      "maxStep": 0.0149
+      "frames": 100,
+      "maxFrame": 82,
+      "maxStep": 0.003
     },
     {
       "key": "roll",
@@ -445,6 +424,27 @@
       "maxStep": 0.0256
     },
     {
+      "key": "land",
+      "fps": 30,
+      "frames": 25,
+      "maxFrame": 1,
+      "maxStep": 0.2457
+    },
+    {
+      "key": "land",
+      "fps": 60,
+      "frames": 48,
+      "maxFrame": 1,
+      "maxStep": 0.1263
+    },
+    {
+      "key": "land",
+      "fps": 144,
+      "frames": 113,
+      "maxFrame": 1,
+      "maxStep": 0.0532
+    },
+    {
       "key": "combatIdle",
       "fps": 30,
       "frames": 134,
@@ -469,22 +469,22 @@
       "key": "jab",
       "fps": 30,
       "frames": 42,
-      "maxFrame": 9,
-      "maxStep": 0.1
+      "maxFrame": 10,
+      "maxStep": 0.0906
     },
     {
       "key": "jab",
       "fps": 60,
       "frames": 82,
-      "maxFrame": 17,
-      "maxStep": 0.0515
+      "maxFrame": 19,
+      "maxStep": 0.0469
     },
     {
       "key": "jab",
       "fps": 144,
       "frames": 194,
-      "maxFrame": 39,
-      "maxStep": 0.022
+      "maxFrame": 44,
+      "maxStep": 0.02
     },
     {
       "key": "guard",
@@ -594,23 +594,23 @@
     {
       "key": "cross",
       "fps": 30,
-      "frames": 45,
-      "maxFrame": 22,
-      "maxStep": 0.218
+      "frames": 16,
+      "maxFrame": 6,
+      "maxStep": 0.1349
     },
     {
       "key": "cross",
       "fps": 60,
-      "frames": 88,
-      "maxFrame": 44,
-      "maxStep": 0.113
+      "frames": 31,
+      "maxFrame": 11,
+      "maxStep": 0.0694
     },
     {
       "key": "cross",
       "fps": 144,
-      "frames": 208,
-      "maxFrame": 103,
-      "maxStep": 0.0486
+      "frames": 72,
+      "maxFrame": 25,
+      "maxStep": 0.0296
     },
     {
       "key": "hook",
@@ -674,6 +674,27 @@
       "frames": 136,
       "maxFrame": 98,
       "maxStep": 0.0852
+    },
+    {
+      "key": "backTrick",
+      "fps": 30,
+      "frames": 38,
+      "maxFrame": 1,
+      "maxStep": 0.4809
+    },
+    {
+      "key": "backTrick",
+      "fps": 60,
+      "frames": 74,
+      "maxFrame": 1,
+      "maxStep": 0.2534
+    },
+    {
+      "key": "backTrick",
+      "fps": 144,
+      "frames": 174,
+      "maxFrame": 1,
+      "maxStep": 0.1089
     },
     {
       "key": "special",

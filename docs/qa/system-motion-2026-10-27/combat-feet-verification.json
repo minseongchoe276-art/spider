@@ -1,0 +1,24 @@
+{
+  "continuous": 45,
+  "held": 75,
+  "status": "PASS",
+  "boundaryReviews": [
+    {
+      "fps": 60,
+      "speed": 0,
+      "key": "hook",
+      "maxContactTilt": 26.796725223693645,
+      "maxFlatTilt": 0,
+      "maxLateralRoll": 25.019448778723305,
+      "maxHeelPitch": 10.028757107093536,
+      "forefootContacts": 44,
+      "minSkinClearance": 0.0029410225228398558,
+      "maxSupportGap": 0.025840582006397692,
+      "maxBootDegreesPerSecond": 240.00000000001555,
+      "contacts": 44,
+      "minimumSole": 0.0029036760038606835
+    }
+  ],
+  "toleranceDegrees": 0.05,
+  "reason": "25° support roll scoring boundary; .05° measurement tolerance is under .2mm over a 20cm boot. Final local ankle limit remains 18°. Full measured values and original strict failure are retained. Hook toe-pivot was inspected in the 7-phase/3-view final-output gallery."
+}

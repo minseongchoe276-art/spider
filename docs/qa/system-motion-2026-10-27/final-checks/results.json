@@ -1,0 +1,83 @@
+{
+  "completed": 11,
+  "total": 11,
+  "results": [
+    {
+      "suite": "physics-invariants",
+      "startedAt": "2026-10-27T02:28:22.050Z",
+      "exitCode": 0,
+      "pass": true,
+      "seconds": 1.21
+    },
+    {
+      "suite": "controller",
+      "startedAt": "2026-10-27T02:28:22.039Z",
+      "exitCode": 0,
+      "pass": true,
+      "seconds": 1.39
+    },
+    {
+      "suite": "motions",
+      "startedAt": "2026-10-27T02:28:23.265Z",
+      "exitCode": 0,
+      "pass": true,
+      "seconds": 12.583
+    },
+    {
+      "suite": "combat-rig",
+      "startedAt": "2026-10-27T02:28:23.429Z",
+      "exitCode": 0,
+      "pass": true,
+      "seconds": 126.918
+    },
+    {
+      "suite": "combat-quality",
+      "startedAt": "2026-10-27T02:28:35.853Z",
+      "exitCode": 0,
+      "pass": true,
+      "seconds": 127.727
+    },
+    {
+      "suite": "stance-combat",
+      "startedAt": "2026-10-27T02:30:30.349Z",
+      "exitCode": 0,
+      "pass": true,
+      "seconds": 880.653
+    },
+    {
+      "suite": "low-stance-online",
+      "startedAt": "2026-10-27T02:45:11.003Z",
+      "exitCode": 0,
+      "pass": true,
+      "seconds": 7.145
+    },
+    {
+      "suite": "low-stance",
+      "startedAt": "2026-10-27T02:30:43.581Z",
+      "exitCode": 0,
+      "pass": true,
+      "seconds": 878.419
+    },
+    {
+      "suite": "combat-jump-and-web-speed",
+      "startedAt": "2026-10-27T02:45:22.001Z",
+      "exitCode": 0,
+      "pass": true,
+      "seconds": 20.593
+    },
+    {
+      "suite": "strike-steering",
+      "startedAt": "2026-10-27T02:45:18.150Z",
+      "exitCode": 0,
+      "pass": true,
+      "seconds": 66.373
+    },
+    {
+      "suite": "web-shot-body",
+      "startedAt": "2026-10-27T02:45:42.597Z",
+      "exitCode": 0,
+      "pass": true,
+      "seconds": 220.686
+    }
+  ]
+}

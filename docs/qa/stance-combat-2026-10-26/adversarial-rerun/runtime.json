@@ -50,13 +50,11 @@
       0.016666666666666666
     ]
   ],
-  "cases": 307,
-  "frames": 3079,
-  "maxJointExcess": 5.134781488891349e-15,
-  "maxEndJointRate": 240.0000000000136,
-  "failures": [
-    "cross frame 5, dt 0.041666666666666664: torso lean 0.06192569832800376m exceeded 6cm (mantle -> cross)"
-  ],
+  "cases": 4205,
+  "frames": 42050,
+  "maxJointExcess": 7.271960811294775e-15,
+  "maxEndJointRate": 240.00000000043914,
+  "failures": [],
   "scope": "Render-state interruption robustness, including deliberately unreachable pairs. Actual physics reachability and contact quality are tested by separate gameplay suites.",
-  "currentPair": "mantle -> cross"
+  "currentPair": "trick -> trick"
 }

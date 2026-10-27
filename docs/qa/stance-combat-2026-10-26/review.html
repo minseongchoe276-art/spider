@@ -21,7 +21,7 @@ let last=0;renderer.setAnimationLoop(now=>{
  c.model.position.fromArray(pose.model.p);c.model.quaternion.fromArray(pose.model.q);
  for(const [name,...values] of pose.bones){const b=c.bones[name];if(b){b.position.fromArray(values);b.quaternion.fromArray(values,3);}}
  c.group.updateMatrixWorld(true);
- const stance=row.key.startsWith('prone'),target=new T.Vector3(0,stance?.45:.9,stance?-.1:0);
+ const target=new T.Vector3(0,.9,0);
  camera.position.copy(target).add(view.value==='side'?new T.Vector3(6.6,.9,.4):new T.Vector3(view.value==='back'?-.5:.5,.65,view.value==='back'?-4.3:4.3));camera.lookAt(target);
  status.textContent=`${row.key} · ${Math.floor(frame)}/149 · 실제 Character.update 기록`;
  renderer.render(scene,camera);

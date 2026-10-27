@@ -30,7 +30,7 @@ MOTIONS.push(...COMBAT_MOTIONS);
 const imported = {
  combatIdle:{file:'Boxing Stance',loop:true},
  jab:{file:'Lead Jab',impactPhase:.28},
- cross:{file:'Jab Cross',trim:[.4,.93],impactPhase:.57},
+ cross:{file:'Lead Jab (3)',trim:[.1,.8],mirror:true,impactPhase:.57},
  // The source has a long idle tail. Use the complete swing and recovery,
  // then play that section slower so the fist does not snap out and back.
  hook:{file:'Boxing Hook',trim:[0,1.4],impactPhase:.43},

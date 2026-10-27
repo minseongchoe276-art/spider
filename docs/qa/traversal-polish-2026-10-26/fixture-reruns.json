@@ -1,0 +1,21 @@
+{
+  "reason": "Snapshot initially omitted reference GLBs and existing QA output folders; test assertions unchanged.",
+  "results": [
+    {
+      "suite": "combat-traversal",
+      "pass": true
+    },
+    {
+      "suite": "appearances",
+      "pass": true
+    },
+    {
+      "suite": "moving-combat-skin",
+      "pass": true
+    },
+    {
+      "suite": "full-appearance-motions",
+      "pass": true
+    }
+  ]
+}

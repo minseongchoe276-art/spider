@@ -1,0 +1,171 @@
+{
+  "sheets": [
+    {
+      "appearance": "combat",
+      "keys": [
+        "idle",
+        "walk",
+        "regularRun"
+      ],
+      "page": 0,
+      "phases": [
+        0.15,
+        0.45,
+        0.8
+      ],
+      "view": "front"
+    },
+    {
+      "appearance": "combat",
+      "keys": [
+        "run",
+        "stop",
+        "runStop"
+      ],
+      "page": 1,
+      "phases": [
+        0.15,
+        0.45,
+        0.8
+      ],
+      "view": "front"
+    },
+    {
+      "appearance": "combat",
+      "keys": [
+        "zip",
+        "turnLeft",
+        "turnRight"
+      ],
+      "page": 2,
+      "phases": [
+        0.15,
+        0.45,
+        0.8
+      ],
+      "view": "front"
+    },
+    {
+      "appearance": "combat",
+      "keys": [
+        "jump",
+        "land",
+        "jumpDown"
+      ],
+      "page": 3,
+      "phases": [
+        0.15,
+        0.45,
+        0.8
+      ],
+      "view": "front"
+    },
+    {
+      "appearance": "combat",
+      "keys": [
+        "drop",
+        "jumpDownVariant",
+        "swing"
+      ],
+      "page": 4,
+      "phases": [
+        0.15,
+        0.45,
+        0.8
+      ],
+      "view": "front"
+    },
+    {
+      "appearance": "combat",
+      "keys": [
+        "fall",
+        "fallVariant",
+        "fallIdle"
+      ],
+      "page": 5,
+      "phases": [
+        0.15,
+        0.45,
+        0.8
+      ],
+      "view": "front"
+    },
+    {
+      "appearance": "combat",
+      "keys": [
+        "roll",
+        "injuredIdle",
+        "wall"
+      ],
+      "page": 6,
+      "phases": [
+        0.15,
+        0.45,
+        0.8
+      ],
+      "view": "front"
+    },
+    {
+      "appearance": "combat",
+      "keys": [
+        "combatIdle",
+        "jab",
+        "guard"
+      ],
+      "page": 7,
+      "phases": [
+        0.15,
+        0.45,
+        0.8
+      ],
+      "view": "front"
+    },
+    {
+      "appearance": "combat",
+      "keys": [
+        "slam",
+        "slamLand",
+        "hitHead"
+      ],
+      "page": 8,
+      "phases": [
+        0.15,
+        0.45,
+        0.8
+      ],
+      "view": "front"
+    },
+    {
+      "appearance": "combat",
+      "keys": [
+        "rightHook",
+        "cross",
+        "hook"
+      ],
+      "page": 9,
+      "phases": [
+        0.15,
+        0.45,
+        0.8
+      ],
+      "view": "front"
+    },
+    {
+      "appearance": "combat",
+      "keys": [
+        "heavy",
+        "airTrick",
+        "special"
+      ],
+      "page": 10,
+      "phases": [
+        0.15,
+        0.45,
+        0.8
+      ],
+      "view": "front"
+    }
+  ],
+  "poses": 99,
+  "note": "Authored source clips at 15/45/80%, front diagonal view; runtime contacts and procedural poses are covered by separate real-rig tests and actual-game traversal."
+}

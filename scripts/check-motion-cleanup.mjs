@@ -14,7 +14,7 @@ function check(name,run){try{results.push({name,status:'PASS',detail:run()});con
 const removed=['hit','dodgeBack','dodgeLeft','dodgeRight','dodgeForward','femaleStop','jog'];
 check('Requested motions are absent from catalog, generated assets and loaded actors',()=>{
  const c=actor();try{for(const key of removed){assert(!MOTIONS.some(m=>m.key===key));assert(!fs.existsSync(`public/motions/${key}.json`));assert(!c.actions[key]);}
- assert.equal(c.actions.cross.getClip().userData.source,'/models/Jab Cross.fbx');
+ assert.equal(c.actions.cross.getClip().userData.source,'/models/Lead Jab (3).fbx');
  assert.equal(c.actions.cross.getClip().userData.authoredMixamo,true);
  assert.equal(c.actions.backTrick.getClip().userData.source,'/models/Stylish Flip.fbx');
  assert.deepEqual(Object.keys(AIR_TRICKS),['front','back']);

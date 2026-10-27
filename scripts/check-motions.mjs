@@ -31,7 +31,7 @@ for (const item of MOTIONS) {
   assert(sourceClip, `${file}: empty takes only`);
   const targetBones = {};
   gltf.scene.traverse(n => { if (n.isBone) targetBones[n.name] = n; });
-  const clip = prepareMotion(retargetMotion(gltf.scene, source, sourceClip), item.key, targetBones,item);
+  const clip = prepareMotion(retargetMotion(gltf.scene, source, sourceClip,30,item.mirror), item.key, targetBones,item);
   assert(clip.duration > 0, file + ': empty clip');
   for (const track of clip.tracks.filter(t => t.ValueTypeName === 'quaternion')) {
     for (let n = 0; n < track.values.length; n += 4) {

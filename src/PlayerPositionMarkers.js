@@ -50,8 +50,9 @@ export class PlayerPositionMarkers {
       const arrow=placed.offscreen?['→','↘','↓','↙','←','↖','↑','↗'][(Math.round(placed.angle/(Math.PI/4))+8)%8]+' ':'';
       const name=String(player.name || t(role)).slice(0,12);
       el.textContent=`${arrow}${name}${Number.isFinite(player.health)?' · HP '+player.health:''} · ${distance}m${Math.abs(altitude)>=3?' · '+(altitude>0?'↑':'↓')+Math.abs(altitude)+'m':''}${player.targeted?t(' · 조준 대상'):''}${player.rescue?t(' · 구조'):player.downed?t(' · 탈락'):''}${player.connected===false?t(' · 마지막 위치'):''}`;
-      el.dataset.userContent='';el.setAttribute('aria-label',`${t(role)} ${player.name}, ${t('거리')} ${distance}${t('미터')}, ${t('높이 차')} ${altitude}${t('미터')}`);
-      el.classList.toggle('targeted',!!player.targeted);el.style.setProperty('--hp-value',`${Math.max(0,Math.min(100,player.health??100))}%`);
+      el.dataset.userContent='';el.setAttribute('aria-label',`${t(role)} ${player.name}, ${t('거리')} ${distance}${t('미터')}, ${t('높이 차')} ${altitude}${t('미터')}${Number.isFinite(player.health)?`, HP ${player.health}/100`:''}`);
+      el.classList.toggle('targeted',!!player.targeted);el.classList.toggle('low-health',Number.isFinite(player.health)&&player.health<=25);el.classList.toggle('has-health',Number.isFinite(player.health));el.style.setProperty('--hp-value',`${Math.max(0,Math.min(100,player.health??100))}%`);
+      el.style.setProperty('--hp-ratio',String(Math.max(0,Math.min(100,player.health??100))/100));
       el.dataset.team=player.ally?'ally':player.team;el.classList.toggle('offscreen',placed.offscreen);
       const separated=separateMarker(placed,occupied,rect.width,rect.height);
       el.classList.toggle('compact',separated.compact);

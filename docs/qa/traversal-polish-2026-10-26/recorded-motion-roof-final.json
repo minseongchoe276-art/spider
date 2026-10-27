@@ -1,0 +1,2489 @@
+[
+  {
+    "recording": {
+      "bytes": 43818257,
+      "duration": 81.781,
+      "mime": "video/webm;codecs=vp9",
+      "summary": {
+        "completed": 24,
+        "failed": 0,
+        "passed": 24,
+        "temporalReviewCases": 16
+      }
+    },
+    "results": [
+      {
+        "attacks": [],
+        "finalState": "IDLE",
+        "frames": 270,
+        "independentRelease": false,
+        "invalidBoneFrames": 0,
+        "jumpResult": null,
+        "maxAimError": 0,
+        "maxAnkle": 17.999999999999968,
+        "maxJointOver": 0,
+        "maxJumpRise": 0,
+        "maxLimbLengthError": 3.552713678800501e-15,
+        "maxStep": 0.14746108496535726,
+        "maxWristError": 0,
+        "name": "climb/close",
+        "pass": true,
+        "peakWebs": 0,
+        "position": [
+          -90,
+          94.09197994705713,
+          -75.85
+        ],
+        "reachedRoof": true,
+        "released": true,
+        "reviewFlags": [
+          {
+            "bone": "leftleg",
+            "degreesPerSecond": 4034.1012619129538,
+            "state": "IDLE",
+            "stepDegrees": 73.82405309301879,
+            "time": 3.340499999999998
+          }
+        ],
+        "roof": 93.99197994705712,
+        "rotationPeaks": [
+          {
+            "bone": "leftleg",
+            "degreesPerSecond": 4034.1012619129538,
+            "state": "IDLE",
+            "stepDegrees": 73.82405309301879,
+            "time": 3.340499999999998
+          },
+          {
+            "bone": "leftleg",
+            "degreesPerSecond": 2651.0626000107504,
+            "state": "MANTLING",
+            "stepDegrees": 40.5612577801722,
+            "time": 1.8378000000000032
+          },
+          {
+            "bone": "leftupleg",
+            "degreesPerSecond": 2574.002561481948,
+            "state": "MANTLING",
+            "stepDegrees": 39.38223919068129,
+            "time": 1.8378000000000032
+          },
+          {
+            "bone": "rightleg",
+            "degreesPerSecond": 2159.22173544466,
+            "state": "WALL_RUNNING",
+            "stepDegrees": 36.05900298191954,
+            "time": 0.6715999999999983
+          },
+          {
+            "bone": "leftupleg",
+            "degreesPerSecond": 2080.47859105162,
+            "state": "IDLE",
+            "stepDegrees": 38.072758216250705,
+            "time": 3.340499999999998
+          },
+          {
+            "bone": "leftleg",
+            "degreesPerSecond": 2006.131494663099,
+            "state": "WALL_RUNNING",
+            "stepDegrees": 33.703009110338606,
+            "time": 0.1045
+          },
+          {
+            "bone": "leftleg",
+            "degreesPerSecond": 1973.0407949674009,
+            "state": "WALL_RUNNING",
+            "stepDegrees": 32.949781275949846,
+            "time": 0.8550999999999981
+          },
+          {
+            "bone": "rightleg",
+            "degreesPerSecond": 1944.225852062492,
+            "state": "WALL_RUNNING",
+            "stepDegrees": 32.468571729437954,
+            "time": 1.4221999999999977
+          }
+        ],
+        "seenWeb": false,
+        "states": [
+          "WALL_RUNNING",
+          "MANTLING",
+          "RUNNING",
+          "IDLE"
+        ],
+        "switches": 0,
+        "travel": 5.701973342624457,
+        "videoEnd": 4.524099999999628,
+        "videoStart": 0.0002000000001862645
+      },
+      {
+        "attacks": [],
+        "finalState": "IDLE",
+        "frames": 271,
+        "independentRelease": false,
+        "invalidBoneFrames": 0,
+        "jumpResult": null,
+        "maxAimError": 0,
+        "maxAnkle": 17.999999999999968,
+        "maxJointOver": 0,
+        "maxJumpRise": 0,
+        "maxLimbLengthError": 3.552713678800501e-15,
+        "maxStep": 0.14746108496535726,
+        "maxWristError": 0,
+        "name": "climb/follow",
+        "pass": true,
+        "peakWebs": 0,
+        "position": [
+          -90,
+          94.09197994705713,
+          -75.85
+        ],
+        "reachedRoof": true,
+        "released": true,
+        "reviewFlags": [
+          {
+            "bone": "leftleg",
+            "degreesPerSecond": 4406.926913724145,
+            "state": "IDLE",
+            "stepDegrees": 73.5956794591804,
+            "time": 3.340999999999436
+          }
+        ],
+        "roof": 93.99197994705712,
+        "rotationPeaks": [
+          {
+            "bone": "leftleg",
+            "degreesPerSecond": 4406.926913724145,
+            "state": "IDLE",
+            "stepDegrees": 73.5956794591804,
+            "time": 3.340999999999436
+          },
+          {
+            "bone": "leftleg",
+            "degreesPerSecond": 2434.901229551911,
+            "state": "MANTLING",
+            "stepDegrees": 40.662850533509825,
+            "time": 1.8398999999994403
+          },
+          {
+            "bone": "leftupleg",
+            "degreesPerSecond": 2353.346337985813,
+            "state": "MANTLING",
+            "stepDegrees": 39.30088384435623,
+            "time": 1.8398999999994403
+          },
+          {
+            "bone": "leftupleg",
+            "degreesPerSecond": 2274.8055153749074,
+            "state": "IDLE",
+            "stepDegrees": 37.98925210675433,
+            "time": 3.340999999999436
+          },
+          {
+            "bone": "rightleg",
+            "degreesPerSecond": 2125.41068048946,
+            "state": "IDLE",
+            "stepDegrees": 35.494358364167795,
+            "time": 3.340999999999436
+          },
+          {
+            "bone": "leftleg",
+            "degreesPerSecond": 2068.3576009968083,
+            "state": "WALL_RUNNING",
+            "stepDegrees": 34.54157193665572,
+            "time": 0.8557999999994426
+          },
+          {
+            "bone": "rightleg",
+            "degreesPerSecond": 2058.0928423429605,
+            "state": "WALL_RUNNING",
+            "stepDegrees": 34.37015046712145,
+            "time": 0.6723999999994413
+          },
+          {
+            "bone": "leftleg",
+            "degreesPerSecond": 1986.040641817492,
+            "state": "WALL_RUNNING",
+            "stepDegrees": 32.96827465418193,
+            "time": 1.6396999999994435
+          }
+        ],
+        "seenWeb": false,
+        "states": [
+          "WALL_RUNNING",
+          "MANTLING",
+          "RUNNING",
+          "IDLE"
+        ],
+        "switches": 0,
+        "travel": 5.701973342624457,
+        "videoEnd": 9.046,
+        "videoStart": 4.524400000000372
+      },
+      {
+        "attacks": [],
+        "finalState": "IDLE",
+        "frames": 271,
+        "independentRelease": false,
+        "invalidBoneFrames": 0,
+        "jumpResult": null,
+        "maxAimError": 0,
+        "maxAnkle": 17.999999999999968,
+        "maxJointOver": 1.7334023013976168e-13,
+        "maxJumpRise": 0,
+        "maxLimbLengthError": 3.552713678800501e-15,
+        "maxStep": 0.14746108496535726,
+        "maxWristError": 0,
+        "name": "climb/swing",
+        "pass": true,
+        "peakWebs": 0,
+        "position": [
+          -90,
+          94.09197994705713,
+          -75.85
+        ],
+        "reachedRoof": true,
+        "released": true,
+        "reviewFlags": [
+          {
+            "bone": "leftleg",
+            "degreesPerSecond": 4430.424459253507,
+            "state": "IDLE",
+            "stepDegrees": 73.9880884695529,
+            "time": 3.339599999999252
+          }
+        ],
+        "roof": 93.99197994705712,
+        "rotationPeaks": [
+          {
+            "bone": "leftleg",
+            "degreesPerSecond": 4430.424459253507,
+            "state": "IDLE",
+            "stepDegrees": 73.9880884695529,
+            "time": 3.339599999999252
+          },
+          {
+            "bone": "leftleg",
+            "degreesPerSecond": 2332.0628756269243,
+            "state": "MANTLING",
+            "stepDegrees": 40.57789403591188,
+            "time": 1.838599999999256
+          },
+          {
+            "bone": "leftupleg",
+            "degreesPerSecond": 2285.995446726606,
+            "state": "IDLE",
+            "stepDegrees": 38.1761239603443,
+            "time": 3.339599999999252
+          },
+          {
+            "bone": "leftupleg",
+            "degreesPerSecond": 2262.5850913616327,
+            "state": "MANTLING",
+            "stepDegrees": 39.3689805896957,
+            "time": 1.838599999999256
+          },
+          {
+            "bone": "rightleg",
+            "degreesPerSecond": 2118.6611603306887,
+            "state": "IDLE",
+            "stepDegrees": 35.38164137753175,
+            "time": 3.339599999999252
+          },
+          {
+            "bone": "rightleg",
+            "degreesPerSecond": 2101.808078675881,
+            "state": "WALL_RUNNING",
+            "stepDegrees": 31.52712118013821,
+            "time": 0.669199999999255
+          },
+          {
+            "bone": "leftleg",
+            "degreesPerSecond": 2049.0821269678995,
+            "state": "WALL_RUNNING",
+            "stepDegrees": 34.014763307664154,
+            "time": 0.8543999999992518
+          },
+          {
+            "bone": "leftleg",
+            "degreesPerSecond": 1957.245899392766,
+            "state": "WALL_RUNNING",
+            "stepDegrees": 32.68600651985349,
+            "time": 1.6383999999992516
+          }
+        ],
+        "seenWeb": false,
+        "states": [
+          "WALL_RUNNING",
+          "MANTLING",
+          "RUNNING",
+          "IDLE"
+        ],
+        "switches": 0,
+        "travel": 5.701973342624457,
+        "videoEnd": 13.5655,
+        "videoStart": 9.046200000000184
+      },
+      {
+        "attacks": [
+          "jab",
+          "cross"
+        ],
+        "finalState": "IDLE",
+        "frames": 181,
+        "independentRelease": false,
+        "invalidBoneFrames": 0,
+        "jumpResult": null,
+        "maxAimError": 0,
+        "maxAnkle": 17.999999999999968,
+        "maxJointOver": 2.942013080353753e-13,
+        "maxJumpRise": 0,
+        "maxLimbLengthError": 3.552713678800501e-15,
+        "maxStep": 0.10999993378777972,
+        "maxWristError": 0,
+        "name": "combat/close",
+        "pass": true,
+        "peakWebs": 0,
+        "position": [
+          0,
+          0.1,
+          7.1718511163229755
+        ],
+        "reachedRoof": false,
+        "released": true,
+        "reviewFlags": [],
+        "roof": 93.99197994705712,
+        "rotationPeaks": [
+          {
+            "bone": "rightleg",
+            "degreesPerSecond": 1733.2161744530088,
+            "state": "RUNNING",
+            "stepDegrees": 28.9447101133602,
+            "time": 1.555099999999998
+          },
+          {
+            "bone": "rightupleg",
+            "degreesPerSecond": 1579.4139690360785,
+            "state": "RUNNING",
+            "stepDegrees": 26.37621328289791,
+            "time": 1.555099999999998
+          },
+          {
+            "bone": "leftarm",
+            "degreesPerSecond": 1338.4027465283311,
+            "state": "RUNNING",
+            "stepDegrees": 22.083645317717465,
+            "time": 1.2213000000000025
+          },
+          {
+            "bone": "leftupleg",
+            "degreesPerSecond": 1317.296707931408,
+            "state": "RUNNING",
+            "stepDegrees": 20.154639631354375,
+            "time": 1.1868000000000023
+          },
+          {
+            "bone": "rightarm",
+            "degreesPerSecond": 1269.6605447571785,
+            "state": "RUNNING",
+            "stepDegrees": 20.94939898849344,
+            "time": 1.3046999999999964
+          },
+          {
+            "bone": "rightupleg",
+            "degreesPerSecond": 1225.4897617110305,
+            "state": "RUNNING",
+            "stepDegrees": 20.58822799673996,
+            "time": 1.471699999999997
+          },
+          {
+            "bone": "rightarm",
+            "degreesPerSecond": 1207.8278174605002,
+            "state": "RUNNING",
+            "stepDegrees": 19.083679515879417,
+            "time": 1.2539999999999991
+          },
+          {
+            "bone": "leftarm",
+            "degreesPerSecond": 1202.374942868439,
+            "state": "RUNNING",
+            "stepDegrees": 20.32013653446962,
+            "time": 1.2381999999999964
+          }
+        ],
+        "seenWeb": false,
+        "states": [
+          "RUNNING",
+          "IDLE"
+        ],
+        "switches": 0,
+        "travel": 7.1718511163229755,
+        "videoEnd": 16.5755,
+        "videoStart": 13.565700000000186
+      },
+      {
+        "attacks": [
+          "jab",
+          "cross"
+        ],
+        "finalState": "IDLE",
+        "frames": 181,
+        "independentRelease": false,
+        "invalidBoneFrames": 0,
+        "jumpResult": null,
+        "maxAimError": 0,
+        "maxAnkle": 17.999999999999968,
+        "maxJointOver": 2.942013080353753e-13,
+        "maxJumpRise": 0,
+        "maxLimbLengthError": 3.552713678800501e-15,
+        "maxStep": 0.10999965523430344,
+        "maxWristError": 0,
+        "name": "combat/follow",
+        "pass": true,
+        "peakWebs": 0,
+        "position": [
+          0,
+          0.1,
+          7.1718511163229755
+        ],
+        "reachedRoof": false,
+        "released": true,
+        "reviewFlags": [],
+        "roof": 93.99197994705712,
+        "rotationPeaks": [
+          {
+            "bone": "rightleg",
+            "degreesPerSecond": 1720.6986238584886,
+            "state": "RUNNING",
+            "stepDegrees": 28.73566701843175,
+            "time": 1.5638999999992511
+          },
+          {
+            "bone": "rightupleg",
+            "degreesPerSecond": 1557.1213320497136,
+            "state": "RUNNING",
+            "stepDegrees": 26.003926245225685,
+            "time": 1.5638999999992511
+          },
+          {
+            "bone": "leftarm",
+            "degreesPerSecond": 1364.1599830386174,
+            "state": "RUNNING",
+            "stepDegrees": 20.46239974557926,
+            "time": 1.2286999999992545
+          },
+          {
+            "bone": "leftupleg",
+            "degreesPerSecond": 1317.572187790979,
+            "state": "RUNNING",
+            "stepDegrees": 21.73994109855115,
+            "time": 1.1966999999992545
+          },
+          {
+            "bone": "rightarm",
+            "degreesPerSecond": 1252.7406875562524,
+            "state": "RUNNING",
+            "stepDegrees": 20.54494727591525,
+            "time": 1.3133999999992512
+          },
+          {
+            "bone": "rightupleg",
+            "degreesPerSecond": 1239.799263384337,
+            "state": "RUNNING",
+            "stepDegrees": 20.9526075511971,
+            "time": 1.480499999999257
+          },
+          {
+            "bone": "rightarm",
+            "degreesPerSecond": 1228.98385739831,
+            "state": "RUNNING",
+            "stepDegrees": 22.49040459039265,
+            "time": 1.2469999999992571
+          },
+          {
+            "bone": "leftarm",
+            "degreesPerSecond": 1208.0274218190816,
+            "state": "RUNNING",
+            "stepDegrees": 22.10690181929271,
+            "time": 1.2469999999992571
+          }
+        ],
+        "seenWeb": false,
+        "states": [
+          "RUNNING",
+          "IDLE"
+        ],
+        "switches": 0,
+        "travel": 7.1718511163229755,
+        "videoEnd": 19.594799999999815,
+        "videoStart": 16.575700000000186
+      },
+      {
+        "attacks": [
+          "jab",
+          "cross"
+        ],
+        "finalState": "IDLE",
+        "frames": 181,
+        "independentRelease": false,
+        "invalidBoneFrames": 0,
+        "jumpResult": null,
+        "maxAimError": 0,
+        "maxAnkle": 17.999999999999968,
+        "maxJointOver": 2.942013080353753e-13,
+        "maxJumpRise": 0,
+        "maxLimbLengthError": 3.552713678800501e-15,
+        "maxStep": 0.10999965523430344,
+        "maxWristError": 0,
+        "name": "combat/swing",
+        "pass": true,
+        "peakWebs": 0,
+        "position": [
+          0,
+          0.1,
+          7.1718511163229755
+        ],
+        "reachedRoof": false,
+        "released": true,
+        "reviewFlags": [],
+        "roof": 93.99197994705712,
+        "rotationPeaks": [
+          {
+            "bone": "rightleg",
+            "degreesPerSecond": 1728.0791786044424,
+            "state": "RUNNING",
+            "stepDegrees": 28.85892228270173,
+            "time": 1.5638000000000023
+          },
+          {
+            "bone": "rightupleg",
+            "degreesPerSecond": 1567.2658623390046,
+            "state": "RUNNING",
+            "stepDegrees": 26.173339901068218,
+            "time": 1.5638000000000023
+          },
+          {
+            "bone": "leftarm",
+            "degreesPerSecond": 1345.154728669333,
+            "state": "RUNNING",
+            "stepDegrees": 22.195053023043997,
+            "time": 1.2299999999999995
+          },
+          {
+            "bone": "leftupleg",
+            "degreesPerSecond": 1288.4481725506043,
+            "state": "RUNNING",
+            "stepDegrees": 21.259394847084973,
+            "time": 1.196599999999998
+          },
+          {
+            "bone": "rightarm",
+            "degreesPerSecond": 1270.494642231483,
+            "state": "RUNNING",
+            "stepDegrees": 21.471359453713916,
+            "time": 1.313599999999998
+          },
+          {
+            "bone": "rightupleg",
+            "degreesPerSecond": 1238.6016360620308,
+            "state": "RUNNING",
+            "stepDegrees": 20.808507485845723,
+            "time": 1.4804000000000008
+          },
+          {
+            "bone": "rightarm",
+            "degreesPerSecond": 1212.9459272664851,
+            "state": "RUNNING",
+            "stepDegrees": 18.19418890899728,
+            "time": 1.261900000000001
+          },
+          {
+            "bone": "leftarm",
+            "degreesPerSecond": 1187.5956290240842,
+            "state": "RUNNING",
+            "stepDegrees": 20.070366130508752,
+            "time": 1.246900000000001
+          }
+        ],
+        "seenWeb": false,
+        "states": [
+          "RUNNING",
+          "IDLE"
+        ],
+        "switches": 0,
+        "travel": 7.1718511163229755,
+        "videoEnd": 22.613700000000183,
+        "videoStart": 19.59509999999963
+      },
+      {
+        "attacks": [],
+        "finalState": "FALLING",
+        "frames": 180,
+        "independentRelease": false,
+        "invalidBoneFrames": 0,
+        "jumpResult": {
+          "attached": true,
+          "detached": true,
+          "height": 75.24254004126875,
+          "velocityY": 26
+        },
+        "maxAimError": 0,
+        "maxAnkle": 18.000000000000053,
+        "maxJointOver": 5.0888874903416275e-14,
+        "maxJumpRise": 11.962499999999965,
+        "maxLimbLengthError": 3.552713678800501e-15,
+        "maxStep": 0.7236111111111114,
+        "maxWristError": 0.000002618103102516701,
+        "name": "jump/close",
+        "pass": true,
+        "peakWebs": 2,
+        "position": [
+          -90,
+          53.18226226349088,
+          -63.61131036408773
+        ],
+        "reachedRoof": false,
+        "released": true,
+        "reviewFlags": [],
+        "roof": 93.99197994705712,
+        "rotationPeaks": [
+          {
+            "bone": "rightarm",
+            "degreesPerSecond": 2581.885582493087,
+            "state": "JUMPING",
+            "stepDegrees": 42.8593006693815,
+            "time": 0.6315999999999986
+          },
+          {
+            "bone": "rightarm",
+            "degreesPerSecond": 2520.946864758556,
+            "state": "SWINGING",
+            "stepDegrees": 41.84771795498836,
+            "time": 0.3814000000000016
+          },
+          {
+            "bone": "rightarm",
+            "degreesPerSecond": 2469.969844426378,
+            "state": "SWINGING",
+            "stepDegrees": 40.75450243303524,
+            "time": 0.06440000000000146
+          },
+          {
+            "bone": "leftarm",
+            "degreesPerSecond": 2454.888040785739,
+            "state": "SWINGING",
+            "stepDegrees": 40.99663028113256,
+            "time": 0.2314000000000015
+          },
+          {
+            "bone": "rightarm",
+            "degreesPerSecond": 2128.012698713374,
+            "state": "SWINGING",
+            "stepDegrees": 38.942632386460936,
+            "time": 0.047900000000001455
+          },
+          {
+            "bone": "rightarm",
+            "degreesPerSecond": 2123.292007901222,
+            "state": "SWINGING",
+            "stepDegrees": 33.12335532325597,
+            "time": 0.029599999999998544
+          },
+          {
+            "bone": "rightarm",
+            "degreesPerSecond": 1832.770091779094,
+            "state": "JUMPING",
+            "stepDegrees": 30.607260532705535,
+            "time": 0.6150000000000001
+          },
+          {
+            "bone": "leftupleg",
+            "degreesPerSecond": 1349.5784916403145,
+            "state": "JUMPING",
+            "stepDegrees": 22.53796081038932,
+            "time": 0.6150000000000001
+          }
+        ],
+        "seenWeb": true,
+        "states": [
+          "SWINGING",
+          "JUMPING",
+          "FALLING"
+        ],
+        "switches": 0,
+        "travel": 25.85996612516746,
+        "videoEnd": 25.648700000000183,
+        "videoStart": 22.614
+      },
+      {
+        "attacks": [],
+        "finalState": "FALLING",
+        "frames": 180,
+        "independentRelease": false,
+        "invalidBoneFrames": 0,
+        "jumpResult": {
+          "attached": true,
+          "detached": true,
+          "height": 75.26118268675597,
+          "velocityY": 26
+        },
+        "maxAimError": 0,
+        "maxAnkle": 17.999999999999968,
+        "maxJointOver": 1.7334023013976168e-13,
+        "maxJumpRise": 11.962499999999965,
+        "maxLimbLengthError": 3.552713678800501e-15,
+        "maxStep": 0.7236111111111114,
+        "maxWristError": 0.0000028232905274840812,
+        "name": "jump/follow",
+        "pass": true,
+        "peakWebs": 2,
+        "position": [
+          -90,
+          53.20090490897808,
+          -63.633867005761935
+        ],
+        "reachedRoof": false,
+        "released": true,
+        "reviewFlags": [
+          {
+            "bone": "rightarm",
+            "degreesPerSecond": 2839.526645776168,
+            "state": "SWINGING",
+            "stepDegrees": 47.988000313600715,
+            "time": 0.048999999999810834
+          }
+        ],
+        "roof": 93.99197994705712,
+        "rotationPeaks": [
+          {
+            "bone": "rightarm",
+            "degreesPerSecond": 2839.526645776168,
+            "state": "SWINGING",
+            "stepDegrees": 47.988000313600715,
+            "time": 0.048999999999810834
+          },
+          {
+            "bone": "rightarm",
+            "degreesPerSecond": 2594.1088324834413,
+            "state": "JUMPING",
+            "stepDegrees": 43.84043926897393,
+            "time": 0.6327999999998137
+          },
+          {
+            "bone": "leftarm",
+            "degreesPerSecond": 2461.36770424554,
+            "state": "SWINGING",
+            "stepDegrees": 41.10484066089335,
+            "time": 0.23239999999981223
+          },
+          {
+            "bone": "rightarm",
+            "degreesPerSecond": 2433.9933525290025,
+            "state": "SWINGING",
+            "stepDegrees": 41.86468566349176,
+            "time": 0.38239999999981233
+          },
+          {
+            "bone": "rightarm",
+            "degreesPerSecond": 2266.8924967199864,
+            "state": "SWINGING",
+            "stepDegrees": 37.177036946211075,
+            "time": 0.06539999999981229
+          },
+          {
+            "bone": "rightarm",
+            "degreesPerSecond": 1806.1862510396943,
+            "state": "JUMPING",
+            "stepDegrees": 29.802073142154956,
+            "time": 0.6158999999998123
+          },
+          {
+            "bone": "rightarm",
+            "degreesPerSecond": 1634.6076470970063,
+            "state": "SWINGING",
+            "stepDegrees": 26.971026177100608,
+            "time": 0.03209999999981665
+          },
+          {
+            "bone": "leftupleg",
+            "degreesPerSecond": 1348.5660639467678,
+            "state": "JUMPING",
+            "stepDegrees": 22.25134005512167,
+            "time": 0.6158999999998123
+          }
+        ],
+        "seenWeb": true,
+        "states": [
+          "SWINGING",
+          "JUMPING",
+          "FALLING"
+        ],
+        "switches": 0,
+        "travel": 25.842776031462662,
+        "videoEnd": 28.685200000000187,
+        "videoStart": 25.648900000000378
+      },
+      {
+        "attacks": [],
+        "finalState": "FALLING",
+        "frames": 180,
+        "independentRelease": false,
+        "invalidBoneFrames": 0,
+        "jumpResult": {
+          "attached": true,
+          "detached": true,
+          "height": 75.27003603629609,
+          "velocityY": 26
+        },
+        "maxAimError": 0,
+        "maxAnkle": 17.999999999999968,
+        "maxJointOver": 1.7334023013976168e-13,
+        "maxJumpRise": 11.962499999999965,
+        "maxLimbLengthError": 3.552713678800501e-15,
+        "maxStep": 0.7236111111111114,
+        "maxWristError": 0.0000025363502415364774,
+        "name": "jump/swing",
+        "pass": true,
+        "peakWebs": 2,
+        "position": [
+          -90,
+          53.2097582585182,
+          -63.64222127386898
+        ],
+        "reachedRoof": false,
+        "released": true,
+        "reviewFlags": [
+          {
+            "bone": "rightarm",
+            "degreesPerSecond": 2794.7750618581617,
+            "state": "SWINGING",
+            "stepDegrees": 47.511176051588755,
+            "time": 0.04819999999925494
+          }
+        ],
+        "roof": 93.99197994705712,
+        "rotationPeaks": [
+          {
+            "bone": "rightarm",
+            "degreesPerSecond": 2794.7750618581617,
+            "state": "SWINGING",
+            "stepDegrees": 47.511176051588755,
+            "time": 0.04819999999925494
+          },
+          {
+            "bone": "rightarm",
+            "degreesPerSecond": 2772.996703909008,
+            "state": "SWINGING",
+            "stepDegrees": 41.87225022902199,
+            "time": 0.37989999999925217
+          },
+          {
+            "bone": "rightarm",
+            "degreesPerSecond": 2641.561142510585,
+            "state": "JUMPING",
+            "stepDegrees": 44.90653942267995,
+            "time": 0.6316999999992551
+          },
+          {
+            "bone": "leftarm",
+            "degreesPerSecond": 2431.8208121614916,
+            "state": "SWINGING",
+            "stepDegrees": 41.097771725532745,
+            "time": 0.2315999999992564
+          },
+          {
+            "bone": "rightarm",
+            "degreesPerSecond": 2238.516846670112,
+            "state": "SWINGING",
+            "stepDegrees": 35.592417862058035,
+            "time": 0.06409999999925639
+          },
+          {
+            "bone": "rightarm",
+            "degreesPerSecond": 1767.353253946966,
+            "state": "JUMPING",
+            "stepDegrees": 28.45438738854358,
+            "time": 0.6146999999992551
+          },
+          {
+            "bone": "rightarm",
+            "degreesPerSecond": 1643.6490618827452,
+            "state": "SWINGING",
+            "stepDegrees": 27.1202095210653,
+            "time": 0.031199999999254945
+          },
+          {
+            "bone": "leftupleg",
+            "degreesPerSecond": 1331.5335993265537,
+            "state": "JUMPING",
+            "stepDegrees": 21.437690949155577,
+            "time": 0.6146999999992551
+          }
+        ],
+        "seenWeb": true,
+        "states": [
+          "SWINGING",
+          "JUMPING",
+          "FALLING"
+        ],
+        "switches": 0,
+        "travel": 25.83447011086766,
+        "videoEnd": 31.72040000000037,
+        "videoStart": 28.68540000000037
+      },
+      {
+        "attacks": [],
+        "finalState": "FALLING",
+        "frames": 181,
+        "independentRelease": true,
+        "invalidBoneFrames": 0,
+        "jumpResult": null,
+        "maxAimError": 0,
+        "maxAnkle": 17.999999999999968,
+        "maxJointOver": 1.7334023013976168e-13,
+        "maxJumpRise": 0,
+        "maxLimbLengthError": 3.552713678800501e-15,
+        "maxStep": 0.5633800055849968,
+        "maxWristError": 0.00000281833591616405,
+        "name": "web/close",
+        "pass": true,
+        "peakWebs": 2,
+        "position": [
+          -90,
+          55.463932136648765,
+          -73.3
+        ],
+        "reachedRoof": false,
+        "released": true,
+        "reviewFlags": [
+          {
+            "bone": "rightarm",
+            "degreesPerSecond": 2990.6708510096087,
+            "state": "SWINGING",
+            "stepDegrees": 52.934874062883125,
+            "time": 0.06380000000000291
+          }
+        ],
+        "roof": 93.99197994705712,
+        "rotationPeaks": [
+          {
+            "bone": "rightarm",
+            "degreesPerSecond": 2990.6708510096087,
+            "state": "SWINGING",
+            "stepDegrees": 52.934874062883125,
+            "time": 0.06380000000000291
+          },
+          {
+            "bone": "rightarm",
+            "degreesPerSecond": 2663.6359481256127,
+            "state": "SWINGING",
+            "stepDegrees": 41.81908438558375,
+            "time": 0.379800000000003
+          },
+          {
+            "bone": "leftarm",
+            "degreesPerSecond": 2493.1163201202203,
+            "state": "SWINGING",
+            "stepDegrees": 40.88710764997524,
+            "time": 0.23040000000000144
+          },
+          {
+            "bone": "rightarm",
+            "degreesPerSecond": 1900.6667770137765,
+            "state": "SWINGING",
+            "stepDegrees": 30.030535076809365,
+            "time": 0.07959999999999855
+          },
+          {
+            "bone": "rightforearm",
+            "degreesPerSecond": 1745.7091994441423,
+            "state": "SWINGING",
+            "stepDegrees": 29.327914550653972,
+            "time": 1.5650999999999975
+          },
+          {
+            "bone": "rightarm",
+            "degreesPerSecond": 1646.0684542320707,
+            "state": "SWINGING",
+            "stepDegrees": 24.52641996806025,
+            "time": 0.02880000000000291
+          },
+          {
+            "bone": "rightforearm",
+            "degreesPerSecond": 1567.8149114363396,
+            "state": "SWINGING",
+            "stepDegrees": 26.33929051213507,
+            "time": 1.548300000000002
+          },
+          {
+            "bone": "rightarm",
+            "degreesPerSecond": 1524.7465691395068,
+            "state": "SWINGING",
+            "stepDegrees": 26.378115646106817,
+            "time": 0.046099999999998545
+          }
+        ],
+        "seenWeb": true,
+        "states": [
+          "SWINGING",
+          "FALLING"
+        ],
+        "switches": 0,
+        "travel": 26.10093932732807,
+        "videoEnd": 34.77309999999963,
+        "videoStart": 31.720700000000186
+      },
+      {
+        "attacks": [],
+        "finalState": "FALLING",
+        "frames": 181,
+        "independentRelease": true,
+        "invalidBoneFrames": 0,
+        "jumpResult": null,
+        "maxAimError": 0,
+        "maxAnkle": 17.999999999999968,
+        "maxJointOver": 2.942013080353753e-13,
+        "maxJumpRise": 0,
+        "maxLimbLengthError": 3.552713678800501e-15,
+        "maxStep": 0.5303640718403174,
+        "maxWristError": 0.000003216671819726182,
+        "name": "web/follow",
+        "pass": true,
+        "peakWebs": 2,
+        "position": [
+          -90,
+          55.60331341555397,
+          -73.3
+        ],
+        "reachedRoof": false,
+        "released": true,
+        "reviewFlags": [],
+        "roof": 93.99197994705712,
+        "rotationPeaks": [
+          {
+            "bone": "rightarm",
+            "degreesPerSecond": 2801.914812622199,
+            "state": "SWINGING",
+            "stepDegrees": 41.74853070805446,
+            "time": 0.04529999999943539
+          },
+          {
+            "bone": "rightarm",
+            "degreesPerSecond": 2650.7511013438225,
+            "state": "SWINGING",
+            "stepDegrees": 41.88186740124011,
+            "time": 0.3795999999994384
+          },
+          {
+            "bone": "leftarm",
+            "degreesPerSecond": 2475.8041625339883,
+            "state": "SWINGING",
+            "stepDegrees": 41.09834909807862,
+            "time": 0.23049999999944704
+          },
+          {
+            "bone": "rightarm",
+            "degreesPerSecond": 2271.2419977189993,
+            "state": "SWINGING",
+            "stepDegrees": 41.79085275804942,
+            "time": 0.06369999999944412
+          },
+          {
+            "bone": "rightforearm",
+            "degreesPerSecond": 1780.8812941750095,
+            "state": "SWINGING",
+            "stepDegrees": 29.56262948331553,
+            "time": 1.56489999999944
+          },
+          {
+            "bone": "rightarm",
+            "degreesPerSecond": 1603.893687312825,
+            "state": "SWINGING",
+            "stepDegrees": 27.26619268431803,
+            "time": 0.030399999999441207
+          },
+          {
+            "bone": "rightforearm",
+            "degreesPerSecond": 1544.740683376557,
+            "state": "SWINGING",
+            "stepDegrees": 25.951643480708174,
+            "time": 1.5482999999994342
+          },
+          {
+            "bone": "leftarm",
+            "degreesPerSecond": 1417.4418120262242,
+            "state": "SWINGING",
+            "stepDegrees": 23.52953407964357,
+            "time": 1.531499999999446
+          }
+        ],
+        "seenWeb": true,
+        "states": [
+          "SWINGING",
+          "FALLING"
+        ],
+        "switches": 0,
+        "travel": 25.975367603209303,
+        "videoEnd": 37.82540000000037,
+        "videoStart": 34.773299999999814
+      },
+      {
+        "attacks": [],
+        "finalState": "FALLING",
+        "frames": 181,
+        "independentRelease": true,
+        "invalidBoneFrames": 0,
+        "jumpResult": null,
+        "maxAimError": 0,
+        "maxAnkle": 17.999999999999968,
+        "maxJointOver": 2.942013080353753e-13,
+        "maxJumpRise": 0,
+        "maxLimbLengthError": 3.552713678800501e-15,
+        "maxStep": 0.5593951508698672,
+        "maxWristError": 0.0000026536421561207923,
+        "name": "web/swing",
+        "pass": true,
+        "peakWebs": 2,
+        "position": [
+          -90,
+          55.60317603991338,
+          -73.3
+        ],
+        "reachedRoof": false,
+        "released": true,
+        "reviewFlags": [
+          {
+            "bone": "rightarm",
+            "degreesPerSecond": 2794.0977464479174,
+            "state": "SWINGING",
+            "stepDegrees": 46.66143236571275,
+            "time": 0.04739999999981956
+          }
+        ],
+        "roof": 93.99197994705712,
+        "rotationPeaks": [
+          {
+            "bone": "rightarm",
+            "degreesPerSecond": 2794.0977464479174,
+            "state": "SWINGING",
+            "stepDegrees": 46.66143236571275,
+            "time": 0.04739999999981956
+          },
+          {
+            "bone": "rightarm",
+            "degreesPerSecond": 2702.0600584093263,
+            "state": "SWINGING",
+            "stepDegrees": 41.88193090534456,
+            "time": 0.37979999999981384
+          },
+          {
+            "bone": "leftarm",
+            "degreesPerSecond": 2507.0279579015223,
+            "state": "SWINGING",
+            "stepDegrees": 41.11525850960685,
+            "time": 0.23059999999981665
+          },
+          {
+            "bone": "rightarm",
+            "degreesPerSecond": 2217.0051456640344,
+            "state": "SWINGING",
+            "stepDegrees": 36.58058490345657,
+            "time": 0.06389999999981956
+          },
+          {
+            "bone": "rightforearm",
+            "degreesPerSecond": 1760.909880470859,
+            "state": "SWINGING",
+            "stepDegrees": 29.407195003858217,
+            "time": 1.5652999999998127
+          },
+          {
+            "bone": "rightarm",
+            "degreesPerSecond": 1612.3198085956344,
+            "state": "SWINGING",
+            "stepDegrees": 26.764508822673452,
+            "time": 0.030699999999807916
+          },
+          {
+            "bone": "rightforearm",
+            "degreesPerSecond": 1554.0024503948368,
+            "state": "SWINGING",
+            "stepDegrees": 25.951840921589252,
+            "time": 1.5485999999998157
+          },
+          {
+            "bone": "leftarm",
+            "degreesPerSecond": 1408.95599574068,
+            "state": "SWINGING",
+            "stepDegrees": 23.52956512888576,
+            "time": 1.5318999999998186
+          }
+        ],
+        "seenWeb": true,
+        "states": [
+          "SWINGING",
+          "FALLING"
+        ],
+        "switches": 0,
+        "travel": 25.97549129866117,
+        "videoEnd": 40.878200000000184,
+        "videoStart": 37.82570000000019
+      },
+      {
+        "attacks": [],
+        "finalState": "IDLE",
+        "frames": 270,
+        "independentRelease": false,
+        "invalidBoneFrames": 0,
+        "jumpResult": null,
+        "maxAimError": 0,
+        "maxAnkle": 17.999999999999968,
+        "maxJointOver": 5.0888874903416275e-14,
+        "maxJumpRise": 0,
+        "maxLimbLengthError": 3.552713678800501e-15,
+        "maxStep": 0.1950096343946086,
+        "maxWristError": 0,
+        "name": "climb/close/switch",
+        "pass": true,
+        "peakWebs": 0,
+        "position": [
+          -90,
+          94.09197994705713,
+          -75.85
+        ],
+        "reachedRoof": true,
+        "released": true,
+        "reviewFlags": [
+          {
+            "bone": "leftleg",
+            "degreesPerSecond": 4398.136337015593,
+            "state": "IDLE",
+            "stepDegrees": 73.88869046187476,
+            "time": 3.349699999999443
+          }
+        ],
+        "roof": 93.99197994705712,
+        "rotationPeaks": [
+          {
+            "bone": "leftleg",
+            "degreesPerSecond": 4398.136337015593,
+            "state": "IDLE",
+            "stepDegrees": 73.88869046187476,
+            "time": 3.349699999999443
+          },
+          {
+            "bone": "leftleg",
+            "degreesPerSecond": 2452.302737341374,
+            "state": "MANTLING",
+            "stepDegrees": 40.70822543988107,
+            "time": 1.8484999999994456
+          },
+          {
+            "bone": "leftupleg",
+            "degreesPerSecond": 2365.3158331455775,
+            "state": "MANTLING",
+            "stepDegrees": 39.26424283023036,
+            "time": 1.8484999999994456
+          },
+          {
+            "bone": "leftupleg",
+            "degreesPerSecond": 2269.753333511884,
+            "state": "IDLE",
+            "stepDegrees": 38.131856003006256,
+            "time": 3.349699999999443
+          },
+          {
+            "bone": "rightleg",
+            "degreesPerSecond": 2107.2021846203625,
+            "state": "IDLE",
+            "stepDegrees": 35.40099670162822,
+            "time": 3.349699999999443
+          },
+          {
+            "bone": "leftleg",
+            "degreesPerSecond": 2078.8240523809923,
+            "state": "WALL_RUNNING",
+            "stepDegrees": 34.71636167475652,
+            "time": 0.864399999999441
+          },
+          {
+            "bone": "rightleg",
+            "degreesPerSecond": 2049.8413025339773,
+            "state": "WALL_RUNNING",
+            "stepDegrees": 34.232349752341285,
+            "time": 0.680999999999447
+          },
+          {
+            "bone": "leftleg",
+            "degreesPerSecond": 2007.7481205233896,
+            "state": "WALL_RUNNING",
+            "stepDegrees": 33.529393612734765,
+            "time": 1.64839999999944
+          }
+        ],
+        "seenWeb": false,
+        "states": [
+          "WALL_RUNNING",
+          "MANTLING",
+          "RUNNING",
+          "IDLE"
+        ],
+        "switches": 6,
+        "travel": 5.701973342624457,
+        "videoEnd": 45.391400000000374,
+        "videoStart": 40.8785
+      },
+      {
+        "attacks": [],
+        "finalState": "IDLE",
+        "frames": 271,
+        "independentRelease": false,
+        "invalidBoneFrames": 0,
+        "jumpResult": null,
+        "maxAimError": 0,
+        "maxAnkle": 17.999999999999968,
+        "maxJointOver": 0,
+        "maxJumpRise": 0,
+        "maxLimbLengthError": 3.552713678800501e-15,
+        "maxStep": 0.14746108496535726,
+        "maxWristError": 0,
+        "name": "climb/follow/switch",
+        "pass": true,
+        "peakWebs": 0,
+        "position": [
+          -90,
+          94.09197994705713,
+          -75.85
+        ],
+        "reachedRoof": true,
+        "released": true,
+        "reviewFlags": [
+          {
+            "bone": "leftleg",
+            "degreesPerSecond": 4371.319036158945,
+            "state": "IDLE",
+            "stepDegrees": 73.87529171106073,
+            "time": 3.3403999999994394
+          }
+        ],
+        "roof": 93.99197994705712,
+        "rotationPeaks": [
+          {
+            "bone": "leftleg",
+            "degreesPerSecond": 4371.319036158945,
+            "state": "IDLE",
+            "stepDegrees": 73.87529171106073,
+            "time": 3.3403999999994394
+          },
+          {
+            "bone": "leftleg",
+            "degreesPerSecond": 2451.185598400388,
+            "state": "MANTLING",
+            "stepDegrees": 40.68968093342503,
+            "time": 1.839099999999436
+          },
+          {
+            "bone": "leftupleg",
+            "degreesPerSecond": 2366.2193316633825,
+            "state": "MANTLING",
+            "stepDegrees": 39.279240905591486,
+            "time": 1.839099999999436
+          },
+          {
+            "bone": "leftupleg",
+            "degreesPerSecond": 2255.548756700922,
+            "state": "IDLE",
+            "stepDegrees": 38.11877398823245,
+            "time": 3.3403999999994394
+          },
+          {
+            "bone": "rightleg",
+            "degreesPerSecond": 2097.580022260525,
+            "state": "IDLE",
+            "stepDegrees": 35.449102376190666,
+            "time": 3.3403999999994394
+          },
+          {
+            "bone": "leftleg",
+            "degreesPerSecond": 2068.357886383383,
+            "state": "WALL_RUNNING",
+            "stepDegrees": 34.54157670259648,
+            "time": 0.855099999999438
+          },
+          {
+            "bone": "rightleg",
+            "degreesPerSecond": 2054.17788428099,
+            "state": "WALL_RUNNING",
+            "stepDegrees": 34.51018845592661,
+            "time": 0.6715999999994383
+          },
+          {
+            "bone": "rightleg",
+            "degreesPerSecond": 1920.0104360271537,
+            "state": "WALL_RUNNING",
+            "stepDegrees": 31.87217323803398,
+            "time": 1.422099999999437
+          }
+        ],
+        "seenWeb": false,
+        "states": [
+          "WALL_RUNNING",
+          "MANTLING",
+          "RUNNING",
+          "IDLE"
+        ],
+        "switches": 6,
+        "travel": 5.701973342624457,
+        "videoEnd": 49.911799999999815,
+        "videoStart": 45.3915
+      },
+      {
+        "attacks": [],
+        "finalState": "IDLE",
+        "frames": 271,
+        "independentRelease": false,
+        "invalidBoneFrames": 0,
+        "jumpResult": null,
+        "maxAimError": 0,
+        "maxAnkle": 17.999999999999968,
+        "maxJointOver": 5.0888874903416275e-14,
+        "maxJumpRise": 0,
+        "maxLimbLengthError": 3.552713678800501e-15,
+        "maxStep": 0.14746108496535726,
+        "maxWristError": 0,
+        "name": "climb/swing/switch",
+        "pass": true,
+        "peakWebs": 0,
+        "position": [
+          -90,
+          94.09197994705713,
+          -75.85
+        ],
+        "reachedRoof": true,
+        "released": true,
+        "reviewFlags": [
+          {
+            "bone": "leftleg",
+            "degreesPerSecond": 4438.708543853906,
+            "state": "IDLE",
+            "stepDegrees": 74.12643268234731,
+            "time": 3.3401999999994434
+          }
+        ],
+        "roof": 93.99197994705712,
+        "rotationPeaks": [
+          {
+            "bone": "leftleg",
+            "degreesPerSecond": 4438.708543853906,
+            "state": "IDLE",
+            "stepDegrees": 74.12643268234731,
+            "time": 3.3401999999994434
+          },
+          {
+            "bone": "leftleg",
+            "degreesPerSecond": 2725.8560329852944,
+            "state": "MANTLING",
+            "stepDegrees": 40.61525489150469,
+            "time": 1.8371999999994435
+          },
+          {
+            "bone": "leftupleg",
+            "degreesPerSecond": 2640.2090376389856,
+            "state": "MANTLING",
+            "stepDegrees": 39.33911466084394,
+            "time": 1.8371999999994435
+          },
+          {
+            "bone": "leftupleg",
+            "degreesPerSecond": 2289.4922148876954,
+            "state": "IDLE",
+            "stepDegrees": 38.23451998861785,
+            "time": 3.3401999999994434
+          },
+          {
+            "bone": "rightleg",
+            "degreesPerSecond": 2116.3675621820657,
+            "state": "IDLE",
+            "stepDegrees": 35.34333828843434,
+            "time": 3.3401999999994434
+          },
+          {
+            "bone": "rightleg",
+            "degreesPerSecond": 2108.1352261304733,
+            "state": "WALL_RUNNING",
+            "stepDegrees": 34.78423123115281,
+            "time": 0.6711999999994442
+          },
+          {
+            "bone": "leftleg",
+            "degreesPerSecond": 1950.4175926521104,
+            "state": "WALL_RUNNING",
+            "stepDegrees": 32.376932038008,
+            "time": 1.6387999999994347
+          },
+          {
+            "bone": "rightforearm",
+            "degreesPerSecond": 1942.3708762117012,
+            "state": "MANTLING",
+            "stepDegrees": 29.524037318412205,
+            "time": 2.070799999999435
+          }
+        ],
+        "seenWeb": false,
+        "states": [
+          "WALL_RUNNING",
+          "MANTLING",
+          "RUNNING",
+          "IDLE"
+        ],
+        "switches": 6,
+        "travel": 5.701973342624457,
+        "videoEnd": 54.43209999999963,
+        "videoStart": 49.912099999999626
+      },
+      {
+        "attacks": [
+          "jab",
+          "cross"
+        ],
+        "finalState": "FALLING",
+        "frames": 181,
+        "independentRelease": false,
+        "invalidBoneFrames": 0,
+        "jumpResult": {
+          "height": 0.1,
+          "velocityY": 0
+        },
+        "maxAimError": 0,
+        "maxAnkle": 17.999999999999968,
+        "maxJointOver": 2.942013080353753e-13,
+        "maxJumpRise": 12.179999999999987,
+        "maxLimbLengthError": 3.552713678800501e-15,
+        "maxStep": 0.4318124523561307,
+        "maxWristError": 0,
+        "name": "combat/close/switch",
+        "pass": true,
+        "peakWebs": 0,
+        "position": [
+          -2.834425893381421,
+          11.279999999999983,
+          10.413706090502597
+        ],
+        "reachedRoof": false,
+        "released": true,
+        "reviewFlags": [],
+        "roof": 93.99197994705712,
+        "rotationPeaks": [
+          {
+            "bone": "rightleg",
+            "degreesPerSecond": 1507.0741247086871,
+            "state": "SPRINTING",
+            "stepDegrees": 25.168137882630692,
+            "time": 0.6206999999994441
+          },
+          {
+            "bone": "leftarm",
+            "degreesPerSecond": 1354.1689747661246,
+            "state": "SPRINTING",
+            "stepDegrees": 22.20837118615656,
+            "time": 1.2208999999994403
+          },
+          {
+            "bone": "leftupleg",
+            "degreesPerSecond": 1345.391450776155,
+            "state": "SPRINTING",
+            "stepDegrees": 22.871654663194636,
+            "time": 1.52139999999944
+          },
+          {
+            "bone": "rightleg",
+            "degreesPerSecond": 1327.5277511998083,
+            "state": "SPRINTING",
+            "stepDegrees": 22.435218995269036,
+            "time": 0.8207999999994351
+          },
+          {
+            "bone": "rightupleg",
+            "degreesPerSecond": 1326.2112232940308,
+            "state": "SPRINTING",
+            "stepDegrees": 22.147727429006455,
+            "time": 0.6206999999994441
+          },
+          {
+            "bone": "leftupleg",
+            "degreesPerSecond": 1325.795138022542,
+            "state": "JUMPING",
+            "stepDegrees": 22.14077880499189,
+            "time": 1.9049999999994456
+          },
+          {
+            "bone": "leftleg",
+            "degreesPerSecond": 1291.7466254747894,
+            "state": "SPRINTING",
+            "stepDegrees": 21.959692633071423,
+            "time": 1.52139999999944
+          },
+          {
+            "bone": "rightarm",
+            "degreesPerSecond": 1253.609899398574,
+            "state": "SPRINTING",
+            "stepDegrees": 22.188895219351114,
+            "time": 1.3043999999994405
+          }
+        ],
+        "seenWeb": false,
+        "states": [
+          "SPRINTING",
+          "IDLE",
+          "JUMPING",
+          "FALLING"
+        ],
+        "switches": 6,
+        "travel": 15.53935792381531,
+        "videoEnd": 57.441599999999625,
+        "videoStart": 54.43229999999981
+      },
+      {
+        "attacks": [
+          "jab",
+          "cross"
+        ],
+        "finalState": "FALLING",
+        "frames": 181,
+        "independentRelease": false,
+        "invalidBoneFrames": 0,
+        "jumpResult": {
+          "height": 0.1,
+          "velocityY": 0
+        },
+        "maxAimError": 0,
+        "maxAnkle": 17.999999999999968,
+        "maxJointOver": 1.7334023013976168e-13,
+        "maxJumpRise": 12.179999999999986,
+        "maxLimbLengthError": 3.552713678800501e-15,
+        "maxStep": 0.4318728344547344,
+        "maxWristError": 0,
+        "name": "combat/follow/switch",
+        "pass": true,
+        "peakWebs": 0,
+        "position": [
+          -2.834424471193002,
+          11.279999999999976,
+          10.539801486108118
+        ],
+        "reachedRoof": false,
+        "released": true,
+        "reviewFlags": [],
+        "roof": 93.99197994705712,
+        "rotationPeaks": [
+          {
+            "bone": "leftleg",
+            "degreesPerSecond": 1892.2810794142815,
+            "state": "SPRINTING",
+            "stepDegrees": 31.979550242117885,
+            "time": 1.5975999999998152
+          },
+          {
+            "bone": "rightleg",
+            "degreesPerSecond": 1515.4528603526148,
+            "state": "SPRINTING",
+            "stepDegrees": 25.61115333997242,
+            "time": 0.6300999999998167
+          },
+          {
+            "bone": "leftarm",
+            "degreesPerSecond": 1347.3533110955836,
+            "state": "SPRINTING",
+            "stepDegrees": 24.791300924170503,
+            "time": 1.230599999999816
+          },
+          {
+            "bone": "leftupleg",
+            "degreesPerSecond": 1328.4030922695877,
+            "state": "JUMPING",
+            "stepDegrees": 22.184331640898247,
+            "time": 1.914499999999809
+          },
+          {
+            "bone": "rightupleg",
+            "degreesPerSecond": 1328.0944099813169,
+            "state": "SPRINTING",
+            "stepDegrees": 22.44479552869585,
+            "time": 0.6300999999998167
+          },
+          {
+            "bone": "rightleg",
+            "degreesPerSecond": 1274.72724919118,
+            "state": "SPRINTING",
+            "stepDegrees": 23.200035935275764,
+            "time": 0.8302999999998137
+          },
+          {
+            "bone": "rightarm",
+            "degreesPerSecond": 1255.0908082169774,
+            "state": "SPRINTING",
+            "stepDegrees": 20.45798017394038,
+            "time": 1.3135999999998158
+          },
+          {
+            "bone": "leftleg",
+            "degreesPerSecond": 1229.8436350786967,
+            "state": "JUMPING",
+            "stepDegrees": 20.538388705810657,
+            "time": 1.914499999999809
+          }
+        ],
+        "seenWeb": false,
+        "states": [
+          "SPRINTING",
+          "IDLE",
+          "JUMPING",
+          "FALLING"
+        ],
+        "switches": 6,
+        "travel": 15.624140854762674,
+        "videoEnd": 60.45970000000018,
+        "videoStart": 57.44190000000037
+      },
+      {
+        "attacks": [
+          "jab",
+          "cross"
+        ],
+        "finalState": "FALLING",
+        "frames": 181,
+        "independentRelease": false,
+        "invalidBoneFrames": 0,
+        "jumpResult": {
+          "height": 0.1,
+          "velocityY": 0
+        },
+        "maxAimError": 0,
+        "maxAnkle": 17.999999999999968,
+        "maxJointOver": 1.7334023013976168e-13,
+        "maxJumpRise": 12.179999999999986,
+        "maxLimbLengthError": 3.552713678800501e-15,
+        "maxStep": 0.4318728344547344,
+        "maxWristError": 0,
+        "name": "combat/swing/switch",
+        "pass": true,
+        "peakWebs": 0,
+        "position": [
+          -2.834424471193002,
+          11.279999999999976,
+          10.539801486108118
+        ],
+        "reachedRoof": false,
+        "released": true,
+        "reviewFlags": [],
+        "roof": 93.99197994705712,
+        "rotationPeaks": [
+          {
+            "bone": "rightleg",
+            "degreesPerSecond": 1548.942249316603,
+            "state": "SPRINTING",
+            "stepDegrees": 25.557547113723952,
+            "time": 0.6308999999992521
+          },
+          {
+            "bone": "rightleg",
+            "degreesPerSecond": 1389.4124398415695,
+            "state": "SPRINTING",
+            "stepDegrees": 23.203187745350167,
+            "time": 0.7311999999992549
+          },
+          {
+            "bone": "rightupleg",
+            "degreesPerSecond": 1360.1477989903717,
+            "state": "SPRINTING",
+            "stepDegrees": 22.442438683341138,
+            "time": 0.6308999999992521
+          },
+          {
+            "bone": "leftupleg",
+            "degreesPerSecond": 1359.378418066495,
+            "state": "SPRINTING",
+            "stepDegrees": 22.70161958170651,
+            "time": 1.5318999999992504
+          },
+          {
+            "bone": "leftarm",
+            "degreesPerSecond": 1352.5828544210513,
+            "state": "SPRINTING",
+            "stepDegrees": 22.858650239707895,
+            "time": 1.2315999999992482
+          },
+          {
+            "bone": "leftupleg",
+            "degreesPerSecond": 1341.3822856989018,
+            "state": "JUMPING",
+            "stepDegrees": 22.66936062832315,
+            "time": 1.9154999999992557
+          },
+          {
+            "bone": "leftleg",
+            "degreesPerSecond": 1301.2037923189937,
+            "state": "SPRINTING",
+            "stepDegrees": 21.73010333172341,
+            "time": 1.5318999999992504
+          },
+          {
+            "bone": "rightarm",
+            "degreesPerSecond": 1266.7666340064206,
+            "state": "SPRINTING",
+            "stepDegrees": 21.155002787903538,
+            "time": 1.3149999999992563
+          }
+        ],
+        "seenWeb": false,
+        "states": [
+          "SPRINTING",
+          "IDLE",
+          "JUMPING",
+          "FALLING"
+        ],
+        "switches": 6,
+        "travel": 15.624140854762674,
+        "videoEnd": 63.47929999999981,
+        "videoStart": 60.46
+      },
+      {
+        "attacks": [],
+        "finalState": "FALLING",
+        "frames": 181,
+        "independentRelease": false,
+        "invalidBoneFrames": 0,
+        "jumpResult": {
+          "attached": true,
+          "detached": true,
+          "height": 75.24361536603477,
+          "velocityY": 26
+        },
+        "maxAimError": 0,
+        "maxAnkle": 17.999999999999968,
+        "maxJointOver": 5.0888874903416275e-14,
+        "maxJumpRise": 11.962499999999965,
+        "maxLimbLengthError": 3.552713678800501e-15,
+        "maxStep": 0.7313888888888869,
+        "maxWristError": 0.000003232010124673082,
+        "name": "jump/close/switch",
+        "pass": true,
+        "peakWebs": 2,
+        "position": [
+          -90,
+          52.45194869936801,
+          -63.61254423376353
+        ],
+        "reachedRoof": false,
+        "released": true,
+        "reviewFlags": [
+          {
+            "bone": "rightarm",
+            "degreesPerSecond": 2863.4177560395165,
+            "state": "SWINGING",
+            "stepDegrees": 47.246392974652025,
+            "time": 0.04649999999962165
+          },
+          {
+            "bone": "rightarm",
+            "degreesPerSecond": 2576.9628660153394,
+            "state": "JUMPING",
+            "stepDegrees": 46.64302787489264,
+            "time": 0.6301999999996333
+          }
+        ],
+        "roof": 93.99197994705712,
+        "rotationPeaks": [
+          {
+            "bone": "rightarm",
+            "degreesPerSecond": 2863.4177560395165,
+            "state": "SWINGING",
+            "stepDegrees": 47.246392974652025,
+            "time": 0.04649999999962165
+          },
+          {
+            "bone": "rightarm",
+            "degreesPerSecond": 2576.9628660153394,
+            "state": "JUMPING",
+            "stepDegrees": 46.64302787489264,
+            "time": 0.6301999999996333
+          },
+          {
+            "bone": "leftarm",
+            "degreesPerSecond": 2471.649930839332,
+            "state": "SWINGING",
+            "stepDegrees": 41.0293888519473,
+            "time": 0.23009999999962744
+          },
+          {
+            "bone": "rightarm",
+            "degreesPerSecond": 2338.246406140127,
+            "state": "SWINGING",
+            "stepDegrees": 41.85461066989466,
+            "time": 0.3800999999996275
+          },
+          {
+            "bone": "rightarm",
+            "degreesPerSecond": 2267.827929959665,
+            "state": "SWINGING",
+            "stepDegrees": 38.326292016338144,
+            "time": 0.06339999999963038
+          },
+          {
+            "bone": "rightarm",
+            "degreesPerSecond": 1708.3265448875452,
+            "state": "JUMPING",
+            "stepDegrees": 25.96656348228571,
+            "time": 0.6120999999996275
+          },
+          {
+            "bone": "rightarm",
+            "degreesPerSecond": 1607.1712661029433,
+            "state": "SWINGING",
+            "stepDegrees": 27.161194397130387,
+            "time": 0.02999999999962165
+          },
+          {
+            "bone": "leftupleg",
+            "degreesPerSecond": 1324.9553526434674,
+            "state": "JUMPING",
+            "stepDegrees": 20.139321360176847,
+            "time": 0.6120999999996275
+          }
+        ],
+        "seenWeb": true,
+        "states": [
+          "SWINGING",
+          "JUMPING",
+          "FALLING"
+        ],
+        "switches": 6,
+        "travel": 26.588974360327597,
+        "videoEnd": 66.53229999999981,
+        "videoStart": 63.47959999999963
+      },
+      {
+        "attacks": [],
+        "finalState": "FALLING",
+        "frames": 181,
+        "independentRelease": false,
+        "invalidBoneFrames": 0,
+        "jumpResult": {
+          "attached": true,
+          "detached": true,
+          "height": 75.26960728338285,
+          "velocityY": 26
+        },
+        "maxAimError": 0,
+        "maxAnkle": 17.999999999999968,
+        "maxJointOver": 2.942013080353753e-13,
+        "maxJumpRise": 11.962499999999965,
+        "maxLimbLengthError": 3.552713678800501e-15,
+        "maxStep": 0.7313888888888869,
+        "maxWristError": 0.000002923795152531679,
+        "name": "jump/follow/switch",
+        "pass": true,
+        "peakWebs": 2,
+        "position": [
+          -90,
+          52.47794061671609,
+          -63.641749261372624
+        ],
+        "reachedRoof": false,
+        "released": true,
+        "reviewFlags": [
+          {
+            "bone": "rightarm",
+            "degreesPerSecond": 2819.3923505164826,
+            "state": "SWINGING",
+            "stepDegrees": 47.92966995878021,
+            "time": 0.046100000000005824
+          }
+        ],
+        "roof": 93.99197994705712,
+        "rotationPeaks": [
+          {
+            "bone": "rightarm",
+            "degreesPerSecond": 2819.3923505164826,
+            "state": "SWINGING",
+            "stepDegrees": 47.92966995878021,
+            "time": 0.046100000000005824
+          },
+          {
+            "bone": "rightarm",
+            "degreesPerSecond": 2613.657784060461,
+            "state": "JUMPING",
+            "stepDegrees": 43.64808499380209,
+            "time": 0.629800000000003
+          },
+          {
+            "bone": "rightarm",
+            "degreesPerSecond": 2476.9509832812705,
+            "state": "SWINGING",
+            "stepDegrees": 41.86047161743905,
+            "time": 0.3793999999999943
+          },
+          {
+            "bone": "leftarm",
+            "degreesPerSecond": 2459.978864817097,
+            "state": "SWINGING",
+            "stepDegrees": 41.08164704243835,
+            "time": 0.2295
+          },
+          {
+            "bone": "rightarm",
+            "degreesPerSecond": 2265.3063900265147,
+            "state": "SWINGING",
+            "stepDegrees": 34.206126489380594,
+            "time": 0.06119999999999709
+          },
+          {
+            "bone": "rightarm",
+            "degreesPerSecond": 1826.729856917925,
+            "state": "JUMPING",
+            "stepDegrees": 30.32371562484819,
+            "time": 0.613100000000006
+          },
+          {
+            "bone": "rightarm",
+            "degreesPerSecond": 1617.059147153004,
+            "state": "SWINGING",
+            "stepDegrees": 26.84318184274928,
+            "time": 0.029100000000005823
+          },
+          {
+            "bone": "leftupleg",
+            "degreesPerSecond": 1346.761615422917,
+            "state": "JUMPING",
+            "stepDegrees": 22.356242816028264,
+            "time": 0.613100000000006
+          }
+        ],
+        "seenWeb": true,
+        "states": [
+          "SWINGING",
+          "JUMPING",
+          "FALLING"
+        ],
+        "switches": 6,
+        "travel": 26.564819258712987,
+        "videoEnd": 69.58440000000037,
+        "videoStart": 66.53259999999963
+      },
+      {
+        "attacks": [],
+        "finalState": "FALLING",
+        "frames": 181,
+        "independentRelease": false,
+        "invalidBoneFrames": 0,
+        "jumpResult": {
+          "attached": true,
+          "detached": true,
+          "height": 75.272473803984,
+          "velocityY": 26
+        },
+        "maxAimError": 0,
+        "maxAnkle": 17.999999999999968,
+        "maxJointOver": 5.0888874903416275e-14,
+        "maxJumpRise": 11.962499999999965,
+        "maxLimbLengthError": 3.552713678800501e-15,
+        "maxStep": 0.7313888888888869,
+        "maxWristError": 0.000002677279767860249,
+        "name": "jump/swing/switch",
+        "pass": true,
+        "peakWebs": 2,
+        "position": [
+          -90,
+          52.480807137317235,
+          -63.64489913449549
+        ],
+        "reachedRoof": false,
+        "released": true,
+        "reviewFlags": [
+          {
+            "bone": "rightarm",
+            "degreesPerSecond": 2775.962088889506,
+            "state": "SWINGING",
+            "stepDegrees": 48.57933655556637,
+            "time": 0.04539999999963038
+          }
+        ],
+        "roof": 93.99197994705712,
+        "rotationPeaks": [
+          {
+            "bone": "rightarm",
+            "degreesPerSecond": 2775.962088889506,
+            "state": "SWINGING",
+            "stepDegrees": 48.57933655556637,
+            "time": 0.04539999999963038
+          },
+          {
+            "bone": "rightarm",
+            "degreesPerSecond": 2584.582716894168,
+            "state": "JUMPING",
+            "stepDegrees": 43.16253137212508,
+            "time": 0.6298999999996304
+          },
+          {
+            "bone": "rightarm",
+            "degreesPerSecond": 2507.2061887066484,
+            "state": "SWINGING",
+            "stepDegrees": 41.87034335143022,
+            "time": 0.3796999999996334
+          },
+          {
+            "bone": "leftarm",
+            "degreesPerSecond": 2461.8268561653917,
+            "state": "SWINGING",
+            "stepDegrees": 41.11250849795488,
+            "time": 0.22959999999962744
+          },
+          {
+            "bone": "rightarm",
+            "degreesPerSecond": 2155.121035187787,
+            "state": "SWINGING",
+            "stepDegrees": 37.49910601225496,
+            "time": 0.06279999999962456
+          },
+          {
+            "bone": "rightarm",
+            "degreesPerSecond": 1869.5459073658585,
+            "state": "JUMPING",
+            "stepDegrees": 31.034462062284135,
+            "time": 0.6131999999996334
+          },
+          {
+            "bone": "rightarm",
+            "degreesPerSecond": 1610.5536628797506,
+            "state": "SWINGING",
+            "stepDegrees": 24.48041567576752,
+            "time": 0.02789999999963038
+          },
+          {
+            "bone": "leftupleg",
+            "degreesPerSecond": 1332.7263408651283,
+            "state": "JUMPING",
+            "stepDegrees": 22.12325725836889,
+            "time": 0.6131999999996334
+          }
+        ],
+        "seenWeb": true,
+        "states": [
+          "SWINGING",
+          "JUMPING",
+          "FALLING"
+        ],
+        "switches": 6,
+        "travel": 26.56215309252161,
+        "videoEnd": 72.63740000000037,
+        "videoStart": 69.58490000000037
+      },
+      {
+        "attacks": [],
+        "finalState": "FALLING",
+        "frames": 181,
+        "independentRelease": true,
+        "invalidBoneFrames": 0,
+        "jumpResult": null,
+        "maxAimError": 0,
+        "maxAnkle": 17.999999999999968,
+        "maxJointOver": 2.942013080353753e-13,
+        "maxJumpRise": 0,
+        "maxLimbLengthError": 3.552713678800501e-15,
+        "maxStep": 0.5631050830287274,
+        "maxWristError": 0.0000032463169484206618,
+        "name": "web/close/switch",
+        "pass": true,
+        "peakWebs": 2,
+        "position": [
+          -90,
+          55.473662227870705,
+          -73.3
+        ],
+        "reachedRoof": false,
+        "released": true,
+        "reviewFlags": [
+          {
+            "bone": "rightarm",
+            "degreesPerSecond": 2974.518702716586,
+            "state": "SWINGING",
+            "stepDegrees": 53.54133664889855,
+            "time": 0.06239999999981956
+          }
+        ],
+        "roof": 93.99197994705712,
+        "rotationPeaks": [
+          {
+            "bone": "rightarm",
+            "degreesPerSecond": 2974.518702716586,
+            "state": "SWINGING",
+            "stepDegrees": 53.54133664889855,
+            "time": 0.06239999999981956
+          },
+          {
+            "bone": "leftarm",
+            "degreesPerSecond": 2728.77391233557,
+            "state": "SWINGING",
+            "stepDegrees": 40.931608685033545,
+            "time": 0.2274999999998108
+          },
+          {
+            "bone": "rightarm",
+            "degreesPerSecond": 2518.4617735690235,
+            "state": "SWINGING",
+            "stepDegrees": 41.80646544126045,
+            "time": 0.37929999999981384
+          },
+          {
+            "bone": "rightarm",
+            "degreesPerSecond": 1874.677625549505,
+            "state": "SWINGING",
+            "stepDegrees": 30.182309771330655,
+            "time": 0.07849999999981083
+          },
+          {
+            "bone": "rightforearm",
+            "degreesPerSecond": 1739.0926911846243,
+            "state": "SWINGING",
+            "stepDegrees": 31.65148697958041,
+            "time": 1.5633999999998187
+          },
+          {
+            "bone": "rightarm",
+            "degreesPerSecond": 1609.3102561833182,
+            "state": "SWINGING",
+            "stepDegrees": 27.19734332951213,
+            "time": 0.029099999999816648
+          },
+          {
+            "bone": "rightforearm",
+            "degreesPerSecond": 1572.52474988654,
+            "state": "SWINGING",
+            "stepDegrees": 23.74512372327303,
+            "time": 1.5451999999998072
+          },
+          {
+            "bone": "rightarm",
+            "degreesPerSecond": 1522.9390109769945,
+            "state": "SWINGING",
+            "stepDegrees": 23.300966867952443,
+            "time": 0.04439999999981955
+          }
+        ],
+        "seenWeb": true,
+        "states": [
+          "SWINGING",
+          "FALLING"
+        ],
+        "switches": 4,
+        "travel": 26.092168716697305,
+        "videoEnd": 75.68959999999963,
+        "videoStart": 72.63779999999981
+      },
+      {
+        "attacks": [],
+        "finalState": "FALLING",
+        "frames": 181,
+        "independentRelease": true,
+        "invalidBoneFrames": 0,
+        "jumpResult": null,
+        "maxAimError": 0,
+        "maxAnkle": 17.999999999999968,
+        "maxJointOver": 2.942013080353753e-13,
+        "maxJumpRise": 0,
+        "maxLimbLengthError": 3.552713678800501e-15,
+        "maxStep": 0.5203965657633312,
+        "maxWristError": 0.000002929408228428071,
+        "name": "web/follow/switch",
+        "pass": true,
+        "peakWebs": 2,
+        "position": [
+          -90,
+          55.585332753603765,
+          -73.3
+        ],
+        "reachedRoof": false,
+        "released": true,
+        "reviewFlags": [
+          {
+            "bone": "rightarm",
+            "degreesPerSecond": 2800.780468253145,
+            "state": "SWINGING",
+            "stepDegrees": 47.89334600710433,
+            "time": 0.04659999999924912
+          }
+        ],
+        "roof": 93.99197994705712,
+        "rotationPeaks": [
+          {
+            "bone": "rightarm",
+            "degreesPerSecond": 2800.780468253145,
+            "state": "SWINGING",
+            "stepDegrees": 47.89334600710433,
+            "time": 0.04659999999924912
+          },
+          {
+            "bone": "rightarm",
+            "degreesPerSecond": 2506.6853385466497,
+            "state": "SWINGING",
+            "stepDegrees": 41.86164515372175,
+            "time": 0.380199999999255
+          },
+          {
+            "bone": "leftarm",
+            "degreesPerSecond": 2386.973584382861,
+            "state": "SWINGING",
+            "stepDegrees": 41.055945651378266,
+            "time": 0.22999999999925785
+          },
+          {
+            "bone": "rightarm",
+            "degreesPerSecond": 2201.9305265838734,
+            "state": "SWINGING",
+            "stepDegrees": 35.671274530684386,
+            "time": 0.06279999999926075
+          },
+          {
+            "bone": "rightforearm",
+            "degreesPerSecond": 1750.5395649005636,
+            "state": "SWINGING",
+            "stepDegrees": 29.234010733834317,
+            "time": 1.5644999999992562
+          },
+          {
+            "bone": "rightarm",
+            "degreesPerSecond": 1616.0154051534223,
+            "state": "SWINGING",
+            "stepDegrees": 26.66425418503147,
+            "time": 0.029499999999257853
+          },
+          {
+            "bone": "rightforearm",
+            "degreesPerSecond": 1566.0468299871677,
+            "state": "SWINGING",
+            "stepDegrees": 26.15298206080393,
+            "time": 1.547799999999259
+          },
+          {
+            "bone": "leftarm",
+            "degreesPerSecond": 1417.8694956745176,
+            "state": "SWINGING",
+            "stepDegrees": 23.53663362818461,
+            "time": 1.5310999999992474
+          }
+        ],
+        "seenWeb": true,
+        "states": [
+          "SWINGING",
+          "FALLING"
+        ],
+        "switches": 4,
+        "travel": 25.991558876658353,
+        "videoEnd": 78.74259999999963,
+        "videoStart": 75.69
+      },
+      {
+        "attacks": [],
+        "finalState": "FALLING",
+        "frames": 180,
+        "independentRelease": true,
+        "invalidBoneFrames": 0,
+        "jumpResult": null,
+        "maxAimError": 0,
+        "maxAnkle": 17.999999999999968,
+        "maxJointOver": 2.942013080353753e-13,
+        "maxJumpRise": 0,
+        "maxLimbLengthError": 3.552713678800501e-15,
+        "maxStep": 0.5027343583466938,
+        "maxWristError": 0.000003050863514703309,
+        "name": "web/swing/switch",
+        "pass": true,
+        "peakWebs": 2,
+        "position": [
+          -90,
+          56.044458098431825,
+          -73.3
+        ],
+        "reachedRoof": false,
+        "released": true,
+        "reviewFlags": [
+          {
+            "bone": "rightarm",
+            "degreesPerSecond": 2769.9952184047324,
+            "state": "SWINGING",
+            "stepDegrees": 46.25892014735097,
+            "time": 0.04809999999924912
+          }
+        ],
+        "roof": 93.99197994705712,
+        "rotationPeaks": [
+          {
+            "bone": "rightarm",
+            "degreesPerSecond": 2769.9952184047324,
+            "state": "SWINGING",
+            "stepDegrees": 46.25892014735097,
+            "time": 0.04809999999924912
+          },
+          {
+            "bone": "rightarm",
+            "degreesPerSecond": 2585.379894811454,
+            "state": "SWINGING",
+            "stepDegrees": 41.88315429593803,
+            "time": 0.381199999999255
+          },
+          {
+            "bone": "leftarm",
+            "degreesPerSecond": 2459.7690397033057,
+            "state": "SWINGING",
+            "stepDegrees": 41.07814296303805,
+            "time": 0.23149999999925783
+          },
+          {
+            "bone": "rightarm",
+            "degreesPerSecond": 2249.704593719407,
+            "state": "SWINGING",
+            "stepDegrees": 37.12012579637022,
+            "time": 0.06459999999924912
+          },
+          {
+            "bone": "rightforearm",
+            "degreesPerSecond": 1749.00234804736,
+            "state": "SWINGING",
+            "stepDegrees": 29.38323944720074,
+            "time": 1.5658999999992504
+          },
+          {
+            "bone": "rightarm",
+            "degreesPerSecond": 1644.6862018932648,
+            "state": "SWINGING",
+            "stepDegrees": 30.097757494651532,
+            "time": 0.03139999999925203
+          },
+          {
+            "bone": "rightforearm",
+            "degreesPerSecond": 1573.764250009884,
+            "state": "SWINGING",
+            "stepDegrees": 26.28186297516048,
+            "time": 1.5490999999992476
+          },
+          {
+            "bone": "leftarm",
+            "degreesPerSecond": 1404.4291106969704,
+            "state": "SWINGING",
+            "stepDegrees": 23.173080326500013,
+            "time": 1.5323999999992506
+          }
+        ],
+        "seenWeb": true,
+        "states": [
+          "SWINGING",
+          "FALLING"
+        ],
+        "switches": 4,
+        "travel": 25.578873294051384,
+        "videoEnd": 81.7785,
+        "videoStart": 78.743
+      }
+    ]
+  }
+]

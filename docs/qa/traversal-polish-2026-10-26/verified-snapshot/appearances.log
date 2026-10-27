@@ -1,0 +1,15 @@
+node:fs:561
+  return binding.open(
+                 ^
+
+Error: ENOENT: no such file or directory, open 'artifacts/사람모습.glb'
+    at Object.openSync (node:fs:561:18)
+    at Object.readFileSync (node:fs:445:35)
+    at file:///private/tmp/shadow-pulse-qa-20261026/scripts/check-appearances.mjs:13:81 {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'artifacts/사람모습.glb'
+}
+
+Node.js v22.19.0

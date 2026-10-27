@@ -1,0 +1,154 @@
+{
+  "registeredMotions": 34,
+  "focusedActions": [
+    "jab",
+    "cross",
+    "heavy",
+    "guard"
+  ],
+  "matrix": {
+    "passed": 288,
+    "total": 288
+  },
+  "resolvedSuites": {
+    "passed": 15,
+    "total": 15
+  },
+  "frozenReplay": {
+    "passed": 5,
+    "total": 5,
+    "stable": true,
+    "currentHashesMatch": true
+  },
+  "skinCases": 24,
+  "beforeAfter": {
+    "before": {
+      "moveStartedDuringAttack": {
+        "travel": false,
+        "distance": 0
+      },
+      "guardSprint": {
+        "speed": 2.2747192426957032,
+        "base": "run"
+      },
+      "sideAttack": {
+        "minFootGap": 0.018417991374498843
+      },
+      "cpuGuardStepMs": 7.978679866666668
+    },
+    "after": {
+      "moveStartedDuringAttack": {
+        "travel": true,
+        "distance": 0.6788356416529375
+      },
+      "guardSprint": {
+        "speed": 2.2747192426957032,
+        "base": "walk"
+      },
+      "sideAttack": {
+        "minFootGap": 0.12999950853759046
+      },
+      "cpuGuardStepMs": 6.943151400000003
+    }
+  },
+  "results": [
+    {
+      "suite": "moving-action-input",
+      "pass": true,
+      "code": 0,
+      "seconds": 15.799
+    },
+    {
+      "suite": "moving-actions-before-after",
+      "pass": true,
+      "code": 0,
+      "seconds": 3.876
+    },
+    {
+      "suite": "strike-steering",
+      "pass": true,
+      "code": 0,
+      "seconds": 25.961
+    },
+    {
+      "suite": "combat-traversal",
+      "pass": true,
+      "code": 0,
+      "seconds": 8.094
+    },
+    {
+      "suite": "combat-quality",
+      "pass": true,
+      "code": 0,
+      "seconds": 27.783
+    },
+    {
+      "suite": "combat-roll-recovery",
+      "pass": true,
+      "code": 0,
+      "seconds": 18.297
+    },
+    {
+      "suite": "motion-combinations",
+      "pass": true,
+      "code": 0,
+      "seconds": 26.506
+    },
+    {
+      "suite": "motion-reset",
+      "pass": true,
+      "code": 0,
+      "seconds": 10.411
+    },
+    {
+      "suite": "moving-actions",
+      "pass": true,
+      "code": 0,
+      "seconds": 214.944
+    },
+    {
+      "suite": "moving-combat-skin",
+      "pass": true,
+      "code": 0,
+      "seconds": 10.156
+    },
+    {
+      "suite": "online-motion-sync",
+      "pass": true,
+      "code": 0,
+      "seconds": 31.77,
+      "rerun": true
+    },
+    {
+      "suite": "web-continuity",
+      "pass": true,
+      "code": 0,
+      "seconds": 1.388
+    },
+    {
+      "suite": "input-lifecycle",
+      "pass": true,
+      "code": 0,
+      "seconds": 0.145
+    },
+    {
+      "suite": "end-joint-stability",
+      "pass": true,
+      "code": 0,
+      "seconds": 98.551
+    },
+    {
+      "suite": "low-stance",
+      "pass": true,
+      "code": 0,
+      "seconds": 47.202
+    }
+  ],
+  "limits": "The 288 local scenarios passed before a network-only gait/clock priority correction. The final unchanged source passed the 5-suite replay including 56 remote rigs and moving jab/cross/heavy/guard clocks. This is not all-frame artistic or physical-device certification.",
+  "browserIntegration": {
+    "passed": 2,
+    "total": 2,
+    "frames": 341,
+    "reviewFlags": 1
+  }
+}

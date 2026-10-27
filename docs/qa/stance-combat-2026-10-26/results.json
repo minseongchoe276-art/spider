@@ -20,26 +20,6 @@
     "minSkinY": 0.007634672734285482
   },
   {
-    "fps": 24,
-    "stance": "prone",
-    "moving": false,
-    "standing": 1.6977262579470533,
-    "height": 0.5229219682152677,
-    "speed": 0,
-    "maxStep": 0.18082190154378974,
-    "minSkinY": 0.012000003107439983
-  },
-  {
-    "fps": 24,
-    "stance": "prone",
-    "moving": true,
-    "standing": 1.6977262579470533,
-    "height": 0.5308448502686638,
-    "speed": 0.6999999893390142,
-    "maxStep": 0.18406702545069595,
-    "minSkinY": 0.012000003216919186
-  },
-  {
     "fps": 60,
     "stance": "crouch",
     "moving": false,
@@ -58,26 +38,6 @@
     "speed": 1.4999999771550303,
     "maxStep": 0.037050967867576334,
     "minSkinY": 0.007586423487918374
-  },
-  {
-    "fps": 60,
-    "stance": "prone",
-    "moving": false,
-    "standing": 1.6977262579470533,
-    "height": 0.5229219682152677,
-    "speed": 0,
-    "maxStep": 0.07260573538958821,
-    "minSkinY": 0.012000003107439983
-  },
-  {
-    "fps": 60,
-    "stance": "prone",
-    "moving": true,
-    "standing": 1.6977262579470533,
-    "height": 0.5300850242417052,
-    "speed": 0.6999999893390142,
-    "maxStep": 0.07384295263793758,
-    "minSkinY": 0.012000003206419863
   },
   {
     "fps": 144,
@@ -100,123 +60,88 @@
     "minSkinY": 0.007570665173154786
   },
   {
-    "fps": 144,
-    "stance": "prone",
-    "moving": false,
-    "standing": 1.6977262579470533,
-    "height": 0.5229219682152677,
-    "speed": 0,
-    "maxStep": 0.030267872291667493,
-    "minSkinY": 0.012000003107439983
-  },
-  {
-    "fps": 144,
-    "stance": "prone",
-    "moving": true,
-    "standing": 1.6977262579470533,
-    "height": 0.5295189454189578,
-    "speed": 0.6999999893390142,
-    "maxStep": 0.030772992406727127,
-    "minSkinY": 0.012000003198597509
-  },
-  {
     "fps": 24,
-    "transition": "crouch-prone-crouch-stand",
-    "maxStep": 0.18082190154378974
+    "transition": "crouch-stand",
+    "maxStep": 0.053744341266178296
   },
   {
     "fps": 144,
-    "transition": "crouch-prone-crouch-stand",
-    "maxStep": 0.030267872291667493
+    "transition": "crouch-stand",
+    "maxStep": 0.009500610893423803
   },
   {
     "fps": 24,
     "key": "jab",
-    "maxDifference": 0.8496600057037321,
-    "peakWeight": 0.86
+    "maxFootDeviation": 0
   },
   {
     "fps": 24,
     "key": "cross",
-    "maxDifference": 0.9585031339227554,
-    "peakWeight": 0.86
+    "maxFootDeviation": 0
   },
   {
     "fps": 24,
     "key": "hook",
-    "maxDifference": 0.9280526634982028,
-    "peakWeight": 0.86
+    "maxFootDeviation": 0
   },
   {
     "fps": 24,
     "key": "heavy",
-    "maxDifference": 0.9186127958693785,
-    "peakWeight": 0.86
+    "maxFootDeviation": 0
   },
   {
     "fps": 24,
     "key": "special",
-    "maxDifference": 0.9253328817208344,
-    "peakWeight": 0.86
+    "maxFootDeviation": 0
   },
   {
     "fps": 60,
     "key": "jab",
-    "maxDifference": 0.8941984845745565,
-    "peakWeight": 0.86
+    "maxFootDeviation": 0
   },
   {
     "fps": 60,
     "key": "cross",
-    "maxDifference": 0.8719067627445694,
-    "peakWeight": 0.86
+    "maxFootDeviation": 0
   },
   {
     "fps": 60,
     "key": "hook",
-    "maxDifference": 0.9433155420553793,
-    "peakWeight": 0.86
+    "maxFootDeviation": 0
   },
   {
     "fps": 60,
     "key": "heavy",
-    "maxDifference": 0.8792056700320909,
-    "peakWeight": 0.86
+    "maxFootDeviation": 0
   },
   {
     "fps": 60,
     "key": "special",
-    "maxDifference": 0.8151088728202921,
-    "peakWeight": 0.86
+    "maxFootDeviation": 0
   },
   {
     "fps": 144,
     "key": "jab",
-    "maxDifference": 0.8867713377207758,
-    "peakWeight": 0.86
+    "maxFootDeviation": 0
   },
   {
     "fps": 144,
     "key": "cross",
-    "maxDifference": 0.8424744460154258,
-    "peakWeight": 0.86
+    "maxFootDeviation": 0
   },
   {
     "fps": 144,
     "key": "hook",
-    "maxDifference": 0.9417140238605369,
-    "peakWeight": 0.86
+    "maxFootDeviation": 0
   },
   {
     "fps": 144,
     "key": "heavy",
-    "maxDifference": 0.8994882616762734,
-    "peakWeight": 0.86
+    "maxFootDeviation": 0
   },
   {
     "fps": 144,
     "key": "special",
-    "maxDifference": 0.8319499684753034,
-    "peakWeight": 0.86
+    "maxFootDeviation": 0
   }
 ]

@@ -41,7 +41,7 @@ for(const item of MOTIONS) {
   const source=gltf?.scene || new FBXLoader().parse(buffer,'');
   const take=(gltf?.animations || source.animations).find(clip=>(!item.take || clip.name===item.take)&&clip.duration>0&&clip.tracks.length);
   assert(take,`No take in ${item.url}`);
-  const clip=prepareMotion(retargetMotion(target,source,take),item.key,bones,item);
+  const clip=prepareMotion(retargetMotion(target,source,take,30,item.mirror),item.key,bones,item);
   // Bake anatomical limits into review clips as well as live IK output.
   for(const {bone,rest,limit} of createJointConstraints(target,bones)){
     const track=clip.tracks.find(t=>t.name===bone.name+'.quaternion');

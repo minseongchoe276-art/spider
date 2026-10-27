@@ -1,0 +1,8 @@
+PASS combat jump 24 FPS moving=false, landing hand step=0.226m
+PASS combat jump 24 FPS moving=true, landing hand step=0.266m
+PASS combat jump 60 FPS moving=false, landing hand step=0.122m
+PASS combat jump 60 FPS moving=true, landing hand step=0.106m
+PASS combat jump 144 FPS moving=false, landing hand step=0.115m
+PASS combat jump 144 FPS moving=true, landing hand step=0.111m
+PASS web walk 7.00m/s; combat speed preserved
+PASS web sprint 12.00m/s; combat speed preserved

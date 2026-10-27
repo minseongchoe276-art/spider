@@ -1,0 +1,65 @@
+PASS flat 24 reverse-diagonal
+FAIL flat 24 sprint-attack-jump Limb length changed
+PASS flat 30 reverse-diagonal
+FAIL flat 30 sprint-attack-jump Limb length changed
+PASS flat 60 reverse-diagonal
+FAIL flat 60 sprint-attack-jump Limb length changed
+PASS flat 144 reverse-diagonal
+FAIL flat 144 sprint-attack-jump Limb length changed
+PASS diagonal-ramp 24 reverse-diagonal
+FAIL diagonal-ramp 24 sprint-attack-jump Limb length changed
+PASS diagonal-ramp 30 reverse-diagonal
+FAIL diagonal-ramp 30 sprint-attack-jump Limb length changed
+PASS diagonal-ramp 60 reverse-diagonal
+FAIL diagonal-ramp 60 sprint-attack-jump Limb length changed
+PASS diagonal-ramp 144 reverse-diagonal
+FAIL diagonal-ramp 144 sprint-attack-jump Limb length changed
+PASS ramp-edge 24 reverse-diagonal
+FAIL ramp-edge 24 sprint-attack-jump Limb length changed
+PASS ramp-edge 30 reverse-diagonal
+FAIL ramp-edge 30 sprint-attack-jump Limb length changed
+PASS ramp-edge 60 reverse-diagonal
+FAIL ramp-edge 60 sprint-attack-jump Limb length changed
+PASS ramp-edge 144 reverse-diagonal
+FAIL ramp-edge 144 sprint-attack-jump Limb length changed
+PASS stairs-up 24 reverse-diagonal
+FAIL stairs-up 24 sprint-attack-jump Limb length changed
+PASS stairs-up 30 reverse-diagonal
+FAIL stairs-up 30 sprint-attack-jump Limb length changed
+PASS stairs-up 60 reverse-diagonal
+FAIL stairs-up 60 sprint-attack-jump Limb length changed
+PASS stairs-up 144 reverse-diagonal
+FAIL stairs-up 144 sprint-attack-jump Limb length changed
+PASS stairs-down 24 reverse-diagonal
+PASS stairs-down 24 sprint-attack-jump
+PASS stairs-down 30 reverse-diagonal
+PASS stairs-down 30 sprint-attack-jump
+PASS stairs-down 60 reverse-diagonal
+PASS stairs-down 60 sprint-attack-jump
+PASS stairs-down 144 reverse-diagonal
+PASS stairs-down 144 sprint-attack-jump
+PASS low-ceiling 24 reverse-diagonal
+FAIL low-ceiling 24 sprint-attack-jump Limb length changed
+PASS low-ceiling 30 reverse-diagonal
+FAIL low-ceiling 30 sprint-attack-jump Limb length changed
+PASS low-ceiling 60 reverse-diagonal
+FAIL low-ceiling 60 sprint-attack-jump Limb length changed
+PASS low-ceiling 144 reverse-diagonal
+FAIL low-ceiling 144 sprint-attack-jump Limb length changed
+PASS narrow-corner 24 reverse-diagonal
+FAIL narrow-corner 24 sprint-attack-jump Limb length changed
+PASS narrow-corner 30 reverse-diagonal
+FAIL narrow-corner 30 sprint-attack-jump Limb length changed
+PASS narrow-corner 60 reverse-diagonal
+FAIL narrow-corner 60 sprint-attack-jump Limb length changed
+PASS narrow-corner 144 reverse-diagonal
+FAIL narrow-corner 144 sprint-attack-jump Limb length changed
+PASS roof-edge 24 reverse-diagonal
+PASS roof-edge 24 sprint-attack-jump
+PASS roof-edge 30 reverse-diagonal
+PASS roof-edge 30 sprint-attack-jump
+PASS roof-edge 60 reverse-diagonal
+PASS roof-edge 60 sprint-attack-jump
+PASS roof-edge 144 reverse-diagonal
+PASS roof-edge 144 sprint-attack-jump
+Expanded terrain motion: 40/64

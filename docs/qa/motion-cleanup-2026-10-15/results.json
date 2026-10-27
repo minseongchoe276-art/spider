@@ -16,7 +16,8 @@
           "jog"
         ],
         "retainedAirTricks": [
-          "front"
+          "front",
+          "back"
         ]
       }
     },
@@ -24,7 +25,7 @@
       "name": "Every retained compiled motion respects ankle, wrist and toe limits between keyframes",
       "status": "PASS",
       "detail": {
-        "frames": 3935,
+        "frames": 3490,
         "maxDegrees": {
           "foot": 18.000036656104236,
           "toebase": 5.0001334145056715,

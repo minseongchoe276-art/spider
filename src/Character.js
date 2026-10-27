@@ -244,7 +244,7 @@ export class Character {
         if (fbx.animations && fbx.animations.length > 0) {
           const sourceClip = fbx.animations.find(c => (!item.take || c.name===item.take) && c.duration > 0 && c.tracks.length > 0);
           if (!sourceClip) throw new Error('No animated take in FBX');
-          clip = retargetMotion(this.model, fbx, sourceClip);
+          clip = retargetMotion(this.model, fbx, sourceClip,30,item.mirror);
           clip = prepareMotion(clip, item.key, this.bones,item);
         }
         }

@@ -1,0 +1,56 @@
+{
+  "completed": 8,
+  "total": 8,
+  "results": [
+    {
+      "suite": "traversal-handoffs",
+      "args": [],
+      "pass": true,
+      "exitCode": 0
+    },
+    {
+      "suite": "web-continuity",
+      "args": [],
+      "pass": true,
+      "exitCode": 0
+    },
+    {
+      "suite": "motion-interruptions",
+      "args": [],
+      "pass": true,
+      "exitCode": 0
+    },
+    {
+      "suite": "web-hand-pose",
+      "args": [],
+      "pass": true,
+      "exitCode": 0
+    },
+    {
+      "suite": "end-joint-stability",
+      "args": [
+        "--keys=wall,jump,swing,zip,jab,cross"
+      ],
+      "pass": true,
+      "exitCode": 0
+    },
+    {
+      "suite": "motion-reset",
+      "args": [],
+      "pass": true,
+      "exitCode": 0
+    },
+    {
+      "suite": "motion-cleanup",
+      "args": [],
+      "pass": true,
+      "exitCode": 0
+    },
+    {
+      "suite": "expanded-terrain-motion",
+      "args": [],
+      "pass": true,
+      "exitCode": 0
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+FBXLoader: TGA loader not found, skipping  ../../../../home/app/mixamo-mini/tmp/skins_e57a88ac-3622-472c-96c7-e4a65b4e1321.fbm/RED CLASSIC.tga
+FBXLoader: TGA loader not found, creating placeholder texture for ../../../../home/app/mixamo-mini/tmp/skins_e57a88ac-3622-472c-96c7-e4a65b4e1321.fbm/RED CLASSIC.tga
+THREE.FBXLoader: Vertex has more than 4 skinning weights assigned to vertex. Deleting additional weights.
+{"file":"Idle","key":"idle","duration":4,"matchedBones":65,"unitScale":0.025399998829791486,"nominalSpeed":7.918739123391324e-9,"climbSpeed":7.225866707563529e-8,"checkedFrames":241,"samples":[{"headY":1.698,"footY":0.111},{"headY":1.682,"footY":0.112},{"headY":1.698,"footY":0.111}]}
+{"file":"Walking","key":"walk","duration":0.967,"matchedBones":65,"unitScale":0.02553865444955606,"nominalSpeed":2.0744570316998203,"climbSpeed":3.4748923358280395e-7,"checkedFrames":59,"samples":[{"headY":1.772,"footY":0.108},{"headY":1.772,"footY":0.11},{"headY":1.772,"footY":0.108}]}
+FBXLoader: TGA loader not found, skipping  ../../../../home/app/mixamo-mini/tmp/skins_cc1b17f1-7dd0-4c24-92bf-417033ef4f5d.fbm/RED CLASSIC.tga
+FBXLoader: TGA loader not found, creating placeholder texture for ../../../../home/app/mixamo-mini/tmp/skins_cc1b17f1-7dd0-4c24-92bf-417033ef4f5d.fbm/RED CLASSIC.tga
+THREE.FBXLoader: Vertex has more than 4 skinning weights assigned to vertex. Deleting additional weights.
+{"file":"Running","key":"regularRun","duration":0.7,"matchedBones":65,"unitScale":0.025399998829791486,"nominalSpeed":6.069090994560909e-7,"climbSpeed":9.666362437661636e-7,"checkedFrames":43,"samples":[{"headY":1.645,"footY":0.137},{"headY":1.643,"footY":0.106},{"headY":1.645,"footY":0.137}]}
+{"file":"Fast Run","key":"run","duration":0.533,"matchedBones":65,"unitScale":0.02553865444955606,"nominalSpeed":7.001824220704476,"climbSpeed":6.461661049903808e-8,"checkedFrames":34,"samples":[{"headY":1.636,"footY":0.129},{"headY":1.637,"footY":0.118},{"headY":1.636,"footY":0.129}]}
+{"file":"Run To Stop","key":"stop","duration":0.233,"matchedBones":65,"unitScale":0.02553865444955606,"nominalSpeed":1.1319419730059574,"climbSpeed":0.05010261720188925,"checkedFrames":15,"samples":[{"headY":1.661,"footY":0.108},{"headY":1.702,"footY":0.108},{"headY":1.699,"footY":0.108}]}
+{"file":"Run To Stop","key":"runStop","duration":0.9,"matchedBones":65,"unitScale":0.02553865444955606,"nominalSpeed":1.1319419730059574,"climbSpeed":0.05010261720188925,"checkedFrames":55,"samples":[{"headY":1.641,"footY":0.133},{"headY":1.475,"footY":0.107},{"headY":1.694,"footY":0.108}]}
+FBXLoader: TGA loader not found, skipping  ../../../../home/app/mixamo-mini/tmp/skins_883db11c-af78-4b49-a12b-ee4b2630fae0.fbm/RED CLASSIC.tga
+FBXLoader: TGA loader not found, creating placeholder texture for ../../../../home/app/mixamo-mini/tmp/skins_883db11c-af78-4b49-a12b-ee4b2630fae0.fbm/RED CLASSIC.tga
+THREE.FBXLoader: Vertex has more than 4 skinning weights assigned to vertex. Deleting additional weights.
+file:///Users/choeminseong/Desktop/%E1%84%80%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%B7/src/Character.js:1150
+    const outward=new THREE.Vector3(side==='left'?-.65:.65,-.6,.15).applyQuaternion(this.model.getWorldQuaternion(new THREE.Quaternion()));
+                                                                                               ^
+
+TypeError: Cannot read properties of undefined (reading 'getWorldQuaternion')
+    at Character.reachWebAnchor (file:///Users/choeminseong/Desktop/%E1%84%80%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%B7/src/Character.js:1150:96)
+    at file:///Users/choeminseong/Desktop/%E1%84%80%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%B7/scripts/check-motions.mjs:75:31
+
+Node.js v22.19.0

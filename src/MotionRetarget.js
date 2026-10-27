@@ -82,8 +82,25 @@ export function prepareMotion(clip, key, bones, item={}) {
     const base=combatBases.get(Object.values(bones).find(b=>boneId(b.name)==='hips'));
     if(base)clip=choreographCombat(base,key,bones,boneId);
   }
-  if(item.authoredMixamo && ['jab','cross'].includes(key))
+  if(item.authoredMixamo && ['jab','cross'].includes(key)) {
+    const original=item.mirror?clip.clone():null;
     clip=compactStraightBody(clip,combatBases.get(Object.values(bones).find(b=>boneId(b.name)==='hips')),key,boneId);
+    if(original){
+      // Keep the reflected fist orientation while fitting its body and boots
+      // to the game's guard. Replacing the torso alone rotates the whole arm.
+      const nodes=Object.values(bones),saved=nodes.map(n=>({n,p:n.position.clone(),q:n.quaternion.clone()}));
+      let root=nodes.find(n=>boneId(n.name)==='hips');while(root.parent)root=root.parent;
+      const apply=(take,time)=>{for(const track of take.tracks){const [name,property]=track.name.split('.'),bone=bones[name];if(bone)bone[property].fromArray(track.createInterpolant().evaluate(time));}root.updateMatrixWorld(true);};
+      for(const side of ['left','right']){
+        const arm=nodes.find(n=>boneId(n.name)===side+'shoulder'),track=clip.tracks.find(t=>t.name===arm.name+'.quaternion');
+        for(let i=0;i<track.times.length;i++){
+          const time=track.times[i];apply(original,time);const world=arm.getWorldQuaternion(new THREE.Quaternion());
+          apply(clip,time);arm.parent.getWorldQuaternion(new THREE.Quaternion()).invert().multiply(world).normalize().toArray(track.values,i*4);
+        }
+      }
+      saved.forEach(({n,p,q})=>{n.position.copy(p);n.quaternion.copy(q);});root.updateMatrixWorld(true);
+    }
+  }
   if (key === 'turnLeft' || key === 'turnRight') {
     // Let the controller own heading; remove authored pelvis yaw so it is
     // not added a second time to the model's turn.
@@ -174,7 +191,7 @@ export function prepareMotion(clip, key, bones, item={}) {
 // Bake Mixamo source world-space rotations into the target's local axes.
 // FBX and GLB roots use different units and coordinate systems; track renaming
 // alone is not retargeting (in particular, GLB Hips is rotated -90 degrees).
-export function retargetMotion(target, source, clip, fps = 30) {
+export function retargetMotion(target, source, clip, fps = 30, mirror = false) {
   const targetBones = [], sourceBones = new Map();
   target.traverse(n => { if (n.isBone) targetBones.push(n); });
   source.traverse(n => { if (n.isBone) sourceBones.set(boneId(n.name), n); });
@@ -189,7 +206,9 @@ export function retargetMotion(target, source, clip, fps = 30) {
   target.updateMatrixWorld(true);
   source.updateMatrixWorld(true);
   const pairs = targetBones.map(t => {
-    const s = sourceBones.get(boneId(t.name));
+    const id=boneId(t.name);
+    const sourceId=mirror?id.replace(/^(left|right)/,side=>side==='left'?'right':'left'):id;
+    const s = sourceBones.get(sourceId);
     return s && { t, s, targetRest: t.getWorldQuaternion(new THREE.Quaternion()),
       sourceInverse: s.getWorldQuaternion(new THREE.Quaternion()).invert(),
       position: t.position.clone(), rotation: t.quaternion.clone(), scale: t.scale.clone(),
@@ -202,7 +221,9 @@ export function retargetMotion(target, source, clip, fps = 30) {
   // These are all Mixamo rigs with the same joint-axis convention, but the
   // target was exported in an A-pose and most sources in a T-pose. Per-joint
   // rest deltas would keep that A-pose offset and fold arms into the torso.
-  const rootAlignment = hips.targetRest.clone().multiply(hips.sourceInverse);
+  const sourceRest=hips.s.getWorldQuaternion(new THREE.Quaternion());
+  if(mirror){sourceRest.y*=-1;sourceRest.z*=-1;}
+  const rootAlignment = hips.targetRest.clone().multiply(sourceRest.invert());
   const mesh2motion = hips.s.name === 'pelvis';
   if(mesh2motion && !clip.name.includes('Climb Wall')) {
     // This target binds its arms down in an A pose; the source binds in a T
@@ -238,6 +259,9 @@ export function retargetMotion(target, source, clip, fps = 30) {
     rootSamples.push(hips.s.getWorldPosition(new THREE.Vector3()));
     for (const p of pairs) {
       const sourceWorld=p.s.getWorldQuaternion(new THREE.Quaternion());
+      // Reflect in source world space before retargeting; local bone axes
+      // differ between the two arms and cannot simply be sign-flipped.
+      if(mirror){sourceWorld.y*=-1;sourceWorld.z*=-1;}
       const world = mesh2motion
         ? sourceWorld.multiply(p.sourceInverse).multiply(p.targetRest)
         : rootAlignment.clone().multiply(sourceWorld);
@@ -264,7 +288,7 @@ export function retargetMotion(target, source, clip, fps = 30) {
   mixer.stopAllAction(); mixer.uncacheRoot(source);
   const result = new THREE.AnimationClip(clip.name, clip.duration, tracks);
   const displacement = rootSamples.at(-1).clone().sub(rootSamples[0]);
-  result.userData = { matchedBones: pairs.length, unitScale: ratio,
+  result.userData = { matchedBones: pairs.length, unitScale: ratio, mirrored:mirror,
     nominalSpeed: Math.hypot(displacement.x,displacement.z) * ratio / clip.duration,
     climbSpeed:Math.abs(displacement.y)*ratio/clip.duration,
     rootMotion: rootSamples.map((p,i) => ({time:times[i],distance:Math.hypot(p.x-rootSamples[0].x,p.z-rootSamples[0].z)*ratio})) };

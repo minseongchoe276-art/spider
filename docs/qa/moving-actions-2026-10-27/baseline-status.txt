@@ -1,0 +1,251 @@
+ M MOTION_REVIEW.md
+ M README.md
+ M docs/qa/all-motions-2026-10-15/all-motion-results.json
+ M docs/qa/all-motions-2026-10-15/coverage.json
+ M docs/qa/all-motions-2026-10-15/source-coverage.json
+ M docs/qa/appearances-2026-10-19/results.json
+ M docs/qa/combat-feet-2026-10-19/results.json
+ M docs/qa/combat-roll-2026-10-21/recovery.json
+ M docs/qa/complete-motion-2026-10-19/appearance-motion-results.json
+ M docs/qa/eight-player-2026-10-21/motion-sync.json
+ M docs/qa/expanded-motion-2026-10-19/input-camera-results.json
+ M docs/qa/expanded-motion-2026-10-19/terrain-motion-results.json
+ M docs/qa/joint-stability-2026-10-20/results.json
+ M docs/qa/motion-adversarial-2026-10-25/interruptions.json
+ M docs/qa/motion-adversarial-2026-10-25/runtime.json
+ M docs/qa/motion-audit/samples.json
+ M docs/qa/motion-cleanup-2026-10-15/results.json
+ M docs/qa/motion-quality-2026-10-13/transitions.json
+ M docs/qa/motion-selection-2026-10-25/selection-results.json
+ M docs/qa/silk-gait-2026-10-15/results.json
+ M docs/qa/stance-combat-2026-10-26/adversarial-rerun/runtime.json
+ M docs/qa/stance-combat-2026-10-26/crouch-front.png
+ M docs/qa/stance-combat-2026-10-26/joint-rerun/results.json
+ M docs/qa/stance-combat-2026-10-26/moving-cross-side.png
+ M docs/qa/stance-combat-2026-10-26/pose-source.json
+ M docs/qa/stance-combat-2026-10-26/poses.json
+ D docs/qa/stance-combat-2026-10-26/prone-side.png
+ M docs/qa/stance-combat-2026-10-26/results.json
+ M docs/qa/stance-combat-2026-10-26/review.html
+ M docs/qa/stance-combat-2026-10-26/review.md
+ M docs/qa/traversal-polish-2026-10-26/build.log
+ M docs/qa/traversal-polish-2026-10-26/final-audit.log
+ M docs/qa/traversal-polish-2026-10-26/final/motion-reset.log
+ M docs/qa/traversal-polish-2026-10-26/final/suite-results.json
+ M docs/qa/traversal-polish-2026-10-26/handoffs.json
+ M docs/qa/traversal-polish-2026-10-26/handoffs.log
+ M docs/qa/turn-joints-2026-10-20/results.json
+ M docs/qa/wall-crawl-views-2026-10-15/results.json
+ M docs/qa/web-hand-pose-2026-10-15/results.json
+ M index.html
+ M package.json
+ M public/motions/airTrick.json
+ M public/motions/combatIdle.json
+ M public/motions/cross.json
+ M public/motions/drop.json
+ M public/motions/fall.json
+ M public/motions/fallIdle.json
+ M public/motions/fallVariant.json
+ M public/motions/guard.json
+ M public/motions/heavy.json
+ M public/motions/hitHead.json
+ M public/motions/hook.json
+ M public/motions/idle.json
+ M public/motions/injuredIdle.json
+ M public/motions/jab.json
+ M public/motions/jump.json
+ M public/motions/jumpDown.json
+ M public/motions/jumpDownVariant.json
+ M public/motions/land.json
+ M public/motions/manifest.json
+ M public/motions/regularRun.json
+ M public/motions/rightHook.json
+ M public/motions/roll.json
+ M public/motions/run.json
+ M public/motions/runStop.json
+ M public/motions/slam.json
+ M public/motions/slamLand.json
+ M public/motions/special.json
+ M public/motions/stop.json
+ M public/motions/swing.json
+ M public/motions/turnLeft.json
+ M public/motions/turnRight.json
+ M public/motions/walk.json
+ M public/motions/wall.json
+ M public/motions/zip.json
+ M scripts/check-air-tricks.mjs
+ M scripts/check-all-motions.mjs
+ M scripts/check-camera-motion-web.mjs
+ M scripts/check-combat-roll-recovery.mjs
+ M scripts/check-controller.mjs
+ M scripts/check-drop-motion.mjs
+ M scripts/check-expanded-input-camera.mjs
+ M scripts/check-expanded-terrain-motion.mjs
+ M scripts/check-expert-audit.mjs
+ M scripts/check-expert-recovery.mjs
+ M scripts/check-input-lifecycle.mjs
+ M scripts/check-low-stance.mjs
+ M scripts/check-motion-cleanup.mjs
+ M scripts/check-motion-combinations.mjs
+ M scripts/check-motion-selection.mjs
+ M scripts/check-stance-combat.mjs
+ M scripts/check-touch-controls.mjs
+ M scripts/check-traversal-handoffs.mjs
+ M scripts/export-stance-review.mjs
+ M src/AirTricks.js
+ M src/Camera.js
+ M src/Character.js
+ M src/CharacterPose.js
+ M src/Combat.js
+ M src/CombatFeedback.js
+ M src/CombatPractice.js
+ M src/GamepadInput.js
+ M src/LowStance.js
+ M src/MotionCatalog.js
+ M src/MotionRetarget.js
+ M src/PlayerExperience.js
+ M src/PlayerSettings.js
+ M src/RemoteMotion.js
+ M src/SettingsPanel.js
+ M src/SwingPhysics.js
+ M src/TouchControls.js
+ M src/TraversalPlaytest.js
+ M src/VitalsHud.js
+ M src/locales/en.js
+ M src/main.js
+ M src/player-ui.css
+?? docs/qa/mode-controls-2026-10-27/
+?? docs/qa/stance-combat-2026-10-26/logs/
+?? docs/qa/stance-combat-2026-10-26/validation-summary.json
+?? docs/qa/traversal-polish-2026-10-26/after-peak-frames.png
+?? docs/qa/traversal-polish-2026-10-26/before-peak-frames.png
+?? docs/qa/traversal-polish-2026-10-26/browser-all-clips.json
+?? docs/qa/traversal-polish-2026-10-26/browser-playtest-final.png
+?? docs/qa/traversal-polish-2026-10-26/browser-playtest.json
+?? docs/qa/traversal-polish-2026-10-26/current-final.log
+?? docs/qa/traversal-polish-2026-10-26/current-final/
+?? docs/qa/traversal-polish-2026-10-26/delivered-all-motions.log
+?? docs/qa/traversal-polish-2026-10-26/delivered-combinations.log
+?? docs/qa/traversal-polish-2026-10-26/delivered-expanded-terrain-motion.log
+?? docs/qa/traversal-polish-2026-10-26/delivered-full-appearance-motions.log
+?? docs/qa/traversal-polish-2026-10-26/delivered-handoffs.log
+?? docs/qa/traversal-polish-2026-10-26/delivered-motion-adversarial.log
+?? docs/qa/traversal-polish-2026-10-26/delivered-motion-cleanup.log
+?? docs/qa/traversal-polish-2026-10-26/delivered-motion-combinations.log
+?? docs/qa/traversal-polish-2026-10-26/delivered-motion-reset.log
+?? docs/qa/traversal-polish-2026-10-26/delivered-reset.log
+?? docs/qa/traversal-polish-2026-10-26/delivered-source-integrity.json
+?? docs/qa/traversal-polish-2026-10-26/delivered-traversal-handoffs.log
+?? docs/qa/traversal-polish-2026-10-26/delivered-validation.json
+?? docs/qa/traversal-polish-2026-10-26/delivered-validation.log
+?? docs/qa/traversal-polish-2026-10-26/delivered-wall.log
+?? docs/qa/traversal-polish-2026-10-26/delivered-web-continuity.log
+?? docs/qa/traversal-polish-2026-10-26/delivered-web-hand-pose.log
+?? docs/qa/traversal-polish-2026-10-26/delivered-web-hand.log
+?? docs/qa/traversal-polish-2026-10-26/expanded-terrain-final.log
+?? docs/qa/traversal-polish-2026-10-26/final-combat-roll-recovery.log
+?? docs/qa/traversal-polish-2026-10-26/final-combat-traversal.log
+?? docs/qa/traversal-polish-2026-10-26/final-gate.json
+?? docs/qa/traversal-polish-2026-10-26/final-motion-combinations.log
+?? docs/qa/traversal-polish-2026-10-26/final-motion-frames-1.png
+?? docs/qa/traversal-polish-2026-10-26/final-motion-frames-2.png
+?? docs/qa/traversal-polish-2026-10-26/final-motion-frames-3.png
+?? docs/qa/traversal-polish-2026-10-26/final-motion-frames-4.png
+?? docs/qa/traversal-polish-2026-10-26/final-motion-frames-5.png
+?? docs/qa/traversal-polish-2026-10-26/final-motion-frames-6.png
+?? docs/qa/traversal-polish-2026-10-26/final-motion-interruptions.log
+?? docs/qa/traversal-polish-2026-10-26/final-recorded-joints.log
+?? docs/qa/traversal-polish-2026-10-26/final-recorded-reset.log
+?? docs/qa/traversal-polish-2026-10-26/final-recorded-wall.log
+?? docs/qa/traversal-polish-2026-10-26/final-recorded-web-hand.log
+?? docs/qa/traversal-polish-2026-10-26/final-roof-cleanup.log
+?? docs/qa/traversal-polish-2026-10-26/final-roof-joints.log
+?? docs/qa/traversal-polish-2026-10-26/final-roof-reset.log
+?? docs/qa/traversal-polish-2026-10-26/final-smooth-combat-feet.log
+?? docs/qa/traversal-polish-2026-10-26/final-source-integrity.json
+?? docs/qa/traversal-polish-2026-10-26/final-web-continuity.log
+?? docs/qa/traversal-polish-2026-10-26/final/combat-roll-recovery.log
+?? docs/qa/traversal-polish-2026-10-26/fixture-reruns.json
+?? docs/qa/traversal-polish-2026-10-26/gate-all-motions.log
+?? docs/qa/traversal-polish-2026-10-26/gate-expanded-terrain-motion.log
+?? docs/qa/traversal-polish-2026-10-26/gate-full-appearance-motions.log
+?? docs/qa/traversal-polish-2026-10-26/gate-motion-adversarial.log
+?? docs/qa/traversal-polish-2026-10-26/gate-motion-cleanup.log
+?? docs/qa/traversal-polish-2026-10-26/gate-motion-combinations.log
+?? docs/qa/traversal-polish-2026-10-26/gate-motion-reset.log
+?? docs/qa/traversal-polish-2026-10-26/gate-traversal-handoffs.log
+?? docs/qa/traversal-polish-2026-10-26/gate-web-continuity.log
+?? docs/qa/traversal-polish-2026-10-26/gate-web-hand-pose.log
+?? docs/qa/traversal-polish-2026-10-26/knee-natural-wall.log
+?? docs/qa/traversal-polish-2026-10-26/knee-reset.log
+?? docs/qa/traversal-polish-2026-10-26/knee-wall-ledge.log
+?? docs/qa/traversal-polish-2026-10-26/last-end-joint-stability.log
+?? docs/qa/traversal-polish-2026-10-26/last-expanded-terrain-motion.log
+?? docs/qa/traversal-polish-2026-10-26/last-motion-cleanup.log
+?? docs/qa/traversal-polish-2026-10-26/last-motion-interruptions.log
+?? docs/qa/traversal-polish-2026-10-26/last-motion-reset.log
+?? docs/qa/traversal-polish-2026-10-26/last-traversal-handoffs.log
+?? docs/qa/traversal-polish-2026-10-26/last-web-continuity.log
+?? docs/qa/traversal-polish-2026-10-26/last-web-hand-pose.log
+?? docs/qa/traversal-polish-2026-10-26/latest-clone-regressions.json
+?? docs/qa/traversal-polish-2026-10-26/latest-full-appearance-motions.log
+?? docs/qa/traversal-polish-2026-10-26/latest-motion-reset.log
+?? docs/qa/traversal-polish-2026-10-26/latest-online-motion-sync.log
+?? docs/qa/traversal-polish-2026-10-26/latest-online-stance.log
+?? docs/qa/traversal-polish-2026-10-26/latest-remote-motion.log
+?? docs/qa/traversal-polish-2026-10-26/low-stance.log
+?? docs/qa/traversal-polish-2026-10-26/motion-after.webm
+?? docs/qa/traversal-polish-2026-10-26/motion-before.webm
+?? docs/qa/traversal-polish-2026-10-26/motion-coverage.md
+?? docs/qa/traversal-polish-2026-10-26/motion-final.webm
+?? docs/qa/traversal-polish-2026-10-26/motion-review.html
+?? docs/qa/traversal-polish-2026-10-26/motions-1.png
+?? docs/qa/traversal-polish-2026-10-26/motions-10.png
+?? docs/qa/traversal-polish-2026-10-26/motions-11.png
+?? docs/qa/traversal-polish-2026-10-26/motions-2.png
+?? docs/qa/traversal-polish-2026-10-26/motions-3.png
+?? docs/qa/traversal-polish-2026-10-26/motions-4.png
+?? docs/qa/traversal-polish-2026-10-26/motions-5.png
+?? docs/qa/traversal-polish-2026-10-26/motions-6.png
+?? docs/qa/traversal-polish-2026-10-26/motions-7.png
+?? docs/qa/traversal-polish-2026-10-26/motions-8.png
+?? docs/qa/traversal-polish-2026-10-26/motions-9.png
+?? docs/qa/traversal-polish-2026-10-26/new-air-tricks.log
+?? docs/qa/traversal-polish-2026-10-26/new-catalog-sources.log
+?? docs/qa/traversal-polish-2026-10-26/post-recording-source.json
+?? docs/qa/traversal-polish-2026-10-26/post-recording-validation.json
+?? docs/qa/traversal-polish-2026-10-26/recorded-motion-after.json
+?? docs/qa/traversal-polish-2026-10-26/recorded-motion-before.json
+?? docs/qa/traversal-polish-2026-10-26/recorded-motion-final.json
+?? docs/qa/traversal-polish-2026-10-26/recorded-motion-roof-final.json
+?? docs/qa/traversal-polish-2026-10-26/recording-end-joint-stability.log
+?? docs/qa/traversal-polish-2026-10-26/recording-final.json
+?? docs/qa/traversal-polish-2026-10-26/recording-motion-cleanup.log
+?? docs/qa/traversal-polish-2026-10-26/recording-natural-wall-motion.log
+?? docs/qa/traversal-polish-2026-10-26/recording-regressions.json
+?? docs/qa/traversal-polish-2026-10-26/recording-wall-crawl.log
+?? docs/qa/traversal-polish-2026-10-26/recording-wall-head-clearance.log
+?? docs/qa/traversal-polish-2026-10-26/rendered-entry-interruptions.log
+?? docs/qa/traversal-polish-2026-10-26/rendered-entry-reset.log
+?? docs/qa/traversal-polish-2026-10-26/rendered-entry-transitions.log
+?? docs/qa/traversal-polish-2026-10-26/snapshot-match.json
+?? docs/qa/traversal-polish-2026-10-26/stance-combat.log
+?? docs/qa/traversal-polish-2026-10-26/verified-snapshot.log
+?? docs/qa/traversal-polish-2026-10-26/verified-snapshot/
+?? docs/qa/traversal-polish-2026-10-26/video-after-encode.log
+?? docs/qa/traversal-polish-2026-10-26/video-encode.log
+?? docs/qa/traversal-polish-2026-10-26/video-final-encode.log
+?? docs/qa/traversal-polish-2026-10-26/visual-coverage.json
+?? docs/qa/traversal-polish-2026-10-26/wall-axis-diagnostic.json
+?? docs/qa/traversal-polish-2026-10-26/wall-axis-diagnostic.log
+?? "public/models/Falling Idle Neutral.fbx"
+?? "public/models/Falling To Landing.fbx"
+?? "public/models/Stylish Flip.fbx"
+?? public/motions/backTrick.json
+?? scripts/check-archived-motion-sources.mjs
+?? scripts/check-low-stance-online.mjs
+?? scripts/check-mode-rig.mjs
+?? scripts/diagnose-wall-exit.mjs
+?? scripts/report-mode-controls.mjs
+?? scripts/run-traversal-polish-validation.mjs
+?? scripts/validate-mode-controls.mjs

@@ -1,0 +1,424 @@
+{
+  "snapshot": "/tmp/shadow-pulse-qa-20261026",
+  "matched": false,
+  "differences": [
+    "src/Character.js"
+  ],
+  "files": [
+    {
+      "path": "index.html",
+      "hash": "956df7d3983c0c70e4072f5bdaf507845de6d20eaed75a99b3b6c4d1dd7642f8",
+      "snapshotHash": "956df7d3983c0c70e4072f5bdaf507845de6d20eaed75a99b3b6c4d1dd7642f8"
+    },
+    {
+      "path": "package.json",
+      "hash": "1db76e36369e74044d38eb22bc03e105d0f80299a57ec3cd6c70f970446d53af",
+      "snapshotHash": "1db76e36369e74044d38eb22bc03e105d0f80299a57ec3cd6c70f970446d53af"
+    },
+    {
+      "path": "src/AdminConsole.js",
+      "hash": "d8d50ee36482b734e0b4619840eca40ab76e86df69231f05ea9377bc4878fbd0",
+      "snapshotHash": "d8d50ee36482b734e0b4619840eca40ab76e86df69231f05ea9377bc4878fbd0"
+    },
+    {
+      "path": "src/AirTricks.js",
+      "hash": "5b6360428f45d3576fffce753174485b63c5022e77ad2f5444b1b7172ce583b9",
+      "snapshotHash": "5b6360428f45d3576fffce753174485b63c5022e77ad2f5444b1b7172ce583b9"
+    },
+    {
+      "path": "src/AssetLoader.js",
+      "hash": "bb5d7f719cd1bca9bf94c2396cb507f4d76c18ce3f365d9e31591e7657479bd2",
+      "snapshotHash": "bb5d7f719cd1bca9bf94c2396cb507f4d76c18ce3f365d9e31591e7657479bd2"
+    },
+    {
+      "path": "src/AttackRules.js",
+      "hash": "54fc57b57e19ddb6fe9b46da3b2796f3a67ee65c499e16a6106b7248d2eb578a",
+      "snapshotHash": "54fc57b57e19ddb6fe9b46da3b2796f3a67ee65c499e16a6106b7248d2eb578a"
+    },
+    {
+      "path": "src/Audio.js",
+      "hash": "3c64c5c4b4a8662d5828a61e3c34f3e3872456ffdec1a7fe8b6205f47ad95674",
+      "snapshotHash": "3c64c5c4b4a8662d5828a61e3c34f3e3872456ffdec1a7fe8b6205f47ad95674"
+    },
+    {
+      "path": "src/AuditMetrics.js",
+      "hash": "98e189f8cd611b17d387eee53a29d9f8204506e99042ab5a27246e714b3fab09",
+      "snapshotHash": "98e189f8cd611b17d387eee53a29d9f8204506e99042ab5a27246e714b3fab09"
+    },
+    {
+      "path": "src/Camera.js",
+      "hash": "40a50108a615acacb2b13035ff8b0053459f5e939b1b8362fb800d0e1e789310",
+      "snapshotHash": "40a50108a615acacb2b13035ff8b0053459f5e939b1b8362fb800d0e1e789310"
+    },
+    {
+      "path": "src/Character.js",
+      "hash": "61379155c9e20bbc31f8852729bcfada7efcda853c85448d285254cd4673e778",
+      "snapshotHash": "272bb20917a5d5c2b033b8a7e4594fee5a1cde7023cae6ddbe046f73ee2a0256"
+    },
+    {
+      "path": "src/CharacterAppearance.js",
+      "hash": "d611709c950fa91debadc4e59ed64af068c2f2a593eb6d4f4e69b00c93c52af0",
+      "snapshotHash": "d611709c950fa91debadc4e59ed64af068c2f2a593eb6d4f4e69b00c93c52af0"
+    },
+    {
+      "path": "src/CharacterPose.js",
+      "hash": "05b3d4d6a367d130e220fb229e9749b5d5e3cf57d1241a0527037e3cde498846",
+      "snapshotHash": "05b3d4d6a367d130e220fb229e9749b5d5e3cf57d1241a0527037e3cde498846"
+    },
+    {
+      "path": "src/City.js",
+      "hash": "4789fbd6a8706d0f1ef09704e4fc21801be79dfecdc9a9a5df1c99330c9a2903",
+      "snapshotHash": "4789fbd6a8706d0f1ef09704e4fc21801be79dfecdc9a9a5df1c99330c9a2903"
+    },
+    {
+      "path": "src/CitySelection.js",
+      "hash": "47ce6f848a96e3e6e414f6e3901bbb0b26147abaf1036c6b31f7ea1b207e80fe",
+      "snapshotHash": "47ce6f848a96e3e6e414f6e3901bbb0b26147abaf1036c6b31f7ea1b207e80fe"
+    },
+    {
+      "path": "src/Combat.js",
+      "hash": "91c51cbc9bfcc16ecfb4c05b732026b052cc0b0ad18c7470357623eb9f3a6369",
+      "snapshotHash": "91c51cbc9bfcc16ecfb4c05b732026b052cc0b0ad18c7470357623eb9f3a6369"
+    },
+    {
+      "path": "src/CombatAim.js",
+      "hash": "00d1bd21e0972c6ef29c7faab035973b206f45976eed8cfcf4877e0700b8dd74",
+      "snapshotHash": "00d1bd21e0972c6ef29c7faab035973b206f45976eed8cfcf4877e0700b8dd74"
+    },
+    {
+      "path": "src/CombatChoreography.js",
+      "hash": "78514c4ab430601040317c7e969ef423fe72feca1608e4090a5290ce954d9dd1",
+      "snapshotHash": "78514c4ab430601040317c7e969ef423fe72feca1608e4090a5290ce954d9dd1"
+    },
+    {
+      "path": "src/CombatFeedback.js",
+      "hash": "c8b5519f7a298360faeac8814f99f722f36e6adc30974c708ed4822e83610421",
+      "snapshotHash": "c8b5519f7a298360faeac8814f99f722f36e6adc30974c708ed4822e83610421"
+    },
+    {
+      "path": "src/CombatPractice.js",
+      "hash": "59ef41a780c82b3e2c02077d8cc137fb98749bfd707a7d22ae691962fe754100",
+      "snapshotHash": "59ef41a780c82b3e2c02077d8cc137fb98749bfd707a7d22ae691962fe754100"
+    },
+    {
+      "path": "src/CombatReview.js",
+      "hash": "089d3ded77e69201854c84e4f0b7187d929197f571b34e29944d9dce84afe129",
+      "snapshotHash": "089d3ded77e69201854c84e4f0b7187d929197f571b34e29944d9dce84afe129"
+    },
+    {
+      "path": "src/CombatReviewPose.js",
+      "hash": "e5b37ef6e9ae28b5bb449571e55b321a45bd32772a70ca897d052be6671d2ed9",
+      "snapshotHash": "e5b37ef6e9ae28b5bb449571e55b321a45bd32772a70ca897d052be6671d2ed9"
+    },
+    {
+      "path": "src/DisplayMode.js",
+      "hash": "04aba93e59382916af45accf81bcfa039e6c65906b6b27f4600102bfe1acc823",
+      "snapshotHash": "04aba93e59382916af45accf81bcfa039e6c65906b6b27f4600102bfe1acc823"
+    },
+    {
+      "path": "src/DistrictLayout.js",
+      "hash": "ebf86f17343fe23113e18cee3fd50c1a4b16bfef569398030bd9d500c2d4b1b1",
+      "snapshotHash": "ebf86f17343fe23113e18cee3fd50c1a4b16bfef569398030bd9d500c2d4b1b1"
+    },
+    {
+      "path": "src/EffectsReview.js",
+      "hash": "d648c47f38d699ab4db907b27610d45f10e1d2e5528f0963974b1fd19bc7a1ab",
+      "snapshotHash": "d648c47f38d699ab4db907b27610d45f10e1d2e5528f0963974b1fd19bc7a1ab"
+    },
+    {
+      "path": "src/ForwardRoll.js",
+      "hash": "9e0aa186b09586dde97d9e271ee3a1c08110b859413147aade3b3b980971c89b",
+      "snapshotHash": "9e0aa186b09586dde97d9e271ee3a1c08110b859413147aade3b3b980971c89b"
+    },
+    {
+      "path": "src/GamepadInput.js",
+      "hash": "bdd2fc73955a6f7e8f8f95b2c5fb2f25d7f8457f437f93744000300ecdcb6e35",
+      "snapshotHash": "bdd2fc73955a6f7e8f8f95b2c5fb2f25d7f8457f437f93744000300ecdcb6e35"
+    },
+    {
+      "path": "src/HongKongAudit.js",
+      "hash": "e549e2619b1fcbe8e7e781df176f2c8363ebe8092aa4109c7bf9e914fada3345",
+      "snapshotHash": "e549e2619b1fcbe8e7e781df176f2c8363ebe8092aa4109c7bf9e914fada3345"
+    },
+    {
+      "path": "src/HudLayout.js",
+      "hash": "a078ee64cd114a21feaa3c73a9659ae590a9cfe126d670e19e37834bcef6c31f",
+      "snapshotHash": "a078ee64cd114a21feaa3c73a9659ae590a9cfe126d670e19e37834bcef6c31f"
+    },
+    {
+      "path": "src/I18n.js",
+      "hash": "b400a008bac99c5cc8d8b6791e3945a9fa8c5d76bfcd9fe9925c330179b90354",
+      "snapshotHash": "b400a008bac99c5cc8d8b6791e3945a9fa8c5d76bfcd9fe9925c330179b90354"
+    },
+    {
+      "path": "src/JointConstraints.js",
+      "hash": "2a2fc25a8e6bf9e9ea3fb590dda576393db66db6c14961d5fc1c92a4526141a0",
+      "snapshotHash": "2a2fc25a8e6bf9e9ea3fb590dda576393db66db6c14961d5fc1c92a4526141a0"
+    },
+    {
+      "path": "src/LedgeTraversal.js",
+      "hash": "e65bb05f3418a0afeb1beb362f06f5f9d1bb0857c5969375cc4172cb532eb020",
+      "snapshotHash": "e65bb05f3418a0afeb1beb362f06f5f9d1bb0857c5969375cc4172cb532eb020"
+    },
+    {
+      "path": "src/LoadingStatus.js",
+      "hash": "25ad96bf4bfc7363a9ef07239316a447df30264085dbc3e58cca6ede2ed4fd52",
+      "snapshotHash": "25ad96bf4bfc7363a9ef07239316a447df30264085dbc3e58cca6ede2ed4fd52"
+    },
+    {
+      "path": "src/LobbySelection.js",
+      "hash": "2d34e5ce7abb1767b2105cc9e288de7dffef97947fbf9ae83952d0ca9a46ba27",
+      "snapshotHash": "2d34e5ce7abb1767b2105cc9e288de7dffef97947fbf9ae83952d0ca9a46ba27"
+    },
+    {
+      "path": "src/LocalCityLayout.js",
+      "hash": "e977179fddc8c4f7945245b7035c8fd4e13d58a5c550020b30a6543a5fccae58",
+      "snapshotHash": "e977179fddc8c4f7945245b7035c8fd4e13d58a5c550020b30a6543a5fccae58"
+    },
+    {
+      "path": "src/LowStance.js",
+      "hash": "c3b75857a676c99d6dc0da935e887f6b9c80fefa28726512e98919b724343be0",
+      "snapshotHash": "c3b75857a676c99d6dc0da935e887f6b9c80fefa28726512e98919b724343be0"
+    },
+    {
+      "path": "src/MapCatalog.js",
+      "hash": "10d5c5f3dd7e2dde265d5f7835a6ee7f2d61a52d5b6bc0dff7e0939c1609b343",
+      "snapshotHash": "10d5c5f3dd7e2dde265d5f7835a6ee7f2d61a52d5b6bc0dff7e0939c1609b343"
+    },
+    {
+      "path": "src/MatchRules.js",
+      "hash": "ad47d29a6cdfd4b57ae429137cb8a7f9c396d7347ca0f5d8a4d319f5b07d28c0",
+      "snapshotHash": "ad47d29a6cdfd4b57ae429137cb8a7f9c396d7347ca0f5d8a4d319f5b07d28c0"
+    },
+    {
+      "path": "src/Minimap.js",
+      "hash": "bd35204828a2d0ef54f0324893e2cfc531619427b65d4955dd32adc363e3ed6c",
+      "snapshotHash": "bd35204828a2d0ef54f0324893e2cfc531619427b65d4955dd32adc363e3ed6c"
+    },
+    {
+      "path": "src/MissionRules.js",
+      "hash": "9a9537a942d2d2872b6f62a39b912924da2203c6d8b145c0231d8003ab5c377f",
+      "snapshotHash": "9a9537a942d2d2872b6f62a39b912924da2203c6d8b145c0231d8003ab5c377f"
+    },
+    {
+      "path": "src/MixamoMotion.js",
+      "hash": "8e3b0d98e5b7ebe289fa36c0ddafa5ed276be26ef498abb164f680d1e217da50",
+      "snapshotHash": "8e3b0d98e5b7ebe289fa36c0ddafa5ed276be26ef498abb164f680d1e217da50"
+    },
+    {
+      "path": "src/MobileTraversal.js",
+      "hash": "86c965b9c2e705fcee6f4bc0eb07d4771fef4c1fc88c4d6b968de0cc48a8fe8e",
+      "snapshotHash": "86c965b9c2e705fcee6f4bc0eb07d4771fef4c1fc88c4d6b968de0cc48a8fe8e"
+    },
+    {
+      "path": "src/MotionAuditReview.js",
+      "hash": "ed766e237cd1b3f820ee02409d670f8d4f6e602202ebbb8ef2c0db5cadbe4bdc",
+      "snapshotHash": "ed766e237cd1b3f820ee02409d670f8d4f6e602202ebbb8ef2c0db5cadbe4bdc"
+    },
+    {
+      "path": "src/MotionCatalog.js",
+      "hash": "f40e5f6be484cdc0303b6c8b9f5a4922627bd0f010c2a3e59d97298e3bc863ac",
+      "snapshotHash": "f40e5f6be484cdc0303b6c8b9f5a4922627bd0f010c2a3e59d97298e3bc863ac"
+    },
+    {
+      "path": "src/MotionQualityReview.js",
+      "hash": "84a99a451df55cf0acee48dfbd68fd6091dfc88cc1c89cc68ccaec06af6d6ec2",
+      "snapshotHash": "84a99a451df55cf0acee48dfbd68fd6091dfc88cc1c89cc68ccaec06af6d6ec2"
+    },
+    {
+      "path": "src/MotionRetarget.js",
+      "hash": "80f18f640387a2a1e85a62f0c4af4646493768c893628a9c518af6c22c600dc7",
+      "snapshotHash": "80f18f640387a2a1e85a62f0c4af4646493768c893628a9c518af6c22c600dc7"
+    },
+    {
+      "path": "src/MotionReview.js",
+      "hash": "0dbebe8852922248245e46cfe49ebc5166ba0f655466aefc965e8d83582543b1",
+      "snapshotHash": "0dbebe8852922248245e46cfe49ebc5166ba0f655466aefc965e8d83582543b1"
+    },
+    {
+      "path": "src/MovementCollision.js",
+      "hash": "6ef229e28dab111ee88cf2d1ce9fbeb0e28744eb10ab18de13652ac794986f51",
+      "snapshotHash": "6ef229e28dab111ee88cf2d1ce9fbeb0e28744eb10ab18de13652ac794986f51"
+    },
+    {
+      "path": "src/Multiplayer.js",
+      "hash": "5180e4770b2be6d7c2f650cdc95d8b3f83ddf88fbe8b61b0b60f674bac5b9a9e",
+      "snapshotHash": "5180e4770b2be6d7c2f650cdc95d8b3f83ddf88fbe8b61b0b60f674bac5b9a9e"
+    },
+    {
+      "path": "src/NetworkHealth.js",
+      "hash": "2b4937c3783d8b4eae4943d7ac7f5d7a6b6edb149948da74726883c06dc74e32",
+      "snapshotHash": "2b4937c3783d8b4eae4943d7ac7f5d7a6b6edb149948da74726883c06dc74e32"
+    },
+    {
+      "path": "src/PerformanceBudget.js",
+      "hash": "67f1e987e18103d3aca035fb6a9e64f419b5d305cfcc98ef5bd1d161a266e9be",
+      "snapshotHash": "67f1e987e18103d3aca035fb6a9e64f419b5d305cfcc98ef5bd1d161a266e9be"
+    },
+    {
+      "path": "src/PlayDiagnostics.js",
+      "hash": "7f081da634c05aaaf9bf5330504e65c66231b433f91e8f5a538e6db751c60c5a",
+      "snapshotHash": "7f081da634c05aaaf9bf5330504e65c66231b433f91e8f5a538e6db751c60c5a"
+    },
+    {
+      "path": "src/PlayStudy.js",
+      "hash": "7df99ef197252f7549055f3012c01098b86a4a35bae82e56d5de70ad40f76ca2",
+      "snapshotHash": "7df99ef197252f7549055f3012c01098b86a4a35bae82e56d5de70ad40f76ca2"
+    },
+    {
+      "path": "src/PlayerExperience.js",
+      "hash": "02940f66a3e7bba41215c08a5054bbc6673228e6c681d29575457046991598ff",
+      "snapshotHash": "02940f66a3e7bba41215c08a5054bbc6673228e6c681d29575457046991598ff"
+    },
+    {
+      "path": "src/PlayerPositionMarkers.js",
+      "hash": "ab8daba981806fdb36db465c9aad69e2cc574e6f73996916877bf79a524c4329",
+      "snapshotHash": "ab8daba981806fdb36db465c9aad69e2cc574e6f73996916877bf79a524c4329"
+    },
+    {
+      "path": "src/PlayerSettings.js",
+      "hash": "9872c353f12f7197769c9542a4faf937d6fedc9cf1adb5c1e177797ae4f40577",
+      "snapshotHash": "9872c353f12f7197769c9542a4faf937d6fedc9cf1adb5c1e177797ae4f40577"
+    },
+    {
+      "path": "src/Preferences.js",
+      "hash": "c95cf22b8b96bfeab1e26c108583f85efe1af30191453cc424dc1e604baee261",
+      "snapshotHash": "c95cf22b8b96bfeab1e26c108583f85efe1af30191453cc424dc1e604baee261"
+    },
+    {
+      "path": "src/Progression.js",
+      "hash": "6f7c071905ebc7c47c2dde530c38eab3df7b0833a33da3a2a0c96e5fa4114f54",
+      "snapshotHash": "6f7c071905ebc7c47c2dde530c38eab3df7b0833a33da3a2a0c96e5fa4114f54"
+    },
+    {
+      "path": "src/PursuitRules.js",
+      "hash": "24b23e50863d6fac782ee29f1610fc7f12cff2f4a7e4976dc70e411ae6a556fb",
+      "snapshotHash": "24b23e50863d6fac782ee29f1610fc7f12cff2f4a7e4976dc70e411ae6a556fb"
+    },
+    {
+      "path": "src/ReleaseIdentity.js",
+      "hash": "c0982e24e2171777e98b6a10605b6561613d1cd43c5565b5d620864e12335551",
+      "snapshotHash": "c0982e24e2171777e98b6a10605b6561613d1cd43c5565b5d620864e12335551"
+    },
+    {
+      "path": "src/RemoteMotion.js",
+      "hash": "ef336cd48f3c6e7e2bcf535b49033327e7678a4146a671b44d632f3e8bfc3898",
+      "snapshotHash": "ef336cd48f3c6e7e2bcf535b49033327e7678a4146a671b44d632f3e8bfc3898"
+    },
+    {
+      "path": "src/SettingsPanel.js",
+      "hash": "4c17dc6ebab0f1c5885b1d791ce225c447d365ceedbb7edaa678a9cbda6de6ef",
+      "snapshotHash": "4c17dc6ebab0f1c5885b1d791ce225c447d365ceedbb7edaa678a9cbda6de6ef"
+    },
+    {
+      "path": "src/SoloJourney.js",
+      "hash": "54db4a4b9403d00a1a452337b5f9ed1229f230079c1067cbb6b5f150437a1702",
+      "snapshotHash": "54db4a4b9403d00a1a452337b5f9ed1229f230079c1067cbb6b5f150437a1702"
+    },
+    {
+      "path": "src/SpeedLines.js",
+      "hash": "70f649a380d660f04242fb3b2a57940b67a55862272e582e90868cc4be28180d",
+      "snapshotHash": "70f649a380d660f04242fb3b2a57940b67a55862272e582e90868cc4be28180d"
+    },
+    {
+      "path": "src/StreamedCollision.js",
+      "hash": "e9cf353b5657794d94b2e21f6db54febc1b366f09a1a07cd10d65d92d50fbf0e",
+      "snapshotHash": "e9cf353b5657794d94b2e21f6db54febc1b366f09a1a07cd10d65d92d50fbf0e"
+    },
+    {
+      "path": "src/StuntSystem.js",
+      "hash": "53b39a856978cd0e1812a30ffc50f10794a224d2a28173f98d5e9edfaefefaae",
+      "snapshotHash": "53b39a856978cd0e1812a30ffc50f10794a224d2a28173f98d5e9edfaefefaae"
+    },
+    {
+      "path": "src/SupabaseRooms.js",
+      "hash": "310b092820a5b8645c9b85725d8027474fbd246f72aee25ecc82e8b482b40dac",
+      "snapshotHash": "310b092820a5b8645c9b85725d8027474fbd246f72aee25ecc82e8b482b40dac"
+    },
+    {
+      "path": "src/SwingPhysics.js",
+      "hash": "3409ca5d6c7e767a8c08cadf71c870c5dc56dd3be87db1ece6857a3b6072d9eb",
+      "snapshotHash": "3409ca5d6c7e767a8c08cadf71c870c5dc56dd3be87db1ece6857a3b6072d9eb"
+    },
+    {
+      "path": "src/TileTextures.js",
+      "hash": "bedffd13ced0ce3c126dd2b2a82d94b7ff890e486115eeace1f59910237f3b3e",
+      "snapshotHash": "bedffd13ced0ce3c126dd2b2a82d94b7ff890e486115eeace1f59910237f3b3e"
+    },
+    {
+      "path": "src/TouchControls.js",
+      "hash": "0f5bc9c240e8c339af9ed1dbfc59f33a50d3319ae73cbe3357c9817a4e25eb5f",
+      "snapshotHash": "0f5bc9c240e8c339af9ed1dbfc59f33a50d3319ae73cbe3357c9817a4e25eb5f"
+    },
+    {
+      "path": "src/TrainingOpponent.js",
+      "hash": "14856186554bbc7c3bfddd745b218e1b59ff025bcf394bb6a6514f5703ebe72b",
+      "snapshotHash": "14856186554bbc7c3bfddd745b218e1b59ff025bcf394bb6a6514f5703ebe72b"
+    },
+    {
+      "path": "src/TraversalPlaytest.js",
+      "hash": "5caa63d5991e5def1e28527fed1f836521f30611e4b47eadaea93c6de35e1681",
+      "snapshotHash": "5caa63d5991e5def1e28527fed1f836521f30611e4b47eadaea93c6de35e1681"
+    },
+    {
+      "path": "src/UrbanGroundCity.js",
+      "hash": "2ad25ad2efee845a06cc9b2623c7a1f1e4d770f4eb4f868f102d3f33970e8930",
+      "snapshotHash": "2ad25ad2efee845a06cc9b2623c7a1f1e4d770f4eb4f868f102d3f33970e8930"
+    },
+    {
+      "path": "src/VFX.js",
+      "hash": "a0f903e6a17223462b14d3552314d36a9038fc59220e499936ff0026bc88aec0",
+      "snapshotHash": "a0f903e6a17223462b14d3552314d36a9038fc59220e499936ff0026bc88aec0"
+    },
+    {
+      "path": "src/VitalsHud.js",
+      "hash": "cca02ceab20f170bb37806d0d7ea9ecb6f7bf5673d226d8baaeddf07df5d28aa",
+      "snapshotHash": "cca02ceab20f170bb37806d0d7ea9ecb6f7bf5673d226d8baaeddf07df5d28aa"
+    },
+    {
+      "path": "src/WebConstraints.js",
+      "hash": "d7947ac07084b35f90fbd9109ca4569c1a8cae1f880076a9c377282911e695dd",
+      "snapshotHash": "d7947ac07084b35f90fbd9109ca4569c1a8cae1f880076a9c377282911e695dd"
+    },
+    {
+      "path": "src/WebHandPose.js",
+      "hash": "8b08e99ae4b3bf306688479e48038ba40e0172d1f5bbce8fe3082057d7601c74",
+      "snapshotHash": "8b08e99ae4b3bf306688479e48038ba40e0172d1f5bbce8fe3082057d7601c74"
+    },
+    {
+      "path": "src/WebHandReview.js",
+      "hash": "555e073db34da2e3f85e62323d12b89ecf2feb62ef3052fbe46b6f436d5170fd",
+      "snapshotHash": "555e073db34da2e3f85e62323d12b89ecf2feb62ef3052fbe46b6f436d5170fd"
+    },
+    {
+      "path": "src/WebStrand.js",
+      "hash": "c2fc2374f02a9229a4ed122e9b3ae3e08e7449a7dc574ec6683606ed9e806f54",
+      "snapshotHash": "c2fc2374f02a9229a4ed122e9b3ae3e08e7449a7dc574ec6683606ed9e806f54"
+    },
+    {
+      "path": "src/WebSwinger.js",
+      "hash": "2573af6543bf544d20173ac5114b53c8ac15174d5838b4e891e34b2568bd49f6",
+      "snapshotHash": "2573af6543bf544d20173ac5114b53c8ac15174d5838b4e891e34b2568bd49f6"
+    },
+    {
+      "path": "src/WorldMap.js",
+      "hash": "0ed5b444eff8e58e86cf3e16f51f0726e0b30dba2637293ff8c010b2a116c136",
+      "snapshotHash": "0ed5b444eff8e58e86cf3e16f51f0726e0b30dba2637293ff8c010b2a116c136"
+    },
+    {
+      "path": "src/main.js",
+      "hash": "7b3d46826d7c1659311f00863329bd6e5e690574bb3de959b4e0a1de46dff77c",
+      "snapshotHash": "7b3d46826d7c1659311f00863329bd6e5e690574bb3de959b4e0a1de46dff77c"
+    },
+    {
+      "path": "src/player-ui.css",
+      "hash": "461f81d6d0801c1b99a152a3eed22bc6284756ee4eba650ff95577b30b1753d1",
+      "snapshotHash": "461f81d6d0801c1b99a152a3eed22bc6284756ee4eba650ff95577b30b1753d1"
+    },
+    {
+      "path": "src/style.css",
+      "hash": "f68290e9634ede118cb19bd1c4b87180bb184a73d19c82005bdfef12f9369bbb",
+      "snapshotHash": "f68290e9634ede118cb19bd1c4b87180bb184a73d19c82005bdfef12f9369bbb"
+    }
+  ]
+}

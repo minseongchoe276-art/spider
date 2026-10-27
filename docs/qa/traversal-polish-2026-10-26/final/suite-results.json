@@ -1,7 +1,7 @@
 {
-  "completed": 47,
+  "completed": 48,
   "total": 65,
-  "passed": 47,
+  "passed": 48,
   "failed": 0,
   "results": [
     {
@@ -285,6 +285,12 @@
       "pass": true,
       "exitCode": 0,
       "seconds": 44.599
+    },
+    {
+      "suite": "motion-reset",
+      "pass": true,
+      "exitCode": 0,
+      "seconds": 30.647
     }
   ]
 }

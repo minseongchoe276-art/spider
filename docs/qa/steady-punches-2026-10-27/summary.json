@@ -1,0 +1,268 @@
+{
+  "passed": 13,
+  "total": 13,
+  "preservation": {
+    "thisTaskEditedMovementOrJump": false,
+    "externalCharacterAndPhysicsChangesPreserved": true,
+    "combatIdenticalToTaskStart": true,
+    "otherMotionCatalogEntriesIdentical": true
+  },
+  "results": [
+    {
+      "suite": "steady-punches",
+      "pass": true,
+      "code": 0,
+      "seconds": 36.759
+    },
+    {
+      "suite": "strike-steering",
+      "pass": true,
+      "code": 0,
+      "seconds": 40.68
+    },
+    {
+      "suite": "combat-traversal",
+      "pass": true,
+      "code": 0,
+      "seconds": 11.103
+    },
+    {
+      "suite": "combat-quality",
+      "pass": true,
+      "code": 0,
+      "seconds": 36.249
+    },
+    {
+      "suite": "motion-combinations",
+      "pass": true,
+      "code": 0,
+      "seconds": 25.004,
+      "rerun": true,
+      "initialCode": 1,
+      "evidence": "motion-combinations-rerun.log"
+    },
+    {
+      "suite": "moving-action-input",
+      "pass": true,
+      "code": 0,
+      "seconds": 16.817
+    },
+    {
+      "suite": "online-motion-sync",
+      "pass": true,
+      "code": 0,
+      "seconds": 38.304
+    },
+    {
+      "suite": "end-joint-stability",
+      "pass": true,
+      "code": 0,
+      "seconds": 58.572
+    },
+    {
+      "suite": "motion-cleanup",
+      "pass": true,
+      "code": 0,
+      "seconds": 57.437
+    },
+    {
+      "suite": "all-motions",
+      "pass": true,
+      "code": 0,
+      "seconds": 36.916
+    },
+    {
+      "suite": "input-lifecycle",
+      "pass": true,
+      "code": 0,
+      "seconds": 0.206
+    },
+    {
+      "suite": "moving-actions-skin",
+      "pass": true,
+      "code": 0,
+      "seconds": 49.013
+    },
+    {
+      "suite": "moving-actions",
+      "pass": true,
+      "code": 0,
+      "seconds": 308.519
+    }
+  ],
+  "comparison60fps": [
+    {
+      "fps": 60,
+      "key": "jab",
+      "moving": false,
+      "before": {
+        "headSway": 0.08055012926261208,
+        "angularTravel": 86.45477737675317,
+        "peakStep": 5.396763579086904,
+        "reach": 0.5391196675344965
+      },
+      "after": {
+        "headSway": 0.02096027296869045,
+        "angularTravel": 26.44024823428077,
+        "peakStep": 1.947535716578851,
+        "reach": 0.5433797668076228
+      }
+    },
+    {
+      "fps": 60,
+      "key": "jab",
+      "moving": true,
+      "before": {
+        "headSway": 0.1074980402886994,
+        "angularTravel": 86.01334617687674,
+        "peakStep": 5.3967611822201516,
+        "reach": 0.536862518299059
+      },
+      "after": {
+        "headSway": 0.03534958086774183,
+        "angularTravel": 26.809802855721696,
+        "peakStep": 1.9475362176510196,
+        "reach": 0.5443685786584025
+      }
+    },
+    {
+      "fps": 60,
+      "key": "cross",
+      "moving": false,
+      "before": {
+        "headSway": 0.33874710016202186,
+        "angularTravel": 209.36466140181255,
+        "peakStep": 8.68131052298091,
+        "reach": 0.541636671371496
+      },
+      "after": {
+        "headSway": 0.07865720200787393,
+        "angularTravel": 91.68522019488611,
+        "peakStep": 3.750811526687494,
+        "reach": 0.5418311555864517
+      }
+    },
+    {
+      "fps": 60,
+      "key": "cross",
+      "moving": true,
+      "before": {
+        "headSway": 0.32379500808869255,
+        "angularTravel": 222.5865109328111,
+        "peakStep": 10.713773766776608,
+        "reach": 0.5453288756482717
+      },
+      "after": {
+        "headSway": 0.08020873496757308,
+        "angularTravel": 91.95007391713318,
+        "peakStep": 3.750811882715032,
+        "reach": 0.5415635576476658
+      }
+    }
+  ],
+  "limits": "Numerical/finite scenario coverage plus sampled browser poses; not all-frame artistic or physical-device certification.",
+  "initialRunSourceStable": true,
+  "lateExternalChanges": [
+    "src/Character.js",
+    "src/CharacterPose.js"
+  ],
+  "replayValidation": {
+    "completed": 6,
+    "total": 6,
+    "passed": 6,
+    "results": [
+      {
+        "suite": "steady-punches",
+        "pass": true,
+        "code": 0,
+        "seconds": 96.695
+      },
+      {
+        "suite": "strike-steering",
+        "pass": true,
+        "code": 0,
+        "seconds": 111.979
+      },
+      {
+        "suite": "moving-action-input",
+        "pass": true,
+        "code": 0,
+        "seconds": 74.96
+      },
+      {
+        "suite": "motion-combinations",
+        "pass": true,
+        "code": 0,
+        "seconds": 140.373
+      },
+      {
+        "suite": "input-lifecycle",
+        "pass": true,
+        "code": 0,
+        "seconds": 0.505
+      },
+      {
+        "suite": "online-motion-sync",
+        "pass": true,
+        "code": 0,
+        "seconds": 180.918
+      }
+    ],
+    "sourceStable": false,
+    "changed": [
+      "src/CharacterPose.js"
+    ],
+    "sourceHashes": {
+      "src/Character.js": "1aba33a0140fe10f0686140cdbe26029df87f1de2a5fddc29a1971536824bd38",
+      "src/CharacterPose.js": "530b94ff48882a78ad425bca40c17c7c5724a2c79517e67a25bbc784a407008f",
+      "src/MotionRetarget.js": "91523468529ce2efc5006c252186da578a829f730527f215ec5867972812a7b4",
+      "src/MixamoMotion.js": "1067bdcb9b8483f9b61403b9777efe3be0469af08e534374f950b18a57d61078",
+      "src/MotionCatalog.js": "042aff0c43987b95d9a30bd943140a336dd3fe0a2c5d17f83586107f88e46a5e",
+      "src/SwingPhysics.js": "b66c6838e3ffce1a9526589e96c59f0813d48cbe581d98f20d2dc67383cba74c",
+      "src/Combat.js": "01941dcf6342165ea264ba0ff7f78a19c027250d58fcc5aa5f93ceac884104a8",
+      "public/motions/jab.json": "46fb59b635b28d38ff2b7c61c4945a981121f6a2af64f852db6f96acfe4cee97",
+      "public/motions/cross.json": "89641147087a229411e1f9e2eb959fc86628c16c596a6e88493737ba2ade6d90",
+      "public/motions/manifest.json": "5e1cde766cc88a5c7fc35891621940ca11dc46cec8e29ea2dcf4bfc35a2f16d5"
+    }
+  },
+  "finalValidation": {
+    "completed": 3,
+    "total": 3,
+    "passed": 3,
+    "results": [
+      {
+        "suite": "steady-punches",
+        "pass": true,
+        "code": 0,
+        "seconds": 130.015
+      },
+      {
+        "suite": "input-lifecycle",
+        "pass": true,
+        "code": 0,
+        "seconds": 0.485
+      },
+      {
+        "suite": "motion-combinations",
+        "pass": true,
+        "code": 0,
+        "seconds": 142.667
+      }
+    ],
+    "sourceStable": true,
+    "changed": [],
+    "sourceHashes": {
+      "src/Character.js": "1aba33a0140fe10f0686140cdbe26029df87f1de2a5fddc29a1971536824bd38",
+      "src/CharacterPose.js": "530b94ff48882a78ad425bca40c17c7c5724a2c79517e67a25bbc784a407008f",
+      "src/MotionRetarget.js": "91523468529ce2efc5006c252186da578a829f730527f215ec5867972812a7b4",
+      "src/MixamoMotion.js": "1067bdcb9b8483f9b61403b9777efe3be0469af08e534374f950b18a57d61078",
+      "src/MotionCatalog.js": "042aff0c43987b95d9a30bd943140a336dd3fe0a2c5d17f83586107f88e46a5e",
+      "src/SwingPhysics.js": "b66c6838e3ffce1a9526589e96c59f0813d48cbe581d98f20d2dc67383cba74c",
+      "src/Combat.js": "01941dcf6342165ea264ba0ff7f78a19c027250d58fcc5aa5f93ceac884104a8",
+      "public/motions/jab.json": "46fb59b635b28d38ff2b7c61c4945a981121f6a2af64f852db6f96acfe4cee97",
+      "public/motions/cross.json": "89641147087a229411e1f9e2eb959fc86628c16c596a6e88493737ba2ade6d90",
+      "public/motions/manifest.json": "5e1cde766cc88a5c7fc35891621940ca11dc46cec8e29ea2dcf4bfc35a2f16d5"
+    }
+  },
+  "currentHashesMatchFinal": true
+}

@@ -1,0 +1,28 @@
+{
+  "before": {
+    "moveStartedDuringAttack": {
+      "travel": false,
+      "distance": 0
+    },
+    "guardSprint": {
+      "speed": 2.2747192426957032,
+      "base": "run"
+    },
+    "sideAttack": {
+      "minFootGap": 0.018417991374498843
+    }
+  },
+  "after": {
+    "moveStartedDuringAttack": {
+      "travel": true,
+      "distance": 0.6788356416529375
+    },
+    "guardSprint": {
+      "speed": 2.2747192426957032,
+      "base": "walk"
+    },
+    "sideAttack": {
+      "minFootGap": 0.12999950853759046
+    }
+  }
+}

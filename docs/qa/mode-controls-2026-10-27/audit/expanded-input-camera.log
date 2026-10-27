@@ -1,0 +1,25 @@
+FAIL three input owners KeyB, release 0,1,2 A released device cancelled a still-held action
+
+false !== true
+
+FAIL three input owners KeyB, release 0,2,1 A released device cancelled a still-held action
+
+false !== true
+
+FAIL three input owners KeyB, release 1,0,2 A released device cancelled a still-held action
+
+false !== true
+
+FAIL three input owners KeyB, release 1,2,0 A released device cancelled a still-held action
+
+false !== true
+
+FAIL three input owners KeyB, release 2,0,1 A released device cancelled a still-held action
+
+false !== true
+
+FAIL three input owners KeyB, release 2,1,0 A released device cancelled a still-held action
+
+false !== true
+
+Expanded input/camera: 520/526

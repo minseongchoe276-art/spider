@@ -1,0 +1,57 @@
+{
+  "files": 4,
+  "animatedTakes": 3,
+  "emptyTakes": 0,
+  "frames": 390,
+  "results": [
+    {
+      "file": "Falling.fbx",
+      "status": "NOT_APPLICABLE",
+      "reason": "No animation takes",
+      "duration": 0,
+      "tracks": 0
+    },
+    {
+      "file": "docs/qa/mixamo-combat/candidates/Jab Cross.fbx",
+      "take": "mixamo.com",
+      "status": "PASS",
+      "usedBy": [],
+      "archived": true,
+      "duration": 2.133333444595337,
+      "frames": 130,
+      "bones": 65,
+      "hipRange": [
+        0.9814330064492489,
+        1.165178313199919
+      ]
+    },
+    {
+      "file": "docs/qa/mixamo-combat/candidates/Stylish Flip.fbx",
+      "take": "mixamo.com",
+      "status": "PASS",
+      "usedBy": [],
+      "archived": true,
+      "duration": 2.133333444595337,
+      "frames": 130,
+      "bones": 65,
+      "hipRange": [
+        0.5656952498843536,
+        4.006425405879695
+      ]
+    },
+    {
+      "file": "docs/qa/mixamo-combat/candidates/Roundhouse Kick.fbx",
+      "take": "mixamo.com",
+      "status": "PASS",
+      "usedBy": [],
+      "archived": true,
+      "duration": 2.133333444595337,
+      "frames": 130,
+      "bones": 65,
+      "hipRange": [
+        1.1738494911799133,
+        1.379986415978782
+      ]
+    }
+  ]
+}

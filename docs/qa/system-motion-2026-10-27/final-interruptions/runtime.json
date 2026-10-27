@@ -1,0 +1,60 @@
+{
+  "profiles": [
+    "idle",
+    "walk",
+    "run",
+    "sprint",
+    "jump",
+    "fall",
+    "drop",
+    "swing",
+    "zip",
+    "wall",
+    "mantle",
+    "landing",
+    "roll",
+    "turnLeft",
+    "turnRight",
+    "guard",
+    "jab",
+    "cross",
+    "hook",
+    "heavy",
+    "special",
+    "hitHead",
+    "dodgeLeft",
+    "dodgeRight",
+    "dodgeBack",
+    "dodgeForward",
+    "slam",
+    "slamLand",
+    "trick"
+  ],
+  "timings": [
+    [
+      0.041666666666666664
+    ],
+    [
+      0.03333333333333333
+    ],
+    [
+      0.016666666666666666
+    ],
+    [
+      0.006944444444444444
+    ],
+    [
+      0.006944444444444444,
+      0.09,
+      0.03333333333333333,
+      0.016666666666666666
+    ]
+  ],
+  "cases": 4205,
+  "frames": 42050,
+  "maxJointExcess": 7.271960811294775e-15,
+  "maxEndJointRate": 240.00000000043914,
+  "failures": [],
+  "scope": "Render-state interruption robustness, including deliberately unreachable pairs. Actual physics reachability and contact quality are tested by separate gameplay suites.",
+  "currentPair": "trick -> trick"
+}

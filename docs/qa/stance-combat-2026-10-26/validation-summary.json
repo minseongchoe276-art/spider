@@ -1,0 +1,62 @@
+{
+  "status": "PASS within recorded validation scope",
+  "date": "2026-10-26",
+  "method": "Initial npm test chain, continuation over the remaining scripts, corrections to outdated test fixtures, and targeted final reruns. This is not a claim of one uninterrupted npm test run.",
+  "newChecks": {
+    "publishedSkinAndTransitions": 29,
+    "standBeforeCombat": 30,
+    "remoteStances": 2,
+    "cameraFrameRates": 3,
+    "inputLifecycle": 17
+  },
+  "catalog": {
+    "passed": 165,
+    "failed": 0
+  },
+  "adversarial": {
+    "cases": 4205,
+    "frames": 42050,
+    "failures": 0
+  },
+  "jointAudit": {
+    "initialPass": 248,
+    "initialTotal": 272,
+    "affectedCasesAndTransitionsRerun": 32,
+    "rerunFailed": 0,
+    "note": "Only jab, cross and special use the changed spine lean; unaffected motion cases retain their full-audit result."
+  },
+  "initialContinuation": {
+    "scripts": 54,
+    "initialNonzero": 7,
+    "resolvedReruns": {
+      "node scripts/check-all-motions.mjs": "all-motions-final",
+      "node scripts/check-end-joint-stability.mjs": "joint-rerun",
+      "node scripts/check-expert-recovery.mjs": "expert-rerun",
+      "node scripts/check-motion-combinations.mjs": "combinations-rerun",
+      "node scripts/check-motion-adversarial.mjs": "adversarial-final",
+      "node scripts/check-release-readiness.mjs": "release-rerun",
+      "node scripts/check-low-stance.mjs": "low-stance-final"
+    }
+  },
+  "build": "PASS; existing large-chunk advisory remains",
+  "limits": [
+    "Standing collision volume retained for crouch/prone; no low-clearance passage or smaller hit volume.",
+    "Recorded review is a flat-ground pose viewer; geometry and transition suites provide additional coverage.",
+    "New stunt motions are design proposals, not implemented features."
+  ],
+  "sourceHashes": {
+    "src/Character.js": "61379155c9e20bbc31f8852729bcfada7efcda853c85448d285254cd4673e778",
+    "src/CharacterPose.js": "05b3d4d6a367d130e220fb229e9749b5d5e3cf57d1241a0527037e3cde498846",
+    "src/LowStance.js": "c3b75857a676c99d6dc0da935e887f6b9c80fefa28726512e98919b724343be0",
+    "src/Combat.js": "91c51cbc9bfcc16ecfb4c05b732026b052cc0b0ad18c7470357623eb9f3a6369",
+    "src/SwingPhysics.js": "3409ca5d6c7e767a8c08cadf71c870c5dc56dd3be87db1ece6857a3b6072d9eb",
+    "src/main.js": "6afe1778872da2f382a2aed7e1215fd5b426dac023a05b2a4dcab5d7bc20055a",
+    "src/Camera.js": "6ed2a95bcad0e00d2f32f5c32e86759ea49758197af111cf2dfcfb6fa9c77e91",
+    "src/RemoteMotion.js": "ef336cd48f3c6e7e2bcf535b49033327e7678a4146a671b44d632f3e8bfc3898",
+    "src/PlayerSettings.js": "9872c353f12f7197769c9542a4faf937d6fedc9cf1adb5c1e177797ae4f40577",
+    "src/SettingsPanel.js": "4c17dc6ebab0f1c5885b1d791ce225c447d365ceedbb7edaa678a9cbda6de6ef",
+    "src/TouchControls.js": "0f5bc9c240e8c339af9ed1dbfc59f33a50d3319ae73cbe3357c9817a4e25eb5f",
+    "src/locales/en.js": "f5420ec25ea68ae95fe9bba08dd8db7aab8a4dc30a0d31c59aa41644c29bb5b1",
+    "index.html": "956df7d3983c0c70e4072f5bdaf507845de6d20eaed75a99b3b6c4d1dd7642f8"
+  }
+}

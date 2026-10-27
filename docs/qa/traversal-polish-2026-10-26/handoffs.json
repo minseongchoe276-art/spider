@@ -1,5 +1,5 @@
 {
-  "passed": 36,
+  "passed": 40,
   "results": [
     {
       "case": "stationary-combat",
@@ -52,19 +52,19 @@
       "from": "fall",
       "to": "land",
       "maxPosition": 0,
-      "maxAngle": 5.960464477539063e-8
-    },
-    {
-      "case": "rendered-pose-handoff",
-      "fps": 24,
-      "from": "land",
-      "to": "run",
-      "maxPosition": 0,
       "maxAngle": 5.16191365590357e-8
     },
     {
       "case": "rendered-pose-handoff",
       "fps": 24,
+      "from": "land",
+      "to": "run",
+      "maxPosition": 0,
+      "maxAngle": 5.16191365590357e-8
+    },
+    {
+      "case": "rendered-pose-handoff",
+      "fps": 24,
       "from": "roll",
       "to": "regularRun",
       "maxPosition": 0,
@@ -121,7 +121,7 @@
       "from": "fall",
       "to": "land",
       "maxPosition": 0,
-      "maxAngle": 5.960464477539063e-8
+      "maxAngle": 5.16191365590357e-8
     },
     {
       "case": "rendered-pose-handoff",
@@ -190,7 +190,7 @@
       "from": "fall",
       "to": "land",
       "maxPosition": 0,
-      "maxAngle": 5.960464477539063e-8
+      "maxAngle": 5.16191365590357e-8
     },
     {
       "case": "rendered-pose-handoff",
@@ -259,7 +259,7 @@
       "from": "fall",
       "to": "land",
       "maxPosition": 0,
-      "maxAngle": 5.960464477539063e-8
+      "maxAngle": 5.16191365590357e-8
     },
     {
       "case": "rendered-pose-handoff",
@@ -276,6 +276,30 @@
       "to": "regularRun",
       "maxPosition": 0,
       "maxAngle": 4.2146848510894035e-8
+    },
+    {
+      "case": "rendered-combat-run-to-jump",
+      "fps": 24,
+      "maxArmStep": 32.252480146002824,
+      "armDegreesPerSecond": 774.0595235040678
+    },
+    {
+      "case": "rendered-combat-run-to-jump",
+      "fps": 30,
+      "maxArmStep": 25.963452543269792,
+      "armDegreesPerSecond": 778.9035762980938
+    },
+    {
+      "case": "rendered-combat-run-to-jump",
+      "fps": 60,
+      "maxArmStep": 13.137746957108803,
+      "armDegreesPerSecond": 788.2648174265282
+    },
+    {
+      "case": "rendered-combat-run-to-jump",
+      "fps": 144,
+      "maxArmStep": 5.514689336270724,
+      "armDegreesPerSecond": 794.1152644229842
     }
   ]
 }

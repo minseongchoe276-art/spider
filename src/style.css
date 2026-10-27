@@ -1260,3 +1260,29 @@ body.in-game .language-in-menu,.language-in-menu {position:static;display:inline
 body:not(.touch-device) #touch-anchor {display:none;}
 body.touch-device.mobile-traversal.in-game #crosshair {opacity:.35;}
 @media(max-height:500px) and (orientation:landscape){#touch-controls[data-simple="true"][data-combat="false"] .touch-extra{right:calc(var(--touch-edge) + 158px);bottom:var(--action-bottom);max-height:calc(100dvh - 94px);}#touch-controls[data-simple="true"][data-combat="false"] .touch-actions{height:170px;}#touch-controls[data-simple="true"][data-combat="false"] .touch-primary{width:82px;height:82px;}}
+
+/* Opponent vitals share the dark, restrained combat HUD palette. */
+.player-position-marker {
+  --health-color:#e7798c;
+  padding:6px 10px 15px;border:1px solid #ffffff26;border-radius:6px;
+  background:rgba(10,20,31,.88);color:#e3ebf0;
+  font:600 11px/1.35 system-ui,sans-serif;letter-spacing:.015em;
+  box-shadow:0 3px 12px #0003;pointer-events:none;
+}
+.player-position-marker[data-team] {border-color:#ffffff26;color:#e3ebf0;}
+.player-position-marker[data-team="ally"] {--health-color:#90d5bc;}
+.player-position-marker::before,.player-position-marker::after {
+  content:'';position:absolute;left:10px;bottom:6px;height:4px;border-radius:2px;
+}
+.player-position-marker::before {right:10px;background:#ffffff1c;}
+.player-position-marker::after {
+  width:calc((100% - 20px) * var(--hp-ratio,1));background:var(--health-color);
+  transition:width .22s ease-out,background-color .22s ease-out;
+}
+.player-position-marker:not(.has-health)::before,.player-position-marker:not(.has-health)::after {display:none;}
+.player-position-marker.low-health {--health-color:#ffb66b;}
+.player-position-marker.targeted {border-color:#e7798c;outline:1px solid #e7798c44;box-shadow:0 0 12px #e7798c20;}
+.player-position-marker.offscreen {border-style:dashed;}
+.player-position-marker.compact {padding:4px 8px 13px;font-size:10px;}
+.player-position-marker.compact::before,.player-position-marker.compact::after {bottom:5px;}
+@media(prefers-reduced-motion:reduce){.player-position-marker::after{transition:none;}}

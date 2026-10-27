@@ -1,0 +1,66 @@
+{
+  "completed": 10,
+  "total": 10,
+  "results": [
+    {
+      "suite": "full-appearance-motions",
+      "pass": true,
+      "exitCode": 0,
+      "seconds": 32.756
+    },
+    {
+      "suite": "all-motions",
+      "pass": true,
+      "exitCode": 0,
+      "seconds": 40.791
+    },
+    {
+      "suite": "motion-combinations",
+      "pass": true,
+      "exitCode": 0,
+      "seconds": 102.568
+    },
+    {
+      "suite": "motion-cleanup",
+      "pass": true,
+      "exitCode": 0,
+      "seconds": 175.759
+    },
+    {
+      "suite": "web-hand-pose",
+      "pass": true,
+      "exitCode": 0,
+      "seconds": 40.133
+    },
+    {
+      "suite": "web-continuity",
+      "pass": true,
+      "exitCode": 0,
+      "seconds": 2.688
+    },
+    {
+      "suite": "motion-reset",
+      "pass": true,
+      "exitCode": 0,
+      "seconds": 22.591
+    },
+    {
+      "suite": "traversal-handoffs",
+      "pass": true,
+      "exitCode": 0,
+      "seconds": 8.972
+    },
+    {
+      "suite": "motion-adversarial",
+      "pass": true,
+      "exitCode": 0,
+      "seconds": 311.041
+    },
+    {
+      "suite": "expanded-terrain-motion",
+      "pass": true,
+      "exitCode": 0,
+      "seconds": 176.033
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "registered": 34,
+  "automaticallyPassed": 34,
+  "sourceFiles": 41,
+  "sourceTakes": 49,
+  "inventoryPaths": 81,
+  "changed": [
+    "src/Combat.js",
+    "src/CombatFeedback.js",
+    "src/CombatPractice.js",
+    "src/GamepadInput.js",
+    "src/PlayerExperience.js",
+    "src/PlayerSettings.js",
+    "src/SettingsPanel.js",
+    "src/TouchControls.js",
+    "src/VitalsHud.js",
+    "src/main.js",
+    "src/player-ui.css"
+  ],
+  "performanceReport": {
+    "method": "median of 7 × 100,000 held-input updates after warmup",
+    "beforeMicroseconds": 0.1529049999999995,
+    "afterMicroseconds": 0.16902999999999904,
+    "limitation": "CPU microbenchmark only; real device FPS / GPU / eight rendered players remain unverified."
+  }
+}

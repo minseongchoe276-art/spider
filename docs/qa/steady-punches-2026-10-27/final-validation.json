@@ -1,0 +1,39 @@
+{
+  "completed": 3,
+  "total": 3,
+  "passed": 3,
+  "results": [
+    {
+      "suite": "steady-punches",
+      "pass": true,
+      "code": 0,
+      "seconds": 130.015
+    },
+    {
+      "suite": "input-lifecycle",
+      "pass": true,
+      "code": 0,
+      "seconds": 0.485
+    },
+    {
+      "suite": "motion-combinations",
+      "pass": true,
+      "code": 0,
+      "seconds": 142.667
+    }
+  ],
+  "sourceStable": true,
+  "changed": [],
+  "sourceHashes": {
+    "src/Character.js": "1aba33a0140fe10f0686140cdbe26029df87f1de2a5fddc29a1971536824bd38",
+    "src/CharacterPose.js": "530b94ff48882a78ad425bca40c17c7c5724a2c79517e67a25bbc784a407008f",
+    "src/MotionRetarget.js": "91523468529ce2efc5006c252186da578a829f730527f215ec5867972812a7b4",
+    "src/MixamoMotion.js": "1067bdcb9b8483f9b61403b9777efe3be0469af08e534374f950b18a57d61078",
+    "src/MotionCatalog.js": "042aff0c43987b95d9a30bd943140a336dd3fe0a2c5d17f83586107f88e46a5e",
+    "src/SwingPhysics.js": "b66c6838e3ffce1a9526589e96c59f0813d48cbe581d98f20d2dc67383cba74c",
+    "src/Combat.js": "01941dcf6342165ea264ba0ff7f78a19c027250d58fcc5aa5f93ceac884104a8",
+    "public/motions/jab.json": "46fb59b635b28d38ff2b7c61c4945a981121f6a2af64f852db6f96acfe4cee97",
+    "public/motions/cross.json": "89641147087a229411e1f9e2eb959fc86628c16c596a6e88493737ba2ade6d90",
+    "public/motions/manifest.json": "5e1cde766cc88a5c7fc35891621940ca11dc46cec8e29ea2dcf4bfc35a2f16d5"
+  }
+}

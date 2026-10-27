@@ -1,0 +1,47 @@
+{
+  "completed": 5,
+  "total": 5,
+  "passed": 5,
+  "results": [
+    {
+      "suite": "input-lifecycle",
+      "pass": true,
+      "code": 0,
+      "seconds": 0.185
+    },
+    {
+      "suite": "motion-reset",
+      "pass": true,
+      "code": 0,
+      "seconds": 11.94
+    },
+    {
+      "suite": "moving-action-input",
+      "pass": true,
+      "code": 0,
+      "seconds": 15.626
+    },
+    {
+      "suite": "motion-packet-gaps",
+      "pass": true,
+      "code": 0,
+      "seconds": 4.458
+    },
+    {
+      "suite": "online-motion-sync",
+      "pass": true,
+      "code": 0,
+      "seconds": 31.77
+    }
+  ],
+  "sourceStable": true,
+  "changed": [],
+  "sourceHashes": {
+    "src/Character.js": "40616c38698e3b6834ddfcb518dcba42e6a3d770641073957337964d167ef3ac",
+    "src/CharacterPose.js": "5645894780dff3b162fc6829d6af0368b0fec909723635f3522467c946ca4c9a",
+    "src/Combat.js": "01941dcf6342165ea264ba0ff7f78a19c027250d58fcc5aa5f93ceac884104a8",
+    "src/SwingPhysics.js": "5813b12ecb8d7efcb098bbc07c68e14ccaa1ab0cf01075c0dacd1f633d7ef06d",
+    "src/CombatMotionScenario.js": "ef1eda7c7d24358396b208329233dd4eb004b319bb9a396a96f42f67327d5ae2",
+    "src/CombatReview.js": "e98c75b80170cb5afe7a783355939fb0d1638f5f0b8e27f865a6063d2d8b1319"
+  }
+}

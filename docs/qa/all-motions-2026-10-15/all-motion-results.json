@@ -5,7 +5,7 @@
     60,
     144
   ],
-  "registered": 33,
+  "registered": 34,
   "embedded": 0,
   "archivedCompiled": [],
   "results": [
@@ -129,7 +129,7 @@
       "name": "Every registered clip and embedded fallback has explicit coverage",
       "status": "PASS",
       "detail": {
-        "registered": 33,
+        "registered": 34,
         "embedded": 0,
         "archivedCompiled": []
       }
@@ -535,46 +535,6 @@
       }
     },
     {
-      "name": "land: entire timeline at 24fps",
-      "status": "PASS",
-      "detail": {
-        "key": "land",
-        "fps": 24,
-        "frames": 22,
-        "maxExtremitySpeed": 2.2676979040000043
-      }
-    },
-    {
-      "name": "land: entire timeline at 30fps",
-      "status": "PASS",
-      "detail": {
-        "key": "land",
-        "fps": 30,
-        "frames": 28,
-        "maxExtremitySpeed": 2.264890185932859
-      }
-    },
-    {
-      "name": "land: entire timeline at 60fps",
-      "status": "PASS",
-      "detail": {
-        "key": "land",
-        "fps": 60,
-        "frames": 54,
-        "maxExtremitySpeed": 2.2754998950574223
-      }
-    },
-    {
-      "name": "land: entire timeline at 144fps",
-      "status": "PASS",
-      "detail": {
-        "key": "land",
-        "fps": 144,
-        "frames": 126,
-        "maxExtremitySpeed": 2.2793633754601004
-      }
-    },
-    {
       "name": "jumpDown: entire timeline at 24fps",
       "status": "PASS",
       "detail": {
@@ -740,8 +700,8 @@
       "detail": {
         "key": "fall",
         "fps": 24,
-        "frames": 109,
-        "maxExtremitySpeed": 2.026480646505508
+        "frames": 18,
+        "maxExtremitySpeed": 0.395247943323812
       }
     },
     {
@@ -750,8 +710,8 @@
       "detail": {
         "key": "fall",
         "fps": 30,
-        "frames": 136,
-        "maxExtremitySpeed": 2.1340131040357293
+        "frames": 22,
+        "maxExtremitySpeed": 0.4308391210224529
       }
     },
     {
@@ -760,8 +720,8 @@
       "detail": {
         "key": "fall",
         "fps": 60,
-        "frames": 271,
-        "maxExtremitySpeed": 2.1406964008535074
+        "frames": 43,
+        "maxExtremitySpeed": 0.430901532253791
       }
     },
     {
@@ -770,8 +730,8 @@
       "detail": {
         "key": "fall",
         "fps": 144,
-        "frames": 649,
-        "maxExtremitySpeed": 2.143247644649901
+        "frames": 100,
+        "maxExtremitySpeed": 0.43089450006131974
       }
     },
     {
@@ -820,8 +780,8 @@
       "detail": {
         "key": "fallIdle",
         "fps": 24,
-        "frames": 109,
-        "maxExtremitySpeed": 2.026184164026005
+        "frames": 18,
+        "maxExtremitySpeed": 0.395247943323812
       }
     },
     {
@@ -830,8 +790,8 @@
       "detail": {
         "key": "fallIdle",
         "fps": 30,
-        "frames": 136,
-        "maxExtremitySpeed": 2.1343791119309174
+        "frames": 22,
+        "maxExtremitySpeed": 0.4308391210224529
       }
     },
     {
@@ -840,8 +800,8 @@
       "detail": {
         "key": "fallIdle",
         "fps": 60,
-        "frames": 271,
-        "maxExtremitySpeed": 2.1410574371225173
+        "frames": 43,
+        "maxExtremitySpeed": 0.430901532253791
       }
     },
     {
@@ -850,8 +810,8 @@
       "detail": {
         "key": "fallIdle",
         "fps": 144,
-        "frames": 649,
-        "maxExtremitySpeed": 2.1436064929360854
+        "frames": 100,
+        "maxExtremitySpeed": 0.43089450006131974
       }
     },
     {
@@ -975,6 +935,46 @@
       }
     },
     {
+      "name": "land: entire timeline at 24fps",
+      "status": "PASS",
+      "detail": {
+        "key": "land",
+        "fps": 24,
+        "frames": 20,
+        "maxExtremitySpeed": 7.435366654435774
+      }
+    },
+    {
+      "name": "land: entire timeline at 30fps",
+      "status": "PASS",
+      "detail": {
+        "key": "land",
+        "fps": 30,
+        "frames": 25,
+        "maxExtremitySpeed": 7.601843097470048
+      }
+    },
+    {
+      "name": "land: entire timeline at 60fps",
+      "status": "PASS",
+      "detail": {
+        "key": "land",
+        "fps": 60,
+        "frames": 48,
+        "maxExtremitySpeed": 7.651420495680034
+      }
+    },
+    {
+      "name": "land: entire timeline at 144fps",
+      "status": "PASS",
+      "detail": {
+        "key": "land",
+        "fps": 144,
+        "frames": 113,
+        "maxExtremitySpeed": 7.676195890489922
+      }
+    },
+    {
       "name": "combatIdle: entire timeline at 24fps",
       "status": "PASS",
       "detail": {
@@ -1021,7 +1021,7 @@
         "key": "jab",
         "fps": 24,
         "frames": 34,
-        "maxExtremitySpeed": 2.9755397558412064
+        "maxExtremitySpeed": 2.7499549082330477
       }
     },
     {
@@ -1031,7 +1031,7 @@
         "key": "jab",
         "fps": 30,
         "frames": 42,
-        "maxExtremitySpeed": 3.0754427165795124
+        "maxExtremitySpeed": 2.7847115602536867
       }
     },
     {
@@ -1041,7 +1041,7 @@
         "key": "jab",
         "fps": 60,
         "frames": 82,
-        "maxExtremitySpeed": 3.128994574846665
+        "maxExtremitySpeed": 2.8475434859589037
       }
     },
     {
@@ -1051,7 +1051,7 @@
         "key": "jab",
         "fps": 144,
         "frames": 194,
-        "maxExtremitySpeed": 3.1914443960735768
+        "maxExtremitySpeed": 2.9015520024494856
       }
     },
     {
@@ -1260,8 +1260,8 @@
       "detail": {
         "key": "cross",
         "fps": 24,
-        "frames": 36,
-        "maxExtremitySpeed": 6.549781464593831
+        "frames": 13,
+        "maxExtremitySpeed": 4.064659029857701
       }
     },
     {
@@ -1270,8 +1270,8 @@
       "detail": {
         "key": "cross",
         "fps": 30,
-        "frames": 45,
-        "maxExtremitySpeed": 6.692030140011342
+        "frames": 16,
+        "maxExtremitySpeed": 4.109729068966232
       }
     },
     {
@@ -1280,8 +1280,8 @@
       "detail": {
         "key": "cross",
         "fps": 60,
-        "frames": 88,
-        "maxExtremitySpeed": 6.858311617105916
+        "frames": 31,
+        "maxExtremitySpeed": 4.231589664089971
       }
     },
     {
@@ -1290,8 +1290,8 @@
       "detail": {
         "key": "cross",
         "fps": 144,
-        "frames": 208,
-        "maxExtremitySpeed": 7.018687118727873
+        "frames": 72,
+        "maxExtremitySpeed": 4.266417212924239
       }
     },
     {
@@ -1415,6 +1415,46 @@
       }
     },
     {
+      "name": "backTrick: entire timeline at 24fps",
+      "status": "PASS",
+      "detail": {
+        "key": "backTrick",
+        "fps": 24,
+        "frames": 30,
+        "maxExtremitySpeed": 14.213026729782998
+      }
+    },
+    {
+      "name": "backTrick: entire timeline at 30fps",
+      "status": "PASS",
+      "detail": {
+        "key": "backTrick",
+        "fps": 30,
+        "frames": 38,
+        "maxExtremitySpeed": 14.828168322525427
+      }
+    },
+    {
+      "name": "backTrick: entire timeline at 60fps",
+      "status": "PASS",
+      "detail": {
+        "key": "backTrick",
+        "fps": 60,
+        "frames": 74,
+        "maxExtremitySpeed": 15.412233515635975
+      }
+    },
+    {
+      "name": "backTrick: entire timeline at 144fps",
+      "status": "PASS",
+      "detail": {
+        "key": "backTrick",
+        "fps": 144,
+        "frames": 174,
+        "maxExtremitySpeed": 15.693388590941955
+      }
+    },
+    {
       "name": "special: entire timeline at 24fps",
       "status": "PASS",
       "detail": {
@@ -1455,19 +1495,35 @@
       }
     },
     {
-      "name": "24fps complete procedural front trick, interruption and repeat",
+      "name": "24fps complete authored front trick, interruption and repeat",
       "status": "PASS"
     },
     {
-      "name": "30fps complete procedural front trick, interruption and repeat",
+      "name": "24fps complete authored back trick, interruption and repeat",
       "status": "PASS"
     },
     {
-      "name": "60fps complete procedural front trick, interruption and repeat",
+      "name": "30fps complete authored front trick, interruption and repeat",
       "status": "PASS"
     },
     {
-      "name": "144fps complete procedural front trick, interruption and repeat",
+      "name": "30fps complete authored back trick, interruption and repeat",
+      "status": "PASS"
+    },
+    {
+      "name": "60fps complete authored front trick, interruption and repeat",
+      "status": "PASS"
+    },
+    {
+      "name": "60fps complete authored back trick, interruption and repeat",
+      "status": "PASS"
+    },
+    {
+      "name": "144fps complete authored front trick, interruption and repeat",
+      "status": "PASS"
+    },
+    {
+      "name": "144fps complete authored back trick, interruption and repeat",
       "status": "PASS"
     },
     {
@@ -1482,8 +1538,8 @@
       "name": "24fps remote rig reproduces and completes remaining airborne trick",
       "status": "PASS",
       "detail": {
-        "tricks": 1,
-        "frames": 24
+        "tricks": 2,
+        "frames": 51
       }
     },
     {
@@ -1498,8 +1554,8 @@
       "name": "30fps remote rig reproduces and completes remaining airborne trick",
       "status": "PASS",
       "detail": {
-        "tricks": 1,
-        "frames": 30
+        "tricks": 2,
+        "frames": 63
       }
     },
     {
@@ -1514,8 +1570,8 @@
       "name": "60fps remote rig reproduces and completes remaining airborne trick",
       "status": "PASS",
       "detail": {
-        "tricks": 1,
-        "frames": 58
+        "tricks": 2,
+        "frames": 122
       }
     },
     {
@@ -1530,23 +1586,23 @@
       "name": "144fps remote rig reproduces and completes remaining airborne trick",
       "status": "PASS",
       "detail": {
-        "tricks": 1,
-        "frames": 138
+        "tricks": 2,
+        "frames": 291
       }
     },
     {
       "name": "24fps every directed clip pair can reverse mid-blend without a pose snap",
       "status": "PASS",
       "detail": {
-        "cases": 1089,
-        "maxDiscontinuity": 7.014000920878593e-8
+        "cases": 1156,
+        "maxDiscontinuity": 1.2757138899407043e-7
       }
     },
     {
       "name": "30fps every directed clip pair can reverse mid-blend without a pose snap",
       "status": "PASS",
       "detail": {
-        "cases": 1089,
+        "cases": 1156,
         "maxDiscontinuity": 0
       }
     },
@@ -1554,7 +1610,7 @@
       "name": "60fps every directed clip pair can reverse mid-blend without a pose snap",
       "status": "PASS",
       "detail": {
-        "cases": 1089,
+        "cases": 1156,
         "maxDiscontinuity": 0
       }
     },
@@ -1562,7 +1618,7 @@
       "name": "144fps every directed clip pair can reverse mid-blend without a pose snap",
       "status": "PASS",
       "detail": {
-        "cases": 1089,
+        "cases": 1156,
         "maxDiscontinuity": 4.36084877919397e-8
       }
     }

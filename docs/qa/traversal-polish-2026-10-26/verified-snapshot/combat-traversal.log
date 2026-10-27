@@ -1,0 +1,14 @@
+node:fs:2425
+    return binding.writeFileUtf8(
+                   ^
+
+Error: ENOENT: no such file or directory, open 'docs/qa/combat-traversal-2026-10-18/regression-results.json'
+    at Object.writeFileSync (node:fs:2425:20)
+    at file:///private/tmp/shadow-pulse-qa-20261026/scripts/check-combat-traversal.mjs:48:4 {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'docs/qa/combat-traversal-2026-10-18/regression-results.json'
+}
+
+Node.js v22.19.0

@@ -1,5 +1,5 @@
 {
-  "cases": 66,
+  "cases": 68,
   "failed": 0,
   "results": [
     {
@@ -104,16 +104,6 @@
     },
     {
       "mode": "combat",
-      "key": "land",
-      "samples": 13,
-      "finite": true,
-      "maxExtent": 2.429185475296482,
-      "maxEdgeGrowth": 0.06572912737332025,
-      "worstPhase": 1,
-      "pass": true
-    },
-    {
-      "mode": "combat",
       "key": "jumpDown",
       "samples": 13,
       "finite": true,
@@ -157,9 +147,9 @@
       "key": "fall",
       "samples": 13,
       "finite": true,
-      "maxExtent": 2.7505109017287714,
-      "maxEdgeGrowth": 0.12177110409949687,
-      "worstPhase": 0.75,
+      "maxExtent": 2.4115644630451114,
+      "maxEdgeGrowth": 0.07037093853417667,
+      "worstPhase": 0.4166666666666667,
       "pass": true
     },
     {
@@ -177,9 +167,9 @@
       "key": "fallIdle",
       "samples": 13,
       "finite": true,
-      "maxExtent": 2.750511460800039,
-      "maxEdgeGrowth": 0.12177117184631206,
-      "worstPhase": 0.75,
+      "maxExtent": 2.4115644630451114,
+      "maxEdgeGrowth": 0.07037093853417667,
+      "worstPhase": 0.4166666666666667,
       "pass": true
     },
     {
@@ -214,6 +204,16 @@
     },
     {
       "mode": "combat",
+      "key": "land",
+      "samples": 13,
+      "finite": true,
+      "maxExtent": 2.6891548039307525,
+      "maxEdgeGrowth": 0.08259390336730514,
+      "worstPhase": 0.16666666666666666,
+      "pass": true
+    },
+    {
+      "mode": "combat",
       "key": "combatIdle",
       "samples": 13,
       "finite": true,
@@ -227,8 +227,8 @@
       "key": "jab",
       "samples": 13,
       "finite": true,
-      "maxExtent": 2.6232499551149435,
-      "maxEdgeGrowth": 0.08712693925238366,
+      "maxExtent": 2.455286058403205,
+      "maxEdgeGrowth": 0.06943341388691841,
       "worstPhase": 0.6666666666666666,
       "pass": true
     },
@@ -287,9 +287,9 @@
       "key": "cross",
       "samples": 13,
       "finite": true,
-      "maxExtent": 2.648735987922582,
-      "maxEdgeGrowth": 0.07900849279029244,
-      "worstPhase": 0.5833333333333334,
+      "maxExtent": 2.4443402144138577,
+      "maxEdgeGrowth": 0.06870487883794196,
+      "worstPhase": 0.5,
       "pass": true
     },
     {
@@ -319,6 +319,16 @@
       "finite": true,
       "maxExtent": 3.1495643839541434,
       "maxEdgeGrowth": 0.08889443433397176,
+      "worstPhase": 0,
+      "pass": true
+    },
+    {
+      "mode": "combat",
+      "key": "backTrick",
+      "samples": 13,
+      "finite": true,
+      "maxExtent": 2.4993231467088903,
+      "maxEdgeGrowth": 0.1086751115758895,
       "worstPhase": 0,
       "pass": true
     },
@@ -434,16 +444,6 @@
     },
     {
       "mode": "web",
-      "key": "land",
-      "samples": 13,
-      "finite": true,
-      "maxExtent": 2.447462596034728,
-      "maxEdgeGrowth": 0.030366040383109822,
-      "worstPhase": 1,
-      "pass": true
-    },
-    {
-      "mode": "web",
       "key": "jumpDown",
       "samples": 13,
       "finite": true,
@@ -487,9 +487,9 @@
       "key": "fall",
       "samples": 13,
       "finite": true,
-      "maxExtent": 2.7790386415103976,
-      "maxEdgeGrowth": 0.05565686441232583,
-      "worstPhase": 0.75,
+      "maxExtent": 2.4131799055175445,
+      "maxEdgeGrowth": 0.05759141015412435,
+      "worstPhase": 0.4166666666666667,
       "pass": true
     },
     {
@@ -507,9 +507,9 @@
       "key": "fallIdle",
       "samples": 13,
       "finite": true,
-      "maxExtent": 2.7790389633534973,
-      "maxEdgeGrowth": 0.05565689766309184,
-      "worstPhase": 0.75,
+      "maxExtent": 2.4131799055175445,
+      "maxEdgeGrowth": 0.05759141015412435,
+      "worstPhase": 0.4166666666666667,
       "pass": true
     },
     {
@@ -544,6 +544,16 @@
     },
     {
       "mode": "web",
+      "key": "land",
+      "samples": 13,
+      "finite": true,
+      "maxExtent": 2.729193508213963,
+      "maxEdgeGrowth": 0.04726988228174195,
+      "worstPhase": 0,
+      "pass": true
+    },
+    {
+      "mode": "web",
       "key": "combatIdle",
       "samples": 13,
       "finite": true,
@@ -557,9 +567,9 @@
       "key": "jab",
       "samples": 13,
       "finite": true,
-      "maxExtent": 2.601951593674793,
-      "maxEdgeGrowth": 0.03989700481993938,
-      "worstPhase": 0.6666666666666666,
+      "maxExtent": 2.451296614638192,
+      "maxEdgeGrowth": 0.039277270038710954,
+      "worstPhase": 0.3333333333333333,
       "pass": true
     },
     {
@@ -617,9 +627,9 @@
       "key": "cross",
       "samples": 13,
       "finite": true,
-      "maxExtent": 2.650230411397071,
-      "maxEdgeGrowth": 0.06865597986611793,
-      "worstPhase": 0.5833333333333334,
+      "maxExtent": 2.446484779646449,
+      "maxEdgeGrowth": 0.06265234854910276,
+      "worstPhase": 0.5,
       "pass": true
     },
     {
@@ -650,6 +660,16 @@
       "maxExtent": 3.1460041021458958,
       "maxEdgeGrowth": 0.06381376436113442,
       "worstPhase": 0.75,
+      "pass": true
+    },
+    {
+      "mode": "web",
+      "key": "backTrick",
+      "samples": 13,
+      "finite": true,
+      "maxExtent": 2.502349487973329,
+      "maxEdgeGrowth": 0.08520476438645269,
+      "worstPhase": 0.16666666666666666,
       "pass": true
     },
     {
