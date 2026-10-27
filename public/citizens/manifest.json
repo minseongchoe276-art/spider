@@ -1,0 +1,170 @@
+{
+  "version": 1,
+  "characters": [
+    {
+      "id": "remy",
+      "file": "Remy.fbx",
+      "bytes": 3325692,
+      "sourceBytes": 28338736,
+      "sourceSha256": "71c1fdce07e6c321f774887c73d90b9a531df124934b36f5d585ac7a79a42a14",
+      "triangles": 35194,
+      "vertices": 21459,
+      "bones": 114,
+      "meshes": 1,
+      "materials": 1,
+      "atlasSize": 1176,
+      "animations": [
+        {
+          "key": "jab",
+          "duration": 1.2000000476837158,
+          "nominalSpeed": 0.002359041877254026
+        },
+        {
+          "key": "idle",
+          "duration": 4,
+          "nominalSpeed": 5.844383588838891e-9
+        },
+        {
+          "key": "walk",
+          "duration": 0.9666666388511658,
+          "nominalSpeed": 1.5310420564310256
+        },
+        {
+          "key": "run",
+          "duration": 0.5333333611488342,
+          "nominalSpeed": 5.167659387406956
+        },
+        {
+          "key": "startle",
+          "duration": 0.9666666388511658,
+          "nominalSpeed": 0.11259245343669311
+        },
+        {
+          "key": "hit",
+          "duration": 0.8333333134651184,
+          "nominalSpeed": 4.704473050145222e-8
+        },
+        {
+          "key": "hitBody",
+          "duration": 1.3333333730697632,
+          "nominalSpeed": 8.7990146379179e-8
+        },
+        {
+          "key": "hitUppercut",
+          "duration": 1.2333333492279053,
+          "nominalSpeed": 0.000001992978450065425
+        }
+      ]
+    },
+    {
+      "id": "megan",
+      "file": "Ch22_nonPBR.fbx",
+      "bytes": 3475092,
+      "sourceBytes": 59319056,
+      "sourceSha256": "fa3c0daa73eb5c5c72ed385256146fbe6df4497196449b29206dfab2e9701898",
+      "triangles": 54883,
+      "vertices": 34151,
+      "bones": 111,
+      "meshes": 1,
+      "materials": 1,
+      "atlasSize": 784,
+      "animations": [
+        {
+          "key": "jab",
+          "duration": 1.2000000476837158,
+          "nominalSpeed": 0.0024037077756766567
+        },
+        {
+          "key": "idle",
+          "duration": 4,
+          "nominalSpeed": 5.955040651029677e-9
+        },
+        {
+          "key": "walk",
+          "duration": 0.9666666388511658,
+          "nominalSpeed": 1.5600306766130996
+        },
+        {
+          "key": "run",
+          "duration": 0.5333333611488342,
+          "nominalSpeed": 5.265503411078697
+        },
+        {
+          "key": "startle",
+          "duration": 0.9666666388511658,
+          "nominalSpeed": 0.11472426938148339
+        },
+        {
+          "key": "hit",
+          "duration": 0.8333333134651184,
+          "nominalSpeed": 4.793547143070773e-8
+        },
+        {
+          "key": "hitBody",
+          "duration": 1.3333333730697632,
+          "nominalSpeed": 8.965614433294979e-8
+        },
+        {
+          "key": "hitUppercut",
+          "duration": 1.2333333492279053,
+          "nominalSpeed": 0.000002030713334667276
+        }
+      ]
+    },
+    {
+      "id": "louise",
+      "file": "Ch07_nonPBR.fbx",
+      "bytes": 3137636,
+      "sourceBytes": 49979392,
+      "sourceSha256": "699876cb3776e768ae193ce899719f733d965a1797be984f8a28ff6f2b21caf3",
+      "triangles": 52831,
+      "vertices": 31194,
+      "bones": 136,
+      "meshes": 1,
+      "materials": 1,
+      "atlasSize": 784,
+      "animations": [
+        {
+          "key": "jab",
+          "duration": 1.2000000476837158,
+          "nominalSpeed": 0.0023182251833319878
+        },
+        {
+          "key": "idle",
+          "duration": 4,
+          "nominalSpeed": 5.743262698019312e-9
+        },
+        {
+          "key": "walk",
+          "duration": 0.9666666388511658,
+          "nominalSpeed": 1.5045516089312743
+        },
+        {
+          "key": "run",
+          "duration": 0.5333333611488342,
+          "nominalSpeed": 5.078247336886403
+        },
+        {
+          "key": "startle",
+          "duration": 0.9666666388511658,
+          "nominalSpeed": 0.11064435249191197
+        },
+        {
+          "key": "hit",
+          "duration": 0.8333333134651184,
+          "nominalSpeed": 4.6230751578891634e-8
+        },
+        {
+          "key": "hitBody",
+          "duration": 1.3333333730697632,
+          "nominalSpeed": 8.64677203012262e-8
+        },
+        {
+          "key": "hitUppercut",
+          "duration": 1.2333333492279053,
+          "nominalSpeed": 0.0000019584954711179605
+        }
+      ]
+    }
+  ]
+}

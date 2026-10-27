@@ -655,7 +655,7 @@ export class Character {
     const combatMoving=combatGround && legsMoving;
     const gait=['RUNNING','SPRINTING'].includes(state);
     const strikeKey=!!(combat?.duration && ['jab','cross','hook','heavy','special'].includes(combat.key));
-    const reactKey=!!(combat && (combat.key?.startsWith('dodge') || combat.key==='hit' || combat.key==='hitHead' || combat.key==='hitBody' || combat.key==='hitHeavy'));
+    const reactKey=!!(combat && (combat.key?.startsWith('dodge') || combat.key==='hit' || combat.key==='hitHead' || combat.key==='hitBody' || combat.key==='hitHeavy' || combat.key==='hitUppercut'));
     // A traveling punch keeps a stride carrier underneath the attack legs.
     // Replacing it with the in-place boxing take nailed the flight foot down
     // and left the pelvis ahead of both boots. A standing punch still owns
@@ -668,10 +668,10 @@ export class Character {
       }
     }else if(!strikeKey){this.strikeTravelId=null;this.strikeKeepsGait=false;}
     if(strikeKey && (combat.travel || (gait && horizontalSpeed>.9)))this.strikeKeepsGait=true;
-    const movingStrike=!!(strikeKey && ['IDLE','RUNNING','SPRINTING'].includes(state) && this.strikeKeepsGait);
+    const movingStrike=!!(strikeKey && combat.key!=='special' && ['IDLE','RUNNING','SPRINTING'].includes(state) && this.strikeKeepsGait);
     const movingGuard=combatMoving && combat?.key==='guard';
     const dodgeKey=!!combat?.key?.startsWith('dodge');
-    const hitKey=combat?.key==='hit' || combat?.key==='hitHead' || combat?.key==='hitBody' || combat?.key==='hitHeavy';
+    const hitKey=combat?.key==='hit' || combat?.key==='hitHead' || combat?.key==='hitBody' || combat?.key==='hitHeavy' || combat?.key==='hitUppercut';
     const playingKey=Object.entries(this.actions).find(([,action])=>action===this.activeAction)?.[0];
     // The dodge sine starts at zero. Waiting for speed let the run fade into
     // a walk before the latch, and that swap was the foot pop.
@@ -1136,6 +1136,10 @@ export class Character {
       const foot=Object.values(this.bones || {}).find(b=>boneId(b.name)===side+'foot');
       return [side,foot?.getWorldPosition(new THREE.Vector3()).sub(this.group.getWorldPosition(new THREE.Vector3()))];
     }));
+    if(combat?.key==='hitUppercut' && combat.duration){
+      const phase=THREE.MathUtils.clamp(combat.time/combat.duration,0,1);
+      this.model.position.y+=.55*Math.sin(Math.PI*phase);this.group.updateMatrixWorld(true);
+    }
     const attached = ['SWINGING','WEB_ZIP'].includes(state) && !!anchorPos;
     const visibleAnchor = attached ? anchorPos : (this.persistentWebAnchor || firingAnchor);
     this.updateWeb(!!visibleAnchor, visibleAnchor);

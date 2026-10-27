@@ -193,12 +193,18 @@ export class Multiplayer {
         const attacker=this.players.find(p=>p.id===data.attacker);
         this.feedback?.show(`${data.blocked?'정면 방어 · ':''}${attacker?.name||'상대'}의 ${data.kind==='web'?'거미줄':'주먹'} 명중 −${data.damage??MATCH[data.kind]?.damage??0} · 내 HP ${data.health}${data.eliminated?' · 탈락 / 관전':''}`);
         this.game.tpsCamera?.triggerShake?.(.18);
-        if(!data.blocked && !data.eliminated)this.game.combat?.reactToHit?.(data.damage ?? MATCH[data.kind]?.damage ?? 0,{hitRegion:data.kind==='web'?'body':'head'});
+        if(!data.blocked && !data.eliminated)this.game.combat?.reactToHit?.(data.damage ?? MATCH[data.kind]?.damage ?? 0,{hitRegion:data.kind==='web'?'body':'head',variant:data.variant});
         if(data.eliminated){this.setSpectating(true);this.game.physics.clearWebAnchor();this.game.clearInput();this.game.combat?.cancel();this.pendingPunch=null;}
       }
       else if(data.attacker===this.id){
         this.feedback?.hit(data,player);
         if(!this.feedback)this.game.showNotice(`명중! 상대 체력 ${data.health}`);
+      }
+      if(data.variant==='uppercut' && !data.blocked && player){
+        const point=new THREE.Vector3(player.x,player.y+1.6,player.z);
+        const source=this.players.find(p=>p.id===data.attacker);
+        const direction=new THREE.Vector3(Math.sin(source?.facing||0),0,Math.cos(source?.facing||0));
+        this.game.vfx?.spawnUppercutImpact?.(point,direction);this.game.audio?.playCombatHit?.(true);
       }
       this.renderHud();this.syncAvatars();
     }
@@ -415,13 +421,13 @@ export class Multiplayer {
     const blocked=!!this.game.city.raycast?.(from,line.clone().normalize(),Math.max(0,line.length()-.3));
     return {player:target.p,name:target.p.name||'상대',distance:target.d,blocked,aimReady:kind!=='web'||webTargetInReticle(target.p,this.game.camera)};
   }
-  sendAttack(kind,facing,hand='left'){
+  sendAttack(kind,facing,hand='left',variant=null){
     if(kind==='web'&&this.game.combat?.mode==='combat')return false;
     const me=this.players.find(p=>p.id===this.id);
     if(this.spectating||!canAttack(this.room,me))return;
     const origin=this.game.physics.position.clone().add(new THREE.Vector3(0,1,0));
     const targets=this.players.filter(p=>opponents(this.room,me,p)&&!p.eliminated&&p.seen)
-      .filter(p=>!attackGate(this.game.physics.position,p,kind,facing)&&(kind!=='web'||webTargetInReticle(p,this.game.camera)))
+      .filter(p=>!attackGate(this.game.physics.position,p,kind,facing)&&(variant!=='uppercut'||Math.hypot(p.x-this.game.physics.position.x,p.z-this.game.physics.position.z)<=ATTACKS.special.reach)&&(kind!=='web'||webTargetInReticle(p,this.game.camera)))
       .sort((a,b)=>Math.hypot(a.x-origin.x,a.z-origin.z)-Math.hypot(b.x-origin.x,b.z-origin.z));
     if(kind==='web'&&!targets.length)return false;
     if(targets.length){
@@ -429,7 +435,7 @@ export class Multiplayer {
       if(this.game.city.raycast?.(origin,dir.clone().normalize(),Math.max(0,dir.length()-.3))){this.feedback?.show('벽이나 건물이 상대를 가리고 있습니다');return kind==='web';}
     }
     if(this.feedback&&!this.feedback.canFire(kind,this))return kind==='web';
-    this.send({type:'attack',kind,facing,targetId:targets[0]?.id||null,
+    this.send({type:'attack',kind,variant,facing,targetId:targets[0]?.id||null,
       pose:this.game.character&&this.game.physics.velocity?capturePose(this.game.physics,this.game.character):null});
     this.feedback?.sent(kind,targets[0],hand);
     return kind==='web';
@@ -472,7 +478,7 @@ export class Multiplayer {
     if(this.pendingPunch!=null && this.game.isPlaying && !this.game.isPaused){
       const action=this.game.combat.action,rule=ATTACKS[action?.key];
       if(!action || action.id!==this.pendingPunch || !rule)this.pendingPunch=null;
-      else if(action.time>=rule.from){this.pendingPunch=null;this.sendAttack('punch',this.game.physics.facingAngle);}
+      else if(action.time>=rule.from){this.pendingPunch=null;this.sendAttack('punch',this.game.physics.facingAngle,'left',action.key==='special'?'uppercut':null);}
     }
     if(this.spectating){
       const point=this.spectatePoint();

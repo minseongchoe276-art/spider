@@ -1,0 +1,83 @@
+[
+  {
+    "name": "uppercut server damage and variant",
+    "type": "hit",
+    "attacker": "f247dff5e17cfeb7",
+    "target": "34b114556073937b",
+    "kind": "punch",
+    "damage": 48,
+    "baseDamage": 48,
+    "blocked": false,
+    "variant": "uppercut",
+    "health": 52,
+    "eliminated": false
+  },
+  {
+    "name": "front guard reduces uppercut",
+    "type": "hit",
+    "attacker": "f247dff5e17cfeb7",
+    "target": "34b114556073937b",
+    "kind": "punch",
+    "damage": 20,
+    "baseDamage": 48,
+    "blocked": true,
+    "variant": "uppercut",
+    "health": 80,
+    "eliminated": false
+  },
+  {
+    "name": "rear guard does not block",
+    "type": "hit",
+    "attacker": "f247dff5e17cfeb7",
+    "target": "34b114556073937b",
+    "kind": "punch",
+    "damage": 48,
+    "baseDamage": 48,
+    "blocked": false,
+    "variant": "uppercut",
+    "health": 52,
+    "eliminated": false
+  },
+  {
+    "name": "ordinary punch unchanged",
+    "type": "hit",
+    "attacker": "f247dff5e17cfeb7",
+    "target": "34b114556073937b",
+    "kind": "punch",
+    "damage": 25,
+    "baseDamage": 25,
+    "blocked": false,
+    "health": 75,
+    "eliminated": false
+  },
+  {
+    "name": "early contact rejected",
+    "type": "attack-result",
+    "kind": "punch",
+    "reason": "invalid"
+  },
+  {
+    "name": "airborne uppercut rejected",
+    "type": "attack-result",
+    "kind": "punch",
+    "reason": "recovering"
+  },
+  {
+    "name": "8 second server cooldown",
+    "type": "attack-result",
+    "kind": "punch",
+    "reason": "cooldown"
+  },
+  {
+    "name": "special reach is limited to 2m",
+    "type": "attack-result",
+    "kind": "punch",
+    "reason": "range"
+  },
+  {
+    "name": "unknown variant rejected",
+    "type": "attack-result",
+    "kind": "punch",
+    "reason": "invalid"
+  }
+]

@@ -34,6 +34,7 @@ export function createTrainingOpponent(type){
 export function poseTrainingOpponent(enemy,dt,reducedMotion=false){
   if(!enemy.pose||!Number.isFinite(dt)||dt<=0)return;
   const step=Math.min(dt,.1),p=enemy.pose;
+  if(enemy.uppercutTime!=null){enemy.uppercutTime=Math.min(enemy.uppercutDuration,enemy.uppercutTime+step);const phase=enemy.uppercutTime/enemy.uppercutDuration;p.rig.position.y=.55*Math.sin(Math.PI*phase);if(phase>=1){enemy.uppercutTime=null;p.rig.position.y=0;}}
   const distance=enemy.lastPosePosition?enemy.position.distanceTo(enemy.lastPosePosition):0;
   enemy.lastPosePosition=enemy.position.clone();
   enemy.gaitPhase=(enemy.gaitPhase||0)+Math.min(distance,.5)*5.5;
@@ -41,7 +42,7 @@ export function poseTrainingOpponent(enemy,dt,reducedMotion=false){
   const walking=distance>step*.2&&enemy.stagger<=0&&enemy.windup<=0;
   const gait=walking?Math.sin(enemy.gaitPhase)*.35:0,windup=enemy.windup>0,strike=enemy.strike>0,hit=enemy.stagger>0;
   const mix=1-Math.exp(-18*step),set=(node,axis,value)=>{node.rotation[axis]+= (value-node.rotation[axis])*mix;};
-  set(p.rig,'x',hit?-.16:windup?-.08:strike?.12:0);
+  set(p.rig,'x',enemy.uppercutTime!=null?-.4*Math.sin(Math.PI*enemy.uppercutTime/enemy.uppercutDuration):hit?-.16:windup?-.08:strike?.12:0);
   set(p.rig,'z',hit&&!reducedMotion?Math.sin(enemy.stagger*30)*.06:0);
   for(const [name,sign]of [['left',1],['right',-1]]){
     const limb=p[name],attacking=name==='right';

@@ -1,6 +1,6 @@
 [
   {
-    "case": "imported rear power cross and retained hook",
+    "case": "imported dashing uppercut and retained hook",
     "hookElbowDegrees": 87.95336346828356,
     "pass": true
   },
@@ -37,22 +37,6 @@
     "pass": true
   },
   {
-    "fps": 24,
-    "key": "special",
-    "sprint": false,
-    "travel": 5.3166085683185464,
-    "maxHandStep": 0.15885235800171246,
-    "pass": true
-  },
-  {
-    "fps": 24,
-    "key": "special",
-    "sprint": true,
-    "travel": 7.854080839561462,
-    "maxHandStep": 0.18150259739169644,
-    "pass": true
-  },
-  {
     "fps": 60,
     "key": "jab",
     "sprint": false,
@@ -82,22 +66,6 @@
     "sprint": true,
     "travel": 5.416580885407647,
     "maxHandStep": 0.08127289212368198,
-    "pass": true
-  },
-  {
-    "fps": 60,
-    "key": "special",
-    "sprint": false,
-    "travel": 5.2799419017375175,
-    "maxHandStep": 0.06943136333758691,
-    "pass": true
-  },
-  {
-    "fps": 60,
-    "key": "special",
-    "sprint": true,
-    "travel": 7.799914173021307,
-    "maxHandStep": 0.07740058017445893,
     "pass": true
   },
   {
@@ -133,22 +101,6 @@
     "pass": true
   },
   {
-    "fps": 144,
-    "key": "special",
-    "sprint": false,
-    "travel": 5.2799419017375175,
-    "maxHandStep": 0.02964718170224923,
-    "pass": true
-  },
-  {
-    "fps": 144,
-    "key": "special",
-    "sprint": true,
-    "travel": 7.799914173021307,
-    "maxHandStep": 0.032585643865729,
-    "pass": true
-  },
-  {
     "case": "jab contact boots retain bounded authored pivot",
     "tiltDegrees": {
       "left": 0.000003306651113363206,
@@ -167,8 +119,8 @@
   {
     "case": "special contact boots retain bounded authored pivot",
     "tiltDegrees": {
-      "left": 0.00004753610481523207,
-      "right": 16.81298420094096
+      "left": 0.000052837484341132565,
+      "right": 4.752330821413326
     },
     "pass": true
   },

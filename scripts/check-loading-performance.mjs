@@ -20,15 +20,14 @@ const city=Object.create(UrbanGroundCity.prototype);
 city.camera=new THREE.PerspectiveCamera(65,1.6,.2,1000);city.camera.position.set(4,22,-7);
 city.streamCamera=city.camera.clone();city.isReady=false;
 city.updateStreamingCamera(1000);
-assert.equal(city.streamCamera.far,220);
+assert.equal(city.streamCamera.far,1000);
 assert.equal(city.streamCamera.fov,city.camera.fov);
 assert(city.streamCamera.position.equals(city.camera.position));
 city.isReady=true;city.readyAt=1000;
-city.updateStreamingCamera(7000);assert.equal(city.streamCamera.far,610);
-city.updateStreamingCamera(13000);assert.equal(city.streamCamera.far,1000);
+city.camera.far=1200;city.updateStreamingCamera(7000);assert.equal(city.streamCamera.far,1200);
 city.camera.far=500;city.updateStreamingCamera(50000);assert.equal(city.streamCamera.far,500);
 assert.equal(city.camera.far,500);
-console.log('PASS: streaming starts locally, preserves nearby detail, and restores the full camera range');
+console.log('PASS: streaming camera immediately maintains full camera range and matching frustum');
 
 // Larger loading batches must produce the same real support surface.
 const surface=new THREE.Mesh(new THREE.BoxGeometry(20,2,20));surface.position.y=19;surface.updateMatrixWorld(true);

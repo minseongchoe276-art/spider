@@ -402,6 +402,20 @@ export class VFXManager {
     }
   }
 
+  spawnUppercutImpact(pos,direction) {
+    // Small ascending sparks, not a ground explosion; use the existing pool.
+    const count=this.reducedMotion?6:22;
+    let emitted=0;
+    for(const p of this.particles){
+      if(p.active)continue;if(emitted++>=count)break;
+      const angle=emitted*2.399963,spread=this.reducedMotion?.35:1;
+      p.active=true;p.pos.copy(pos);p.pos.x+=Math.cos(angle)*.12;p.pos.z+=Math.sin(angle)*.12;p.life=0;p.kind=2;
+      p.vel.set(Math.cos(angle)*spread+direction.x*.7,1.4+(emitted%5)*.3,Math.sin(angle)*spread+direction.z*.7);
+      p.color.setRGB(.78,.58,1);p.size=(this.reducedMotion?.08:.12)+(emitted%3)*.025;
+      p.maxLife=this.reducedMotion?.16:.28+(emitted%4)*.025;p.gravity=4;p.drag=3;
+    }
+  }
+
   spawnWebImpact(pos) {
     this.spawn(pos, 16, 0);
   }

@@ -41,10 +41,9 @@ export class UrbanGroundCity {
     this.playableHalfExtent = 2400;
     this.scene = scene;
     this.camera = camera;
-    // Start with the same local surface detail, inside a smaller streaming frustum.
-    // Distant neighbourhoods expand in after the spawn has fully settled.
+    // Maintain full camera view distance from startup so all buildings render in full
     this.streamCamera = camera.clone();
-    this.streamCamera.far = Math.min(camera.far, 220);
+    this.streamCamera.far = camera.far;
     this.streamCamera.updateProjectionMatrix();
     this.renderer = renderer;
     this.onProgress = onProgress;
@@ -53,10 +52,10 @@ export class UrbanGroundCity {
     // The library default cache is shared globally. Own one cache per city so
     // later layers cannot overwrite an earlier layer's memory budget.
     this.tileCache = new LRUCache();
-    this.tileCache.maxSize = 1200;
-    this.tileCache.minSize = 600;
-    this.tileCache.minBytesSize = 288 * 1024 * 1024;
-    this.tileCache.maxBytesSize = 384 * 1024 * 1024;
+    this.tileCache.maxSize = 3200;
+    this.tileCache.minSize = 1600;
+    this.tileCache.minBytesSize = 512 * 1024 * 1024;
+    this.tileCache.maxBytesSize = 800 * 1024 * 1024;
     this.buildingMeshes = [];
     this.rooftopSpawns = [new THREE.Vector3(0, 18, 0)];
     this.rooftopPoints = this.rooftopSpawns;
@@ -66,7 +65,7 @@ export class UrbanGroundCity {
     this.collisionWorld = new StreamedCollision();
     this.playerPosition = new THREE.Vector3(0, 18, 0);
     this.isReady = false;
-    this.ktxLoader = new KTX2Loader().setTranscoderPath('/basis/').setWorkerLimit(2);
+    this.ktxLoader = new KTX2Loader().setTranscoderPath('/basis/').setWorkerLimit(4);
     this.ktxLoader.detectSupport(renderer);
 
     // Support comes only from streamed terrain, never an invisible flat floor.
@@ -82,9 +81,11 @@ export class UrbanGroundCity {
   addTileset(tilesetConfig, index) {
     const { url, reorientation } = tilesetConfig;
     const tiles = new TilesRenderer(url);
-    tiles.errorTarget = index === 0 ? 48 : 32;
-    tiles.downloadQueue.maxJobsPerOrigin = 6;
-    tiles.parseQueue.maxJobs = 1;
+    // Low error target ensures buildings and textures refine fully into complete geometry
+    tiles.errorTarget = index === 1 ? 12 : (index === 2 ? 16 : 20);
+    tiles.userData = { baseErrorTarget: tiles.errorTarget, retryAt: 0, retries: 0 };
+    tiles.downloadQueue.maxJobsPerOrigin = 12;
+    tiles.parseQueue.maxJobs = 3;
     if (!this.tileCache.unloadPriorityCallback) {
       this.tileCache.unloadPriorityCallback = tiles.lruCache.unloadPriorityCallback;
     }
@@ -101,6 +102,7 @@ export class UrbanGroundCity {
         `홍콩 3D 도시 타일 ${this.loadedRoots}/${TILESETS.length} 준비 중...`);
     });
     tiles.addEventListener('load-error', event => {
+      tiles.userData.retryAt = performance.now() + Math.min(30000, 2000 * 2 ** Math.min(tiles.userData.retries, 4));
       this.lastError = event.error || new Error('도시 데이터를 불러오지 못했습니다.');
       if (!this.isReady) this.onError?.(this.lastError);
       if (new URLSearchParams(location.search).has('debugCity')) {
@@ -143,8 +145,7 @@ export class UrbanGroundCity {
 
   updateStreamingCamera(now = performance.now()) {
     this.streamCamera.copy(this.camera, false);
-    const expansion = this.isReady ? Math.min(1, Math.max(0, (now - this.readyAt) / 12000)) : 0;
-    this.streamCamera.far = Math.min(this.camera.far, 220 + 780 * expansion);
+    this.streamCamera.far = this.camera.far;
     this.streamCamera.updateProjectionMatrix();
     this.streamCamera.updateMatrixWorld(true);
   }
@@ -161,14 +162,20 @@ export class UrbanGroundCity {
     for (const tiles of this.tilesets) {
       tiles.setCamera(this.streamCamera);
       tiles.setResolutionFromRenderer(this.streamCamera, this.renderer);
+      const recovery = tiles.userData;
+      if (recovery?.retryAt && performance.now() >= recovery.retryAt && recovery.retries < 5) {
+        recovery.retryAt = 0; recovery.retries++;
+        tiles.resetFailedTiles();
+      }
       tiles.update();
     }
     if (performance.now() - (this.lastBudgetCheck || 0) > 2000) {
       this.lastBudgetCheck = performance.now();
-      if (this.tilesets[0].lruCache.isFull()) {
-        // Prefer a complete coarser district to missing near tiles when
-        // mandatory parent textures exhaust the shared cache.
-        for (const tiles of this.tilesets) tiles.errorTarget = Math.min(128, tiles.errorTarget * 1.25);
+      const pressured = this.tileCache.isFull();
+      for (const tiles of this.tilesets) {
+        const baseline = tiles.userData?.baseErrorTarget ?? 20;
+        tiles.errorTarget = pressured ? Math.min(28, tiles.errorTarget * 1.05)
+          : Math.max(baseline, tiles.errorTarget / 1.1);
       }
     }
     this.root.updateMatrixWorld(true);
@@ -190,6 +197,9 @@ export class UrbanGroundCity {
         this.camera.lookAt(spawn.clone().add(new THREE.Vector3(0,1.7,0)));
         this.camera.updateMatrixWorld(true);
         this.rooftopSpawns[0].copy(spawn);
+        const meshBonus = Math.min(25, Math.round(this.buildingMeshes.length * 0.4));
+        this.onProgress?.(Math.min(95, 70 + meshBonus),
+          `홍콩 마천루 렌더링 및 지형 안착 중 (${this.buildingMeshes.length}개 건물 완료)...`);
         if (this.startupSurfaceSettled(spawn)) {
           this.readyAt = performance.now();
           this.isReady = true;
@@ -239,9 +249,11 @@ export class UrbanGroundCity {
   }
 
   startupSurfaceSettled(spawn, now = performance.now()) {
-    const idle = this.loadedRoots === TILESETS.length && this.tilesets.every(t =>
-      !t.stats.queued && !t.stats.downloading && !t.stats.parsing) &&
-      !this.collisionWorld.pending.length && !this.collisionWorld.job;
+    const tilesIdle = this.loadedRoots === TILESETS.length && this.tilesets.every(t =>
+      (!t.stats.downloading && !t.stats.parsing && !t.stats.queued) ||
+      (t.stats.downloading + t.stats.parsing <= 2 && this.buildingMeshes.length >= 8));
+    const physicsSettled = !this.collisionWorld.pending.length && !this.collisionWorld.job;
+    const idle = tilesIdle && physicsSettled && this.buildingMeshes.length > 0;
     if (!idle || !this.settlingSpawn || this.settlingSpawn.distanceTo(spawn) > 0.1) {
       this.settlingSpawn = spawn.clone();
       this.settlingSince = now;

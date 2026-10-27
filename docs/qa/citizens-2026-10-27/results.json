@@ -1,0 +1,41 @@
+{
+  "scope": "CPU simulation and real skinned vertex validation, not GPU FPS",
+  "results": [
+    {
+      "asset": "remy",
+      "rig": "7 clips, unique bones, deformed gait/body bounds pass"
+    },
+    {
+      "asset": "megan",
+      "rig": "7 clips, unique bones, deformed gait/body bounds pass"
+    },
+    {
+      "asset": "louise",
+      "rig": "7 clips, unique bones, deformed gait/body bounds pass"
+    },
+    {
+      "fps": 24,
+      "population": 10,
+      "pool": 10,
+      "cpuP50": 0.2825830000001588,
+      "cpuP95": 7.081374999999753,
+      "recycled": 10
+    },
+    {
+      "fps": 60,
+      "population": 10,
+      "pool": 10,
+      "cpuP50": 0.19962500000019645,
+      "cpuP95": 4.63025000000016,
+      "recycled": 10
+    },
+    {
+      "fps": 144,
+      "population": 10,
+      "pool": 10,
+      "cpuP50": 0.03008399999998801,
+      "cpuP95": 0.4086670000006052,
+      "recycled": 10
+    }
+  ]
+}

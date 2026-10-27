@@ -245,6 +245,9 @@ export function clearGroundSoles(c,{preserveLocal=false}={}) {
           const height=support.height-(support.normal.x*(p.x-actual.x)+support.normal.z*(p.z-actual.z))/support.normal.y;
           clearance=Math.min(clearance,p.y-height);
         }
+        // The uppercut transfers weight onto one boot while the other lifts.
+        // Retire an airborne support rather than keeping a floating IK anchor.
+        if(c.combatAction?.key==='special' && clearance>.035)delete c.movingPlants[side];
         if(clearance>=-.005 && clearance<.06){
           plant.offset=actual.y-support.height+THREE.MathUtils.clamp(.003-clearance,-.012,.012);
           plant.position.y=support.height+plant.offset;
@@ -498,7 +501,7 @@ export function plantMovingFeet(c,delta) {
         // its outer edge. Shorten this support at acquisition, never by moving
         // an already planted foot or by relaxing the anatomical joint limit.
         const compactStraight=['jab','cross'].includes(clip.name);
-        plant.position.addScaledVector(forward,compactStraight ? .35 : strike ? .22 : .10);
+        plant.position.addScaledVector(forward,clip.name==='special' ? .22 : compactStraight ? .35 : strike ? .22 : .10);
       }
       plant.position.y=surface+0.11;
     }
@@ -939,7 +942,7 @@ export function heavyClipPhase(t) {
 export function poseCombatLife(c, combat) {
   const key = combat?.key;
   if (!key) return;
-  if (['hitHead','hitBody','hitHeavy'].includes(key) && c.actions[key]?.getClip().userData?.authoredMixamo) return;
+  if (['hitHead','hitBody','hitHeavy','hitUppercut'].includes(key) && c.actions[key]?.getClip().userData?.authoredMixamo) return;
   const duration = combat.duration || 1;
   const t = THREE.MathUtils.clamp((combat.time || 0) / duration, 0, 1);
   if (key.startsWith('dodge')) {
@@ -958,7 +961,7 @@ export function poseCombatLife(c, combat) {
     }
     return;
   }
-  if (key === 'hit' || key === 'hitHead' || key === 'hitBody' || key === 'hitHeavy') {
+  if (key === 'hit' || key === 'hitHead' || key === 'hitBody' || key === 'hitHeavy' || key === 'hitUppercut') {
     const snap = t < 0.2 ? smooth01(t / 0.2) : 1 - smooth01((t - 0.2) / 0.8);
     pitchModelX(c, find(c, 'spine'), -0.32 * snap);
     pitchModelX(c, find(c, 'spine1'), -0.16 * snap);
@@ -988,7 +991,7 @@ export function poseCombatLife(c, combat) {
 function strikeDrive(combat) {
   const phase = THREE.MathUtils.clamp((combat.time || 0) / (combat.duration || 1), 0, 1);
   const visual = combat.key === 'heavy' ? heavyClipPhase(phase) : phase;
-  const impact = {jab: 0.28, cross: 0.57, hook: 0.43, heavy: 0.43, special: 0.56}[combat.key] ?? 0.45;
+  const impact = {jab: 0.28, cross: 0.57, hook: 0.43, heavy: 0.43, special: 0.36}[combat.key] ?? 0.45;
   if (visual <= impact) return smooth01(visual / Math.max(impact, 0.05));
   return 1 - smooth01((visual - impact) / Math.max(1 - impact, 0.05));
 }
@@ -1017,6 +1020,7 @@ function shiftBone(bone, worldDelta) {
 // in, on a point the arm can actually hold.
 export function settleStrikeBalance(c, combat, moving) {
   const key = combat?.key;
+  if(key==='special')return; // The imported rising fist must not be straight-punch IK.
   if (!combat?.duration || !['jab', 'cross', 'hook', 'heavy', 'special'].includes(key)) return;
   const drive = strikeDrive(combat);
   if (drive < 0.02) return;
@@ -1189,7 +1193,7 @@ export function settleHeldStance(c, delta) {
   const combat = c.combatAction;
   const key = combat?.key;
   const dodge = !!key?.startsWith('dodge');
-  const hit = key === 'hit' || key === 'hitHead' || key === 'hitBody' || key === 'hitHeavy';
+  const hit = key === 'hit' || key === 'hitHead' || key === 'hitBody' || key === 'hitHeavy' || key === 'hitUppercut';
   if (!dodge && !hit) { c.reactSettle = 0; c.reactSettleId = null; return; }
   if ((c.activeAction?.getEffectiveTimeScale?.() ?? 1) > 0.02) { c.reactSettle = 0; return; }
   const stride = c.activeAction?.getClip()?.name;

@@ -64,7 +64,7 @@ export function prepareMotion(clip, key, bones, item={}) {
     }
     clip.duration=1;
   }
-  if ((!item.authoredMixamo || ['wall','airTrick','backTrick'].includes(key)) && ['swing','jump','drop','zip','wall','airTrick','backTrick','combatIdle','jab','cross','hook','heavy','guard','dodgeLeft','dodgeBack','dodgeForward','slam','slamLand','hit','hitHead','hitBody','hitHeavy'].includes(key)) {
+  if ((!item.authoredMixamo || ['wall','airTrick','backTrick'].includes(key)) && ['swing','jump','drop','zip','wall','airTrick','backTrick','combatIdle','jab','cross','hook','heavy','guard','dodgeLeft','dodgeBack','dodgeForward','slam','slamLand','hit','hitHead','hitBody','hitHeavy','hitUppercut'].includes(key)) {
     const hips = Object.values(bones).find(b => boneId(b.name) === 'hips');
     const positionTrack = clip.tracks.find(t => t.name === `${hips.name}.position`);
     const crouch=['dodgeForward','slamLand'].includes(key);
@@ -134,7 +134,7 @@ export function prepareMotion(clip, key, bones, item={}) {
     }
   }
   clip.userData = {...audit,...clip.userData};
-  if(['slamLand','hit','hitHead','hitBody','hitHeavy'].includes(key)){
+  if(['slamLand','hit','hitHead','hitBody','hitHeavy','hitUppercut'].includes(key)){
     const nodes=Object.values(bones),saved=nodes.map(n=>({n,p:n.position.clone(),q:n.quaternion.clone()}));
     const hips=nodes.find(n=>boneId(n.name)==='hips'),feet=['left','right'].map(side=>nodes.find(n=>boneId(n.name)===side+'foot'));
     let root=hips;while(root.parent && !root.parent.name?.includes('ShadowPulseCharacterGroup'))root=root.parent;
@@ -160,7 +160,7 @@ export function prepareMotion(clip, key, bones, item={}) {
     }));
   }
   clip.name = key;
-  if (['walk','jog','regularRun','run','stop','runStop','land','slamLand','turnLeft','turnRight','wall','combatIdle','jab','cross','rightHook','hook','heavy','special','guard','dodgeLeft','dodgeRight','dodgeBack','hit','hitHead','hitBody','hitHeavy'].includes(key)) {
+  if (['walk','jog','regularRun','run','stop','runStop','land','slamLand','turnLeft','turnRight','wall','combatIdle','jab','cross','rightHook','hook','heavy','special','guard','dodgeLeft','dodgeRight','dodgeBack','hit','hitHead','hitBody','hitHeavy','hitUppercut'].includes(key)) {
     // Contact windows measured on this character, not guessed from the
     // clip name. Preserve the compiler's bind pose after sampling.
     const nodes=Object.values(bones), saved=nodes.map(n=>({n,p:n.position.clone(),q:n.quaternion.clone()}));

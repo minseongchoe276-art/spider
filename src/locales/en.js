@@ -1,5 +1,6 @@
 // Longest phrases are matched first; numbers and rebound control keys stay intact.
 export const EN = {
+'돌진 어퍼컷':'Dashing uppercut','정면 방어 시':'When guarded from the front','재사용 8초':'8-second cooldown','명중 48 피해':'48 damage on hit',
 '앉기 / 일어서기':'Crouch / stand','앉기':'Crouch',
 '속도':'Speed',
 '구역 3곳 탐방':'Visit three districts','물품 회수 · 배달':'Collect and deliver','이동 기술 훈련':'Traversal training',

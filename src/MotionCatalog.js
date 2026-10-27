@@ -41,7 +41,8 @@ const imported = {
  hitHead:{file:'Light Hit To Head'},
  hitBody:{file:'Hit To Body'},
  hitHeavy:{file:'Big Hit To Head'},
- special:{file:'Cross Punch',trim:[.1,1.9],impactPhase:.56},
+ hitUppercut:{file:'Receive Uppercut To The Face'},
+ special:{file:'Surprise Uppercut',trim:[.7,1.97],impactPhase:.36},
 };
 MOTIONS.push({key:'rightHook',url:'/models/Boxing Stance.fbx',loop:false});
 for(const [key,{file,...settings}] of Object.entries(imported)){

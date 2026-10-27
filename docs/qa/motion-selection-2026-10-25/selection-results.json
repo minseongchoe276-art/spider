@@ -1,6 +1,6 @@
 {
-  "motions": 34,
-  "cases": 153,
+  "motions": 37,
+  "cases": 154,
   "results": [
     {
       "fps": 24,
@@ -833,10 +833,10 @@
     {
       "preview": "cross",
       "key": "cross",
-      "fraction": 0.57,
+      "fraction": 0.54,
       "state": "IDLE",
       "active": "cross",
-      "clipPhase": 0.57
+      "clipPhase": 0.54
     },
     {
       "preview": "rightHook",
@@ -865,10 +865,10 @@
     {
       "preview": "special",
       "key": "special",
-      "fraction": 0.56,
+      "fraction": 0.36,
       "state": "IDLE",
       "active": "special",
-      "clipPhase": 0.56
+      "clipPhase": 0.36
     },
     {
       "preview": "guard",
@@ -900,6 +900,14 @@
       "fraction": 0.45,
       "state": "IDLE",
       "active": "hitHead",
+      "clipPhase": 0.45000000000000007
+    },
+    {
+      "preview": "hitUppercut",
+      "key": "hitUppercut",
+      "fraction": 0.45,
+      "state": "IDLE",
+      "active": "hitUppercut",
       "clipPhase": 0.45
     },
     {
@@ -990,7 +998,7 @@
       "key": "special",
       "fraction": 0.5,
       "state": "RUNNING",
-      "active": "regularRun"
+      "active": "special"
     },
     {
       "preview": "slam",
@@ -1044,7 +1052,7 @@
       "key": "special",
       "fraction": 0.5,
       "state": "SPRINTING",
-      "active": "run"
+      "active": "special"
     },
     {
       "preview": "slam",

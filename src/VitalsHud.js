@@ -37,12 +37,13 @@ export function updateVitalsHud(node,{health,stamina,mode,warning=false,visible=
 }
 
 // Each mode exposes E plus its contextual F action.
-export function abilitySlotState({mode='web',locked=false,grounded=true,stamina=100,zipCooling=false,strikeGround=grounded,busy=false,blocking=false,zipBlocked=false}={}){
+export function abilitySlotState({mode='web',locked=false,grounded=true,stamina=100,zipCooling=false,strikeGround=grounded,busy=false,blocking=false,zipBlocked=false,specialCooldown=0}={}){
   const wire=mode!=='combat';
   return {
     mode:wire?'web':'combat',
     label:wire?'와이어 기술':'전투 기술',
     slots:{
+      special:{unavailable:wire||!strikeGround||busy||blocking,active:!wire&&strikeGround&&!busy&&!blocking&&stamina>=35&&specialCooldown<=0,dry:!wire&&stamina<35,cooling:specialCooldown>0},
       mode:{active:!locked,unavailable:locked,dry:false,cooling:false},
       zip:{
         unavailable:wire?(grounded||zipBlocked):(!strikeGround||busy||blocking),

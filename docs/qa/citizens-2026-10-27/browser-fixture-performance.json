@@ -1,0 +1,8 @@
+{
+  "evidence": "Visible benchmark output in Chrome, scripts/review-citizens.html, 120 retained frames after 30 warm-up frames per condition",
+  "environment": "fixture, 1280x1210 screenshot viewport, renderer pixel ratio 1",
+  "activeCitizensDuringMeasurement": 10,
+  "baseline": {"p50Ms":16.699999999254942,"p95Ms":19.099999997764826,"cpuP95":0,"calls":3,"triangles":26},
+  "citizens": {"p50Ms":16.699999999254942,"p95Ms":18.800000000745058,"cpuP95":0.3999999985098839,"calls":13,"triangles":463944},
+  "interpretation": "10 additional draw calls, about 60 FPS median. Lower sampled P95 is measurement noise, not a claim that adding citizens improves FPS. This fixture does not measure Hong Kong streaming."
+}

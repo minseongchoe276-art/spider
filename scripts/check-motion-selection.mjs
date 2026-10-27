@@ -60,7 +60,7 @@ for (const fps of [24,30,60,144]) {
 }
 // Exercise the same function used by the browser, through Character.update.
 // These assertions catch preview aliases and heavy's nonlinear source clock.
-for(const key of ['combatIdle','jab','cross','rightHook','hook','heavy','special','guard','slam','slamLand','hitHead']) {
+for(const key of ['combatIdle','jab','cross','rightHook','hook','heavy','special','guard','slam','slamLand','hitHead','hitUppercut']) {
   const c=actor();
   try {
     const sample=sampleCombatReviewPose(c,{key,id:1});
@@ -75,7 +75,7 @@ for(const speed of [0,4.4,6.5])for(const key of ['jab','cross','heavy','special'
   const c=actor();
   try {
     const sample=sampleCombatReviewPose(c,{key,phase:.5,speed,id:1});
-    const fullBody=!speed || key==='slam' || key==='slamLand';
+    const fullBody=!speed || key==='special' || key==='slam' || key==='slamLand';
     assert.equal(sample.active,fullBody?key:speed>5?'run':'regularRun');
     assert.equal(c.combatAction.key,key);
     if(fullBody)assert(Math.abs(c.activeAction.time/c.activeAction.getClip().duration-(key==='heavy'?heavyClipPhase(.5):.5))<1e-5);

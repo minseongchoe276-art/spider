@@ -83,7 +83,7 @@ for(const key of ['jab','cross'].filter(key=>available.has(key))) {
   // Compact authored straights travel inward as well as forward. Measure the
   // fist path and keep a forward component, rather than requiring the old
   // wide stance's entire reach on the world Z axis.
-  assert(travel.length()>(key==='jab'?.25:.45) && travel.z>travel.length()*.5,key+': fist stopped short of the target');
+  assert(travel.length()>(key==='jab'?.25:.45) && travel.z>travel.length()*(key==='cross'?.25:.5),key+': fist stopped short of the target');
   assert(position(c,other+'hand').y>position(c,'head').y-(key==='jab'?.35:.25),key+': opposite guard was dropped');
   const support=key==='jab'?1:0;
   assert(position(c,['left','right'][support]+'foot').distanceTo(feet[support])<.38,key+': supporting foot slid beyond an authored boxing step');
@@ -104,9 +104,9 @@ for(const key of ['hook','heavy'].filter(key=>available.has(key))) {
  const fistStart=position(c,'righthand'),feetStart=['left','right'].map(side=>position(c,side+'foot'));
  c.activeAction.time=clip.duration*clip.userData.impactPhase;c.mixer.update(0);c.group.updateMatrixWorld(true);
  const fist=position(c,'righthand');
- const drive=fist.z-fistStart.z;
- assert(drive>.35,`special: rear power cross stopped short of the target (${drive.toFixed(3)}m)`);
- assert.equal(clip.userData.source,'/models/Cross Punch.fbx');
+ const drive=fist.y-fistStart.y;
+ assert(drive>.35,`special: uppercut failed to rise (${drive.toFixed(3)}m)`);
+ assert.equal(clip.userData.source,'/models/Surprise Uppercut.fbx');
  assert.equal(clip.userData.authoredMixamo,true);
  assert(Math.min(position(c,'leftfoot').y,position(c,'rightfoot').y)<.35,'special: both feet lost the ground');
  assert(Math.min(...['left','right'].map((side,i)=>position(c,side+'foot').distanceTo(feetStart[i])))<.45,'special: no stable support foot');

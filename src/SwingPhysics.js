@@ -1142,7 +1142,7 @@ export class SwingPhysics {
       } else if (!['TURNING','LANDING','ROLLING'].includes(this.state)) {
         const slide = Math.hypot(this.velocity.x, this.velocity.z);
         const dodge = this.combatMotion?.key?.startsWith('dodge');
-        const hit = this.combatMotion?.key === 'hit' || this.combatMotion?.key === 'hitHead' || this.combatMotion?.key === 'hitBody' || this.combatMotion?.key === 'hitHeavy';
+        const hit = this.combatMotion?.key === 'hit' || this.combatMotion?.key === 'hitHead' || this.combatMotion?.key === 'hitBody' || this.combatMotion?.key === 'hitHeavy' || this.combatMotion?.key === 'hitUppercut';
         // A released dodge or hit still carries speed. Idle here swapped the
         // whole body to a still clip and popped the feet.
         if (dodge) this.state = input.sprint && slide > 4.2 ? 'SPRINTING' : 'RUNNING';

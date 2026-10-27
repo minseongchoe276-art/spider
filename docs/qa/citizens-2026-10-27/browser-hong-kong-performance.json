@@ -1,0 +1,10 @@
+{
+  "date": "2026-10-28 Asia/Seoul",
+  "evidence": "Visible Chrome benchmark output in scripts/review-citizens.html?hongKong=1, 150 frames per condition with first 30 discarded",
+  "environment": "Local Chrome, real Hong Kong streamed tiles, renderer pixel ratio 1, camera fixed after tile queues reached 0/0",
+  "activeCitizens": 10,
+  "terrainMeshes": 87,
+  "baseline": {"frames":120,"p50Ms":16.69999999552965,"p95Ms":17.5,"cpuP95":0,"calls":122,"triangles":139114},
+  "citizens": {"frames":120,"p50Ms":16.700000002980232,"p95Ms":17.799999997019768,"cpuP95":0.4000000059604645,"calls":132,"triangles":603032},
+  "scope": "Short local steady-state sample. Measures actual Hong Kong geometry plus all ten resident draws, not a guarantee for every device, graphics setting or streaming condition."
+}

@@ -1,3 +1,4 @@
+import {UPPERCUT,uppercutSpeed} from './DashingUppercut.js';
 import * as THREE from 'three';
 import {GROUNDED} from './MotionCatalog.js';
 import {COMBAT_GROUND_STATES} from './AttackRules.js';
@@ -9,14 +10,14 @@ export const ATTACKS={
   jab:{duration:0.72,from:0.14,to:0.22,damage:12,reach:1.8},
   cross:{duration:0.82,from:0.42,to:0.52,damage:17,reach:1.9},
   hook:{duration:0.9,from:0.342,to:0.432,damage:32,reach:2.1},
-  special:{duration:1.2,from:0.62,to:0.74,damage:48,reach:2.0},
+  special:UPPERCUT,
   heavy:{duration:1.05,from:0.52,to:0.7,damage:32,reach:2.1},
 };
 const grounded=p=>GROUNDED.includes(p.state);
 const forward=p=>new THREE.Vector3(Math.sin(p.facingAngle),0,Math.cos(p.facingAngle));
 export class CombatSystem {
-  constructor(scene,physics,character,{vfx=null,audio=null,onNotice=()=>{},onHit=()=>{},getBindings=()=>BINDINGS}={}) {
-    Object.assign(this,{scene,physics,character,vfx,audio,onNotice,onHit,getBindings});
+  constructor(scene,physics,character,{vfx=null,audio=null,onNotice=()=>{},onHit=()=>{},onImpact=()=>{},getTargets=null,getBindings=()=>BINDINGS}={}) {
+    Object.assign(this,{scene,physics,character,vfx,audio,onNotice,onHit,onImpact,getTargets,getBindings});
     this.mode='web';this.action=null;
     this.character.combatStance=false;
     this.blocking=false;this.health=100;this.stamina=100;this.invulnerable=0;
@@ -76,10 +77,10 @@ export class CombatSystem {
     return true;
   }
   special(camera) {
-    if(this.mode!=='combat' || this.action || !canStrike(this.physics) || this.blocking || this.stamina<35 || this.specialCooldown>0)return false;
+    if(this.mode!=='combat' || this.action || !canStrike(this.physics) || this.blocking || this.stamina<UPPERCUT.stamina || this.specialCooldown>0)return false;
     if(this.standBefore('special',camera))return false;
-    this.stamina-=35;this.specialCooldown=4;
-    this.start('special',ATTACKS.special.duration,camera);return true;
+    this.stamina-=UPPERCUT.stamina;this.specialCooldown=UPPERCUT.cooldown;
+    this.start('special',ATTACKS.special.duration,camera);this.action.direction=forward(this.physics);return true;
   }
   queue(method,camera) {if(this.action && this.action.time>=this.action.duration*.75)this.queued={method,camera,expires:this.elapsed+.18};}
   airStrike(camera) {
@@ -130,15 +131,15 @@ export class CombatSystem {
     const current=this.action;
     const stopping=this.character.activeAction && ['stop','runStop'].some(key=>this.character.activeAction===this.character.actions?.[key] && this.character.activeAction?.time<this.character.activeAction.getClip().duration-.05) || ['RUNNING','SPRINTING'].includes(this.character.lastState);
     // Track camera aim throughout a strike, including while standing still.
-    if(current && ATTACKS[current.key])this.face(camera);
+    if(current && ATTACKS[current.key] && current.key!=='special')this.face(camera);
     if(current && ATTACKS[current.key]){
       const speed=Math.hypot(this.physics.velocity.x,this.physics.velocity.z);
       const stepping=!!(input && (input.forward || input.backward || input.left || input.right));
       // Promote a planted strike when movement starts, then keep its carrier
       // until recovery so braking cannot replace both legs mid-punch.
-      current.travel=!!current.travel || stepping || speed>0.9;
+      current.travel=current.key==='special'?false:!!current.travel || stepping || speed>0.9;
     }
-    const dodgeSpeed=current?.direction?
+    const dodgeSpeed=current?.key==='special'?uppercutSpeed(current.previous,current.time):current?.direction?
       ({dodgeLeft:0.8,dodgeRight:0.8,dodgeBack:1.35,dodgeForward:2.3}[current.key] || 0)*
       Math.sin(Math.PI*THREE.MathUtils.clamp(current.time/current.duration,0,1)):0;
     this.physics.combatMotion=current?{key:current.key,direction:current.direction || null,speed:dodgeSpeed,plant:!!ATTACKS[current.key] && !current.travel,travel:!!current.travel}:this.blocking?{key:'guard'}:null;
@@ -165,23 +166,32 @@ export class CombatSystem {
   }
   strike(action,hit) {
     const origin=this.physics.position.clone().add(new THREE.Vector3(0,1,0)),f=forward(this.physics);
-    for(const e of this.enemies) {
+    for(const e of this.getTargets?.() || this.enemies) {
       if(e.health<=0 || action.hits.has(e))continue;
       const target=e.position.clone().add(new THREE.Vector3(0,1,0)),d=target.clone().sub(origin);
       if(Math.abs(d.y)>1.5 || Math.hypot(d.x,d.z)>hit.reach || (!hit.radial && d.clone().setY(0).normalize().dot(f)<0.45) || this.obstructed(origin,target))continue;
       action.hits.add(e);
+      if(e.nonCombatant){
+        e.reactToAttack?.(action.key,hit.damage,origin);
+        if(action.key==='special'){this.vfx?.spawnUppercutImpact?.(target.clone().setY(e.position.y+1.6),f);this.onImpact(.16);}else this.vfx?.spawnWebImpact?.(target);
+        this.audio?.playCombatHit?.(hit.damage>=24);continue;
+      }
       if(e.type==='shield' && !['hook','heavy','special','slamLand'].includes(action.key)){e.flash=.1;e.stagger=.08;this.audio?.playCombatHit?.(false);this.onNotice('방패 방어 · E 훅으로 돌파하세요.');continue;}
       e.health=Math.max(0,e.health-hit.damage);e.flash=0.15;e.stagger=0.45;this.hits++;
       this.onHit(hit.damage);
-      this.vfx?.spawnWebImpact(target);this.audio?.playCombatHit?.(hit.damage>=24);
+      if(action.key==='special'){
+        e.uppercutTime=0;e.uppercutDuration=.85;e.stagger=.85;
+        this.vfx?.spawnUppercutImpact?.(target.clone().setY(e.position.y+1.6),f);this.onImpact(.22);
+      }else this.vfx?.spawnWebImpact(target);
+      this.audio?.playCombatHit?.(hit.damage>=24);
       if(e.health===0){e.mesh.visible=false;this.onNotice('대상 제압');}
     }
   }
-  reactToHit(amount,{hitRegion=null}={}) {
+  reactToHit(amount,{hitRegion=null,variant=null}={}) {
     if(this.mode!=='combat' || !grounded(this.physics))return false;
     this.cancel();
-    const key=amount>=24 && this.character.actions?.hitHeavy?'hitHeavy':hitRegion==='body' || (!hitRegion && amount<16)?'hitBody':'hitHead';
-    const duration={hitHead:.65,hitBody:.85,hitHeavy:1.05}[key];
+    const key=variant==='uppercut' && this.character.actions?.hitUppercut?'hitUppercut':amount>=24 && this.character.actions?.hitHeavy?'hitHeavy':hitRegion==='body' || (!hitRegion && amount<16)?'hitBody':'hitHead';
+    const duration={hitHead:.65,hitBody:.85,hitHeavy:1.05,hitUppercut:.95}[key];
     this.start(key,duration,null);return true;
   }
   receiveDamage(amount,enemy) {

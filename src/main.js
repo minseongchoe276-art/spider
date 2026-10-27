@@ -29,6 +29,7 @@ import {CombatPractice} from './CombatPractice.js';
 import {startLoadingStatus} from './LoadingStatus.js';
 import {HudLayout} from './HudLayout.js';
 import {COMBAT_GROUND_STATES} from './AttackRules.js';
+import {AmbientCitizens} from './AmbientCitizens.js';
 import {abilitySlotState,updateVitalsHud} from './VitalsHud.js';
 let stopLoadingStatus=()=>{};
 
@@ -157,12 +158,10 @@ export class GameApp {
     // Scene
     this.scene = new THREE.Scene();
     this.scene.background = new THREE.Color(0x8fc8e8);
-    // Stream the nearby district, not twenty kilometres of textured terrain
-    // into the startup cache. The neighbourhood advances with the player.
-    this.scene.fog = new THREE.FogExp2(0xaed9eb, 0.0004);
+    this.scene.fog = new THREE.FogExp2(0xaed9eb, 0.00032);
 
     // Camera
-    this.camera = new THREE.PerspectiveCamera(65, window.innerWidth / window.innerHeight, 0.2, 1000);
+    this.camera = new THREE.PerspectiveCamera(65, window.innerWidth / window.innerHeight, 0.2, 1200);
 
     // Lighting
     const localCity=selectedCity(location.search)!=='hong-kong';
@@ -265,10 +264,15 @@ export class GameApp {
 
     this.vfx = new VFXManager(this.scene);
     this.physics = new SwingPhysics(this.scene, this.city, this.character, this.audio);
-    this.combat=new CombatSystem(this.scene,this.physics,this.character,{vfx:this.vfx,audio:this.audio,onNotice:message=>this.showNotice(message),getBindings:()=>this.preferences.values.settings.bindings});
+    this.combat=new CombatSystem(this.scene,this.physics,this.character,{vfx:this.vfx,audio:this.audio,onNotice:message=>this.showNotice(message),getBindings:()=>this.preferences.values.settings.bindings,onImpact:strength=>this.tpsCamera?.triggerShake?.(strength)});
+    if(selectedCity(location.search)==='hong-kong'){
+      this.citizens=new AmbientCitizens({scene:this.scene,city:this.city,player:this.physics,camera:this.camera,onPlayerHit:(amount,n)=>{this.combat.receiveDamage(amount,n);this.audio?.playCombatHit?.(false);},onError:error=>console.warn('Citizen assets unavailable',error)});
+      this.combat.getTargets=()=>[...this.combat.enemies,...this.citizens.targets];
+    }
     this.combat.onDeferredStrike=()=>this.multiplayer?.attack('punch');
     this.physics.onWebAttach=anchor=>this.vfx.spawnWebImpact(anchor);
     this.physics.onLanding = (position, impact, surfaceNormal) => {
+      if(impact>14)this.citizens?.alarm(position,Math.min(18,impact*.6));
       if (this.vfx?.spawnLandingShockwave) {
         this.vfx.spawnLandingShockwave(position, impact, surfaceNormal);
       } else if (impact > 7) {
@@ -366,7 +370,7 @@ export class GameApp {
     for(const button of (document.querySelectorAll?.('#ability-bar button') || [])){
       const send=down=>{
         const action=['wall','guard'].includes(button.dataset.ability)?'wall':button.dataset.ability;
-        const code=this.preferences?.values.settings?.bindings?.[action];
+        const code=action==='special'?'KeyG':this.preferences?.values.settings?.bindings?.[action];
         if(!code)return;
         const event=new KeyboardEvent(down?'keydown':'keyup',{code,bubbles:true});
         Object.defineProperty(event,'touchInput',{value:true});window.dispatchEvent(event);
@@ -454,6 +458,7 @@ export class GameApp {
           this.physics.clearPendingInput();
         }
       }
+      if(k==='KeyG' && this.combat?.mode==='combat'){if(this.combat.special(this.camera))this.multiplayer?.attack('punch');return;}
       if (k === 'KeyF' && this.combat?.mode==='combat') this.combat.guard(true);
       if (k === 'KeyE') {
         if (this.combat?.mode==='combat') {
@@ -809,6 +814,7 @@ export class GameApp {
     if (motionValue) motionValue.textContent = reducedMotion ? '켜짐' : '꺼짐';
     document.getElementById('graphics-quality').value = quality;
     this.tpsCamera.reducedMotion = reducedMotion;
+    this.vfx.reducedMotion = reducedMotion;
     this.city.reducedMotion = reducedMotion;
     document.body.classList.toggle('reduced-motion', reducedMotion);
     if(this.appliedQuality!==quality || this.appliedAutoQuality!==settings.autoQuality){
@@ -892,6 +898,7 @@ export class GameApp {
       strikeGround:COMBAT_GROUND_STATES.includes(this.physics?.state),
       busy:!!this.combat.action,blocking:!!this.combat.blocking,
       zipBlocked:this.physics?.state==='MANTLING',
+      specialCooldown:this.combat.specialCooldown,
       zipCooling:(this.physics?.zipCooldown||0)>0 || this.physics?.state==='WEB_ZIP',
     });
     if(bar.dataset.mode!==slots.mode)bar.dataset.mode=slots.mode;
@@ -899,9 +906,10 @@ export class GameApp {
     for(const [name,flags] of Object.entries(slots.slots)){
       const slot=bar.querySelector(`[data-ability="${name}"]`);
       if(!slot)continue;
-      const labels={mode:slots.mode==='web'?'전투 모드로 전환':'와이어 모드로 전환',zip:slots.mode==='web'?'공중 와이어 집':'훅 · 기력 18',wall:'벽 타기 · 누르고 이동',guard:'방어 · 누르고 유지'};
+      const labels={special:`돌진 어퍼컷 · G · 기력 35${this.combat.specialCooldown>0?' · '+this.combat.specialCooldown.toFixed(1)+'초 대기':''}`,mode:slots.mode==='web'?'전투 모드로 전환':'와이어 모드로 전환',zip:slots.mode==='web'?'공중 와이어 집':'훅 · 기력 18',wall:'벽 타기 · 누르고 이동',guard:'방어 · 누르고 유지'};
+      if(name==='special'){const remaining=slot.querySelector('.ability-cooldown');if(remaining)remaining.textContent=this.combat.specialCooldown>0?Math.ceil(this.combat.specialCooldown)+'s':'';}
       slot.title=t(labels[name]);slot.setAttribute('aria-label',t(labels[name]));
-      slot.hidden=(name==='guard' && slots.mode==='web') || (name==='wall' && slots.mode==='combat');
+      slot.hidden=(name==='special' && slots.mode==='web') || (name==='guard' && slots.mode==='web') || (name==='wall' && slots.mode==='combat');
       slot.disabled=!!(flags.unavailable || flags.dry || flags.cooling);
       slot.classList.toggle('is-active',flags.active);
       slot.classList.toggle('is-unavailable',flags.unavailable);
@@ -1041,6 +1049,7 @@ export class GameApp {
         this.physics.facingAngle,
         this.input
       );
+      this.citizens?.update(delta);
       // 3. Update Visuals & FX
       const speedKmh = this.physics.velocity.length() * 3.6;
       if (this.speedLines) {

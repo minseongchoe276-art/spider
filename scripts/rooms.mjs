@@ -5,6 +5,7 @@ import { MATCH, policeCount } from '../src/MatchRules.js';
 import { sanitizePose } from '../src/RemoteMotion.js';
 import {PURSUIT,matchDuration,arenaFrom,arenaContains,validArenaPoint} from '../src/PursuitRules.js';
 import {proceduralCollision,blockedSegment} from './city-collision.mjs';
+import {UPPERCUT} from '../src/DashingUppercut.js';
 import {attackGate,canAttack,opponents,guardedDamage,COMBAT_GROUND_STATES} from '../src/AttackRules.js';
 import {LOCAL_CITY} from '../src/LocalCityLayout.js';
 
@@ -150,7 +151,7 @@ function start(room) {
   for(let i=shuffled.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[shuffled[i],shuffled[j]]=[shuffled[j],shuffled[i]];}
   if(room.enhanced){shuffled.sort((a,b)=>(a.policeRounds||0)-(b.policeRounds||0));room.arena=arenaFrom(room.anchor,room.city,room.roofs);}
   const cops=room.mode==='tag'?policeCount(players.length):0;
-  shuffled.forEach((p,i)=>{p.team=room.mode==='custom'?(room.format==='ffa'?p.id:p.team):room.mode==='tag'?(i<cops?'police':'runner'):'free';if(p.team==='police')p.policeRounds=(p.policeRounds||0)+1;p.progress=0;p.goalAt=0;p.rescue=null;p.history=[];p.lifeEpoch=(p.lifeEpoch||0)+1;p.health=100;p.eliminated=false;p.seen=false;p.x=0;p.y=0;p.z=0;p.lastMove=0;p.cooldowns={punch:0,web:0};});
+  shuffled.forEach((p,i)=>{p.team=room.mode==='custom'?(room.format==='ffa'?p.id:p.team):room.mode==='tag'?(i<cops?'police':'runner'):'free';if(p.team==='police')p.policeRounds=(p.policeRounds||0)+1;p.progress=0;p.goalAt=0;p.rescue=null;p.history=[];p.lifeEpoch=(p.lifeEpoch||0)+1;p.health=100;p.eliminated=false;p.seen=false;p.x=0;p.y=0;p.z=0;p.lastMove=0;p.lastUppercutAt=0;p.cooldowns={punch:0,web:0};});
   publish(room);
 }
 async function handle(ws, data, terrain) {
@@ -235,9 +236,14 @@ async function handle(ws, data, terrain) {
     if(p.pose?.combat?.key==='guard'&&now-p.lastMove<=MATCH.guard.freshnessMs)return reject('guarding');
     if(kind==='web'&&p.pose?.combatStance)return reject('mode');
     if(kind==='punch'&&p.pose&&!COMBAT_GROUND_STATES.includes(p.pose.state))return reject('recovering');
+    const uppercut=data.variant==='uppercut';
+    if(data.variant!=null && !uppercut)return reject('invalid');
+    if(uppercut && (kind!=='punch' || !p.pose?.combatStance || p.pose.combat?.key!=='special' || Math.abs(p.pose.combat.duration-UPPERCUT.duration)>.02 || p.pose.combat.time<UPPERCUT.from-.04 || p.pose.combat.time>UPPERCUT.to+.1))return reject('invalid');
+    if(uppercut && now-(p.lastUppercutAt||0)<UPPERCUT.cooldown*1000)return reject('cooldown');
     p.cooldowns||={punch:0,web:0};
     if(now-(p.cooldowns[kind]||0)<rule.cooldown)return reject('cooldown');
     p.cooldowns[kind]=now;
+    if(uppercut)p.lastUppercutAt=now;
     const facing=Number.isFinite(data.facing)?data.facing:p.facing;
     // Modern clients name the exact highlighted opponent. Legacy clients keep
     // nearest-in-cone selection, without changing the target of a named shot.
@@ -246,7 +252,9 @@ async function handle(ws, data, terrain) {
     if(!target)return reject('target');
     const reason=attackGate(p,target,kind,facing);if(reason)return reject(reason);
     if(target.disconnectedAt)return reject('stale');
+    if(uppercut && Math.hypot(p.x-target.x,p.z-target.z)>UPPERCUT.reach)return reject('range');
     const damage=guardedDamage(p,target,kind,now);
+    if(uppercut){damage.variant='uppercut';damage.baseDamage=UPPERCUT.damage;damage.damage=damage.blocked?Math.ceil(UPPERCUT.damage*MATCH.guard.damageMultiplier):UPPERCUT.damage;}
     if(room.city==='hong-kong'){
       const round=room.round,life=target.lifeEpoch,attackerLife=p.lifeEpoch,from={x:p.x,y:p.y,z:p.z},to={x:target.x,y:target.y,z:target.z};
       const decision=await terrain.visibility(from,to);
