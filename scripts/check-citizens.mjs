@@ -26,7 +26,7 @@ for(const fps of [24,60,144]){
  for(let i=0;i<fps*15;i++){manager.update(dt);cpu.push(manager.metrics.lastMs);assert(manager.targets.length<=10);for(const n of manager.targets){assert(n.position.y>1.99&&n.position.y<2.03);assert(!(n.position.x>9.7&&n.position.x<14.3&&Math.abs(n.position.z)<17.7),'Citizen penetrated wall');const prev=positions.get(n);if(prev && prev.id===n.id)assert(n.position.distanceTo(prev.p)<.7,'Citizen teleported between logic ticks');positions.set(n,{id:n.id,p:n.position.clone()});}}
  assert.equal(manager.targets.length,10);assert.equal(manager.slots.length,10);assert.equal(new Set(manager.targets.map(n=>n.actor.variant)).size,3);
  const victim=manager.targets[0];player.position.copy(victim.position).add(new T.Vector3(0,0,-1));player.facingAngle=0;let scores=0;const combat=new CombatSystem(manager.scene,player,{},{getTargets:()=>manager.targets,onHit:()=>scores++});const action={key:'cross',hits:new Set()};combat.strike(action,{damage:12,reach:1.9});assert.equal(victim.state,'HURT');assert.equal(victim.hitSerial,1);combat.strike(action,{damage:12,reach:1.9});assert.equal(victim.hitSerial,1);assert.equal(scores,0,'Civilians must not grant enemy/mission rewards');
- for(let i=0;i<fps*1.1;i++)manager.update(dt);assert.equal(victim.state,'FLEE');const distance=victim.position.distanceTo(player.position);for(let i=0;i<fps*2;i++)manager.update(dt);assert(victim.position.distanceTo(player.position)>distance+1,'Citizen did not escape threat');
+ for(let i=0;i<fps*1.8;i++)manager.update(dt);assert.equal(victim.state,'FLEE');const distance=victim.position.distanceTo(player.position);for(let i=0;i<fps*2;i++)manager.update(dt);assert(victim.position.distanceTo(player.position)>distance+1,'Citizen did not escape threat');
  const before=manager.time;manager.update(1,false);assert.equal(manager.time,before,'Paused citizens advanced');
  player.position.x+=500;for(let i=0;i<fps*8;i++)manager.update(dt);assert.equal(manager.slots.length,10,'Population recycling grew the pool');assert(manager.metrics.recycled>=10);assert(manager.targets.every(n=>n.position.distanceTo(player.position)<100));
  const sorted=cpu.slice(fps*3).sort((a,b)=>a-b);results.push({fps,population:manager.targets.length,pool:manager.slots.length,cpuP50:sorted[Math.floor(sorted.length*.5)],cpuP95:sorted[Math.floor(sorted.length*.95)],recycled:manager.metrics.recycled});manager.dispose();assert.equal(manager.slots.length,0);
@@ -49,9 +49,20 @@ for(const fps of [24,60,144]){
  const n=manager.targets[0];for(const other of manager.targets)if(other!==n)manager.retire(other);manager.max=1;n.position.set(0,2.01,3);n.moveFrom.copy(n.position);n.moveTo.copy(n.position);n.yaw=n.targetYaw=Math.PI;n.mesh.rotation.y=n.yaw;
  player.position.set(0,2.01,1.7);let damage=0,hits=0;manager.onPlayerHit=(amount,enemy)=>{assert.equal(enemy,n);damage+=amount;hits++;};
  manager.hit(n,'jab',12,player.position);manager.hit(n,'jab',12,player.position);
- for(let i=0;i<fps*1.1;i++)manager.update(1/fps);
+ for(let i=0;i<fps*2.1;i++)manager.update(1/fps);
  assert.equal(hits,1,'One contact per counterattack');assert.equal(damage,12);assert.equal(n.actor.key,'jab');manager.alarm(n.position,14);assert.equal(n.state,'ATTACK','Witness alarm interrupted self defense');
  player.position.set(0,2.01,-10);for(let i=0;i<fps*2;i++)manager.update(1/fps);assert.equal(hits,1,'Out of range attacks cannot damage');assert.equal(n.state,'FLEE');manager.dispose();
+}
+// Warning backs away while facing the player; witnesses watch safely then resume.
+for(const fps of [24,60,144]){
+ const {manager,player}=fixture();for(let i=0;i<fps*3;i++)manager.update(1/fps);const n=manager.targets[0];for(const other of manager.targets)if(other!==n)manager.retire(other);manager.max=1;
+ n.position.set(0,2.01,3);n.moveFrom.copy(n.position);n.moveTo.copy(n.position);n.yaw=n.targetYaw=Math.PI;player.position.set(0,2.01,0);
+ let notices=0;manager.onNotice=()=>notices++;manager.hit(n,'jab',12,player.position);
+ for(let i=0;i<fps*.65;i++)manager.update(1/fps);assert.equal(n.state,'WARN');assert.equal(notices,1);const before=n.position.clone();
+ for(let i=0;i<fps*.5;i++)manager.update(1/fps);assert(n.position.z>before.z,'Warning did not step backward');assert(Math.cos(n.yaw)<-.8,'Warning turned its back to player');assert(n.actor.current.timeScale<0,'Retreat did not reuse reversed walk');
+ manager.change(n,'IDLE',100);n.retaliates=false;manager.alarm(player.position,20);
+ for(let i=0;i<fps*4.5;i++)manager.update(1/fps);assert.equal(n.state,'WATCH');assert(n.position.distanceTo(player.position)>=6.7,'Witness watched inside danger radius');
+ for(let i=0;i<fps*5;i++)manager.update(1/fps);assert(['IDLE','WALK'].includes(n.state),'Witness never resumed daily routine');manager.dispose();
 }
 // Damage uses the real player health/invulnerability path; walls and height reject contact.
 {const {manager,player}=fixture();for(let i=0;i<90;i++)manager.update(1/30);const n=manager.targets[0];

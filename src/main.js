@@ -266,7 +266,7 @@ export class GameApp {
     this.physics = new SwingPhysics(this.scene, this.city, this.character, this.audio);
     this.combat=new CombatSystem(this.scene,this.physics,this.character,{vfx:this.vfx,audio:this.audio,onNotice:message=>this.showNotice(message),getBindings:()=>this.preferences.values.settings.bindings,onImpact:strength=>this.tpsCamera?.triggerShake?.(strength)});
     if(selectedCity(location.search)==='hong-kong'){
-      this.citizens=new AmbientCitizens({scene:this.scene,city:this.city,player:this.physics,camera:this.camera,onPlayerHit:(amount,n)=>{this.combat.receiveDamage(amount,n);this.audio?.playCombatHit?.(false);},onError:error=>console.warn('Citizen assets unavailable',error)});
+      this.citizens=new AmbientCitizens({scene:this.scene,city:this.city,player:this.physics,camera:this.camera,onNotice:message=>this.showNotice(message),onPlayerHit:(amount,n)=>{this.combat.receiveDamage(amount,n);this.audio?.playCombatHit?.(false);},onError:error=>console.warn('Citizen assets unavailable',error)});
       this.combat.getTargets=()=>[...this.combat.enemies,...this.citizens.targets];
     }
     this.combat.onDeferredStrike=()=>this.multiplayer?.attack('punch');

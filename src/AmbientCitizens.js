@@ -17,8 +17,8 @@ export const CITIZEN_LIMITS=Object.freeze({
 
 // Local ambient population. Never enters combat.enemies or changes room scores.
 export class AmbientCitizens{
- constructor({scene,city,player,camera,assets=null,random=Math.random,max=10,loadAssets=loadCitizenAssets,onError=()=>{},onPlayerHit=()=>{}}){
-  Object.assign(this,{scene,city,player,camera,assets,random,loadAssets,onError,onPlayerHit});
+ constructor({scene,city,player,camera,assets=null,random=Math.random,max=10,loadAssets=loadCitizenAssets,onError=()=>{},onPlayerHit=()=>{},onNotice=()=>{}}){
+  Object.assign(this,{scene,city,player,camera,assets,random,loadAssets,onError,onPlayerHit,onNotice});
   this.max=Math.min(CITIZEN_LIMITS.count,Math.max(0,max));
   this.slots=[];this.time=0;this.spawnAt=0;this.loadAt=2;this.loading=false;this.failed=false;this.disposed=false;this.serial=0;this.phase=0;
   this.frustum=new T.Frustum();this.view=new T.Matrix4();this.center=new T.Vector3();
@@ -157,7 +157,7 @@ export class AmbientCitizens{
     route:[],
     routeAt:0,
     retaliates:false,
-    attackAt:0
+    attackAt:0,watchingIncident:false,warnStarted:0,threat:null
    });
    n.moveFrom=point.clone();
    n.moveTo=point.clone();
@@ -177,10 +177,12 @@ export class AmbientCitizens{
  }
 
  change(n,state,duration=0){
+  if(state!==n.state){n.route=[];n.routeAt=0;}
+  if(state==='WARN'){n.warnStarted=this.time;this.onNotice('물러서세요! 계속 공격하면 반격합니다.');}
   n.state=state;
   n.stateUntil=this.time+duration;
-  const key={IDLE:'idle',WALK:'walk',STARTLED:'startle',HURT:n.hitKey||'hit',FLEE:'run',DEFEND:'idle',ATTACK:'jab'}[state];
-  n.actor.play(key,.16,state==='HURT'||state==='STARTLED'||state==='ATTACK');
+  const key={IDLE:'idle',WALK:'walk',STARTLED:'startle',HURT:n.hitKey||'hit',FLEE:'run',DEFEND:'idle',ATTACK:'jab',WARN:'startle',RETREAT:'walk',WATCH:'idle'}[state];
+  n.actor.play(key,.16,state==='HURT'||state==='STARTLED'||state==='ATTACK'||state==='WARN');
   if(!['WALK','FLEE'].includes(state)){
    n.speed=0;
    n.moveFrom?.copy(n.position);
@@ -189,13 +191,14 @@ export class AmbientCitizens{
  }
 
  alarm(origin,radius=14,except=null){
+  this.incidentUntil=this.time+6;
   for(const n of this.slots){
-   if(!n.active || n===except || n.position.distanceTo(origin)>radius || ['HURT','DEFEND','ATTACK'].includes(n.state))continue;
+   if(!n.active || n===except || n.position.distanceTo(origin)>radius || ['HURT','WARN','DEFEND','ATTACK'].includes(n.state) || n.retaliates)continue;
    const line=origin.clone().sub(n.position);
    line.y=0;
    const distance=line.length();
    if(distance>.1 && this.ray(n.position.clone().addScaledVector(up,1),line.normalize(),distance))continue;
-   n.threat=origin.clone();
+   n.threat=origin.clone();n.watchingIncident=true;
    n.fearUntil=Math.max(n.fearUntil,this.time+9+this.random()*3);
    if(n.state!=='FLEE')this.change(n,'STARTLED',.55);
   }
@@ -217,8 +220,9 @@ export class AmbientCitizens{
 
  think(n,dt){
   const player=this.player.position;
-  if(n.state==='HURT' && this.time>=n.stateUntil)this.change(n,n.retaliates?'DEFEND':'STARTLED',.35);
-  else if(n.state==='STARTLED' && this.time>=n.stateUntil)this.change(n,'FLEE',0);
+  if(n.state==='HURT' && this.time>=n.stateUntil)this.change(n,'WARN',.9);
+  else if(n.state==='WARN' && this.time>=n.stateUntil)this.change(n,n.retaliates?'DEFEND':'FLEE',0);
+  else if(n.state==='STARTLED' && this.time>=n.stateUntil)this.change(n,'RETREAT',0);
   else if(n.state==='FLEE' && this.time>n.fearUntil && n.position.distanceTo(player)>15)this.change(n,'IDLE',1+this.random()*2);
   else if(['WALK','IDLE'].includes(n.state) && this.time>=n.stateUntil){
    if(n.state==='WALK'){
@@ -227,6 +231,13 @@ export class AmbientCitizens{
     n.targetYaw=this.findOpenStreetYaw(n,n.targetYaw+(this.random()-.5)*1.2);
     this.change(n,'WALK',4+this.random()*6);
    }
+  }
+
+  if(['RETREAT','WATCH'].includes(n.state)){
+   const distance=n.position.distanceTo(player);
+   if(this.time>(this.incidentUntil||0)){n.watchingIncident=false;n.threat=null;this.change(n,'IDLE',.8+this.random());}
+   else if(n.state==='RETREAT'&&distance>=7)this.change(n,'WATCH');
+   else if(n.state==='WATCH'&&distance<5.5)this.change(n,'RETREAT');
   }
 
   if(n.state==='ATTACK'){
@@ -250,7 +261,7 @@ export class AmbientCitizens{
    if(line.length()>5||this.time>n.fearUntil){
     n.retaliates=false;
     this.change(n,'FLEE');
-   }else if(line.length()<1.7&&Math.abs(player.y-n.position.y)<.9&&this.time>=n.attackAt){
+   }else if(line.length()<1.9&&Math.abs(player.y-n.position.y)<.9&&this.time>=n.attackAt){
     n.attackAt=this.time+1.7;
     n.attackStarted=this.time;
     n.attackHit=false;
@@ -268,6 +279,9 @@ export class AmbientCitizens{
    n.targetYaw=this.findOpenStreetYaw(n,Math.atan2(avoid.x,avoid.z));
   }
 
+  const backward=n.state==='RETREAT'||n.state==='WARN';
+  if(backward||n.state==='WATCH'){const toward=player.clone().sub(n.position);n.targetYaw=Math.atan2(toward.x,toward.z);}
+
   // Pedestrian separation
   const repel=new T.Vector3();
   for(const other of this.slots){
@@ -282,7 +296,7 @@ export class AmbientCitizens{
    n.targetYaw=Math.atan2(Math.sin(n.targetYaw)+repel.x,Math.cos(n.targetYaw)+repel.z);
   }
 
-  const speed=n.state==='FLEE'?4.6:n.state==='WALK'?1.2:0;
+  const speed=n.state==='FLEE'?4.6:n.state==='WALK'?1.2:n.state==='RETREAT'?1.7:n.state==='WARN'&&this.time-n.warnStarted>.25?.65:0;
   n.speed=speed;
   n.moveFrom.copy(n.position);
   n.moveTo.copy(n.position);
@@ -291,7 +305,7 @@ export class AmbientCitizens{
   if(!speed)return;
 
   if(this.time>=n.routeAt){
-   n.route=citizenRoute(this,n,n.targetYaw);
+   n.route=citizenRoute(this,n,n.targetYaw+(backward?Math.PI:0));
    n.routeAt=this.time+1.2;
   }
   while(n.route.length&&n.position.distanceTo(n.route[0])<.25)n.route.shift();
@@ -307,7 +321,7 @@ export class AmbientCitizens{
   direction.y=0;
   const distance=direction.length();
   direction.normalize();
-  n.targetYaw=Math.atan2(direction.x,direction.z);
+  if(!backward)n.targetYaw=Math.atan2(direction.x,direction.z);
   const travel=Math.min(distance,speed*dt);
   const target=n.position.clone().addScaledVector(direction,travel);
   const height=this.floor(target);
@@ -370,7 +384,7 @@ export class AmbientCitizens{
    n.mesh.rotation.y=n.yaw;
    const interval=n.state==='HURT'||n.state==='STARTLED'?1/30:this.camera&&!visible?1/8:distance<25?1/30:distance<55?1/15:1/8;
    if(n.animationTime>=interval){
-    n.actor.update(n.animationTime,n.speed);
+    n.actor.update(n.animationTime,['WARN','RETREAT'].includes(n.state)?-n.speed:n.speed);
     n.animationTime=0;
     this.metrics.animations++;
    }

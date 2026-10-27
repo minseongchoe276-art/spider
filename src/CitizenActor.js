@@ -20,7 +20,7 @@ export class CitizenActor{
   this.current=null;this.play('idle',0);
  }
  play(key,fade=.16,restart=false){const next=this.actions[key]||this.actions.idle;if(this.current===next){if(restart)next.reset().play();return;}const oneShot=['jab','startle','hit','hitBody','hitUppercut'].includes(key);next.reset().setLoop(oneShot?T.LoopOnce:T.LoopRepeat,oneShot?1:Infinity);next.clampWhenFinished=oneShot;next.setEffectiveTimeScale(1).setEffectiveWeight(1).play();if(this.current)this.current.crossFadeTo(next,fade,false);this.current=next;this.key=key;}
- update(delta,speed=0){if(this.key==='walk')this.current.timeScale=T.MathUtils.clamp(speed/(this.speeds.walk||1.8),.4,1.4);else if(this.key==='run')this.current.timeScale=T.MathUtils.clamp(speed/(this.speeds.run||6.5),.4,1.4);this.mixer.update(delta);}
+ update(delta,speed=0){if(this.key==='walk')this.current.timeScale=(speed<0?-1:1)*T.MathUtils.clamp(Math.abs(speed)/(this.speeds.walk||1.8),.4,1.4);else if(this.key==='run')this.current.timeScale=T.MathUtils.clamp(speed/(this.speeds.run||6.5),.4,1.4);this.mixer.update(delta);}
  reset(){this.mixer.stopAllAction();this.current=null;this.play('idle',0);this.group.visible=true;}
  dispose(){this.mixer.stopAllAction();this.mixer.uncacheRoot(this.model);this.model.traverse(n=>n.skeleton?.dispose());this.group.removeFromParent();}
 }
