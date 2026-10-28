@@ -1,0 +1,117 @@
+{
+  "environment": "Apple M1 Metal GPU, Chrome WebGL2, 1600x900, balanced, auto quality disabled",
+  "rows": [
+    {
+      "name": "baseline-bmw",
+      "city": "procedural",
+      "fps": 46.887470071827615,
+      "p95Ms": 33.400000000001455,
+      "gpuMedianMs": 25.323374,
+      "rendererCpuMeanMs": 9.743404254951376,
+      "drawCalls": 504,
+      "triangles": 707308,
+      "distance": 71.54259259259246,
+      "materials": 149,
+      "transmissionMeshes": null
+    },
+    {
+      "name": "baseline-repeat-bmw",
+      "city": "procedural",
+      "fps": 48.90219560866607,
+      "p95Ms": 33.39999999999782,
+      "gpuMedianMs": 26.966374,
+      "rendererCpuMeanMs": 8.355102041242073,
+      "drawCalls": 504,
+      "triangles": 707308,
+      "distance": 71.54259259259246,
+      "materials": 149,
+      "transmissionMeshes": 1
+    },
+    {
+      "name": "optimized-bmw",
+      "city": "procedural",
+      "fps": 59.020577444638676,
+      "p95Ms": 16.799999999999272,
+      "gpuMedianMs": 6.2915,
+      "rendererCpuMeanMs": 3.6472972972268187,
+      "drawCalls": 232,
+      "triangles": 358442,
+      "distance": 71.27592592592579,
+      "materials": 32,
+      "transmissionMeshes": 0
+    },
+    {
+      "name": "optimized-repeat-bmw",
+      "city": "procedural",
+      "fps": 59.62113659008758,
+      "p95Ms": 16.700000000000728,
+      "gpuMedianMs": 7.239583,
+      "rendererCpuMeanMs": 3.410702341924543,
+      "drawCalls": 232,
+      "triangles": 358442,
+      "distance": 71.54259259259246,
+      "materials": 32,
+      "transmissionMeshes": 0
+    },
+    {
+      "name": "baseline-corvette",
+      "city": "procedural",
+      "fps": 60.155484941251046,
+      "p95Ms": 16.700000000000728,
+      "gpuMedianMs": 6.383375,
+      "rendererCpuMeanMs": 1.9770764117423085,
+      "drawCalls": 154,
+      "triangles": 242454,
+      "distance": 71.54259259259246,
+      "materials": 38,
+      "transmissionMeshes": 0
+    },
+    {
+      "name": "optimized-corvette",
+      "city": "procedural",
+      "fps": 52.04828814553324,
+      "p95Ms": 33.30000000000291,
+      "gpuMedianMs": 6.458874,
+      "rendererCpuMeanMs": 2.715589352660306,
+      "drawCalls": 152,
+      "triangles": 242454,
+      "distance": 71.79637037037024,
+      "materials": 26,
+      "transmissionMeshes": 0
+    },
+    {
+      "name": "optimized-repeat-corvette",
+      "city": "procedural",
+      "fps": 60.225346495199815,
+      "p95Ms": 16.799999999999272,
+      "gpuMedianMs": 6.195124,
+      "rendererCpuMeanMs": 1.6582781452414215,
+      "drawCalls": 152,
+      "triangles": 242454,
+      "distance": 71.80925925925914,
+      "materials": 26,
+      "transmissionMeshes": 0
+    },
+    {
+      "name": "optimized-hong-kong-bmw",
+      "city": "hong-kong",
+      "fps": 59.965220172264374,
+      "p95Ms": 16.700000000004366,
+      "gpuMedianMs": 6.485,
+      "rendererCpuMeanMs": 3.4313333329061666,
+      "drawCalls": 201,
+      "triangles": 556620,
+      "distance": 3.5911344963885905,
+      "materials": 32,
+      "transmissionMeshes": 0
+    }
+  ],
+  "experimentSourceFingerprints": {
+    "src/VehicleAsset.js": "c973207c7b519d22a46e9d8915efded9bfc7b9228787779e1f7809db29faf81b",
+    "src/VehicleRender.js": "69888a8d847cf863cebcf4399da43ffe48b4470155e0e27431ae3f3b28406815"
+  },
+  "releaseSourceFingerprints": {
+    "src/VehicleAsset.js": "c308de739e85000b66c6c05575cf667fbf8c1e475d5fae5ac936c73810867142",
+    "src/VehicleRender.js": "69888a8d847cf863cebcf4399da43ffe48b4470155e0e27431ae3f3b28406815"
+  }
+}

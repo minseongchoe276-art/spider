@@ -3,6 +3,7 @@ import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
 import {clone} from 'three/addons/utils/SkeletonUtils.js';
 import {fetchAsset} from './AssetLoader.js';
 import {VEHICLE_IDS} from './VehicleNetwork.js';
+import {batchVehicleRendering,cloneVehicleMaterials} from './VehicleRender.js';
 const cache=new Map(),lateralAxle=new T.Vector3(1,0,0);
 function normalize(model,length,rotation=0){
  const frame=new T.Group(),visual=new T.Group();frame.add(visual);visual.add(model);model.rotation.y=rotation;model.updateMatrixWorld(true);
@@ -169,9 +170,9 @@ export function poseWheels(asset,spin,steering,ride=null){
 function glass(model){model.traverse(n=>{if(n.isMesh){n.castShadow=false;n.receiveShadow=true;for(const m of Array.isArray(n.material)?n.material:[n.material]){if(/MI_Glass$|Window/i.test(m.name)){m.transmission=0;m.opacity=.22;m.transparent=true;m.depthWrite=false;}if(m.name==='CarPaint')m.roughness=Math.max(.25,m.roughness);}}});}
 export function prepareBMW(model){
  const asset=normalize(model,4.7,-Math.PI/2);asset.frame.name='BMW330i';asset.wheels=wheelPivots(asset,['Object_13_169','Object_13004_172','Object_13001_173','Object_13002_174'].map(name=>model.getObjectByName(name)).filter(Boolean));
- const door=new T.Group();door.position.set(asset.size.x*.36,.6,.85);asset.visual.add(door);const parts=[];model.traverse(n=>{if(/^SK_Door_FL_/.test(n.name))parts.push(n);});for(const p of parts)door.attach(p);glass(model);
+ const door=new T.Group();door.position.set(asset.size.x*.36,.6,.85);asset.visual.add(door);const parts=[];model.traverse(n=>{if(/^SK_Door_FL_/.test(n.name))parts.push(n);});for(const p of parts)door.attach(p);glass(asset.frame);
  const ready={...asset,door,modelId:'bmw',seat:new T.Vector3(.43,.62,.02),pedals:[new T.Vector3(.58,.32,.85),new T.Vector3(.27,.32,.9)],wheel:new T.Vector3(.43,1,.54)};
- seatOnTires(ready);return ready;
+ seatOnTires(ready);return batchVehicleRendering(ready);
 }
 export function prepareCorvette(model){
  const asset=normalize(model,4.46);asset.frame.name='CorvetteC6ZR1';const wheels=[];model.traverse(n=>{if(n.isGroup&&/^Combined3DWheel/.test(n.name))wheels.push(n);});asset.wheels=wheelPivots(asset,wheels);
@@ -186,14 +187,14 @@ export function prepareCorvette(model){
   const subset=indices=>{const g=new T.BufferGeometry();for(const [key,a]of Object.entries(geometry.attributes))g.setAttribute(key,a);g.setIndex(indices);g.computeBoundingBox();g.computeBoundingSphere();asset.ownedGeometries.add(g);return g;};
   const part=new T.Mesh(subset(moving),mesh.material);part.position.copy(mesh.position);part.quaternion.copy(mesh.quaternion);part.scale.copy(mesh.scale);mesh.parent.add(part);part.updateWorldMatrix(true,false);door.attach(part);mesh.geometry=subset(closed);
  }
- glass(model);
+ glass(asset.frame);
  const ready={...asset,door,modelId:'corvette',seat:new T.Vector3(.375,.35,-.46),pedals:[new T.Vector3(.52,.18,.33),new T.Vector3(.23,.18,.38)],wheel:new T.Vector3(.375,.73,-.03)};
- seatOnTires(ready);return ready;
+ seatOnTires(ready);return batchVehicleRendering(ready);
 }
 export async function loadVehicle(id='bmw'){
  if(!VEHICLE_IDS.includes(id))throw Error('Unknown vehicle');
  if(!cache.has(id))cache.set(id,(async()=>{const name=id==='bmw'?'bmw-330i':'corvette-c6',bytes=await fetchAsset(`/vehicles/${name}.glb?v=2`,30000);return (await new GLTFLoader().parseAsync(bytes,'/vehicles/')).scene;})().catch(error=>{cache.delete(id);throw error;}));
- const model=clone(await cache.get(id));model.traverse(n=>{if(n.material)n.material=Array.isArray(n.material)?n.material.map(m=>m.clone()):n.material.clone();});const asset=id==='bmw'?prepareBMW(model):prepareCorvette(model);asset.shared=true;return asset;
+ const model=clone(await cache.get(id));cloneVehicleMaterials(model);const asset=id==='bmw'?prepareBMW(model):prepareCorvette(model);asset.shared=true;return asset;
 }
 export const loadBMW=()=>loadVehicle('bmw');
 export function disposeVehicleAsset(asset){
