@@ -22,3 +22,9 @@ export function poseDriver(c,asset,steering=0,blend=1,standing=null,standingFaci
  c.webFingerRig ||= createHandPoseRig(c.model,c.bones);for(const side of ['left','right'])applyHandPose(c.webFingerRig,side,0,.6*blend,{absolute:true});
  c.group.updateMatrixWorld(true);c.model.traverse(n=>n.skeleton?.update());
 }
+
+export function prepareDriver(c){
+ c.stopAnimation?.();c.combatStance=false;const idle=c.actions?.idle;
+ if(idle){idle.reset().setEffectiveWeight(1).play();c.mixer?.update(0);c.drivingBasePose=Object.values(c.bones||{}).map(bone=>({bone,p:bone.position.clone(),q:bone.quaternion.clone(),s:bone.scale.clone()}));c.mixer?.stopAllAction();}
+}
+export function releaseDriver(c,yaw=0){delete c.drivingBasePose;c.stopAnimation?.();c.group.quaternion.identity();if(c.model)c.model.rotation.y=yaw;c.targetFacingAngle=c.visualYaw=yaw;}

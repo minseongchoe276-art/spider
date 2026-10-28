@@ -283,7 +283,7 @@ export class GameApp {
       // Random camera offsets on every landing made ordinary movement jitter.
     };
     this.tpsCamera = new ThirdPersonCamera(this.camera, this.canvas);
-    this.vehicle=new VehicleSystem({scene:this.scene,city:this.city,physics:this.physics,character:this.character,cameraRig:this.tpsCamera,combat:this.combat,onControlReset:()=>this.clearInput(),onNotice:message=>this.showNotice(message),allowed:()=>!this.multiplayer?.room,getCitizens:()=>this.citizens?.targets||[]});
+    this.vehicle=new VehicleSystem({scene:this.scene,city:this.city,physics:this.physics,character:this.character,cameraRig:this.tpsCamera,combat:this.combat,onControlReset:()=>this.clearInput(),onNotice:message=>this.showNotice(message),allowed:()=>!this.multiplayer?.spectating&&(!this.multiplayer?.room||this.multiplayer.room.phase==='playing'),getOtherVehicles:()=>this.multiplayer?.players?.filter(p=>p.id!==this.multiplayer.id&&!p.eliminated).map(p=>p.vehicle).filter(Boolean)||[],getCitizens:()=>this.citizens?.targets||[]});
     if(this.citizens)this.citizens.obstacleRay=(origin,direction,distance)=>this.vehicle.blocksRay(origin,direction,distance);
     this.worldMap = new WorldMap(this);
     this.hongKongAudit=createHongKongAudit(this);

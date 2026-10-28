@@ -151,7 +151,7 @@ export class Multiplayer {
     if(data.type==='left')return this.room||this.id ? this.leaveLocal() : undefined;
     if(data.type==='pose') {
       const avatar=this.avatars.get(data.id),player=this.players.find(p=>p.id===data.id);
-      if(avatar && player)avatar.receive(player,sanitizePose(data.pose));
+      if(player){const clean=sanitizePose(data.pose);if(clean?.vehicle)player.vehicle=clean.vehicle;if(avatar)avatar.receive(player,clean);}
       return;
     }
     if(data.type==='room') {
@@ -182,7 +182,7 @@ export class Multiplayer {
       const player=this.players.find(p=>p.id===data.id);
       if(player && [data.x,data.y,data.z,data.facing].every(Number.isFinite)){
         player.x=data.x;player.y=data.y;player.z=data.z;player.facing=data.facing;player.seen=true;
-        player.pose=sanitizePose(data.pose);
+        player.pose=sanitizePose(data.pose);if(data.vehicle)player.vehicle=data.vehicle;else if(player.pose?.vehicle)player.vehicle=player.pose.vehicle;
       }
       this.syncAvatars();
       return;
@@ -216,6 +216,7 @@ export class Multiplayer {
   applyServerPosition(data) {
     if(![data.x,data.y,data.z].every(Number.isFinite))return false;
     const p=this.game.physics;
+    if(this.game.vehicle?.applyCorrection(data))return true;
     p.clearPendingInput();p.clearWebAnchor();this.game.combat?.cancel();this.pendingPunch=null;
     p.character.cancelAirTrick?.();p.mantle=null;p.character.mantle=null;
     p.recoveryTime=0;p.recoveryElapsed=0;p.wallBuilding=null;p.wallRunTimer=0;
@@ -312,7 +313,7 @@ export class Multiplayer {
     this.setSpectating(!!me?.eliminated);
     game.clickToPlayOverlay?.classList.add('hidden');
     game.isPlaying=true;game.isPaused=false;game.clearInput();game.audio.ensureContext();game.pointerLockWanted=true;
-    game.practice?.stop();game.physics.resetPosition();
+    game.practice?.stop();game.vehicle?.resetSession();game.physics.resetPosition();
     if(me?.seen && [me.x,me.y,me.z,me.facing].every(Number.isFinite)){
       game.physics.position.set(me.x,me.y,me.z);
       game.physics.previousFixedPosition.copy(game.physics.position);
@@ -322,6 +323,7 @@ export class Multiplayer {
       game.character.visualYaw=me.facing;
     }else this.placeMatchSpawn();
     game.resetCamera();game.combat.cancel();game.combat.clearEnemies();
+    if(me?.vehicle&&me.vehicle.phase!=='NONE')game.vehicle?.restore(me.vehicle).catch(()=>game.showNotice('차량 복원에 실패했습니다. 다시 불러주세요.'));
     const desiredMode=(this.room.mode==='custom'||me?.team==='police')?'combat':'web';
     game.combat.allowGuardInWeb=this.room.mode==='tag'&&me?.team==='runner';
     game.applyPreferences();
@@ -391,7 +393,7 @@ export class Multiplayer {
     game.showNotice('화면 클릭: 카메라 조작 · H: 조작 가이드 · M: 전체 지도');
   }
   finish(){this.pendingPunch=null;clearInterval(this.beginTimer);this.beginTimer=null;this.setSpectating(false);this.game.isPlaying=false;this.game.clearInput();this.game.setPaused(true);this.game.clickToPlayOverlay?.classList.add('hidden');this.clearAvatars();}
-  leaveLocal(){if(this.game.experience?.study)this.game.experience.study.match=null;this.game.character.group.visible=true;this.rescueStarted=null;this.rescueTarget=null;this.goalLive=false;if(this.goalMarker)this.goalMarker.visible=false;$('pursuit-hud').textContent='';$('spectate-next')?.classList.add('hidden');try{sessionStorage.removeItem('web-runner-room-resume');}catch{}this.arena=null;this.pulseUntil=0;this.game.practice?.stop();this.room=null;this.pendingPunch=null;clearInterval(this.beginTimer);this.beginTimer=null;this.spectating=false;this.solo=false;clearInterval(this.soloStartTimer);this.soloStartTimer=null;this.players=[];this.id=null;this.lastPhase=null;this.game.isPlaying=false;this.game.clearInput();this.game.setPaused(true);this.game.clickToPlayOverlay?.classList.add('hidden');this.clearAvatars();showLobbyView('solo');this.render();this.reportPresence();this.send({type:'list'});}
+  leaveLocal(){this.game.vehicle?.resetSession();if(this.game.experience?.study)this.game.experience.study.match=null;this.game.character.group.visible=true;this.rescueStarted=null;this.rescueTarget=null;this.goalLive=false;if(this.goalMarker)this.goalMarker.visible=false;$('pursuit-hud').textContent='';$('spectate-next')?.classList.add('hidden');try{sessionStorage.removeItem('web-runner-room-resume');}catch{}this.arena=null;this.pulseUntil=0;this.game.practice?.stop();this.room=null;this.pendingPunch=null;clearInterval(this.beginTimer);this.beginTimer=null;this.spectating=false;this.solo=false;clearInterval(this.soloStartTimer);this.soloStartTimer=null;this.players=[];this.id=null;this.lastPhase=null;this.game.isPlaying=false;this.game.clearInput();this.game.setPaused(true);this.game.clickToPlayOverlay?.classList.add('hidden');this.clearAvatars();showLobbyView('solo');this.render();this.reportPresence();this.send({type:'list'});}
   attack(kind,hand='left'){
     if(kind==='web'&&this.game.combat?.mode==='combat')return false;
     const me=this.players.find(p=>p.id===this.id);

@@ -13,7 +13,10 @@ export class VehicleController{
   const extent=this.city.playableHalfExtent;if(extent&&(Math.abs(position.x)+2.7>extent||Math.abs(position.z)+2.7>extent))return null;
   const samples=[];for(const [x,z] of [[0,0],[-.88,1.55],[.88,1.55],[-.88,-1.55],[.88,-1.55]]){const point=this.local(x,z,position,yaw),y=this.ground(point);if(y==null||Math.abs(y-position.y)>.55)return null;samples.push(y);}
   if(Math.max(...samples)-Math.min(...samples)>1.0)return null;
-  return {height:samples.reduce((a,b)=>a+b)/5,pitch:-Math.atan2((samples[1]+samples[2]-samples[3]-samples[4])*.5,3.1),roll:-Math.atan2((samples[1]+samples[3]-samples[2]-samples[4])*.5,1.76)};
+  const median=[...samples].sort((a,b)=>a-b)[2];
+  const used=samples.map(y=>Math.abs(y-median)>.28?median:y);
+  const height=used.reduce((a,b)=>a+b)/used.length;
+  return {height,pitch:-Math.atan2((used[1]+used[2]-used[3]-used[4])*.5,3.1),roll:-Math.atan2((used[1]+used[3]-used[2]-used[4])*.5,1.76),contacts:[{x:-.88,z:1.55,y:samples[1]},{x:.88,z:1.55,y:samples[2]},{x:-.88,z:-1.55,y:samples[3]},{x:.88,z:-1.55,y:samples[4]}]};
  }
  overlapsBuildings(position,yaw){
   const forward=new T.Vector3(Math.sin(yaw),0,Math.cos(yaw)),right=new T.Vector3(Math.cos(yaw),0,-Math.sin(yaw));
@@ -47,6 +50,14 @@ export class VehicleController{
   this.speed=T.MathUtils.clamp(this.speed,-VEHICLE.reverseSpeed,VEHICLE.maxSpeed);
   const yaw=this.yaw+this.speed/VEHICLE.wheelbase*Math.tan(this.steering)*dt,targetPosition=this.position.clone().addScaledVector(new T.Vector3(Math.sin(yaw),0,Math.cos(yaw)),this.speed*dt),ground=this.support(targetPosition,yaw);
   if(!ground||!this.clearMove(this.position,this.yaw,targetPosition,yaw,ground)){this.speed=0;this.velocity.set(0,0,0);return;}
-  targetPosition.y=ground.height+.02;this.position.copy(targetPosition);this.yaw=yaw;this.pitch=ground.pitch;this.roll=ground.roll;this.spin+=this.speed*dt/(this.wheelRadius||.38);this.velocity.set(Math.sin(yaw)*this.speed,0,Math.cos(yaw)*this.speed);
+  // Mesh roads chatter by several centimetres between triangles. The chassis
+  // follows the median slowly; each tyre is planted on its own sample.
+  if(this.rideY==null)this.rideY=ground.height;
+  const drop=Math.abs(ground.height-this.rideY);
+  this.rideY=T.MathUtils.damp(this.rideY,ground.height,drop>.45?14:5.5,dt);
+  this.pitch=T.MathUtils.damp(this.pitch||0,ground.pitch,6,dt);
+  this.roll=T.MathUtils.damp(this.roll||0,ground.roll,6,dt);
+  this.contacts=ground.contacts;
+  targetPosition.y=this.rideY+.02;this.position.copy(targetPosition);this.yaw=yaw;this.spin+=this.speed*dt/(this.wheelRadius||.38);this.velocity.set(Math.sin(yaw)*this.speed,0,Math.cos(yaw)*this.speed);
  }
 }

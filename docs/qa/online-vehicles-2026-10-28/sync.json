@@ -1,0 +1,36 @@
+{
+  "status": "PASS",
+  "results": [
+    {
+      "model": "bmw",
+      "fps": 24,
+      "seatChecks": 50
+    },
+    {
+      "model": "bmw",
+      "fps": 60,
+      "seatChecks": 126
+    },
+    {
+      "model": "bmw",
+      "fps": 144,
+      "seatChecks": 302
+    },
+    {
+      "model": "corvette",
+      "fps": 24,
+      "seatChecks": 50
+    },
+    {
+      "model": "corvette",
+      "fps": 60,
+      "seatChecks": 126
+    },
+    {
+      "model": "corvette",
+      "fps": 144,
+      "seatChecks": 302
+    }
+  ],
+  "scope": "Real rigs, real car assets and real two-client WebSocket messages; interpolation, stale packet rejection, entry/drive/exit, collision correction and leave cleanup"
+}

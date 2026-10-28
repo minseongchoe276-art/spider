@@ -1,0 +1,14 @@
+{
+  "status": "PASS",
+  "checks": [
+    "two model snapshots",
+    "persistent reconnect state",
+    "sequence/schema/speed rejection",
+    "car-car overlap",
+    "whole-body building obstruction",
+    "enter/drive/exit broadcasts",
+    "no model swaps or skipped exits",
+    "life reset",
+    "RLS and anon denial"
+  ]
+}

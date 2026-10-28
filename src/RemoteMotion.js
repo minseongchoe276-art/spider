@@ -1,3 +1,5 @@
+import {RemoteVehicle} from './RemoteVehicle.js';
+import {sanitizeVehicle} from './VehicleNetwork.js';
 import { AIR_TRICKS } from './AirTricks.js';
 import * as THREE from 'three';
 import { Character } from './Character.js';
@@ -6,7 +8,7 @@ import {MOTIONS} from './MotionCatalog.js';
 const ANIMATIONS=new Set(MOTIONS.map(m=>m.key));
 
 const STATES = new Set(['IDLE','RUNNING','SPRINTING','JUMPING','FALLING','SWINGING','WEB_ZIP',
-  'WALL_RUNNING','MANTLING','LANDING','ROLLING','TURNING']);
+  'WALL_RUNNING','MANTLING','LANDING','ROLLING','TURNING','DRIVING']);
 const COMBAT = new Set(['combatIdle','jab','cross','hook','heavy','guard','dodge',
   'dodgeLeft','dodgeRight','dodgeBack','dodgeForward','slam','slamLand','special','hit','hitHead','hitBody','hitHeavy','hitUppercut','rightHook']);
 const vector = v => v && [v.x,v.y,v.z].every(n => Number.isFinite(n) && Math.abs(n)<=10000)
@@ -24,6 +26,7 @@ const cleanShot=shot=>{
 
 export function sanitizePose(pose) {
   if (!pose || !STATES.has(pose.state)) return null;
+  const vehicle=sanitizeVehicle(pose.vehicle);if(pose.state==='DRIVING'&&(!vehicle||['NONE','PARKED'].includes(vehicle.phase)))return null;
   const velocity = vector(pose.velocity);
   if (!velocity || Math.hypot(velocity.x,velocity.y,velocity.z)>150) return null;
   const webs = (pose.combatStance===true?[]:Array.isArray(pose.webs)?pose.webs:[]).slice(0,2)
@@ -46,7 +49,7 @@ export function sanitizePose(pose) {
     ? {normal:normal(m.normal),...Object.fromEntries(['edge','start','end'].map(k=>[k,vector(m[k])])),
       elapsed:THREE.MathUtils.clamp(m.elapsed,0,2),duration:THREE.MathUtils.clamp(m.duration,.1,2),
       gap:THREE.MathUtils.clamp(m.gap,0,2),height:m.height} : null;
-  return {lowStance:pose.lowStance==='crouch' && ['IDLE','RUNNING','SPRINTING'].includes(pose.state) && !(combat?.duration>0)?pose.lowStance:null,state:pose.state,velocity,webs,webShot,webShots,animation,
+  return {vehicle,lowStance:pose.lowStance==='crouch' && ['IDLE','RUNNING','SPRINTING'].includes(pose.state) && !(combat?.duration>0)?pose.lowStance:null,state:pose.state,velocity,webs,webShot,webShots,animation,
     visualYaw:Number.isFinite(pose.visualYaw)?Math.atan2(Math.sin(pose.visualYaw),Math.cos(pose.visualYaw)):null,
     contactTime:Number.isFinite(pose.contactTime)?THREE.MathUtils.clamp(pose.contactTime,0,10):null,
     wallPhase:Number.isFinite(pose.wallPhase)?((pose.wallPhase%1)+1)%1:null,
@@ -61,7 +64,7 @@ export function sanitizePose(pose) {
 
 export function capturePose(physics,character) {
   const action=character.activeAction,clip=action?.getClip();
-  return sanitizePose({lowStance:character.lowStance,state:physics.animationState || physics.state,velocity:physics.velocity,webs:physics.webs,
+  return sanitizePose({vehicle:physics.vehicleSystem?.networkSnapshot()||null,lowStance:character.lowStance,state:physics.vehicleSystem?.driving?'DRIVING':physics.animationState || physics.state,velocity:physics.velocity,webs:physics.webs,
     animation:clip?{key:clip.name,phase:action.time/clip.duration,
       rate:character.airTrick?clip.duration/(character.airTrick.duration || AIR_TRICKS[character.airTrick.key].duration)
         :clip.name==='roll' && physics.recoveryTime>0?clip.duration/physics.recoveryTime
@@ -81,6 +84,7 @@ export function capturePose(physics,character) {
 export class RemoteMotion {
   constructor(scene, source, player, city) {
     this.character = new Character(scene,null,null,source);
+    this.vehicle=new RemoteVehicle(scene,this.character);
     this.mesh = this.character.group;
     this.mesh.name = `OnlineShadowPulseCharacter-${player.id}`;
     this.target = new THREE.Vector3(player.x,player.y,player.z);
@@ -102,10 +106,12 @@ export class RemoteMotion {
     }
     this.player=player;
     const clean=sanitizePose(pose);
+    const vehicle=clean?.vehicle||player.vehicle;if(vehicle)this.vehicle.receive(vehicle,now);
     if (clean) {this.pose=clean;this.poseAt=now;this.velocity.copy(clean.velocity);}
   }
   update(delta,now=performance.now()) {
-    const c=this.character;
+    const c=this.character;if(c.copySource&&!c.isLoaded)c.copyLoadedCharacter(c.copySource);
+    if(this.vehicle.update(delta,now,this.target)){this.marker.visible=c.isLoaded;return;}
     this.previous.copy(this.mesh.position);
     if (this.mesh.position.distanceToSquared(this.target)>1600) this.mesh.position.copy(this.target);
     else this.mesh.position.lerp(this.target,1-Math.exp(-15*delta));
@@ -165,6 +171,6 @@ export class RemoteMotion {
     this.marker.visible=c.isLoaded;
   }
   dispose() {
-    this.marker.geometry.dispose();this.marker.material.dispose();this.character.disposeCopy();
+    this.vehicle.dispose();this.marker.geometry.dispose();this.marker.material.dispose();this.character.disposeCopy();
   }
 }

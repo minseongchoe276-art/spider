@@ -1,3 +1,5 @@
+import {sanitizeVehicle,vehicleUpdateError} from '../src/VehicleNetwork.js';
+import {VehicleController} from '../src/VehicleController.js';
 import {HongKongTerrain} from '../supabase/functions/_shared/hong-kong-terrain.js';
 import { WebSocketServer } from 'ws';
 import { createHash, randomBytes, timingSafeEqual } from 'node:crypto';
@@ -9,7 +11,7 @@ import {UPPERCUT} from '../src/DashingUppercut.js';
 import {attackGate,canAttack,opponents,guardedDamage,COMBAT_GROUND_STATES} from '../src/AttackRules.js';
 import {LOCAL_CITY} from '../src/LocalCityLayout.js';
 
-export const ROOM_FEATURES=['custom-matches','named-targets','attack-results','directional-guard','motion-phase','admin-overview'];
+export const ROOM_FEATURES=['custom-matches','named-targets','attack-results','directional-guard','motion-phase','admin-overview','vehicles-v1'];
 const rooms = new Map();
 const clients = new Set();
 const adminStrikes=[];
@@ -17,7 +19,7 @@ const serverStarted=Date.now();
 const validName = value => String(value || '').trim().slice(0, 16) || '플레이어';
 const send = (ws, data) => { if (ws.readyState === 1) ws.send(JSON.stringify(data)); };
 const publicRoom = room => ({ code: room.code, name: room.name, mode: room.mode, format:room.format, city:room.city, count: room.players.size, capacity: room.capacity, phase: room.phase, enhanced:!!room.enhanced });
-const playerView = p => ({ id:p.id, name:p.name, ready:p.ready, team:p.team, health:p.health, eliminated:p.eliminated, seen:!!p.seen, x:p.x, y:p.y, z:p.z, facing:p.facing, progress:p.progress||0, connected:p.ws?.readyState===1 });
+const playerView = p => ({ id:p.id, name:p.name, ready:p.ready, team:p.team, health:p.health, eliminated:p.eliminated, seen:!!p.seen, x:p.x, y:p.y, z:p.z, facing:p.facing, progress:p.progress||0, connected:p.ws?.readyState===1,vehicle:p.vehicleLifeEpoch===p.lifeEpoch?p.pose?.vehicle||null:null });
 const broadcast = (room, data) => { for (const p of room.players.values()) send(p.ws, data); };
 const roomState = room => ({ type:'room', room:publicRoom(room), players:[...room.players.values()].map(playerView), host:room.host, endsAt:room.endsAt || null, vulnerableAt:room.vulnerableAt || null, serverNow:Date.now(), winner:room.winner || null, arena:room.arena||null, round:room.round||1, pulseUntil:room.pulseUntil||0, spawnAnchor:room.anchor||null });
 const publish = room => { broadcast(room, roomState(room)); publishList(); };
@@ -151,7 +153,7 @@ function start(room) {
   for(let i=shuffled.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[shuffled[i],shuffled[j]]=[shuffled[j],shuffled[i]];}
   if(room.enhanced){shuffled.sort((a,b)=>(a.policeRounds||0)-(b.policeRounds||0));room.arena=arenaFrom(room.anchor,room.city,room.roofs);}
   const cops=room.mode==='tag'?policeCount(players.length):0;
-  shuffled.forEach((p,i)=>{p.team=room.mode==='custom'?(room.format==='ffa'?p.id:p.team):room.mode==='tag'?(i<cops?'police':'runner'):'free';if(p.team==='police')p.policeRounds=(p.policeRounds||0)+1;p.progress=0;p.goalAt=0;p.rescue=null;p.history=[];p.lifeEpoch=(p.lifeEpoch||0)+1;p.health=100;p.eliminated=false;p.seen=false;p.x=0;p.y=0;p.z=0;p.lastMove=0;p.lastUppercutAt=0;p.cooldowns={punch:0,web:0};});
+  shuffled.forEach((p,i)=>{p.team=room.mode==='custom'?(room.format==='ffa'?p.id:p.team):room.mode==='tag'?(i<cops?'police':'runner'):'free';if(p.team==='police')p.policeRounds=(p.policeRounds||0)+1;p.progress=0;p.goalAt=0;p.rescue=null;p.history=[];p.lifeEpoch=(p.lifeEpoch||0)+1;p.health=100;p.eliminated=false;p.seen=false;p.x=0;p.y=0;p.z=0;p.lastMove=0;p.lastUppercutAt=0;p.pose=null;p.vehicleAt=0;p.cooldowns={punch:0,web:0};});
   publish(room);
 }
 async function handle(ws, data, terrain) {
@@ -207,26 +209,36 @@ async function handle(ws, data, terrain) {
     const coords=[data.x,data.y,data.z,data.facing];
     if(coords.some(n=>!Number.isFinite(n))||Math.abs(data.x)>2500||Math.abs(data.z)>2500||data.y < -100 || data.y>1000)return;
     const limit=room.city==='procedural'?LOCAL_CITY.playableHalfExtent:2400;
-    if(Math.abs(data.x)>=limit || Math.abs(data.z)>=limit){send(ws,{type:'correction',x:p.x,y:p.y,z:p.z});return;}
+    if(Math.abs(data.x)>=limit || Math.abs(data.z)>=limit){send(ws,{type:'correction',x:p.x,y:p.y,z:p.z,vehicle:p.pose?.vehicle||{phase:'NONE',sequence:0}});return;}
     const now=Date.now();if(now-p.lastMove<40)return;
-    if(room.enhanced&&!arenaContains(room.arena,data,3)){send(ws,{type:'correction',x:p.x,y:p.y,z:p.z});return;}
+    if(room.enhanced&&!arenaContains(room.arena,data,3)){send(ws,{type:'correction',x:p.x,y:p.y,z:p.z,vehicle:p.pose?.vehicle||{phase:'NONE',sequence:0}});return;}
+    const cleanPose=sanitizePose(data.pose),vehicle=cleanPose?.vehicle,previousVehicle=p.vehicleLifeEpoch===p.lifeEpoch?p.pose?.vehicle:null;
+    const correction=()=>send(ws,{type:'correction',x:p.x,y:p.y,z:p.z,facing:p.facing,vehicle:previousVehicle||{phase:'NONE',sequence:vehicle?.sequence||0}});
+    if(data.pose?.vehicle&&!vehicle){correction();return;}
+    const vehicleReason=vehicleUpdateError(vehicle,previousVehicle,{player:data,previousPlayer:p,elapsed:p.vehicleAt?(now-p.vehicleAt)/1000:0,limit,others:[...room.players.values()].filter(other=>other!==p&&!other.eliminated&&other.vehicleLifeEpoch===other.lifeEpoch).map(other=>other.pose?.vehicle).filter(Boolean)});
+    if(vehicleReason){correction();return;}
+    if(vehicle&&vehicle.phase!=='NONE'&&room.city==='procedural'){
+      const controller=new VehicleController(proceduralCollision()),start=previousVehicle&&['ENTERING','DRIVING','EXITING'].includes(previousVehicle.phase)?previousVehicle.position:vehicle.position,travel=Math.hypot(vehicle.position.x-start.x,vehicle.position.z-start.z),steps=Math.max(1,Math.ceil(travel/.5));
+      for(let i=0;i<=steps;i++){const t=i/steps,point={x:start.x+(vehicle.position.x-start.x)*t,y:start.y+(vehicle.position.y-start.y)*t,z:start.z+(vehicle.position.z-start.z)*t};if(controller.overlapsBuildings(point,vehicle.yaw)){correction();return;}}
+    }
     const distance=Math.hypot(data.x-p.x,data.y-p.y,data.z-p.z);
     // A 20m burst absorbs jitter once; it must not be granted again for
     // every packet (which allowed 18m teleports at 20Hz). Normal movement
     // is capped at 48m/s; 72m/s refill leaves network/simulation headroom.
     const budget=p.lastMove?(p.moveBudget??20)+(now-p.lastMove)*0.072:20;
-    if(p.lastMove&&distance>budget){send(ws,{type:'correction',x:p.x,y:p.y,z:p.z});return;}
-    if(room.enhanced&&p.lastMove&&room.city==='procedural'&&blockedSegment(p,data,proceduralCollision().colliders)){send(ws,{type:'correction',x:p.x,y:p.y,z:p.z});return;}
+    if(p.lastMove&&distance>budget){send(ws,{type:'correction',x:p.x,y:p.y,z:p.z,vehicle:p.pose?.vehicle||{phase:'NONE',sequence:0}});return;}
+    if(room.enhanced&&p.lastMove&&room.city==='procedural'&&blockedSegment(p,data,proceduralCollision().colliders)){send(ws,{type:'correction',x:p.x,y:p.y,z:p.z,vehicle:p.pose?.vehicle||{phase:'NONE',sequence:0}});return;}
     p.moveBudget=p.lastMove?Math.min(20,budget-distance):20;
     const previousMove=p.lastMove;
     p.x=data.x;p.y=data.y;p.z=data.z;p.facing=data.facing;p.seen=true;p.lastMove=now;
     if(room.enhanced){p.history||=[];p.history.push({x:p.x,y:p.y,z:p.z,time:now});p.history=p.history.filter(h=>now-h.time<600);advanceGoal(room,p,now,previousMove);}
-    p.pose=sanitizePose(data.pose);p.allowRunnerGuard=room.mode==='tag'&&p.team==='runner';
-    broadcast(room,{type:'move',id:p.id,x:p.x,y:p.y,z:p.z,facing:p.facing,pose:p.pose});return;
+    p.pose=cleanPose;p.vehicleAt=now;p.vehicleLifeEpoch=p.lifeEpoch;p.allowRunnerGuard=room.mode==='tag'&&p.team==='runner';
+    broadcast(room,{type:'move',id:p.id,x:p.x,y:p.y,z:p.z,facing:p.facing,pose:p.pose,vehicle:p.pose?.vehicle||null});return;
   }
   if(data.type==='attack' && canAttack(room,p)) {
     const kind=data.kind,now=Date.now(),rule=MATCH[kind];
     const reject=reason=>send(ws,{type:'attack-result',kind,reason});
+    if(['ENTERING','DRIVING','EXITING'].includes(p.pose?.vehicle?.phase))return reject('airborne');
     if(!['punch','web'].includes(kind))return reject('invalid');
     if(!p.seen || ((room.enhanced||room.city==='hong-kong'||room.mode==='custom')&&now-p.lastMove>1500))return reject('stale');
     if(now<(room.vulnerableAt||0))return reject('protected');

@@ -1,4 +1,4 @@
-import assert from 'node:assert/strict';import fs from 'node:fs';import * as T from 'three';import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';import {Character} from '../src/Character.js';import {boneId} from '../src/MotionRetarget.js';import {prepareBMW} from '../src/VehicleAsset.js';import {poseDriver} from '../src/DrivingPose.js';import {VehicleController} from '../src/VehicleController.js';import {VehicleSystem} from '../src/VehicleSystem.js';
+import assert from 'node:assert/strict';import fs from 'node:fs';import * as T from 'three';import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';import {Character} from '../src/Character.js';import {boneId} from '../src/MotionRetarget.js';import {prepareBMW,poseWheels} from '../src/VehicleAsset.js';import {poseDriver} from '../src/DrivingPose.js';import {VehicleController} from '../src/VehicleController.js';import {VehicleSystem} from '../src/VehicleSystem.js';
 globalThis.ProgressEvent=class{};
 async function rig(path){const b=fs.readFileSync(path),sz=b.readUInt32LE(12),j=JSON.parse(b.subarray(20,20+sz));j.buffers[0].uri='data:application/octet-stream;base64,'+b.subarray(28+sz).toString('base64');delete j.images;delete j.textures;j.materials=[];j.meshes.forEach(m=>m.primitives.forEach(p=>delete p.material));return (await new GLTFLoader().parseAsync(JSON.stringify(j),'')).scene;}
 function fixture(){const ray=new T.Raycaster(),floor=new T.Mesh(new T.PlaneGeometry(150,150),new T.MeshBasicMaterial({side:T.DoubleSide}));floor.rotation.x=-Math.PI/2;const wall=new T.Mesh(new T.BoxGeometry(20,4,.15));wall.position.set(0,2,20);floor.updateMatrixWorld();wall.updateMatrixWorld();return {isStreamed:true,raycast(origin,direction,distance){ray.set(origin,direction);ray.far=distance;const h=ray.intersectObjects([floor,wall],false)[0];return h?{point:h.point,distance:h.distance,normal:h.face.normal.clone().transformDirection(h.object.matrixWorld)}:null;}};}
@@ -9,7 +9,31 @@ const results=[];for(const fps of [24,60,144]){const city=fixture(),c=new Vehicl
 {const c=new VehicleController({colliders:[{minX:.55,maxX:.7,minY:0,maxY:3,minZ:5.9,maxZ:6.1}]});assert(c.overlapsBuildings(new T.Vector3(0,0,5),.4));assert(!c.overlapsBuildings(new T.Vector3(5,0,5),.4));}
 {const city=fixture();city.playableHalfExtent=12;const c=new VehicleController(city,new T.Vector3(0,.02,0));for(let i=0;i<600;i++)c.update(1/60,{forward:true});assert(c.position.z<9.31,'Vehicle escaped the playable map');}
 {const c=new VehicleController(fixture(),new T.Vector3(0,.02,0));c.occupied=()=>true;for(let i=0;i<120;i++)c.update(1/60,{forward:true});assert.equal(c.position.z,0,'Car drove through a citizen blocker');}
-const asset=prepareBMW(await rig('public/vehicles/bmw-330i.glb'));assert(Math.abs(asset.size.z-4.7)<.01);assert(asset.size.y<1.8&&asset.size.x<3,'Display props were not removed');assert.equal(asset.wheels.length,4);assert(asset.door.children.length>=6);
+const asset=prepareBMW(await rig('public/vehicles/bmw-330i.glb'));assert(Math.abs(asset.size.z-4.7)<.01);assert(asset.size.y<1.8&&asset.size.x<3,'Display props were not removed');assert.equal(asset.wheels.length,4);assert.equal(asset.wheels.filter(wheel=>wheel.front).length,2);assert(asset.door.children.length>=6);
+function treadBottom(root){root.updateWorldMatrix(true,true);let y=Infinity;root.traverse(node=>{const position=node.isMesh&&node.geometry.attributes?.position;if(!position)return;const index=node.geometry.index,count=index?index.count:position.count,step=count>80000?Math.floor(count/4000):1;for(let i=0;i<count;i+=step){const vertex=index?index.getX(i):i;y=Math.min(y,node.localToWorld(new T.Vector3().fromBufferAttribute(position,vertex)).y);}});return y-root.getWorldPosition(new T.Vector3()).y;}
+for(const wheel of asset.wheels)assert(wheel.radius>.25&&wheel.radius<.4,`tread radius ${wheel.radius}`);
+const bottoms=[];
+for(const turn of [0,.25,.5,.75,1]){
+ poseWheels(asset,turn*Math.PI*2,.35);
+ asset.frame.position.set(0,0,0);asset.frame.rotation.set(0,0,0);asset.frame.updateMatrixWorld(true);
+ bottoms.push(asset.wheels.map(wheel=>treadBottom(wheel.spin)+wheel.spin.getWorldPosition(new T.Vector3()).y));
+}
+for(let i=0;i<4;i++){
+ const column=bottoms.map(frame=>frame[i]);
+ const hop=Math.max(...column)-Math.min(...column);
+ assert(Math.min(...column)>-.02&&Math.max(...column)<.03,`tyre floated or sank ${column.map(v=>v.toFixed(3)).join(',')}`);
+ assert(hop<.012,`wheel ${i} hopped ${hop.toFixed(3)}m per turn`);
+}
+poseWheels(asset,0,0);asset.frame.updateMatrixWorld(true);
+{
+ const city=fixture(),plain=city.raycast;
+ city.raycast=(origin,direction,distance)=>{const hit=plain(origin,direction,distance);if(hit&&direction.y<-.5)hit.point.y=(Math.floor(origin.z*2)%2?1:-1)*.05;return hit;};
+ const c=new VehicleController(city,new T.Vector3(0,.02,0));
+ let maxStep=0,previous=null;
+ for(let i=0;i<240;i++){c.update(1/60,{forward:true});if(previous!=null)maxStep=Math.max(maxStep,Math.abs(c.position.y-previous));previous=c.position.y;}
+ assert(maxStep<.012,`chassis copied a road edge ${maxStep.toFixed(3)}m in one frame`);
+ assert(c.spin>2&&c.contacts?.length===4,'wheels did not roll on their own contacts');
+}
 const character=Object.create(Character.prototype),model=await rig('public/models/shadow-pulse-rig.glb');Object.assign(character,{group:new T.Group(),model,bones:{},actions:{},targetFacingAngle:0});character.group.add(model);model.traverse(n=>{if(n.isBone)character.bones[n.name]=n;});character.rememberRestPose();const find=id=>Object.values(character.bones).find(b=>boneId(b.name)===id);const lengths=Object.fromEntries(['left','right'].map(side=>[side,find(side+'leg').position.length()]));
 for(const yaw of [0,.8,Math.PI])for(const steering of [-.5,0,.5]){asset.frame.position.set(10,2,5);asset.frame.rotation.y=yaw;asset.frame.updateMatrixWorld(true);poseDriver(character,asset,steering);const hip=find('hips').getWorldPosition(new T.Vector3()),seat=asset.visual.localToWorld(asset.seat.clone());assert(hip.distanceTo(seat)<.001,'Hip missed driver seat');for(const side of ['left','right']){assert(Math.abs(find(side+'leg').position.length()-lengths[side])<1e-5,'Leg was stretched');for(const suffix of ['hand','foot'])assert(find(side+suffix).getWorldPosition(new T.Vector3()).toArray().every(Number.isFinite));}for(const b of Object.values(character.bones))assert(Math.abs(b.quaternion.length()-1)<.001);}
 asset.frame.position.set(0,0,0);asset.frame.rotation.y=0;asset.frame.updateMatrixWorld(true);poseDriver(character,asset,0);

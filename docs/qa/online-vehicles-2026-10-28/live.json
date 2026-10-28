@@ -1,0 +1,46 @@
+{
+  "status": "PASS",
+  "project": "spider",
+  "transports": "authenticated Supabase RPC + actual private Realtime channel",
+  "checks": [
+    "BMW and Corvette accepted",
+    "car-car overlap rejected",
+    "current-map building rejected",
+    "invalid speed and teleport rejected",
+    "reconnect snapshot retained",
+    "peer received parked/entering/driving/exiting",
+    "unauthenticated RPC denied"
+  ],
+  "broadcasts": [
+    {
+      "phase": "PARKED",
+      "model": "bmw",
+      "sequence": 1
+    },
+    {
+      "phase": "PARKED",
+      "model": "bmw",
+      "sequence": 5
+    },
+    {
+      "phase": "ENTERING",
+      "model": "bmw",
+      "sequence": 6
+    },
+    {
+      "phase": "DRIVING",
+      "model": "bmw",
+      "sequence": 7
+    },
+    {
+      "phase": "EXITING",
+      "model": "bmw",
+      "sequence": 9
+    },
+    {
+      "phase": "PARKED",
+      "model": "bmw",
+      "sequence": 10
+    }
+  ]
+}
