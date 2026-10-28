@@ -47,7 +47,7 @@ check('Match finish retires goal and rescue markers and restores player visibili
 check('Changing quality synchronizes the adaptive controller with manual resolution',()=>dom(()=>{
   const g=Object.create(GameApp.prototype),budget=new PerformanceBudget();budget.level=.9;budget.bad=1;budget.samples=[80,80];
   Object.assign(g,{preferences:{values:{quality:'high',muted:false,reducedMotion:false,settings:cleanSettings()}},appliedQuality:'balanced',appliedAutoQuality:true,
-    experience:{performance:budget},renderer:{setPixelRatio(){},shadowMap:{}},tpsCamera:{},physics:{},city:{},timeTrial:{},audio:{isMuted:false},applyWebTheme(){}});
+    experience:{performance:budget},renderer:{setPixelRatio(){},shadowMap:{}},tpsCamera:{},physics:{},vfx:{},city:{},timeTrial:{},audio:{isMuted:false},applyWebTheme(){}});
   g.applyPreferences();assert.equal(budget.level,2);assert.equal(budget.bad,0);assert.equal(budget.samples.length,0);
 }));
 

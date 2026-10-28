@@ -1,0 +1,82 @@
+{
+  "roof": {
+    "y": 95.02,
+    "x": 100,
+    "z": 97
+  },
+  "street": {
+    "y": 0.02
+  },
+  "noSpace": true,
+  "roll": {
+    "speed": 11.536,
+    "arc": 11.536,
+    "distance": 11.536
+  },
+  "bmw": {
+    "entry": [
+      1.65,
+      0.1,
+      0.15
+    ],
+    "door": [
+      0.74,
+      0.814,
+      0.278
+    ]
+  },
+  "corvette": {
+    "entry": [
+      1.65,
+      0.1,
+      0.15
+    ],
+    "door": [
+      0.006,
+      0.637,
+      0.002
+    ]
+  },
+  "citizens": {
+    "procedural": {
+      "count": 8,
+      "cap": 8,
+      "cpuP95": 4.424,
+      "walked": 8
+    },
+    "harbor": {
+      "count": 6,
+      "cap": 6,
+      "cpuP95": 2.608,
+      "walked": 6
+    },
+    "gardens": {
+      "count": 6,
+      "cap": 6,
+      "cpuP95": 4.036,
+      "walked": 6
+    },
+    "old-town": {
+      "count": 5,
+      "cap": 5,
+      "cpuP95": 3.72,
+      "walked": 5
+    },
+    "skyline": {
+      "count": 5,
+      "cap": 5,
+      "cpuP95": 3.198,
+      "walked": 5
+    }
+  },
+  "roofCitizens": 8,
+  "recovery": {
+    "x": 4.85,
+    "state": "IDLE",
+    "worst": 0.04
+  },
+  "pierce": true,
+  "together": {
+    "stopped": 1.06
+  }
+}

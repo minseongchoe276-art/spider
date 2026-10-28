@@ -59,7 +59,7 @@ for(const [id,file,height] of entries){
  const mesh=new T.SkinnedMesh(merged,material);mesh.name=id+'Citizen';model.add(mesh);mesh.bind(new T.Skeleton(bones,bones.map(b=>inverses.get(b)||new T.Matrix4())),new T.Matrix4());for(const m of meshes)m.removeFromParent();
  const box=new T.Box3().setFromObject(model),scale=height/(box.max.y-box.min.y);model.scale.multiplyScalar(scale);model.position.y-=box.min.y*scale;model.updateMatrixWorld(true);
  const animations=[];
- for(const [key,filename] of [['jab','Boxing Lead Jab'],['idle','Idle'],['walk','Walking'],['run','Fast Run'],['startle','Citizen Startle'],['hit','Light Hit To Head'],['hitBody','Hit To Body'],['hitUppercut','Receive Uppercut To The Face']]){
+ for(const [key,filename] of [['jab','Boxing Lead Jab'],['cross','Cross Punch'],['hook','Boxing Hook'],['combatIdle','Boxing Stance'],['idle','Idle'],['walk','Walking'],['run','Fast Run'],['startle','Citizen Startle'],['hit','Light Hit To Head'],['hitBody','Hit To Body'],['hitUppercut','Receive Uppercut To The Face']]){
   const filenamePath=`public/models/${filename}.fbx`;if(!fs.existsSync(filenamePath)){if(key==='startle')continue;throw Error(filenamePath);}
   const sourceMotion=parse(filenamePath);let take=sourceMotion.animations[0];if(key==='startle')take=T.AnimationUtils.subclip(take,key,0,30,30);const clip=retargetMotion(model,sourceMotion,take,20);clip.name=key;clip.optimize();animations.push(clip);
  }

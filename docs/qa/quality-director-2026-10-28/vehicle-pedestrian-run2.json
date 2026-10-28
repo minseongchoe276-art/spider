@@ -1,0 +1,979 @@
+{
+  "seed": 20261028,
+  "base": "http://127.0.0.1:5191",
+  "started": "2026-10-28T02:54:11.861Z",
+  "cities": {
+    "procedural": {
+      "citizensBefore": {
+        "frames": 15,
+        "liveFrames": 15,
+        "apiMiss": 0,
+        "lastCount": 0,
+        "absent": true,
+        "streamed": null,
+        "hasFootpaths": null,
+        "people": [],
+        "teleport": 0,
+        "offPath": 0,
+        "samples": 0,
+        "metrics": null
+      },
+      "bmw": {
+        "entry": {
+          "parked": "EMPTY",
+          "door": null,
+          "driving": "EMPTY",
+          "model": "bmw",
+          "speed": 0
+        },
+        "blocked": "enter did not reach DRIVING",
+        "scenarios": {},
+        "performance": null
+      },
+      "corvetteError": "page.waitForFunction: Timeout 8000ms exceeded.\n    at driveModel (/Users/choeminseong/Desktop/게임/scripts/quality-director/vehicle-pedestrian.mjs:281:16)\n    at async recordDrive (/Users/choeminseong/Desktop/게임/scripts/quality-director/vehicle-pedestrian.mjs:423:17)\n    at async file:///Users/choeminseong/Desktop/%E1%84%80%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%B7/scripts/quality-director/vehicle-pedestrian.mjs:445:41"
+    },
+    "harbor": {
+      "citizens": {
+        "frames": 13,
+        "liveFrames": 12,
+        "apiMiss": 1,
+        "lastCount": 0,
+        "absent": true,
+        "streamed": null,
+        "hasFootpaths": null,
+        "people": [],
+        "teleport": 0,
+        "offPath": 0,
+        "samples": 0,
+        "metrics": null
+      }
+    },
+    "gardens": {
+      "citizens": {
+        "frames": 13,
+        "liveFrames": 13,
+        "apiMiss": 0,
+        "lastCount": 0,
+        "absent": true,
+        "streamed": null,
+        "hasFootpaths": null,
+        "people": [],
+        "teleport": 0,
+        "offPath": 0,
+        "samples": 0,
+        "metrics": null
+      }
+    },
+    "old-town": {
+      "citizens": {
+        "frames": 12,
+        "liveFrames": 12,
+        "apiMiss": 0,
+        "lastCount": 0,
+        "absent": true,
+        "streamed": null,
+        "hasFootpaths": null,
+        "people": [],
+        "teleport": 0,
+        "offPath": 0,
+        "samples": 0,
+        "metrics": null
+      }
+    },
+    "skyline": {
+      "citizens": {
+        "frames": 13,
+        "liveFrames": 13,
+        "apiMiss": 0,
+        "lastCount": 0,
+        "absent": true,
+        "streamed": null,
+        "hasFootpaths": null,
+        "people": [],
+        "teleport": 0,
+        "offPath": 0,
+        "samples": 0,
+        "metrics": null
+      }
+    },
+    "hong-kong": {
+      "citizens": {
+        "frames": 20,
+        "liveFrames": 20,
+        "apiMiss": 0,
+        "lastCount": 10,
+        "absent": false,
+        "streamed": true,
+        "hasFootpaths": false,
+        "people": [
+          {
+            "id": 1,
+            "states": [
+              "WALK",
+              "IDLE"
+            ],
+            "anims": [
+              "walk",
+              "idle"
+            ],
+            "travel": 4.58,
+            "allowsFalse": 0,
+            "samples": 20,
+            "anchorMin": 1.25,
+            "anchorMax": 1.25,
+            "anchorMissing": 0
+          },
+          {
+            "id": 2,
+            "states": [
+              "WALK",
+              "IDLE"
+            ],
+            "anims": [
+              "idle"
+            ],
+            "travel": 0,
+            "allowsFalse": 0,
+            "samples": 20,
+            "anchorMin": 1.22,
+            "anchorMax": 1.22,
+            "anchorMissing": 0
+          },
+          {
+            "id": 3,
+            "states": [
+              "WALK",
+              "IDLE"
+            ],
+            "anims": [
+              "walk",
+              "idle"
+            ],
+            "travel": 4.14,
+            "allowsFalse": 0,
+            "samples": 20,
+            "anchorMin": 0.98,
+            "anchorMax": 1.22,
+            "anchorMissing": 0
+          },
+          {
+            "id": 4,
+            "states": [
+              "WALK",
+              "IDLE"
+            ],
+            "anims": [
+              "walk",
+              "idle"
+            ],
+            "travel": 3.31,
+            "allowsFalse": 0,
+            "samples": 20,
+            "anchorMin": 1.25,
+            "anchorMax": 1.25,
+            "anchorMissing": 0
+          },
+          {
+            "id": 5,
+            "states": [
+              "WALK",
+              "IDLE"
+            ],
+            "anims": [
+              "walk",
+              "idle"
+            ],
+            "travel": 5.39,
+            "allowsFalse": 0,
+            "samples": 15,
+            "anchorMin": 0.98,
+            "anchorMax": 1.25,
+            "anchorMissing": 0
+          },
+          {
+            "id": 6,
+            "states": [
+              "WALK"
+            ],
+            "anims": [
+              "walk"
+            ],
+            "travel": 4.48,
+            "allowsFalse": 0,
+            "samples": 11,
+            "anchorMin": 1.25,
+            "anchorMax": 1.25,
+            "anchorMissing": 0
+          },
+          {
+            "id": 7,
+            "states": [
+              "WALK"
+            ],
+            "anims": [
+              "idle"
+            ],
+            "travel": 0,
+            "allowsFalse": 0,
+            "samples": 10,
+            "anchorMin": 4.42,
+            "anchorMax": 4.42,
+            "anchorMissing": 0
+          },
+          {
+            "id": 8,
+            "states": [
+              "WALK"
+            ],
+            "anims": [
+              "walk",
+              "idle"
+            ],
+            "travel": 0.62,
+            "allowsFalse": 0,
+            "samples": 7,
+            "anchorMin": 2.37,
+            "anchorMax": 2.37,
+            "anchorMissing": 5
+          },
+          {
+            "id": 9,
+            "states": [
+              "WALK"
+            ],
+            "anims": [
+              "idle"
+            ],
+            "travel": 0,
+            "allowsFalse": 0,
+            "samples": 6,
+            "anchorMin": 2.46,
+            "anchorMax": 2.46,
+            "anchorMissing": 0
+          },
+          {
+            "id": 10,
+            "states": [
+              "WALK"
+            ],
+            "anims": [
+              "walk"
+            ],
+            "travel": 1.9,
+            "allowsFalse": 0,
+            "samples": 5,
+            "anchorMin": 1.25,
+            "anchorMax": 1.25,
+            "anchorMissing": 0
+          }
+        ],
+        "teleport": 0,
+        "offPath": 0,
+        "samples": 124,
+        "metrics": {
+          "lastMs": 0.10000000894069672,
+          "raycasts": 0,
+          "active": 10
+        }
+      },
+      "drive": {
+        "entry": {
+          "parked": "PARKED",
+          "door": 0.48,
+          "driving": "DRIVING",
+          "model": "bmw",
+          "speed": 0
+        },
+        "scenarios": {
+          "idle": {
+            "live": 5,
+            "apiMiss": 0,
+            "samples": 5,
+            "distance": 1.054,
+            "yaw": -0.097,
+            "spin": -3.103,
+            "arc": 1.053,
+            "radius": 0.33952357339386763,
+            "slip": 0,
+            "maxSpeed": 3.124,
+            "endSpeed": -3.124,
+            "pitch": [
+              0.0035,
+              0.0036
+            ],
+            "roll": [
+              0.001,
+              0.0017
+            ],
+            "wheels": [
+              {
+                "index": 0,
+                "front": false,
+                "radius": 0.331,
+                "axle": [
+                  1,
+                  0,
+                  0
+                ],
+                "hasFixed": true,
+                "commandErrorMax": 0,
+                "contactGapMin": 0.017,
+                "contactGapMax": 0.054,
+                "contactSpan": 0.037,
+                "steerMin": 0,
+                "steerMax": 0,
+                "spinDelta": -3.184,
+                "fixedDrift": 0
+              },
+              {
+                "index": 1,
+                "front": true,
+                "radius": 0.347,
+                "axle": [
+                  0.872,
+                  0.007,
+                  0.49
+                ],
+                "hasFixed": true,
+                "commandErrorMax": 0,
+                "contactGapMin": -0.008,
+                "contactGapMax": 0.005,
+                "contactSpan": 0.013,
+                "steerMin": 0.067,
+                "steerMax": 0.409,
+                "spinDelta": -3.034,
+                "fixedDrift": 0
+              },
+              {
+                "index": 2,
+                "front": true,
+                "radius": 0.349,
+                "axle": [
+                  0.863,
+                  0.012,
+                  0.505
+                ],
+                "hasFixed": true,
+                "commandErrorMax": 0,
+                "contactGapMin": -0.013,
+                "contactGapMax": 0.008,
+                "contactSpan": 0.021,
+                "steerMin": 0.067,
+                "steerMax": 0.409,
+                "spinDelta": -3.021,
+                "fixedDrift": 0
+              },
+              {
+                "index": 3,
+                "front": false,
+                "radius": 0.331,
+                "axle": [
+                  1,
+                  0,
+                  0
+                ],
+                "hasFixed": true,
+                "commandErrorMax": 0,
+                "contactGapMin": 0.01,
+                "contactGapMax": 0.055,
+                "contactSpan": 0.045,
+                "steerMin": 0,
+                "steerMax": 0,
+                "spinDelta": -3.179,
+                "fixedDrift": 0
+              }
+            ]
+          },
+          "launch": {
+            "live": 11,
+            "apiMiss": 0,
+            "samples": 11,
+            "distance": 4.496,
+            "yaw": -0.097,
+            "spin": 11.8,
+            "arc": 4.006,
+            "radius": 0.33952357339386763,
+            "slip": 0.49,
+            "maxSpeed": 5.255,
+            "endSpeed": 4.227,
+            "pitch": [
+              0.0035,
+              0.004
+            ],
+            "roll": [
+              0,
+              0.0009
+            ],
+            "wheels": [
+              {
+                "index": 0,
+                "front": false,
+                "radius": 0.331,
+                "axle": [
+                  1,
+                  0,
+                  0
+                ],
+                "hasFixed": true,
+                "commandErrorMax": 0,
+                "contactGapMin": 0.009,
+                "contactGapMax": 0.068,
+                "contactSpan": 0.059,
+                "steerMin": 0,
+                "steerMax": 0,
+                "spinDelta": -0.455,
+                "fixedDrift": 0
+              },
+              {
+                "index": 1,
+                "front": true,
+                "radius": 0.347,
+                "axle": [
+                  0.872,
+                  0.007,
+                  0.49
+                ],
+                "hasFixed": true,
+                "commandErrorMax": 0,
+                "contactGapMin": -0.015,
+                "contactGapMax": 0.007,
+                "contactSpan": 0.022,
+                "steerMin": -0.257,
+                "steerMax": 0.48,
+                "spinDelta": -1.029,
+                "fixedDrift": 0
+              },
+              {
+                "index": 2,
+                "front": true,
+                "radius": 0.349,
+                "axle": [
+                  0.863,
+                  0.012,
+                  0.505
+                ],
+                "hasFixed": true,
+                "commandErrorMax": 0,
+                "contactGapMin": -0.015,
+                "contactGapMax": 0.018,
+                "contactSpan": 0.033,
+                "steerMin": -0.257,
+                "steerMax": 0.48,
+                "spinDelta": -1.077,
+                "fixedDrift": 0
+              },
+              {
+                "index": 3,
+                "front": false,
+                "radius": 0.331,
+                "axle": [
+                  1,
+                  0,
+                  0
+                ],
+                "hasFixed": true,
+                "commandErrorMax": 0,
+                "contactGapMin": 0.005,
+                "contactGapMax": 0.083,
+                "contactSpan": 0.078,
+                "steerMin": 0,
+                "steerMax": 0,
+                "spinDelta": -0.476,
+                "fixedDrift": 0
+              }
+            ]
+          },
+          "cruise": {
+            "live": 13,
+            "apiMiss": 0,
+            "samples": 13,
+            "distance": 1.078,
+            "yaw": -0.081,
+            "spin": 3.173,
+            "arc": 1.077,
+            "radius": 0.33952357339386763,
+            "slip": 0,
+            "maxSpeed": 4.484,
+            "endSpeed": 0,
+            "pitch": [
+              0.004,
+              0.0041
+            ],
+            "roll": [
+              -0.0001,
+              0.0003
+            ],
+            "wheels": [
+              {
+                "index": 0,
+                "front": false,
+                "radius": 0.331,
+                "axle": [
+                  1,
+                  0,
+                  0
+                ],
+                "hasFixed": true,
+                "commandErrorMax": 0,
+                "contactGapMin": 0.029,
+                "contactGapMax": 0.054,
+                "contactSpan": 0.025,
+                "steerMin": 0,
+                "steerMax": 0,
+                "spinDelta": 3.257,
+                "fixedDrift": 0
+              },
+              {
+                "index": 1,
+                "front": true,
+                "radius": 0.347,
+                "axle": [
+                  0.872,
+                  0.007,
+                  0.49
+                ],
+                "hasFixed": true,
+                "commandErrorMax": 0,
+                "contactGapMin": -0.014,
+                "contactGapMax": 0,
+                "contactSpan": 0.014,
+                "steerMin": -0.492,
+                "steerMax": 0,
+                "spinDelta": 3.103,
+                "fixedDrift": 0
+              },
+              {
+                "index": 2,
+                "front": true,
+                "radius": 0.349,
+                "axle": [
+                  0.863,
+                  0.012,
+                  0.505
+                ],
+                "hasFixed": true,
+                "commandErrorMax": 0,
+                "contactGapMin": -0.017,
+                "contactGapMax": -0.006,
+                "contactSpan": 0.011,
+                "steerMin": -0.492,
+                "steerMax": 0,
+                "spinDelta": 3.09,
+                "fixedDrift": 0
+              },
+              {
+                "index": 3,
+                "front": false,
+                "radius": 0.331,
+                "axle": [
+                  1,
+                  0,
+                  0
+                ],
+                "hasFixed": true,
+                "commandErrorMax": 0,
+                "contactGapMin": 0.026,
+                "contactGapMax": 0.065,
+                "contactSpan": 0.039,
+                "steerMin": 0,
+                "steerMax": 0,
+                "spinDelta": 3.251,
+                "fixedDrift": 0
+              }
+            ]
+          },
+          "cruiseProximity": {
+            "min": 32.72,
+            "close": []
+          },
+          "rollingFrames": {
+            "live": 6,
+            "apiMiss": 0,
+            "samples": 6,
+            "distance": 0,
+            "yaw": 0,
+            "spin": 0,
+            "arc": 0,
+            "radius": 0.33952357339386763,
+            "slip": 0,
+            "maxSpeed": 0,
+            "endSpeed": 0,
+            "pitch": [
+              0.0041,
+              0.0041
+            ],
+            "roll": [
+              -0.0001,
+              -0.0001
+            ],
+            "wheels": [
+              {
+                "index": 0,
+                "front": false,
+                "radius": 0.331,
+                "axle": [
+                  1,
+                  0,
+                  0
+                ],
+                "hasFixed": true,
+                "commandErrorMax": 0,
+                "contactGapMin": 0.036,
+                "contactGapMax": 0.036,
+                "contactSpan": 0,
+                "steerMin": 0,
+                "steerMax": 0,
+                "spinDelta": 0,
+                "fixedDrift": 0
+              },
+              {
+                "index": 1,
+                "front": true,
+                "radius": 0.347,
+                "axle": [
+                  0.872,
+                  0.007,
+                  0.49
+                ],
+                "hasFixed": true,
+                "commandErrorMax": 0,
+                "contactGapMin": 0,
+                "contactGapMax": 0,
+                "contactSpan": 0,
+                "steerMin": 0,
+                "steerMax": 0,
+                "spinDelta": 0,
+                "fixedDrift": 0
+              },
+              {
+                "index": 2,
+                "front": true,
+                "radius": 0.349,
+                "axle": [
+                  0.863,
+                  0.012,
+                  0.505
+                ],
+                "hasFixed": true,
+                "commandErrorMax": 0,
+                "contactGapMin": -0.009,
+                "contactGapMax": -0.009,
+                "contactSpan": 0,
+                "steerMin": 0,
+                "steerMax": 0,
+                "spinDelta": 0,
+                "fixedDrift": 0
+              },
+              {
+                "index": 3,
+                "front": false,
+                "radius": 0.331,
+                "axle": [
+                  1,
+                  0,
+                  0
+                ],
+                "hasFixed": true,
+                "commandErrorMax": 0,
+                "contactGapMin": 0.048,
+                "contactGapMax": 0.048,
+                "contactSpan": 0,
+                "steerMin": 0,
+                "steerMax": 0,
+                "spinDelta": 0,
+                "fixedDrift": 0
+              }
+            ]
+          },
+          "left": {
+            "live": 0,
+            "apiMiss": 14,
+            "samples": 14,
+            "distance": 0,
+            "yaw": 0,
+            "spin": 0,
+            "arc": null,
+            "radius": null,
+            "slip": null,
+            "maxSpeed": 0,
+            "endSpeed": 0,
+            "pitch": null,
+            "roll": null,
+            "wheels": []
+          },
+          "right": {
+            "live": 0,
+            "apiMiss": 8,
+            "samples": 8,
+            "distance": 0,
+            "yaw": 0,
+            "spin": 0,
+            "arc": null,
+            "radius": null,
+            "slip": null,
+            "maxSpeed": 0,
+            "endSpeed": 0,
+            "pitch": null,
+            "roll": null,
+            "wheels": []
+          },
+          "brake": {
+            "live": 0,
+            "apiMiss": 11,
+            "samples": 11,
+            "distance": 0,
+            "yaw": 0,
+            "spin": 0,
+            "arc": null,
+            "radius": null,
+            "slip": null,
+            "maxSpeed": 0,
+            "endSpeed": 0,
+            "pitch": null,
+            "roll": null,
+            "wheels": []
+          },
+          "reverse": {
+            "live": 0,
+            "apiMiss": 12,
+            "samples": 12,
+            "distance": 0,
+            "yaw": 0,
+            "spin": 0,
+            "arc": null,
+            "radius": null,
+            "slip": null,
+            "maxSpeed": 0,
+            "endSpeed": 0,
+            "pitch": null,
+            "roll": null,
+            "wheels": []
+          },
+          "brakeInTurn": {
+            "live": 0,
+            "apiMiss": 7,
+            "samples": 7,
+            "distance": 0,
+            "yaw": 0,
+            "spin": 0,
+            "arc": null,
+            "radius": null,
+            "slip": null,
+            "maxSpeed": 0,
+            "endSpeed": 0,
+            "pitch": null,
+            "roll": null,
+            "wheels": []
+          },
+          "wall": {
+            "live": 0,
+            "apiMiss": 47,
+            "samples": 47,
+            "distance": 0,
+            "yaw": 0,
+            "spin": 0,
+            "arc": null,
+            "radius": null,
+            "slip": null,
+            "maxSpeed": 0,
+            "endSpeed": 0,
+            "pitch": null,
+            "roll": null,
+            "wheels": []
+          },
+          "wallProximity": {
+            "min": null,
+            "close": []
+          }
+        },
+        "performance": {
+          "summary": {
+            "frames": 356,
+            "seconds": 6.559,
+            "travel": 4.171,
+            "start": [
+              9.947,
+              16.143,
+              18.111
+            ],
+            "end": [
+              12.095,
+              16.126,
+              14.536
+            ],
+            "maxSpeed": 5.421,
+            "states": [
+              "DRIVING"
+            ],
+            "animations": [],
+            "attacks": [],
+            "swingingFrames": 0,
+            "maxWebs": 0,
+            "averageFps": 58.13,
+            "low1Fps": 35.46,
+            "maxDt": 0.1,
+            "maxDrawCalls": 644,
+            "maxTriangles": 1407276,
+            "memoryStart": 1092166306,
+            "memoryEnd": 907137823,
+            "pitch": [
+              0.3081,
+              0.9873
+            ],
+            "yaw": [
+              2.227,
+              2.5603
+            ]
+          },
+          "diagnostics": {
+            "programs": 45,
+            "drawCalls": 378,
+            "triangles": 861402,
+            "geometries": 481,
+            "textures": 269,
+            "heap": 842545695
+          }
+        }
+      }
+    }
+  },
+  "consoleErrors": [],
+  "shots": [
+    "docs/qa/quality-director-2026-10-28/vehicle-pedestrian/procedural-citizens.png",
+    "docs/qa/quality-director-2026-10-28/vehicle-pedestrian/bmw-entered.png",
+    "docs/qa/quality-director-2026-10-28/vehicle-pedestrian/corvette-drive-failed.png",
+    "docs/qa/quality-director-2026-10-28/vehicle-pedestrian/procedural-done.png",
+    "docs/qa/quality-director-2026-10-28/vehicle-pedestrian/harbor-citizens.png",
+    "docs/qa/quality-director-2026-10-28/vehicle-pedestrian/gardens-citizens.png",
+    "docs/qa/quality-director-2026-10-28/vehicle-pedestrian/old-town-citizens.png",
+    "docs/qa/quality-director-2026-10-28/vehicle-pedestrian/skyline-citizens.png",
+    "docs/qa/quality-director-2026-10-28/vehicle-pedestrian/hong-kong-citizen-view.png",
+    "docs/qa/quality-director-2026-10-28/vehicle-pedestrian/hong-kong-citizens.png",
+    "docs/qa/quality-director-2026-10-28/vehicle-pedestrian/bmw-entered.png",
+    "docs/qa/quality-director-2026-10-28/vehicle-pedestrian/bmw-roll-0.png",
+    "docs/qa/quality-director-2026-10-28/vehicle-pedestrian/bmw-roll-1.png",
+    "docs/qa/quality-director-2026-10-28/vehicle-pedestrian/bmw-roll-2.png",
+    "docs/qa/quality-director-2026-10-28/vehicle-pedestrian/bmw-roll-3.png",
+    "docs/qa/quality-director-2026-10-28/vehicle-pedestrian/bmw-roll-4.png",
+    "docs/qa/quality-director-2026-10-28/vehicle-pedestrian/bmw-roll-5.png",
+    "docs/qa/quality-director-2026-10-28/vehicle-pedestrian/bmw-steer-left.png",
+    "docs/qa/quality-director-2026-10-28/vehicle-pedestrian/bmw-after-wall.png"
+  ],
+  "boot": {
+    "procedural": {
+      "attempt": 1,
+      "href": "http://127.0.0.1:5191/?city=procedural&qualityDirector=1",
+      "begin": true,
+      "ready": true,
+      "playing": true,
+      "loadingHidden": true,
+      "overlayHidden": true,
+      "build": "quality-director-v4"
+    },
+    "harbor": {
+      "attempt": 1,
+      "href": "http://127.0.0.1:5191/?city=harbor&qualityDirector=1",
+      "begin": true,
+      "ready": true,
+      "playing": true,
+      "loadingHidden": true,
+      "overlayHidden": true,
+      "build": "quality-director-v4"
+    },
+    "gardens": {
+      "attempt": 1,
+      "href": "http://127.0.0.1:5191/?city=gardens&qualityDirector=1",
+      "begin": true,
+      "ready": true,
+      "playing": true,
+      "loadingHidden": true,
+      "overlayHidden": true,
+      "build": "quality-director-v4"
+    },
+    "old-town": {
+      "attempt": 1,
+      "href": "http://127.0.0.1:5191/?city=old-town&qualityDirector=1",
+      "begin": true,
+      "ready": true,
+      "playing": true,
+      "loadingHidden": true,
+      "overlayHidden": true,
+      "build": "quality-director-v4"
+    },
+    "skyline": {
+      "attempt": 1,
+      "href": "http://127.0.0.1:5191/?city=skyline&qualityDirector=1",
+      "begin": true,
+      "ready": true,
+      "playing": true,
+      "loadingHidden": true,
+      "overlayHidden": true,
+      "build": "quality-director-v4"
+    },
+    "hong-kong": {
+      "attempt": 1,
+      "href": "http://127.0.0.1:5191/?city=hong-kong&qualityDirector=1",
+      "begin": true,
+      "ready": true,
+      "playing": true,
+      "loadingHidden": true,
+      "overlayHidden": true,
+      "build": "quality-director-v4"
+    }
+  },
+  "approaches": [
+    {
+      "phase": "spawned",
+      "door": 96.19,
+      "car": [
+        110.199,
+        0.02,
+        92.942
+      ],
+      "player": [
+        99.6,
+        95.474,
+        90
+      ]
+    },
+    {
+      "phase": "approached",
+      "door": null,
+      "car": null,
+      "player": [
+        99.6,
+        95.474,
+        90
+      ]
+    },
+    {
+      "phase": "spawned",
+      "door": 9.19,
+      "car": [
+        9.947,
+        16.043,
+        18.111
+      ],
+      "player": [
+        -0.782,
+        16.295,
+        17.235
+      ]
+    },
+    {
+      "phase": "approached",
+      "door": 0.52,
+      "car": [
+        9.947,
+        16.043,
+        18.111
+      ],
+      "player": [
+        8.27,
+        16.151,
+        18.023
+      ]
+    }
+  ],
+  "video": "docs/qa/quality-director-2026-10-28/vehicle-pedestrian/session.webm"
+}

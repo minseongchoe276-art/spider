@@ -1,0 +1,1320 @@
+{
+  "started": "2026-10-28T02:41:42.815Z",
+  "errors": [],
+  "boot": {
+    "build": "quality-director-v3",
+    "map": "procedural",
+    "state": "IDLE",
+    "position": [
+      99.6,
+      95.474,
+      90
+    ],
+    "diagnostics": {
+      "programs": 9,
+      "drawCalls": 26,
+      "triangles": 50840,
+      "geometries": 45,
+      "textures": 11,
+      "heap": 68657693
+    }
+  },
+  "pointer": {
+    "error": "WrongDocumentError: The root document of this element is not valid for pointer lock.",
+    "webdriver": true,
+    "locked": false,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36"
+  },
+  "ui": {
+    "vehicle": {
+      "hidden": false,
+      "text": "BMW 330i Corvette C6 ZR1 BMW 330i BMW 330i 불러오기 · B",
+      "top": 726,
+      "bottom": 790,
+      "left": 532,
+      "right": 908,
+      "width": 376,
+      "height": 64
+    },
+    "ability": {
+      "hidden": false,
+      "text": "Q E F",
+      "top": 814,
+      "bottom": 878,
+      "left": 621,
+      "right": 819,
+      "width": 198,
+      "height": 64
+    },
+    "actions": {
+      "hidden": false,
+      "text": "",
+      "top": 880,
+      "bottom": 880,
+      "left": 12,
+      "right": 1428,
+      "width": 1416,
+      "height": 0
+    },
+    "vehicleCoversAbility": false,
+    "vehicleCoversActions": false,
+    "viewport": [
+      1440,
+      900
+    ],
+    "shot": "docs/qa/quality-director-2026-10-28/shots/v3-vehicle-ui.png"
+  },
+  "sweep": {
+    "best": {
+      "distance": 21.036,
+      "pitch": 0.05,
+      "yaw": 0,
+      "anchor": [
+        99.6,
+        96.04,
+        105.2
+      ],
+      "hit": {
+        "distance": 21.036,
+        "name": "Mesh",
+        "point": [
+          99.6,
+          96.04,
+          105.2
+        ]
+      }
+    },
+    "longest": [
+      {
+        "distance": 21.036,
+        "pitch": 0.05,
+        "yaw": 0,
+        "anchor": [
+          99.6,
+          96.04,
+          105.2
+        ],
+        "hit": {
+          "distance": 21.036,
+          "name": "Mesh",
+          "point": [
+            99.6,
+            96.04,
+            105.2
+          ]
+        }
+      },
+      {
+        "distance": 15.876,
+        "pitch": 0.05,
+        "yaw": 4.189,
+        "anchor": [
+          91.3,
+          95.37,
+          84.07
+        ],
+        "hit": {
+          "distance": 15.876,
+          "name": "Mesh",
+          "point": [
+            91.3,
+            95.37,
+            84.07
+          ]
+        }
+      },
+      {
+        "distance": 15.614,
+        "pitch": 0.05,
+        "yaw": 5.236,
+        "anchor": [
+          90.55,
+          95.37,
+          94.12
+        ],
+        "hit": {
+          "distance": 15.614,
+          "name": "Mesh",
+          "point": [
+            90.55,
+            95.37,
+            94.12
+          ]
+        }
+      },
+      {
+        "distance": 15.479,
+        "pitch": 0.05,
+        "yaw": 3.665,
+        "anchor": [
+          95.55,
+          95.37,
+          81.07
+        ],
+        "hit": {
+          "distance": 15.479,
+          "name": "Mesh",
+          "point": [
+            95.55,
+            95.37,
+            81.07
+          ]
+        }
+      },
+      {
+        "distance": 14.374,
+        "pitch": 0.25,
+        "yaw": 0,
+        "anchor": [
+          99.6,
+          95.37,
+          98.4
+        ],
+        "hit": {
+          "distance": 14.374,
+          "name": "Mesh",
+          "point": [
+            99.6,
+            95.37,
+            98.4
+          ]
+        }
+      },
+      {
+        "distance": 14.285,
+        "pitch": 0.05,
+        "yaw": 4.712,
+        "anchor": [
+          91.01,
+          95.65,
+          89.16
+        ],
+        "hit": {
+          "distance": 14.285,
+          "name": "Mesh",
+          "point": [
+            91.01,
+            95.65,
+            89.16
+          ]
+        }
+      }
+    ],
+    "attempts": 48
+  },
+  "dualShot": "docs/qa/quality-director-2026-10-28/shots/v3-city-dual.png",
+  "dual": [
+    {
+      "index": 0,
+      "webs": [
+        {
+          "hand": "right",
+          "button": 0,
+          "length": 1.67,
+          "current": 1.674,
+          "slack": 0.004,
+          "anchor": [
+            99.53,
+            103.58,
+            96.19
+          ]
+        },
+        {
+          "hand": "left",
+          "button": 2,
+          "length": 2.157,
+          "current": 2.145,
+          "slack": -0.012,
+          "anchor": [
+            99.49,
+            104.25,
+            96.16
+          ]
+        }
+      ],
+      "speed": 0.402,
+      "state": "SWINGING",
+      "animation": "swing",
+      "maxDt": 0.1,
+      "averageFps": 60.18,
+      "frames": 92,
+      "maxWebs": 2,
+      "maxSpeed": 29.12,
+      "programsBefore": 10,
+      "programsAfter": 12,
+      "heapBefore": 31205294,
+      "heapAfter": 44631693,
+      "drawCalls": 22
+    },
+    {
+      "index": 1,
+      "webs": [
+        {
+          "hand": "left",
+          "button": 0,
+          "length": 2.853,
+          "current": 2.853,
+          "slack": 0,
+          "anchor": [
+            99.43,
+            99.85,
+            96.5
+          ]
+        },
+        {
+          "hand": "right",
+          "button": 2,
+          "length": 2.853,
+          "current": 2.853,
+          "slack": 0,
+          "anchor": [
+            99.43,
+            99.85,
+            96.5
+          ]
+        }
+      ],
+      "speed": 0.098,
+      "state": "SWINGING",
+      "animation": "swing",
+      "maxDt": 0.0178,
+      "averageFps": 60.05,
+      "frames": 85,
+      "maxWebs": 2,
+      "maxSpeed": 10.327,
+      "programsBefore": 12,
+      "programsAfter": 12,
+      "heapBefore": 44004139,
+      "heapAfter": 42895632,
+      "drawCalls": 22
+    },
+    {
+      "index": 2,
+      "webs": [
+        {
+          "hand": "right",
+          "button": 0,
+          "length": 1.612,
+          "current": 1.613,
+          "slack": 0.001,
+          "anchor": [
+            99.46,
+            97.14,
+            96.52
+          ]
+        },
+        {
+          "hand": "left",
+          "button": 2,
+          "length": 1.612,
+          "current": 1.613,
+          "slack": 0.001,
+          "anchor": [
+            99.46,
+            97.14,
+            96.52
+          ]
+        }
+      ],
+      "speed": 0.061,
+      "state": "SWINGING",
+      "animation": "swing",
+      "maxDt": 0.0177,
+      "averageFps": 60.03,
+      "frames": 86,
+      "maxWebs": 2,
+      "maxSpeed": 25.533,
+      "programsBefore": 13,
+      "programsAfter": 13,
+      "heapBefore": 37505033,
+      "heapAfter": 38857036,
+      "drawCalls": 21
+    },
+    {
+      "index": 3,
+      "webs": [
+        {
+          "hand": "left",
+          "button": 0,
+          "length": 1.615,
+          "current": 1.615,
+          "slack": 0.001,
+          "anchor": [
+            99.46,
+            97.14,
+            96.52
+          ]
+        },
+        {
+          "hand": "right",
+          "button": 2,
+          "length": 1.615,
+          "current": 1.615,
+          "slack": 0.001,
+          "anchor": [
+            99.46,
+            97.14,
+            96.52
+          ]
+        }
+      ],
+      "speed": 0.061,
+      "state": "SWINGING",
+      "animation": "swing",
+      "maxDt": 0.018,
+      "averageFps": 60.03,
+      "frames": 86,
+      "maxWebs": 2,
+      "maxSpeed": 25.533,
+      "programsBefore": 13,
+      "programsAfter": 13,
+      "heapBefore": 45987096,
+      "heapAfter": 33042795,
+      "drawCalls": 21
+    },
+    {
+      "index": 4,
+      "webs": [
+        {
+          "hand": "right",
+          "button": 0,
+          "length": 1.615,
+          "current": 1.615,
+          "slack": 0.001,
+          "anchor": [
+            99.46,
+            97.14,
+            96.52
+          ]
+        },
+        {
+          "hand": "left",
+          "button": 2,
+          "length": 1.615,
+          "current": 1.615,
+          "slack": 0.001,
+          "anchor": [
+            99.46,
+            97.14,
+            96.52
+          ]
+        }
+      ],
+      "speed": 0.061,
+      "state": "SWINGING",
+      "animation": "swing",
+      "maxDt": 0.0178,
+      "averageFps": 60.02,
+      "frames": 86,
+      "maxWebs": 2,
+      "maxSpeed": 25.533,
+      "programsBefore": 13,
+      "programsAfter": 13,
+      "heapBefore": 46910211,
+      "heapAfter": 43419427,
+      "drawCalls": 21
+    },
+    {
+      "index": 5,
+      "webs": [
+        {
+          "hand": "left",
+          "button": 0,
+          "length": 1.615,
+          "current": 1.615,
+          "slack": 0.001,
+          "anchor": [
+            99.46,
+            97.14,
+            96.52
+          ]
+        },
+        {
+          "hand": "right",
+          "button": 2,
+          "length": 1.615,
+          "current": 1.615,
+          "slack": 0.001,
+          "anchor": [
+            99.46,
+            97.14,
+            96.52
+          ]
+        }
+      ],
+      "speed": 0.061,
+      "state": "SWINGING",
+      "animation": "swing",
+      "maxDt": 0.0179,
+      "averageFps": 60.04,
+      "frames": 85,
+      "maxWebs": 2,
+      "maxSpeed": 25.533,
+      "programsBefore": 13,
+      "programsAfter": 13,
+      "heapBefore": 45653387,
+      "heapAfter": 32532834,
+      "drawCalls": 21
+    }
+  ],
+  "spikes": [
+    {
+      "t": 1462.5,
+      "dt": 0.1,
+      "state": "IDLE",
+      "animation": "idle",
+      "webs": 0,
+      "programs": 9,
+      "drawCalls": 26,
+      "triangles": 50840,
+      "heap": 59354925
+    },
+    {
+      "t": 1503.300000011921,
+      "dt": 0.0599,
+      "state": "IDLE",
+      "animation": "idle",
+      "webs": 0,
+      "programs": 9,
+      "drawCalls": 26,
+      "triangles": 50840,
+      "heap": 59354925
+    },
+    {
+      "t": 7926.4000000059605,
+      "dt": 0.1,
+      "state": "SWINGING",
+      "animation": "swing",
+      "webs": 2,
+      "programs": 12,
+      "drawCalls": 22,
+      "triangles": 51764,
+      "heap": 46125549
+    }
+  ],
+  "camera": {
+    "before": {
+      "facing": -0.0105,
+      "yaw": 0,
+      "mode": "combat",
+      "lock": false
+    },
+    "during": {
+      "facing": 1.2,
+      "yaw": 1.2,
+      "attack": {
+        "key": "jab",
+        "time": 0.284,
+        "duration": 0.72
+      },
+      "animation": "jab"
+    },
+    "facingDelta": 1.21,
+    "aimVersusFacing": 0,
+    "shot": "docs/qa/quality-director-2026-10-28/shots/v3-camera-jab.png"
+  },
+  "combos": [
+    {
+      "name": "run-jab",
+      "summary": {
+        "frames": 80,
+        "seconds": 1.315,
+        "travel": 4.662,
+        "start": [
+          99.463,
+          95.474,
+          95.78
+        ],
+        "end": [
+          103.943,
+          95.474,
+          97.07
+        ],
+        "maxSpeed": 4.399,
+        "states": [
+          "IDLE",
+          "RUNNING"
+        ],
+        "animations": [
+          "combatIdle",
+          "walk",
+          "regularRun"
+        ],
+        "attacks": [
+          "jab"
+        ],
+        "swingingFrames": 0,
+        "maxWebs": 0,
+        "averageFps": 59.99,
+        "low1Fps": 56.5,
+        "maxDt": 0.0177,
+        "maxDrawCalls": 17,
+        "maxTriangles": 50772,
+        "memoryStart": 42743755,
+        "memoryEnd": 36173156,
+        "pitch": [
+          0.25,
+          0.25
+        ],
+        "yaw": [
+          1.2,
+          1.2
+        ]
+      },
+      "samples": [
+        {
+          "t": 9,
+          "state": "IDLE",
+          "animation": "combatIdle",
+          "speed": 0,
+          "attack": null,
+          "attackTime": null
+        },
+        {
+          "t": 141,
+          "state": "RUNNING",
+          "animation": "walk",
+          "speed": 2.866,
+          "attack": null,
+          "attackTime": null
+        },
+        {
+          "t": 272,
+          "state": "RUNNING",
+          "animation": "regularRun",
+          "speed": 3.729,
+          "attack": null,
+          "attackTime": null
+        },
+        {
+          "t": 409,
+          "state": "RUNNING",
+          "animation": "regularRun",
+          "speed": 4.121,
+          "attack": null,
+          "attackTime": null
+        },
+        {
+          "t": 538,
+          "state": "RUNNING",
+          "animation": "regularRun",
+          "speed": 4.31,
+          "attack": null,
+          "attackTime": null
+        },
+        {
+          "t": 673,
+          "state": "RUNNING",
+          "animation": "regularRun",
+          "speed": 4.372,
+          "attack": null,
+          "attackTime": null
+        },
+        {
+          "t": 807,
+          "state": "RUNNING",
+          "animation": "regularRun",
+          "speed": 4.392,
+          "attack": "jab",
+          "attackTime": 0.099
+        },
+        {
+          "t": 938,
+          "state": "RUNNING",
+          "animation": "regularRun",
+          "speed": 4.397,
+          "attack": "jab",
+          "attackTime": 0.233
+        },
+        {
+          "t": 1072,
+          "state": "RUNNING",
+          "animation": "regularRun",
+          "speed": 4.399,
+          "attack": "jab",
+          "attackTime": 0.367
+        },
+        {
+          "t": 1211,
+          "state": "IDLE",
+          "animation": "walk",
+          "speed": 1.977,
+          "attack": "jab",
+          "attackTime": 0.5
+        },
+        {
+          "t": 1324,
+          "state": "IDLE",
+          "animation": "walk",
+          "speed": 0.777,
+          "attack": "jab",
+          "attackTime": 0.617
+        }
+      ]
+    },
+    {
+      "name": "run-cross",
+      "summary": {
+        "frames": 55,
+        "seconds": 0.896,
+        "travel": 1.372,
+        "start": [
+          104.034,
+          95.474,
+          97.105
+        ],
+        "end": [
+          104.5,
+          95.474,
+          98.395
+        ],
+        "maxSpeed": 3.68,
+        "states": [
+          "RUNNING"
+        ],
+        "animations": [
+          "walk",
+          "regularRun"
+        ],
+        "attacks": [
+          "cross"
+        ],
+        "swingingFrames": 0,
+        "maxWebs": 0,
+        "averageFps": 60.08,
+        "low1Fps": 56.5,
+        "maxDt": 0.0177,
+        "maxDrawCalls": 15,
+        "maxTriangles": 50684,
+        "memoryStart": 32324857,
+        "memoryEnd": 35479427,
+        "pitch": [
+          0.25,
+          0.25
+        ],
+        "yaw": [
+          1.2,
+          1.2
+        ]
+      },
+      "samples": [
+        {
+          "t": 14,
+          "state": "RUNNING",
+          "animation": "walk",
+          "speed": 0.648,
+          "attack": null,
+          "attackTime": null
+        },
+        {
+          "t": 149,
+          "state": "RUNNING",
+          "animation": "regularRun",
+          "speed": 3.27,
+          "attack": null,
+          "attackTime": null
+        },
+        {
+          "t": 278,
+          "state": "RUNNING",
+          "animation": "walk",
+          "speed": 1.471,
+          "attack": null,
+          "attackTime": null
+        },
+        {
+          "t": 410,
+          "state": "RUNNING",
+          "animation": "walk",
+          "speed": 1.557,
+          "attack": null,
+          "attackTime": null
+        },
+        {
+          "t": 543,
+          "state": "RUNNING",
+          "animation": "walk",
+          "speed": 1.583,
+          "attack": "cross",
+          "attackTime": 0.049
+        },
+        {
+          "t": 679,
+          "state": "RUNNING",
+          "animation": "walk",
+          "speed": 1.591,
+          "attack": "cross",
+          "attackTime": 0.183
+        },
+        {
+          "t": 809,
+          "state": "RUNNING",
+          "animation": "walk",
+          "speed": 1.593,
+          "attack": "cross",
+          "attackTime": 0.316
+        },
+        {
+          "t": 911,
+          "state": "RUNNING",
+          "animation": "walk",
+          "speed": 1.594,
+          "attack": "cross",
+          "attackTime": 0.416
+        }
+      ]
+    },
+    {
+      "name": "run-heavy",
+      "summary": {
+        "frames": 60,
+        "seconds": 0.981,
+        "travel": 1.429,
+        "start": [
+          104.5,
+          95.474,
+          98.581
+        ],
+        "end": [
+          104.5,
+          95.474,
+          100.01
+        ],
+        "maxSpeed": 1.594,
+        "states": [
+          "RUNNING"
+        ],
+        "animations": [
+          "walk"
+        ],
+        "attacks": [
+          "cross",
+          "heavy"
+        ],
+        "swingingFrames": 0,
+        "maxWebs": 0,
+        "averageFps": 60.03,
+        "low1Fps": 56.18,
+        "maxDt": 0.0178,
+        "maxDrawCalls": 14,
+        "maxTriangles": 50660,
+        "memoryStart": 41695751,
+        "memoryEnd": 35866501,
+        "pitch": [
+          0.25,
+          0.25
+        ],
+        "yaw": [
+          1.2,
+          1.2
+        ]
+      },
+      "samples": [
+        {
+          "t": 13,
+          "state": "RUNNING",
+          "animation": "walk",
+          "speed": 0.295,
+          "attack": "cross",
+          "attackTime": 0.8
+        },
+        {
+          "t": 144,
+          "state": "RUNNING",
+          "animation": "walk",
+          "speed": 1.203,
+          "attack": null,
+          "attackTime": null
+        },
+        {
+          "t": 281,
+          "state": "RUNNING",
+          "animation": "walk",
+          "speed": 1.477,
+          "attack": null,
+          "attackTime": null
+        },
+        {
+          "t": 415,
+          "state": "RUNNING",
+          "animation": "walk",
+          "speed": 1.559,
+          "attack": null,
+          "attackTime": null
+        },
+        {
+          "t": 546,
+          "state": "RUNNING",
+          "animation": "walk",
+          "speed": 1.584,
+          "attack": "heavy",
+          "attackTime": 0.05
+        },
+        {
+          "t": 683,
+          "state": "RUNNING",
+          "animation": "walk",
+          "speed": 1.591,
+          "attack": "heavy",
+          "attackTime": 0.183
+        },
+        {
+          "t": 813,
+          "state": "RUNNING",
+          "animation": "walk",
+          "speed": 1.593,
+          "attack": "heavy",
+          "attackTime": 0.317
+        },
+        {
+          "t": 946,
+          "state": "RUNNING",
+          "animation": "walk",
+          "speed": 1.594,
+          "attack": "heavy",
+          "attackTime": 0.45
+        },
+        {
+          "t": 993,
+          "state": "RUNNING",
+          "animation": "walk",
+          "speed": 1.594,
+          "attack": "heavy",
+          "attackTime": 0.5
+        }
+      ]
+    },
+    {
+      "name": "jump-attack",
+      "summary": {
+        "frames": 50,
+        "seconds": 0.823,
+        "travel": 0.137,
+        "start": [
+          104.5,
+          95.605,
+          100.195
+        ],
+        "end": [
+          104.5,
+          95.474,
+          100.236
+        ],
+        "maxSpeed": 7.767,
+        "states": [
+          "JUMPING",
+          "FALLING",
+          "IDLE"
+        ],
+        "animations": [
+          "jump",
+          "drop",
+          "fall",
+          "idle",
+          "combatIdle"
+        ],
+        "attacks": [
+          "heavy"
+        ],
+        "swingingFrames": 0,
+        "maxWebs": 0,
+        "averageFps": 60.02,
+        "low1Fps": 56.82,
+        "maxDt": 0.0176,
+        "maxDrawCalls": 15,
+        "maxTriangles": 50724,
+        "memoryStart": 36555046,
+        "memoryEnd": 37336594,
+        "pitch": [
+          0.25,
+          0.25
+        ],
+        "yaw": [
+          1.2,
+          1.2
+        ]
+      },
+      "samples": [
+        {
+          "t": 8,
+          "state": "JUMPING",
+          "animation": "jump",
+          "speed": 7.767,
+          "attack": "heavy",
+          "attackTime": 0.9
+        },
+        {
+          "t": 141,
+          "state": "JUMPING",
+          "animation": "jump",
+          "speed": 4.034,
+          "attack": null,
+          "attackTime": null
+        },
+        {
+          "t": 275,
+          "state": "JUMPING",
+          "animation": "jump",
+          "speed": 0.307,
+          "attack": null,
+          "attackTime": null
+        },
+        {
+          "t": 408,
+          "state": "FALLING",
+          "animation": "drop",
+          "speed": 3.434,
+          "attack": null,
+          "attackTime": null
+        },
+        {
+          "t": 542,
+          "state": "FALLING",
+          "animation": "fall",
+          "speed": 7.167,
+          "attack": null,
+          "attackTime": null
+        },
+        {
+          "t": 688,
+          "state": "IDLE",
+          "animation": "combatIdle",
+          "speed": 0.025,
+          "attack": null,
+          "attackTime": null
+        },
+        {
+          "t": 815,
+          "state": "IDLE",
+          "animation": "combatIdle",
+          "speed": 0,
+          "attack": null,
+          "attackTime": null
+        },
+        {
+          "t": 831,
+          "state": "IDLE",
+          "animation": "combatIdle",
+          "speed": 0,
+          "attack": null,
+          "attackTime": null
+        }
+      ]
+    },
+    {
+      "name": "attack-attack",
+      "summary": {
+        "frames": 72,
+        "seconds": 1.183,
+        "travel": 0,
+        "start": [
+          104.5,
+          95.474,
+          100.236
+        ],
+        "end": [
+          104.5,
+          95.474,
+          100.236
+        ],
+        "maxSpeed": 0,
+        "states": [
+          "IDLE"
+        ],
+        "animations": [
+          "jab",
+          "cross"
+        ],
+        "attacks": [
+          "jab",
+          "cross"
+        ],
+        "swingingFrames": 0,
+        "maxWebs": 0,
+        "averageFps": 59.99,
+        "low1Fps": 56.18,
+        "maxDt": 0.0178,
+        "maxDrawCalls": 14,
+        "maxTriangles": 50660,
+        "memoryStart": 61443478,
+        "memoryEnd": 42178054,
+        "pitch": [
+          0.25,
+          0.25
+        ],
+        "yaw": [
+          1.2,
+          1.2
+        ]
+      },
+      "samples": [
+        {
+          "t": 12,
+          "state": "IDLE",
+          "animation": "jab",
+          "speed": 0,
+          "attack": "jab",
+          "attackTime": 0.017
+        },
+        {
+          "t": 144,
+          "state": "IDLE",
+          "animation": "jab",
+          "speed": 0,
+          "attack": "jab",
+          "attackTime": 0.151
+        },
+        {
+          "t": 281,
+          "state": "IDLE",
+          "animation": "jab",
+          "speed": 0,
+          "attack": "jab",
+          "attackTime": 0.284
+        },
+        {
+          "t": 414,
+          "state": "IDLE",
+          "animation": "jab",
+          "speed": 0,
+          "attack": "jab",
+          "attackTime": 0.418
+        },
+        {
+          "t": 544,
+          "state": "IDLE",
+          "animation": "jab",
+          "speed": 0,
+          "attack": "jab",
+          "attackTime": 0.55
+        },
+        {
+          "t": 678,
+          "state": "IDLE",
+          "animation": "jab",
+          "speed": 0,
+          "attack": "jab",
+          "attackTime": 0.684
+        },
+        {
+          "t": 815,
+          "state": "IDLE",
+          "animation": "cross",
+          "speed": 0,
+          "attack": "cross",
+          "attackTime": 0.084
+        },
+        {
+          "t": 945,
+          "state": "IDLE",
+          "animation": "cross",
+          "speed": 0,
+          "attack": "cross",
+          "attackTime": 0.216
+        },
+        {
+          "t": 1076,
+          "state": "IDLE",
+          "animation": "cross",
+          "speed": 0,
+          "attack": "cross",
+          "attackTime": 0.351
+        },
+        {
+          "t": 1195,
+          "state": "IDLE",
+          "animation": "cross",
+          "speed": 0,
+          "attack": "cross",
+          "attackTime": 0.468
+        }
+      ]
+    },
+    {
+      "name": "swing-landing",
+      "summary": {
+        "frames": 124,
+        "seconds": 2.042,
+        "travel": 0,
+        "start": [
+          104.5,
+          95.474,
+          100.236
+        ],
+        "end": [
+          104.5,
+          95.474,
+          100.236
+        ],
+        "maxSpeed": 0,
+        "states": [
+          "IDLE"
+        ],
+        "animations": [
+          "combatIdle",
+          "jab"
+        ],
+        "attacks": [
+          "jab"
+        ],
+        "swingingFrames": 0,
+        "maxWebs": 0,
+        "averageFps": 60.04,
+        "low1Fps": 56.5,
+        "maxDt": 0.0177,
+        "maxDrawCalls": 16,
+        "maxTriangles": 50748,
+        "memoryStart": 35261018,
+        "memoryEnd": 50546754,
+        "pitch": [
+          0.05,
+          0.05
+        ],
+        "yaw": [
+          0,
+          0
+        ]
+      },
+      "samples": [
+        {
+          "t": 11,
+          "state": "IDLE",
+          "animation": "combatIdle",
+          "speed": 0,
+          "attack": null,
+          "attackTime": null
+        },
+        {
+          "t": 142,
+          "state": "IDLE",
+          "animation": "combatIdle",
+          "speed": 0,
+          "attack": null,
+          "attackTime": null
+        },
+        {
+          "t": 277,
+          "state": "IDLE",
+          "animation": "jab",
+          "speed": 0,
+          "attack": "jab",
+          "attackTime": 0.117
+        },
+        {
+          "t": 407,
+          "state": "IDLE",
+          "animation": "jab",
+          "speed": 0,
+          "attack": "jab",
+          "attackTime": 0.25
+        },
+        {
+          "t": 546,
+          "state": "IDLE",
+          "animation": "jab",
+          "speed": 0,
+          "attack": "jab",
+          "attackTime": 0.383
+        },
+        {
+          "t": 678,
+          "state": "IDLE",
+          "animation": "jab",
+          "speed": 0,
+          "attack": "jab",
+          "attackTime": 0.516
+        },
+        {
+          "t": 809,
+          "state": "IDLE",
+          "animation": "jab",
+          "speed": 0,
+          "attack": "jab",
+          "attackTime": 0.65
+        },
+        {
+          "t": 945,
+          "state": "IDLE",
+          "animation": "combatIdle",
+          "speed": 0,
+          "attack": null,
+          "attackTime": null
+        },
+        {
+          "t": 1077,
+          "state": "IDLE",
+          "animation": "combatIdle",
+          "speed": 0,
+          "attack": null,
+          "attackTime": null
+        },
+        {
+          "t": 1210,
+          "state": "IDLE",
+          "animation": "combatIdle",
+          "speed": 0,
+          "attack": null,
+          "attackTime": null
+        },
+        {
+          "t": 1337,
+          "state": "IDLE",
+          "animation": "combatIdle",
+          "speed": 0,
+          "attack": null,
+          "attackTime": null
+        },
+        {
+          "t": 1469,
+          "state": "IDLE",
+          "animation": "combatIdle",
+          "speed": 0,
+          "attack": null,
+          "attackTime": null
+        },
+        {
+          "t": 1604,
+          "state": "IDLE",
+          "animation": "combatIdle",
+          "speed": 0,
+          "attack": null,
+          "attackTime": null
+        },
+        {
+          "t": 1737,
+          "state": "IDLE",
+          "animation": "combatIdle",
+          "speed": 0,
+          "attack": null,
+          "attackTime": null
+        },
+        {
+          "t": 1870,
+          "state": "IDLE",
+          "animation": "combatIdle",
+          "speed": 0,
+          "attack": null,
+          "attackTime": null
+        },
+        {
+          "t": 2004,
+          "state": "IDLE",
+          "animation": "combatIdle",
+          "speed": 0,
+          "attack": null,
+          "attackTime": null
+        },
+        {
+          "t": 2054,
+          "state": "IDLE",
+          "animation": "combatIdle",
+          "speed": 0,
+          "attack": null,
+          "attackTime": null
+        }
+      ]
+    }
+  ],
+  "comboShot": "docs/qa/quality-director-2026-10-28/shots/v3-combo.png",
+  "status": "RECORDED"
+}

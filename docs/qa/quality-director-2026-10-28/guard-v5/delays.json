@@ -1,0 +1,38 @@
+{
+  "passed": 6,
+  "total": 6,
+  "freshnessMs": 350,
+  "results": [
+    {
+      "name": "100ms after a guard packet",
+      "damage": 10,
+      "expected": 10
+    },
+    {
+      "name": "250ms after a guard packet",
+      "damage": 10,
+      "expected": 10
+    },
+    {
+      "name": "packet stopped past 350ms",
+      "damage": 25,
+      "expected": 25
+    },
+    {
+      "name": "guard packet resumed",
+      "damage": 10,
+      "expected": 10
+    },
+    {
+      "name": "standing still while packets continue",
+      "damage": 10,
+      "expected": 10
+    },
+    {
+      "name": "SP-V4-GUARD runner forged pose still reduces damage",
+      "damage": 10,
+      "expected": 10,
+      "changed": false
+    }
+  ]
+}

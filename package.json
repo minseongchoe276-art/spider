@@ -87,8 +87,11 @@
     "test:combat:steering": "node scripts/check-strike-steering.mjs",
     "test:stances": "node scripts/check-low-stance.mjs && node scripts/check-input-lifecycle.mjs && node scripts/check-stance-combat.mjs && node scripts/check-low-stance-online.mjs",
     "test:vehicle": "node scripts/check-vehicle.mjs",
+    "test:vehicle-pedestrian": "node scripts/check-vehicle-pedestrian-v3.mjs",
     "test:vehicle:online": "node scripts/check-vehicle-sync.mjs && node scripts/check-vehicle-database.mjs",
     "test:vehicle:live": "node scripts/check-vehicle-live.mjs",
+    "qa:director": "node scripts/quality-director/play.mjs",
+    "qa:motions": "node scripts/quality-director/audit-motions.mjs",
     "build:vehicle": "node scripts/build-vehicle.mjs"
   },
   "dependencies": {

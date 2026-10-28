@@ -1,0 +1,210 @@
+{
+  "started": "2026-10-28T02:55:18.879Z",
+  "tests": [
+    {
+      "name": "정지 발·골반",
+      "status": "PASS",
+      "detail": {
+        "count": 25,
+        "states": [
+          "IDLE"
+        ],
+        "animations": [
+          "idle"
+        ],
+        "gap": {
+          "min": 0.119,
+          "max": 0.161
+        },
+        "hips": {
+          "min": 1.156,
+          "max": 1.173
+        },
+        "supportSeen": true
+      },
+      "shot": "shots/v4/follow-idle.png"
+    },
+    {
+      "name": "높은 착지 발 간격",
+      "status": "PASS",
+      "detail": {
+        "count": 130,
+        "states": [
+          "FALLING",
+          "LANDING",
+          "SWINGING"
+        ],
+        "animations": [
+          "drop",
+          "fall",
+          "land",
+          "jump"
+        ],
+        "gap": {
+          "min": 0.125,
+          "max": 0.579
+        },
+        "hips": {
+          "min": 0.763,
+          "max": 1.269
+        },
+        "supportSeen": true,
+        "fallVariant": false
+      }
+    },
+    {
+      "name": "정지 잽 발 간격",
+      "status": "PASS",
+      "detail": {
+        "count": 43,
+        "states": [
+          "LANDING"
+        ],
+        "animations": [
+          "land"
+        ],
+        "gap": {
+          "min": 0.125,
+          "max": 0.547
+        },
+        "hips": {
+          "min": 0.763,
+          "max": 1.25
+        },
+        "supportSeen": true
+      }
+    },
+    {
+      "name": "회피 이동 거리",
+      "status": "PASS",
+      "detail": {
+        "left": {
+          "started": true,
+          "key": "dodgeLeft",
+          "distance": 0.204,
+          "animations": [
+            "combatIdle",
+            "stop"
+          ],
+          "states": [
+            "RUNNING",
+            "IDLE"
+          ]
+        },
+        "right": {
+          "started": true,
+          "key": "dodgeRight",
+          "distance": 0.202,
+          "animations": [
+            "combatIdle",
+            "stop"
+          ],
+          "states": [
+            "RUNNING",
+            "IDLE"
+          ]
+        },
+        "back": {
+          "started": true,
+          "key": "dodgeBack",
+          "distance": 0.363,
+          "animations": [
+            "combatIdle",
+            "stop"
+          ],
+          "states": [
+            "RUNNING",
+            "IDLE"
+          ]
+        },
+        "forward": {
+          "started": true,
+          "key": "dodgeForward",
+          "distance": 0.767,
+          "animations": [
+            "combatIdle",
+            "stop"
+          ],
+          "states": [
+            "RUNNING",
+            "IDLE"
+          ]
+        }
+      }
+    },
+    {
+      "name": "스윙 4초",
+      "status": "PASS",
+      "detail": {
+        "sought": {
+          "ok": true,
+          "distance": 5.809,
+          "yaw": -0.95,
+          "pitch": -0.9,
+          "anchor": [
+            97.17,
+            100.37,
+            96.66
+          ]
+        },
+        "webs": 1,
+        "fov": {
+          "min": 64,
+          "max": 70.17
+        },
+        "span": {
+          "x": 1.64,
+          "z": 1.89
+        },
+        "release": [
+          "FALLING:drop",
+          "FALLING:fall",
+          "LANDING:land"
+        ],
+        "wrist": [
+          3.7,
+          3.4,
+          3.3,
+          3.4
+        ]
+      }
+    },
+    {
+      "name": "벽 타기",
+      "status": "PASS",
+      "detail": {
+        "count": 91,
+        "states": [
+          "LANDING",
+          "WALL_RUNNING",
+          "RUNNING",
+          "MANTLING"
+        ],
+        "animations": [
+          "land",
+          "wall",
+          "regularRun",
+          "idle"
+        ],
+        "gap": {
+          "min": -0.62,
+          "max": 0.681
+        },
+        "hips": {
+          "min": -0.159,
+          "max": 1.263
+        },
+        "supportSeen": true
+      }
+    },
+    {
+      "name": "영어 도움말",
+      "status": "FAIL",
+      "detail": {
+        "hangul": false,
+        "sample": " Controls Mouse lock or middle-button drag Close Movement · Camera W A S D Forward follows the camera; screen right is D ShiftHold to sprint Space Jump · Wall jump · Leap off the energy wire Mouse movement Rotate camera XAlign camera behind you Home · End / PgUp · PgDnAim left/right and up/down with the keyboard VCycle close / default / distant camera MOpen / close world map Mouse wheel Zoom camera in/out Esc · H · M"
+      }
+    }
+  ],
+  "finished": "2026-10-28T02:55:42.649Z"
+}

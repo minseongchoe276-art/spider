@@ -1,0 +1,57 @@
+{
+  "aim": {
+    "ok": true,
+    "distance": 20.96,
+    "yaw": 0,
+    "pitch": -0.45
+  },
+  "summary": {
+    "frames": 170,
+    "seconds": 2.849,
+    "travel": 0,
+    "start": [
+      99.6,
+      95.474,
+      90
+    ],
+    "end": [
+      99.6,
+      95.474,
+      90
+    ],
+    "maxSpeed": 0,
+    "states": [
+      "IDLE"
+    ],
+    "animations": [
+      "idle"
+    ],
+    "attacks": [],
+    "swingingFrames": 0,
+    "maxWebs": 0,
+    "averageFps": 60.35,
+    "low1Fps": 28.09,
+    "maxDrawCalls": 26,
+    "maxTriangles": 51308,
+    "memoryStart": 42691456,
+    "memoryEnd": 48196726,
+    "pitch": [
+      -0.45,
+      -0.45
+    ],
+    "yaw": [
+      0,
+      0
+    ]
+  },
+  "audio": {
+    "playSurfaceStep": 1,
+    "playWebFailure": 3,
+    "playWebShoot": 2
+  },
+  "vfx": {
+    "spawnLandingShockwave": 1
+  },
+  "errors": [],
+  "samples": []
+}

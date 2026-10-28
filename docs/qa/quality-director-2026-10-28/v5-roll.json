@@ -1,0 +1,192 @@
+{
+  "started": "2026-10-28T03:53:15.504Z",
+  "swing": {
+    "aim": {
+      "ok": true,
+      "distance": 11.554,
+      "yaw": 0,
+      "pitch": -0.9,
+      "anchor": [
+        99.6,
+        104.87,
+        96.11
+      ]
+    },
+    "count": 191,
+    "samples": [
+      {
+        "state": "SWINGING",
+        "y": 96.528,
+        "speed": 28.508,
+        "fov": 66.99759179555883,
+        "rigRoll": 0,
+        "cock": 28.2,
+        "rope": 11.211,
+        "x": 99.6,
+        "z": 90.583
+      },
+      {
+        "state": "SWINGING",
+        "y": 100.589,
+        "speed": 24.168,
+        "fov": 72.8120427310341,
+        "rigRoll": 0,
+        "cock": 37.2,
+        "rope": 11.211,
+        "x": 99.6,
+        "z": 93.15
+      },
+      {
+        "state": "SWINGING",
+        "y": 102.951,
+        "speed": 15.967,
+        "fov": 73.3512504998909,
+        "rigRoll": 0,
+        "cock": 17.8,
+        "rope": 11.211,
+        "x": 99.6,
+        "z": 94.9
+      },
+      {
+        "state": "SWINGING",
+        "y": 103.072,
+        "speed": 0.105,
+        "fov": 68.2279197096534,
+        "rigRoll": 0,
+        "cock": 16.1,
+        "rope": 2.169,
+        "x": 99.6,
+        "z": 94.9
+      },
+      {
+        "state": "SWINGING",
+        "y": 103.072,
+        "speed": 0.105,
+        "fov": 65.75858600107009,
+        "rigRoll": 0,
+        "cock": 16.9,
+        "rope": 2.169,
+        "x": 99.6,
+        "z": 94.9
+      },
+      {
+        "state": "SWINGING",
+        "y": 103.072,
+        "speed": 0.105,
+        "fov": 64.84832630604669,
+        "rigRoll": 0,
+        "cock": 17.1,
+        "rope": 2.169,
+        "x": 99.6,
+        "z": 94.9
+      },
+      {
+        "state": "SWINGING",
+        "y": 103.072,
+        "speed": 0.105,
+        "fov": 64.38102513977373,
+        "rigRoll": 0,
+        "cock": 17.3,
+        "rope": 2.169,
+        "x": 99.6,
+        "z": 94.9
+      },
+      {
+        "state": "SWINGING",
+        "y": 103.072,
+        "speed": 0.105,
+        "fov": 64.17237379690886,
+        "rigRoll": 0,
+        "cock": 17.1,
+        "rope": 2.169,
+        "x": 99.6,
+        "z": 94.9
+      },
+      {
+        "state": "SWINGING",
+        "y": 103.072,
+        "speed": 0.105,
+        "fov": 64.07686613148121,
+        "rigRoll": 0,
+        "cock": 17.3,
+        "rope": 2.169,
+        "x": 99.6,
+        "z": 94.9
+      },
+      {
+        "state": "SWINGING",
+        "y": 103.072,
+        "speed": 0.105,
+        "fov": 64.03456582083209,
+        "rigRoll": 0,
+        "cock": 16.4,
+        "rope": 2.169,
+        "x": 99.6,
+        "z": 94.9
+      },
+      {
+        "state": "SWINGING",
+        "y": 103.072,
+        "speed": 0.105,
+        "fov": 64.01552521314174,
+        "rigRoll": 0,
+        "cock": 15.9,
+        "rope": 2.169,
+        "x": 99.6,
+        "z": 94.9
+      },
+      {
+        "state": "SWINGING",
+        "y": 103.072,
+        "speed": 0.105,
+        "fov": 64.00698151091379,
+        "rigRoll": 0,
+        "cock": 15.8,
+        "rope": 2.169,
+        "x": 99.6,
+        "z": 94.9
+      }
+    ],
+    "release": [
+      "FALLING:drop",
+      "FALLING:fall"
+    ]
+  },
+  "deck": {
+    "ok": true,
+    "area": 1024,
+    "x": -90,
+    "z": -104.8,
+    "y": 94.112,
+    "depth": 32
+  },
+  "fall": {
+    "states": [
+      "FALLING",
+      "ROLLING"
+    ],
+    "animations": [
+      "drop",
+      "fall",
+      "roll"
+    ],
+    "rollFrames": 88,
+    "rollAnimation": [
+      "roll"
+    ],
+    "lowest": {
+      "state": "ROLLING",
+      "animation": "roll",
+      "y": 94.092,
+      "vx": 2.012,
+      "vy": 0,
+      "vz": 0,
+      "gap": 0.645,
+      "knee": 114.8
+    },
+    "maxHorizontal": 6.97,
+    "minVy": -20.77,
+    "gap": 0.164
+  },
+  "status": "PASS"
+}

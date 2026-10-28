@@ -99,7 +99,7 @@ await check('Audio changes preserve third-person zoom and adaptive resolution; F
   document.getElementById=id=>id==='graphics-quality'?{}:null;
   const app=Object.create(GameApp.prototype),settings=cleanSettings();let ratio=0;
   Object.assign(app,{preferences:{values:{muted:false,reducedMotion:false,quality:'balanced',settings}},tpsCamera:{},
-    physics:{},audio:{isMuted:false,configure(){}},city:{},timeTrial:{},renderer:{setPixelRatio:value=>{ratio=value;},shadowMap:{}},applyWebTheme(){}});
+    physics:{},audio:{isMuted:false,configure(){}},city:{},timeTrial:{},vfx:{},character:{},renderer:{setPixelRatio:value=>{ratio=value;},shadowMap:{}},applyWebTheme(){}});
   app.applyPreferences();app.tpsCamera.targetDistance=5.5;ratio=.7;settings.effectsVolume=.1;app.applyPreferences();
   assert.equal(app.tpsCamera.targetDistance,5.5);assert.equal(ratio,.7);
   settings.fov=95;app.applyPreferences();assert.equal(app.tpsCamera.maxFov,95);assert.equal(app.tpsCamera.baseFov,95);

@@ -1,0 +1,142 @@
+{
+  "started": "2026-10-28T02:44:24.604Z",
+  "spawn": {
+    "position": [
+      99.6,
+      95.474,
+      90
+    ],
+    "facing": 0,
+    "mode": "web"
+  },
+  "longest": [
+    {
+      "gap": 77.87,
+      "anchor": [
+        46,
+        113.31,
+        36.4
+      ],
+      "pitch": -0.45,
+      "yaw": 3.927,
+      "reason": null
+    },
+    {
+      "gap": 77.04,
+      "anchor": [
+        46,
+        108.77,
+        36.28
+      ],
+      "pitch": -0.15,
+      "yaw": 3.927,
+      "reason": null
+    },
+    {
+      "gap": 10.87,
+      "anchor": [
+        99.6,
+        104.38,
+        96.24
+      ],
+      "pitch": -1.1,
+      "yaw": 0,
+      "reason": null
+    },
+    {
+      "gap": 8.64,
+      "anchor": [
+        91.01,
+        96.41,
+        89.99
+      ],
+      "pitch": -0.15,
+      "yaw": 4.712,
+      "reason": null
+    },
+    {
+      "gap": 8.36,
+      "anchor": [
+        99.6,
+        101.04,
+        96.24
+      ],
+      "pitch": -0.8,
+      "yaw": 0,
+      "reason": null
+    }
+  ],
+  "best": {
+    "gap": 77.87,
+    "anchor": [
+      46,
+      113.31,
+      36.4
+    ],
+    "pitch": -0.45,
+    "yaw": 3.927,
+    "reason": null
+  },
+  "confirm": {
+    "gap": 77.87,
+    "anchor": [
+      46,
+      113.34,
+      36.42
+    ],
+    "pitch": -0.45
+  },
+  "attached": {
+    "webs": [
+      {
+        "hand": "left",
+        "button": 0,
+        "length": 63.115,
+        "current": 61.849,
+        "slack": -1.266,
+        "anchor": [
+          46,
+          113.34,
+          36.42
+        ]
+      },
+      {
+        "hand": "right",
+        "button": 2,
+        "length": 63.115,
+        "current": 61.849,
+        "slack": -1.266,
+        "anchor": [
+          46,
+          113.34,
+          36.42
+        ]
+      }
+    ],
+    "speed": 14.216,
+    "state": "SWINGING",
+    "animation": "swing",
+    "position": [
+      89.534,
+      107.318,
+      79.937
+    ]
+  },
+  "shot": "docs/qa/quality-director-2026-10-28/shots/v3-settled-dual.png",
+  "landing": {
+    "states": [
+      "SWINGING",
+      "FALLING"
+    ],
+    "animations": [
+      "jump",
+      "swing",
+      "drop",
+      "fall"
+    ],
+    "maxSpeed": 48,
+    "maxDt": 0.0834,
+    "travel": 44.301
+  },
+  "status": "RECORDED"
+}

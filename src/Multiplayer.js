@@ -10,12 +10,13 @@ import { MATCH, resolveMatchSpawn, teamOffset } from './MatchRules.js';
 import { SupabaseRooms } from './SupabaseRooms.js';
 import { RemoteMotion, capturePose, sanitizePose } from './RemoteMotion.js';
 import { ATTACKS } from './Combat.js';
-import {PURSUIT,arenaContains} from './PursuitRules.js';
+import {PURSUIT,arenaContains,matchDuration} from './PursuitRules.js';
 import {PlayerPositionMarkers} from './PlayerPositionMarkers.js';
 import {AdminConsole} from './AdminConsole.js';
 
 const $ = id => globalThis.document?.getElementById(id);
 const label = mode => mode === 'tag' ? '경찰과 도망자' : mode==='custom'?'사용자 설정 경기':'자유 플레이';
+const tagMinutes = (enhanced, count) => (enhanced ? matchDuration(count) : MATCH.durationMs) / 60000;
 const make = (tag, className, value) => { const el=document.createElement(tag);el.className=className;if(className==='user-content')el.dataset.userContent='';el.textContent=value;return el; };
 
 export class Multiplayer {
@@ -191,7 +192,7 @@ export class Multiplayer {
       const player=this.players.find(p=>p.id===data.target);if(player){player.health=data.health;player.eliminated=data.eliminated;}
       if(data.target===this.id){
         const attacker=this.players.find(p=>p.id===data.attacker);
-        this.feedback?.show(`${data.blocked?'정면 방어 · ':''}${attacker?.name||'상대'}의 ${data.kind==='web'?'거미줄':'주먹'} 명중 −${data.damage??MATCH[data.kind]?.damage??0} · 내 HP ${data.health}${data.eliminated?' · 탈락 / 관전':''}`);
+        this.feedback?.show(`${data.blocked?'정면 방어 · ':''}${attacker?.name||'상대'}의 ${data.kind==='web'?'에너지 와이어':'주먹'} 명중 −${data.damage??MATCH[data.kind]?.damage??0} · 내 HP ${data.health}${data.eliminated?' · 탈락 / 관전':''}`);
         this.game.tpsCamera?.triggerShake?.(.18);
         if(!data.blocked && !data.eliminated)this.game.combat?.reactToHit?.(data.damage ?? MATCH[data.kind]?.damage ?? 0,{hitRegion:data.kind==='web'?'body':'head',variant:data.variant});
         if(data.eliminated){this.setSpectating(true);this.game.physics.clearWebAnchor();this.game.clearInput();this.game.combat?.cancel();this.pendingPunch=null;}
@@ -268,10 +269,15 @@ export class Multiplayer {
     const me=this.players.find(p=>p.id===this.id);
     $('room-ready').textContent=me?.ready?'준비 취소':'준비하기';
     $('room-start').disabled=this.players.length<MATCH.minPlayers||this.players.some(p=>!p.ready)||(this.room.mode==='custom'&&this.room.format==='teams'&&(!this.players.some(p=>p.team==='red')||!this.players.some(p=>p.team==='blue')));
+    const waitingCount=this.players.length;
+    const waitingMinutes=tagMinutes(!!this.room.enhanced, waitingCount);
+    const waitingTime=this.room.enhanced
+      ? `지금은 ${waitingCount}명 · 시작하면 ${waitingMinutes}분 · 2명 3분, 3~6명 4분, 7~8명 5분 · 목표 3개로 탈출 · 다음 경기 역할 순환`
+      : '5분 생존';
     const waitingText=this.room.mode==='custom'
-      ? `${this.room.format==='ffa'?'개인전 · 마지막 1명 생존 시 승리':'팀전 · 상대 팀 전원 탈락 시 승리 · 팀 변경 시 전원 준비 초기화'} · 2~8명 · HP 100 · 주먹 25 / 거미줄 15 · 시작 보호 8초 · 부활 없음. Q로 전투/거미줄 전환.`
+      ? `${this.room.format==='ffa'?'개인전 · 마지막 1명 생존 시 승리':'팀전 · 상대 팀 전원 탈락 시 승리 · 팀 변경 시 전원 준비 초기화'} · 2~8명 · HP 100 · 주먹 25 / 에너지 와이어 15 · 시작 보호 8초 · 부활 없음. Q로 전투/에너지 와이어 전환.`
       : this.room.mode==='tag'
-      ? `최소 ${MATCH.minPlayers}명 · 모두 지형 로딩 후 준비. 6명 이하는 경찰 1명, 7명 이상은 경찰 2명. ${this.room.enhanced?'인원별 3~5분 · 목표 3개로 탈출 · 다음 경기 역할 순환':'5분 생존'}. 시작 ${MATCH.graceMs/1000}초는 공격 불가.`
+      ? `최소 ${MATCH.minPlayers}명 · 모두 지형 로딩 후 준비. 6명 이하는 경찰 1명, 7명 이상은 경찰 2명. ${waitingTime}. 시작 ${MATCH.graceMs/1000}초는 공격 불가.`
       : `최소 ${MATCH.minPlayers}명 · 모두 준비하면 방장이 시작할 수 있습니다.`;
     const winnerText=this.room.mode==='custom'?(this.winner==='draw'?'무승부':this.room.format==='ffa'?`${this.players.find(p=>p.id===this.winner)?.name||'마지막 생존자'} 승리`:`${teamName(this.winner)} 승리`):this.winner==='police'?'경찰 팀 승리':this.winner==='runner'?'도망자 팀 승리':'경기 종료';
     $('room-message').textContent=finished?`${winnerText}. 방장이 다시 대기실을 열 수 있습니다.`:waiting?waitingText:'';
@@ -328,8 +334,11 @@ export class Multiplayer {
     game.combat.allowGuardInWeb=this.room.mode==='tag'&&me?.team==='runner';
     game.applyPreferences();
     if(game.combat.mode!==desiredMode)game.combat.toggle(game.input);
-    this.game.showNotice(this.room.mode==='custom'?'사용자 설정 경기 · HP 100 · 상대 전원 제압! Q로 전투/거미줄 전환 · 주먹 25 / 거미줄 15 · 시작 보호 8초':this.room.mode==='tag'
-      ? (this.arena?'경찰은 추격, 도망자는 이동 목표 3개를 완료하거나 제한 시간 생존. 쓰러진 팀원 곁에서 3초 유지하면 구조합니다. 시작 8초는 공격이 없습니다.':'경찰은 주먹 25, 에너지 와이어 15로 추격합니다. 도망자는 5분 생존하면 승리합니다.')
+    const startMinutes=tagMinutes(!!this.room.enhanced, this.players.length);
+    this.game.showNotice(this.room.mode==='custom'?'사용자 설정 경기 · HP 100 · 상대 전원 제압! Q로 전투/에너지 와이어 전환 · 주먹 25 / 에너지 와이어 15 · 시작 보호 8초':this.room.mode==='tag'
+      ? (this.arena
+        ? `경찰은 추격합니다. 도망자는 이동 목표 3개를 완료하거나 ${startMinutes}분 생존하면 승리합니다. 화면의 남은 시간은 서버 종료 시각입니다. 쓰러진 팀원 곁에서 3초 유지하면 구조합니다. 시작 8초는 공격이 없습니다.`
+        : `경찰은 주먹 25, 에너지 와이어 15로 추격합니다. 도망자는 ${startMinutes}분 생존하면 승리합니다. 화면의 남은 시간은 서버 종료 시각입니다.`)
       : '자유 플레이 시작! 도시를 함께 탐험하세요.');
   }
   locksCombatToggle() {

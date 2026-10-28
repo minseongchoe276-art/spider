@@ -1,7 +1,8 @@
 import * as T from 'three';
 import {CitizenActor,loadCitizenAssets} from './CitizenActor.js';
-import {citizenRoute} from './CitizenNavigation.js';
+import {citizenRoute,projectSidewalk,sidewalkAnchor} from './CitizenNavigation.js';
 const up=new T.Vector3(0,1,0),down=new T.Vector3(0,-1,0);
+export const AMBIENT_COUNTS=Object.freeze({procedural:8,harbor:6,gardens:6,'old-town':5,skyline:5,'hong-kong':10});
 export const CITIZEN_LIMITS=Object.freeze({
  count:10,
  spawnMin:18,
@@ -25,7 +26,7 @@ export class AmbientCitizens{
   this.metrics={active:0,pool:0,updates:0,animations:0,raycasts:0,spawned:0,recycled:0,lastMs:0,maxMs:0};
  }
 
- get targets(){return this.slots.filter(n=>n.active);}
+ get targets(){return this.slots.filter(n=>n.active&&n.health>0);}
 
  visible(position){
   if(!this.camera)return false;
@@ -47,7 +48,18 @@ export class AmbientCitizens{
   return true;
  }
 
+ buildingFootprint(x,z){
+  return (this.city.buildings||[]).some(b=>Math.abs(x-b.x)<(b.size||0)/2-.2&&Math.abs(z-b.z)<((b.depth||b.size)||0)/2-.2);
+ }
+
  floor(position,spawn=false){
+  // Local districts paint sidewalks but do not collide with them. The footpath
+  // graph is the walkable surface, on the street plane. A roof is not a sidewalk.
+  if(this.city.footpaths){
+   if(!this.city.footpaths.allows(position.x,position.z)||this.buildingFootprint(position.x,position.z))return null;
+   if(spawn&&this.ray(new T.Vector3(position.x,.25,position.z),up,1.7))return null;
+   return 0;
+  }
   if(spawn){
    const searchTop=Math.max(position.y+8,50);
    const origin=new T.Vector3(position.x,Math.min(CITIZEN_LIMITS.streetCeiling,searchTop),position.z);
@@ -76,9 +88,16 @@ export class AmbientCitizens{
   return true;
  }
 
+ lane(point){
+  if(this.city.footpaths)return !this.city.footpaths.allows(point.x,point.z);
+  if(!this.city.isStreamed)return false;
+  return !sidewalkAnchor(this,point);
+ }
+
  streetPatch(point,direction){
   const side=new T.Vector3(direction.z,0,-direction.x);
-  for(const [axis,distance] of [[direction,2.8],[direction,-2.8],[side,.85],[side,-.85]]){
+  const lateral=(this.city.footpaths||this.city.isStreamed)?0.35:0.85;
+  for(const [axis,distance] of [[direction,2.8],[direction,-2.8],[side,lateral],[side,-lateral]]){
    const sample=point.clone().addScaledVector(axis,distance);
    if(this.floor(sample)==null)return false;
   }
@@ -90,6 +109,13 @@ export class AmbientCitizens{
  }
 
  findOpenStreetYaw(n,baseAngle){
+  if(this.city.isStreamed&&!this.city.footpaths){
+   const anchor=sidewalkAnchor(this,n.position)||(()=>{const stand=projectSidewalk(this,n.position);return stand&&sidewalkAnchor(this,stand);})();
+   if(anchor){
+    const wrap=t=>Math.atan2(Math.sin(t),Math.cos(t)),along=Math.atan2(anchor.tangent.x,anchor.tangent.z);
+    return Math.abs(wrap(along-baseAngle))<Math.abs(wrap(along+Math.PI-baseAngle))?along:along+Math.PI;
+   }
+  }
   const offsets=[0,.45,-.45,.9,-.9,1.4,-1.4,2.0,-2.0,Math.PI];
   let bestScore=-1,bestYaw=baseAngle;
   const chest=n.position.clone().addScaledVector(up,.85);
@@ -113,60 +139,108 @@ export class AmbientCitizens{
   return bestYaw;
  }
 
+ place(point,initialYaw){
+  let n=this.slots.find(slot=>!slot.active);
+  if(!n){
+   const actor=new CitizenActor(this.assets[this.slots.length%this.assets.length]);
+   this.scene.add(actor.group);
+   n={actor,mesh:actor.group,position:actor.group.position,nonCombatant:true,health:100};
+   n.reactToAttack=(key,damage,origin)=>this.hit(n,key,damage,origin);
+   this.slots.push(n);
+  }else{
+   n.actor.reset();
+   this.metrics.recycled++;
+  }
+  Object.assign(n,{
+   active:true,
+   id:++this.serial,
+   state:'WALK',
+   stateUntil:this.time+4+this.random()*6,
+   health:100,
+   attackIndex:0,attackSpec:null,deathAt:0,
+   fearUntil:0,
+   speed:0,
+   targetYaw:initialYaw,
+   yaw:initialYaw,
+   logicTime:0,
+   animationTime:this.random()*.04,
+   blocked:0,
+   hitSerial:0,
+   moveAge:0,
+   moveDuration:.1,
+   route:[],
+   routeAt:0,
+   moved:0,
+   movedAt:this.time,
+   recover:0,
+   retaliates:false,
+   attackAt:0,watchingIncident:false,warnStarted:0,threat:null
+  });
+  n.moveFrom=point.clone();
+  n.moveTo=point.clone();
+  n.position.copy(point);
+  n.mesh.rotation.y=n.yaw;
+  n.actor.play('walk',.1);
+  this.metrics.spawned++;
+  return true;
+ }
+
  spawn(){
-  if(!this.assets?.length || this.targets.length>=this.max)return false;
+  if(!this.assets?.length || this.slots.filter(n=>n.active).length>=this.max)return false;
+  if(this.city.footpaths)return this.spawnOnFootpath();
+  if(this.city.isStreamed)return this.spawnOnSidewalk();
   const player=this.player.position;
   for(let attempt=0;attempt<CITIZEN_LIMITS.spawnAttempts;attempt++){
    const angle=this.random()*Math.PI*2,radius=CITIZEN_LIMITS.spawnMin+this.random()*(CITIZEN_LIMITS.spawnMax-CITIZEN_LIMITS.spawnMin);
    const point=new T.Vector3(player.x+Math.sin(angle)*radius,player.y,player.z+Math.cos(angle)*radius);
    const height=this.floor(point,true);
-   if(height==null)continue;
+   if(height==null||this.lane(point))continue;
    point.y=height+.01;
    if(this.visible(point) || this.targets.some(n=>n.position.distanceToSquared(point)<9))continue;
    const direction=new T.Vector3(Math.sin(angle+Math.PI/2),0,Math.cos(angle+Math.PI/2));
    if(!this.open(point,direction,1.2)||!this.streetPatch(point,direction))continue;
    const edge=point.clone().addScaledVector(direction,.8);
-   if(this.floor(edge)==null)continue;
-   let n=this.slots.find(n=>!n.active);
-   if(!n){
-    const actor=new CitizenActor(this.assets[this.slots.length%this.assets.length]);
-    this.scene.add(actor.group);
-    n={actor,mesh:actor.group,position:actor.group.position,nonCombatant:true,health:100};
-    n.reactToAttack=(key,damage,origin)=>this.hit(n,key,damage,origin);
-    this.slots.push(n);
-   }else{
-    n.actor.reset();
-    this.metrics.recycled++;
-   }
-   const initialYaw=Math.atan2(direction.x,direction.z);
-   Object.assign(n,{
-    active:true,
-    id:++this.serial,
-    state:'WALK',
-    stateUntil:this.time+4+this.random()*6,
-    health:100,
-    fearUntil:0,
-    speed:0,
-    targetYaw:initialYaw,
-    yaw:initialYaw,
-    logicTime:0,
-    animationTime:this.random()*.04,
-    blocked:0,
-    hitSerial:0,
-    moveAge:0,
-    moveDuration:.1,
-    route:[],
-    routeAt:0,
-    retaliates:false,
-    attackAt:0,watchingIncident:false,warnStarted:0,threat:null
-   });
-   n.moveFrom=point.clone();
-   n.moveTo=point.clone();
-   n.position.copy(point);
-   n.mesh.rotation.y=n.yaw;
-   n.actor.play('walk',.1);
-   this.metrics.spawned++;
-   return true;
+   if(this.floor(edge)==null||this.lane(edge))continue;
+   return this.place(point,Math.atan2(direction.x,direction.z));
+  }
+  return false;
+ }
+
+ spawnOnSidewalk(){
+  const player=this.player.position;
+  for(let attempt=0;attempt<10;attempt++){
+   const angle=this.random()*Math.PI*2,radius=CITIZEN_LIMITS.spawnMin+this.random()*(CITIZEN_LIMITS.spawnMax-CITIZEN_LIMITS.spawnMin);
+   const guess=new T.Vector3(player.x+Math.sin(angle)*radius,player.y,player.z+Math.cos(angle)*radius);
+   const stand=projectSidewalk(this,guess);if(!stand)continue;
+   const height=this.floor(stand,true);if(height==null)continue;
+   stand.y=height+.01;
+   if(this.lane(stand)||this.visible(stand)||this.targets.some(n=>n.position.distanceToSquared(stand)<9))continue;
+   const anchor=sidewalkAnchor(this,stand),yaw=anchor?Math.atan2(anchor.tangent.x,anchor.tangent.z):angle;
+   const direction=new T.Vector3(Math.sin(yaw),0,Math.cos(yaw));
+   if(!this.open(stand,direction,.8))continue;
+   return this.place(stand,yaw);
+  }
+  return false;
+ }
+
+ spawnOnFootpath(){
+  const spots=this.city.footpaths.nodes,player=this.player.position;
+  for(let attempt=0;attempt<16;attempt++){
+   const spot=spots[Math.floor(this.random()*spots.length)];
+   if(!spot||spot.kind==='cross')continue;
+   const horizontal=Math.hypot(spot.x-player.x,spot.z-player.z),vertical=Math.abs(player.y);
+   // From a roof the street is far in 3D, so the bubble is horizontal.
+   // On the street it stays the normal ring, never at the player's feet.
+   if(vertical>8){if(horizontal<22||horizontal>70)continue;}
+   else if(horizontal<CITIZEN_LIMITS.spawnMin||horizontal>CITIZEN_LIMITS.spawnMax)continue;
+   const point=new T.Vector3(spot.x,player.y,spot.z),height=this.floor(point,true);
+   if(height==null)continue;
+   point.y=height+.01;
+   if(this.visible(point)||this.targets.some(n=>n.position.distanceToSquared(point)<9)||this.lane(point))continue;
+   const direction=new T.Vector3(Math.sin(spot.yaw),0,Math.cos(spot.yaw));
+   if(!this.open(point,direction,.8))continue;
+   if(!citizenRoute(this,{position:point.clone()},spot.yaw).length)continue;
+   return this.place(point,spot.yaw);
   }
   return false;
  }
@@ -178,11 +252,11 @@ export class AmbientCitizens{
  }
 
  change(n,state,duration=0){
-  if(state!==n.state){n.route=[];n.routeAt=0;}
+  if(state!==n.state){n.route=[];n.routeAt=0;n.recover=0;n.moved=0;n.movedAt=this.time;}
   if(state==='WARN'){n.warnStarted=this.time;this.onNotice('물러서세요! 계속 공격하면 반격합니다.');}
   n.state=state;
   n.stateUntil=this.time+duration;
-  const key={IDLE:'idle',WALK:'walk',STARTLED:'startle',HURT:n.hitKey||'hit',FLEE:'run',DEFEND:'idle',ATTACK:'jab',WARN:'startle',RETREAT:'walk',WATCH:'idle'}[state];
+  const key={IDLE:'idle',WALK:'walk',STARTLED:'startle',HURT:n.hitKey||'hit',FLEE:'run',DEAD:'hitUppercut',DEFEND:'combatIdle',ATTACK:n.attackSpec?.key||'jab',WARN:'startle',RETREAT:'walk',WATCH:'idle'}[state];
   n.actor.play(key,.16,state==='HURT'||state==='STARTLED'||state==='ATTACK'||state==='WARN');
   if(!['WALK','FLEE'].includes(state)){
    n.speed=0;
@@ -194,7 +268,7 @@ export class AmbientCitizens{
  alarm(origin,radius=14,except=null){
   this.incidentUntil=this.time+6;
   for(const n of this.slots){
-   if(!n.active || n===except || n.position.distanceTo(origin)>radius || ['HURT','WARN','DEFEND','ATTACK'].includes(n.state) || n.retaliates)continue;
+   if(!n.active || n.health<=0 || n===except || n.position.distanceTo(origin)>radius || ['HURT','WARN','DEFEND','ATTACK'].includes(n.state) || n.retaliates)continue;
    const line=origin.clone().sub(n.position);
    line.y=0;
    const distance=line.length();
@@ -206,8 +280,10 @@ export class AmbientCitizens{
  }
 
  hit(n,key,damage,origin){
-  if(!n.active)return;
-  n.health=Math.max(1,n.health-damage);
+  if(!n.active||n.health<=0||!Number.isFinite(damage)||damage<=0)return;
+  n.health=Math.max(0,n.health-damage);
+  n.actor.setHealth(n.health);
+  if(n.health===0){n.retaliates=false;n.deathAt=this.time;this.change(n,'DEAD',8);this.alarm(n.position,14,n);return;}
   n.hitSerial++;
   n.retaliates=n.hitSerial>=2;
   n.route=[];
@@ -215,12 +291,13 @@ export class AmbientCitizens{
   n.threat=origin.clone();
   n.fearUntil=this.time+12;
   n.hitKey=key==='special'?'hitUppercut':damage>=24?'hitBody':'hit';
-  this.change(n,'HURT',key==='special'?.75:.45);
+  this.change(n,'HURT',Math.max(.45,(n.actor.actions[n.hitKey]?.getClip().duration||.7)-.16));
   this.alarm(n.position,14,n);
  }
 
  think(n,dt){
   const player=this.player.position;
+  if(n.state==='DEAD'){if(this.time>=n.stateUntil&&!this.visible(n.position))this.retire(n);return;}
   if(n.state==='HURT' && this.time>=n.stateUntil)this.change(n,'WARN',.9);
   else if(n.state==='WARN' && this.time>=n.stateUntil)this.change(n,n.retaliates?'DEFEND':'FLEE',0);
   else if(n.state==='STARTLED' && this.time>=n.stateUntil)this.change(n,'RETREAT',0);
@@ -243,13 +320,13 @@ export class AmbientCitizens{
 
   if(n.state==='ATTACK'){
    n.attackAge=this.time-n.attackStarted;
-   if(!n.attackHit&&n.attackAge>=.3){
+   if(!n.attackHit&&n.attackAge>=(n.attackSpec?.contact||.3)){
     n.attackHit=true;
     const line=player.clone().sub(n.position);
     line.y=0;
     const distance=line.length();
     if(distance<1.9&&Math.abs(player.y-n.position.y)<.9&&distance>.01&&line.normalize().dot(new T.Vector3(Math.sin(n.yaw),0,Math.cos(n.yaw)))>.35&&this.open(n.position,line,distance)){
-     this.onPlayerHit(12,n);
+     this.onPlayerHit(n.attackSpec?.damage||12,n);
     }
    }
    if(this.time>=n.stateUntil)this.change(n,'DEFEND',0);
@@ -263,10 +340,13 @@ export class AmbientCitizens{
     n.retaliates=false;
     this.change(n,'FLEE');
    }else if(line.length()<1.9&&Math.abs(player.y-n.position.y)<.9&&this.time>=n.attackAt){
-    n.attackAt=this.time+1.7;
+    const attacks=[{key:'jab',contact:.3,damage:12},{key:'cross',contact:.38,damage:15},{key:'hook',contact:.52,damage:18}];
+    n.attackSpec=attacks[(n.attackIndex||0)%attacks.length];n.attackIndex=(n.attackIndex||0)+1;
+    const duration=n.actor.actions[n.attackSpec.key]?.getClip().duration||1.2;
+    n.attackAt=this.time+duration+.22;
     n.attackStarted=this.time;
     n.attackHit=false;
-    this.change(n,'ATTACK',1.2);
+    this.change(n,'ATTACK',duration);
    }
   }
 
@@ -305,15 +385,27 @@ export class AmbientCitizens{
   n.moveDuration=dt;
   if(!speed)return;
 
+  if(['WALK','FLEE','RETREAT'].includes(n.state)){
+   if(n.movedAt==null)n.movedAt=this.time;
+   if((n.moved||0)>.3){n.moved=0;n.movedAt=this.time;n.recover=0;}
+   else if(this.time-n.movedAt>1.15&&this.time>=(n.stallRouteAt||0)){
+    n.recover=Math.min(8,(n.recover||0)+1);
+    n.route=[];
+    n.routeAt=this.time;
+    n.movedAt=this.time;
+    n.stallRouteAt=this.time+1.2;
+    n.targetYaw=this.findOpenStreetYaw(n,n.targetYaw+n.recover*1.15);
+   }
+  }
   if(this.time>=n.routeAt){
-   n.route=citizenRoute(this,n,n.targetYaw+(backward?Math.PI:0));
-   n.routeAt=this.time+1.2;
+   const extra=(n.recover||0)>0?n.recover*1.15:0,desired=n.targetYaw+extra+(backward?Math.PI:0);
+   n.route=citizenRoute(this,n,desired);
+   if(!n.route.length)n.route=citizenRoute(this,n,desired+Math.PI);
+   n.routeAt=this.time+((n.recover||0)>=4?2.4:1.2);
   }
   while(n.route.length&&n.position.distanceTo(n.route[0])<.25)n.route.shift();
   if(!n.route.length){
    n.speed=0;
-   n.targetYaw=this.findOpenStreetYaw(n,n.targetYaw+1.2);
-   n.routeAt=0;
    n.actor.play('idle');
    return;
   }
@@ -326,15 +418,18 @@ export class AmbientCitizens{
   const travel=Math.min(distance,speed*dt);
   const target=n.position.clone().addScaledVector(direction,travel);
   const height=this.floor(target);
-  if(height==null||!this.open(n.position,direction,travel+.35)){
+  const leaving=!n.route[0].cross&&!n.route[0].recover;
+  if(height==null||!this.open(n.position,direction,travel+.35)||(leaving&&this.lane(target))){
    n.speed=0;
    n.route=[];
+   n.recover=Math.min(8,(n.recover||0)+1);
+   n.routeAt=this.time+((n.recover||0)>=4?2.4:1.2);
    n.targetYaw=this.findOpenStreetYaw(n,n.targetYaw+1.4);
-   n.routeAt=0;
    n.actor.play('idle');
    return;
   }
 
+  n.moved=(n.moved||0)+travel;
   n.moveTo.copy(target);
   n.moveTo.y=height+.01;
   n.actor.play(n.state==='FLEE'?'run':'walk');
@@ -365,7 +460,9 @@ export class AmbientCitizens{
   }
   for(const n of this.slots){
    if(!n.active)continue;
-   const distance=n.position.distanceTo(this.player.position),visible=this.visible(n.position);
+   const horizontal=Math.hypot(n.position.x-this.player.position.x,n.position.z-this.player.position.z);
+   const separated=Math.abs(n.position.y-this.player.position.y)>8;
+   const distance=separated?horizontal:n.position.distanceTo(this.player.position),visible=this.visible(n.position);
    n.mesh.visible=!this.camera||visible;
    if(distance>CITIZEN_LIMITS.hardRetire || (distance>CITIZEN_LIMITS.retire&&!visible)){
     this.retire(n);
@@ -383,7 +480,9 @@ export class AmbientCitizens{
    const turn=Math.atan2(Math.sin(n.targetYaw-n.yaw),Math.cos(n.targetYaw-n.yaw));
    n.yaw+=turn*(1-Math.exp(-7*delta));
    n.mesh.rotation.y=n.yaw;
-   const interval=n.state==='HURT'||n.state==='STARTLED'?1/30:this.camera&&!visible?1/8:distance<25?1/30:distance<55?1/15:1/8;
+   if(this.camera)n.actor.healthBar.quaternion.copy(n.mesh.getWorldQuaternion(new T.Quaternion()).invert().multiply(this.camera.quaternion));
+   if(n.state==='DEAD'){const fall=T.MathUtils.smoothstep(this.time-n.deathAt,.25,1.1);n.actor.model.rotation.x=-Math.PI/2*fall;n.actor.model.position.y=.18*fall;}
+   const interval=['HURT','STARTLED','ATTACK','DEFEND','DEAD'].includes(n.state)?1/30:this.camera&&!visible?1/8:distance<25?1/30:distance<55?1/15:1/8;
    if(n.animationTime>=interval){
     n.actor.update(n.animationTime,['WARN','RETREAT'].includes(n.state)?-n.speed:n.speed);
     n.animationTime=0;

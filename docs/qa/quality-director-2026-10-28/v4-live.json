@@ -1,0 +1,1580 @@
+{
+  "seed": 20261028,
+  "started": "2026-10-28T02:51:00.743Z",
+  "build": "quality-director-v4",
+  "tests": [
+    {
+      "name": "도움말·로비 카드 문구",
+      "status": "PASS",
+      "detail": {
+        "card": "2명 3분 · 3~6명 4분 · 7~8명 5분",
+        "hasOldRange": false,
+        "hasWireName": true,
+        "hasSpider": false,
+        "hasServerTimer": true,
+        "hasTouchException": true,
+        "hasGamepad": true,
+        "hasCtrlEvade": false,
+        "callsBEvade": false,
+        "callsTriggersAlwaysWire": false
+      },
+      "shot": "docs/qa/quality-director-2026-10-28/shots/v4/help-ko.png"
+    },
+    {
+      "name": "훅·헤비 클립 출처",
+      "status": "PASS",
+      "detail": {
+        "hook": {
+          "name": "hook",
+          "duration": 1.4,
+          "source": "/models/Boxing Hook.fbx",
+          "authored": true,
+          "choreography": null
+        },
+        "heavy": {
+          "name": "heavy",
+          "duration": 1.4,
+          "source": "/models/Boxing Hook.fbx",
+          "authored": true,
+          "choreography": null
+        },
+        "fall": {
+          "name": "fall",
+          "duration": 0.683,
+          "source": null,
+          "authored": false,
+          "choreography": null
+        },
+        "fallVariant": {
+          "name": "fallVariant",
+          "duration": 4.5,
+          "source": null,
+          "authored": false,
+          "choreography": null
+        },
+        "land": {
+          "name": "land",
+          "duration": 0.776,
+          "source": "/models/Falling To Landing.fbx",
+          "authored": true,
+          "choreography": null
+        },
+        "slamLand": {
+          "name": "slamLand",
+          "duration": 0.884,
+          "source": null,
+          "authored": false,
+          "choreography": null
+        },
+        "special": {
+          "name": "special",
+          "duration": 1.2,
+          "source": "/models/Surprise Uppercut.fbx",
+          "authored": true,
+          "choreography": null
+        }
+      }
+    },
+    {
+      "name": "fallVariant 재생 선택",
+      "status": "UNVERIFIED",
+      "detail": {
+        "loaded": true,
+        "note": "클립은 로드된다. 착지 분기는 플레이 중 확인한다."
+      }
+    },
+    {
+      "name": "낮은 낙하 착지",
+      "status": "PASS",
+      "detail": {
+        "count": 125,
+        "states": [
+          "FALLING",
+          "LANDING",
+          "IDLE"
+        ],
+        "animations": [
+          "drop",
+          "fall",
+          "land",
+          "idle"
+        ],
+        "attacks": [],
+        "slamLand": false,
+        "fov": {
+          "min": 64,
+          "max": 64.38
+        },
+        "gap": null,
+        "hips": null,
+        "changes": [
+          {
+            "state": "FALLING",
+            "animation": "drop",
+            "animationTime": 0.016,
+            "attack": null,
+            "speed": 0.467,
+            "fov": 64.02383023801258,
+            "pitch": 0.16,
+            "roll": -3.1416,
+            "y": 96.668,
+            "x": 99.6,
+            "z": 90,
+            "webs": 0,
+            "leftGap": null,
+            "rightGap": null,
+            "hips": null,
+            "wrist": 3.5,
+            "knee": 42,
+            "shoot": 0,
+            "webShot": 0
+          },
+          {
+            "state": "FALLING",
+            "animation": "fall",
+            "animationTime": 0.017,
+            "attack": null,
+            "speed": 7.467,
+            "fov": 64.26635488146725,
+            "pitch": 0.16,
+            "roll": -3.1416,
+            "y": 95.647,
+            "x": 99.6,
+            "z": 90,
+            "webs": 0,
+            "leftGap": null,
+            "rightGap": null,
+            "hips": null,
+            "wrist": 4.4,
+            "knee": 46.8,
+            "shoot": 0,
+            "webShot": 0
+          },
+          {
+            "state": "LANDING",
+            "animation": "land",
+            "animationTime": 0.017,
+            "attack": null,
+            "speed": 0,
+            "fov": 64.34375977418091,
+            "pitch": 0.16,
+            "roll": -3.1416,
+            "y": 95.474,
+            "x": 99.6,
+            "z": 90,
+            "webs": 0,
+            "leftGap": null,
+            "rightGap": null,
+            "hips": null,
+            "wrist": 4,
+            "knee": 54.9,
+            "shoot": 0,
+            "webShot": 0
+          },
+          {
+            "state": "IDLE",
+            "animation": "idle",
+            "animationTime": 0.017,
+            "attack": null,
+            "speed": 0,
+            "fov": 64.00309362357703,
+            "pitch": 0.16,
+            "roll": -3.1416,
+            "y": 95.474,
+            "x": 99.6,
+            "z": 90,
+            "webs": 0,
+            "leftGap": null,
+            "rightGap": null,
+            "hips": null,
+            "wrist": 4.3,
+            "knee": 44.4,
+            "shoot": 0,
+            "webShot": 0
+          }
+        ],
+        "first": {
+          "state": "FALLING",
+          "animation": "drop",
+          "animationTime": 0.016,
+          "attack": null,
+          "speed": 0.467,
+          "fov": 64.02383023801258,
+          "pitch": 0.16,
+          "roll": -3.1416,
+          "y": 96.668,
+          "x": 99.6,
+          "z": 90,
+          "webs": 0,
+          "leftGap": null,
+          "rightGap": null,
+          "hips": null,
+          "wrist": 3.5,
+          "knee": 42,
+          "shoot": 0,
+          "webShot": 0
+        },
+        "last": {
+          "state": "IDLE",
+          "animation": "idle",
+          "animationTime": 1.117,
+          "attack": null,
+          "speed": 0,
+          "fov": 64.00000420594232,
+          "pitch": 0.16,
+          "roll": -3.1416,
+          "y": 95.474,
+          "x": 99.6,
+          "z": 90,
+          "webs": 0,
+          "leftGap": null,
+          "rightGap": null,
+          "hips": null,
+          "wrist": 3.9,
+          "knee": 42,
+          "shoot": 0,
+          "webShot": 0
+        }
+      },
+      "shot": "docs/qa/quality-director-2026-10-28/shots/v4/land-low.png"
+    },
+    {
+      "name": "높은 낙하 착지",
+      "status": "PASS",
+      "detail": {
+        "count": 142,
+        "states": [
+          "FALLING",
+          "LANDING",
+          "IDLE"
+        ],
+        "animations": [
+          "drop",
+          "fall",
+          "land",
+          "idle"
+        ],
+        "attacks": [],
+        "slamLand": false,
+        "fov": {
+          "min": 64,
+          "max": 73.62
+        },
+        "gap": null,
+        "hips": null,
+        "changes": [
+          {
+            "state": "FALLING",
+            "animation": "drop",
+            "animationTime": 0.03,
+            "attack": null,
+            "speed": 0.7,
+            "fov": 64.00000140115705,
+            "pitch": 0.16,
+            "roll": -3.1416,
+            "y": 107.462,
+            "x": 99.6,
+            "z": 90,
+            "webs": 0,
+            "leftGap": null,
+            "rightGap": null,
+            "hips": null,
+            "wrist": 2.1,
+            "knee": 39.3,
+            "shoot": 0,
+            "webShot": 0
+          },
+          {
+            "state": "FALLING",
+            "animation": "fall",
+            "animationTime": 0.017,
+            "attack": null,
+            "speed": 7.233,
+            "fov": 64.21186731721015,
+            "pitch": 0.16,
+            "roll": -3.1416,
+            "y": 106.509,
+            "x": 99.6,
+            "z": 90,
+            "webs": 0,
+            "leftGap": null,
+            "rightGap": null,
+            "hips": null,
+            "wrist": 4.4,
+            "knee": 46.9,
+            "shoot": 0,
+            "webShot": 0
+          },
+          {
+            "state": "LANDING",
+            "animation": "land",
+            "animationTime": 0.016,
+            "attack": null,
+            "speed": 0,
+            "fov": 72.7635173449566,
+            "pitch": 0.16,
+            "roll": -3.1416,
+            "y": 95.474,
+            "x": 99.6,
+            "z": 90,
+            "webs": 0,
+            "leftGap": null,
+            "rightGap": null,
+            "hips": null,
+            "wrist": 4.5,
+            "knee": 102,
+            "shoot": 0,
+            "webShot": 0
+          },
+          {
+            "state": "IDLE",
+            "animation": "idle",
+            "animationTime": 0.018,
+            "attack": null,
+            "speed": 0,
+            "fov": 64.0780190187193,
+            "pitch": 0.16,
+            "roll": -3.1416,
+            "y": 95.474,
+            "x": 99.6,
+            "z": 90,
+            "webs": 0,
+            "leftGap": null,
+            "rightGap": null,
+            "hips": null,
+            "wrist": 4.3,
+            "knee": 44.4,
+            "shoot": 0,
+            "webShot": 0
+          }
+        ],
+        "first": {
+          "state": "FALLING",
+          "animation": "drop",
+          "animationTime": 0.03,
+          "attack": null,
+          "speed": 0.7,
+          "fov": 64.00000140115705,
+          "pitch": 0.16,
+          "roll": -3.1416,
+          "y": 107.462,
+          "x": 99.6,
+          "z": 90,
+          "webs": 0,
+          "leftGap": null,
+          "rightGap": null,
+          "hips": null,
+          "wrist": 2.1,
+          "knee": 39.3,
+          "shoot": 0,
+          "webShot": 0
+        },
+        "last": {
+          "state": "IDLE",
+          "animation": "idle",
+          "animationTime": 0.851,
+          "attack": null,
+          "speed": 0,
+          "fov": 64.00052674044113,
+          "pitch": 0.16,
+          "roll": -3.1416,
+          "y": 95.474,
+          "x": 99.6,
+          "z": 90,
+          "webs": 0,
+          "leftGap": null,
+          "rightGap": null,
+          "hips": null,
+          "wrist": 4.1,
+          "knee": 43.2,
+          "shoot": 0,
+          "webShot": 0
+        },
+        "playLandBefore": 0,
+        "playLandAfter": 1
+      },
+      "shot": "docs/qa/quality-director-2026-10-28/shots/v4/land-high.png"
+    },
+    {
+      "name": "빠른 수평 낙하",
+      "status": "PASS",
+      "detail": {
+        "count": 132,
+        "states": [
+          "FALLING",
+          "LANDING",
+          "IDLE"
+        ],
+        "animations": [
+          "drop",
+          "fall",
+          "land",
+          "idle"
+        ],
+        "attacks": [],
+        "slamLand": false,
+        "fov": {
+          "min": 64,
+          "max": 66.33
+        },
+        "gap": null,
+        "hips": null,
+        "changes": [
+          {
+            "state": "FALLING",
+            "animation": "drop",
+            "animationTime": 0.028,
+            "attack": null,
+            "speed": 6.004,
+            "fov": 64.04300286190792,
+            "pitch": 0.16,
+            "roll": -3.1393,
+            "y": 97.862,
+            "x": 99.749,
+            "z": 90,
+            "webs": 0,
+            "leftGap": null,
+            "rightGap": null,
+            "hips": null,
+            "wrist": 3.1,
+            "knee": 39.8,
+            "shoot": 0,
+            "webShot": 0
+          },
+          {
+            "state": "FALLING",
+            "animation": "fall",
+            "animationTime": 0.016,
+            "attack": null,
+            "speed": 9.163,
+            "fov": 65.01024821173768,
+            "pitch": 0.16,
+            "roll": -3.1361,
+            "y": 96.909,
+            "x": 101.099,
+            "z": 90,
+            "webs": 0,
+            "leftGap": null,
+            "rightGap": null,
+            "hips": null,
+            "wrist": 4.4,
+            "knee": 46.3,
+            "shoot": 0,
+            "webShot": 0
+          },
+          {
+            "state": "LANDING",
+            "animation": "land",
+            "animationTime": 0.017,
+            "attack": null,
+            "speed": 5.417,
+            "fov": 66.11043769244434,
+            "pitch": 0.16,
+            "roll": -3.1363,
+            "y": 95.474,
+            "x": 101.927,
+            "z": 90,
+            "webs": 0,
+            "leftGap": null,
+            "rightGap": null,
+            "hips": null,
+            "wrist": 4.6,
+            "knee": 101.8,
+            "shoot": 0,
+            "webShot": 0
+          },
+          {
+            "state": "IDLE",
+            "animation": "idle",
+            "animationTime": 0.017,
+            "attack": null,
+            "speed": 0,
+            "fov": 64.01918733914712,
+            "pitch": 0.16,
+            "roll": -3.1416,
+            "y": 95.474,
+            "x": 102.205,
+            "z": 90,
+            "webs": 0,
+            "leftGap": null,
+            "rightGap": null,
+            "hips": null,
+            "wrist": 4.3,
+            "knee": 45.6,
+            "shoot": 0,
+            "webShot": 0
+          }
+        ],
+        "first": {
+          "state": "FALLING",
+          "animation": "drop",
+          "animationTime": 0.028,
+          "attack": null,
+          "speed": 6.004,
+          "fov": 64.04300286190792,
+          "pitch": 0.16,
+          "roll": -3.1393,
+          "y": 97.862,
+          "x": 99.749,
+          "z": 90,
+          "webs": 0,
+          "leftGap": null,
+          "rightGap": null,
+          "hips": null,
+          "wrist": 3.1,
+          "knee": 39.8,
+          "shoot": 0,
+          "webShot": 0
+        },
+        "last": {
+          "state": "IDLE",
+          "animation": "idle",
+          "animationTime": 1.034,
+          "attack": null,
+          "speed": 0,
+          "fov": 64.00004297445722,
+          "pitch": 0.16,
+          "roll": -3.1416,
+          "y": 95.474,
+          "x": 102.205,
+          "z": 90,
+          "webs": 0,
+          "leftGap": null,
+          "rightGap": null,
+          "hips": null,
+          "wrist": 4.2,
+          "knee": 42.3,
+          "shoot": 0,
+          "webShot": 0
+        },
+        "note": "수평 4.5 이상이고 바닥이 이어지면 구르기가 설계된 분기다. slamLand는 공중 내려찍기 전용이다."
+      },
+      "shot": "docs/qa/quality-director-2026-10-28/shots/v4/land-fast.png"
+    },
+    {
+      "name": "전투 모드 진입",
+      "status": "PASS",
+      "detail": {
+        "mode": "combat",
+        "stamina": 100,
+        "specialCooldown": 0,
+        "blocking": false,
+        "allowGuardInWeb": false,
+        "action": null
+      }
+    },
+    {
+      "name": "Ctrl은 회피를 시작하지 않음",
+      "status": "PASS",
+      "detail": {
+        "mode": "combat",
+        "stamina": 100,
+        "specialCooldown": 0,
+        "blocking": false,
+        "allowGuardInWeb": false,
+        "action": null
+      }
+    },
+    {
+      "name": "정지 잽",
+      "status": "PASS",
+      "detail": {
+        "count": 34,
+        "states": [
+          "IDLE"
+        ],
+        "animations": [
+          "jab"
+        ],
+        "attacks": [
+          "jab"
+        ],
+        "slamLand": false,
+        "fov": {
+          "min": 64,
+          "max": 64
+        },
+        "gap": null,
+        "hips": null,
+        "changes": [
+          {
+            "state": "IDLE",
+            "animation": "jab",
+            "animationTime": 0.03,
+            "attack": "jab",
+            "speed": 0,
+            "fov": 64.00000387755934,
+            "pitch": 0.16,
+            "roll": -3.1416,
+            "y": 95.474,
+            "x": 102.205,
+            "z": 90,
+            "webs": 0,
+            "leftGap": null,
+            "rightGap": null,
+            "hips": null,
+            "wrist": 8.6,
+            "knee": 61.2,
+            "shoot": 0,
+            "webShot": 0
+          }
+        ],
+        "first": {
+          "state": "IDLE",
+          "animation": "jab",
+          "animationTime": 0.03,
+          "attack": "jab",
+          "speed": 0,
+          "fov": 64.00000387755934,
+          "pitch": 0.16,
+          "roll": -3.1416,
+          "y": 95.474,
+          "x": 102.205,
+          "z": 90,
+          "webs": 0,
+          "leftGap": null,
+          "rightGap": null,
+          "hips": null,
+          "wrist": 8.6,
+          "knee": 61.2,
+          "shoot": 0,
+          "webShot": 0
+        },
+        "last": {
+          "state": "IDLE",
+          "animation": "jab",
+          "animationTime": 1.216,
+          "attack": "jab",
+          "speed": 0,
+          "fov": 64.00000008309306,
+          "pitch": 0.16,
+          "roll": -3.1416,
+          "y": 95.474,
+          "x": 102.205,
+          "z": 90,
+          "webs": 0,
+          "leftGap": null,
+          "rightGap": null,
+          "hips": null,
+          "wrist": 9,
+          "knee": 60.3,
+          "shoot": 0,
+          "webShot": 0
+        },
+        "travel": 0,
+        "started": "IDLE"
+      }
+    },
+    {
+      "name": "달리기 잽",
+      "status": "PASS",
+      "detail": {
+        "count": 52,
+        "states": [
+          "RUNNING"
+        ],
+        "animations": [
+          "regularRun"
+        ],
+        "attacks": [
+          "jab"
+        ],
+        "slamLand": false,
+        "fov": {
+          "min": 64,
+          "max": 64
+        },
+        "gap": null,
+        "hips": null,
+        "changes": [
+          {
+            "state": "RUNNING",
+            "animation": "regularRun",
+            "animationTime": 0.174,
+            "attack": "jab",
+            "speed": 3.861,
+            "fov": 64.00000001529247,
+            "pitch": 0.16,
+            "roll": -3.1416,
+            "y": 95.474,
+            "x": 102.205,
+            "z": 90.614,
+            "webs": 0,
+            "leftGap": null,
+            "rightGap": null,
+            "hips": null,
+            "wrist": 4.7,
+            "knee": 32.3,
+            "shoot": 0,
+            "webShot": 0
+          },
+          {
+            "state": "RUNNING",
+            "animation": "regularRun",
+            "animationTime": 0.034,
+            "attack": null,
+            "speed": 4.398,
+            "fov": 64.00000000036246,
+            "pitch": 0.16,
+            "roll": -3.1416,
+            "y": 95.474,
+            "x": 102.205,
+            "z": 93.306,
+            "webs": 0,
+            "leftGap": null,
+            "rightGap": null,
+            "hips": null,
+            "wrist": 8.6,
+            "knee": 94.2,
+            "shoot": 0,
+            "webShot": 0
+          }
+        ],
+        "first": {
+          "state": "RUNNING",
+          "animation": "regularRun",
+          "animationTime": 0.174,
+          "attack": "jab",
+          "speed": 3.861,
+          "fov": 64.00000001529247,
+          "pitch": 0.16,
+          "roll": -3.1416,
+          "y": 95.474,
+          "x": 102.205,
+          "z": 90.614,
+          "webs": 0,
+          "leftGap": null,
+          "rightGap": null,
+          "hips": null,
+          "wrist": 4.7,
+          "knee": 32.3,
+          "shoot": 0,
+          "webShot": 0
+        },
+        "last": {
+          "state": "RUNNING",
+          "animation": "regularRun",
+          "animationTime": 0.231,
+          "attack": null,
+          "speed": 4.4,
+          "fov": 64.00000000009948,
+          "pitch": 0.16,
+          "roll": -3.1416,
+          "y": 95.474,
+          "x": 102.205,
+          "z": 94.259,
+          "webs": 0,
+          "leftGap": null,
+          "rightGap": null,
+          "hips": null,
+          "wrist": 8.7,
+          "knee": 23.4,
+          "shoot": 0,
+          "webShot": 0
+        },
+        "travel": 3.645,
+        "started": "IDLE"
+      }
+    },
+    {
+      "name": "달리기 오른손",
+      "status": "PASS",
+      "detail": {
+        "count": 54,
+        "states": [
+          "RUNNING"
+        ],
+        "animations": [
+          "regularRun"
+        ],
+        "attacks": [
+          "cross"
+        ],
+        "slamLand": false,
+        "fov": {
+          "min": 64,
+          "max": 64
+        },
+        "gap": null,
+        "hips": null,
+        "changes": [
+          {
+            "state": "RUNNING",
+            "animation": "regularRun",
+            "animationTime": 0.482,
+            "attack": "cross",
+            "speed": 4.291,
+            "fov": 64.00000000001631,
+            "pitch": 0.16,
+            "roll": -3.1416,
+            "y": 95.474,
+            "x": 102.205,
+            "z": 95.458,
+            "webs": 0,
+            "leftGap": null,
+            "rightGap": null,
+            "hips": null,
+            "wrist": 8.7,
+            "knee": 37.2,
+            "shoot": 0,
+            "webShot": 0
+          },
+          {
+            "state": "RUNNING",
+            "animation": "regularRun",
+            "animationTime": 0.528,
+            "attack": null,
+            "speed": 4.4,
+            "fov": 64.00000000000011,
+            "pitch": 0.16,
+            "roll": -3.1416,
+            "y": 95.474,
+            "x": 102.205,
+            "z": 99.04,
+            "webs": 0,
+            "leftGap": null,
+            "rightGap": null,
+            "hips": null,
+            "wrist": 11.2,
+            "knee": 57.8,
+            "shoot": 0,
+            "webShot": 0
+          }
+        ],
+        "first": {
+          "state": "RUNNING",
+          "animation": "regularRun",
+          "animationTime": 0.482,
+          "attack": "cross",
+          "speed": 4.291,
+          "fov": 64.00000000001631,
+          "pitch": 0.16,
+          "roll": -3.1416,
+          "y": 95.474,
+          "x": 102.205,
+          "z": 95.458,
+          "webs": 0,
+          "leftGap": null,
+          "rightGap": null,
+          "hips": null,
+          "wrist": 8.7,
+          "knee": 37.2,
+          "shoot": 0,
+          "webShot": 0
+        },
+        "last": {
+          "state": "RUNNING",
+          "animation": "regularRun",
+          "animationTime": 0.59,
+          "attack": null,
+          "speed": 4.4,
+          "fov": 64.00000000000009,
+          "pitch": 0.16,
+          "roll": -3.1416,
+          "y": 95.474,
+          "x": 102.205,
+          "z": 99.334,
+          "webs": 0,
+          "leftGap": null,
+          "rightGap": null,
+          "hips": null,
+          "wrist": 8.7,
+          "knee": 93.4,
+          "shoot": 0,
+          "webShot": 0
+        },
+        "travel": 3.876,
+        "started": "IDLE"
+      }
+    },
+    {
+      "name": "정지 헤비(E)",
+      "status": "PASS",
+      "detail": {
+        "count": 55,
+        "states": [
+          "IDLE"
+        ],
+        "animations": [
+          "walk"
+        ],
+        "attacks": [
+          "heavy"
+        ],
+        "slamLand": false,
+        "fov": {
+          "min": 64,
+          "max": 64
+        },
+        "gap": null,
+        "hips": null,
+        "changes": [
+          {
+            "state": "IDLE",
+            "animation": "walk",
+            "animationTime": 0.914,
+            "attack": "heavy",
+            "speed": 2.581,
+            "fov": 64.00000000000009,
+            "pitch": 0.16,
+            "roll": -3.1416,
+            "y": 95.474,
+            "x": 102.205,
+            "z": 99.627,
+            "webs": 0,
+            "leftGap": null,
+            "rightGap": null,
+            "hips": null,
+            "wrist": 8.7,
+            "knee": 101.9,
+            "shoot": 0,
+            "webShot": 0
+          }
+        ],
+        "first": {
+          "state": "IDLE",
+          "animation": "walk",
+          "animationTime": 0.914,
+          "attack": "heavy",
+          "speed": 2.581,
+          "fov": 64.00000000000009,
+          "pitch": 0.16,
+          "roll": -3.1416,
+          "y": 95.474,
+          "x": 102.205,
+          "z": 99.627,
+          "webs": 0,
+          "leftGap": null,
+          "rightGap": null,
+          "hips": null,
+          "wrist": 8.7,
+          "knee": 101.9,
+          "shoot": 0,
+          "webShot": 0
+        },
+        "last": {
+          "state": "IDLE",
+          "animation": "walk",
+          "animationTime": 0.093,
+          "attack": "heavy",
+          "speed": 0,
+          "fov": 64.00000000000009,
+          "pitch": 0.16,
+          "roll": -3.1416,
+          "y": 95.474,
+          "x": 102.205,
+          "z": 99.936,
+          "webs": 0,
+          "leftGap": null,
+          "rightGap": null,
+          "hips": null,
+          "wrist": 8.7,
+          "knee": 38.3,
+          "shoot": 0,
+          "webShot": 0
+        },
+        "travel": 0.309,
+        "started": "IDLE"
+      }
+    },
+    {
+      "name": "질주 잽",
+      "status": "PASS",
+      "detail": {
+        "count": 55,
+        "states": [
+          "SPRINTING"
+        ],
+        "animations": [
+          "run",
+          "walk"
+        ],
+        "attacks": [
+          "jab"
+        ],
+        "slamLand": false,
+        "fov": {
+          "min": 64.05,
+          "max": 64.54
+        },
+        "gap": null,
+        "hips": null,
+        "changes": [
+          {
+            "state": "SPRINTING",
+            "animation": "run",
+            "animationTime": 0.21,
+            "attack": "jab",
+            "speed": 6.029,
+            "fov": 64.0764940375337,
+            "pitch": 0.16,
+            "roll": -3.1416,
+            "y": 95.474,
+            "x": 102.205,
+            "z": 101.187,
+            "webs": 0,
+            "leftGap": null,
+            "rightGap": null,
+            "hips": null,
+            "wrist": 8.6,
+            "knee": 49.4,
+            "shoot": 0,
+            "webShot": 0
+          },
+          {
+            "state": "SPRINTING",
+            "animation": "walk",
+            "animationTime": 0.27,
+            "attack": "jab",
+            "speed": 0,
+            "fov": 64.49253569861148,
+            "pitch": 0.16,
+            "roll": -3.1416,
+            "y": 95.474,
+            "x": 102.205,
+            "z": 104.5,
+            "webs": 0,
+            "leftGap": null,
+            "rightGap": null,
+            "hips": null,
+            "wrist": 8.4,
+            "knee": 36.9,
+            "shoot": 0,
+            "webShot": 0
+          },
+          {
+            "state": "SPRINTING",
+            "animation": "walk",
+            "animationTime": 0.273,
+            "attack": null,
+            "speed": 0,
+            "fov": 64.16408210494555,
+            "pitch": 0.16,
+            "roll": -3.1416,
+            "y": 95.474,
+            "x": 102.205,
+            "z": 104.5,
+            "webs": 0,
+            "leftGap": null,
+            "rightGap": null,
+            "hips": null,
+            "wrist": 8.7,
+            "knee": 39,
+            "shoot": 0,
+            "webShot": 0
+          }
+        ],
+        "first": {
+          "state": "SPRINTING",
+          "animation": "run",
+          "animationTime": 0.21,
+          "attack": "jab",
+          "speed": 6.029,
+          "fov": 64.0764940375337,
+          "pitch": 0.16,
+          "roll": -3.1416,
+          "y": 95.474,
+          "x": 102.205,
+          "z": 101.187,
+          "webs": 0,
+          "leftGap": null,
+          "rightGap": null,
+          "hips": null,
+          "wrist": 8.6,
+          "knee": 49.4,
+          "shoot": 0,
+          "webShot": 0
+        },
+        "last": {
+          "state": "SPRINTING",
+          "animation": "walk",
+          "animationTime": 0.3,
+          "attack": null,
+          "speed": 0,
+          "fov": 64.05462911281973,
+          "pitch": 0.16,
+          "roll": -3.1416,
+          "y": 95.474,
+          "x": 102.205,
+          "z": 104.5,
+          "webs": 0,
+          "leftGap": null,
+          "rightGap": null,
+          "hips": null,
+          "wrist": 8.7,
+          "knee": 38,
+          "shoot": 0,
+          "webShot": 0
+        },
+        "travel": 3.313,
+        "started": "IDLE"
+      }
+    },
+    {
+      "name": "돌진 어퍼컷 기력·재사용",
+      "status": "PASS",
+      "detail": {
+        "before": {
+          "mode": "combat",
+          "stamina": 85.02,
+          "specialCooldown": 0,
+          "blocking": false,
+          "allowGuardInWeb": false,
+          "action": null
+        },
+        "during": {
+          "mode": "combat",
+          "stamina": 50.02,
+          "specialCooldown": 7.899,
+          "blocking": false,
+          "allowGuardInWeb": false,
+          "action": {
+            "key": "special",
+            "time": 0.101,
+            "duration": 1.35
+          }
+        },
+        "after": {
+          "mode": "combat",
+          "stamina": 50.02,
+          "specialCooldown": 7.524,
+          "blocking": false,
+          "allowGuardInWeb": false,
+          "action": {
+            "key": "special",
+            "time": 0.476,
+            "duration": 1.35
+          }
+        }
+      },
+      "shot": "docs/qa/quality-director-2026-10-28/shots/v4/uppercut.png"
+    },
+    {
+      "name": "잠복 회피 함수 이동",
+      "status": "UNVERIFIED",
+      "detail": {
+        "note": "플레이어 Ctrl은 회피를 시작하지 않는다. 이 수치는 Combat.dodge 직접 호출이며 속도 상수는 바꾸지 않았다.",
+        "dodges": {
+          "left": {
+            "started": false,
+            "key": "special",
+            "distance": 0,
+            "states": [
+              "IDLE"
+            ],
+            "animations": [
+              "special"
+            ]
+          },
+          "right": {
+            "started": true,
+            "key": "dodgeRight",
+            "distance": 0.2,
+            "states": [
+              "RUNNING",
+              "IDLE"
+            ],
+            "animations": [
+              "combatIdle",
+              "stop"
+            ]
+          },
+          "back": {
+            "started": true,
+            "key": "dodgeBack",
+            "distance": 0.367,
+            "states": [
+              "RUNNING",
+              "IDLE"
+            ],
+            "animations": [
+              "combatIdle",
+              "stop"
+            ]
+          },
+          "forward": {
+            "started": true,
+            "key": "dodgeForward",
+            "distance": 0.367,
+            "states": [
+              "RUNNING",
+              "IDLE"
+            ],
+            "animations": [
+              "combatIdle",
+              "stop"
+            ]
+          }
+        }
+      },
+      "shot": "docs/qa/quality-director-2026-10-28/shots/v4/dodge-latent.png"
+    },
+    {
+      "name": "4초 스윙 FOV·해제 첫 구간",
+      "status": "UNVERIFIED",
+      "detail": {
+        "sought": {
+          "ok": false,
+          "meshes": 16,
+          "pitch": -0.7,
+          "yaw": 5.76,
+          "reason": "대상 없음 · 건물을 향해 조준하세요."
+        }
+      }
+    },
+    {
+      "name": "점프 후 와이어 발사",
+      "status": "PASS",
+      "detail": {
+        "count": 43,
+        "states": [
+          "JUMPING"
+        ],
+        "animations": [
+          "jump"
+        ],
+        "attacks": [],
+        "slamLand": false,
+        "fov": {
+          "min": 64.96,
+          "max": 71.56
+        },
+        "gap": null,
+        "hips": null,
+        "changes": [
+          {
+            "state": "JUMPING",
+            "animation": "jump",
+            "animationTime": 0.121,
+            "attack": null,
+            "speed": 22.733,
+            "fov": 69.87209425462007,
+            "pitch": -0.7,
+            "roll": -3.0107,
+            "y": 98.52,
+            "x": 102.005,
+            "z": 104.5,
+            "webs": 0,
+            "leftGap": null,
+            "rightGap": null,
+            "hips": null,
+            "wrist": 4.8,
+            "knee": 128.4,
+            "shoot": 0.48,
+            "webShot": 0.534
+          }
+        ],
+        "first": {
+          "state": "JUMPING",
+          "animation": "jump",
+          "animationTime": 0.121,
+          "attack": null,
+          "speed": 22.733,
+          "fov": 69.87209425462007,
+          "pitch": -0.7,
+          "roll": -3.0107,
+          "y": 98.52,
+          "x": 102.005,
+          "z": 104.5,
+          "webs": 0,
+          "leftGap": null,
+          "rightGap": null,
+          "hips": null,
+          "wrist": 4.8,
+          "knee": 128.4,
+          "shoot": 0.48,
+          "webShot": 0.534
+        },
+        "last": {
+          "state": "JUMPING",
+          "animation": "jump",
+          "animationTime": 0.6,
+          "attack": null,
+          "speed": 1.033,
+          "fov": 64.96309586565249,
+          "pitch": -0.7,
+          "roll": -2.7855,
+          "y": 107.639,
+          "x": 102.005,
+          "z": 104.5,
+          "webs": 0,
+          "leftGap": null,
+          "rightGap": null,
+          "hips": null,
+          "wrist": 6.1,
+          "knee": 100.8,
+          "shoot": 0,
+          "webShot": 0
+        }
+      },
+      "shot": "docs/qa/quality-director-2026-10-28/shots/v4/jump-web.png"
+    },
+    {
+      "name": "시드 무작위 입력",
+      "status": "PASS",
+      "detail": {
+        "seed": 20261028,
+        "sequence": [
+          "KeyW",
+          "KeyF",
+          "KeyD",
+          "KeyW",
+          "KeyA",
+          "Space",
+          "KeyE",
+          "KeyS",
+          "KeyF",
+          "Space",
+          "KeyS",
+          "KeyD",
+          "KeyS",
+          "KeyE",
+          "KeyA",
+          "KeyD",
+          "KeyF",
+          "KeyS",
+          "KeyG",
+          "KeyG",
+          "KeyG",
+          "KeyS",
+          "KeyD",
+          "KeyW"
+        ],
+        "after": {
+          "state": "LANDING",
+          "position": [
+            101.317,
+            95.474,
+            103.768
+          ],
+          "errors": 0
+        }
+      }
+    },
+    {
+      "name": "사운드·VFX 호출 횟수",
+      "status": "PASS",
+      "detail": {
+        "audio": {
+          "playSurfaceStep": 16,
+          "playLand": 2,
+          "playJump": 1,
+          "playWebFailure": 2,
+          "playWebShoot": 1
+        },
+        "vfx": {
+          "spawnLandingShockwave": 6
+        },
+        "note": "합성음 호출 횟수다. 음질과 화면 가림은 스크린샷으로만 본다."
+      },
+      "shot": "docs/qa/quality-director-2026-10-28/shots/v4/vfx.png"
+    },
+    {
+      "name": "솔로 차량 소환",
+      "status": "PASS",
+      "detail": {
+        "state": "PARKED",
+        "model": "bmw",
+        "loading": false,
+        "speed": 0,
+        "spin": 0,
+        "steering": 0,
+        "yaw": 2.618,
+        "pitch": 0,
+        "roll": 0,
+        "position": [
+          108.095,
+          0.02,
+          105.518
+        ],
+        "wheelRadius": 0.33952357339386763,
+        "groundY": 0,
+        "door": 95.51,
+        "wheels": [
+          {
+            "front": false,
+            "radius": 0.331,
+            "hub": [
+              106.793,
+              0.35,
+              106.267
+            ],
+            "contactY": 0.041,
+            "tread": [
+              106.801,
+              0.559,
+              106.539
+            ],
+            "fixedLocal": [
+              0.153,
+              0.267,
+              0.005
+            ],
+            "steer": 0,
+            "spin": 0,
+            "commandError": 0,
+            "axle": [
+              1,
+              0,
+              0
+            ],
+            "drop": 0
+          },
+          {
+            "front": true,
+            "radius": 0.347,
+            "hub": [
+              108.209,
+              0.35,
+              103.801
+            ],
+            "contactY": 0.026,
+            "tread": [
+              108.193,
+              0.645,
+              103.977
+            ],
+            "fixedLocal": [
+              0.132,
+              0.267,
+              0.08
+            ],
+            "steer": 0,
+            "spin": 0,
+            "commandError": 0,
+            "axle": [
+              0.872,
+              0.007,
+              0.49
+            ],
+            "drop": 0
+          },
+          {
+            "front": true,
+            "radius": 0.349,
+            "hub": [
+              109.545,
+              0.35,
+              104.54
+            ],
+            "contactY": 0.021,
+            "tread": [
+              109.557,
+              0.054,
+              104.361
+            ],
+            "fixedLocal": [
+              -0.134,
+              0.268,
+              -0.062
+            ],
+            "steer": 0,
+            "spin": 0,
+            "commandError": 0,
+            "axle": [
+              0.863,
+              0.012,
+              0.505
+            ],
+            "drop": 0
+          },
+          {
+            "front": false,
+            "radius": 0.331,
+            "hub": [
+              108.097,
+              0.349,
+              107.019
+            ],
+            "contactY": 0.056,
+            "tread": [
+              108.084,
+              0.503,
+              107.328
+            ],
+            "fixedLocal": [
+              -0.153,
+              0.269,
+              0.014
+            ],
+            "steer": 0,
+            "spin": 0,
+            "commandError": 0,
+            "axle": [
+              1,
+              0,
+              0
+            ],
+            "drop": 0
+          }
+        ]
+      },
+      "shot": "docs/qa/quality-director-2026-10-28/shots/v4/vehicle-solo.png"
+    },
+    {
+      "name": "영어 도움말",
+      "status": "UNVERIFIED",
+      "detail": "page.waitForFunction: Timeout 30000ms exceeded."
+    },
+    {
+      "name": "훅·헤비 50% 화면",
+      "status": "PASS",
+      "detail": {
+        "hashes": {
+          "hook": "0cbc3f81bfccaa602118355d86fd670d137a7f0c",
+          "heavy": "dbdb70e10194ab1b0e10aa9d71519709ec0ffbb9"
+        },
+        "note": "같은 Boxing Hook 원본이다. 헤비는 heavyClipPhase로 재생 시점이 다르다. 해시가 같으면 그 차이가 화면에 없다."
+      }
+    },
+    {
+      "name": "홍콩 시민 표시",
+      "status": "PASS",
+      "detail": {
+        "count": 1,
+        "streamed": true,
+        "sample": [
+          {
+            "id": 1,
+            "state": "WALK",
+            "x": -24.53,
+            "y": 20.85,
+            "z": 15.9,
+            "yaw": 1.022,
+            "speed": 1.2,
+            "allows": null,
+            "route": 6,
+            "anim": "walk",
+            "anchor": 1.25
+          }
+        ]
+      },
+      "shot": "docs/qa/quality-director-2026-10-28/shots/v4/hong-kong-citizens.png"
+    },
+    {
+      "name": "로컬 2인 태그 문구·동기",
+      "status": "PASS",
+      "detail": {
+        "code": "62E92B",
+        "waiting": "최소 2명 · 모두 지형 로딩 후 준비. 6명 이하는 경찰 1명, 7명 이상은 경찰 2명. 지금은 1명 · 시작하면 3분 · 2명 3분, 3~6명 4분, 7~8명 5분 · 목표 3개로 탈출 · 다음 경기 역할 순환. 시작 8초는 공격 불가.",
+        "both": "최소 2명 · 모두 지형 로딩 후 준비. 6명 이하는 경찰 1명, 7명 이상은 경찰 2명. 지금은 2명 · 시작하면 3분 · 2명 3분, 3~6명 4분, 7~8명 5분 · 목표 3개로 탈출 · 다음 경기 역할 순환. 시작 8초는 공격 불가.",
+        "notice": "경찰은 추격합니다. 도망자는 이동 목표 3개를 완료하거나 3분 생존하면 승리합니다. 화면의 남은 시간은 서버 종료 시각입니다. 쓰러진 팀원 곁에서 3초 유지하면 구조합니다. 시작 8초는 공격이 없습니다.",
+        "timer": "시작 여유 8초",
+        "seen": true,
+        "peers": [
+          {
+            "name": "V4Host",
+            "motion": "walk",
+            "position": [
+              99.6,
+              95.47,
+              100.22
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "errors": [],
+  "finished": "2026-10-28T02:53:21.507Z"
+}

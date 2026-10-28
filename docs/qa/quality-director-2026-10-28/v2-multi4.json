@@ -1,0 +1,305 @@
+{
+  "players": 4,
+  "started": "2026-10-28T02:08:25.889Z",
+  "boots": [
+    {
+      "ws": "http://127.0.0.1:5191/ws",
+      "probe": "quality-director-v2"
+    },
+    {
+      "ws": "http://127.0.0.1:5191/ws",
+      "probe": "quality-director-v2"
+    },
+    {
+      "ws": "http://127.0.0.1:5191/ws",
+      "probe": "quality-director-v2"
+    },
+    {
+      "ws": "http://127.0.0.1:5191/ws",
+      "probe": "quality-director-v2"
+    }
+  ],
+  "code": "AB81FB",
+  "connected": 4,
+  "host": {
+    "position": [
+      96.214,
+      95.474,
+      90
+    ],
+    "state": "IDLE",
+    "facing": -1.5708,
+    "animation": "idle"
+  },
+  "views": [
+    {
+      "viewer": "DirectorB",
+      "peers": [
+        {
+          "name": "DirectorA",
+          "position": [
+            96.22,
+            95.47,
+            90
+          ],
+          "motion": "idle"
+        },
+        {
+          "name": "DirectorC",
+          "position": [
+            99.6,
+            95.47,
+            100
+          ],
+          "motion": "idle"
+        },
+        {
+          "name": "DirectorD",
+          "position": [
+            89.6,
+            95.47,
+            90
+          ],
+          "motion": "idle"
+        }
+      ],
+      "horizontalError": 0.006
+    },
+    {
+      "viewer": "DirectorC",
+      "peers": [
+        {
+          "name": "DirectorB",
+          "position": [
+            99.6,
+            95.47,
+            80
+          ],
+          "motion": "idle"
+        },
+        {
+          "name": "DirectorA",
+          "position": [
+            96.22,
+            95.47,
+            90
+          ],
+          "motion": "idle"
+        },
+        {
+          "name": "DirectorD",
+          "position": [
+            89.6,
+            95.47,
+            90
+          ],
+          "motion": "idle"
+        }
+      ],
+      "horizontalError": 0.006
+    },
+    {
+      "viewer": "DirectorD",
+      "peers": [
+        {
+          "name": "DirectorB",
+          "position": [
+            99.6,
+            95.47,
+            80
+          ],
+          "motion": "idle"
+        },
+        {
+          "name": "DirectorA",
+          "position": [
+            96.22,
+            95.47,
+            90
+          ],
+          "motion": "idle"
+        },
+        {
+          "name": "DirectorC",
+          "position": [
+            99.6,
+            95.47,
+            100
+          ],
+          "motion": "idle"
+        }
+      ],
+      "horizontalError": 0.006
+    }
+  ],
+  "attack": {
+    "key": {
+      "key": "jab",
+      "time": 0.308,
+      "duration": 0.72
+    },
+    "animation": "jab",
+    "state": "IDLE"
+  },
+  "attackPeers": [
+    {
+      "viewer": "DirectorB",
+      "peers": [
+        {
+          "name": "DirectorA",
+          "position": [
+            96.21,
+            95.47,
+            90
+          ],
+          "motion": "combatIdle"
+        },
+        {
+          "name": "DirectorC",
+          "position": [
+            99.6,
+            95.47,
+            100
+          ],
+          "motion": "idle"
+        },
+        {
+          "name": "DirectorD",
+          "position": [
+            89.6,
+            95.47,
+            90
+          ],
+          "motion": "idle"
+        }
+      ]
+    },
+    {
+      "viewer": "DirectorC",
+      "peers": [
+        {
+          "name": "DirectorB",
+          "position": [
+            99.6,
+            95.47,
+            80
+          ],
+          "motion": "idle"
+        },
+        {
+          "name": "DirectorA",
+          "position": [
+            96.21,
+            95.47,
+            90
+          ],
+          "motion": "combatIdle"
+        },
+        {
+          "name": "DirectorD",
+          "position": [
+            89.6,
+            95.47,
+            90
+          ],
+          "motion": "idle"
+        }
+      ]
+    },
+    {
+      "viewer": "DirectorD",
+      "peers": [
+        {
+          "name": "DirectorB",
+          "position": [
+            99.6,
+            95.47,
+            80
+          ],
+          "motion": "idle"
+        },
+        {
+          "name": "DirectorA",
+          "position": [
+            96.21,
+            95.47,
+            90
+          ],
+          "motion": "combatIdle"
+        },
+        {
+          "name": "DirectorC",
+          "position": [
+            99.6,
+            95.47,
+            100
+          ],
+          "motion": "idle"
+        }
+      ]
+    }
+  ],
+  "reconnect": {
+    "playing": true,
+    "peers": [
+      {
+        "name": "DirectorA",
+        "position": [
+          96.21,
+          95.47,
+          90
+        ],
+        "motion": "combatIdle"
+      },
+      {
+        "name": "DirectorB",
+        "position": [
+          99.6,
+          95.47,
+          80
+        ],
+        "motion": "idle"
+      },
+      {
+        "name": "DirectorC",
+        "position": [
+          99.6,
+          95.47,
+          100
+        ],
+        "motion": "idle"
+      }
+    ],
+    "href": "http://127.0.0.1:5191/?city=procedural&qualityDirector=1"
+  },
+  "hostAfterReconnect": [
+    {
+      "name": "DirectorB",
+      "position": [
+        99.6,
+        95.47,
+        80
+      ],
+      "motion": "idle"
+    },
+    {
+      "name": "DirectorC",
+      "position": [
+        99.6,
+        95.47,
+        100
+      ],
+      "motion": "idle"
+    },
+    {
+      "name": "DirectorD",
+      "position": [
+        89.6,
+        95.47,
+        90
+      ],
+      "motion": "idle"
+    }
+  ],
+  "status": "PASS"
+}

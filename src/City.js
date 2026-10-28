@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import {LOCAL_CITY} from './LocalCityLayout.js';
 import {localMap} from './MapCatalog.js';
 import {districtLayout} from './DistrictLayout.js';
+import {attachFootpaths} from './PedestrianRoutes.js';
 
 // Procedural Manhattan-style Open World City Generator
 export class City {
@@ -31,6 +32,7 @@ export class City {
     this.generateCity();
     this.createStreetsAndGround();
     this.createDistrictDetails();
+    this.footpaths=attachFootpaths(this);
   }
 
   random() {

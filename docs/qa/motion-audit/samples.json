@@ -1,7 +1,7 @@
 {
-  "motions": 34,
-  "cases": 102,
-  "samples": 13569,
+  "motions": 37,
+  "cases": 111,
+  "samples": 14532,
   "report": [
     {
       "key": "idle",
@@ -552,23 +552,23 @@
     {
       "key": "hitHead",
       "fps": 30,
-      "frames": 18,
-      "maxFrame": 8,
-      "maxStep": 0.0167
+      "frames": 26,
+      "maxFrame": 3,
+      "maxStep": 0.0499
     },
     {
       "key": "hitHead",
       "fps": 60,
-      "frames": 34,
-      "maxFrame": 15,
-      "maxStep": 0.0086
+      "frames": 51,
+      "maxFrame": 5,
+      "maxStep": 0.0272
     },
     {
       "key": "hitHead",
       "fps": 144,
-      "frames": 80,
-      "maxFrame": 37,
-      "maxStep": 0.0036
+      "frames": 121,
+      "maxFrame": 11,
+      "maxStep": 0.0116
     },
     {
       "key": "rightHook",
@@ -594,23 +594,23 @@
     {
       "key": "cross",
       "fps": 30,
-      "frames": 16,
-      "maxFrame": 6,
-      "maxStep": 0.1349
+      "frames": 31,
+      "maxFrame": 11,
+      "maxStep": 0.1961
     },
     {
       "key": "cross",
       "fps": 60,
-      "frames": 31,
-      "maxFrame": 11,
-      "maxStep": 0.0694
+      "frames": 61,
+      "maxFrame": 22,
+      "maxStep": 0.0989
     },
     {
       "key": "cross",
       "fps": 144,
-      "frames": 72,
-      "maxFrame": 25,
-      "maxStep": 0.0296
+      "frames": 145,
+      "maxFrame": 52,
+      "maxStep": 0.0412
     },
     {
       "key": "hook",
@@ -697,25 +697,88 @@
       "maxStep": 0.1089
     },
     {
+      "key": "hitBody",
+      "fps": 30,
+      "frames": 42,
+      "maxFrame": 9,
+      "maxStep": 0.1098
+    },
+    {
+      "key": "hitBody",
+      "fps": 60,
+      "frames": 82,
+      "maxFrame": 17,
+      "maxStep": 0.0559
+    },
+    {
+      "key": "hitBody",
+      "fps": 144,
+      "frames": 194,
+      "maxFrame": 39,
+      "maxStep": 0.0235
+    },
+    {
+      "key": "hitHeavy",
+      "fps": 30,
+      "frames": 40,
+      "maxFrame": 4,
+      "maxStep": 0.1633
+    },
+    {
+      "key": "hitHeavy",
+      "fps": 60,
+      "frames": 79,
+      "maxFrame": 8,
+      "maxStep": 0.0873
+    },
+    {
+      "key": "hitHeavy",
+      "fps": 144,
+      "frames": 189,
+      "maxFrame": 19,
+      "maxStep": 0.0371
+    },
+    {
+      "key": "hitUppercut",
+      "fps": 30,
+      "frames": 39,
+      "maxFrame": 3,
+      "maxStep": 0.0775
+    },
+    {
+      "key": "hitUppercut",
+      "fps": 60,
+      "frames": 76,
+      "maxFrame": 5,
+      "maxStep": 0.0392
+    },
+    {
+      "key": "hitUppercut",
+      "fps": 144,
+      "frames": 179,
+      "maxFrame": 14,
+      "maxStep": 0.0167
+    },
+    {
       "key": "special",
       "fps": 30,
-      "frames": 55,
-      "maxFrame": 27,
-      "maxStep": 0.225
+      "frames": 37,
+      "maxFrame": 12,
+      "maxStep": 0.5123
     },
     {
       "key": "special",
       "fps": 60,
-      "frames": 109,
-      "maxFrame": 53,
-      "maxStep": 0.1169
+      "frames": 73,
+      "maxFrame": 24,
+      "maxStep": 0.2616
     },
     {
       "key": "special",
       "fps": 144,
-      "frames": 261,
-      "maxFrame": 127,
-      "maxStep": 0.0487
+      "frames": 174,
+      "maxFrame": 57,
+      "maxStep": 0.1094
     }
   ]
 }

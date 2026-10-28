@@ -1,0 +1,121 @@
+{
+  "started": "2026-10-28T03:44:27.801Z",
+  "tests": [
+    {
+      "name": "넓은 바닥 구르기",
+      "status": "UNVERIFIED",
+      "detail": {
+        "deck": {
+          "ok": true,
+          "area": 1024,
+          "x": -90,
+          "z": -104.8,
+          "y": 94.112,
+          "depth": 32
+        },
+        "settled": {
+          "state": "IDLE",
+          "y": 94.092
+        },
+        "shoved": false,
+        "states": [
+          "FALLING",
+          "IDLE"
+        ],
+        "animations": [
+          "drop",
+          "idle"
+        ],
+        "contact": null,
+        "rollFrames": 0,
+        "gap": null,
+        "travel": 0
+      }
+    },
+    {
+      "name": "지면 회피 발",
+      "status": "PASS",
+      "detail": {
+        "left": {
+          "started": true,
+          "key": "dodgeLeft",
+          "capsule": 0,
+          "footRel": 0,
+          "animation": [
+            "combatIdle"
+          ],
+          "gap": 0.125
+        },
+        "back": {
+          "started": true,
+          "key": "dodgeBack",
+          "capsule": 0,
+          "footRel": 0,
+          "animation": [
+            "combatIdle"
+          ],
+          "gap": 0.125
+        },
+        "forward": {
+          "started": true,
+          "key": "dodgeForward",
+          "capsule": 0.678,
+          "footRel": 0.288,
+          "animation": [
+            "combatIdle"
+          ],
+          "gap": 0.126
+        }
+      }
+    },
+    {
+      "name": "실제 스윙",
+      "status": "UNVERIFIED",
+      "detail": {
+        "aim": {
+          "ok": false,
+          "meshes": 16,
+          "pitch": -0.7,
+          "yaw": 5.76,
+          "reason": "대상 없음 · 건물을 향해 조준하세요."
+        },
+        "frames": 0,
+        "travel": 0,
+        "fov": null,
+        "rope": null,
+        "rigRoll": null,
+        "cock": [],
+        "release": [
+          "IDLE:idle"
+        ]
+      }
+    },
+    {
+      "name": "지면에서 벽 타기",
+      "status": "PASS",
+      "detail": {
+        "states": [
+          "RUNNING",
+          "WALL_RUNNING"
+        ],
+        "animations": [
+          "walk",
+          "regularRun",
+          "wall"
+        ]
+      }
+    },
+    {
+      "name": "홍콩 차량 소환",
+      "status": "PASS",
+      "detail": {
+        "state": "PARKED",
+        "model": "bmw",
+        "speed": 0,
+        "door": 7.36,
+        "notice": "BMW 330i가 도착했습니다. 운전석 옆에서 B를 눌러 탑승하세요."
+      }
+    }
+  ],
+  "finished": "2026-10-28T03:46:32.077Z"
+}

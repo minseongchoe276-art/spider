@@ -1,0 +1,372 @@
+{
+  "started": "2026-10-28T04:17:07.540Z",
+  "cities": {
+    "procedural": {
+      "id": "procedural",
+      "aim": {
+        "count": 8,
+        "person": {
+          "id": 1,
+          "state": "WALK",
+          "x": 73.15,
+          "y": 0.01,
+          "z": 35.09,
+          "yaw": 0,
+          "speed": 1.2,
+          "allows": true,
+          "route": 8,
+          "anim": "walk",
+          "anchor": null
+        },
+        "yaw": 0
+      },
+      "shot": "docs/qa/quality-director-2026-10-28/vehicle-pedestrian-v3/procedural-aim.png",
+      "count": 8,
+      "people": [
+        {
+          "id": 1,
+          "state": "WALK",
+          "anim": "walk",
+          "y": 0.01,
+          "anchor": null,
+          "travel": 3.41
+        },
+        {
+          "id": 2,
+          "state": "IDLE",
+          "anim": "idle",
+          "y": 0.01,
+          "anchor": null,
+          "travel": 3.11
+        },
+        {
+          "id": 3,
+          "state": "IDLE",
+          "anim": "idle",
+          "y": 0.01,
+          "anchor": null,
+          "travel": 2.61
+        },
+        {
+          "id": 4,
+          "state": "IDLE",
+          "anim": "idle",
+          "y": 0.01,
+          "anchor": null,
+          "travel": 2.61
+        },
+        {
+          "id": 5,
+          "state": "WALK",
+          "anim": "walk",
+          "y": 0.01,
+          "anchor": null,
+          "travel": 3.42
+        },
+        {
+          "id": 6,
+          "state": "WALK",
+          "anim": "walk",
+          "y": 0.01,
+          "anchor": null,
+          "travel": 3.43
+        },
+        {
+          "id": 7,
+          "state": "WALK",
+          "anim": "walk",
+          "y": 0.01,
+          "anchor": null,
+          "travel": 3.43
+        },
+        {
+          "id": 8,
+          "state": "WALK",
+          "anim": "walk",
+          "y": 0.01,
+          "anchor": null,
+          "travel": 3.45
+        }
+      ]
+    },
+    "harbor": {
+      "id": "harbor",
+      "aim": {
+        "count": 6,
+        "person": {
+          "id": 5,
+          "state": "WALK",
+          "x": -16.72,
+          "y": 0.01,
+          "z": -55.05,
+          "yaw": -1.571,
+          "speed": 1.2,
+          "allows": true,
+          "route": 8,
+          "anim": "walk",
+          "anchor": null
+        },
+        "yaw": 0
+      },
+      "shot": "docs/qa/quality-director-2026-10-28/vehicle-pedestrian-v3/harbor-aim.png",
+      "count": 6,
+      "people": [
+        {
+          "id": 1,
+          "state": "WALK",
+          "anim": "walk",
+          "y": 0.01,
+          "anchor": null,
+          "travel": 2.98
+        },
+        {
+          "id": 7,
+          "state": "WALK",
+          "anim": "walk",
+          "y": 0.01,
+          "anchor": null,
+          "travel": null
+        },
+        {
+          "id": 3,
+          "state": "WALK",
+          "anim": "walk",
+          "y": 0.01,
+          "anchor": null,
+          "travel": 2.99
+        },
+        {
+          "id": 8,
+          "state": "WALK",
+          "anim": "walk",
+          "y": 0.01,
+          "anchor": null,
+          "travel": null
+        },
+        {
+          "id": 5,
+          "state": "WALK",
+          "anim": "walk",
+          "y": 0.01,
+          "anchor": null,
+          "travel": 2.99
+        },
+        {
+          "id": 9,
+          "state": "WALK",
+          "anim": "walk",
+          "y": 0.01,
+          "anchor": null,
+          "travel": null
+        }
+      ]
+    },
+    "gardens": {
+      "id": "gardens",
+      "aim": {
+        "count": 6,
+        "person": {
+          "id": 1,
+          "state": "WALK",
+          "x": -65.29,
+          "y": 0.01,
+          "z": 84.95,
+          "yaw": 1.571,
+          "speed": 1.2,
+          "allows": true,
+          "route": 8,
+          "anim": "walk",
+          "anchor": null
+        },
+        "yaw": 0
+      },
+      "shot": "docs/qa/quality-director-2026-10-28/vehicle-pedestrian-v3/gardens-aim.png",
+      "count": 6,
+      "people": [
+        {
+          "id": 1,
+          "state": "WALK",
+          "anim": "walk",
+          "y": 0.01,
+          "anchor": null,
+          "travel": 2.97
+        },
+        {
+          "id": 2,
+          "state": "WALK",
+          "anim": "walk",
+          "y": 0.01,
+          "anchor": null,
+          "travel": 2.97
+        },
+        {
+          "id": 3,
+          "state": "WALK",
+          "anim": "walk",
+          "y": 0.01,
+          "anchor": null,
+          "travel": 2.96
+        },
+        {
+          "id": 4,
+          "state": "WALK",
+          "anim": "walk",
+          "y": 0.01,
+          "anchor": null,
+          "travel": 2.97
+        },
+        {
+          "id": 5,
+          "state": "WALK",
+          "anim": "walk",
+          "y": 0.01,
+          "anchor": null,
+          "travel": 2.97
+        },
+        {
+          "id": 6,
+          "state": "WALK",
+          "anim": "walk",
+          "y": 0.01,
+          "anchor": null,
+          "travel": 2.98
+        }
+      ]
+    },
+    "old-town": {
+      "id": "old-town",
+      "aim": {
+        "count": 5,
+        "person": {
+          "id": 5,
+          "state": "WALK",
+          "x": -127.36,
+          "y": 0.01,
+          "z": -36.45,
+          "yaw": -1.571,
+          "speed": 1.2,
+          "allows": true,
+          "route": 5,
+          "anim": "walk",
+          "anchor": null
+        },
+        "yaw": 0
+      },
+      "shot": "docs/qa/quality-director-2026-10-28/vehicle-pedestrian-v3/old-town-aim.png",
+      "count": 5,
+      "people": [
+        {
+          "id": 6,
+          "state": "WALK",
+          "anim": "walk",
+          "y": 0.01,
+          "anchor": null,
+          "travel": null
+        },
+        {
+          "id": 2,
+          "state": "WALK",
+          "anim": "walk",
+          "y": 0.01,
+          "anchor": null,
+          "travel": 2.93
+        },
+        {
+          "id": 3,
+          "state": "WALK",
+          "anim": "walk",
+          "y": 0.01,
+          "anchor": null,
+          "travel": 2.93
+        },
+        {
+          "id": 4,
+          "state": "WALK",
+          "anim": "walk",
+          "y": 0.01,
+          "anchor": null,
+          "travel": 2.92
+        },
+        {
+          "id": 5,
+          "state": "WALK",
+          "anim": "walk",
+          "y": 0.01,
+          "anchor": null,
+          "travel": 2.9
+        }
+      ]
+    },
+    "skyline": {
+      "id": "skyline",
+      "aim": {
+        "count": 4,
+        "person": {
+          "id": 2,
+          "state": "WALK",
+          "x": -130.2,
+          "y": 0.01,
+          "z": -54.95,
+          "yaw": -1.571,
+          "speed": 1.2,
+          "allows": true,
+          "route": 5,
+          "anim": "walk",
+          "anchor": null
+        },
+        "yaw": 0
+      },
+      "shot": "docs/qa/quality-director-2026-10-28/vehicle-pedestrian-v3/skyline-aim.png",
+      "count": 5,
+      "people": [
+        {
+          "id": 1,
+          "state": "WALK",
+          "anim": "walk",
+          "y": 0.01,
+          "anchor": null,
+          "travel": 3.03
+        },
+        {
+          "id": 2,
+          "state": "WALK",
+          "anim": "walk",
+          "y": 0.01,
+          "anchor": null,
+          "travel": 3.05
+        },
+        {
+          "id": 5,
+          "state": "WALK",
+          "anim": "walk",
+          "y": 0.01,
+          "anchor": null,
+          "travel": null
+        },
+        {
+          "id": 6,
+          "state": "WALK",
+          "anim": "walk",
+          "y": 0.01,
+          "anchor": null,
+          "travel": null
+        },
+        {
+          "id": 7,
+          "state": "WALK",
+          "anim": "walk",
+          "y": 0.01,
+          "anchor": null,
+          "travel": null
+        }
+      ]
+    },
+    "hong-kong": {
+      "id": "hong-kong",
+      "error": "Error: page.evaluate: TypeError: Cannot read properties of undefined (reading 'citizens')\n    at eval (eval at evaluate (:311:30), <anonymous>:1:39)\n    at UtilityScript.evaluate (<anonymous>:313:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)"
+    }
+  },
+  "hongKongDrive": null,
+  "fatal": "page.evaluate: TypeError: Cannot read properties of undefined (reading 'citizens')\n    at eval (eval at evaluate (:311:30), <anonymous>:3:28)\n    at UtilityScript.evaluate (<anonymous>:313:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)\n    at /Users/choeminseong/Desktop/게임/scripts/quality-director/vehicle-pedestrian-v3-aim.mjs:91:25",
+  "finished": "2026-10-28T04:18:55.095Z"
+}

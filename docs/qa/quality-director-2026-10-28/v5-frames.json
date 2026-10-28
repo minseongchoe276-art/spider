@@ -1,0 +1,56 @@
+{
+  "started": "2026-10-28T03:59:45.666Z",
+  "swing": [
+    {
+      "file": "swing-mid-0.png",
+      "state": "SWINGING",
+      "animation": "jump",
+      "speed": 28.508,
+      "y": 96.528,
+      "fov": 66.79547291492116,
+      "rigRoll": 0,
+      "cock": 32.6,
+      "rope": 11.211,
+      "gap": null
+    }
+  ],
+  "roll": [
+    {
+      "file": "roll-mid-0.png",
+      "state": "ROLLING",
+      "animation": "roll",
+      "speed": 5.79,
+      "y": 94.092,
+      "fov": 70.74817659317951,
+      "rigRoll": 0,
+      "cock": null,
+      "rope": null,
+      "gap": 0.7
+    },
+    {
+      "file": "roll-mid-1.png",
+      "state": "ROLLING",
+      "animation": "roll",
+      "speed": 4.681,
+      "y": 94.092,
+      "fov": 65.24909695701982,
+      "rigRoll": 0,
+      "cock": null,
+      "rope": null,
+      "gap": 0.359
+    },
+    {
+      "file": "roll-mid-2.png",
+      "state": "ROLLING",
+      "animation": "roll",
+      "speed": 2.002,
+      "y": 94.092,
+      "fov": 64.25213789363369,
+      "rigRoll": 0,
+      "cock": null,
+      "rope": null,
+      "gap": 0.542
+    }
+  ],
+  "status": "PASS"
+}

@@ -1,0 +1,74 @@
+{
+  "ready": {
+    "begin": true,
+    "ready": true,
+    "playing": true,
+    "loadingHidden": true
+  },
+  "drive": {
+    "people": [
+      {
+        "id": 1,
+        "state": "WALK",
+        "anim": "walk",
+        "y": 20.85,
+        "anchor": 1.25
+      },
+      {
+        "id": 2,
+        "state": "WALK",
+        "anim": "walk",
+        "y": 4.92,
+        "anchor": 1.25
+      },
+      {
+        "id": 3,
+        "state": "WALK",
+        "anim": "idle",
+        "y": 20.86,
+        "anchor": 4.33
+      }
+    ],
+    "spot": {
+      "id": 2,
+      "state": "WALK",
+      "x": -16.96,
+      "y": 4.92,
+      "z": 11.53,
+      "yaw": -1.843,
+      "speed": 1.2,
+      "allows": null,
+      "route": 3,
+      "anim": "walk",
+      "anchor": 1.25
+    },
+    "parked": true,
+    "entered": true,
+    "notice": "W/S 가속·제동·후진 · A/D 조향 · Space 브레이크 · B 하차",
+    "vehicle": {
+      "state": "PARKED",
+      "y": 4.755,
+      "position": [
+        -6.96,
+        4.755,
+        4.53
+      ]
+    },
+    "player": [
+      -5.31,
+      4.855,
+      4.68
+    ]
+  },
+  "moving": {
+    "speed": 3.738,
+    "state": "DRIVING",
+    "position": [
+      -6.96,
+      4.762,
+      5.755
+    ],
+    "citizens": 10
+  },
+  "shot": "/Users/choeminseong/Desktop/게임/docs/qa/quality-director-2026-10-28/vehicle-pedestrian-v3/hong-kong-street-drive.png"
+}

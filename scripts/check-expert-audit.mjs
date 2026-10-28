@@ -89,13 +89,13 @@ check('Help suspends solo simulation and race clock, Escape closes it, and onlin
 check('Disabling adaptive quality restores the selected manual resolution immediately',()=>withDOM(()=>{
   const g=Object.create(GameApp.prototype),quality={value:'balanced'};document.getElementById=id=>id==='graphics-quality'?quality:null;
   let ratio;Object.assign(g,{preferences:{values:{quality:'balanced',muted:false,reducedMotion:false,settings:cleanSettings({autoQuality:false})}},
-    appliedQuality:'balanced',appliedAutoQuality:true,renderer:{setPixelRatio(v){ratio=v;},shadowMap:{}},tpsCamera:{},physics:{},city:{},timeTrial:{},audio:{isMuted:false},applyWebTheme(){}});
+    appliedQuality:'balanced',appliedAutoQuality:true,renderer:{setPixelRatio(v){ratio=v;},shadowMap:{}},tpsCamera:{},physics:{},city:{},timeTrial:{},vfx:{},audio:{isMuted:false},applyWebTheme(){}});
   g.applyPreferences();assert.equal(ratio,1.5);
 }));
 
 check('A fatal projectile retires all old shots before the next can damage a respawn',()=>{
   const scene=new THREE.Scene(),p=body(),g={scene,physics:p,camera,city:{raycast:()=>null}};
-  const enemy={health:100,type:'dummy',position:new THREE.Vector3(0,.1,0),mesh:new THREE.Group(),body:{material:{emissive:{setHex(){}}}},bar:{scale:{},quaternion:new THREE.Quaternion()},ring:{},flash:0,stagger:0,cooldown:1,windup:0};
+  const enemy={health:100,maxHealth:100,type:'dummy',position:new THREE.Vector3(0,.1,0),mesh:new THREE.Group(),body:{material:{emissive:{setHex(){}}}},bar:new THREE.Mesh(new THREE.PlaneGeometry(.1,.1),new THREE.MeshBasicMaterial()),barTrack:new THREE.Object3D(),ring:{},flash:0,stagger:0,cooldown:1,windup:0};
   let hits=0;g.combat={enemies:[enemy],receiveDamage(){hits++;this.enemies=[];},clearEnemies(){this.enemies=[];}};
   const practice=Object.create(CombatPractice.prototype);Object.assign(practice,{game:g,active:true,projectiles:[0,1].map(()=>{
     const mesh=new THREE.Mesh(new THREE.SphereGeometry(.1),new THREE.MeshBasicMaterial());mesh.position.set(0,1.1,0);scene.add(mesh);return {mesh,enemy,velocity:new THREE.Vector3(),life:1};})});

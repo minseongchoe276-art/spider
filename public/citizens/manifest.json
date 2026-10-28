@@ -4,7 +4,7 @@
     {
       "id": "remy",
       "file": "Remy.fbx",
-      "bytes": 3325692,
+      "bytes": 3658376,
       "sourceBytes": 28338736,
       "sourceSha256": "71c1fdce07e6c321f774887c73d90b9a531df124934b36f5d585ac7a79a42a14",
       "triangles": 35194,
@@ -18,6 +18,21 @@
           "key": "jab",
           "duration": 1.2000000476837158,
           "nominalSpeed": 0.002359041877254026
+        },
+        {
+          "key": "cross",
+          "duration": 2,
+          "nominalSpeed": 2.941744975496616e-8
+        },
+        {
+          "key": "hook",
+          "duration": 2,
+          "nominalSpeed": 6.269683715030888e-7
+        },
+        {
+          "key": "combatIdle",
+          "duration": 4.400000095367432,
+          "nominalSpeed": 9.673438790747946e-9
         },
         {
           "key": "idle",
@@ -59,7 +74,7 @@
     {
       "id": "megan",
       "file": "Ch22_nonPBR.fbx",
-      "bytes": 3475092,
+      "bytes": 3807768,
       "sourceBytes": 59319056,
       "sourceSha256": "fa3c0daa73eb5c5c72ed385256146fbe6df4497196449b29206dfab2e9701898",
       "triangles": 54883,
@@ -73,6 +88,21 @@
           "key": "jab",
           "duration": 1.2000000476837158,
           "nominalSpeed": 0.0024037077756766567
+        },
+        {
+          "key": "cross",
+          "duration": 2,
+          "nominalSpeed": 2.997443724860813e-8
+        },
+        {
+          "key": "hook",
+          "duration": 2,
+          "nominalSpeed": 6.388393373667202e-7
+        },
+        {
+          "key": "combatIdle",
+          "duration": 4.400000095367432,
+          "nominalSpeed": 9.856594858722472e-9
         },
         {
           "key": "idle",
@@ -114,7 +144,7 @@
     {
       "id": "louise",
       "file": "Ch07_nonPBR.fbx",
-      "bytes": 3137636,
+      "bytes": 3470336,
       "sourceBytes": 49979392,
       "sourceSha256": "699876cb3776e768ae193ce899719f733d965a1797be984f8a28ff6f2b21caf3",
       "triangles": 52831,
@@ -128,6 +158,21 @@
           "key": "jab",
           "duration": 1.2000000476837158,
           "nominalSpeed": 0.0023182251833319878
+        },
+        {
+          "key": "cross",
+          "duration": 2,
+          "nominalSpeed": 2.8908462163778057e-8
+        },
+        {
+          "key": "hook",
+          "duration": 2,
+          "nominalSpeed": 6.161204182025614e-7
+        },
+        {
+          "key": "combatIdle",
+          "duration": 4.400000095367432,
+          "nominalSpeed": 9.50606669188757e-9
         },
         {
           "key": "idle",

@@ -1,0 +1,553 @@
+{
+  "citySweep": [
+    {
+      "yaw": 0,
+      "hits": 1,
+      "first": {
+        "distance": 8.853,
+        "name": "Mesh",
+        "point": [
+          99.6,
+          95.37,
+          92.62
+        ]
+      },
+      "anchor": [
+        99.6,
+        95.37,
+        92.62
+      ],
+      "reason": null
+    },
+    {
+      "yaw": 0.785,
+      "hits": 1,
+      "first": {
+        "distance": 8.301,
+        "name": "Mesh",
+        "point": [
+          100.34,
+          95.37,
+          92.08
+        ]
+      },
+      "anchor": [
+        100.34,
+        95.37,
+        92.08
+      ],
+      "reason": null
+    },
+    {
+      "yaw": 1.571,
+      "hits": 1,
+      "first": {
+        "distance": 7.629,
+        "name": "Mesh",
+        "point": [
+          101.18,
+          95.37,
+          90.82
+        ]
+      },
+      "anchor": [
+        101.18,
+        95.37,
+        90.82
+      ],
+      "reason": null
+    },
+    {
+      "yaw": 2.356,
+      "hits": 1,
+      "first": {
+        "distance": 7.26,
+        "name": "Mesh",
+        "point": [
+          101.15,
+          95.37,
+          89.75
+        ]
+      },
+      "anchor": [
+        101.15,
+        95.37,
+        89.75
+      ],
+      "reason": null
+    },
+    {
+      "yaw": 3.142,
+      "hits": 1,
+      "first": {
+        "distance": 6.967,
+        "name": "Mesh",
+        "point": [
+          100.43,
+          95.37,
+          88.87
+        ]
+      },
+      "anchor": [
+        100.43,
+        95.37,
+        88.87
+      ],
+      "reason": null
+    },
+    {
+      "yaw": 3.927,
+      "hits": 2,
+      "first": {
+        "distance": 6.831,
+        "name": "Mesh",
+        "point": [
+          99.39,
+          95.37,
+          88.7
+        ]
+      },
+      "anchor": [
+        99.39,
+        95.37,
+        88.7
+      ],
+      "reason": null
+    },
+    {
+      "yaw": 4.712,
+      "hits": 1,
+      "first": {
+        "distance": 6.806,
+        "name": "Mesh",
+        "point": [
+          98.52,
+          95.37,
+          89.29
+        ]
+      },
+      "anchor": [
+        98.52,
+        95.37,
+        89.29
+      ],
+      "reason": null
+    },
+    {
+      "yaw": 5.498,
+      "hits": 2,
+      "first": {
+        "distance": 6.838,
+        "name": "Mesh",
+        "point": [
+          98.32,
+          95.37,
+          90.29
+        ]
+      },
+      "anchor": [
+        98.32,
+        95.37,
+        90.29
+      ],
+      "reason": null
+    }
+  ],
+  "cityView": {
+    "yaw": 0,
+    "hits": 1,
+    "first": {
+      "distance": 8.853,
+      "name": "Mesh",
+      "point": [
+        99.6,
+        95.37,
+        92.62
+      ]
+    },
+    "anchor": [
+      99.6,
+      95.37,
+      92.62
+    ],
+    "reason": null
+  },
+  "sideJab": {
+    "attack": {
+      "key": "jab",
+      "time": 0.25,
+      "duration": 0.72
+    },
+    "animation": "jab",
+    "blends": [
+      {
+        "key": "regularRun",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "walk",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "run",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "stop",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "zip",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "runStop",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "jump",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "turnRight",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "turnLeft",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "jumpDown",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "drop",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "jumpDownVariant",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "swing",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "fall",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "fallVariant",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "fallIdle",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "roll",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "land",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "wall",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "injuredIdle",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "jab",
+        "weight": 1,
+        "time": 0.462
+      },
+      {
+        "key": "guard",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "slam",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "slamLand",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "hitHead",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "rightHook",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "cross",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "hook",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "heavy",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "airTrick",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "backTrick",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "hitBody",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "hitHeavy",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "hitUppercut",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "special",
+        "weight": 1,
+        "time": 0
+      }
+    ],
+    "combatMode": "combat",
+    "state": "IDLE"
+  },
+  "special": {
+    "attack": {
+      "key": "special",
+      "time": 0.351,
+      "duration": 1.35
+    },
+    "animation": "special",
+    "blends": [
+      {
+        "key": "regularRun",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "walk",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "run",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "stop",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "zip",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "runStop",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "jump",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "turnRight",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "turnLeft",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "jumpDown",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "drop",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "jumpDownVariant",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "swing",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "fall",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "fallVariant",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "fallIdle",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "roll",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "land",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "wall",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "injuredIdle",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "guard",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "slam",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "slamLand",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "hitHead",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "rightHook",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "cross",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "hook",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "heavy",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "airTrick",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "backTrick",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "hitBody",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "hitHeavy",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "hitUppercut",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "special",
+        "weight": 1,
+        "time": 0.312
+      }
+    ],
+    "combatMode": "combat",
+    "state": "IDLE"
+  },
+  "lockWithoutAutomationFlag": {
+    "webdriver": true,
+    "gesture": {
+      "granted": false,
+      "name": "WrongDocumentError",
+      "message": "The root document of this element is not valid for pointer lock."
+    },
+    "locked": null
+  }
+}

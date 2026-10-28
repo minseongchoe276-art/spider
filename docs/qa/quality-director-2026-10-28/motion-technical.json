@@ -1,0 +1,2459 @@
+{
+  "claimedAnimationCount": 57,
+  "manifestCount": 37,
+  "motionCatalogCount": 37,
+  "compiledJsonCount": 37,
+  "archivedNotInCatalog": [],
+  "comparedWithClaimed57": {
+    "catalogMinus57": -20,
+    "note": "The live catalog is the source of truth. 57 was not found in public/motions or MotionCatalog."
+  },
+  "technicalPass": 37,
+  "technicalFail": 0,
+  "visualPass": 0,
+  "visualUnverified": 37,
+  "results": [
+    {
+      "key": "idle",
+      "duration": 4,
+      "frames": 121,
+      "technical": "TECHNICAL_PASS",
+      "visual": "UNVERIFIED",
+      "maxExtremitySpeed": 1.56,
+      "peakPhase": 0.517,
+      "unmatchedTracks": 0,
+      "phases": [
+        {
+          "phase": 0,
+          "hipsY": 1.276,
+          "leftFootY": 0.212,
+          "rightFootY": 0.211,
+          "leftKnee": 139.2,
+          "rightKnee": 139.6,
+          "extremitySpeed": 0
+        },
+        {
+          "phase": 0.15,
+          "hipsY": 1.273,
+          "leftFootY": 0.212,
+          "rightFootY": 0.211,
+          "leftKnee": 138.4,
+          "rightKnee": 139.5,
+          "extremitySpeed": 0.12
+        },
+        {
+          "phase": 0.5,
+          "hipsY": 1.272,
+          "leftFootY": 0.212,
+          "rightFootY": 0.218,
+          "leftKnee": 138.5,
+          "rightKnee": 142.4,
+          "extremitySpeed": 1.42
+        },
+        {
+          "phase": 0.517,
+          "hipsY": 1.275,
+          "leftFootY": 0.212,
+          "rightFootY": 0.217,
+          "leftKnee": 139.2,
+          "rightKnee": 141.5,
+          "extremitySpeed": 1.56
+        },
+        {
+          "phase": 0.817,
+          "hipsY": 1.282,
+          "leftFootY": 0.213,
+          "rightFootY": 0.212,
+          "leftKnee": 141,
+          "rightKnee": 140.8,
+          "extremitySpeed": 0.89
+        },
+        {
+          "phase": 0.983,
+          "hipsY": 1.277,
+          "leftFootY": 0.212,
+          "rightFootY": 0.211,
+          "leftKnee": 139.2,
+          "rightKnee": 139.6,
+          "extremitySpeed": 0.03
+        }
+      ]
+    },
+    {
+      "key": "walk",
+      "duration": 0.967,
+      "frames": 30,
+      "technical": "TECHNICAL_PASS",
+      "visual": "UNVERIFIED",
+      "maxExtremitySpeed": 5.11,
+      "peakPhase": 0.586,
+      "unmatchedTracks": 0,
+      "phases": [
+        {
+          "phase": 0,
+          "hipsY": 1.326,
+          "leftFootY": 0.375,
+          "rightFootY": 0.208,
+          "leftKnee": 108.7,
+          "rightKnee": 151.3,
+          "extremitySpeed": 0
+        },
+        {
+          "phase": 0.138,
+          "hipsY": 1.321,
+          "leftFootY": 0.25,
+          "rightFootY": 0.214,
+          "leftKnee": 147.2,
+          "rightKnee": 155.2,
+          "extremitySpeed": 3.83
+        },
+        {
+          "phase": 0.483,
+          "hipsY": 1.323,
+          "leftFootY": 0.209,
+          "rightFootY": 0.374,
+          "leftKnee": 150.2,
+          "rightKnee": 110.3,
+          "extremitySpeed": 3.22
+        },
+        {
+          "phase": 0.586,
+          "hipsY": 1.335,
+          "leftFootY": 0.216,
+          "rightFootY": 0.268,
+          "leftKnee": 152.6,
+          "rightKnee": 133.9,
+          "extremitySpeed": 5.11
+        },
+        {
+          "phase": 0.828,
+          "hipsY": 1.289,
+          "leftFootY": 0.324,
+          "rightFootY": 0.214,
+          "leftKnee": 134.6,
+          "rightKnee": 147.7,
+          "extremitySpeed": 1.57
+        },
+        {
+          "phase": 0.966,
+          "hipsY": 1.324,
+          "leftFootY": 0.382,
+          "rightFootY": 0.208,
+          "leftKnee": 108,
+          "rightKnee": 150.7,
+          "extremitySpeed": 1.86
+        }
+      ]
+    },
+    {
+      "key": "regularRun",
+      "duration": 0.7,
+      "frames": 22,
+      "technical": "TECHNICAL_PASS",
+      "visual": "UNVERIFIED",
+      "maxExtremitySpeed": 7.08,
+      "peakPhase": 0.857,
+      "unmatchedTracks": 0,
+      "phases": [
+        {
+          "phase": 0,
+          "hipsY": 1.232,
+          "leftFootY": 0.546,
+          "rightFootY": 0.237,
+          "leftKnee": 72.6,
+          "rightKnee": 120.7,
+          "extremitySpeed": 0
+        },
+        {
+          "phase": 0.143,
+          "hipsY": 1.359,
+          "leftFootY": 0.3,
+          "rightFootY": 0.415,
+          "leftKnee": 141.5,
+          "rightKnee": 158.7,
+          "extremitySpeed": 5.39
+        },
+        {
+          "phase": 0.476,
+          "hipsY": 1.217,
+          "leftFootY": 0.211,
+          "rightFootY": 0.626,
+          "leftKnee": 121.2,
+          "rightKnee": 63.7,
+          "extremitySpeed": 5.29
+        },
+        {
+          "phase": 0.857,
+          "hipsY": 1.259,
+          "leftFootY": 0.646,
+          "rightFootY": 0.192,
+          "leftKnee": 80.8,
+          "rightKnee": 135.9,
+          "extremitySpeed": 7.08
+        },
+        {
+          "phase": 0.81,
+          "hipsY": 1.298,
+          "leftFootY": 0.689,
+          "rightFootY": 0.24,
+          "leftKnee": 98.2,
+          "rightKnee": 153.1,
+          "extremitySpeed": 4.75
+        },
+        {
+          "phase": 1,
+          "hipsY": 1.232,
+          "leftFootY": 0.546,
+          "rightFootY": 0.237,
+          "leftKnee": 72.6,
+          "rightKnee": 120.7,
+          "extremitySpeed": 1.32
+        }
+      ]
+    },
+    {
+      "key": "run",
+      "duration": 0.533,
+      "frames": 18,
+      "technical": "TECHNICAL_PASS",
+      "visual": "UNVERIFIED",
+      "maxExtremitySpeed": 10.73,
+      "peakPhase": 0.824,
+      "unmatchedTracks": 0,
+      "phases": [
+        {
+          "phase": 0,
+          "hipsY": 1.241,
+          "leftFootY": 0.728,
+          "rightFootY": 0.229,
+          "leftKnee": 50,
+          "rightKnee": 138.8,
+          "extremitySpeed": 0
+        },
+        {
+          "phase": 0.176,
+          "hipsY": 1.244,
+          "leftFootY": 0.388,
+          "rightFootY": 0.405,
+          "leftKnee": 112,
+          "rightKnee": 162.4,
+          "extremitySpeed": 6.11
+        },
+        {
+          "phase": 0.471,
+          "hipsY": 1.242,
+          "leftFootY": 0.21,
+          "rightFootY": 0.727,
+          "leftKnee": 131.9,
+          "rightKnee": 53.3,
+          "extremitySpeed": 7.47
+        },
+        {
+          "phase": 0.824,
+          "hipsY": 1.265,
+          "leftFootY": 0.705,
+          "rightFootY": 0.17,
+          "leftKnee": 71.4,
+          "rightKnee": 142.6,
+          "extremitySpeed": 10.73
+        },
+        {
+          "phase": 0.824,
+          "hipsY": 1.265,
+          "leftFootY": 0.705,
+          "rightFootY": 0.17,
+          "leftKnee": 71.4,
+          "rightKnee": 142.6,
+          "extremitySpeed": 10.73
+        },
+        {
+          "phase": 1,
+          "hipsY": 1.241,
+          "leftFootY": 0.728,
+          "rightFootY": 0.229,
+          "leftKnee": 50,
+          "rightKnee": 138.8,
+          "extremitySpeed": 1.57
+        }
+      ]
+    },
+    {
+      "key": "stop",
+      "duration": 0.233,
+      "frames": 8,
+      "technical": "TECHNICAL_PASS",
+      "visual": "UNVERIFIED",
+      "maxExtremitySpeed": 1.32,
+      "peakPhase": 1,
+      "unmatchedTracks": 0,
+      "phases": [
+        {
+          "phase": 0,
+          "hipsY": 1.282,
+          "leftFootY": 0.208,
+          "rightFootY": 0.22,
+          "leftKnee": 138.1,
+          "rightKnee": 145.7,
+          "extremitySpeed": 0
+        },
+        {
+          "phase": 0.143,
+          "hipsY": 1.289,
+          "leftFootY": 0.208,
+          "rightFootY": 0.208,
+          "leftKnee": 139.6,
+          "rightKnee": 152.5,
+          "extremitySpeed": 0.82
+        },
+        {
+          "phase": 0.571,
+          "hipsY": 1.292,
+          "leftFootY": 0.208,
+          "rightFootY": 0.208,
+          "leftKnee": 141.4,
+          "rightKnee": 150.9,
+          "extremitySpeed": 1.15
+        },
+        {
+          "phase": 1,
+          "hipsY": 1.279,
+          "leftFootY": 0.208,
+          "rightFootY": 0.208,
+          "leftKnee": 139.9,
+          "rightKnee": 142.5,
+          "extremitySpeed": 1.32
+        },
+        {
+          "phase": 0.857,
+          "hipsY": 1.284,
+          "leftFootY": 0.208,
+          "rightFootY": 0.208,
+          "leftKnee": 140.6,
+          "rightKnee": 145.6,
+          "extremitySpeed": 1.28
+        },
+        {
+          "phase": 1,
+          "hipsY": 1.279,
+          "leftFootY": 0.208,
+          "rightFootY": 0.208,
+          "leftKnee": 139.9,
+          "rightKnee": 142.5,
+          "extremitySpeed": 1.32
+        }
+      ]
+    },
+    {
+      "key": "runStop",
+      "duration": 0.9,
+      "frames": 28,
+      "technical": "TECHNICAL_PASS",
+      "visual": "UNVERIFIED",
+      "maxExtremitySpeed": 10.15,
+      "peakPhase": 0.037,
+      "unmatchedTracks": 0,
+      "phases": [
+        {
+          "phase": 0,
+          "hipsY": 1.228,
+          "leftFootY": 0.542,
+          "rightFootY": 0.233,
+          "leftKnee": 72.6,
+          "rightKnee": 120.7,
+          "extremitySpeed": 0
+        },
+        {
+          "phase": 0.148,
+          "hipsY": 1.101,
+          "leftFootY": 0.296,
+          "rightFootY": 0.307,
+          "leftKnee": 130,
+          "rightKnee": 91.7,
+          "extremitySpeed": 3.46
+        },
+        {
+          "phase": 0.481,
+          "hipsY": 1.138,
+          "leftFootY": 0.207,
+          "rightFootY": 0.294,
+          "leftKnee": 115.7,
+          "rightKnee": 97.6,
+          "extremitySpeed": 1.4
+        },
+        {
+          "phase": 0.037,
+          "hipsY": 1.206,
+          "leftFootY": 0.419,
+          "rightFootY": 0.233,
+          "leftKnee": 83.2,
+          "rightKnee": 120,
+          "extremitySpeed": 10.15
+        },
+        {
+          "phase": 0.815,
+          "hipsY": 1.293,
+          "leftFootY": 0.208,
+          "rightFootY": 0.208,
+          "leftKnee": 141,
+          "rightKnee": 152.5,
+          "extremitySpeed": 0.99
+        },
+        {
+          "phase": 0.963,
+          "hipsY": 1.279,
+          "leftFootY": 0.208,
+          "rightFootY": 0.208,
+          "leftKnee": 139.9,
+          "rightKnee": 142.5,
+          "extremitySpeed": 1.33
+        }
+      ]
+    },
+    {
+      "key": "zip",
+      "duration": 1,
+      "frames": 31,
+      "technical": "TECHNICAL_PASS",
+      "visual": "UNVERIFIED",
+      "maxExtremitySpeed": 0,
+      "peakPhase": 0.233,
+      "unmatchedTracks": 0,
+      "phases": [
+        {
+          "phase": 0,
+          "hipsY": 1.369,
+          "leftFootY": 0.9,
+          "rightFootY": 0.833,
+          "leftKnee": 51,
+          "rightKnee": 69.2,
+          "extremitySpeed": 0
+        },
+        {
+          "phase": 0.133,
+          "hipsY": 1.369,
+          "leftFootY": 0.9,
+          "rightFootY": 0.833,
+          "leftKnee": 51,
+          "rightKnee": 69.2,
+          "extremitySpeed": 0
+        },
+        {
+          "phase": 0.5,
+          "hipsY": 1.369,
+          "leftFootY": 0.9,
+          "rightFootY": 0.833,
+          "leftKnee": 51,
+          "rightKnee": 69.2,
+          "extremitySpeed": 0
+        },
+        {
+          "phase": 0.233,
+          "hipsY": 1.369,
+          "leftFootY": 0.9,
+          "rightFootY": 0.833,
+          "leftKnee": 51,
+          "rightKnee": 69.2,
+          "extremitySpeed": 0
+        },
+        {
+          "phase": 0.833,
+          "hipsY": 1.369,
+          "leftFootY": 0.9,
+          "rightFootY": 0.833,
+          "leftKnee": 51,
+          "rightKnee": 69.2,
+          "extremitySpeed": 0
+        },
+        {
+          "phase": 0.967,
+          "hipsY": 1.369,
+          "leftFootY": 0.9,
+          "rightFootY": 0.833,
+          "leftKnee": 51,
+          "rightKnee": 69.2,
+          "extremitySpeed": 0
+        }
+      ]
+    },
+    {
+      "key": "turnLeft",
+      "duration": 0.933,
+      "frames": 30,
+      "technical": "TECHNICAL_PASS",
+      "visual": "UNVERIFIED",
+      "maxExtremitySpeed": 1.7,
+      "peakPhase": 0.31,
+      "unmatchedTracks": 0,
+      "phases": [
+        {
+          "phase": 0,
+          "hipsY": 1.357,
+          "leftFootY": 0.21,
+          "rightFootY": 0.208,
+          "leftKnee": 159.7,
+          "rightKnee": 163.2,
+          "extremitySpeed": 0
+        },
+        {
+          "phase": 0.138,
+          "hipsY": 1.352,
+          "leftFootY": 0.223,
+          "rightFootY": 0.208,
+          "leftKnee": 153.4,
+          "rightKnee": 158.9,
+          "extremitySpeed": 0.33
+        },
+        {
+          "phase": 0.483,
+          "hipsY": 1.338,
+          "leftFootY": 0.231,
+          "rightFootY": 0.226,
+          "leftKnee": 142.5,
+          "rightKnee": 145.5,
+          "extremitySpeed": 0.51
+        },
+        {
+          "phase": 0.31,
+          "hipsY": 1.343,
+          "leftFootY": 0.236,
+          "rightFootY": 0.208,
+          "leftKnee": 140.8,
+          "rightKnee": 155.5,
+          "extremitySpeed": 1.7
+        },
+        {
+          "phase": 0.828,
+          "hipsY": 1.343,
+          "leftFootY": 0.215,
+          "rightFootY": 0.231,
+          "leftKnee": 147.7,
+          "rightKnee": 148,
+          "extremitySpeed": 0.55
+        },
+        {
+          "phase": 0.966,
+          "hipsY": 1.353,
+          "leftFootY": 0.21,
+          "rightFootY": 0.209,
+          "leftKnee": 156.6,
+          "rightKnee": 159.9,
+          "extremitySpeed": 0.86
+        }
+      ]
+    },
+    {
+      "key": "turnRight",
+      "duration": 0.933,
+      "frames": 30,
+      "technical": "TECHNICAL_PASS",
+      "visual": "UNVERIFIED",
+      "maxExtremitySpeed": 1.31,
+      "peakPhase": 0.31,
+      "unmatchedTracks": 0,
+      "phases": [
+        {
+          "phase": 0,
+          "hipsY": 1.357,
+          "leftFootY": 0.21,
+          "rightFootY": 0.208,
+          "leftKnee": 159.6,
+          "rightKnee": 163.1,
+          "extremitySpeed": 0
+        },
+        {
+          "phase": 0.138,
+          "hipsY": 1.349,
+          "leftFootY": 0.209,
+          "rightFootY": 0.224,
+          "leftKnee": 154.4,
+          "rightKnee": 150.7,
+          "extremitySpeed": 0.31
+        },
+        {
+          "phase": 0.483,
+          "hipsY": 1.34,
+          "leftFootY": 0.228,
+          "rightFootY": 0.224,
+          "leftKnee": 143.1,
+          "rightKnee": 151.4,
+          "extremitySpeed": 0.52
+        },
+        {
+          "phase": 0.31,
+          "hipsY": 1.344,
+          "leftFootY": 0.209,
+          "rightFootY": 0.231,
+          "leftKnee": 151.9,
+          "rightKnee": 146.4,
+          "extremitySpeed": 1.31
+        },
+        {
+          "phase": 0.828,
+          "hipsY": 1.349,
+          "leftFootY": 0.232,
+          "rightFootY": 0.213,
+          "leftKnee": 151.2,
+          "rightKnee": 157,
+          "extremitySpeed": 0.48
+        },
+        {
+          "phase": 0.966,
+          "hipsY": 1.356,
+          "leftFootY": 0.212,
+          "rightFootY": 0.208,
+          "leftKnee": 158.6,
+          "rightKnee": 162.9,
+          "extremitySpeed": 0.81
+        }
+      ]
+    },
+    {
+      "key": "jump",
+      "duration": 0.6,
+      "frames": 19,
+      "technical": "TECHNICAL_PASS",
+      "visual": "UNVERIFIED",
+      "maxExtremitySpeed": 4.58,
+      "peakPhase": 0.056,
+      "unmatchedTracks": 0,
+      "phases": [
+        {
+          "phase": 0,
+          "hipsY": 1.369,
+          "leftFootY": 0.534,
+          "rightFootY": 0.452,
+          "leftKnee": 93.5,
+          "rightKnee": 101.5,
+          "extremitySpeed": 0
+        },
+        {
+          "phase": 0.167,
+          "hipsY": 1.369,
+          "leftFootY": 0.914,
+          "rightFootY": 0.83,
+          "leftKnee": 50.4,
+          "rightKnee": 51.9,
+          "extremitySpeed": 2.86
+        },
+        {
+          "phase": 0.5,
+          "hipsY": 1.369,
+          "leftFootY": 0.357,
+          "rightFootY": 0.333,
+          "leftKnee": 128.3,
+          "rightKnee": 135.8,
+          "extremitySpeed": 2.51
+        },
+        {
+          "phase": 0.056,
+          "hipsY": 1.369,
+          "leftFootY": 0.683,
+          "rightFootY": 0.595,
+          "leftKnee": 74.1,
+          "rightKnee": 80.5,
+          "extremitySpeed": 4.58
+        },
+        {
+          "phase": 0.833,
+          "hipsY": 1.369,
+          "leftFootY": 0.603,
+          "rightFootY": 0.629,
+          "leftKnee": 89,
+          "rightKnee": 85.2,
+          "extremitySpeed": 2.82
+        },
+        {
+          "phase": 1,
+          "hipsY": 1.369,
+          "leftFootY": 0.704,
+          "rightFootY": 0.718,
+          "leftKnee": 79.2,
+          "rightKnee": 73.8,
+          "extremitySpeed": 1.06
+        }
+      ]
+    },
+    {
+      "key": "jumpDown",
+      "duration": 2.3,
+      "frames": 70,
+      "technical": "TECHNICAL_PASS",
+      "visual": "UNVERIFIED",
+      "maxExtremitySpeed": 10.3,
+      "peakPhase": 0.551,
+      "unmatchedTracks": 0,
+      "phases": [
+        {
+          "phase": 0,
+          "hipsY": 1.736,
+          "leftFootY": 1.394,
+          "rightFootY": 1.416,
+          "leftKnee": 33.1,
+          "rightKnee": 31.6,
+          "extremitySpeed": 0
+        },
+        {
+          "phase": 0.145,
+          "hipsY": 1.977,
+          "leftFootY": 1.397,
+          "rightFootY": 1.42,
+          "leftKnee": 59.3,
+          "rightKnee": 56.8,
+          "extremitySpeed": 6.38
+        },
+        {
+          "phase": 0.493,
+          "hipsY": 1.56,
+          "leftFootY": 0.424,
+          "rightFootY": 0.42,
+          "leftKnee": 160.9,
+          "rightKnee": 172.6,
+          "extremitySpeed": 7.47
+        },
+        {
+          "phase": 0.551,
+          "hipsY": 0.94,
+          "leftFootY": 0.239,
+          "rightFootY": 0.231,
+          "leftKnee": 79.5,
+          "rightKnee": 75.8,
+          "extremitySpeed": 10.3
+        },
+        {
+          "phase": 0.826,
+          "hipsY": 0.833,
+          "leftFootY": 0.297,
+          "rightFootY": 0.295,
+          "leftKnee": 53.8,
+          "rightKnee": 58.3,
+          "extremitySpeed": 0.25
+        },
+        {
+          "phase": 0.986,
+          "hipsY": 0.822,
+          "leftFootY": 0.306,
+          "rightFootY": 0.307,
+          "leftKnee": 52,
+          "rightKnee": 55.8,
+          "extremitySpeed": 0.06
+        }
+      ]
+    },
+    {
+      "key": "drop",
+      "duration": 0.4,
+      "frames": 13,
+      "technical": "TECHNICAL_PASS",
+      "visual": "UNVERIFIED",
+      "maxExtremitySpeed": 3,
+      "peakPhase": 0.083,
+      "unmatchedTracks": 0,
+      "phases": [
+        {
+          "phase": 0,
+          "hipsY": 1.369,
+          "leftFootY": 0.531,
+          "rightFootY": 0.555,
+          "leftKnee": 137.5,
+          "rightKnee": 128.8,
+          "extremitySpeed": 0
+        },
+        {
+          "phase": 0.167,
+          "hipsY": 1.369,
+          "leftFootY": 0.528,
+          "rightFootY": 0.517,
+          "leftKnee": 154.4,
+          "rightKnee": 145.2,
+          "extremitySpeed": 2.73
+        },
+        {
+          "phase": 0.5,
+          "hipsY": 1.369,
+          "leftFootY": 0.523,
+          "rightFootY": 0.406,
+          "leftKnee": 143.9,
+          "rightKnee": 152.7,
+          "extremitySpeed": 1.47
+        },
+        {
+          "phase": 0.083,
+          "hipsY": 1.369,
+          "leftFootY": 0.523,
+          "rightFootY": 0.537,
+          "leftKnee": 150.3,
+          "rightKnee": 139.5,
+          "extremitySpeed": 3
+        },
+        {
+          "phase": 0.833,
+          "hipsY": 1.369,
+          "leftFootY": 0.38,
+          "rightFootY": 0.294,
+          "leftKnee": 149,
+          "rightKnee": 164.8,
+          "extremitySpeed": 2.21
+        },
+        {
+          "phase": 1,
+          "hipsY": 1.369,
+          "leftFootY": 0.31,
+          "rightFootY": 0.26,
+          "leftKnee": 152.6,
+          "rightKnee": 167.2,
+          "extremitySpeed": 2.48
+        }
+      ]
+    },
+    {
+      "key": "jumpDownVariant",
+      "duration": 2.633,
+      "frames": 81,
+      "technical": "TECHNICAL_PASS",
+      "visual": "UNVERIFIED",
+      "maxExtremitySpeed": 12.14,
+      "peakPhase": 0.637,
+      "unmatchedTracks": 0,
+      "phases": [
+        {
+          "phase": 0,
+          "hipsY": 2.408,
+          "leftFootY": 1.331,
+          "rightFootY": 1.331,
+          "leftKnee": 138.4,
+          "rightKnee": 140.9,
+          "extremitySpeed": 0
+        },
+        {
+          "phase": 0.15,
+          "hipsY": 2.395,
+          "leftFootY": 1.333,
+          "rightFootY": 1.332,
+          "leftKnee": 134.5,
+          "rightKnee": 137.4,
+          "extremitySpeed": 2.23
+        },
+        {
+          "phase": 0.5,
+          "hipsY": 2.295,
+          "leftFootY": 1.376,
+          "rightFootY": 1.289,
+          "leftKnee": 153,
+          "rightKnee": 164.9,
+          "extremitySpeed": 3.12
+        },
+        {
+          "phase": 0.637,
+          "hipsY": 1.017,
+          "leftFootY": 0.209,
+          "rightFootY": 0.209,
+          "leftKnee": 104.8,
+          "rightKnee": 98.4,
+          "extremitySpeed": 12.14
+        },
+        {
+          "phase": 0.825,
+          "hipsY": 0.783,
+          "leftFootY": 0.211,
+          "rightFootY": 0.223,
+          "leftKnee": 61.1,
+          "rightKnee": 59.3,
+          "extremitySpeed": 0.4
+        },
+        {
+          "phase": 0.975,
+          "hipsY": 0.758,
+          "leftFootY": 0.214,
+          "rightFootY": 0.234,
+          "leftKnee": 56,
+          "rightKnee": 56.5,
+          "extremitySpeed": 0.36
+        }
+      ]
+    },
+    {
+      "key": "swing",
+      "duration": 1.952,
+      "frames": 60,
+      "technical": "TECHNICAL_PASS",
+      "visual": "UNVERIFIED",
+      "maxExtremitySpeed": 9.67,
+      "peakPhase": 0.949,
+      "unmatchedTracks": 0,
+      "phases": [
+        {
+          "phase": 0,
+          "hipsY": 1.369,
+          "leftFootY": 0.289,
+          "rightFootY": 0.252,
+          "leftKnee": 138.4,
+          "rightKnee": 146.9,
+          "extremitySpeed": 0
+        },
+        {
+          "phase": 0.153,
+          "hipsY": 1.369,
+          "leftFootY": 0.779,
+          "rightFootY": 0.662,
+          "leftKnee": 121.9,
+          "rightKnee": 81.2,
+          "extremitySpeed": 2.87
+        },
+        {
+          "phase": 0.492,
+          "hipsY": 1.369,
+          "leftFootY": 0.726,
+          "rightFootY": 0.733,
+          "leftKnee": 82.3,
+          "rightKnee": 87.5,
+          "extremitySpeed": 5.93
+        },
+        {
+          "phase": 0.949,
+          "hipsY": 1.369,
+          "leftFootY": 0.259,
+          "rightFootY": 0.281,
+          "leftKnee": 142.3,
+          "rightKnee": 159.1,
+          "extremitySpeed": 9.67
+        },
+        {
+          "phase": 0.814,
+          "hipsY": 1.369,
+          "leftFootY": 0.506,
+          "rightFootY": 0.485,
+          "leftKnee": 94.3,
+          "rightKnee": 116.5,
+          "extremitySpeed": 2.4
+        },
+        {
+          "phase": 0.983,
+          "hipsY": 1.369,
+          "leftFootY": 0.281,
+          "rightFootY": 0.254,
+          "leftKnee": 138,
+          "rightKnee": 149.3,
+          "extremitySpeed": 7.95
+        }
+      ]
+    },
+    {
+      "key": "fall",
+      "duration": 0.683,
+      "frames": 22,
+      "technical": "TECHNICAL_PASS",
+      "visual": "UNVERIFIED",
+      "maxExtremitySpeed": 0.43,
+      "peakPhase": 0.857,
+      "unmatchedTracks": 0,
+      "phases": [
+        {
+          "phase": 0,
+          "hipsY": 1.292,
+          "leftFootY": 0.709,
+          "rightFootY": 0.783,
+          "leftKnee": 57.9,
+          "rightKnee": 48.7,
+          "extremitySpeed": 0
+        },
+        {
+          "phase": 0.143,
+          "hipsY": 1.292,
+          "leftFootY": 0.714,
+          "rightFootY": 0.763,
+          "leftKnee": 57.4,
+          "rightKnee": 50.8,
+          "extremitySpeed": 0.3
+        },
+        {
+          "phase": 0.476,
+          "hipsY": 1.292,
+          "leftFootY": 0.733,
+          "rightFootY": 0.767,
+          "leftKnee": 55.2,
+          "rightKnee": 50.2,
+          "extremitySpeed": 0.32
+        },
+        {
+          "phase": 0.857,
+          "hipsY": 1.292,
+          "leftFootY": 0.713,
+          "rightFootY": 0.793,
+          "leftKnee": 57.3,
+          "rightKnee": 47.6,
+          "extremitySpeed": 0.43
+        },
+        {
+          "phase": 0.81,
+          "hipsY": 1.292,
+          "leftFootY": 0.717,
+          "rightFootY": 0.796,
+          "leftKnee": 56.8,
+          "rightKnee": 47.1,
+          "extremitySpeed": 0.39
+        },
+        {
+          "phase": 1,
+          "hipsY": 1.292,
+          "leftFootY": 0.709,
+          "rightFootY": 0.783,
+          "leftKnee": 57.9,
+          "rightKnee": 48.7,
+          "extremitySpeed": 0.06
+        }
+      ]
+    },
+    {
+      "key": "fallVariant",
+      "duration": 4.5,
+      "frames": 136,
+      "technical": "TECHNICAL_PASS",
+      "visual": "UNVERIFIED",
+      "maxExtremitySpeed": 2.13,
+      "peakPhase": 0.978,
+      "unmatchedTracks": 0,
+      "phases": [
+        {
+          "phase": 0,
+          "hipsY": 1.44,
+          "leftFootY": 1.264,
+          "rightFootY": 1.198,
+          "leftKnee": 84.8,
+          "rightKnee": 137.4,
+          "extremitySpeed": 0
+        },
+        {
+          "phase": 0.148,
+          "hipsY": 1.429,
+          "leftFootY": 1.192,
+          "rightFootY": 1.174,
+          "leftKnee": 107.7,
+          "rightKnee": 106.7,
+          "extremitySpeed": 1.12
+        },
+        {
+          "phase": 0.496,
+          "hipsY": 1.448,
+          "leftFootY": 1.34,
+          "rightFootY": 1.26,
+          "leftKnee": 72,
+          "rightKnee": 136.9,
+          "extremitySpeed": 0.91
+        },
+        {
+          "phase": 0.978,
+          "hipsY": 1.445,
+          "leftFootY": 1.294,
+          "rightFootY": 1.178,
+          "leftKnee": 89.3,
+          "rightKnee": 137.2,
+          "extremitySpeed": 2.13
+        },
+        {
+          "phase": 0.822,
+          "hipsY": 1.429,
+          "leftFootY": 1.079,
+          "rightFootY": 1.478,
+          "leftKnee": 98.4,
+          "rightKnee": 114.5,
+          "extremitySpeed": 1.25
+        },
+        {
+          "phase": 0.978,
+          "hipsY": 1.445,
+          "leftFootY": 1.294,
+          "rightFootY": 1.178,
+          "leftKnee": 89.3,
+          "rightKnee": 137.2,
+          "extremitySpeed": 2.13
+        }
+      ]
+    },
+    {
+      "key": "fallIdle",
+      "duration": 0.683,
+      "frames": 22,
+      "technical": "TECHNICAL_PASS",
+      "visual": "UNVERIFIED",
+      "maxExtremitySpeed": 0.43,
+      "peakPhase": 0.857,
+      "unmatchedTracks": 0,
+      "phases": [
+        {
+          "phase": 0,
+          "hipsY": 1.292,
+          "leftFootY": 0.709,
+          "rightFootY": 0.783,
+          "leftKnee": 57.9,
+          "rightKnee": 48.7,
+          "extremitySpeed": 0
+        },
+        {
+          "phase": 0.143,
+          "hipsY": 1.292,
+          "leftFootY": 0.714,
+          "rightFootY": 0.763,
+          "leftKnee": 57.4,
+          "rightKnee": 50.8,
+          "extremitySpeed": 0.3
+        },
+        {
+          "phase": 0.476,
+          "hipsY": 1.292,
+          "leftFootY": 0.733,
+          "rightFootY": 0.767,
+          "leftKnee": 55.2,
+          "rightKnee": 50.2,
+          "extremitySpeed": 0.32
+        },
+        {
+          "phase": 0.857,
+          "hipsY": 1.292,
+          "leftFootY": 0.713,
+          "rightFootY": 0.793,
+          "leftKnee": 57.3,
+          "rightKnee": 47.6,
+          "extremitySpeed": 0.43
+        },
+        {
+          "phase": 0.81,
+          "hipsY": 1.292,
+          "leftFootY": 0.717,
+          "rightFootY": 0.796,
+          "leftKnee": 56.8,
+          "rightKnee": 47.1,
+          "extremitySpeed": 0.39
+        },
+        {
+          "phase": 1,
+          "hipsY": 1.292,
+          "leftFootY": 0.709,
+          "rightFootY": 0.783,
+          "leftKnee": 57.9,
+          "rightKnee": 48.7,
+          "extremitySpeed": 0.06
+        }
+      ]
+    },
+    {
+      "key": "roll",
+      "duration": 1.543,
+      "frames": 48,
+      "technical": "TECHNICAL_PASS",
+      "visual": "UNVERIFIED",
+      "maxExtremitySpeed": 9.02,
+      "peakPhase": 0.191,
+      "unmatchedTracks": 0,
+      "phases": [
+        {
+          "phase": 0,
+          "hipsY": 0.948,
+          "leftFootY": 0.226,
+          "rightFootY": 0.253,
+          "leftKnee": 78.6,
+          "rightKnee": 73.6,
+          "extremitySpeed": 0
+        },
+        {
+          "phase": 0.149,
+          "hipsY": 0.838,
+          "leftFootY": 0.351,
+          "rightFootY": 0.532,
+          "leftKnee": 125.3,
+          "rightKnee": 117.2,
+          "extremitySpeed": 6.46
+        },
+        {
+          "phase": 0.489,
+          "hipsY": 0.477,
+          "leftFootY": 0.232,
+          "rightFootY": 0.184,
+          "leftKnee": 108.2,
+          "rightKnee": 41.3,
+          "extremitySpeed": 2.89
+        },
+        {
+          "phase": 0.191,
+          "hipsY": 0.755,
+          "leftFootY": 0.67,
+          "rightFootY": 1.039,
+          "leftKnee": 132.1,
+          "rightKnee": 97.8,
+          "extremitySpeed": 9.02
+        },
+        {
+          "phase": 0.83,
+          "hipsY": 1.227,
+          "leftFootY": 0.207,
+          "rightFootY": 0.207,
+          "leftKnee": 131.8,
+          "rightKnee": 125.2,
+          "extremitySpeed": 0.93
+        },
+        {
+          "phase": 0.979,
+          "hipsY": 1.257,
+          "leftFootY": 0.207,
+          "rightFootY": 0.207,
+          "leftKnee": 135.8,
+          "rightKnee": 134.9,
+          "extremitySpeed": 0.11
+        }
+      ]
+    },
+    {
+      "key": "injuredIdle",
+      "duration": 9.333,
+      "frames": 281,
+      "technical": "TECHNICAL_PASS",
+      "visual": "UNVERIFIED",
+      "maxExtremitySpeed": 0.46,
+      "peakPhase": 0.554,
+      "unmatchedTracks": 0,
+      "phases": [
+        {
+          "phase": 0,
+          "hipsY": 1.269,
+          "leftFootY": 0.29,
+          "rightFootY": 0.21,
+          "leftKnee": 113.9,
+          "rightKnee": 130.7,
+          "extremitySpeed": 0
+        },
+        {
+          "phase": 0.15,
+          "hipsY": 1.289,
+          "leftFootY": 0.299,
+          "rightFootY": 0.21,
+          "leftKnee": 116.3,
+          "rightKnee": 138.8,
+          "extremitySpeed": 0.14
+        },
+        {
+          "phase": 0.5,
+          "hipsY": 1.257,
+          "leftFootY": 0.268,
+          "rightFootY": 0.21,
+          "leftKnee": 114.1,
+          "rightKnee": 127.8,
+          "extremitySpeed": 0.23
+        },
+        {
+          "phase": 0.554,
+          "hipsY": 1.288,
+          "leftFootY": 0.254,
+          "rightFootY": 0.21,
+          "leftKnee": 122.5,
+          "rightKnee": 135.9,
+          "extremitySpeed": 0.46
+        },
+        {
+          "phase": 0.821,
+          "hipsY": 1.259,
+          "leftFootY": 0.253,
+          "rightFootY": 0.21,
+          "leftKnee": 119.4,
+          "rightKnee": 126.8,
+          "extremitySpeed": 0.13
+        },
+        {
+          "phase": 0.979,
+          "hipsY": 1.265,
+          "leftFootY": 0.28,
+          "rightFootY": 0.21,
+          "leftKnee": 115.9,
+          "rightKnee": 129.2,
+          "extremitySpeed": 0.23
+        }
+      ]
+    },
+    {
+      "key": "wall",
+      "duration": 2,
+      "frames": 61,
+      "technical": "TECHNICAL_PASS",
+      "visual": "UNVERIFIED",
+      "maxExtremitySpeed": 3.63,
+      "peakPhase": 0.767,
+      "unmatchedTracks": 0,
+      "phases": [
+        {
+          "phase": 0,
+          "hipsY": 1.369,
+          "leftFootY": 1.04,
+          "rightFootY": 0.28,
+          "leftKnee": 39.3,
+          "rightKnee": 146,
+          "extremitySpeed": 0
+        },
+        {
+          "phase": 0.15,
+          "hipsY": 1.369,
+          "leftFootY": 0.6,
+          "rightFootY": 0.501,
+          "leftKnee": 85.5,
+          "rightKnee": 106,
+          "extremitySpeed": 2.67
+        },
+        {
+          "phase": 0.5,
+          "hipsY": 1.369,
+          "leftFootY": 0.31,
+          "rightFootY": 0.995,
+          "leftKnee": 134.2,
+          "rightKnee": 46.7,
+          "extremitySpeed": 1.12
+        },
+        {
+          "phase": 0.767,
+          "hipsY": 1.369,
+          "leftFootY": 0.743,
+          "rightFootY": 0.369,
+          "leftKnee": 71.2,
+          "rightKnee": 145.8,
+          "extremitySpeed": 3.63
+        },
+        {
+          "phase": 0.817,
+          "hipsY": 1.369,
+          "leftFootY": 0.936,
+          "rightFootY": 0.302,
+          "leftKnee": 53.5,
+          "rightKnee": 160.7,
+          "extremitySpeed": 2.6
+        },
+        {
+          "phase": 0.983,
+          "hipsY": 1.369,
+          "leftFootY": 1.039,
+          "rightFootY": 0.28,
+          "leftKnee": 39.5,
+          "rightKnee": 146.3,
+          "extremitySpeed": 0.16
+        }
+      ]
+    },
+    {
+      "key": "land",
+      "duration": 0.776,
+      "frames": 25,
+      "technical": "TECHNICAL_PASS",
+      "visual": "UNVERIFIED",
+      "maxExtremitySpeed": 7.6,
+      "peakPhase": 0.042,
+      "unmatchedTracks": 0,
+      "phases": [
+        {
+          "phase": 0,
+          "hipsY": 1.346,
+          "leftFootY": 0.258,
+          "rightFootY": 0.347,
+          "leftKnee": 150,
+          "rightKnee": 132.8,
+          "extremitySpeed": 0
+        },
+        {
+          "phase": 0.167,
+          "hipsY": 0.929,
+          "leftFootY": 0.197,
+          "rightFootY": 0.279,
+          "leftKnee": 85.1,
+          "rightKnee": 78.3,
+          "extremitySpeed": 4.72
+        },
+        {
+          "phase": 0.5,
+          "hipsY": 1.07,
+          "leftFootY": 0.207,
+          "rightFootY": 0.274,
+          "leftKnee": 102.3,
+          "rightKnee": 92.7,
+          "extremitySpeed": 1.9
+        },
+        {
+          "phase": 0.042,
+          "hipsY": 1.192,
+          "leftFootY": 0.202,
+          "rightFootY": 0.249,
+          "leftKnee": 122.1,
+          "rightKnee": 125.4,
+          "extremitySpeed": 7.6
+        },
+        {
+          "phase": 0.833,
+          "hipsY": 1.283,
+          "leftFootY": 0.206,
+          "rightFootY": 0.211,
+          "leftKnee": 144,
+          "rightKnee": 144.7,
+          "extremitySpeed": 0.4
+        },
+        {
+          "phase": 1,
+          "hipsY": 1.284,
+          "leftFootY": 0.206,
+          "rightFootY": 0.211,
+          "leftKnee": 144.3,
+          "rightKnee": 145.3,
+          "extremitySpeed": 0.1
+        }
+      ]
+    },
+    {
+      "key": "combatIdle",
+      "duration": 4.4,
+      "frames": 134,
+      "technical": "TECHNICAL_PASS",
+      "visual": "UNVERIFIED",
+      "maxExtremitySpeed": 0.62,
+      "peakPhase": 0.571,
+      "unmatchedTracks": 0,
+      "phases": [
+        {
+          "phase": 0,
+          "hipsY": 1.193,
+          "leftFootY": 0.21,
+          "rightFootY": 0.225,
+          "leftKnee": 121.8,
+          "rightKnee": 121,
+          "extremitySpeed": 0
+        },
+        {
+          "phase": 0.15,
+          "hipsY": 1.243,
+          "leftFootY": 0.214,
+          "rightFootY": 0.215,
+          "leftKnee": 143.3,
+          "rightKnee": 125.6,
+          "extremitySpeed": 0.58
+        },
+        {
+          "phase": 0.496,
+          "hipsY": 1.217,
+          "leftFootY": 0.235,
+          "rightFootY": 0.217,
+          "leftKnee": 131.2,
+          "rightKnee": 121.3,
+          "extremitySpeed": 0.5
+        },
+        {
+          "phase": 0.571,
+          "hipsY": 1.268,
+          "leftFootY": 0.267,
+          "rightFootY": 0.228,
+          "leftKnee": 133.3,
+          "rightKnee": 130.9,
+          "extremitySpeed": 0.62
+        },
+        {
+          "phase": 0.82,
+          "hipsY": 1.197,
+          "leftFootY": 0.236,
+          "rightFootY": 0.219,
+          "leftKnee": 125.1,
+          "rightKnee": 119.1,
+          "extremitySpeed": 0.42
+        },
+        {
+          "phase": 0.977,
+          "hipsY": 1.196,
+          "leftFootY": 0.21,
+          "rightFootY": 0.225,
+          "leftKnee": 122.4,
+          "rightKnee": 121.6,
+          "extremitySpeed": 0.55
+        }
+      ]
+    },
+    {
+      "key": "jab",
+      "duration": 1.333,
+      "frames": 42,
+      "technical": "TECHNICAL_PASS",
+      "visual": "UNVERIFIED",
+      "maxExtremitySpeed": 2.78,
+      "peakPhase": 0.244,
+      "unmatchedTracks": 0,
+      "phases": [
+        {
+          "phase": 0,
+          "hipsY": 1.193,
+          "leftFootY": 0.21,
+          "rightFootY": 0.225,
+          "leftKnee": 121.8,
+          "rightKnee": 121,
+          "extremitySpeed": 0
+        },
+        {
+          "phase": 0.146,
+          "hipsY": 1.199,
+          "leftFootY": 0.232,
+          "rightFootY": 0.227,
+          "leftKnee": 118.6,
+          "rightKnee": 123.8,
+          "extremitySpeed": 0.38
+        },
+        {
+          "phase": 0.488,
+          "hipsY": 1.187,
+          "leftFootY": 0.213,
+          "rightFootY": 0.221,
+          "leftKnee": 119.6,
+          "rightKnee": 125.2,
+          "extremitySpeed": 0.41
+        },
+        {
+          "phase": 0.244,
+          "hipsY": 1.206,
+          "leftFootY": 0.226,
+          "rightFootY": 0.229,
+          "leftKnee": 121.4,
+          "rightKnee": 126,
+          "extremitySpeed": 2.78
+        },
+        {
+          "phase": 0.829,
+          "hipsY": 1.2,
+          "leftFootY": 0.222,
+          "rightFootY": 0.228,
+          "leftKnee": 121.1,
+          "rightKnee": 122.7,
+          "extremitySpeed": 0.27
+        },
+        {
+          "phase": 0.976,
+          "hipsY": 1.193,
+          "leftFootY": 0.211,
+          "rightFootY": 0.225,
+          "leftKnee": 121.8,
+          "rightKnee": 121,
+          "extremitySpeed": 0.28
+        }
+      ]
+    },
+    {
+      "key": "guard",
+      "duration": 2,
+      "frames": 61,
+      "technical": "TECHNICAL_PASS",
+      "visual": "UNVERIFIED",
+      "maxExtremitySpeed": 0.04,
+      "peakPhase": 0.95,
+      "unmatchedTracks": 0,
+      "phases": [
+        {
+          "phase": 0,
+          "hipsY": 1.175,
+          "leftFootY": 0.21,
+          "rightFootY": 0.21,
+          "leftKnee": 115.7,
+          "rightKnee": 116,
+          "extremitySpeed": 0
+        },
+        {
+          "phase": 0.15,
+          "hipsY": 1.183,
+          "leftFootY": 0.21,
+          "rightFootY": 0.21,
+          "leftKnee": 117.1,
+          "rightKnee": 117.3,
+          "extremitySpeed": 0.02
+        },
+        {
+          "phase": 0.5,
+          "hipsY": 1.175,
+          "leftFootY": 0.21,
+          "rightFootY": 0.21,
+          "leftKnee": 115.7,
+          "rightKnee": 116,
+          "extremitySpeed": 0.03
+        },
+        {
+          "phase": 0.95,
+          "hipsY": 1.174,
+          "leftFootY": 0.21,
+          "rightFootY": 0.21,
+          "leftKnee": 115.4,
+          "rightKnee": 115.6,
+          "extremitySpeed": 0.04
+        },
+        {
+          "phase": 0.817,
+          "hipsY": 1.167,
+          "leftFootY": 0.21,
+          "rightFootY": 0.21,
+          "leftKnee": 114.2,
+          "rightKnee": 114.4,
+          "extremitySpeed": 0.01
+        },
+        {
+          "phase": 0.983,
+          "hipsY": 1.175,
+          "leftFootY": 0.21,
+          "rightFootY": 0.21,
+          "leftKnee": 115.7,
+          "rightKnee": 115.9,
+          "extremitySpeed": 0.02
+        }
+      ]
+    },
+    {
+      "key": "slam",
+      "duration": 2.708,
+      "frames": 83,
+      "technical": "TECHNICAL_PASS",
+      "visual": "UNVERIFIED",
+      "maxExtremitySpeed": 5.62,
+      "peakPhase": 0.402,
+      "unmatchedTracks": 0,
+      "phases": [
+        {
+          "phase": 0,
+          "hipsY": 1.369,
+          "leftFootY": 0.4,
+          "rightFootY": 0.436,
+          "leftKnee": 123.2,
+          "rightKnee": 111.2,
+          "extremitySpeed": 0
+        },
+        {
+          "phase": 0.146,
+          "hipsY": 1.369,
+          "leftFootY": 0.408,
+          "rightFootY": 0.785,
+          "leftKnee": 122.6,
+          "rightKnee": 82.9,
+          "extremitySpeed": 2.33
+        },
+        {
+          "phase": 0.5,
+          "hipsY": 1.369,
+          "leftFootY": 0.396,
+          "rightFootY": 0.858,
+          "leftKnee": 128.9,
+          "rightKnee": 71.1,
+          "extremitySpeed": 1.17
+        },
+        {
+          "phase": 0.402,
+          "hipsY": 1.369,
+          "leftFootY": 0.41,
+          "rightFootY": 0.882,
+          "leftKnee": 123.3,
+          "rightKnee": 67.3,
+          "extremitySpeed": 5.62
+        },
+        {
+          "phase": 0.817,
+          "hipsY": 1.369,
+          "leftFootY": 0.567,
+          "rightFootY": 0.58,
+          "leftKnee": 102.9,
+          "rightKnee": 109.7,
+          "extremitySpeed": 0.35
+        },
+        {
+          "phase": 0.976,
+          "hipsY": 1.369,
+          "leftFootY": 0.555,
+          "rightFootY": 0.568,
+          "leftKnee": 104.6,
+          "rightKnee": 111.6,
+          "extremitySpeed": 0.05
+        }
+      ]
+    },
+    {
+      "key": "slamLand",
+      "duration": 0.884,
+      "frames": 28,
+      "technical": "TECHNICAL_PASS",
+      "visual": "UNVERIFIED",
+      "maxExtremitySpeed": 8.83,
+      "peakPhase": 0.037,
+      "unmatchedTracks": 0,
+      "phases": [
+        {
+          "phase": 0,
+          "hipsY": 1.074,
+          "leftFootY": 0.474,
+          "rightFootY": 0.21,
+          "leftKnee": 68.3,
+          "rightKnee": 113,
+          "extremitySpeed": 0
+        },
+        {
+          "phase": 0.148,
+          "hipsY": 0.657,
+          "leftFootY": 0.21,
+          "rightFootY": 0.215,
+          "leftKnee": 90.5,
+          "rightKnee": 75.4,
+          "extremitySpeed": 5.21
+        },
+        {
+          "phase": 0.481,
+          "hipsY": 0.77,
+          "leftFootY": 0.277,
+          "rightFootY": 0.21,
+          "leftKnee": 131.4,
+          "rightKnee": 87.9,
+          "extremitySpeed": 0.53
+        },
+        {
+          "phase": 0.037,
+          "hipsY": 0.903,
+          "leftFootY": 0.359,
+          "rightFootY": 0.21,
+          "leftKnee": 68.6,
+          "rightKnee": 91.7,
+          "extremitySpeed": 8.83
+        },
+        {
+          "phase": 0.815,
+          "hipsY": 0.791,
+          "leftFootY": 0.27,
+          "rightFootY": 0.21,
+          "leftKnee": 134,
+          "rightKnee": 89.5,
+          "extremitySpeed": 0
+        },
+        {
+          "phase": 0.963,
+          "hipsY": 0.791,
+          "leftFootY": 0.27,
+          "rightFootY": 0.21,
+          "leftKnee": 134,
+          "rightKnee": 89.5,
+          "extremitySpeed": 0
+        }
+      ]
+    },
+    {
+      "key": "hitHead",
+      "duration": 0.833,
+      "frames": 26,
+      "technical": "TECHNICAL_PASS",
+      "visual": "UNVERIFIED",
+      "maxExtremitySpeed": 1.5,
+      "peakPhase": 0.12,
+      "unmatchedTracks": 0,
+      "phases": [
+        {
+          "phase": 0,
+          "hipsY": 1.19,
+          "leftFootY": 0.21,
+          "rightFootY": 0.22,
+          "leftKnee": 120.8,
+          "rightKnee": 120.5,
+          "extremitySpeed": 0
+        },
+        {
+          "phase": 0.16,
+          "hipsY": 1.233,
+          "leftFootY": 0.21,
+          "rightFootY": 0.22,
+          "leftKnee": 130.1,
+          "rightKnee": 128.4,
+          "extremitySpeed": 1.23
+        },
+        {
+          "phase": 0.48,
+          "hipsY": 1.248,
+          "leftFootY": 0.21,
+          "rightFootY": 0.219,
+          "leftKnee": 135.4,
+          "rightKnee": 130.5,
+          "extremitySpeed": 0.59
+        },
+        {
+          "phase": 0.12,
+          "hipsY": 1.221,
+          "leftFootY": 0.21,
+          "rightFootY": 0.221,
+          "leftKnee": 127.3,
+          "rightKnee": 126.3,
+          "extremitySpeed": 1.5
+        },
+        {
+          "phase": 0.8,
+          "hipsY": 1.23,
+          "leftFootY": 0.21,
+          "rightFootY": 0.221,
+          "leftKnee": 129.7,
+          "rightKnee": 128.1,
+          "extremitySpeed": 0.82
+        },
+        {
+          "phase": 0.96,
+          "hipsY": 1.197,
+          "leftFootY": 0.21,
+          "rightFootY": 0.22,
+          "leftKnee": 122.2,
+          "rightKnee": 121.8,
+          "extremitySpeed": 0.88
+        }
+      ]
+    },
+    {
+      "key": "rightHook",
+      "duration": 0.68,
+      "frames": 22,
+      "technical": "TECHNICAL_PASS",
+      "visual": "UNVERIFIED",
+      "maxExtremitySpeed": 3.71,
+      "peakPhase": 0.905,
+      "unmatchedTracks": 0,
+      "phases": [
+        {
+          "phase": 0,
+          "hipsY": 1.175,
+          "leftFootY": 0.21,
+          "rightFootY": 0.21,
+          "leftKnee": 115.7,
+          "rightKnee": 116,
+          "extremitySpeed": 0
+        },
+        {
+          "phase": 0.143,
+          "hipsY": 1.158,
+          "leftFootY": 0.21,
+          "rightFootY": 0.21,
+          "leftKnee": 112.6,
+          "rightKnee": 112.7,
+          "extremitySpeed": 1.82
+        },
+        {
+          "phase": 0.476,
+          "hipsY": 1.172,
+          "leftFootY": 0.21,
+          "rightFootY": 0.21,
+          "leftKnee": 115.7,
+          "rightKnee": 116.1,
+          "extremitySpeed": 3.46
+        },
+        {
+          "phase": 0.905,
+          "hipsY": 1.175,
+          "leftFootY": 0.21,
+          "rightFootY": 0.21,
+          "leftKnee": 115.8,
+          "rightKnee": 116,
+          "extremitySpeed": 3.71
+        },
+        {
+          "phase": 0.81,
+          "hipsY": 1.175,
+          "leftFootY": 0.21,
+          "rightFootY": 0.21,
+          "leftKnee": 116,
+          "rightKnee": 116.3,
+          "extremitySpeed": 2.43
+        },
+        {
+          "phase": 1,
+          "hipsY": 1.175,
+          "leftFootY": 0.21,
+          "rightFootY": 0.21,
+          "leftKnee": 115.7,
+          "rightKnee": 116,
+          "extremitySpeed": 1.2
+        }
+      ]
+    },
+    {
+      "key": "cross",
+      "duration": 1,
+      "frames": 31,
+      "technical": "TECHNICAL_PASS",
+      "visual": "UNVERIFIED",
+      "maxExtremitySpeed": 5.88,
+      "peakPhase": 0.367,
+      "unmatchedTracks": 0,
+      "phases": [
+        {
+          "phase": 0,
+          "hipsY": 1.276,
+          "leftFootY": 0.205,
+          "rightFootY": 0.205,
+          "leftKnee": 141.4,
+          "rightKnee": 141.5,
+          "extremitySpeed": 0
+        },
+        {
+          "phase": 0.133,
+          "hipsY": 1.248,
+          "leftFootY": 0.209,
+          "rightFootY": 0.205,
+          "leftKnee": 132.1,
+          "rightKnee": 135.7,
+          "extremitySpeed": 2.16
+        },
+        {
+          "phase": 0.5,
+          "hipsY": 1.223,
+          "leftFootY": 0.203,
+          "rightFootY": 0.317,
+          "leftKnee": 136.7,
+          "rightKnee": 115.4,
+          "extremitySpeed": 2.22
+        },
+        {
+          "phase": 0.367,
+          "hipsY": 1.238,
+          "leftFootY": 0.202,
+          "rightFootY": 0.319,
+          "leftKnee": 142,
+          "rightKnee": 117.5,
+          "extremitySpeed": 5.88
+        },
+        {
+          "phase": 0.833,
+          "hipsY": 1.276,
+          "leftFootY": 0.204,
+          "rightFootY": 0.234,
+          "leftKnee": 141.8,
+          "rightKnee": 134.6,
+          "extremitySpeed": 1.56
+        },
+        {
+          "phase": 0.967,
+          "hipsY": 1.277,
+          "leftFootY": 0.205,
+          "rightFootY": 0.206,
+          "leftKnee": 141.6,
+          "rightKnee": 141.6,
+          "extremitySpeed": 0.94
+        }
+      ]
+    },
+    {
+      "key": "hook",
+      "duration": 1.4,
+      "frames": 43,
+      "technical": "TECHNICAL_PASS",
+      "visual": "UNVERIFIED",
+      "maxExtremitySpeed": 5.56,
+      "peakPhase": 0.333,
+      "unmatchedTracks": 0,
+      "phases": [
+        {
+          "phase": 0,
+          "hipsY": 1.193,
+          "leftFootY": 0.21,
+          "rightFootY": 0.225,
+          "leftKnee": 121.8,
+          "rightKnee": 121,
+          "extremitySpeed": 0
+        },
+        {
+          "phase": 0.143,
+          "hipsY": 1.157,
+          "leftFootY": 0.22,
+          "rightFootY": 0.226,
+          "leftKnee": 111.5,
+          "rightKnee": 116.5,
+          "extremitySpeed": 1.02
+        },
+        {
+          "phase": 0.5,
+          "hipsY": 1.095,
+          "leftFootY": 0.248,
+          "rightFootY": 0.225,
+          "leftKnee": 97.7,
+          "rightKnee": 158,
+          "extremitySpeed": 1.32
+        },
+        {
+          "phase": 0.333,
+          "hipsY": 1.234,
+          "leftFootY": 0.377,
+          "rightFootY": 0.292,
+          "leftKnee": 104.3,
+          "rightKnee": 157.3,
+          "extremitySpeed": 5.56
+        },
+        {
+          "phase": 0.81,
+          "hipsY": 1.197,
+          "leftFootY": 0.29,
+          "rightFootY": 0.224,
+          "leftKnee": 116.3,
+          "rightKnee": 137.4,
+          "extremitySpeed": 1.19
+        },
+        {
+          "phase": 0.976,
+          "hipsY": 1.203,
+          "leftFootY": 0.214,
+          "rightFootY": 0.226,
+          "leftKnee": 120.9,
+          "rightKnee": 123.8,
+          "extremitySpeed": 1.42
+        }
+      ]
+    },
+    {
+      "key": "heavy",
+      "duration": 1.4,
+      "frames": 43,
+      "technical": "TECHNICAL_PASS",
+      "visual": "UNVERIFIED",
+      "maxExtremitySpeed": 5.56,
+      "peakPhase": 0.333,
+      "unmatchedTracks": 0,
+      "phases": [
+        {
+          "phase": 0,
+          "hipsY": 1.193,
+          "leftFootY": 0.21,
+          "rightFootY": 0.225,
+          "leftKnee": 121.8,
+          "rightKnee": 121,
+          "extremitySpeed": 0
+        },
+        {
+          "phase": 0.143,
+          "hipsY": 1.157,
+          "leftFootY": 0.22,
+          "rightFootY": 0.226,
+          "leftKnee": 111.5,
+          "rightKnee": 116.5,
+          "extremitySpeed": 1.02
+        },
+        {
+          "phase": 0.5,
+          "hipsY": 1.095,
+          "leftFootY": 0.248,
+          "rightFootY": 0.225,
+          "leftKnee": 97.7,
+          "rightKnee": 158,
+          "extremitySpeed": 1.32
+        },
+        {
+          "phase": 0.333,
+          "hipsY": 1.234,
+          "leftFootY": 0.377,
+          "rightFootY": 0.292,
+          "leftKnee": 104.3,
+          "rightKnee": 157.3,
+          "extremitySpeed": 5.56
+        },
+        {
+          "phase": 0.81,
+          "hipsY": 1.197,
+          "leftFootY": 0.29,
+          "rightFootY": 0.224,
+          "leftKnee": 116.3,
+          "rightKnee": 137.4,
+          "extremitySpeed": 1.19
+        },
+        {
+          "phase": 0.976,
+          "hipsY": 1.203,
+          "leftFootY": 0.214,
+          "rightFootY": 0.226,
+          "leftKnee": 120.9,
+          "rightKnee": 123.8,
+          "extremitySpeed": 1.42
+        }
+      ]
+    },
+    {
+      "key": "airTrick",
+      "duration": 0.933,
+      "frames": 29,
+      "technical": "TECHNICAL_PASS",
+      "visual": "UNVERIFIED",
+      "maxExtremitySpeed": 12.02,
+      "peakPhase": 0.75,
+      "unmatchedTracks": 0,
+      "phases": [
+        {
+          "phase": 0,
+          "hipsY": 1.369,
+          "leftFootY": 0.209,
+          "rightFootY": 0.264,
+          "leftKnee": 175.9,
+          "rightKnee": 144.9,
+          "extremitySpeed": 0
+        },
+        {
+          "phase": 0.143,
+          "hipsY": 1.369,
+          "leftFootY": 0.527,
+          "rightFootY": 0.587,
+          "leftKnee": 106.5,
+          "rightKnee": 108.7,
+          "extremitySpeed": 9.18
+        },
+        {
+          "phase": 0.5,
+          "hipsY": 1.369,
+          "leftFootY": 2.242,
+          "rightFootY": 2.184,
+          "leftKnee": 175.3,
+          "rightKnee": 177.5,
+          "extremitySpeed": 9.23
+        },
+        {
+          "phase": 0.75,
+          "hipsY": 1.369,
+          "leftFootY": 1.478,
+          "rightFootY": 2.12,
+          "leftKnee": 129.6,
+          "rightKnee": 179,
+          "extremitySpeed": 12.02
+        },
+        {
+          "phase": 0.821,
+          "hipsY": 1.369,
+          "leftFootY": 0.801,
+          "rightFootY": 1.744,
+          "leftKnee": 109,
+          "rightKnee": 162.2,
+          "extremitySpeed": 10.16
+        },
+        {
+          "phase": 0.964,
+          "hipsY": 1.369,
+          "leftFootY": 0.213,
+          "rightFootY": 0.785,
+          "leftKnee": 179.4,
+          "rightKnee": 138.4,
+          "extremitySpeed": 7.91
+        }
+      ]
+    },
+    {
+      "key": "backTrick",
+      "duration": 1.2,
+      "frames": 38,
+      "technical": "TECHNICAL_PASS",
+      "visual": "UNVERIFIED",
+      "maxExtremitySpeed": 14.83,
+      "peakPhase": 0.027,
+      "unmatchedTracks": 0,
+      "phases": [
+        {
+          "phase": 0,
+          "hipsY": 1.369,
+          "leftFootY": 1.792,
+          "rightFootY": 1.742,
+          "leftKnee": 96.7,
+          "rightKnee": 108.9,
+          "extremitySpeed": 0
+        },
+        {
+          "phase": 0.162,
+          "hipsY": 1.369,
+          "leftFootY": 0.493,
+          "rightFootY": 0.521,
+          "leftKnee": 103.9,
+          "rightKnee": 93.2,
+          "extremitySpeed": 10.47
+        },
+        {
+          "phase": 0.486,
+          "hipsY": 1.369,
+          "leftFootY": 1.836,
+          "rightFootY": 1.907,
+          "leftKnee": 48.5,
+          "rightKnee": 63.3,
+          "extremitySpeed": 7.45
+        },
+        {
+          "phase": 0.027,
+          "hipsY": 1.369,
+          "leftFootY": 1.319,
+          "rightFootY": 1.356,
+          "leftKnee": 82.9,
+          "rightKnee": 98.5,
+          "extremitySpeed": 14.83
+        },
+        {
+          "phase": 0.811,
+          "hipsY": 1.369,
+          "leftFootY": 0.878,
+          "rightFootY": 0.738,
+          "leftKnee": 123.4,
+          "rightKnee": 168.7,
+          "extremitySpeed": 6.36
+        },
+        {
+          "phase": 0.973,
+          "hipsY": 1.369,
+          "leftFootY": 0.271,
+          "rightFootY": 0.271,
+          "leftKnee": 166.8,
+          "rightKnee": 156.4,
+          "extremitySpeed": 6.61
+        }
+      ]
+    },
+    {
+      "key": "hitBody",
+      "duration": 1.333,
+      "frames": 42,
+      "technical": "TECHNICAL_PASS",
+      "visual": "UNVERIFIED",
+      "maxExtremitySpeed": 3.38,
+      "peakPhase": 0.22,
+      "unmatchedTracks": 0,
+      "phases": [
+        {
+          "phase": 0,
+          "hipsY": 1.19,
+          "leftFootY": 0.21,
+          "rightFootY": 0.22,
+          "leftKnee": 120.8,
+          "rightKnee": 120.5,
+          "extremitySpeed": 0
+        },
+        {
+          "phase": 0.146,
+          "hipsY": 1.242,
+          "leftFootY": 0.21,
+          "rightFootY": 0.22,
+          "leftKnee": 131.9,
+          "rightKnee": 132.5,
+          "extremitySpeed": 2.53
+        },
+        {
+          "phase": 0.488,
+          "hipsY": 1.142,
+          "leftFootY": 0.21,
+          "rightFootY": 0.217,
+          "leftKnee": 116.2,
+          "rightKnee": 109.6,
+          "extremitySpeed": 1.28
+        },
+        {
+          "phase": 0.22,
+          "hipsY": 1.268,
+          "leftFootY": 0.21,
+          "rightFootY": 0.232,
+          "leftKnee": 139.6,
+          "rightKnee": 138.3,
+          "extremitySpeed": 3.38
+        },
+        {
+          "phase": 0.829,
+          "hipsY": 1.225,
+          "leftFootY": 0.21,
+          "rightFootY": 0.221,
+          "leftKnee": 131,
+          "rightKnee": 124.4,
+          "extremitySpeed": 0.81
+        },
+        {
+          "phase": 0.976,
+          "hipsY": 1.193,
+          "leftFootY": 0.21,
+          "rightFootY": 0.22,
+          "leftKnee": 121.7,
+          "rightKnee": 120.9,
+          "extremitySpeed": 0.66
+        }
+      ]
+    },
+    {
+      "key": "hitHeavy",
+      "duration": 1.3,
+      "frames": 40,
+      "technical": "TECHNICAL_PASS",
+      "visual": "UNVERIFIED",
+      "maxExtremitySpeed": 4.9,
+      "peakPhase": 0.103,
+      "unmatchedTracks": 0,
+      "phases": [
+        {
+          "phase": 0,
+          "hipsY": 1.19,
+          "leftFootY": 0.21,
+          "rightFootY": 0.22,
+          "leftKnee": 120.8,
+          "rightKnee": 120.5,
+          "extremitySpeed": 0
+        },
+        {
+          "phase": 0.154,
+          "hipsY": 1.177,
+          "leftFootY": 0.21,
+          "rightFootY": 0.237,
+          "leftKnee": 122.5,
+          "rightKnee": 118.3,
+          "extremitySpeed": 2.56
+        },
+        {
+          "phase": 0.487,
+          "hipsY": 1.114,
+          "leftFootY": 0.21,
+          "rightFootY": 0.224,
+          "leftKnee": 115.2,
+          "rightKnee": 99.5,
+          "extremitySpeed": 0.88
+        },
+        {
+          "phase": 0.103,
+          "hipsY": 1.213,
+          "leftFootY": 0.21,
+          "rightFootY": 0.232,
+          "leftKnee": 128.3,
+          "rightKnee": 126.5,
+          "extremitySpeed": 4.9
+        },
+        {
+          "phase": 0.821,
+          "hipsY": 1.199,
+          "leftFootY": 0.21,
+          "rightFootY": 0.22,
+          "leftKnee": 123.2,
+          "rightKnee": 121.5,
+          "extremitySpeed": 0.47
+        },
+        {
+          "phase": 0.974,
+          "hipsY": 1.191,
+          "leftFootY": 0.21,
+          "rightFootY": 0.22,
+          "leftKnee": 121.2,
+          "rightKnee": 120.5,
+          "extremitySpeed": 0.61
+        }
+      ]
+    },
+    {
+      "key": "hitUppercut",
+      "duration": 1.233,
+      "frames": 39,
+      "technical": "TECHNICAL_PASS",
+      "visual": "UNVERIFIED",
+      "maxExtremitySpeed": 1.63,
+      "peakPhase": 0.079,
+      "unmatchedTracks": 0,
+      "phases": [
+        {
+          "phase": 0,
+          "hipsY": 1.252,
+          "leftFootY": 0.21,
+          "rightFootY": 0.219,
+          "leftKnee": 139.3,
+          "rightKnee": 129.3,
+          "extremitySpeed": 0
+        },
+        {
+          "phase": 0.158,
+          "hipsY": 1.251,
+          "leftFootY": 0.21,
+          "rightFootY": 0.231,
+          "leftKnee": 138.3,
+          "rightKnee": 129.9,
+          "extremitySpeed": 0.91
+        },
+        {
+          "phase": 0.5,
+          "hipsY": 1.236,
+          "leftFootY": 0.21,
+          "rightFootY": 0.221,
+          "leftKnee": 147.9,
+          "rightKnee": 120.9,
+          "extremitySpeed": 0.99
+        },
+        {
+          "phase": 0.079,
+          "hipsY": 1.261,
+          "leftFootY": 0.21,
+          "rightFootY": 0.226,
+          "leftKnee": 140.5,
+          "rightKnee": 132.4,
+          "extremitySpeed": 1.63
+        },
+        {
+          "phase": 0.816,
+          "hipsY": 1.249,
+          "leftFootY": 0.21,
+          "rightFootY": 0.219,
+          "leftKnee": 140.3,
+          "rightKnee": 127.6,
+          "extremitySpeed": 0.31
+        },
+        {
+          "phase": 0.974,
+          "hipsY": 1.252,
+          "leftFootY": 0.21,
+          "rightFootY": 0.219,
+          "leftKnee": 139.3,
+          "rightKnee": 129.3,
+          "extremitySpeed": 0.01
+        }
+      ]
+    },
+    {
+      "key": "special",
+      "duration": 1.2,
+      "frames": 37,
+      "technical": "TECHNICAL_PASS",
+      "visual": "UNVERIFIED",
+      "maxExtremitySpeed": 15.37,
+      "peakPhase": 0.333,
+      "unmatchedTracks": 0,
+      "phases": [
+        {
+          "phase": 0,
+          "hipsY": 1.095,
+          "leftFootY": 0.255,
+          "rightFootY": 0.2,
+          "leftKnee": 115.2,
+          "rightKnee": 116.1,
+          "extremitySpeed": 0
+        },
+        {
+          "phase": 0.139,
+          "hipsY": 1.106,
+          "leftFootY": 0.209,
+          "rightFootY": 0.212,
+          "leftKnee": 113.9,
+          "rightKnee": 120.6,
+          "extremitySpeed": 6.86
+        },
+        {
+          "phase": 0.5,
+          "hipsY": 1.277,
+          "leftFootY": 0.223,
+          "rightFootY": 0.253,
+          "leftKnee": 153,
+          "rightKnee": 166.6,
+          "extremitySpeed": 3.3
+        },
+        {
+          "phase": 0.333,
+          "hipsY": 1.335,
+          "leftFootY": 0.234,
+          "rightFootY": 0.281,
+          "leftKnee": 175.1,
+          "rightKnee": 154.9,
+          "extremitySpeed": 15.37
+        },
+        {
+          "phase": 0.833,
+          "hipsY": 1.28,
+          "leftFootY": 0.213,
+          "rightFootY": 0.244,
+          "leftKnee": 143.5,
+          "rightKnee": 130.5,
+          "extremitySpeed": 4.64
+        },
+        {
+          "phase": 0.972,
+          "hipsY": 1.118,
+          "leftFootY": 0.242,
+          "rightFootY": 0.198,
+          "leftKnee": 116.4,
+          "rightKnee": 121.6,
+          "extremitySpeed": 4.75
+        }
+      ]
+    }
+  ]
+}

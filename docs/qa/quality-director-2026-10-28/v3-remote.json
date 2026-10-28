@@ -1,0 +1,778 @@
+{
+  "started": "2026-10-28T02:45:03.756Z",
+  "players": 2,
+  "code": "998525",
+  "build": "quality-director-v3",
+  "timeline": [
+    {
+      "ms": 43,
+      "mark": "before",
+      "local": {
+        "animation": "combatIdle",
+        "animationTime": 0,
+        "attack": null,
+        "state": "IDLE",
+        "facing": -1.5708
+      },
+      "remote": {
+        "name": "DirectorA",
+        "position": [
+          103.6,
+          95.47,
+          90
+        ],
+        "motion": "combatIdle",
+        "combat": {
+          "key": "combatIdle",
+          "time": 0.072,
+          "duration": 0
+        },
+        "network": {
+          "key": "combatIdle",
+          "time": 0
+        }
+      }
+    },
+    {
+      "ms": 152,
+      "mark": "down",
+      "local": {
+        "animation": "jab",
+        "animationTime": 0.162,
+        "attack": {
+          "key": "jab",
+          "time": 0.087,
+          "duration": 0.72
+        },
+        "state": "IDLE",
+        "facing": -1.5708
+      },
+      "remote": {
+        "name": "DirectorA",
+        "position": [
+          103.6,
+          95.47,
+          90
+        ],
+        "motion": "jab",
+        "combat": {
+          "key": "jab",
+          "time": 0.074,
+          "duration": 0.72
+        },
+        "network": {
+          "key": "jab",
+          "time": 0.136
+        }
+      }
+    },
+    {
+      "ms": 252,
+      "mark": "hold",
+      "local": {
+        "animation": "jab",
+        "animationTime": 0.333,
+        "attack": {
+          "key": "jab",
+          "time": 0.18,
+          "duration": 0.72
+        },
+        "state": "IDLE",
+        "facing": -1.5708
+      },
+      "remote": {
+        "name": "DirectorA",
+        "position": [
+          103.6,
+          95.47,
+          90
+        ],
+        "motion": "jab",
+        "combat": {
+          "key": "jab",
+          "time": 0.198,
+          "duration": 0.72
+        },
+        "network": {
+          "key": "jab",
+          "time": 0.367
+        }
+      }
+    },
+    {
+      "ms": 347,
+      "mark": "hold",
+      "local": {
+        "animation": "jab",
+        "animationTime": 0.514,
+        "attack": {
+          "key": "jab",
+          "time": 0.278,
+          "duration": 0.72
+        },
+        "state": "IDLE",
+        "facing": -1.5708
+      },
+      "remote": {
+        "name": "DirectorA",
+        "position": [
+          103.6,
+          95.47,
+          90
+        ],
+        "motion": "jab",
+        "combat": {
+          "key": "jab",
+          "time": 0.268,
+          "duration": 0.72
+        },
+        "network": {
+          "key": "jab",
+          "time": 0.497
+        }
+      }
+    },
+    {
+      "ms": 445,
+      "mark": "hold",
+      "local": {
+        "animation": "jab",
+        "animationTime": 0.693,
+        "attack": {
+          "key": "jab",
+          "time": 0.374,
+          "duration": 0.72
+        },
+        "state": "IDLE",
+        "facing": -1.5708
+      },
+      "remote": {
+        "name": "DirectorA",
+        "position": [
+          103.6,
+          95.47,
+          90
+        ],
+        "motion": "jab",
+        "combat": {
+          "key": "jab",
+          "time": 0.368,
+          "duration": 0.72
+        },
+        "network": {
+          "key": "jab",
+          "time": 0.681
+        }
+      }
+    },
+    {
+      "ms": 547,
+      "mark": "hold",
+      "local": {
+        "animation": "jab",
+        "animationTime": 0.89,
+        "attack": {
+          "key": "jab",
+          "time": 0.481,
+          "duration": 0.72
+        },
+        "state": "IDLE",
+        "facing": -1.5708
+      },
+      "remote": {
+        "name": "DirectorA",
+        "position": [
+          103.6,
+          95.47,
+          90
+        ],
+        "motion": "jab",
+        "combat": {
+          "key": "jab",
+          "time": 0.491,
+          "duration": 0.72
+        },
+        "network": {
+          "key": "jab",
+          "time": 0.908
+        }
+      }
+    },
+    {
+      "ms": 652,
+      "mark": "hold",
+      "local": {
+        "animation": "jab",
+        "animationTime": 1.081,
+        "attack": {
+          "key": "jab",
+          "time": 0.584,
+          "duration": 0.72
+        },
+        "state": "IDLE",
+        "facing": -1.5708
+      },
+      "remote": {
+        "name": "DirectorA",
+        "position": [
+          103.6,
+          95.47,
+          90
+        ],
+        "motion": "jab",
+        "combat": {
+          "key": "jab",
+          "time": 0.595,
+          "duration": 0.72
+        },
+        "network": {
+          "key": "jab",
+          "time": 1.101
+        }
+      }
+    },
+    {
+      "ms": 768,
+      "mark": "hold",
+      "local": {
+        "animation": "jab",
+        "animationTime": 1.292,
+        "attack": {
+          "key": "jab",
+          "time": 0.698,
+          "duration": 0.72
+        },
+        "state": "IDLE",
+        "facing": -1.5708
+      },
+      "remote": {
+        "name": "DirectorA",
+        "position": [
+          103.6,
+          95.47,
+          90
+        ],
+        "motion": "jab",
+        "combat": {
+          "key": "jab",
+          "time": 0.708,
+          "duration": 0.72
+        },
+        "network": {
+          "key": "jab",
+          "time": 1.312
+        }
+      }
+    },
+    {
+      "ms": 868,
+      "mark": "hold",
+      "local": {
+        "animation": "combatIdle",
+        "animationTime": 0,
+        "attack": null,
+        "state": "IDLE",
+        "facing": -1.5708
+      },
+      "remote": {
+        "name": "DirectorA",
+        "position": [
+          103.6,
+          95.47,
+          90
+        ],
+        "motion": "combatIdle",
+        "combat": {
+          "key": "combatIdle",
+          "time": 0.008,
+          "duration": 0
+        },
+        "network": {
+          "key": "combatIdle",
+          "time": 0
+        }
+      }
+    },
+    {
+      "ms": 964,
+      "mark": "hold",
+      "local": {
+        "animation": "combatIdle",
+        "animationTime": 0,
+        "attack": null,
+        "state": "IDLE",
+        "facing": -1.5708
+      },
+      "remote": {
+        "name": "DirectorA",
+        "position": [
+          103.6,
+          95.47,
+          90
+        ],
+        "motion": "combatIdle",
+        "combat": {
+          "key": "combatIdle",
+          "time": 0.101,
+          "duration": 0
+        },
+        "network": {
+          "key": "combatIdle",
+          "time": 0
+        }
+      }
+    },
+    {
+      "ms": 1068,
+      "mark": "hold",
+      "local": {
+        "animation": "combatIdle",
+        "animationTime": 0,
+        "attack": null,
+        "state": "IDLE",
+        "facing": -1.5708
+      },
+      "remote": {
+        "name": "DirectorA",
+        "position": [
+          103.6,
+          95.47,
+          90
+        ],
+        "motion": "combatIdle",
+        "combat": {
+          "key": "combatIdle",
+          "time": 0.093,
+          "duration": 0
+        },
+        "network": {
+          "key": "combatIdle",
+          "time": 0
+        }
+      }
+    },
+    {
+      "ms": 1168,
+      "mark": "hold",
+      "local": {
+        "animation": "combatIdle",
+        "animationTime": 0,
+        "attack": null,
+        "state": "IDLE",
+        "facing": -1.5708
+      },
+      "remote": {
+        "name": "DirectorA",
+        "position": [
+          103.6,
+          95.47,
+          90
+        ],
+        "motion": "combatIdle",
+        "combat": {
+          "key": "combatIdle",
+          "time": 0.092,
+          "duration": 0
+        },
+        "network": {
+          "key": "combatIdle",
+          "time": 0
+        }
+      }
+    },
+    {
+      "ms": 1265,
+      "mark": "hold",
+      "local": {
+        "animation": "combatIdle",
+        "animationTime": 0,
+        "attack": null,
+        "state": "IDLE",
+        "facing": -1.5708
+      },
+      "remote": {
+        "name": "DirectorA",
+        "position": [
+          103.6,
+          95.47,
+          90
+        ],
+        "motion": "combatIdle",
+        "combat": {
+          "key": "combatIdle",
+          "time": 0.084,
+          "duration": 0
+        },
+        "network": {
+          "key": "combatIdle",
+          "time": 0
+        }
+      }
+    },
+    {
+      "ms": 1353,
+      "mark": "hold",
+      "local": {
+        "animation": "combatIdle",
+        "animationTime": 0,
+        "attack": null,
+        "state": "IDLE",
+        "facing": -1.5708
+      },
+      "remote": {
+        "name": "DirectorA",
+        "position": [
+          103.6,
+          95.47,
+          90
+        ],
+        "motion": "combatIdle",
+        "combat": {
+          "key": "combatIdle",
+          "time": 0.073,
+          "duration": 0
+        },
+        "network": {
+          "key": "combatIdle",
+          "time": 0
+        }
+      }
+    },
+    {
+      "ms": 1438,
+      "mark": "hold",
+      "local": {
+        "animation": "combatIdle",
+        "animationTime": 0,
+        "attack": null,
+        "state": "IDLE",
+        "facing": -1.5708
+      },
+      "remote": {
+        "name": "DirectorA",
+        "position": [
+          103.6,
+          95.47,
+          90
+        ],
+        "motion": "combatIdle",
+        "combat": {
+          "key": "combatIdle",
+          "time": 0.047,
+          "duration": 0
+        },
+        "network": {
+          "key": "combatIdle",
+          "time": 0
+        }
+      }
+    },
+    {
+      "ms": 1521,
+      "mark": "hold",
+      "local": {
+        "animation": "combatIdle",
+        "animationTime": 0,
+        "attack": null,
+        "state": "IDLE",
+        "facing": -1.5708
+      },
+      "remote": {
+        "name": "DirectorA",
+        "position": [
+          103.6,
+          95.47,
+          90
+        ],
+        "motion": "combatIdle",
+        "combat": {
+          "key": "combatIdle",
+          "time": 0.013,
+          "duration": 0
+        },
+        "network": {
+          "key": "combatIdle",
+          "time": 0
+        }
+      }
+    },
+    {
+      "ms": 1605,
+      "mark": "hold",
+      "local": {
+        "animation": "combatIdle",
+        "animationTime": 0,
+        "attack": null,
+        "state": "IDLE",
+        "facing": -1.5708
+      },
+      "remote": {
+        "name": "DirectorA",
+        "position": [
+          103.6,
+          95.47,
+          90
+        ],
+        "motion": "combatIdle",
+        "combat": {
+          "key": "combatIdle",
+          "time": 0.097,
+          "duration": 0
+        },
+        "network": {
+          "key": "combatIdle",
+          "time": 0
+        }
+      }
+    },
+    {
+      "ms": 1689,
+      "mark": "up",
+      "local": {
+        "animation": "combatIdle",
+        "animationTime": 0,
+        "attack": null,
+        "state": "IDLE",
+        "facing": -1.5708
+      },
+      "remote": {
+        "name": "DirectorA",
+        "position": [
+          103.6,
+          95.47,
+          90
+        ],
+        "motion": "combatIdle",
+        "combat": {
+          "key": "combatIdle",
+          "time": 0.065,
+          "duration": 0
+        },
+        "network": {
+          "key": "combatIdle",
+          "time": 0
+        }
+      }
+    },
+    {
+      "ms": 1773,
+      "mark": "up",
+      "local": {
+        "animation": "combatIdle",
+        "animationTime": 0,
+        "attack": null,
+        "state": "IDLE",
+        "facing": -1.5708
+      },
+      "remote": {
+        "name": "DirectorA",
+        "position": [
+          103.6,
+          95.47,
+          90
+        ],
+        "motion": "combatIdle",
+        "combat": {
+          "key": "combatIdle",
+          "time": 0.048,
+          "duration": 0
+        },
+        "network": {
+          "key": "combatIdle",
+          "time": 0
+        }
+      }
+    },
+    {
+      "ms": 1857,
+      "mark": "up",
+      "local": {
+        "animation": "combatIdle",
+        "animationTime": 0,
+        "attack": null,
+        "state": "IDLE",
+        "facing": -1.5708
+      },
+      "remote": {
+        "name": "DirectorA",
+        "position": [
+          103.6,
+          95.47,
+          90
+        ],
+        "motion": "combatIdle",
+        "combat": {
+          "key": "combatIdle",
+          "time": 0.014,
+          "duration": 0
+        },
+        "network": {
+          "key": "combatIdle",
+          "time": 0
+        }
+      }
+    },
+    {
+      "ms": 1941,
+      "mark": "up",
+      "local": {
+        "animation": "combatIdle",
+        "animationTime": 0,
+        "attack": null,
+        "state": "IDLE",
+        "facing": -1.5708
+      },
+      "remote": {
+        "name": "DirectorA",
+        "position": [
+          103.6,
+          95.47,
+          90
+        ],
+        "motion": "combatIdle",
+        "combat": {
+          "key": "combatIdle",
+          "time": 0.096,
+          "duration": 0
+        },
+        "network": {
+          "key": "combatIdle",
+          "time": 0
+        }
+      }
+    },
+    {
+      "ms": 2036,
+      "mark": "up",
+      "local": {
+        "animation": "combatIdle",
+        "animationTime": 0,
+        "attack": null,
+        "state": "IDLE",
+        "facing": -1.5708
+      },
+      "remote": {
+        "name": "DirectorA",
+        "position": [
+          103.6,
+          95.47,
+          90
+        ],
+        "motion": "combatIdle",
+        "combat": {
+          "key": "combatIdle",
+          "time": 0.08,
+          "duration": 0
+        },
+        "network": {
+          "key": "combatIdle",
+          "time": 0
+        }
+      }
+    },
+    {
+      "ms": 2123,
+      "mark": "up",
+      "local": {
+        "animation": "combatIdle",
+        "animationTime": 0,
+        "attack": null,
+        "state": "IDLE",
+        "facing": -1.5708
+      },
+      "remote": {
+        "name": "DirectorA",
+        "position": [
+          103.6,
+          95.47,
+          90
+        ],
+        "motion": "combatIdle",
+        "combat": {
+          "key": "combatIdle",
+          "time": 0.065,
+          "duration": 0
+        },
+        "network": {
+          "key": "combatIdle",
+          "time": 0
+        }
+      }
+    },
+    {
+      "ms": 2207,
+      "mark": "up",
+      "local": {
+        "animation": "combatIdle",
+        "animationTime": 0,
+        "attack": null,
+        "state": "IDLE",
+        "facing": -1.5708
+      },
+      "remote": {
+        "name": "DirectorA",
+        "position": [
+          103.6,
+          95.47,
+          90
+        ],
+        "motion": "combatIdle",
+        "combat": {
+          "key": "combatIdle",
+          "time": 0.031,
+          "duration": 0
+        },
+        "network": {
+          "key": "combatIdle",
+          "time": 0
+        }
+      }
+    },
+    {
+      "ms": 2289,
+      "mark": "up",
+      "local": {
+        "animation": "combatIdle",
+        "animationTime": 0,
+        "attack": null,
+        "state": "IDLE",
+        "facing": -1.5708
+      },
+      "remote": {
+        "name": "DirectorA",
+        "position": [
+          103.6,
+          95.47,
+          90
+        ],
+        "motion": "combatIdle",
+        "combat": {
+          "key": "combatIdle",
+          "time": 0.112,
+          "duration": 0
+        },
+        "network": {
+          "key": "combatIdle",
+          "time": 0
+        }
+      }
+    }
+  ],
+  "localKeys": [
+    "combatIdle",
+    "jab"
+  ],
+  "remoteMotions": [
+    "combatIdle",
+    "jab"
+  ],
+  "remoteCombats": [
+    "combatIdle",
+    "jab"
+  ],
+  "localJabSamples": 7,
+  "remoteJabSamples": 7,
+  "firstRemoteJabMs": 152,
+  "firstLocalJabMs": 152,
+  "status": "RECORDED"
+}

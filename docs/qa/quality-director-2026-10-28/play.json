@@ -1,0 +1,774 @@
+{
+  "ranAt": "2026-10-28T00:53:42.983Z",
+  "base": "http://127.0.0.1:5191",
+  "pointerLockPolicy": "UNVERIFIED results are not passes.",
+  "counts": {
+    "pass": 22,
+    "fail": 2,
+    "unverified": 1,
+    "blocked": 1
+  },
+  "tests": [
+    {
+      "name": "boot procedural solo",
+      "status": "PASS",
+      "detail": {
+        "map": "procedural",
+        "loadMs": 1704,
+        "state": "IDLE",
+        "errors": []
+      }
+    },
+    {
+      "name": "pointer lock",
+      "status": "UNVERIFIED",
+      "detail": {
+        "granted": false,
+        "error": "WrongDocumentError: The root document of this element is not valid for pointer lock.",
+        "note": "Automation did not receive pointer lock. Later look tests use Home/End/PageUp/PageDown, which call the same handleMouseMove as the locked mouse."
+      }
+    },
+    {
+      "name": "keyboard camera look",
+      "status": "PASS",
+      "detail": {
+        "frames": 91,
+        "seconds": 1.502,
+        "travel": 0,
+        "start": [
+          99.6,
+          95.474,
+          90
+        ],
+        "end": [
+          99.6,
+          95.474,
+          90
+        ],
+        "maxSpeed": 0,
+        "states": [
+          "IDLE"
+        ],
+        "animations": [
+          "idle"
+        ],
+        "attacks": [],
+        "swingingFrames": 0,
+        "maxWebs": 0,
+        "averageFps": 60.09,
+        "low1Fps": 49.75,
+        "maxDrawCalls": 34,
+        "maxTriangles": 50876,
+        "memoryStart": 68168846,
+        "memoryEnd": 62241234,
+        "pitch": [
+          0.16,
+          -0.1209
+        ],
+        "yaw": [
+          0,
+          -0.4848
+        ]
+      }
+    },
+    {
+      "name": "walk",
+      "status": "PASS",
+      "detail": {
+        "frames": 128,
+        "seconds": 2.12,
+        "travel": 10.802,
+        "start": [
+          99.6,
+          95.474,
+          90
+        ],
+        "end": [
+          93.714,
+          95.474,
+          99.058
+        ],
+        "maxSpeed": 6.999,
+        "states": [
+          "IDLE",
+          "RUNNING"
+        ],
+        "animations": [
+          "idle",
+          "walk",
+          "regularRun",
+          "stop"
+        ],
+        "attacks": [],
+        "swingingFrames": 0,
+        "maxWebs": 0,
+        "averageFps": 60.16,
+        "low1Fps": 50,
+        "maxDrawCalls": 35,
+        "maxTriangles": 50888,
+        "memoryStart": 62999715,
+        "memoryEnd": 39280032,
+        "pitch": [
+          -0.1209,
+          -0.1209
+        ],
+        "yaw": [
+          -0.4848,
+          -0.4848
+        ]
+      }
+    },
+    {
+      "name": "sprint faster than walk",
+      "status": "PASS",
+      "detail": {
+        "walkSpeed": 6.999,
+        "sprint": {
+          "frames": 128,
+          "seconds": 2.119,
+          "travel": 10.548,
+          "start": [
+            93.687,
+            95.474,
+            99.108
+          ],
+          "end": [
+            84.621,
+            95.474,
+            104.5
+          ],
+          "maxSpeed": 11.95,
+          "states": [
+            "SPRINTING",
+            "IDLE"
+          ],
+          "animations": [
+            "run",
+            "runStop"
+          ],
+          "attacks": [],
+          "swingingFrames": 0,
+          "maxWebs": 0,
+          "averageFps": 60.17,
+          "low1Fps": 56.5,
+          "maxDrawCalls": 31,
+          "maxTriangles": 50820,
+          "memoryStart": 37728683,
+          "memoryEnd": 35930028,
+          "pitch": [
+            -0.1209,
+            -0.1209
+          ],
+          "yaw": [
+            -0.4848,
+            -0.4848
+          ]
+        }
+      }
+    },
+    {
+      "name": "sprint stop returns toward idle",
+      "status": "PASS",
+      "detail": {
+        "states": [
+          "SPRINTING",
+          "IDLE"
+        ]
+      }
+    },
+    {
+      "name": "jump and landing",
+      "status": "PASS",
+      "detail": {
+        "frames": 103,
+        "seconds": 1.697,
+        "travel": 16.158,
+        "start": [
+          84.612,
+          95.474,
+          104.5
+        ],
+        "end": [
+          75.208,
+          105.59,
+          112.886
+        ],
+        "maxSpeed": 25.969,
+        "states": [
+          "RUNNING",
+          "JUMPING",
+          "FALLING"
+        ],
+        "animations": [
+          "walk",
+          "jump",
+          "drop",
+          "fall"
+        ],
+        "attacks": [],
+        "swingingFrames": 0,
+        "maxWebs": 0,
+        "averageFps": 60.04,
+        "low1Fps": 56.5,
+        "maxDrawCalls": 25,
+        "maxTriangles": 50648,
+        "memoryStart": 48766652,
+        "memoryEnd": 50417391,
+        "pitch": [
+          -0.1209,
+          -0.1209
+        ],
+        "yaw": [
+          -0.4848,
+          -0.4848
+        ]
+      }
+    },
+    {
+      "name": "web swing attach or honest miss",
+      "status": "FAIL",
+      "detail": {
+        "frames": 172,
+        "seconds": 3.027,
+        "travel": 104.062,
+        "start": [
+          73.641,
+          102.604,
+          114.825
+        ],
+        "end": [
+          62.366,
+          0.1,
+          128.777
+        ],
+        "maxSpeed": 48,
+        "states": [
+          "FALLING",
+          "LANDING"
+        ],
+        "animations": [
+          "fall",
+          "land"
+        ],
+        "attacks": [],
+        "swingingFrames": 0,
+        "maxWebs": 0,
+        "averageFps": 59.76,
+        "low1Fps": 10.02,
+        "maxDrawCalls": 60,
+        "maxTriangles": 51462,
+        "memoryStart": 46757662,
+        "memoryEnd": 32043504,
+        "pitch": [
+          -0.2197,
+          -1.095
+        ],
+        "yaw": [
+          -0.4848,
+          -0.4848
+        ]
+      }
+    },
+    {
+      "name": "dual web hold",
+      "status": "FAIL",
+      "detail": {
+        "frames": 157,
+        "seconds": 2.604,
+        "travel": 0,
+        "start": [
+          62.366,
+          0.1,
+          128.777
+        ],
+        "end": [
+          62.366,
+          0.1,
+          128.777
+        ],
+        "maxSpeed": 0,
+        "states": [
+          "LANDING",
+          "IDLE"
+        ],
+        "animations": [
+          "land",
+          "idle"
+        ],
+        "attacks": [],
+        "swingingFrames": 0,
+        "maxWebs": 0,
+        "averageFps": 59.84,
+        "low1Fps": 56.18,
+        "maxDrawCalls": 79,
+        "maxTriangles": 52182,
+        "memoryStart": 39959523,
+        "memoryEnd": 32851683,
+        "pitch": [
+          -1.128,
+          -1.4
+        ],
+        "yaw": [
+          -0.4848,
+          -0.4848
+        ]
+      }
+    },
+    {
+      "name": "toggle combat mode",
+      "status": "PASS",
+      "detail": {
+        "mode": "combat"
+      }
+    },
+    {
+      "name": "jab",
+      "status": "PASS",
+      "detail": {
+        "expected": "jab",
+        "frames": 22,
+        "seconds": 0.605,
+        "travel": 0,
+        "start": [
+          62.366,
+          0.1,
+          128.777
+        ],
+        "end": [
+          62.366,
+          0.1,
+          128.777
+        ],
+        "maxSpeed": 0,
+        "states": [
+          "IDLE"
+        ],
+        "animations": [
+          "jab"
+        ],
+        "attacks": [
+          "jab"
+        ],
+        "swingingFrames": 0,
+        "maxWebs": 0,
+        "averageFps": 55.58,
+        "low1Fps": 10,
+        "maxDrawCalls": 76,
+        "maxTriangles": 51700,
+        "memoryStart": 51535988,
+        "memoryEnd": 45357012,
+        "pitch": [
+          -1.4,
+          -1.4
+        ],
+        "yaw": [
+          -0.4848,
+          -0.4848
+        ]
+      }
+    },
+    {
+      "name": "straight",
+      "status": "PASS",
+      "detail": {
+        "expected": "cross",
+        "frames": 60,
+        "seconds": 0.981,
+        "travel": 0,
+        "start": [
+          62.366,
+          0.1,
+          128.777
+        ],
+        "end": [
+          62.366,
+          0.1,
+          128.777
+        ],
+        "maxSpeed": 0,
+        "states": [
+          "IDLE"
+        ],
+        "animations": [
+          "cross",
+          "combatIdle"
+        ],
+        "attacks": [
+          "cross"
+        ],
+        "swingingFrames": 0,
+        "maxWebs": 0,
+        "averageFps": 59.53,
+        "low1Fps": 30.12,
+        "maxDrawCalls": 77,
+        "maxTriangles": 51760,
+        "memoryStart": 50803528,
+        "memoryEnd": 53320244,
+        "pitch": [
+          -1.4,
+          -0.9534
+        ],
+        "yaw": [
+          -0.4848,
+          -0.3264
+        ]
+      }
+    },
+    {
+      "name": "hook (E starts heavy)",
+      "status": "PASS",
+      "detail": {
+        "expected": "heavy",
+        "frames": 73,
+        "seconds": 1.198,
+        "travel": 0,
+        "start": [
+          62.366,
+          0.1,
+          128.777
+        ],
+        "end": [
+          62.366,
+          0.1,
+          128.777
+        ],
+        "maxSpeed": 0,
+        "states": [
+          "IDLE"
+        ],
+        "animations": [
+          "heavy",
+          "combatIdle"
+        ],
+        "attacks": [
+          "heavy"
+        ],
+        "swingingFrames": 0,
+        "maxWebs": 0,
+        "averageFps": 60.07,
+        "low1Fps": 56.5,
+        "maxDrawCalls": 60,
+        "maxTriangles": 50878,
+        "memoryStart": 49301664,
+        "memoryEnd": 42954472,
+        "pitch": [
+          -0.9534,
+          -0.2725
+        ],
+        "yaw": [
+          -0.3264,
+          -1.2196
+        ]
+      }
+    },
+    {
+      "name": "uppercut (G starts special)",
+      "status": "PASS",
+      "detail": {
+        "expected": "special",
+        "frames": 80,
+        "seconds": 1.502,
+        "travel": 2.098,
+        "start": [
+          62.366,
+          0.1,
+          128.777
+        ],
+        "end": [
+          60.327,
+          0.1,
+          129.269
+        ],
+        "maxSpeed": 8.442,
+        "states": [
+          "IDLE"
+        ],
+        "animations": [
+          "special",
+          "combatIdle"
+        ],
+        "attacks": [
+          "special"
+        ],
+        "swingingFrames": 0,
+        "maxWebs": 0,
+        "averageFps": 59.86,
+        "low1Fps": 10,
+        "maxDrawCalls": 274,
+        "maxTriangles": 54014,
+        "memoryStart": 42954472,
+        "memoryEnd": 46829680,
+        "pitch": [
+          -0.3253,
+          -0.168
+        ],
+        "yaw": [
+          -1.334,
+          -2.2382
+        ]
+      }
+    },
+    {
+      "name": "jab then straight",
+      "status": "PASS",
+      "detail": {
+        "frames": 95,
+        "seconds": 1.566,
+        "travel": 0,
+        "start": [
+          60.327,
+          0.1,
+          129.269
+        ],
+        "end": [
+          60.327,
+          0.1,
+          129.269
+        ],
+        "maxSpeed": 0,
+        "states": [
+          "IDLE"
+        ],
+        "animations": [
+          "jab",
+          "cross",
+          "combatIdle"
+        ],
+        "attacks": [
+          "jab",
+          "cross"
+        ],
+        "swingingFrames": 0,
+        "maxWebs": 0,
+        "averageFps": 59.51,
+        "low1Fps": 10,
+        "maxDrawCalls": 213,
+        "maxTriangles": 52344,
+        "memoryStart": 53981776,
+        "memoryEnd": 49703533,
+        "pitch": [
+          0.4304,
+          0.2511
+        ],
+        "yaw": [
+          -1.9632,
+          -1.9313
+        ]
+      }
+    },
+    {
+      "name": "run into jab",
+      "status": "PASS",
+      "detail": {
+        "frames": 67,
+        "seconds": 1.095,
+        "travel": 3.81,
+        "start": [
+          60.324,
+          0.1,
+          129.268
+        ],
+        "end": [
+          56.561,
+          0.1,
+          129.863
+        ],
+        "maxSpeed": 4.39,
+        "states": [
+          "RUNNING"
+        ],
+        "animations": [
+          "walk",
+          "regularRun"
+        ],
+        "attacks": [
+          "jab"
+        ],
+        "swingingFrames": 0,
+        "maxWebs": 0,
+        "averageFps": 60.17,
+        "low1Fps": 56.18,
+        "maxDrawCalls": 132,
+        "maxTriangles": 52192,
+        "memoryStart": 46680368,
+        "memoryEnd": 54014294,
+        "pitch": [
+          0.2511,
+          -0.9721
+        ],
+        "yaw": [
+          -1.9313,
+          -0.8808
+        ]
+      }
+    },
+    {
+      "name": "attack mash stays finite",
+      "status": "PASS",
+      "detail": {
+        "frames": 74,
+        "seconds": 1.214,
+        "travel": 0.403,
+        "start": [
+          56.465,
+          0.1,
+          129.942
+        ],
+        "end": [
+          56.153,
+          0.1,
+          130.197
+        ],
+        "maxSpeed": 3.362,
+        "states": [
+          "IDLE"
+        ],
+        "animations": [
+          "regularRun",
+          "walk",
+          "combatIdle"
+        ],
+        "attacks": [
+          "jab"
+        ],
+        "swingingFrames": 0,
+        "maxWebs": 0,
+        "averageFps": 60.04,
+        "low1Fps": 56.18,
+        "maxDrawCalls": 127,
+        "maxTriangles": 52182,
+        "memoryStart": 41014866,
+        "memoryEnd": 42524954,
+        "pitch": [
+          -0.9721,
+          0.7362
+        ],
+        "yaw": [
+          -0.8808,
+          -1.9819
+        ]
+      }
+    },
+    {
+      "name": "return to wire mode",
+      "status": "PASS",
+      "detail": {
+        "mode": "web"
+      }
+    },
+    {
+      "name": "blur pauses play",
+      "status": "PASS",
+      "detail": {
+        "paused": true
+      }
+    },
+    {
+      "name": "resize keeps playing",
+      "status": "PASS",
+      "detail": {
+        "playing": true,
+        "drawCalls": 15,
+        "errors": 0
+      }
+    },
+    {
+      "name": "idle performance sample",
+      "status": "PASS",
+      "detail": {
+        "frames": 142,
+        "seconds": 2.499,
+        "travel": 0,
+        "start": [
+          56.153,
+          0.1,
+          130.197
+        ],
+        "end": [
+          56.153,
+          0.1,
+          130.197
+        ],
+        "maxSpeed": 0,
+        "states": [
+          "IDLE"
+        ],
+        "animations": [
+          "idle"
+        ],
+        "attacks": [],
+        "swingingFrames": 0,
+        "maxWebs": 0,
+        "averageFps": 60.23,
+        "low1Fps": 56.18,
+        "maxDrawCalls": 104,
+        "maxTriangles": 50886,
+        "memoryStart": 37049673,
+        "memoryEnd": 42992537,
+        "pitch": [
+          0.7395,
+          0.4359
+        ],
+        "yaw": [
+          -1.983,
+          -2.2162
+        ]
+      }
+    },
+    {
+      "name": "audio triggers observed",
+      "status": "PASS",
+      "detail": {
+        "audioCounts": {
+          "playSurfaceStep": 19,
+          "playJump": 1,
+          "playWebFailure": 4,
+          "playWebShoot": 3,
+          "playLand": 1
+        },
+        "note": "Counts show the synth methods ran. Loudness and timbre were not heard."
+      }
+    },
+    {
+      "name": "vfx triggers observed",
+      "status": "PASS",
+      "detail": {
+        "spawnLandingShockwave": 2
+      }
+    },
+    {
+      "name": "console errors during solo",
+      "status": "PASS",
+      "detail": {
+        "page": [],
+        "probe": []
+      }
+    },
+    {
+      "name": "motion review frames captured",
+      "status": "PASS",
+      "detail": {
+        "keys": [
+          "idle",
+          "walk",
+          "run",
+          "swing",
+          "jab",
+          "hook",
+          "special",
+          "land",
+          "wall",
+          "fall"
+        ],
+        "visual": "captured for director review, not auto-scored"
+      }
+    },
+    {
+      "name": "local multiplayer",
+      "status": "BLOCKED",
+      "detail": {
+        "error": "page.fill: Target page, context or browser has been closed\nCall log:\n  - waiting for locator('#player-name')\n    - locator resolved to <input value=\"Pulse\" maxlength=\"16\" id=\"player-name\" autocomplete=\"nickname\"/>\n    - fill(\"DirectorA\")\n  - attempting fill action\n    2 × waiting for element to be visible, enabled and editable\n      - element is not visible\n    - retrying fill action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and editable\n      - element is not visible\n    - retrying fill action\n      - waiting 100ms\n    15 × waiting for element to be visible, enabled and editable\n       - element is not visible\n     - retrying fill action\n       - waiting 500ms\n\n    at boot (/Users/choeminseong/Desktop/게임/scripts/quality-director/play.mjs:283:18)\n    at async file:///Users/choeminseong/Desktop/%E1%84%80%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%B7/scripts/quality-director/play.mjs:287:3"
+      }
+    }
+  ]
+}

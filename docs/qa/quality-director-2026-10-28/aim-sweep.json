@@ -1,0 +1,95 @@
+{
+  "rows": [
+    {
+      "asked": -0.2,
+      "pitch": -0.2,
+      "yaw": 0,
+      "first": null,
+      "anchor": null,
+      "reason": "대상 없음 · 건물을 향해 조준하세요."
+    },
+    {
+      "asked": -0.45,
+      "pitch": -0.45,
+      "yaw": 0,
+      "first": null,
+      "anchor": null,
+      "reason": "대상 없음 · 건물을 향해 조준하세요."
+    },
+    {
+      "asked": -0.7,
+      "pitch": -0.7,
+      "yaw": 0,
+      "first": null,
+      "anchor": null,
+      "reason": "대상 없음 · 건물을 향해 조준하세요."
+    },
+    {
+      "asked": -0.9,
+      "pitch": -0.9,
+      "yaw": 0,
+      "first": {
+        "distance": 12.157,
+        "name": "Mesh",
+        "point": [
+          99.6,
+          100.37,
+          98.13
+        ]
+      },
+      "anchor": [
+        99.6,
+        100.37,
+        98.13
+      ],
+      "reason": "대상 없음 · 건물을 향해 조준하세요."
+    },
+    {
+      "asked": -1.05,
+      "pitch": -1.05,
+      "yaw": 0,
+      "first": {
+        "distance": 9.802,
+        "name": "Mesh",
+        "point": [
+          99.6,
+          100.65,
+          96.24
+        ]
+      },
+      "anchor": [
+        99.6,
+        100.65,
+        96.24
+      ],
+      "reason": "대상 없음 · 건물을 향해 조준하세요."
+    },
+    {
+      "asked": -1.2,
+      "pitch": -1.2,
+      "yaw": 0,
+      "first": {
+        "distance": 10.052,
+        "name": "Mesh",
+        "point": [
+          99.6,
+          102.01,
+          96.24
+        ]
+      },
+      "anchor": [
+        99.6,
+        102.01,
+        96.24
+      ],
+      "reason": "대상 없음 · 건물을 향해 조준하세요."
+    }
+  ],
+  "swingingFrames": 44,
+  "maxWebs": 1,
+  "states": [
+    "IDLE",
+    "SWINGING"
+  ],
+  "maxSpeed": 29.12
+}

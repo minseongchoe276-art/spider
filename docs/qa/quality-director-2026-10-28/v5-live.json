@@ -1,0 +1,480 @@
+{
+  "started": "2026-10-28T03:40:43.725Z",
+  "seed": 20261028,
+  "build": "quality-director-v5",
+  "tests": [
+    {
+      "name": "모션 카탈로그",
+      "status": "PASS",
+      "detail": {
+        "roll": {
+          "name": "roll",
+          "duration": 1.543,
+          "source": null,
+          "authored": false,
+          "choreography": null
+        },
+        "dodgeLeft": null,
+        "dodgeForward": null,
+        "fallVariant": {
+          "name": "fallVariant",
+          "duration": 4.5,
+          "source": null,
+          "authored": false,
+          "choreography": null
+        },
+        "land": {
+          "name": "land",
+          "duration": 0.776,
+          "source": "/models/Falling To Landing.fbx",
+          "authored": true,
+          "choreography": null
+        }
+      }
+    },
+    {
+      "name": "빠른 수평 착지 구르기",
+      "status": "UNVERIFIED",
+      "detail": {
+        "frames": 0,
+        "animations": [
+          "drop",
+          "fall",
+          "land"
+        ],
+        "states": [
+          "FALLING",
+          "LANDING"
+        ],
+        "impactVy": 0,
+        "horizontal": 2.62,
+        "gap": null,
+        "hips": null,
+        "travel": 0
+      }
+    },
+    {
+      "name": "구르기 중 이동 입력",
+      "status": "UNVERIFIED",
+      "detail": "roll did not start"
+    },
+    {
+      "name": "회피 발과 이동",
+      "status": "UNVERIFIED",
+      "detail": {
+        "left": {
+          "started": {
+            "started": false,
+            "key": null,
+            "stamina": 100,
+            "from": [
+              110.063,
+              23.224,
+              90
+            ]
+          },
+          "slide": {
+            "capsule": 0,
+            "footRel": null,
+            "gap": null,
+            "animations": [],
+            "attacks": []
+          },
+          "states": [
+            "FALLING",
+            "LANDING"
+          ]
+        },
+        "right": {
+          "started": {
+            "started": true,
+            "key": "dodgeRight",
+            "stamina": 82,
+            "from": [
+              110.375,
+              0.1,
+              90
+            ]
+          },
+          "slide": {
+            "capsule": 0.144,
+            "footRel": 0.159,
+            "gap": {
+              "min": 0.121,
+              "max": 0.152
+            },
+            "animations": [
+              "land",
+              "combatIdle"
+            ],
+            "attacks": [
+              "dodgeRight"
+            ]
+          },
+          "states": [
+            "LANDING",
+            "RUNNING",
+            "IDLE"
+          ]
+        },
+        "back": {
+          "started": {
+            "started": true,
+            "key": "dodgeBack",
+            "stamina": 72.99,
+            "from": [
+              110.231,
+              0.1,
+              90
+            ]
+          },
+          "slide": {
+            "capsule": 0.362,
+            "footRel": 0.218,
+            "gap": {
+              "min": 0.121,
+              "max": 0.179
+            },
+            "animations": [
+              "combatIdle"
+            ],
+            "attacks": [
+              "dodgeBack"
+            ]
+          },
+          "states": [
+            "IDLE",
+            "RUNNING"
+          ]
+        },
+        "forward": {
+          "started": {
+            "started": true,
+            "key": "dodgeForward",
+            "stamina": 63.09,
+            "from": [
+              110.231,
+              0.1,
+              89.638
+            ]
+          },
+          "slide": {
+            "capsule": 0.761,
+            "footRel": 0.299,
+            "gap": {
+              "min": 0.125,
+              "max": 0.243
+            },
+            "animations": [
+              "combatIdle"
+            ],
+            "attacks": [
+              "dodgeForward"
+            ]
+          },
+          "states": [
+            "IDLE",
+            "RUNNING"
+          ]
+        }
+      }
+    },
+    {
+      "name": "정지 잽 발",
+      "status": "PASS",
+      "detail": {
+        "capsule": 0,
+        "footRel": 0.001,
+        "gap": {
+          "min": 0.125,
+          "max": 0.126
+        },
+        "animations": [
+          "combatIdle",
+          "jab"
+        ],
+        "attacks": [
+          "jab"
+        ]
+      }
+    },
+    {
+      "name": "달리기 잽 발",
+      "status": "PASS",
+      "detail": {
+        "capsule": 3.043,
+        "footRel": 0.74,
+        "gap": {
+          "min": 0.132,
+          "max": 0.58
+        },
+        "animations": [
+          "regularRun"
+        ],
+        "attacks": [
+          "jab"
+        ]
+      }
+    },
+    {
+      "name": "질주 잽",
+      "status": "PASS",
+      "detail": {
+        "capsule": 4.509,
+        "footRel": 0.716,
+        "gap": {
+          "min": 0.122,
+          "max": 0.644
+        },
+        "animations": [
+          "run"
+        ],
+        "attacks": [
+          "jab"
+        ]
+      }
+    },
+    {
+      "name": "달리기 크로스",
+      "status": "PASS",
+      "detail": {
+        "capsule": 2.836,
+        "footRel": 0.706,
+        "gap": {
+          "min": 0.132,
+          "max": 0.573
+        },
+        "animations": [
+          "regularRun"
+        ],
+        "attacks": [
+          "cross"
+        ]
+      }
+    },
+    {
+      "name": "달리기 헤비",
+      "status": "PASS",
+      "detail": {
+        "capsule": 3.33,
+        "footRel": 0.71,
+        "gap": {
+          "min": 0.134,
+          "max": 0.573
+        },
+        "animations": [
+          "regularRun"
+        ],
+        "attacks": [
+          "heavy"
+        ]
+      }
+    },
+    {
+      "name": "스윙 궤적과 FOV",
+      "status": "UNVERIFIED",
+      "detail": {
+        "far": {
+          "ok": false,
+          "meshes": 16
+        },
+        "frames": 0,
+        "travel": 0,
+        "fov": null,
+        "fovAtLow": null,
+        "rope": null,
+        "rigRoll": null,
+        "cock": null,
+        "cam": null,
+        "release": [
+          "IDLE:idle"
+        ]
+      }
+    },
+    {
+      "name": "점프 후 와이어 첫 구간",
+      "status": "PASS",
+      "detail": {
+        "states": [
+          "JUMPING"
+        ],
+        "animations": [
+          "jump"
+        ],
+        "cock": null
+      }
+    },
+    {
+      "name": "벽 타기 전환",
+      "status": "UNVERIFIED",
+      "detail": {
+        "aim": true,
+        "states": [
+          "JUMPING",
+          "FALLING"
+        ],
+        "animations": [
+          "jump",
+          "drop",
+          "fall"
+        ]
+      }
+    },
+    {
+      "name": "시드 입력",
+      "status": "PASS",
+      "detail": {
+        "seed": 20261028,
+        "sequence": [
+          "KeyD",
+          "KeyF",
+          "KeyE",
+          "KeyW",
+          "KeyG",
+          "KeyS",
+          "KeyA",
+          "Space",
+          "KeyD",
+          "KeyF",
+          "KeyE",
+          "KeyW",
+          "KeyG",
+          "KeyS",
+          "KeyA",
+          "Space",
+          "KeyD",
+          "KeyF",
+          "KeyE",
+          "KeyW",
+          "KeyG",
+          "KeyS",
+          "KeyA",
+          "Space"
+        ],
+        "position": [
+          106.7,
+          3.333,
+          90.442
+        ],
+        "state": "JUMPING"
+      }
+    },
+    {
+      "name": "사운드·VFX 호출",
+      "status": "UNVERIFIED",
+      "detail": {
+        "audio": {
+          "playSurfaceStep": 24,
+          "playLand": 4,
+          "playWebFailure": 6,
+          "playWebShoot": 3,
+          "playJump": 3
+        },
+        "vfx": {
+          "spawnLandingShockwave": 5,
+          "spawnWebImpact": 1,
+          "spawn": 1
+        },
+        "note": "counts only; timbre was not heard"
+      }
+    },
+    {
+      "name": "홍콩 시민 접근",
+      "status": "PASS",
+      "detail": {
+        "count": 1,
+        "approached": {
+          "ok": true,
+          "person": {
+            "id": 1,
+            "state": "WALK",
+            "x": -22.56,
+            "y": 20.86,
+            "z": 8.93,
+            "yaw": 2.867,
+            "speed": 0,
+            "allows": null,
+            "route": 0,
+            "anim": "walk",
+            "anchor": 4.42
+          },
+          "support": null
+        }
+      }
+    },
+    {
+      "name": "홍콩 차량",
+      "status": "UNVERIFIED",
+      "detail": {
+        "parked": "PARKED",
+        "model": "bmw",
+        "driving": "PARKED",
+        "speed": 0,
+        "spinBefore": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "spin": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "contact": [
+          5.036,
+          5.021,
+          5.016,
+          5.051
+        ]
+      }
+    },
+    {
+      "name": "로컬 2인 어퍼컷 모션",
+      "status": "UNVERIFIED",
+      "detail": {
+        "code": "A1C443",
+        "apart": 22.4,
+        "peers": [
+          {
+            "name": "V5Host",
+            "position": [
+              99.6,
+              95.47,
+              78.8
+            ],
+            "motion": "idle",
+            "combat": null,
+            "network": {
+              "key": "idle",
+              "time": 1.623
+            }
+          }
+        ],
+        "guestRoom": {
+          "phase": "playing",
+          "mode": "custom",
+          "id": "4b2c898f72b5e79e",
+          "health": 100,
+          "notice": "시작 보호 6초 · 아직 피해 없음",
+          "others": [
+            {
+              "id": "0aaebbb57eef0d18",
+              "name": "V5Host",
+              "health": 100,
+              "team": "red",
+              "x": 99.6,
+              "y": 95.47,
+              "z": 78.8
+            }
+          ]
+        },
+        "hostNotice": "시작 보호 6초 · 아직 피해 없음",
+        "hostHealth": 100,
+        "guestHealth": 100
+      }
+    }
+  ],
+  "finished": "2026-10-28T03:42:18.939Z"
+}

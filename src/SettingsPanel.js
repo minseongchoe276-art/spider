@@ -1,7 +1,7 @@
 import { BINDINGS, SETTING_LIMITS, keyLabel, rebind } from './PlayerSettings.js';
 const labels={forward:'앞으로',backward:'뒤로',left:'왼쪽',right:'오른쪽',sprint:'질주',jump:'점프',wall:'벽 타기 / 가드',zip:'와이어 집 / 훅',mode:'전투 / 에너지 와이어',recenter:'카메라 정렬',camera:'시점'};
 const ranges={sensitivity:'마우스 / 스틱 감도',fov:'시야각',shake:'카메라 흔들림',speedFov:'속도 시야각 변화',follow:'자동 추적',speedLines:'속도선',effectsVolume:'효과음',environmentVolume:'환경음',musicVolume:'음악',hudScale:'HUD 크기'};
-const switches={invertY:'세로축 반전',webToggle:'에너지 와이어 클릭으로 유지 / 해제',sprintToggle:'질주 키로 유지 / 해제',autoQuality:'성능에 맞춰 해상도 조절',trajectory:'비행 방향 미리 보기',showPerformance:'성능 정보 표시'};
+const switches={invertY:'세로축 반전',webToggle:'데스크톱에서 에너지 와이어를 클릭으로 유지',sprintToggle:'질주 키로 유지 / 해제',autoQuality:'성능에 맞춰 해상도 조절',trajectory:'비행 방향 미리 보기',showPerformance:'성능 정보 표시'};
 export class SettingsPanel {
   constructor(game) {
     this.game=game;const root=document.getElementById('extended-settings');if(!root)return;
@@ -25,7 +25,9 @@ export class SettingsPanel {
       button.addEventListener('click',()=>{this.cancel();this.pending=action;button.textContent='새 키 입력 · Esc 취소';});this.buttons[action]=button;row.append(title,button);input.append(row);
     }
     const reset=document.createElement('button');reset.type='button';reset.textContent='기본 키로 복원';reset.addEventListener('click',()=>{game.clearInput();game.preferences.values.settings.bindings={...BINDINGS};this.cancel();this.save();});input.append(reset);
-    const pad=document.createElement('p');pad.textContent='게임패드: 왼쪽 스틱 이동 · 오른쪽 시점 · A 점프 · LT/RT 양손 에너지 와이어 · X 집 · Y 모드 · LB / B 벽 타기 / 가드 · 스틱 클릭 질주/정렬 · 십자키 시점/벽 이동 · Start 메뉴';input.append(pad);
+    const wirePad=document.createElement('p');wirePad.textContent='왼쪽 스틱 이동 · 오른쪽 스틱 시점 · A 점프 · RT는 누르는 동안 왼손 에너지 와이어 · LT는 누르는 동안 오른손 에너지 와이어 · X 공중 집 · Y 모드 · LB / B / 십자 위는 벽 타기 · L3 질주 · R3 정렬 · 십자 왼쪽 시점 · Start 메뉴. RB, 십자 아래, 십자 오른쪽은 동작이 없습니다.';
+    const combatPad=document.createElement('p');combatPad.textContent='RT는 지상 잽 · LT는 지상 오른손 펀칭 · 공중에서는 RT와 LT가 공격하지 않습니다 · X는 훅 · LB / B / 십자 위는 누르는 동안 방어이며 회피가 아닙니다. 이동·시점·점프·모드·메뉴는 와이어 모드와 같습니다.';
+    input.append(wirePad,combatPad);
     window.addEventListener('keydown',event=>{
       if(!this.pending)return;event.preventDefault();event.stopImmediatePropagation();
       if(event.code==='Escape')return this.cancel();

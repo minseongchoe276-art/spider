@@ -21,13 +21,38 @@
 <body>
 <main>
   <h1>SHADOW PULSE 품질 대시보드</h1>
-  <p>2026-10-28 · MacBook Pro M1 16GB · 절차 도시 · 개발 전용. 게임 HUD가 아니다. 수치는 같은 폴더의 JSON에서 옮겼다. V3에서 확정한 훅, 전투 카메라, 차량 바는 적용 후 다시 확인했다.</p>
+  <p>2026-10-28 · MacBook Pro M1 16GB · 절차 도시 · 개발 전용. 게임 HUD가 아니다. 수치는 같은 폴더의 JSON에서 옮겼다. V3에서 확정한 훅, 전투 카메라, 차량 바는 적용 후 다시 확인했다. V5는 로컬 Chrome 실측이고, 회피 모션과 도망자 가드는 승인 전에 넣지 않았다.</p>
   <div class="grid">
     <div class="card"><b>37×5</b>모션 프레임 저장, 본 것은 일부</div>
     <div class="card"><b class="pass">63m</b>양손, 같은 앵커</div>
     <div class="card"><b class="pass">잽</b>원격 클립이 따라감</div>
     <div class="card"><b class="pass">카메라</b>공격 중 몸은 시작 방향</div>
   </div>
+  <h2>V5 플레이 검증</h2>
+  <p><a href="V5_GAMEPLAY_VALIDATION_REPORT.md">V5 보고서</a> · <a href="v5-live.json">v5-live.json</a> · <a href="v5-roll.json">v5-roll.json</a> · <a href="v5-frames.json">v5-frames.json</a> · <a href="guard-v5/delays.json">가드 지연</a> · 시드 20261028. 속도·피해·물리·클립은 유지.</p>
+  <div class="grid">
+    <div class="card"><b class="pass">0.761m</b>앞 회피, 클립은 combatIdle</div>
+    <div class="card"><b class="pass">88</b>구르기 프레임, 몸은 화면 밖</div>
+    <div class="card"><b class="fail">가드</b>도망자 위조는 여전히 10</div>
+    <div class="card"><b class="pass">0</b>index-B3NTavQ-.js 프로브</div>
+  </div>
+  <table>
+    <tr><th>항목</th><th>상태</th><th>증거</th></tr>
+    <tr><td>앞·뒤 회피 거리</td><td class="pass">PASS</td><td>앞 0.761m, 뒤 0.362m. 적분과 같다. 발은 대기 자세로 미끄러짐. 수정 안 함</td></tr>
+    <tr><td>정지 잽 / 이동 공격 발</td><td class="pass">PASS</td><td>정지 발 상대이동 0.001m. 달리기 잽 0.740m, 클립 regularRun</td></tr>
+    <tr><td>구르기 상태</td><td class="pass">PASS</td><td>88프레임 roll. 발 간격 최소 0.164m. <a href="shots/v5/roll-mid-0.png">화면</a>은 하늘</td></tr>
+    <tr><td>구르기 몸 자세</td><td>UNVERIFIED</td><td>카메라 피치가 와이어 조준에 남아 몸이 프레임 밖</td></tr>
+    <tr><td>짧은 스윙</td><td class="pass">PASS</td><td>줄 11.211m, 롤 0, 손목 32.6°. <a href="shots/v5/swing-mid-0.png">swing-mid-0.png</a> 클립은 jump</td></tr>
+    <tr><td>4초 좌우 스윙</td><td>UNVERIFIED</td><td>앵커 11.6m, z 약 4.3m. FOV 샘플 최대 73.35</td></tr>
+    <tr><td>홍콩 시민</td><td>UNVERIFIED</td><td>생성 1명 PASS. <a href="shots/v5/hong-kong-citizen.png">프레임</a>은 낙하 중</td></tr>
+    <tr><td>홍콩 BMW 소환</td><td class="pass">PASS</td><td>PARKED, 문 7.36m. 탑승·바퀴는 UNVERIFIED</td></tr>
+    <tr><td>어퍼컷 48</td><td class="pass">PASS</td><td>로컬 소켓 9건. Chrome 방 A1C443은 22.4m, 보호 6초</td></tr>
+    <tr><td>가드 신선도</td><td class="pass">PASS</td><td>100·250ms는 10, 패킷 중단은 25, 서 있는 상태는 10</td></tr>
+    <tr><td>도망자 방어</td><td class="fail">FAIL</td><td>SP-V4-GUARD. 추천은 서버 거부. 적용 안 함</td></tr>
+    <tr><td>소리 음질</td><td>UNVERIFIED</td><td>호출 횟수만. 청취하지 않음</td></tr>
+    <tr><td>npm test</td><td class="fail">FAIL</td><td>픽스처 3건은 재실행 PASS. 특수기·훅 발·크로스 원본 기대값 4건은 그대로 실패</td></tr>
+    <tr><td>프로덕션 프로브</td><td class="pass">FIXED_AND_VERIFIED</td><td>index-B3NTavQ-.js 0건. 배포 안 함</td></tr>
+  </table>
   <h2>V4 정합성</h2>
   <p><a href="V4_SYSTEM_CONSISTENCY_REPORT.md">V4 보고서</a> · <a href="v4-live.json">v4-live.json</a> · <a href="v4-follow.json">v4-follow.json</a> · 시드 20261028. 피해·물리·속도·클립은 유지. 영어 JSON의 도움말 FAIL은 로비 카드 문장을 도움말 안에서 찾은 검사 오류이고, 다시 읽은 화면은 PASS다.</p>
   <div class="grid">
@@ -114,8 +139,23 @@
     <tr><td>경사·연석</td><td>NOT_APPLICABLE</td><td>탄 바닥 피치 약 0.01rad</td></tr>
     <tr><td>원격 바퀴·인원 확장 FPS</td><td>UNVERIFIED</td><td>코르벳 20초, 평균 59.7fps, 1% 37.5. GPU 없음</td></tr>
   </table>
+  <h2>차량·보행 수정 V3</h2>
+  <p>로컬 Chrome. 물리 상수와 운전석 2.3m는 유지. 커밋하지 않음. <a href="VEHICLE_PEDESTRIAN_FIX_V3_REPORT.md">수정 보고서</a> · <a href="vehicle-pedestrian-v3.json">vehicle-pedestrian-v3.json</a> · <a href="vehicle-pedestrian-v3-aim.json">aim</a> · <a href="vehicle-pedestrian-v3-unit.json">단위</a></p>
+  <table>
+    <tr><th>항목</th><th>상태</th><th>증거</th></tr>
+    <tr><td>로컬 5개 도시 시민</td><td class="pass">FIXED_AND_VERIFIED</td><td>8 / 6 / 6 / 5 / 5명, y 0.01, 약 3m/2초. <a href="vehicle-pedestrian-v3/procedural-aim.png">절차</a> <a href="vehicle-pedestrian-v3/harbor-citizens.png">항구</a> <a href="vehicle-pedestrian-v3/gardens-aim.png">정원</a> <a href="vehicle-pedestrian-v3/old-town-aim.png">구시가</a> <a href="vehicle-pedestrian-v3/skyline-aim.png">스카이라인</a></td></tr>
+    <tr><td>홍콩 시민 이동</td><td class="pass">FIXED_AND_VERIFIED</td><td>8초에 4.47m, 5.46m. 이동 0인 정지는 없음. 앵커 1.25m</td></tr>
+    <tr><td>홍콩 시민 화면</td><td>UNVERIFIED</td><td>프로브는 walk 1.2m/s. <a href="vehicle-pedestrian-v3/hong-kong-aim.png">벽</a>과 <a href="vehicle-pedestrian-v3/hong-kong-aim-side.png">낙사</a>라 사람이 안 보임</td></tr>
+    <tr><td>옥상 소환</td><td class="pass">FIXED_AND_VERIFIED</td><td>플레이어 y 122.47, 차 y 122.39. <a href="vehicle-pedestrian-v3/roof-summon.png">roof-summon.png</a></td></tr>
+    <tr><td>지상 소환 / 공중 거절</td><td class="pass">PASS</td><td>거리 y 0.02. 공중은 발밑 안내. 홍콩 난간 y 20.5는 층 안내</td></tr>
+    <tr><td>BMW · 코르벳 탑승</td><td class="pass">FIXED_AND_VERIFIED</td><td>문 좌표에서 ENTERING. 앵커 (1.65, 0.1, 0.15) 유지. <a href="vehicle-pedestrian-v3/bmw-side.png">BMW 23km/h</a> <a href="vehicle-pedestrian-v3/corvette-side.png">코르벳 23km/h</a></td></tr>
+    <tr><td>움직이는 바퀴</td><td class="pass">FIXED_AND_VERIFIED</td><td>5시점 6–14m/s. 스핀 증가와 전진 13.4m가 맞음. <a href="vehicle-pedestrian-v3/bmw-front-close.png">앞</a> <a href="vehicle-pedestrian-v3/bmw-rear-close.png">뒤</a> <a href="vehicle-pedestrian-v3/corvette-front-close.png">코르벳 앞</a></td></tr>
+    <tr><td>차·시민 회피</td><td>NOT_APPLICABLE</td><td>전용 회피 없음. 차체 정지 단위 검사는 z 1.06에서 속도 0</td></tr>
+    <tr><td>성능</td><td class="pass">PASS</td><td>시민 창 평균 약 60fps. 주행 2.5초 1%는 69ms 한 프레임. GPU 없음</td></tr>
+  </table>
   <h2>보고서</h2>
   <p>
+    <a href="V5_GAMEPLAY_VALIDATION_REPORT.md">V5 플레이</a> ·
     <a href="V4_SYSTEM_CONSISTENCY_REPORT.md">V4 정합성</a> ·
     <a href="GAME_QUALITY_AUDIT.md">감사</a> ·
     <a href="AUTONOMOUS_TEST_REPORT.md">자율 테스트</a> ·
@@ -127,7 +167,8 @@
     <a href="MULTIPLAYER_REPORT.md">멀티플레이</a> ·
     <a href="IMPROVEMENT_BACKLOG.md">백로그</a> ·
     <a href="FIX_VERIFICATION_REPORT.md">수정 검증</a> ·
-    <a href="VEHICLE_PEDESTRIAN_VISUAL_QA.md">차량·보행</a>
+    <a href="VEHICLE_PEDESTRIAN_VISUAL_QA.md">차량·보행</a> ·
+    <a href="VEHICLE_PEDESTRIAN_FIX_V3_REPORT.md">차량·보행 수정 V3</a>
   </p>
 </main>
 </body>

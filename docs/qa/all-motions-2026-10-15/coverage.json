@@ -626,26 +626,26 @@
   {
     "key": "hitHead",
     "fps": 24,
-    "frames": 15,
-    "maxExtremitySpeed": 0.5202901960492137
+    "frames": 21,
+    "maxExtremitySpeed": 1.3140537379879556
   },
   {
     "key": "hitHead",
     "fps": 30,
-    "frames": 18,
-    "maxExtremitySpeed": 0.5249777020394072
+    "frames": 26,
+    "maxExtremitySpeed": 1.4976090888477418
   },
   {
     "key": "hitHead",
     "fps": 60,
-    "frames": 34,
-    "maxExtremitySpeed": 0.5249978755131647
+    "frames": 51,
+    "maxExtremitySpeed": 1.6339631487559783
   },
   {
     "key": "hitHead",
     "fps": 144,
-    "frames": 80,
-    "maxExtremitySpeed": 0.5250247721603658
+    "frames": 121,
+    "maxExtremitySpeed": 1.6684568234587314
   },
   {
     "key": "rightHook",
@@ -674,26 +674,26 @@
   {
     "key": "cross",
     "fps": 24,
-    "frames": 13,
-    "maxExtremitySpeed": 4.064659029857701
+    "frames": 25,
+    "maxExtremitySpeed": 5.687131606793436
   },
   {
     "key": "cross",
     "fps": 30,
-    "frames": 16,
-    "maxExtremitySpeed": 4.109729068966232
-  },
-  {
-    "key": "cross",
-    "fps": 60,
     "frames": 31,
-    "maxExtremitySpeed": 4.231589664089971
+    "maxExtremitySpeed": 5.883984488456309
+  },
+  {
+    "key": "cross",
+    "fps": 60,
+    "frames": 61,
+    "maxExtremitySpeed": 5.931414973605351
   },
   {
     "key": "cross",
     "fps": 144,
-    "frames": 72,
-    "maxExtremitySpeed": 4.266417212924239
+    "frames": 145,
+    "maxExtremitySpeed": 5.935065124056563
   },
   {
     "key": "hook",
@@ -746,73 +746,145 @@
   {
     "key": "airTrick",
     "fps": 24,
-    "frames": 24,
-    "maxExtremitySpeed": 11.861190274923132
+    "frames": 27,
+    "maxExtremitySpeed": 11.717391651705437
   },
   {
     "key": "airTrick",
     "fps": 30,
-    "frames": 29,
-    "maxExtremitySpeed": 12.022522281569396
+    "frames": 33,
+    "maxExtremitySpeed": 11.901377194350458
   },
   {
     "key": "airTrick",
     "fps": 60,
-    "frames": 57,
-    "maxExtremitySpeed": 12.279782751554116
+    "frames": 65,
+    "maxExtremitySpeed": 12.16404589319095
   },
   {
     "key": "airTrick",
     "fps": 144,
-    "frames": 136,
-    "maxExtremitySpeed": 12.327425420687764
+    "frames": 155,
+    "maxExtremitySpeed": 12.19196123374055
   },
   {
     "key": "backTrick",
     "fps": 24,
-    "frames": 30,
-    "maxExtremitySpeed": 14.213026729782998
+    "frames": 31,
+    "maxExtremitySpeed": 13.949997300831834
   },
   {
     "key": "backTrick",
     "fps": 30,
     "frames": 38,
-    "maxExtremitySpeed": 14.828168322525427
+    "maxExtremitySpeed": 14.453436231055017
   },
   {
     "key": "backTrick",
     "fps": 60,
     "frames": 74,
-    "maxExtremitySpeed": 15.412233515635975
+    "maxExtremitySpeed": 15.007695043213307
   },
   {
     "key": "backTrick",
     "fps": 144,
-    "frames": 174,
-    "maxExtremitySpeed": 15.693388590941955
+    "frames": 176,
+    "maxExtremitySpeed": 15.275115082044854
+  },
+  {
+    "key": "hitBody",
+    "fps": 24,
+    "frames": 34,
+    "maxExtremitySpeed": 3.287519277033052
+  },
+  {
+    "key": "hitBody",
+    "fps": 30,
+    "frames": 42,
+    "maxExtremitySpeed": 3.377527658990594
+  },
+  {
+    "key": "hitBody",
+    "fps": 60,
+    "frames": 82,
+    "maxExtremitySpeed": 3.393731159999835
+  },
+  {
+    "key": "hitBody",
+    "fps": 144,
+    "frames": 194,
+    "maxExtremitySpeed": 3.407659436540737
+  },
+  {
+    "key": "hitHeavy",
+    "fps": 24,
+    "frames": 33,
+    "maxExtremitySpeed": 3.9823575915031943
+  },
+  {
+    "key": "hitHeavy",
+    "fps": 30,
+    "frames": 40,
+    "maxExtremitySpeed": 4.898933130171028
+  },
+  {
+    "key": "hitHeavy",
+    "fps": 60,
+    "frames": 79,
+    "maxExtremitySpeed": 5.2352671416848855
+  },
+  {
+    "key": "hitHeavy",
+    "fps": 144,
+    "frames": 189,
+    "maxExtremitySpeed": 5.358542841407048
+  },
+  {
+    "key": "hitUppercut",
+    "fps": 24,
+    "frames": 31,
+    "maxExtremitySpeed": 1.7828605745254975
+  },
+  {
+    "key": "hitUppercut",
+    "fps": 30,
+    "frames": 39,
+    "maxExtremitySpeed": 2.389108906299809
+  },
+  {
+    "key": "hitUppercut",
+    "fps": 60,
+    "frames": 76,
+    "maxExtremitySpeed": 2.3813117661821206
+  },
+  {
+    "key": "hitUppercut",
+    "fps": 144,
+    "frames": 179,
+    "maxExtremitySpeed": 2.414149374088337
   },
   {
     "key": "special",
     "fps": 24,
-    "frames": 45,
-    "maxExtremitySpeed": 6.701580418105587
+    "frames": 30,
+    "maxExtremitySpeed": 15.020897621969464
   },
   {
     "key": "special",
     "fps": 30,
-    "frames": 55,
-    "maxExtremitySpeed": 6.750995470250676
+    "frames": 37,
+    "maxExtremitySpeed": 15.369195987927796
   },
   {
     "key": "special",
     "fps": 60,
-    "frames": 109,
-    "maxExtremitySpeed": 7.015450725526949
+    "frames": 73,
+    "maxExtremitySpeed": 15.697587038746732
   },
   {
     "key": "special",
     "fps": 144,
-    "frames": 261,
-    "maxExtremitySpeed": 7.03061417501926
+    "frames": 174,
+    "maxExtremitySpeed": 15.773658207617673
   }
 ]

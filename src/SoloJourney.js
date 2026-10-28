@@ -177,8 +177,8 @@ export class SoloJourney {
     const hints={
       walk:copy(`${key('forward','왼쪽 스틱','왼쪽 스틱')} · 20m 이동하세요 (${Math.min(20,Math.floor(this.progress.walk))}/20m)`,`${key('forward','Left stick','Left stick')}: travel 20m (${Math.min(20,Math.floor(this.progress.walk))}/20m)`),
       jump:copy(`${key('jump','점프 버튼','A')} · 점프하세요`,`${key('jump','Jump button','A')}: jump`),
-      swing:copy(`${key('mode','더보기 → 모드','Y')}로 와이어 모드 · ${touch?'거미줄을 한 번 눌러':pad?'RT를 유지해':'높은 건물에 조준하고 좌클릭을 유지해'} 2초 스윙하세요`,`${key('mode','More → Mode','Y')}: wire mode · ${touch?'Tap Wire':pad?'Hold RT':'Aim high and hold left click'} to swing for 2s`),
-      land:copy(`${key('jump','점프 버튼','A')}로 줄에서 뛰어내려 바닥에 착지하세요`,`${key('jump','Jump button','A')}: release the wire and land on solid ground`),
+      swing:copy(`${key('mode','더보기 → 모드','Y')}로 와이어 모드 · ${touch?'에너지 와이어를 한 번 눌러':pad?'RT를 유지해':'높은 건물에 조준하고 좌클릭을 유지해'} 2초 스윙하세요`,`${key('mode','More → Mode','Y')}: wire mode · ${touch?'Tap Energy Wire once':pad?'Hold RT':'Aim high and hold left click'} to swing for 2s`),
+      land:copy(`${key('jump','점프 버튼','A')}로 에너지 와이어에서 뛰어내려 바닥에 착지하세요`,`${key('jump','Jump button','A')}: leap off the energy wire and land on solid ground`),
       wall:copy(`벽에 다가가 ${key('wall','더보기 → 벽 이동','방향키 위')}와 전진을 유지하세요`, `Approach a wall; hold ${key('wall','More → Wall','D-pad up')} and move forward`),
       hit:copy('메뉴 → 탐험 안내 → 훈련 표적을 시작하고 가까이서 공격을 명중시키세요','Menu → Exploration → Start training target, approach and land a hit'),
     };

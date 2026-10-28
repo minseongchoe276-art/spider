@@ -1,9 +1,25 @@
 {
-  "files": 38,
-  "animatedTakes": 47,
+  "files": 45,
+  "animatedTakes": 54,
   "emptyTakes": 7,
-  "frames": 5743,
+  "frames": 7469,
   "results": [
+    {
+      "file": "public/models/Big Hit To Head.fbx",
+      "take": "mixamo.com",
+      "status": "PASS",
+      "usedBy": [
+        "hitHeavy"
+      ],
+      "archived": false,
+      "duration": 1.2999999523162842,
+      "frames": 79,
+      "bones": 65,
+      "hipRange": [
+        0.9687323639142451,
+        1.1068736579735534
+      ]
+    },
     {
       "file": "public/models/Boxing Hook.fbx",
       "take": "mixamo.com",
@@ -67,6 +83,20 @@
       ]
     },
     {
+      "file": "public/models/Citizen Startle.fbx",
+      "take": "mixamo.com",
+      "status": "PASS",
+      "usedBy": [],
+      "archived": true,
+      "duration": 20,
+      "frames": 1201,
+      "bones": 65,
+      "hipRange": [
+        1.0062914229569033,
+        1.2410988132495395
+      ]
+    },
+    {
       "file": "public/models/Climbing Up Wall.fbx",
       "take": "mixamo.com",
       "status": "PASS",
@@ -86,10 +116,8 @@
       "file": "public/models/Cross Punch.fbx",
       "take": "mixamo.com",
       "status": "PASS",
-      "usedBy": [
-        "special"
-      ],
-      "archived": false,
+      "usedBy": [],
+      "archived": true,
       "duration": 2,
       "frames": 121,
       "bones": 65,
@@ -240,8 +268,24 @@
       "frames": 101,
       "bones": 65,
       "hipRange": [
-        0.8740447769344853,
-        2.9276799887860414
+        0.8368753364754778,
+        2.8959119627458865
+      ]
+    },
+    {
+      "file": "public/models/Hit To Body.fbx",
+      "take": "mixamo.com",
+      "status": "PASS",
+      "usedBy": [
+        "hitBody"
+      ],
+      "archived": false,
+      "duration": 1.3333333730697632,
+      "frames": 82,
+      "bones": 65,
+      "hipRange": [
+        1.0193808888503926,
+        1.188235410967563
       ]
     },
     {
@@ -287,10 +331,8 @@
       "file": "public/models/Jab Cross.fbx",
       "take": "mixamo.com",
       "status": "PASS",
-      "usedBy": [
-        "cross"
-      ],
-      "archived": false,
+      "usedBy": [],
+      "archived": true,
       "duration": 2.133333444595337,
       "frames": 130,
       "bones": 65,
@@ -361,6 +403,20 @@
       "tracks": 0
     },
     {
+      "file": "public/models/Lead Jab (3).fbx",
+      "take": "mixamo.com",
+      "status": "PASS",
+      "usedBy": [],
+      "archived": true,
+      "duration": 1.9666666984558105,
+      "frames": 120,
+      "bones": 65,
+      "hipRange": [
+        0.9406439565746519,
+        1.2342229855995184
+      ]
+    },
+    {
       "file": "public/models/Lead Jab.fbx",
       "take": "mixamo.com",
       "status": "PASS",
@@ -393,6 +449,22 @@
       ]
     },
     {
+      "file": "public/models/Light Hit To Head.fbx",
+      "take": "mixamo.com",
+      "status": "PASS",
+      "usedBy": [
+        "hitHead"
+      ],
+      "archived": false,
+      "duration": 0.8333333134651184,
+      "frames": 51,
+      "bones": 65,
+      "hipRange": [
+        1.0886352341951793,
+        1.1486309978886535
+      ]
+    },
+    {
       "file": "public/models/Mma Kick.fbx",
       "take": "mixamo.com",
       "status": "PASS",
@@ -404,6 +476,38 @@
       "hipRange": [
         1.123370270461459,
         1.325444296992287
+      ]
+    },
+    {
+      "file": "public/models/Punching.fbx",
+      "take": "mixamo.com",
+      "status": "PASS",
+      "usedBy": [
+        "cross"
+      ],
+      "archived": false,
+      "duration": 1,
+      "frames": 61,
+      "bones": 65,
+      "hipRange": [
+        1.1227668759418226,
+        1.1816032141979254
+      ]
+    },
+    {
+      "file": "public/models/Receive Uppercut To The Face.fbx",
+      "take": "mixamo.com",
+      "status": "PASS",
+      "usedBy": [
+        "hitUppercut"
+      ],
+      "archived": false,
+      "duration": 1.2333333492279053,
+      "frames": 76,
+      "bones": 65,
+      "hipRange": [
+        1.1302010264177895,
+        1.1557651446972572
       ]
     },
     {
@@ -517,26 +621,28 @@
         "backTrick"
       ],
       "archived": false,
-      "duration": 1.2000000476837158,
-      "frames": 74,
+      "duration": 2.133333444595337,
+      "frames": 130,
       "bones": 65,
       "hipRange": [
-        1.4200239100801557,
-        4.008722548480104
+        0.5235999211308444,
+        3.9811453941844794
       ]
     },
     {
       "file": "public/models/Surprise Uppercut.fbx",
       "take": "mixamo.com",
       "status": "PASS",
-      "usedBy": [],
-      "archived": true,
+      "usedBy": [
+        "special"
+      ],
+      "archived": false,
       "duration": 3.5,
       "frames": 211,
       "bones": 65,
       "hipRange": [
-        0.9576607553086508,
-        1.2399479108124987
+        0.9490771668902506,
+        1.2404575695211566
       ]
     },
     {
@@ -705,10 +811,8 @@
       "file": "public/models/sources/combat-base.glb",
       "take": "Hit_Head",
       "status": "PASS",
-      "usedBy": [
-        "hitHead"
-      ],
-      "archived": false,
+      "usedBy": [],
+      "archived": true,
       "duration": 0.5416666865348816,
       "frames": 34,
       "bones": 65,

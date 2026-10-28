@@ -29,7 +29,7 @@ import {CombatPractice} from './CombatPractice.js';
 import {startLoadingStatus} from './LoadingStatus.js';
 import {HudLayout} from './HudLayout.js';
 import {COMBAT_GROUND_STATES} from './AttackRules.js';
-import {AmbientCitizens} from './AmbientCitizens.js';
+import {AmbientCitizens,AMBIENT_COUNTS} from './AmbientCitizens.js';
 import {VehicleSystem} from './VehicleSystem.js';
 import {abilitySlotState,updateVitalsHud} from './VitalsHud.js';
 let stopLoadingStatus=()=>{};
@@ -266,10 +266,12 @@ export class GameApp {
     this.vfx = new VFXManager(this.scene);
     this.physics = new SwingPhysics(this.scene, this.city, this.character, this.audio);
     this.combat=new CombatSystem(this.scene,this.physics,this.character,{vfx:this.vfx,audio:this.audio,onNotice:message=>this.showNotice(message),getBindings:()=>this.preferences.values.settings.bindings,onImpact:strength=>this.tpsCamera?.triggerShake?.(strength)});
-    if(selectedCity(location.search)==='hong-kong'){
-      this.citizens=new AmbientCitizens({scene:this.scene,city:this.city,player:this.physics,camera:this.camera,onNotice:message=>this.showNotice(message),onPlayerHit:(amount,n)=>{if(this.vehicle?.driving)return;this.combat.receiveDamage(amount,n);this.audio?.playCombatHit?.(false);},onError:error=>console.warn('Citizen assets unavailable',error)});
-      this.combat.getTargets=()=>[...this.combat.enemies,...this.citizens.targets];
-    }
+    // Hong Kong keeps the streamed sidewalk walk. Local maps reuse that same
+    // population on their footpath graph. Counts follow the walkable network,
+    // not one number pasted onto every map.
+    const ambientMax=AMBIENT_COUNTS[useUrbanGround?'hong-kong':this.city.mapId]??6;
+    this.citizens=new AmbientCitizens({scene:this.scene,city:this.city,player:this.physics,camera:this.camera,max:ambientMax,onNotice:message=>this.showNotice(message),onPlayerHit:(amount,n)=>{if(this.vehicle?.driving)return;this.combat.receiveDamage(amount,n);this.audio?.playCombatHit?.(false);},onError:error=>console.warn('Citizen assets unavailable',error)});
+    this.combat.getTargets=()=>[...this.combat.enemies,...this.citizens.targets];
     this.combat.onDeferredStrike=()=>this.multiplayer?.attack('punch');
     this.physics.onWebAttach=anchor=>this.vfx.spawnWebImpact(anchor);
     this.physics.onLanding = (position, impact, surfaceNormal) => {
@@ -287,6 +289,10 @@ export class GameApp {
     if(this.citizens)this.citizens.obstacleRay=(origin,direction,distance)=>this.vehicle.blocksRay(origin,direction,distance);
     this.worldMap = new WorldMap(this);
     this.hongKongAudit=createHongKongAudit(this);
+    if(import.meta.env?.DEV && typeof location!=='undefined' && new URLSearchParams(location.search).has('qualityDirector') && (location.hostname==='127.0.0.1' || location.hostname==='localhost')){
+      this.qualityDirector=null;
+      import('./QualityDirector.js').then(module=>module.attachQualityDirector(this)).catch(error=>console.error(error));
+    }
     this.minimap = new HongKongMinimap({
       canvas: document.getElementById('minimap-canvas'),
       status: document.getElementById('minimap-status'),
@@ -1068,6 +1074,7 @@ export class GameApp {
         this.physics.facingAngle,
         this.vehicle?.driving?{forward:true}:this.input
       );
+      if(import.meta.env?.DEV) this.qualityDirector?.sample(delta);
       this.citizens?.update(delta);
       // 3. Update Visuals & FX
       const speedKmh = this.physics.velocity.length() * 3.6;

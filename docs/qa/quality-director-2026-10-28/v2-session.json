@@ -1,0 +1,724 @@
+{
+  "started": "2026-10-28T02:03:04.841Z",
+  "seed": 20261028,
+  "phases": {
+    "boot": {
+      "status": "PASS",
+      "loadMs": 1923,
+      "build": "quality-director-v2",
+      "map": "procedural",
+      "state": "IDLE",
+      "errors": []
+    },
+    "panel": {
+      "text": "DEV IDLE idle 0.0m/s lock:no err:0",
+      "top": 46,
+      "right": 8,
+      "width": 220,
+      "vitalsHidden": false,
+      "overlapsVitals": false,
+      "shot": "docs/qa/quality-director-2026-10-28/shots/v2-panel.png",
+      "status": "PASS"
+    },
+    "pointerLock": {
+      "canvases": [
+        {
+          "id": "webgl-canvas",
+          "connected": true,
+          "sameDocument": true,
+          "width": 1440,
+          "height": 900
+        },
+        {
+          "id": "speedlines-canvas",
+          "connected": true,
+          "sameDocument": true,
+          "width": 1440,
+          "height": 900
+        },
+        {
+          "id": "minimap-canvas",
+          "connected": true,
+          "sameDocument": true,
+          "width": 298,
+          "height": 298
+        },
+        {
+          "id": null,
+          "connected": true,
+          "sameDocument": true,
+          "width": 300,
+          "height": 150
+        }
+      ],
+      "env": {
+        "hasFocus": true,
+        "visibility": "visible",
+        "webdriver": true,
+        "secure": true,
+        "protocol": "http:"
+      },
+      "ungestured": {
+        "granted": false,
+        "name": "WrongDocumentError",
+        "message": "The root document of this element is not valid for pointer lock."
+      },
+      "gesture": {
+        "granted": false,
+        "name": "WrongDocumentError",
+        "message": "The root document of this element is not valid for pointer lock.",
+        "via": "pointerdown"
+      },
+      "afterGesture": {
+        "locked": null,
+        "paused": false
+      },
+      "gameButton": {
+        "startVisible": true,
+        "locked": null,
+        "playing": true
+      },
+      "status": "UNVERIFIED"
+    },
+    "seek": {
+      "ok": true,
+      "distance": 7.953,
+      "yaw": 0,
+      "pitch": -0.9,
+      "anchor": [
+        99.6,
+        102.75,
+        96.24
+      ],
+      "shot": "docs/qa/quality-director-2026-10-28/shots/v2-seek.png",
+      "status": "PASS"
+    },
+    "dualWeb": {
+      "status": "PASS",
+      "rays": {
+        "anchor": [
+          99.6,
+          100.37,
+          98.69
+        ],
+        "pitch": -0.9,
+        "reason": "대상 없음 · 건물을 향해 조준하세요.",
+        "first": {
+          "distance": 7.262,
+          "name": "Mesh",
+          "point": [
+            99.6,
+            100.37,
+            98.69
+          ]
+        }
+      },
+      "mid": {
+        "state": "SWINGING",
+        "webs": [
+          {
+            "hand": "right",
+            "button": 0,
+            "length": 3.425,
+            "current": 3.435,
+            "slack": 0.009,
+            "anchor": [
+              99.6,
+              100.37,
+              98.69
+            ]
+          },
+          {
+            "hand": "left",
+            "button": 2,
+            "length": 3.425,
+            "current": 3.435,
+            "slack": 0.009,
+            "anchor": [
+              99.6,
+              100.37,
+              98.69
+            ]
+          }
+        ],
+        "speed": 0.597,
+        "animation": "swing",
+        "combatMode": "web"
+      },
+      "afterRightRelease": {
+        "state": "SWINGING",
+        "webs": [
+          {
+            "hand": "right",
+            "button": 0,
+            "length": 3.425,
+            "current": 3.435,
+            "slack": 0.009,
+            "anchor": [
+              99.6,
+              100.37,
+              98.69
+            ]
+          }
+        ],
+        "speed": 0.597
+      },
+      "summary": {
+        "frames": 103,
+        "seconds": 1.769,
+        "travel": 0.775,
+        "start": [
+          99.6,
+          95.901,
+          95.133
+        ],
+        "end": [
+          99.6,
+          95.474,
+          95.78
+        ],
+        "maxSpeed": 29.12,
+        "states": [
+          "SWINGING",
+          "FALLING",
+          "LANDING"
+        ],
+        "animations": [
+          "jump",
+          "swing",
+          "drop",
+          "fall",
+          "land"
+        ],
+        "attacks": [],
+        "swingingFrames": 76,
+        "maxWebs": 2,
+        "averageFps": 59.63,
+        "low1Fps": 47.85,
+        "maxDt": 0.1,
+        "maxDrawCalls": 25,
+        "maxTriangles": 52022,
+        "memoryStart": 60926495,
+        "memoryEnd": 60851242,
+        "pitch": [
+          -0.9,
+          -0.9
+        ],
+        "yaw": [
+          0,
+          0
+        ]
+      },
+      "shot": "docs/qa/quality-director-2026-10-28/shots/v2-dual-web.png"
+    },
+    "secondSwing": {
+      "status": "PASS",
+      "webs": [
+        {
+          "hand": "left",
+          "button": 0,
+          "length": 4.305,
+          "current": 4.325,
+          "slack": 0.02,
+          "anchor": [
+            99.6,
+            100.37,
+            99.69
+          ]
+        }
+      ],
+      "state": "SWINGING",
+      "speed": 1.039,
+      "summary": {
+        "frames": 53,
+        "seconds": 0.848,
+        "travel": 0.505,
+        "start": [
+          99.6,
+          95.901,
+          95.78
+        ],
+        "end": [
+          99.6,
+          96.406,
+          95.78
+        ],
+        "maxSpeed": 25.533,
+        "states": [
+          "SWINGING",
+          "FALLING"
+        ],
+        "animations": [
+          "jump",
+          "swing",
+          "drop",
+          "fall"
+        ],
+        "attacks": [],
+        "swingingFrames": 32,
+        "maxWebs": 1,
+        "averageFps": 60.05,
+        "low1Fps": 56.5,
+        "maxDt": 0.0177,
+        "maxDrawCalls": 22,
+        "maxTriangles": 51414,
+        "memoryStart": 61780665,
+        "memoryEnd": 61906758,
+        "pitch": [
+          -0.9,
+          -0.9
+        ],
+        "yaw": [
+          0,
+          0
+        ]
+      },
+      "shot": "docs/qa/quality-director-2026-10-28/shots/v2-second-swing.png"
+    },
+    "cameraLag": {
+      "before": {
+        "distance": 2.581,
+        "blocked": false,
+        "hit": null,
+        "boom": 2.204,
+        "fov": 65.9005927990953,
+        "lookYaw": 0,
+        "rigYaw": 0,
+        "pitch": -0.9
+      },
+      "samples": [
+        {
+          "distance": 2.581,
+          "blocked": false,
+          "hit": null,
+          "boom": 2.204,
+          "fov": 65.9005927990953,
+          "lookYaw": 0,
+          "rigYaw": 1.4,
+          "pitch": -0.35
+        },
+        {
+          "distance": 4.141,
+          "blocked": false,
+          "hit": null,
+          "boom": 4.611,
+          "fov": 64.57176102521636,
+          "lookYaw": 1.3853,
+          "rigYaw": 1.4,
+          "pitch": -0.35
+        },
+        {
+          "distance": 5.625,
+          "blocked": false,
+          "hit": null,
+          "boom": 5.68,
+          "fov": 64.0469799594454,
+          "lookYaw": 1.4,
+          "rigYaw": 1.4,
+          "pitch": -0.35
+        }
+      ],
+      "shot": "docs/qa/quality-director-2026-10-28/shots/v2-camera-yaw.png"
+    },
+    "jump": {
+      "status": "PASS",
+      "summary": {
+        "frames": 89,
+        "seconds": 1.473,
+        "travel": 0.431,
+        "start": [
+          99.6,
+          95.905,
+          95.78
+        ],
+        "end": [
+          99.6,
+          95.474,
+          95.78
+        ],
+        "maxSpeed": 25.767,
+        "states": [
+          "JUMPING",
+          "FALLING",
+          "LANDING",
+          "IDLE"
+        ],
+        "animations": [
+          "jump",
+          "drop",
+          "fall",
+          "land",
+          "idle"
+        ],
+        "attacks": [],
+        "swingingFrames": 0,
+        "maxWebs": 0,
+        "averageFps": 60,
+        "low1Fps": 56.5,
+        "maxDt": 0.0177,
+        "maxDrawCalls": 47,
+        "maxTriangles": 50900,
+        "memoryStart": 62622336,
+        "memoryEnd": 67848448,
+        "pitch": [
+          -0.35,
+          -0.35
+        ],
+        "yaw": [
+          1.4,
+          1.4
+        ]
+      }
+    },
+    "strikes": [
+      {
+        "name": "jab",
+        "attack": {
+          "key": "jab",
+          "time": 0.266,
+          "duration": 0.72
+        },
+        "animation": "jab",
+        "state": "IDLE",
+        "speed": 0,
+        "attacks": [
+          "jab"
+        ],
+        "shot": "docs/qa/quality-director-2026-10-28/shots/v2-jab.png"
+      },
+      {
+        "name": "straight",
+        "attack": {
+          "key": "cross",
+          "time": 0.332,
+          "duration": 0.82
+        },
+        "animation": "cross",
+        "state": "IDLE",
+        "speed": 0,
+        "attacks": [
+          "cross"
+        ],
+        "shot": "docs/qa/quality-director-2026-10-28/shots/v2-straight.png"
+      },
+      {
+        "name": "heavy",
+        "attack": {
+          "key": "heavy",
+          "time": 0.433,
+          "duration": 1.05
+        },
+        "animation": "heavy",
+        "state": "IDLE",
+        "speed": 0,
+        "attacks": [
+          "heavy"
+        ],
+        "shot": "docs/qa/quality-director-2026-10-28/shots/v2-heavy.png"
+      },
+      {
+        "name": "special",
+        "attack": null,
+        "animation": "combatIdle",
+        "state": "IDLE",
+        "speed": 0,
+        "attacks": [],
+        "shot": "docs/qa/quality-director-2026-10-28/shots/v2-special.png"
+      }
+    ],
+    "runJab": {
+      "before": {
+        "speed": 4.341,
+        "animation": "regularRun",
+        "state": "RUNNING"
+      },
+      "during": {
+        "speed": 4.394,
+        "animation": "regularRun",
+        "attack": {
+          "key": "jab",
+          "time": 0.233,
+          "duration": 0.72
+        },
+        "state": "RUNNING",
+        "feet": {
+          "left": {
+            "y": 95.881,
+            "support": null
+          },
+          "right": {
+            "y": 95.549,
+            "support": null
+          }
+        }
+      },
+      "summary": {
+        "frames": 82,
+        "seconds": 1.313,
+        "travel": 4.041,
+        "start": [
+          99.608,
+          95.474,
+          95.78
+        ],
+        "end": [
+          103.616,
+          95.474,
+          96.298
+        ],
+        "maxSpeed": 4.399,
+        "states": [
+          "RUNNING",
+          "IDLE"
+        ],
+        "animations": [
+          "walk",
+          "regularRun",
+          "idle"
+        ],
+        "attacks": [
+          "jab"
+        ],
+        "swingingFrames": 0,
+        "maxWebs": 0,
+        "averageFps": 60.04,
+        "low1Fps": 50,
+        "maxDt": 0.02,
+        "maxDrawCalls": 17,
+        "maxTriangles": 50772,
+        "memoryStart": 42795131,
+        "memoryEnd": 36057154,
+        "pitch": [
+          -0.35,
+          -0.35
+        ],
+        "yaw": [
+          1.4,
+          1.4
+        ]
+      },
+      "shot": "docs/qa/quality-director-2026-10-28/shots/v2-run-jab.png"
+    },
+    "sprintHeavy": {
+      "attack": {
+        "key": "heavy",
+        "time": 0.283,
+        "duration": 1.05
+      },
+      "animation": "walk",
+      "speed": 1.102,
+      "state": "SPRINTING",
+      "shot": "docs/qa/quality-director-2026-10-28/shots/v2-sprint-heavy.png"
+    },
+    "walkClearance": {
+      "samples": [
+        {
+          "position": [
+            104.5,
+            95.474,
+            98.24
+          ],
+          "state": "RUNNING",
+          "camera": {
+            "distance": 5.981,
+            "blocked": false,
+            "hit": null,
+            "boom": 5.8,
+            "fov": 64.00000519138922,
+            "lookYaw": 0.3915,
+            "rigYaw": 0.4,
+            "pitch": 0.15
+          }
+        },
+        {
+          "position": [
+            104.5,
+            95.474,
+            99.918
+          ],
+          "state": "RUNNING",
+          "camera": {
+            "distance": 5.991,
+            "blocked": false,
+            "hit": null,
+            "boom": 5.8,
+            "fov": 64.00000042681754,
+            "lookYaw": 0.3906,
+            "rigYaw": 0.4,
+            "pitch": 0.15
+          }
+        },
+        {
+          "position": [
+            104.5,
+            95.474,
+            101.539
+          ],
+          "state": "RUNNING",
+          "camera": {
+            "distance": 5.992,
+            "blocked": false,
+            "hit": null,
+            "boom": 5.8,
+            "fov": 64.00000003872002,
+            "lookYaw": 0.3906,
+            "rigYaw": 0.4,
+            "pitch": 0.15
+          }
+        },
+        {
+          "position": [
+            104.5,
+            95.474,
+            103.227
+          ],
+          "state": "RUNNING",
+          "camera": {
+            "distance": 5.992,
+            "blocked": false,
+            "hit": null,
+            "boom": 5.8,
+            "fov": 64.00000000318917,
+            "lookYaw": 0.3906,
+            "rigYaw": 0.4,
+            "pitch": 0.15
+          }
+        },
+        {
+          "position": [
+            104.5,
+            95.474,
+            104.5
+          ],
+          "state": "RUNNING",
+          "camera": {
+            "distance": 5.857,
+            "blocked": false,
+            "hit": null,
+            "boom": 5.8,
+            "fov": 64.00000000028825,
+            "lookYaw": 0.3984,
+            "rigYaw": 0.4,
+            "pitch": 0.15
+          }
+        },
+        {
+          "position": [
+            104.5,
+            95.474,
+            104.5
+          ],
+          "state": "RUNNING",
+          "camera": {
+            "distance": 5.816,
+            "blocked": false,
+            "hit": null,
+            "boom": 5.8,
+            "fov": 64.00000000002379,
+            "lookYaw": 0.4,
+            "rigYaw": 0.4,
+            "pitch": 0.15
+          }
+        }
+      ],
+      "shot": "docs/qa/quality-director-2026-10-28/shots/v2-walk.png"
+    },
+    "explore": {
+      "seed": 20261028,
+      "sequence": [
+        "KeyW",
+        "PageDown",
+        "KeyQ",
+        "KeyW",
+        "KeyS",
+        "KeyG",
+        "ShiftLeft",
+        "KeyD",
+        "PageUp",
+        "KeyG",
+        "Space",
+        "Space",
+        "Space",
+        "ShiftLeft",
+        "KeyS",
+        "KeyQ",
+        "PageUp",
+        "Space",
+        "mouse2",
+        "mouse2",
+        "mouse2",
+        "Space",
+        "KeyQ",
+        "KeyW",
+        "KeyW",
+        "KeyD",
+        "KeyQ",
+        "KeyG",
+        "mouse0",
+        "KeyD",
+        "KeyQ",
+        "PageDown",
+        "Space",
+        "ShiftLeft",
+        "ShiftLeft",
+        "PageDown"
+      ],
+      "status": "PASS",
+      "summary": {
+        "frames": 208,
+        "seconds": 3.447,
+        "travel": 6.25,
+        "start": [
+          104.5,
+          95.474,
+          104.5
+        ],
+        "end": [
+          101.836,
+          101.128,
+          104.5
+        ],
+        "maxSpeed": 25.779,
+        "states": [
+          "RUNNING",
+          "IDLE",
+          "JUMPING",
+          "FALLING",
+          "LANDING"
+        ],
+        "animations": [
+          "walk",
+          "stop",
+          "idle",
+          "jump",
+          "drop",
+          "fall",
+          "land"
+        ],
+        "attacks": [],
+        "swingingFrames": 0,
+        "maxWebs": 0,
+        "averageFps": 60.11,
+        "low1Fps": 56.5,
+        "maxDt": 0.0236,
+        "maxDrawCalls": 17,
+        "maxTriangles": 50958,
+        "memoryStart": 43723099,
+        "memoryEnd": 48318872,
+        "pitch": [
+          0.15,
+          0.2473
+        ],
+        "yaw": [
+          0.4,
+          0.4
+        ]
+      },
+      "errors": [],
+      "shot": "docs/qa/quality-director-2026-10-28/shots/v2-explore.png",
+      "finite": true
+    }
+  },
+  "pageErrors": [],
+  "finished": "2026-10-28T02:03:28.205Z"
+}

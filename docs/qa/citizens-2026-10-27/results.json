@@ -3,38 +3,38 @@
   "results": [
     {
       "asset": "remy",
-      "rig": "8 clips, unique bones, deformed gait/body bounds pass"
+      "rig": "11 clips, unique bones, deformed gait/body bounds pass"
     },
     {
       "asset": "megan",
-      "rig": "8 clips, unique bones, deformed gait/body bounds pass"
+      "rig": "11 clips, unique bones, deformed gait/body bounds pass"
     },
     {
       "asset": "louise",
-      "rig": "8 clips, unique bones, deformed gait/body bounds pass"
+      "rig": "11 clips, unique bones, deformed gait/body bounds pass"
     },
     {
       "fps": 24,
       "population": 10,
       "pool": 10,
-      "cpuP50": 0.09124999999994543,
-      "cpuP95": 0.436333999999988,
+      "cpuP50": 0.09654199999999946,
+      "cpuP95": 0.5463750000000118,
       "recycled": 10
     },
     {
       "fps": 60,
       "population": 10,
       "pool": 10,
-      "cpuP50": 0.02975000000003547,
-      "cpuP95": 0.20095900000001166,
+      "cpuP50": 0.030542000000082226,
+      "cpuP95": 0.20087499999999636,
       "recycled": 10
     },
     {
       "fps": 144,
       "population": 10,
       "pool": 10,
-      "cpuP50": 0.013500000000021828,
-      "cpuP95": 0.11566600000003291,
+      "cpuP50": 0.014667000000031294,
+      "cpuP95": 0.08341600000005656,
       "recycled": 10
     }
   ]

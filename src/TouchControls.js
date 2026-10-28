@@ -31,8 +31,8 @@ export class TouchControls {
       <div class="touch-move-zone" aria-label="왼쪽 이동 영역"><div class="touch-stick" role="group" aria-label="이동 스틱 · 끝까지 밀면 질주"><span class="touch-sprint-mark">질주 ↑</span><span class="touch-stick-knob"></span><span class="touch-stick-caption">이동</span></div></div>
       ${action('data-key="mode" class="touch-mode" aria-label="전투와 에너지 와이어 모드 전환" aria-pressed="false"','mode','전투')}
       <div class="touch-actions" role="group" aria-label="동작 버튼">
-      ${action('data-mouse="0" class="touch-web touch-primary" aria-label="거미줄 연결 · 한 번 누르기"','wire','거미줄')}
-      ${action('data-key="jump" class="touch-jump" aria-label="점프 / 줄에서 뛰어내리기"','jump','점프')}
+      ${action('data-mouse="0" class="touch-web touch-primary" aria-label="에너지 와이어 연결 · 한 번 누르기"','wire','에너지 와이어')}
+      ${action('data-key="jump" class="touch-jump" aria-label="점프 / 에너지 와이어에서 뛰어내리기"','jump','점프')}
       ${action('data-key="zip" class="touch-zip" aria-label="와이어 집 / 전투 훅"','zip','집')}
       ${action('data-key="wall" class="touch-guard" aria-label="방어 · 누르고 유지" hidden','guard','방어')}
       <button data-ui="more" class="touch-more" aria-label="보조 동작과 시점 메뉴" aria-expanded="false" aria-controls="touch-extra">···<span>더보기</span></button></div>
@@ -161,7 +161,7 @@ export class TouchControls {
     const key=`${combat}:${connected}:${this.wireLatched}:${ready}`;
     if(this.wireUiKey!==key){
       this.wireUiKey=key;button.setAttribute('aria-pressed',String(connected));
-      if(!combat){button.querySelector('span').textContent=connected?'놓기':this.wireLatched?'연결 중':'거미줄';button.setAttribute('aria-label',connected?'거미줄 놓기':ready?'거미줄 연결 · 한 번 누르기':'거미줄 · 건물을 바라보세요');button.querySelector('path').setAttribute('d',icons.wire);}
+      if(!combat){button.querySelector('span').textContent=connected?'놓기':this.wireLatched?'연결 중':'에너지 와이어';button.setAttribute('aria-label',connected?'에너지 와이어 놓기':ready?'에너지 와이어 연결 · 한 번 누르기':'에너지 와이어 · 건물을 바라보세요');button.querySelector('path').setAttribute('d',icons.wire);}
       this.root.dataset.wireConnected=String(connected);this.root.dataset.wireReady=String(ready);
     }
     if(this.anchorMarker){
@@ -187,7 +187,7 @@ export class TouchControls {
     this.root.dataset.spectating=String(!!g.multiplayer?.spectating);
     document.body.classList.toggle('touch-solo',this.enabled&&!!g.multiplayer?.solo);
     document.body.classList.toggle('touch-extra-open',!this.root.hidden&&!this.extra.hidden);
-    if(active&&!this.announced){this.announced=true;g.showNotice(this.simpleTraversal?'왼쪽 이동 · 거미줄 한 번으로 연결 / 다시 눌러 놓기 · 카메라 자동 추적':'왼쪽 이동 · 오른쪽 드래그로 시점 · 와이어를 누른 채 조준 · 보조 동작은 더보기');}
+    if(active&&!this.announced){this.announced=true;g.showNotice(this.simpleTraversal?'왼쪽 이동 · 에너지 와이어는 한 번 눌러 연결 / 다시 눌러 놓기 · 카메라 자동 추적':'왼쪽 이동 · 오른쪽 드래그로 시점 · 에너지 와이어를 누른 채 조준 · 보조 동작은 더보기');}
     if(this.enabled)this.game.pointerLockWanted=false;
     if(!active&&(this.pointers.size||this.wireLatched))this.release();
     if(this.simpleTraversal)this.syncTraversal(active);
