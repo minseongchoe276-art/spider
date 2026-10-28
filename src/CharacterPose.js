@@ -976,15 +976,22 @@ export function poseCombatLife(c, combat) {
     rollModelZ(c, find(c, 'spine1'), 0.04 * sway);
     return;
   }
-  if (key === 'heavy') {
-    const wind = t < 0.4 ? smooth01(t / 0.4) : 1 - smooth01((t - 0.4) / 0.18);
-    const drive = t < 0.4 ? 0 : smooth01((t - 0.4) / 0.28) * (1 - smooth01(THREE.MathUtils.clamp((t - 0.78) / 0.22, 0, 1)));
-    // The hook clip is already turning by this fraction. Heavy squares the
-    // chest and leans back through the chamber, then drives into the same hit.
-    yawWorld(find(c, 'spine'), 0.34 * wind);
-    yawWorld(find(c, 'spine1'), 0.18 * wind);
-    pitchModelX(c, find(c, 'spine'), 0.22 * drive - 0.24 * wind);
-    pitchModelX(c, find(c, 'spine1'), 0.1 * drive - 0.12 * wind);
+  if (key === 'heavy' || key === 'hook') {
+    // The shared Boxing Hook take extends forward. Turn the chest the other
+    // way while it loads, then through the punch. Positive world yaw, with
+    // the body facing +Z, brings the lead (left, +X) shoulder forward.
+    const visual = key === 'heavy' ? heavyClipPhase(t) : t;
+    const impact = 0.43;
+    const drive = visual <= impact ? smooth01(visual / impact) : 1 - smooth01((visual - impact) / Math.max(1 - impact, 0.05));
+    const wind = visual < impact ? 1 - drive : 0;
+    const yaw = -0.58 * wind + 0.64 * drive;
+    const hip = combat.travel ? 0.16 : 0.4;
+    yawWorld(find(c, 'hips'), yaw * hip);
+    yawWorld(find(c, 'spine'), yaw * 0.72);
+    yawWorld(find(c, 'spine1'), yaw * 0.5);
+    yawWorld(find(c, 'neck'), -yaw * 0.22);
+    yawWorld(find(c, 'head'), -yaw * 0.42);
+    rollModelZ(c, find(c, 'spine'), -0.18 * drive);
   }
 }
 
@@ -1096,14 +1103,13 @@ export function settleStrikeBalance(c, combat, moving) {
   const outward = characterRight.clone().multiplyScalar(side === 'right' ? 1 : -1);
   let goal, pole;
   if (hooking) {
-    const flat = wrist.clone().sub(shoulder);
-    flat.y = 0;
-    const sideOff = flat.dot(characterRight);
-    const goalReach = THREE.MathUtils.clamp(Math.max(flat.dot(aim), 0.36), 0.2, 0.72);
-    const goalSide = THREE.MathUtils.clamp(sideOff, -0.34, 0.42);
-    goal = shoulder.clone().addScaledVector(aim, goalReach).addScaledVector(characterRight, goalSide);
-    goal.y = wrist.y;
-    pole = outward.addScaledVector(up, -0.28);
+    // Facing +Z, character right is aim × up = (-1, 0, 0). The lead fist
+    // starts on the left and crosses that center line with the elbow out.
+    // A reach near the full arm length would straighten the punch.
+    const cross = side === 'left' ? 0.12 : -0.12;
+    goal = group.clone().addScaledVector(aim, 0.42).addScaledVector(characterRight, cross);
+    goal.y = shoulder.y - 0.05;
+    pole = outward.clone().multiplyScalar(1.2).addScaledVector(up, -0.42).addScaledVector(aim, -0.25);
   } else {
     // 40% of the shoulder offset stays, so the fist leads inside the
     // shoulder instead of beside the head. 96% of the arm length leaves
@@ -1124,6 +1130,22 @@ export function settleStrikeBalance(c, combat, moving) {
   forearm.quaternion.slerpQuaternions(lower, forearm.quaternion.clone(), drive);
   hand.quaternion.copy(fist);
   arm.updateMatrixWorld(true);
+  if (!hooking) return;
+  // The source take also shoves the rear arm forward. Keep that fist on the
+  // cheek so the silhouette is the lead hook, not a second straight.
+  const other = side === 'left' ? 'right' : 'left';
+  const otherArm = find(c, other + 'arm'), otherFore = find(c, other + 'forearm'), otherHand = find(c, other + 'hand');
+  if (!(otherArm && otherFore && otherHand)) return;
+  const otherShoulder = worldPosition(otherArm);
+  const guard = otherShoulder.clone().addScaledVector(aim, 0.16).addScaledVector(characterRight, other === 'right' ? 0.12 : -0.12);
+  guard.y = otherShoulder.y + 0.08;
+  const otherPole = characterRight.clone().multiplyScalar(other === 'right' ? 1 : -1).addScaledVector(up, -0.35);
+  const otherUpper = otherArm.quaternion.clone(), otherLower = otherFore.quaternion.clone(), otherFist = otherHand.quaternion.clone();
+  c.solveLimb(otherArm, otherFore, otherHand, guard, 0.9, otherPole);
+  otherArm.quaternion.slerpQuaternions(otherUpper, otherArm.quaternion.clone(), drive);
+  otherFore.quaternion.slerpQuaternions(otherLower, otherFore.quaternion.clone(), drive);
+  otherHand.quaternion.copy(otherFist);
+  otherArm.updateMatrixWorld(true);
 }
 
 function signedKneeLead(hip, knee, foot, forward) {

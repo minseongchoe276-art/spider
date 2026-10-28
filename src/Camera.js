@@ -51,6 +51,10 @@ export class ThirdPersonCamera {
     this.probeRadius = 0.32;
     this.boomSide = 0;
     this.localAvatarOccluded=false;
+    // Render-only shoulder orbit during a grounded strike. Never copied
+    // into movementYaw, so aim and web rays stay on the mouse yaw.
+    this.strikeOrbit = 0;
+    this.presentationYaw = 0;
   }
 
   safeDistance(center, direction, distance, meshes, cityRaycast = null) {
@@ -207,6 +211,10 @@ export class ThirdPersonCamera {
     }
     // Movement uses the intended view yaw, without spring lag or impact shake.
     this.camera.userData.movementYaw = this.yaw;
+    // A swing keeps the boom on the mouse yaw. The strike offset eases in
+    // only while the caller asks for it, and it is not published as aim.
+    if (isSwinging) this.presentationYaw = 0;
+    else this.presentationYaw = THREE.MathUtils.damp(this.presentationYaw || 0, this.strikeOrbit || 0, 8, delta);
     const speed = playerVelocity.length();
     const speedKmh = speed * 3.6;
 
@@ -231,7 +239,7 @@ export class ThirdPersonCamera {
 
     // Camera position is opposite the player's view direction: yaw 0 places
     // it behind a character facing +Z, rather than in front of their face.
-    const boom = this.findCameraBoom(center, this.yaw, this.pitch,
+    const boom = this.findCameraBoom(center, this.yaw + this.presentationYaw, this.pitch,
       this.distance, cityMeshes, cityRaycast);
     const camDir = boom.direction;
     // Spring-arm behavior: retract immediately to avoid clipping, but ease

@@ -130,8 +130,9 @@ export class CombatSystem {
     if(input)this.guard(!!input.guard);
     const current=this.action;
     const stopping=this.character.activeAction && ['stop','runStop'].some(key=>this.character.activeAction===this.character.actions?.[key] && this.character.activeAction?.time<this.character.activeAction.getClip().duration-.05) || ['RUNNING','SPRINTING'].includes(this.character.lastState);
-    // Track camera aim throughout a strike, including while standing still.
-    if(current && ATTACKS[current.key] && current.key!=='special')this.face(camera);
+    // The strike keeps the aim from the button press. Mouse look after that
+    // orbits the camera and must not yaw the body through the punch.
+    // special already captured its dash direction in start().
     if(current && ATTACKS[current.key]){
       const speed=Math.hypot(this.physics.velocity.x,this.physics.velocity.z);
       const stepping=!!(input && (input.forward || input.backward || input.left || input.right));

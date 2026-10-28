@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>SHADOW PULSE 품질 대시보드</title>
+<style>
+  body { margin: 0; background: #10141c; color: #e7eef6; font: 15px/1.45 system-ui, sans-serif; }
+  main { max-width: 980px; margin: 0 auto; padding: 28px 20px 64px; }
+  h1 { font-size: 28px; margin: 0 0 8px; }
+  p { color: #b7c3d0; }
+  .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 18px 0 28px; }
+  .card { background: #1b2330; border-radius: 12px; padding: 14px; }
+  b { display: block; font-size: 28px; }
+  table { width: 100%; border-collapse: collapse; }
+  td, th { text-align: left; padding: 8px 6px; border-bottom: 1px solid #2c3848; vertical-align: top; }
+  a { color: #9fd0ff; }
+  .fail { color: #ffb4a8; }
+  .pass { color: #b6f3c8; }
+</style>
+</head>
+<body>
+<main>
+  <h1>SHADOW PULSE 품질 대시보드</h1>
+  <p>2026-10-28 · MacBook Pro M1 16GB · 절차 도시 · 개발 전용. 게임 HUD가 아니다. 수치는 같은 폴더의 JSON에서 옮겼다. V3에서 확정한 훅, 전투 카메라, 차량 바는 적용 후 다시 확인했다.</p>
+  <div class="grid">
+    <div class="card"><b>37×5</b>모션 프레임 저장, 본 것은 일부</div>
+    <div class="card"><b class="pass">63m</b>양손, 같은 앵커</div>
+    <div class="card"><b class="pass">잽</b>원격 클립이 따라감</div>
+    <div class="card"><b class="pass">카메라</b>공격 중 몸은 시작 방향</div>
+  </div>
+  <h2>V4 정합성</h2>
+  <p><a href="V4_SYSTEM_CONSISTENCY_REPORT.md">V4 보고서</a> · <a href="v4-live.json">v4-live.json</a> · <a href="v4-follow.json">v4-follow.json</a> · 시드 20261028. 피해·물리·속도·클립은 유지. 영어 JSON의 도움말 FAIL은 로비 카드 문장을 도움말 안에서 찾은 검사 오류이고, 다시 읽은 화면은 PASS다.</p>
+  <div class="grid">
+    <div class="card"><b class="pass">문구</b>2명 3분 · 에너지 와이어</div>
+    <div class="card"><b class="pass">착지</b>12m도 클립 land</div>
+    <div class="card"><b class="fail">가드</b>도망자 서버만 허용</div>
+    <div class="card"><b class="pass">0</b>재빌드 프로브 문자열</div>
+  </div>
+  <table>
+    <tr><th>항목</th><th>상태</th><th>증거</th></tr>
+    <tr><td>태그 시간 도움말·대기실·시작</td><td class="pass">PASS</td><td>2명 3분, 3~6명 4분, 7~8명 5분. 방 62E92B. HUD는 서버 endsAt</td></tr>
+    <tr><td>게임패드·터치 문구</td><td class="pass">PASS</td><td>매핑은 그대로. B는 회피가 아님. 터치는 탭 유지 예외</td></tr>
+    <tr><td>Ctrl 회피</td><td class="pass">PASS</td><td>도움말에 없음. Chrome에서 dodge가 시작되지 않음</td></tr>
+    <tr><td>12m 착지</td><td class="pass">PASS</td><td>drop → fall → land. slamLand 없음. <a href="shots/v4/land-high.png">land-high.png</a>는 회복 후 idle</td></tr>
+    <tr><td>구르기 재생</td><td>UNVERIFIED</td><td>수평 5.4m/s 착지도 land. 속도를 올려 만들지 않음</td></tr>
+    <tr><td>달리기 잽</td><td class="pass">PASS</td><td>하체 regularRun, 공격 키 jab, 약 3.6m. 전신 클립으로 바꾸지 않음</td></tr>
+    <tr><td>훅 / 헤비 50%</td><td class="pass">PASS</td><td>같은 Boxing Hook. 해시 0cbc3f81 / dbdb70e1. <a href="shots/v4/hook-phase50.png">훅</a> <a href="shots/v4/heavy-phase50.png">헤비</a></td></tr>
+    <tr><td>회피 거리</td><td class="pass">PASS</td><td>좌 0.204 · 우 0.202 · 뒤 0.363 · 앞 0.767m. 클립은 combatIdle. 교체는 승인 전</td></tr>
+    <tr><td>4초 넓은 스윙 최저점</td><td>UNVERIFIED</td><td>5.8m 줄, FOV 64→70.17, 이동 약 1.6–1.9m. 긴 진자는 안 나옴</td></tr>
+    <tr><td>홍콩 시민 화면</td><td>UNVERIFIED</td><td>스폰 1명 PASS. <a href="shots/v4/hong-kong-citizens.png">프레임</a> 안에는 안 보임</td></tr>
+    <tr><td>로컬 2인 위치</td><td class="pass">PASS</td><td>게스트가 호스트를 20m 안에서 봄. 공격 동기는 UNVERIFIED</td></tr>
+    <tr><td>도망자 방어</td><td class="fail">FAIL</td><td>SP-V4-GUARD. 공식 F는 시작하지 않음. 서버는 가드 자세를 받음. 활성화하지 않음</td></tr>
+    <tr><td>프로덕션 프로브</td><td class="pass">FIXED_AND_VERIFIED</td><td>SP-V4-PROBE. 이번 첫 빌드에는 필드 이름이 남았고, DEV 가드 후 index-Cpt28IB8.js는 0건. 아래 V2 행은 다른 dist다</td></tr>
+  </table>
+  <h2>V3 진단</h2>
+  <table>
+    <tr><th>항목</th><th>상태</th><th>증거</th></tr>
+    <tr><td>hook / heavy 원본 5구간</td><td class="fail">FAIL</td><td>트랙 66개 동일. 10–90% 해시 일치. <a href="v3-motions.json">v3-motions.json</a></td></tr>
+    <tr><td>라이브 heavy와 hook</td><td>다름</td><td>측면 5구간 해시가 전부 다름. <a href="v3-combat-pose.json">v3-combat-pose.json</a></td></tr>
+    <tr><td>전투 카메라</td><td class="pass">FIXED_AND_VERIFIED</td><td>잽 중 요 +1.2, facing 변화 0. <a href="shots/v3-fix-camera-jab.png">주먹이 보임</a></td></tr>
+    <tr><td>도시 양손 웹</td><td class="pass">PASS</td><td>77.9m 조준, 로프 63.1m, 14.2m/s. <a href="shots/v3-settled-dual.png">v3-settled-dual.png</a></td></tr>
+    <tr><td>같은 앵커</td><td>설계</td><td>화면 중심 레이 하나. 짧은 물탱크에서는 0.67m 벌어진 적 있음</td></tr>
+    <tr><td>100ms 프레임</td><td>UNVERIFIED</td><td>첫 웹 1회. 이후 5회는 18ms. <a href="v3-play.json">v3-play.json</a></td></tr>
+    <tr><td>원격 잽</td><td class="pass">PASS</td><td>152–768ms 양쪽 jab, 868ms 둘 다 combatIdle. <a href="v3-remote.json">v3-remote.json</a></td></tr>
+    <tr><td>E 훅 자세</td><td class="pass">FIXED_AND_VERIFIED</td><td>팔꿈치 1.49rad, 주먹이 중앙선을 넘음. <a href="shots/v3-fix2-heavy-three-50.png">사선</a></td></tr>
+    <tr><td>BMW 바</td><td class="pass">FIXED_AND_VERIFIED</td><td>오른쪽, 미니맵과 26px. <a href="shots/v3-fix2-vehicle-ui.png">화면</a></td></tr>
+    <tr><td>Pointer Lock</td><td>UNVERIFIED</td><td>자동화 Chrome, webdriver true, WrongDocumentError</td></tr>
+    <tr><td>모션 37개 화면</td><td>일부</td><td>185장 저장. 직접 본 것 외에는 VISUAL_UNVERIFIED</td></tr>
+  </table>
+  <p><a href="V3_DIAGNOSIS_AND_FIX_PLAN.md">V3 진단과 수정 계획</a></p>
+  <h2>V2 재검증</h2>
+  <table>
+    <tr><th>항목</th><th>상태</th><th>증거</th></tr>
+    <tr><td>프로브 패널 top 46 / right 8</td><td class="pass">PASS</td><td><a href="v2-session.json">v2-session.json</a> · <a href="shots/v2-panel.png">v2-panel.png</a></td></tr>
+    <tr><td>seekWebTarget</td><td class="pass">PASS</td><td>피치 −0.9, 앵커 있음</td></tr>
+    <tr><td>양손 웹</td><td class="pass">PASS</td><td>손 둘, HUD 양손 스윙 · <a href="shots/v2-dual-web.png">v2-dual-web.png</a></td></tr>
+    <tr><td>G 특수공격, 이전 공격이 끝난 뒤</td><td class="pass">PASS</td><td>special 1.35s, 기력 65, 대기 8s · <a href="shots/v2-special-isolated.png">v2-special-isolated.png</a></td></tr>
+    <tr><td>Pointer Lock</td><td>UNVERIFIED</td><td>클릭 중에도 WrongDocumentError. 플레이어 Chrome은 안 봄</td></tr>
+    <tr><td>모션 시각 12클립</td><td>단일 프레임</td><td><a href="shots/motions/run-45.png">run</a> <a href="shots/motions/jab-45.png">jab</a> <a href="shots/motions/hook-45.png">hook</a> <a href="shots/motions/heavy-45.png">heavy</a></td></tr>
+    <tr><td>hook / heavy 45% 화면</td><td class="fail">같은 이미지</td><td>SHA-1 6d5a3829750aa2754b3988cff9da95b89c6cbd12</td></tr>
+    <tr><td>로컬 4인 위치</td><td class="pass">PASS</td><td><a href="v2-multi4.json">v2-multi4.json</a> · <a href="shots/v2-mp4-host.png">host</a> <a href="shots/v2-mp4-guest.png">guest 96ms</a></td></tr>
+    <tr><td>잽 클립의 원격 재생</td><td>UNVERIFIED</td><td>샘플 시점에 원격은 combatIdle</td></tr>
+    <tr><td>8인 · 홍콩 · 소리</td><td>UNVERIFIED</td><td>실행하지 않음</td></tr>
+    <tr><td>프로덕션 빌드에서 프로브 제외</td><td class="pass">PASS</td><td>/tmp/shadow-pulse-qa-dist 검색 0건. 배포하지 않음</td></tr>
+  </table>
+  <p><a href="V2_SESSION_REPORT.md">V2 세션 보고서</a></p>
+  <table>
+    <tr><th>항목</th><th>상태</th><th>증거</th></tr>
+    <tr><td>솔로 부팅·이동·전투 입력</td><td class="pass">PASS</td><td><a href="play.json">play.json</a></td></tr>
+    <tr><td>Pointer Lock</td><td>UNVERIFIED</td><td>WrongDocumentError</td></tr>
+    <tr><td>하늘 조준 스윙</td><td class="pass">거절이 맞음</td><td><a href="shots/04-swing.png">04-swing.png</a></td></tr>
+    <tr><td>건물 조준 한 줄 스윙</td><td class="pass">PASS</td><td><a href="aim-sweep.json">aim-sweep.json</a> · <a href="shots/10-settled-swing.png">10-settled-swing.png</a></td></tr>
+    <tr><td>양손 스윙</td><td class="pass">V2에서 PASS</td><td><a href="shots/v2-dual-web.png">v2-dual-web.png</a></td></tr>
+    <tr><td>모션 37개 기술</td><td class="pass">TECHNICAL_PASS</td><td><a href="motion-technical.json">motion-technical.json</a></td></tr>
+    <tr><td>모션 시각</td><td>일부 프레임만</td><td><a href="shots/motion-run.png">run</a> <a href="shots/motion-jab.png">jab</a> <a href="shots/motion-hook.png">hook</a> <a href="shots/motion-special.png">special</a></td></tr>
+    <tr><td>로컬 2인</td><td class="pass">PASS</td><td><a href="multi-retest.json">multi-retest.json</a> · <a href="shots/mp-guest.png">mp-guest.png</a></td></tr>
+    <tr><td>4인</td><td class="pass">V2 위치 PASS</td><td><a href="v2-multi4.json">v2-multi4.json</a></td></tr>
+    <tr><td>8인</td><td>UNVERIFIED</td><td>승인 전이라 실행하지 않음</td></tr>
+    <tr><td>홍콩 도시</td><td>UNVERIFIED</td><td>이번 실행에서 열지 않음</td></tr>
+    <tr><td>소리 품질</td><td>UNVERIFIED</td><td>호출 횟수만 있음</td></tr>
+  </table>
+  <h2>차량·보행 시각</h2>
+  <p>2026-10-28 로컬 Chrome. 물리 상수와 시민 생성은 승인 전이라 그대로 두었다. <a href="VEHICLE_PEDESTRIAN_VISUAL_QA.md">전체 기록</a></p>
+  <table>
+    <tr><th>항목</th><th>상태</th><th>증거</th></tr>
+    <tr><td>평지 휠 접촉 수치</td><td class="pass">PASS</td><td>check-vehicle, 한 바퀴 1.2cm 미만</td></tr>
+    <tr><td>인도 그래프 수치</td><td class="pass">PASS</td><td>check-citizens. 플레이 스폰과는 별개</td></tr>
+    <tr><td>절차 도시 탑승</td><td class="fail">FAIL</td><td>플레이어 y 95.5, 차 y 0.02, 운전석 96m</td></tr>
+    <tr><td>홍콩 BMW 탑승</td><td class="fail">FAIL</td><td>트렁크 앞 3.29m · <a href="vehicle-pedestrian/bmw-entered.png">bmw-entered.png</a></td></tr>
+    <tr><td>홍콩 코르벳 이동·후진 슬립</td><td class="pass">PASS</td><td>후진 4.061m, 호 4.061m, 슬립 0</td></tr>
+    <tr><td>구르는 바퀴 화면</td><td>VISUAL_UNVERIFIED</td><td><a href="vehicle-pedestrian/corvette-roll-0.png">roll-0</a> <a href="vehicle-pedestrian/corvette-roll-3.png">roll-3</a> 은 0km/h</td></tr>
+    <tr><td>로컬 5개 도시 시민</td><td class="fail">FAIL</td><td>인원 0 · <a href="vehicle-pedestrian/procedural-citizens.png">절차</a> <a href="vehicle-pedestrian/harbor-citizens.png">항구</a> <a href="vehicle-pedestrian/skyline-citizens.png">스카이라인</a></td></tr>
+    <tr><td>홍콩 시민 경로</td><td class="fail">FAIL</td><td>일부는 면에서 2m 넘게 정지 · <a href="vehicle-pedestrian/hong-kong-citizen-view.png">한 명</a></td></tr>
+    <tr><td>경사·연석</td><td>NOT_APPLICABLE</td><td>탄 바닥 피치 약 0.01rad</td></tr>
+    <tr><td>원격 바퀴·인원 확장 FPS</td><td>UNVERIFIED</td><td>코르벳 20초, 평균 59.7fps, 1% 37.5. GPU 없음</td></tr>
+  </table>
+  <h2>보고서</h2>
+  <p>
+    <a href="V4_SYSTEM_CONSISTENCY_REPORT.md">V4 정합성</a> ·
+    <a href="GAME_QUALITY_AUDIT.md">감사</a> ·
+    <a href="AUTONOMOUS_TEST_REPORT.md">자율 테스트</a> ·
+    <a href="ANIMATION_TEST_REPORT.md">애니메이션</a> ·
+    <a href="COMBAT_TEST_REPORT.md">전투</a> ·
+    <a href="WEB_SWING_TEST_REPORT.md">웹 스윙</a> ·
+    <a href="GRAPHICS_REVIEW.md">그래픽</a> ·
+    <a href="PERFORMANCE_REPORT.md">성능</a> ·
+    <a href="MULTIPLAYER_REPORT.md">멀티플레이</a> ·
+    <a href="IMPROVEMENT_BACKLOG.md">백로그</a> ·
+    <a href="FIX_VERIFICATION_REPORT.md">수정 검증</a> ·
+    <a href="VEHICLE_PEDESTRIAN_VISUAL_QA.md">차량·보행</a>
+  </p>
+</main>
+</body>
+</html>

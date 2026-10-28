@@ -1054,6 +1054,10 @@ export class GameApp {
 
       // 2. Update 3rd Person Follow Camera
       this.tpsCamera.stanceDrop=this.vehicle?.driving?0:.44*(this.character?.crouchWeight || 0);
+      const strike=this.combat?.action;
+      // 0.72 rad sits the boom on the character's right during a grounded punch.
+      // Web swing, driving, and the special dash do not take this path.
+      this.tpsCamera.strikeOrbit=!this.vehicle?.driving && !this.physics.isSwinging && this.combat?.mode==='combat' && strike && ['jab','cross','heavy'].includes(strike.key) ? 0.72 : 0;
       this.tpsCamera.update(
         delta,
         this.vehicle?.driving?this.vehicle.cameraTarget:this.physics.renderPosition,

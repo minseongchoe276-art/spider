@@ -1,0 +1,178 @@
+{
+  "started": "2026-10-28T04:06:00.059Z",
+  "errors": [],
+  "poses": [
+    {
+      "key": "hook",
+      "view": "three",
+      "phase": 0.25,
+      "file": "docs/qa/quality-director-2026-10-28/shots/v3-fix-hook-three-25.png"
+    },
+    {
+      "key": "hook",
+      "view": "three",
+      "phase": 0.5,
+      "file": "docs/qa/quality-director-2026-10-28/shots/v3-fix-hook-three-50.png"
+    },
+    {
+      "key": "hook",
+      "view": "three",
+      "phase": 0.75,
+      "file": "docs/qa/quality-director-2026-10-28/shots/v3-fix-hook-three-75.png"
+    },
+    {
+      "key": "heavy",
+      "view": "three",
+      "phase": 0.25,
+      "file": "docs/qa/quality-director-2026-10-28/shots/v3-fix-heavy-three-25.png"
+    },
+    {
+      "key": "heavy",
+      "view": "three",
+      "phase": 0.5,
+      "file": "docs/qa/quality-director-2026-10-28/shots/v3-fix-heavy-three-50.png"
+    },
+    {
+      "key": "heavy",
+      "view": "three",
+      "phase": 0.75,
+      "file": "docs/qa/quality-director-2026-10-28/shots/v3-fix-heavy-three-75.png"
+    },
+    {
+      "key": "cross",
+      "view": "three",
+      "phase": 0.25,
+      "file": "docs/qa/quality-director-2026-10-28/shots/v3-fix-cross-three-25.png"
+    },
+    {
+      "key": "cross",
+      "view": "three",
+      "phase": 0.5,
+      "file": "docs/qa/quality-director-2026-10-28/shots/v3-fix-cross-three-50.png"
+    },
+    {
+      "key": "cross",
+      "view": "three",
+      "phase": 0.75,
+      "file": "docs/qa/quality-director-2026-10-28/shots/v3-fix-cross-three-75.png"
+    },
+    {
+      "key": "hook",
+      "view": "side",
+      "phase": 0.25,
+      "file": "docs/qa/quality-director-2026-10-28/shots/v3-fix-hook-side-25.png"
+    },
+    {
+      "key": "hook",
+      "view": "side",
+      "phase": 0.5,
+      "file": "docs/qa/quality-director-2026-10-28/shots/v3-fix-hook-side-50.png"
+    },
+    {
+      "key": "hook",
+      "view": "side",
+      "phase": 0.75,
+      "file": "docs/qa/quality-director-2026-10-28/shots/v3-fix-hook-side-75.png"
+    },
+    {
+      "key": "heavy",
+      "view": "side",
+      "phase": 0.25,
+      "file": "docs/qa/quality-director-2026-10-28/shots/v3-fix-heavy-side-25.png"
+    },
+    {
+      "key": "heavy",
+      "view": "side",
+      "phase": 0.5,
+      "file": "docs/qa/quality-director-2026-10-28/shots/v3-fix-heavy-side-50.png"
+    },
+    {
+      "key": "heavy",
+      "view": "side",
+      "phase": 0.75,
+      "file": "docs/qa/quality-director-2026-10-28/shots/v3-fix-heavy-side-75.png"
+    },
+    {
+      "key": "cross",
+      "view": "side",
+      "phase": 0.25,
+      "file": "docs/qa/quality-director-2026-10-28/shots/v3-fix-cross-side-25.png"
+    },
+    {
+      "key": "cross",
+      "view": "side",
+      "phase": 0.5,
+      "file": "docs/qa/quality-director-2026-10-28/shots/v3-fix-cross-side-50.png"
+    },
+    {
+      "key": "cross",
+      "view": "side",
+      "phase": 0.75,
+      "file": "docs/qa/quality-director-2026-10-28/shots/v3-fix-cross-side-75.png"
+    }
+  ],
+  "ui": {
+    "vehicle": {
+      "hidden": false,
+      "text": "BMW 330i Corvette C6 ZR1 BMW 330i BMW 330i 불러오기 · B",
+      "top": 610,
+      "bottom": 674,
+      "left": 1040,
+      "right": 1416,
+      "width": 376,
+      "height": 64
+    },
+    "ability": {
+      "hidden": false,
+      "text": "Q E F",
+      "top": 814,
+      "bottom": 878,
+      "left": 621,
+      "right": 819,
+      "width": 198,
+      "height": 64
+    },
+    "minimap": {
+      "hidden": false,
+      "text": "N ↑",
+      "top": 692,
+      "bottom": 868,
+      "left": 1240,
+      "right": 1416,
+      "width": 176,
+      "height": 176
+    },
+    "vehicleCoversAbility": false,
+    "vehicleCoversMinimap": false,
+    "vehicleClearsCenter": true,
+    "viewport": [
+      1440,
+      900
+    ],
+    "shot": "docs/qa/quality-director-2026-10-28/shots/v3-fix-vehicle-ui.png"
+  },
+  "camera": {
+    "mode": "combat",
+    "attack": {
+      "key": "jab",
+      "time": 0.333,
+      "duration": 0.72
+    },
+    "animation": "jab",
+    "facingDelta": 0,
+    "aimDelta": 1.2,
+    "boomVersusAim": 0.456,
+    "swinging": false,
+    "shot": "docs/qa/quality-director-2026-10-28/shots/v3-fix-camera-jab.png"
+  },
+  "heavy": {
+    "attack": {
+      "key": "heavy",
+      "time": 0.631,
+      "duration": 1.05
+    },
+    "animation": "heavy",
+    "mode": "combat",
+    "shot": "docs/qa/quality-director-2026-10-28/shots/v3-fix-heavy-live.png"
+  }
+}

@@ -508,9 +508,11 @@ button.ability:focus-visible { outline: 2px solid #a6fff2; outline-offset: 3px; 
 
 .ability-cooldown { position: absolute; inset: 0; display: grid; place-items: center; color: #fff; font-size: 19px; font-weight: 700; text-shadow: 0 2px 4px #000; pointer-events: none; }
 
-#vehicle-ui{position:fixed;left:50%;right:auto;transform:translateX(-50%);bottom:110px;z-index:26;display:flex;align-items:center;gap:8px;max-width:min(650px,calc(100vw - 36px));padding:9px 12px;background:#101925e8;color:#f0f4f8;border:1px solid #66788c88;border-radius:10px;backdrop-filter:blur(8px);font:12px system-ui}
-#vehicle-ui[hidden]{display:none}#vehicle-ui span{max-width:370px}#vehicle-ui button{min-height:44px;padding:8px 12px;border:1px solid #8ca1b5;border-radius:6px;background:#24364a;color:white;font:inherit;cursor:pointer}#vehicle-ui button:disabled{opacity:.5}#vehicle-ui button[hidden]{display:none}
-body.vehicle-driving #vehicle-ui{bottom:24px}
+#vehicle-ui{position:fixed;left:auto;right:24px;transform:none;bottom:234px;z-index:26;display:flex;align-items:center;gap:8px;max-width:min(380px,38vw);padding:9px 12px;background:#101925e8;color:#f0f4f8;border:1px solid #66788c88;border-radius:10px;backdrop-filter:blur(8px);font:12px system-ui}
+#vehicle-ui[hidden]{display:none}#vehicle-ui span{max-width:220px}#vehicle-ui button{min-height:44px;padding:8px 12px;border:1px solid #8ca1b5;border-radius:6px;background:#24364a;color:white;font:inherit;cursor:pointer}#vehicle-ui button:disabled{opacity:.5}#vehicle-ui button[hidden]{display:none}
+body.vehicle-driving #vehicle-ui{left:50%;right:auto;transform:translateX(-50%);bottom:24px;max-width:min(520px,calc(100vw - 440px))}
+body.vehicle-driving #vehicle-ui span{max-width:360px}
 body.vehicle-driving #ability-bar,body.vehicle-driving .touch-actions,body.vehicle-driving .touch-mode,body.vehicle-driving .touch-extra{display:none!important}
 body.hud-covered #vehicle-ui{display:none}body.touch-device #vehicle-ui{left:auto;transform:none;bottom:calc(20px + env(safe-area-inset-bottom));right:14px;max-width:calc(100vw - 175px);flex-wrap:wrap}body.touch-device #vehicle-ui span{width:100%;font-size:11px}
 @media(max-width:600px){#vehicle-ui{bottom:160px;max-width:calc(100vw - 24px);right:12px;left:auto;transform:none}#vehicle-ui span{max-width:160px}body.touch-device.vehicle-driving #vehicle-ui span{font-size:0}body.touch-device.vehicle-driving #vehicle-ui span::first-line{font-size:12px}}
+#vehicle-ui select{min-height:44px;max-width:180px;padding:6px 8px;border:1px solid #8ca1b5;border-radius:6px;background:#182a3c;color:#f0f4f8;font:inherit}#vehicle-ui select:disabled{opacity:.55}
