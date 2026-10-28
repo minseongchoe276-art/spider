@@ -4,6 +4,7 @@ export const VEHICLE=Object.freeze({length:4.7,width:2.65,wheelbase:2.8,maxSpeed
 export class VehicleController{
  constructor(city,position=new T.Vector3(),yaw=0){this.city=city;this.position=position.clone();this.yaw=yaw;this.speed=0;this.steering=0;this.spin=0;this.accumulator=0;this.velocity=new T.Vector3();this.occupied=()=>false;
   const ground=this.support(this.position,yaw);if(ground){this.position.y=ground.height+.02;this.rideY=ground.height;this.pitch=ground.pitch;this.roll=ground.roll;this.contacts=ground.contacts;this.groundPlane=ground;this.supportPosition=this.position.clone();this.supportYaw=yaw;}
+  this.resetRenderPose();
  }
  ground(point,spawn=false){return this.groundSample(point,spawn)?.height??null;}
  groundSample(point,spawn=false){
@@ -52,9 +53,34 @@ export class VehicleController{
   return !this.occupied(to,yaw);
  }
 
+ // Keep collision state on its fixed clock; presentation samples the interval
+ // between two completed ticks rather than displaying a staircase at 90 Hz.
+ savePreviousPose(){
+  const previous=this.renderPrevious??={position:new T.Vector3(),contacts:Array.from({length:4},()=>({x:0,z:0,y:0}))};
+  previous.position.copy(this.position);
+  for(const key of ['yaw','spin','steering','pitch','roll'])previous[key]=this[key]||0;
+  previous.rideY=this.rideY??this.position.y-.02;
+  previous.slopeX=this.groundPlane?.slopeX||0;previous.slopeZ=this.groundPlane?.slopeZ||0;
+  for(let i=0;i<4;i++)if(this.contacts?.[i])Object.assign(previous.contacts[i],this.contacts[i]);
+ }
+ resetRenderPose(snapRide=false){
+  if(snapRide){const ground=this.support(this.position,this.yaw);this.rideY=this.position.y-.02;this.contacts=ground?.contacts;this.groundPlane=ground;this.supportPosition=null;}
+  this.savePreviousPose();this.accumulator=0;
+  this.renderPose??={position:new T.Vector3(),contacts:Array.from({length:4},()=>({x:0,z:0,y:0})),plane:{slopeX:0,slopeZ:0}};
+ }
+ sampleRenderPose(){
+  const previous=this.renderPrevious,out=this.renderPose,alpha=T.MathUtils.clamp(this.accumulator/(this.p?.step||VEHICLE.step),0,1);
+  out.position.copy(previous.position).lerp(this.position,alpha);
+  out.yaw=previous.yaw+Math.atan2(Math.sin(this.yaw-previous.yaw),Math.cos(this.yaw-previous.yaw))*alpha;
+  for(const key of ['spin','steering','pitch','roll'])out[key]=T.MathUtils.lerp(previous[key],this[key]||0,alpha);
+  out.rideY=T.MathUtils.lerp(previous.rideY,this.rideY??this.position.y-.02,alpha);
+  for(const key of ['slopeX','slopeZ'])out.plane[key]=T.MathUtils.lerp(previous[key],this.groundPlane?.[key]||0,alpha);
+  for(let i=0;i<4;i++){const current=this.contacts?.[i];if(current){out.contacts[i].x=current.x;out.contacts[i].z=current.z;out.contacts[i].y=T.MathUtils.lerp(previous.contacts[i].y,current.y,alpha);}}
+  return out;
+ }
  update(delta,input={}){
   if(!Number.isFinite(delta)||delta<=0)return;this.accumulator+=Math.min(delta,.1);
-  while(this.accumulator>=VEHICLE.step){this.tick(VEHICLE.step,input);this.accumulator-=VEHICLE.step;}
+  while(this.accumulator>=VEHICLE.step){this.savePreviousPose();this.tick(VEHICLE.step,input);this.accumulator-=VEHICLE.step;}
  }
  tick(dt,input){
   const steer=(input.left?1:0)-(input.right?1:0),target=steer*(.5/(1+Math.abs(this.speed)*.045));this.steering=T.MathUtils.damp(this.steering,target,7,dt);

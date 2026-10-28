@@ -1,0 +1,78 @@
+{
+  "status": "PASS",
+  "results": [
+    {
+      "fps": 30,
+      "rawRange": 0,
+      "renderRange": 3.552713678800501e-15,
+      "rawHeldFrames": 0,
+      "renderHeldFrames": 0
+    },
+    {
+      "fps": 60,
+      "rawRange": 0.2666666666666657,
+      "renderRange": 0,
+      "rawHeldFrames": 0,
+      "renderHeldFrames": 0
+    },
+    {
+      "fps": 90,
+      "rawRange": 0,
+      "renderRange": 0,
+      "rawHeldFrames": 0,
+      "renderHeldFrames": 0
+    },
+    {
+      "fps": 120,
+      "rawRange": 0.2666666666666657,
+      "renderRange": 7.105427357601002e-15,
+      "rawHeldFrames": 30,
+      "renderHeldFrames": 0
+    },
+    {
+      "fps": 144,
+      "rawRange": 0.2666666666666657,
+      "renderRange": 7.105427357601002e-15,
+      "rawHeldFrames": 54,
+      "renderHeldFrames": 0
+    },
+    {
+      "fps": 165,
+      "rawRange": 0.2666666666666657,
+      "renderRange": 7.105427357601002e-15,
+      "rawHeldFrames": 75,
+      "renderHeldFrames": 0
+    },
+    {
+      "fps": 240,
+      "rawRange": 0.2666666666666657,
+      "renderRange": 7.105427357601002e-15,
+      "rawHeldFrames": 150,
+      "renderHeldFrames": 0
+    },
+    {
+      "model": "bmw",
+      "fps": 60,
+      "maxSeatError": 4.440892098500626e-16,
+      "maxCameraError": 0
+    },
+    {
+      "model": "bmw",
+      "fps": 144,
+      "maxSeatError": 3.552713678800501e-15,
+      "maxCameraError": 0
+    },
+    {
+      "model": "corvette",
+      "fps": 60,
+      "maxSeatError": 1.7763568394002505e-15,
+      "maxCameraError": 0
+    },
+    {
+      "model": "corvette",
+      "fps": 144,
+      "maxSeatError": 1.7763568394002505e-15,
+      "maxCameraError": 0
+    }
+  ]
+}

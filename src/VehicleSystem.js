@@ -29,17 +29,27 @@ export class VehicleSystem{
   const actions=document.createElement('div');actions.className='vehicle-actions';actions.append(button,brake);root.append(slots,actions,label);let dock=document.getElementById('game-action-dock');if(!dock){dock=document.createElement('div');dock.id='game-action-dock';const skills=document.getElementById('ability-bar');if(skills)dock.append(skills);document.body.append(dock);}dock.append(root);this.ui={root,label,button,brake,tiles,actionText};
  }
  syncUI(active){
-  if(!this.ui)return;const {root,label,button,brake,tiles,actionText}=this.ui;
-  for(const [id,tile] of tiles){tile.disabled=this.driving||!!this.loading;tile.setAttribute('aria-pressed',String(id===this.selected));tile.classList.toggle('is-loading',!!this.loading&&id===this.selected);}
-  root.setAttribute('aria-busy',String(!!this.loading));const name=VEHICLE_LABELS[this.selected];document.body.classList.toggle('vehicle-driving',this.driving);root.hidden=!active||!this.allowed();if(root.hidden){this.brakeHeld=false;return;}
-  const distance=this.asset?this.physics.position.distanceTo(this.doorPoint()):0;
-  const direction=this.asset?this.doorPoint().sub(this.physics.position):new T.Vector3(),angle=Math.atan2(direction.x,direction.z)-(this.cameraRig?.yaw||0),arrow=['↑','↖','←','↙','↓','↘','→','↗'][((Math.round(angle/(Math.PI/4))%8)+8)%8];
-  const status=this.state==='DRIVING'?`${Math.round(Math.abs(this.controller.speed)*3.6)} km/h · W/S 가속·후진 · A/D 조향 · Space 브레이크`:this.state==='ENTERING'?'탑승 중…':this.state==='EXITING'?'하차 중…':this.loading?`${name} 준비 중…`:this.asset?.frame.visible?`${name} · 운전석 ${Math.round(distance)} m ${arrow}`:name;
-  if(label.textContent!==status)label.textContent=status;
-  button.disabled=!!this.loading||['ENTERING','EXITING'].includes(this.state);
-  actionText.textContent=this.loading?'준비 중':this.driving?'하차':this.asset?.frame.visible&&distance<25?'탑승':'불러오기';button.setAttribute('aria-label',`${name} ${actionText.textContent} · B`);brake.hidden=this.state!=='DRIVING';
-
+  if(!this.ui)return;const {root,label,button,brake,tiles,actionText}=this.ui,shown=this.ui.shown??={};
+  const driving=this.driving,loading=!!this.loading,locked=driving||loading;
+  if(shown.selected!==this.selected||shown.locked!==locked||shown.loading!==loading){
+   for(const [id,tile] of tiles){tile.disabled=locked;tile.setAttribute('aria-pressed',String(id===this.selected));tile.classList.toggle('is-loading',loading&&id===this.selected);}
+   shown.selected=this.selected;shown.locked=locked;
+  }
+  if(shown.loading!==loading){root.setAttribute('aria-busy',String(loading));shown.loading=loading;}
+  if(shown.driving!==driving){document.body.classList.toggle('vehicle-driving',driving);shown.driving=driving;}
+  const hidden=!active||!this.allowed();if(root.hidden!==hidden)root.hidden=hidden;if(hidden){this.brakeHeld=false;return;}
+  const name=VEHICLE_LABELS[this.selected];let distance=0,arrow='';
+  if(!driving&&this.asset?.frame.visible){const direction=this.doorPoint().sub(this.physics.position);distance=direction.length();const angle=Math.atan2(direction.x,direction.z)-(this.cameraRig?.yaw||0);arrow=['↑','↖','←','↙','↓','↘','→','↗'][((Math.round(angle/(Math.PI/4))%8)+8)%8];}
+  const status=this.state==='DRIVING'?`${Math.round(Math.abs(this.controller.speed)*3.6)} km/h · W/S 가속·후진 · A/D 조향 · Space 브레이크`:this.state==='ENTERING'?'탑승 중…':this.state==='EXITING'?'하차 중…':loading?`${name} 준비 중…`:this.asset?.frame.visible?`${name} · 운전석 ${Math.round(distance)} m ${arrow}`:name;
+  // Compare source values, not translated DOM text. Rewriting an unchanged
+  // label every frame also retriggered the English translation observer.
+  if(shown.status!==status){label.textContent=status;shown.status=status;}
+  const disabled=loading||['ENTERING','EXITING'].includes(this.state);if(button.disabled!==disabled)button.disabled=disabled;
+  const action=loading?'준비 중':driving?'하차':this.asset?.frame.visible&&distance<25?'탑승':'불러오기';
+  if(shown.action!==action||shown.actionModel!==this.selected){actionText.textContent=action;button.setAttribute('aria-label',`${name} ${action} · B`);shown.action=action;shown.actionModel=this.selected;}
+  const brakeHidden=this.state!=='DRIVING';if(brake.hidden!==brakeHidden)brake.hidden=brakeHidden;
  }
+
  doorPoint(){return this.asset.frame.localToWorld(new T.Vector3(1.65,.1,.15));}
  async interact(){
   if(this.loading||['ENTERING','EXITING'].includes(this.state))return false;
@@ -119,7 +129,7 @@ export class VehicleSystem{
  exit(){
   if(Math.abs(this.controller.speed)>1.2){this.onNotice('브레이크로 멈춘 뒤 하차하세요.');return false;}
   const point=this.findExit();if(!point){this.onNotice('차 옆이 막혀 있습니다. 넓은 곳에 주차한 뒤 하차하세요.');return false;}
-  this.controller.speed=0;this.controller.velocity.set(0,0,0);this.exitPoint=point;this.state='EXITING';this.time=0;return true;
+  this.controller.speed=0;this.controller.velocity.set(0,0,0);this.controller.resetRenderPose();this.exitPoint=point;this.state='EXITING';this.time=0;return true;
  }
  findExit(){
   for(const [x,z] of [[1.65,.15],[-1.65,.15],[1.65,-1.2],[-1.65,-1.2],[0,-3.2]]){
@@ -136,19 +146,27 @@ export class VehicleSystem{
   if(this.savedCamera)Object.assign(this.cameraRig,this.savedCamera);this.cameraRig?.placeBehind(p.position,p.facingAngle,this.savedCamera?.pitch??.16);this.state='PARKED';this.brakeHeld=false;this.onNotice('하차했습니다.');
  }
  syncCar(delta){
-  const {asset,controller:c}=this;if(!asset||!c)return;asset.frame.position.copy(c.position);asset.frame.rotation.y=c.yaw;asset.visual.position.y=(c.rideY??c.position.y-.02)-(c.position.y-.02);asset.visual.rotation.x=delta>0?T.MathUtils.damp(asset.visual.rotation.x,c.pitch||0,14,delta):(c.pitch||0);asset.visual.rotation.z=delta>0?T.MathUtils.damp(asset.visual.rotation.z,c.roll||0,14,delta):(c.roll||0);asset.frame.updateMatrixWorld(true);
-  poseWheels(asset,c.spin,c.steering,{chassisY:c.position.y,contacts:c.contacts,plane:c.groundPlane,dt:delta});
-  const open=this.state==='ENTERING'?this.time<.65: this.state==='EXITING';asset.door.rotation.y=T.MathUtils.damp(asset.door.rotation.y,open?-.95:0,10,delta);this.cameraTarget.copy(c.position);
+  const {asset,controller:c}=this;if(!asset||!c)return;
+  const pose=this.state==='DRIVING'&&delta>0?c.sampleRenderPose():c;this.renderMotion=pose;
+  asset.frame.position.copy(pose.position);asset.frame.rotation.y=pose.yaw;
+  asset.visual.position.y=(pose.rideY??pose.position.y-.02)-(pose.position.y-.02);
+  asset.visual.rotation.x=delta>0?T.MathUtils.damp(asset.visual.rotation.x,pose.pitch||0,14,delta):(pose.pitch||0);
+  asset.visual.rotation.z=delta>0?T.MathUtils.damp(asset.visual.rotation.z,pose.roll||0,14,delta):(pose.roll||0);asset.frame.updateMatrixWorld(true);
+  poseWheels(asset,pose.spin,pose.steering,{chassisY:pose.position.y,contacts:pose.contacts,plane:pose.plane||c.groundPlane,dt:delta});
+  const open=this.state==='ENTERING'?this.time<.65: this.state==='EXITING';asset.door.rotation.y=T.MathUtils.damp(asset.door.rotation.y,open?-.95:0,10,delta);
+  // Camera and driver follow the exact chassis transform submitted to rendering.
+  this.cameraTarget.copy(asset.frame.position);this.cameraTarget.y+=asset.visual.position.y;
  }
+
  update(delta,input={},active=true){
   this.syncUI(active);if(!this.controller)return;
   if(!this.allowed()){if(this.driving){this.controller.speed=0;this.exitPoint=this.findExit()||this.city.getRooftopSpawn?.()||this.entryStart;this.finishExit();this.syncCar(delta);}this.asset.frame.visible=false;return;}
   if(!active)return;
   if(this.driving){
    this.time+=Math.min(delta,.1);if(this.state==='DRIVING')this.controller.update(delta,{...input,jump:input.jump||this.brakeHeld});this.syncCar(delta);
-   const p=this.physics;p.position.copy(this.controller.position).addScaledVector(up,.1);p.renderPosition.copy(p.position);p.previousFixedPosition?.copy(p.position);p.velocity.copy(this.controller.velocity);p.accumulator=0;p.facingAngle=this.controller.yaw;p.state='DRIVING';this.city.playerPosition?.copy(p.position);
+   const p=this.physics;p.position.copy(this.controller.position).addScaledVector(up,.1);p.renderPosition.copy(this.cameraTarget).addScaledVector(up,.1);p.previousFixedPosition?.copy(p.position);p.velocity.copy(this.controller.velocity);p.accumulator=0;p.facingAngle=this.asset.frame.rotation.y;p.state='DRIVING';this.city.playerPosition?.copy(p.position);
    let blend=1,standing=null;if(this.state==='ENTERING'){blend=smooth(this.time/.9);standing=this.entryStart;if(this.time>=.9)this.state='DRIVING';}else if(this.state==='EXITING'){blend=1-smooth(this.time/.75);standing=this.exitPoint;}
-   poseDriver(this.character,this.asset,this.controller.steering,blend,standing,this.state==='ENTERING'?this.entryFacing:this.controller.yaw);if(this.state==='EXITING'&&this.time>=.75)this.finishExit();
+   poseDriver(this.character,this.asset,this.renderMotion?.steering??this.controller.steering,blend,standing,this.state==='ENTERING'?this.entryFacing:this.controller.yaw);if(this.state==='EXITING'&&this.time>=.75)this.finishExit();
   }else this.syncCar(delta);
  }
  bodies(){return [...(this.asset?.frame.visible&&this.controller?[{position:this.controller.position,yaw:this.controller.yaw}]:[]),...this.getOtherVehicles().filter(v=>v&&v.phase!=='NONE')];}
@@ -172,7 +190,7 @@ export class VehicleSystem{
  networkSnapshot(){
   const sequence=++this.sequence;if(!this.asset?.frame.visible||!this.controller)return {phase:'NONE',sequence};
   const c=this.controller,point=p=>({x:p.x,y:p.y,z:p.z}),angle=a=>Math.atan2(Math.sin(a||0),Math.cos(a||0));
-  return sanitizeVehicle({wheelDrops:this.asset.wheels.map(w=>w.drop||0),sequence,model:this.selected,phase:this.state,position:point(c.position.clone().addScaledVector(up,this.asset.visual.position.y)),yaw:angle(c.yaw),pitch:this.asset.visual.rotation.x,roll:this.asset.visual.rotation.z,speed:this.state==='PARKED'?0:c.speed,steering:c.steering,spin:c.spin%(Math.PI*2),elapsed:['ENTERING','EXITING'].includes(this.state)?Math.min(1.5,this.time):0,start:point(this.entryStart||this.physics.position),startYaw:angle(this.entryFacing),exit:point(this.exitPoint||this.doorPoint())});
+  return sanitizeVehicle({wheelDrops:this.asset.wheels.map(w=>w.drop||0),sequence,model:this.selected,phase:this.state,position:point(this.asset.visual.getWorldPosition(new T.Vector3())),yaw:angle(this.asset.frame.rotation.y),pitch:this.asset.visual.rotation.x,roll:this.asset.visual.rotation.z,speed:this.state==='PARKED'?0:c.speed,steering:this.renderMotion?.steering??c.steering,spin:(this.renderMotion?.spin??c.spin)%(Math.PI*2),elapsed:['ENTERING','EXITING'].includes(this.state)?Math.min(1.5,this.time):0,start:point(this.entryStart||this.physics.position),startYaw:angle(this.entryFacing),exit:point(this.exitPoint||this.doorPoint())});
  }
  resetSession(){
   this.restoreEpoch++;if(this.driving){this.exitPoint=this.findExit()||this.city.getRooftopSpawn?.()||this.entryStart;this.finishExit();}
@@ -182,16 +200,16 @@ export class VehicleSystem{
   const v=sanitizeVehicle(snapshot);if(!v||v.phase==='NONE')return;const epoch=++this.restoreEpoch;
   if(this.asset&&this.selected!==v.model){this.releaseAsset(this.asset);this.asset=null;}
   this.selected=v.model;if(!this.asset){const asset=await this.loadAsset(v.model);if(this.disposed||epoch!==this.restoreEpoch){this.releaseAsset(asset);return;}this.asset=asset;this.scene.add(asset.frame);}
-  this.controller=new VehicleController(this.city,new T.Vector3().copy(v.position),v.yaw);this.controller.wheelRadius=this.asset.wheels.reduce((sum,w)=>sum+w.radius,0)/this.asset.wheels.length||.38;Object.assign(this.controller,{speed:0,steering:v.steering,spin:v.spin,pitch:v.pitch,roll:v.roll});this.controller.occupied=(p,yaw)=>this.citizenInBody(p,yaw);this.asset.frame.visible=true;this.sequence=Math.max(this.sequence,v.sequence);this.entryStart=new T.Vector3().copy(v.start);this.entryFacing=v.startYaw;this.exitPoint=new T.Vector3().copy(v.exit);this.time=v.elapsed;this.state=v.phase;
+  this.controller=new VehicleController(this.city,new T.Vector3().copy(v.position),v.yaw);this.controller.wheelRadius=this.asset.wheels.reduce((sum,w)=>sum+w.radius,0)/this.asset.wheels.length||.38;Object.assign(this.controller,{speed:0,steering:v.steering,spin:v.spin,pitch:v.pitch,roll:v.roll});this.controller.occupied=(p,yaw)=>this.citizenInBody(p,yaw);this.controller.resetRenderPose(true);this.asset.frame.visible=true;this.sequence=Math.max(this.sequence,v.sequence);this.entryStart=new T.Vector3().copy(v.start);this.entryFacing=v.startYaw;this.exitPoint=new T.Vector3().copy(v.exit);this.time=v.elapsed;this.state=v.phase;
   if(this.driving){prepareDriver(this.character);this.combat?.cancel();this.physics.clearWebAnchor?.();if(this.cameraRig){this.savedCamera=Object.fromEntries(['targetDistance','maxDistance','minDistance','mode','pitch','followMovement','lockBehind'].map(k=>[k,this.cameraRig[k]]));Object.assign(this.cameraRig,{targetDistance:8.5,maxDistance:12,minDistance:3.5,mode:'follow',pitch:.23,followMovement:true,lockBehind:true});}}
   this.syncCar(0);
  }
  applyCorrection(data){
   if(!this.controller)return false;
-  if(!Object.hasOwn(data,'vehicle')){if(!this.driving)return false;this.controller.position.set(data.x,data.y-.1,data.z);this.controller.speed=0;this.controller.velocity.set(0,0,0);this.syncCar(0);return true;}
+  if(!Object.hasOwn(data,'vehicle')){if(!this.driving)return false;this.controller.position.set(data.x,data.y-.1,data.z);this.controller.speed=0;this.controller.velocity.set(0,0,0);this.controller.resetRenderPose(true);this.syncCar(0);return true;}
   const v=sanitizeVehicle(data.vehicle);if(!v||v.phase==='NONE'){this.resetSession();return false;}
   if(v.model!==this.selected){this.resetSession();this.restore(v).catch(error=>{this.lastError=error;});return false;}
-  const wasDriving=this.driving;this.controller.position.copy(v.position);this.controller.yaw=v.yaw;this.controller.speed=0;this.controller.velocity.set(0,0,0);this.sequence=Math.max(this.sequence,v.sequence);
+  const wasDriving=this.driving;this.controller.position.copy(v.position);this.controller.yaw=v.yaw;this.controller.speed=0;this.controller.velocity.set(0,0,0);this.controller.resetRenderPose(true);this.sequence=Math.max(this.sequence,v.sequence);
   if(v.phase==='PARKED'){if(wasDriving){this.exitPoint=new T.Vector3(data.x,data.y,data.z);this.finishExit();}this.state='PARKED';this.syncCar(0);return false;}
   this.state=v.phase;if(!wasDriving)prepareDriver(this.character);this.syncCar(0);this.physics.position.copy(this.controller.position).addScaledVector(up,.1);this.physics.renderPosition.copy(this.physics.position);this.physics.previousFixedPosition?.copy(this.physics.position);this.physics.velocity.set(0,0,0);return true;
  }
