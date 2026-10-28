@@ -154,7 +154,13 @@ export function poseWheels(asset,spin,steering,ride=null){
         const d=(contact.x-(wheel.hx??0))**2+(contact.z-(wheel.hz??0))**2;
         if(d<bestD){bestD=d;best=contact;}
       }
-      if(best)target=T.MathUtils.clamp(ride.chassisY-best.y,-.1,.18);
+      if(best){
+        const x=wheel.hx??0,z=wheel.hz??0;
+        const groundY=best.y+(ride.plane?.slopeX||0)*(x-best.x)+(ride.plane?.slopeZ||0)*(z-best.z);
+        const sole=asset.visual.localToWorld(new T.Vector3(x,rest-wheel.radius,z));
+        const axisY=new T.Vector3(0,1,0).transformDirection(asset.visual.matrixWorld).y;
+        target=T.MathUtils.clamp((sole.y-groundY)/Math.max(.5,axisY),-.1,.18);
+      }
     }
     wheel.drop=dt?T.MathUtils.damp(wheel.drop||0,target,16,dt):target;
     wheel.pivot.position.y=rest-wheel.drop;

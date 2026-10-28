@@ -30,7 +30,7 @@ poseWheels(asset,0,0);asset.frame.updateMatrixWorld(true);
  city.raycast=(origin,direction,distance)=>{const hit=plain(origin,direction,distance);if(hit&&direction.y<-.5)hit.point.y=(Math.floor(origin.z*2)%2?1:-1)*.05;return hit;};
  const c=new VehicleController(city,new T.Vector3(0,.02,0));
  let maxStep=0,previous=null;
- for(let i=0;i<240;i++){c.update(1/60,{forward:true});if(previous!=null)maxStep=Math.max(maxStep,Math.abs(c.position.y-previous));previous=c.position.y;}
+ for(let i=0;i<240;i++){c.update(1/60,{forward:true});if(previous!=null)maxStep=Math.max(maxStep,Math.abs(c.rideY-previous));previous=c.rideY;}
  assert(maxStep<.012,`chassis copied a road edge ${maxStep.toFixed(3)}m in one frame`);
  assert(c.spin>2&&c.contacts?.length===4,'wheels did not roll on their own contacts');
 }

@@ -26,7 +26,7 @@ export class VehicleSystem{
   const key=document.createElement('kbd');key.textContent='B';const actionText=document.createElement('span');actionText.textContent='불러오기';button.append(key,actionText);brake.textContent='브레이크';brake.hidden=true;
   button.addEventListener('click',()=>this.interact());
   const release=()=>{this.brakeHeld=false;};brake.addEventListener('pointerdown',e=>{e.preventDefault();this.brakeHeld=true;brake.setPointerCapture?.(e.pointerId);});for(const type of ['pointerup','pointercancel','lostpointercapture'])brake.addEventListener(type,release);
-  const actions=document.createElement('div');actions.className='vehicle-actions';actions.append(button,brake);root.append(slots,actions,label);document.body.append(root);this.ui={root,label,button,brake,tiles,actionText};
+  const actions=document.createElement('div');actions.className='vehicle-actions';actions.append(button,brake);root.append(slots,actions,label);let dock=document.getElementById('game-action-dock');if(!dock){dock=document.createElement('div');dock.id='game-action-dock';const skills=document.getElementById('ability-bar');if(skills)dock.append(skills);document.body.append(dock);}dock.append(root);this.ui={root,label,button,brake,tiles,actionText};
  }
  syncUI(active){
   if(!this.ui)return;const {root,label,button,brake,tiles,actionText}=this.ui;
@@ -70,7 +70,8 @@ export class VehicleSystem{
  playerSupport(){
   const p=this.physics.position,origin=p.clone();origin.y+=.35;
   const hit=this.city.raycast?.(origin,new T.Vector3(0,-1,0),4);
-  if(hit?.normal&&hit.normal.y>=.75&&p.y-hit.point.y<=3.2&&hit.point.y-p.y<=.45&&!this.insideSolid(p.x,hit.point.y+.4,p.z))return hit.point.y;
+  if(hit?.normal&&hit.normal.y>=.75&&p.y-hit.point.y<=3.2&&hit.point.y-p.y<=.45&&!this.insideSolid(p.x,hit.point.y+.4,p.z)){this.playerSurfaceNormal=hit.normal.clone();return hit.point.y;}
+  this.playerSurfaceNormal=up.clone();
   if(!this.city.isStreamed&&p.y<2.5&&!this.insideSolid(p.x,.4,p.z))return 0;
   return null;
  }
@@ -84,9 +85,9 @@ export class VehicleSystem{
   return (this.city.colliders||[]).some(c=>x>c.minX+.05&&x<c.maxX-.05&&z>c.minZ+.05&&z<c.maxZ-.05&&y>c.minY+.15&&y<c.maxY-.08);
  }
  reachable(from,to){
-  if(Math.abs(from.y-to.y)>1.2)return false;
+  if(Math.abs(from.y-to.y)>Math.hypot(to.x-from.x,to.z-from.z)*Math.tan(28*Math.PI/180)+.45)return false;
   const start=from.clone();start.y+=.85;
-  const end=new T.Vector3(to.x,start.y,to.z),delta=end.sub(start),distance=delta.length();
+  const end=new T.Vector3(to.x,to.y+.85,to.z),delta=end.sub(start),distance=delta.length();
   if(distance<.4)return true;
   return !this.city.raycast?.(start,delta.multiplyScalar(1/distance),Math.max(0,distance-.6));
  }
@@ -95,7 +96,8 @@ export class VehicleSystem{
   const yaw=this.physics.facingAngle||0,probe=new VehicleController(this.city,feet,yaw);
   for(const radius of [7,11,17,25,35])for(const offset of [0,.65,-.65,1.3,-1.3,Math.PI]){
    const angle=yaw+offset,position=new T.Vector3(feet.x+Math.sin(angle)*radius,floorY,feet.z+Math.cos(angle)*radius);
-   const height=this.parkingHeight(position.x,position.z,floorY);if(height==null||Math.abs(height-floorY)>.45)continue;
+   const normal=this.playerSurfaceNormal||up,expected=floorY-(normal.x*(position.x-feet.x)+normal.z*(position.z-feet.z))/Math.max(.75,normal.y);
+   const height=this.parkingHeight(position.x,position.z,expected);if(height==null)continue;
    position.y=height+.02;
    if(!probe.support(position,yaw)||!this.spaceClear(position,yaw)||this.citizenInBody(position,yaw)||!this.reachable(feet,position))continue;
    return {position,yaw};
@@ -103,11 +105,11 @@ export class VehicleSystem{
  }
  spaceClear(position,yaw){
   const probe=new VehicleController(this.city,position,yaw),ground=probe.support(position,yaw);
-  if(probe.overlapsBuildings(position,yaw)||this.city.collisionWorld?.vehicleBlocked?.(position,position,yaw,ground?.pitch,ground?.roll))return false;
+  if(!ground||probe.overlapsBuildings(position,yaw)||this.city.collisionWorld?.vehicleBlocked?.(position,position,yaw,ground?.pitch,ground?.roll))return false;
   for(const x of [-1.33,0,1.33])for(const z of [-2.35,0,2.35]){
-   const point=probe.local(x,z).addScaledVector(up,.25);if(this.city.raycast?.(point,up,1.5))return false;
+   const point=probe.bodyPoint(x,.5,z,position,yaw,ground?.pitch,ground?.roll);if(this.city.raycast?.(point,up,1.5))return false;
   }
-  for(const height of [.4,1])for(const x of [-1.33,0,1.33]){const from=probe.local(x,-2.35).addScaledVector(up,height),dir=new T.Vector3(Math.sin(yaw),0,Math.cos(yaw));if(this.city.raycast?.(from,dir,4.7))return false;}
+  for(const height of [.5,1])for(const x of [-1.33,0,1.33]){const from=probe.bodyPoint(x,height,-2.35,position,yaw,ground?.pitch,ground?.roll),to=probe.bodyPoint(x,height,2.35,position,yaw,ground?.pitch,ground?.roll),dir=to.sub(from);if(this.city.raycast?.(from,dir.clone().normalize(),dir.length()))return false;}
   return true;
  }
  citizenInBody(position,yaw){
@@ -121,7 +123,7 @@ export class VehicleSystem{
  }
  findExit(){
   for(const [x,z] of [[1.65,.15],[-1.65,.15],[1.65,-1.2],[-1.65,-1.2],[0,-3.2]]){
-   const point=this.asset.frame.localToWorld(new T.Vector3(x,.1,z)),height=this.controller.ground(point);if(height==null||Math.abs(height-this.controller.position.y)>.5)continue;point.y=height+.1;
+   const point=this.asset.frame.localToWorld(new T.Vector3(x,.1,z)),height=this.controller.ground(point);if(height==null||Math.abs(height-this.controller.position.y)>1.25)continue;point.y=height+.1;
    const head=point.clone().addScaledVector(up,.2);if(this.city.raycast?.(head,up,1.8))continue;
    const center=this.controller.position.clone().addScaledVector(up,.9),line=point.clone().addScaledVector(up,.8).sub(center);if(this.city.raycast?.(center,line.clone().normalize(),line.length()))continue;
    let clear=true;for(const dir of [new T.Vector3(1,0,0),new T.Vector3(-1,0,0),new T.Vector3(0,0,1),new T.Vector3(0,0,-1)])if(this.city.raycast?.(point.clone().addScaledVector(up,.8),dir,.4))clear=false;
@@ -134,8 +136,8 @@ export class VehicleSystem{
   if(this.savedCamera)Object.assign(this.cameraRig,this.savedCamera);this.cameraRig?.placeBehind(p.position,p.facingAngle,this.savedCamera?.pitch??.16);this.state='PARKED';this.brakeHeld=false;this.onNotice('하차했습니다.');
  }
  syncCar(delta){
-  const {asset,controller:c}=this;if(!asset||!c)return;asset.frame.position.copy(c.position);asset.frame.rotation.y=c.yaw;asset.visual.rotation.x=T.MathUtils.damp(asset.visual.rotation.x,c.pitch||0,6,delta);asset.visual.rotation.z=T.MathUtils.damp(asset.visual.rotation.z,c.roll||0,6,delta);asset.frame.updateMatrixWorld(true);
-  poseWheels(asset,c.spin,c.steering,{chassisY:c.position.y,contacts:c.contacts,dt:delta});
+  const {asset,controller:c}=this;if(!asset||!c)return;asset.frame.position.copy(c.position);asset.frame.rotation.y=c.yaw;asset.visual.position.y=(c.rideY??c.position.y-.02)-(c.position.y-.02);asset.visual.rotation.x=delta>0?T.MathUtils.damp(asset.visual.rotation.x,c.pitch||0,14,delta):(c.pitch||0);asset.visual.rotation.z=delta>0?T.MathUtils.damp(asset.visual.rotation.z,c.roll||0,14,delta):(c.roll||0);asset.frame.updateMatrixWorld(true);
+  poseWheels(asset,c.spin,c.steering,{chassisY:c.position.y,contacts:c.contacts,plane:c.groundPlane,dt:delta});
   const open=this.state==='ENTERING'?this.time<.65: this.state==='EXITING';asset.door.rotation.y=T.MathUtils.damp(asset.door.rotation.y,open?-.95:0,10,delta);this.cameraTarget.copy(c.position);
  }
  update(delta,input={},active=true){
@@ -170,7 +172,7 @@ export class VehicleSystem{
  networkSnapshot(){
   const sequence=++this.sequence;if(!this.asset?.frame.visible||!this.controller)return {phase:'NONE',sequence};
   const c=this.controller,point=p=>({x:p.x,y:p.y,z:p.z}),angle=a=>Math.atan2(Math.sin(a||0),Math.cos(a||0));
-  return sanitizeVehicle({wheelDrops:this.asset.wheels.map(w=>w.drop||0),sequence,model:this.selected,phase:this.state,position:point(c.position),yaw:angle(c.yaw),pitch:c.pitch||0,roll:c.roll||0,speed:this.state==='PARKED'?0:c.speed,steering:c.steering,spin:c.spin%(Math.PI*2),elapsed:['ENTERING','EXITING'].includes(this.state)?Math.min(1.5,this.time):0,start:point(this.entryStart||this.physics.position),startYaw:angle(this.entryFacing),exit:point(this.exitPoint||this.doorPoint())});
+  return sanitizeVehicle({wheelDrops:this.asset.wheels.map(w=>w.drop||0),sequence,model:this.selected,phase:this.state,position:point(c.position.clone().addScaledVector(up,this.asset.visual.position.y)),yaw:angle(c.yaw),pitch:this.asset.visual.rotation.x,roll:this.asset.visual.rotation.z,speed:this.state==='PARKED'?0:c.speed,steering:c.steering,spin:c.spin%(Math.PI*2),elapsed:['ENTERING','EXITING'].includes(this.state)?Math.min(1.5,this.time):0,start:point(this.entryStart||this.physics.position),startYaw:angle(this.entryFacing),exit:point(this.exitPoint||this.doorPoint())});
  }
  resetSession(){
   this.restoreEpoch++;if(this.driving){this.exitPoint=this.findExit()||this.city.getRooftopSpawn?.()||this.entryStart;this.finishExit();}

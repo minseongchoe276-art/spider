@@ -71,14 +71,17 @@ export class StreamedCollision {
     };
   }
 
-  vehicleBlocked(from, to, yaw, pitch=0, roll=0) {
+  vehicleBlocked(from, to, yaw, pitch=0, roll=0, previous=null) {
     if(!this.ready)return true;
     this.vehicleShape ||= new RAPIER.Cuboid(1.33,.45,2.35);
     const rotation=new THREE.Quaternion().setFromEuler(new THREE.Euler(pitch,yaw,roll,'YXZ'));
-    const start={x:from.x,y:from.y+.9,z:from.z},end={x:to.x,y:to.y+.9,z:to.z};
+    const startRotation=previous?new THREE.Quaternion().setFromEuler(new THREE.Euler(previous.pitch,previous.yaw,previous.roll,'YXZ')):rotation;
+    // The body centre is above the tyre plane along the chassis up axis.
+    const start=new THREE.Vector3(0,.9,0).applyQuaternion(startRotation).add(from);
+    const end=new THREE.Vector3(0,.9,0).applyQuaternion(rotation).add(to);
     if(this.world.intersectionWithShape(end,rotation,this.vehicleShape,undefined,undefined,this.body))return true;
-    const travel={x:to.x-from.x,y:to.y-from.y,z:to.z-from.z};
-    return !!this.world.castShape(start,rotation,travel,this.vehicleShape,.025,1,true,undefined,undefined,this.body);
+    const travel=end.clone().sub(start);
+    return !!this.world.castShape(start,startRotation,travel,this.vehicleShape,.025,1,true,undefined,undefined,this.body);
   }
 
   update(center, { budgetMs = 3, maxIndices = 6000 } = {}) {
