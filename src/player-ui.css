@@ -508,11 +508,41 @@ button.ability:focus-visible { outline: 2px solid #a6fff2; outline-offset: 3px; 
 
 .ability-cooldown { position: absolute; inset: 0; display: grid; place-items: center; color: #fff; font-size: 19px; font-weight: 700; text-shadow: 0 2px 4px #000; pointer-events: none; }
 
-#vehicle-ui{position:fixed;left:auto;right:24px;transform:none;bottom:234px;z-index:26;display:flex;align-items:center;gap:8px;max-width:min(380px,38vw);padding:9px 12px;background:#101925e8;color:#f0f4f8;border:1px solid #66788c88;border-radius:10px;backdrop-filter:blur(8px);font:12px system-ui}
-#vehicle-ui[hidden]{display:none}#vehicle-ui span{max-width:220px}#vehicle-ui button{min-height:44px;padding:8px 12px;border:1px solid #8ca1b5;border-radius:6px;background:#24364a;color:white;font:inherit;cursor:pointer}#vehicle-ui button:disabled{opacity:.5}#vehicle-ui button[hidden]{display:none}
-body.vehicle-driving #vehicle-ui{left:50%;right:auto;transform:translateX(-50%);bottom:24px;max-width:min(520px,calc(100vw - 440px))}
-body.vehicle-driving #vehicle-ui span{max-width:360px}
+/* Vehicle abilities use the same image-first treatment as the skill bar. */
+#vehicle-ui{position:fixed;right:24px;bottom:234px;z-index:26;display:grid;grid-template-columns:auto auto;gap:8px 10px;align-items:center;width:250px;max-width:calc(100vw - 24px);padding:10px;background:#0c101be8;border:1px solid #b4a1d43b;border-radius:16px;box-shadow:0 8px 28px #0005;backdrop-filter:blur(12px);color:#efedf6;font:12px/1.4 system-ui}
+#vehicle-ui[hidden],#vehicle-ui button[hidden]{display:none}
+#vehicle-ui .vehicle-slots{display:flex;gap:8px}
+#vehicle-ui .vehicle-slot{position:relative;width:76px;height:76px;min-height:44px;padding:0;overflow:hidden;border:1px solid #aaadbf4d;border-radius:11px;background:#10101b;cursor:pointer;transition:border-color .15s,transform .15s,box-shadow .15s}
+#vehicle-ui .vehicle-slot img{display:block;width:100%;height:100%;object-fit:cover;pointer-events:none;transition:filter .15s}
+#vehicle-ui .vehicle-slot-name{position:absolute;inset:auto 0 0;padding:13px 4px 5px;background:linear-gradient(transparent,#080a13ed);color:#f6f3ff;text-align:center;font-size:10px;font-weight:650;letter-spacing:.06em;pointer-events:none}
+#vehicle-ui .vehicle-slot-mark{position:absolute;top:4px;right:4px;display:none;width:16px;height:16px;border-radius:50%;background:#ded0ff;color:#241333;text-align:center;font-size:11px;font-weight:800;line-height:16px}
+#vehicle-ui .vehicle-slot[aria-pressed="true"]{border-color:#d7c0ff;box-shadow:0 0 0 1px #b98aff66,inset 0 0 12px #b98aff33}
+#vehicle-ui .vehicle-slot[aria-pressed="true"] .vehicle-slot-mark{display:block}
+@media(hover:hover){#vehicle-ui .vehicle-slot:hover:not(:disabled){transform:translateY(-2px);border-color:#eee3ff;box-shadow:0 5px 14px #0008}}
+#vehicle-ui button:focus-visible{outline:2px solid #f0dcff;outline-offset:3px}
+#vehicle-ui .vehicle-slot:disabled{cursor:default;opacity:.5}
+#vehicle-ui .vehicle-slot.is-loading{opacity:1}
+#vehicle-ui .vehicle-slot.is-loading img{filter:brightness(.45)}
+#vehicle-ui .vehicle-slot.is-loading::after{content:"";position:absolute;left:calc(50% - 10px);top:calc(50% - 13px);width:20px;height:20px;border:2px solid #dac5ff44;border-top-color:#ede1ff;border-radius:50%;animation:vehicle-loading .8s linear infinite}
+@keyframes vehicle-loading{to{transform:rotate(360deg)}}
+#vehicle-ui .vehicle-actions{display:flex;flex-direction:column;gap:6px;align-items:stretch}
+#vehicle-ui .vehicle-interact,#vehicle-ui .vehicle-brake{display:flex;align-items:center;justify-content:center;gap:6px;min-height:44px;padding:7px 9px;border:1px solid #af92d75c;border-radius:9px;background:#262035;color:#f3edff;font:inherit;white-space:nowrap;cursor:pointer}
+#vehicle-ui .vehicle-interact{flex-direction:column;min-height:76px}
+#vehicle-ui .vehicle-interact kbd{display:grid;place-items:center;width:23px;height:23px;border:1px solid #e5d7ff80;border-radius:5px;background:#14101f;font:600 12px system-ui;box-shadow:0 2px 0 #0005}
+#vehicle-ui .vehicle-interact span{font-size:10px}
+#vehicle-ui .vehicle-actions button:disabled{opacity:.5;cursor:default}
+#vehicle-ui .vehicle-status{grid-column:1/-1;min-width:0;color:#bbb5c9;font-size:10px;overflow-wrap:anywhere}
+body.vehicle-driving #vehicle-ui{left:50%;right:auto;transform:translateX(-50%);bottom:24px;width:auto;max-width:calc(100vw - 32px);grid-template-columns:auto 1fr;padding:10px 14px}
+body.vehicle-driving #vehicle-ui .vehicle-slots{display:none}
+body.vehicle-driving #vehicle-ui .vehicle-actions{flex-direction:row;grid-row:1;grid-column:1}
+body.vehicle-driving #vehicle-ui .vehicle-interact{flex-direction:row;min-height:44px}
+body.vehicle-driving #vehicle-ui .vehicle-status{grid-column:2;max-width:330px}
 body.vehicle-driving #ability-bar,body.vehicle-driving .touch-actions,body.vehicle-driving .touch-mode,body.vehicle-driving .touch-extra{display:none!important}
-body.hud-covered #vehicle-ui{display:none}body.touch-device #vehicle-ui{left:auto;transform:none;bottom:calc(20px + env(safe-area-inset-bottom));right:14px;max-width:calc(100vw - 175px);flex-wrap:wrap}body.touch-device #vehicle-ui span{width:100%;font-size:11px}
-@media(max-width:600px){#vehicle-ui{bottom:160px;max-width:calc(100vw - 24px);right:12px;left:auto;transform:none}#vehicle-ui span{max-width:160px}body.touch-device.vehicle-driving #vehicle-ui span{font-size:0}body.touch-device.vehicle-driving #vehicle-ui span::first-line{font-size:12px}}
-#vehicle-ui select{min-height:44px;max-width:180px;padding:6px 8px;border:1px solid #8ca1b5;border-radius:6px;background:#182a3c;color:#f0f4f8;font:inherit}#vehicle-ui select:disabled{opacity:.55}
+body.hud-covered #vehicle-ui{display:none}
+body.touch-device #vehicle-ui{right:14px;bottom:calc(260px + env(safe-area-inset-bottom));width:226px;padding:8px;gap:6px}
+body.touch-device #vehicle-ui .vehicle-slot{width:66px;height:66px}
+body.touch-device #vehicle-ui .vehicle-interact{min-height:66px}
+body.touch-device.vehicle-driving #vehicle-ui{left:50%;right:auto;bottom:calc(20px + env(safe-area-inset-bottom));width:calc(100vw - 40px);max-width:440px}
+body.touch-device.vehicle-driving #vehicle-ui .vehicle-interact{min-height:44px}
+@media(max-width:600px){#vehicle-ui{right:12px;bottom:260px;width:226px;padding:8px;gap:6px}#vehicle-ui .vehicle-slot{width:66px;height:66px}#vehicle-ui .vehicle-interact{min-height:66px}body.vehicle-driving #vehicle-ui{bottom:20px;max-width:calc(100vw - 24px)}body.vehicle-driving #vehicle-ui .vehicle-status{max-width:190px}}
+@media(prefers-reduced-motion:reduce){#vehicle-ui .vehicle-slot,#vehicle-ui .vehicle-slot img{transition:none}#vehicle-ui .vehicle-slot:hover:not(:disabled){transform:none}#vehicle-ui .vehicle-slot.is-loading::after{animation:none}}

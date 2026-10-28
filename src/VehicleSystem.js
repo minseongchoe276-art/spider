@@ -12,18 +12,33 @@ export class VehicleSystem{
  createUI(){
   if(!globalThis.document?.createElement)return;
   const root=document.createElement('aside');root.id='vehicle-ui';root.hidden=true;root.setAttribute('aria-label','차량 선택 및 탑승');
-  const select=document.createElement('select');select.setAttribute('aria-label','차량 선택');for(const id of VEHICLE_IDS){const option=document.createElement('option');option.value=id;option.textContent=VEHICLE_LABELS[id];select.append(option);}select.addEventListener('change',()=>{if(!this.selectVehicle(select.value))select.value=this.selected;});
-  const label=document.createElement('span'),button=document.createElement('button'),brake=document.createElement('button');button.type=brake.type='button';button.textContent='BMW 불러오기 · B';brake.textContent='브레이크';brake.hidden=true;
+  const slots=document.createElement('div');slots.className='vehicle-slots';slots.setAttribute('role','group');slots.setAttribute('aria-label','차량 불러오기');
+  const tiles=new Map();
+  for(const id of VEHICLE_IDS){
+   const tile=document.createElement('button');tile.type='button';tile.className='vehicle-slot';tile.dataset.vehicle=id;tile.title=`${VEHICLE_LABELS[id]} 불러오기`;tile.setAttribute('aria-label',tile.title);tile.setAttribute('aria-pressed',String(id===this.selected));
+   const art=document.createElement('img');art.src=`/images/vehicles/${id}-skill-v1.png`;art.alt='';art.width=art.height=96;art.draggable=false;
+   const name=document.createElement('span');name.className='vehicle-slot-name';name.textContent=id==='bmw'?'330i':'C6 ZR1';
+   const mark=document.createElement('span');mark.className='vehicle-slot-mark';mark.textContent='✓';mark.setAttribute('aria-hidden','true');
+   tile.append(art,name,mark);tile.addEventListener('click',()=>{if(this.selectVehicle(id)){void this.interact();this.syncUI(true);}});slots.append(tile);tiles.set(id,tile);
+  }
+  const label=document.createElement('span');label.className='vehicle-status';label.setAttribute('role','status');label.setAttribute('aria-live','polite');
+  const button=document.createElement('button'),brake=document.createElement('button');button.type=brake.type='button';button.className='vehicle-interact';brake.className='vehicle-brake';
+  const key=document.createElement('kbd');key.textContent='B';const actionText=document.createElement('span');actionText.textContent='불러오기';button.append(key,actionText);brake.textContent='브레이크';brake.hidden=true;
   button.addEventListener('click',()=>this.interact());
-  const release=()=>{this.brakeHeld=false;};brake.addEventListener('pointerdown',e=>{e.preventDefault();this.brakeHeld=true;brake.setPointerCapture?.(e.pointerId);});for(const type of ['pointerup','pointercancel','lostpointercapture'])brake.addEventListener(type,release);root.append(select,label,button,brake);document.body.append(root);this.ui={root,label,button,brake,select};
+  const release=()=>{this.brakeHeld=false;};brake.addEventListener('pointerdown',e=>{e.preventDefault();this.brakeHeld=true;brake.setPointerCapture?.(e.pointerId);});for(const type of ['pointerup','pointercancel','lostpointercapture'])brake.addEventListener(type,release);
+  const actions=document.createElement('div');actions.className='vehicle-actions';actions.append(button,brake);root.append(slots,actions,label);document.body.append(root);this.ui={root,label,button,brake,tiles,actionText};
  }
  syncUI(active){
-  if(!this.ui)return;const {root,label,button,brake,select}=this.ui;select.disabled=this.driving||!!this.loading;select.value=this.selected;const name=VEHICLE_LABELS[this.selected];document.body.classList.toggle('vehicle-driving',this.driving);root.hidden=!active||!this.allowed();if(root.hidden){this.brakeHeld=false;return;}
+  if(!this.ui)return;const {root,label,button,brake,tiles,actionText}=this.ui;
+  for(const [id,tile] of tiles){tile.disabled=this.driving||!!this.loading;tile.setAttribute('aria-pressed',String(id===this.selected));tile.classList.toggle('is-loading',!!this.loading&&id===this.selected);}
+  root.setAttribute('aria-busy',String(!!this.loading));const name=VEHICLE_LABELS[this.selected];document.body.classList.toggle('vehicle-driving',this.driving);root.hidden=!active||!this.allowed();if(root.hidden){this.brakeHeld=false;return;}
   const distance=this.asset?this.physics.position.distanceTo(this.doorPoint()):0;
   const direction=this.asset?this.doorPoint().sub(this.physics.position):new T.Vector3(),angle=Math.atan2(direction.x,direction.z)-(this.cameraRig?.yaw||0),arrow=['↑','↖','←','↙','↓','↘','→','↗'][((Math.round(angle/(Math.PI/4))%8)+8)%8];
-  label.textContent=this.state==='DRIVING'?`${Math.round(Math.abs(this.controller.speed)*3.6)} km/h · W/S 가속·후진 · A/D 조향 · Space 브레이크`:this.state==='ENTERING'?'탑승 중…':this.state==='EXITING'?'하차 중…':this.asset?.frame.visible?`${name} · 운전석 ${Math.round(distance)} m ${arrow}`:this.loading?`${name} 준비 중…`:name;
+  const status=this.state==='DRIVING'?`${Math.round(Math.abs(this.controller.speed)*3.6)} km/h · W/S 가속·후진 · A/D 조향 · Space 브레이크`:this.state==='ENTERING'?'탑승 중…':this.state==='EXITING'?'하차 중…':this.loading?`${name} 준비 중…`:this.asset?.frame.visible?`${name} · 운전석 ${Math.round(distance)} m ${arrow}`:name;
+  if(label.textContent!==status)label.textContent=status;
   button.disabled=!!this.loading||['ENTERING','EXITING'].includes(this.state);
-  button.textContent=this.driving?'하차 · B':this.asset?.frame.visible&&distance<25?'탑승 · B':`${name} 불러오기 · B`;brake.hidden=this.state!=='DRIVING';
+  actionText.textContent=this.loading?'준비 중':this.driving?'하차':this.asset?.frame.visible&&distance<25?'탑승':'불러오기';button.setAttribute('aria-label',`${name} ${actionText.textContent} · B`);brake.hidden=this.state!=='DRIVING';
+
  }
  doorPoint(){return this.asset.frame.localToWorld(new T.Vector3(1.65,.1,.15));}
  async interact(){
