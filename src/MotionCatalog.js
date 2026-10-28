@@ -35,9 +35,10 @@ const imported = {
  // then play that section slower so the fist does not snap out and back.
  hook:{file:'Boxing Hook',trim:[0,1.4],impactPhase:.43},
  heavy:{file:'Boxing Hook',trim:[0,1.4],impactPhase:.43},
- airTrick:{file:'Front Flip',trim:[.5,1.43]},
+ // Retain extension after the tuck; omit the grounded takeoff and landing.
+ airTrick:{file:'Front Flip',trim:[.5,1.57]},
  // Aerial backflip: the source starts airborne and finishes upright.
- backTrick:{file:'Stylish Flip'},
+ backTrick:{file:'Stylish Flip',trim:[0,1.23]},
  hitHead:{file:'Light Hit To Head'},
  hitBody:{file:'Hit To Body'},
  hitHeavy:{file:'Big Hit To Head'},

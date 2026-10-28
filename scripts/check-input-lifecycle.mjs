@@ -51,10 +51,19 @@ check('Remapped left/right modifiers do not double-toggle modes',()=>dom(()=>{
   key('keydown','ShiftLeft');key('keydown','ShiftRight');assert.equal(calls,1);
   key('keyup','ShiftLeft');assert(g.heldKeys.has('KeyQ'));key('keyup','ShiftRight');assert(!g.heldKeys.has('KeyQ'));
 }));
-check('Retired trick keys stay inactive across keyboard and pad',()=>dom(()=>{
-  const g=app();let races=0;const tricks=[];g.toggleTimeTrial=()=>races++;g.physics.performAirTrick=key=>tricks.push(key);
-  for(const code of ['KeyR','KeyT']){key('keydown',code);key('keydown',code,true);key('keyup',code);key('keyup',code,true);key('keydown',code);key('keyup',code);}
-  assert.equal(races,0);assert.deepEqual(tricks,[]);
+check('R randomly selects both flips in both modes, independent of W; devices share one press',()=>dom(()=>{
+  const g=app();const tricks=[];g.physics.performAirTrick=key=>tricks.push(key);
+  const random=Math.random;
+  try{
+    for(const mode of ['web','combat'])for(const moving of [false,true])for(const [sample,expected] of [[0,'front'],[.4999,'front'],[.5,'back'],[.9999,'back']]){
+      g.combat.mode=mode;if(moving)key('keydown','KeyW');
+      Math.random=()=>sample;const before=tricks.length;
+      key('keydown','KeyR');key('keydown','KeyR',true);
+      assert.equal(tricks.length,before+1);assert.equal(tricks.at(-1),expected);
+      key('keyup','KeyR');key('keyup','KeyR',true);if(moving)key('keyup','KeyW');
+    }
+    const before=tricks.length;key('keydown','KeyT');key('keyup','KeyT');assert.equal(tricks.length,before);
+  }finally{Math.random=random;}
 }));
 check('Retired crouch remains inactive and X retains camera recenter',()=>dom(()=>{
   const g=app();let recentered=0;g.tpsCamera.recenterBehind=()=>recentered++;

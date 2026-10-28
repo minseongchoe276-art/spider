@@ -513,9 +513,9 @@ export class Character {
     });
   }
 
-  triggerAirTrick(key = 'front') {
+  triggerAirTrick(key = 'front', duration = AIR_TRICKS[key]?.duration) {
     if (!Object.hasOwn(AIR_TRICKS, key)) return false;
-    this.airTrick = { key, elapsed: 0 };
+    this.airTrick = { key, elapsed: 0, duration: THREE.MathUtils.clamp(Number.isFinite(duration) ? duration : AIR_TRICKS[key].duration, .42, AIR_TRICKS[key].duration) };
     this.isTricking = true;
     this.trickRotation = 0;
     this.actions?.[key === 'back' ? 'backTrick' : 'airTrick']?.reset();
@@ -573,7 +573,7 @@ export class Character {
       if (!['JUMPING', 'FALLING'].includes(state)) this.cancelAirTrick();
       else {
         this.airTrick.elapsed += Math.max(0, delta);
-        if (this.airTrick.elapsed >= AIR_TRICKS[this.airTrick.key].duration) {
+        if (this.airTrick.elapsed >= (this.airTrick.duration || AIR_TRICKS[this.airTrick.key].duration)) {
           const key = this.airTrick.key;
           this.cancelAirTrick();
           this.onAirTrickComplete?.(key);
@@ -588,7 +588,7 @@ export class Character {
       this.updateWeb(!!visibleAnchor, visibleAnchor);
     this.frameEntryPose=null;
       if (this.placeholder) {
-        const angles=this.airTrick?trickRotation(this.airTrick.key,this.airTrick.elapsed):{x:0,y:0,z:0};
+        const angles=this.airTrick?trickRotation(this.airTrick.key,this.airTrick.elapsed,this.airTrick.duration):{x:0,y:0,z:0};
         this.placeholder.rotation.set(angles.x,this.targetFacingAngle+angles.y,angles.z);
       }
       return;
@@ -697,7 +697,7 @@ export class Character {
       name = this.actions[trickClip] ? trickClip : this.actions.fallIdle ? 'fallIdle' : 'fall';
     }
     else if(this.isTricking && !grounded && !['WALL_RUNNING','MANTLING','WEB_ZIP'].includes(state) && this.actions.fallIdle)name='fallIdle';
-    if(this.networkAnimation && this.actions[this.networkAnimation.key] &&
+    if(!this.airTrick && this.networkAnimation && this.actions[this.networkAnimation.key] &&
       (!['ROLLING','LANDING'].includes(state)||this.networkAnimation.key===name))name=this.networkAnimation.key;
     if(this.lowStance && combatGround && !combat?.duration)name='idle';
     // Guard reduces actual travel speed; a sprint input must not play a
@@ -713,7 +713,7 @@ export class Character {
     // An idle dodge has no stride to keep, so it stays on the fighting stance.
     if(heldReact)name=this.reactStride;
     else if(dodgeKey && grounded && state!=='SPRINTING' && horizontalSpeed<3.4)name='combatIdle';
-    this.fadeToAction(name, combatClip===name ? (combat.duration ? 0.065 : name==='guard' ? 0.18 : 0.12) : state==='MANTLING' && name==='idle' ? .3 : ['LANDING','ROLLING'].includes(state) ? 0.06 : grounded ? 0.18 : 0.12);
+    this.fadeToAction(name, this.airTrick ? .055 : combatClip===name ? (combat.duration ? 0.065 : name==='guard' ? 0.18 : 0.12) : state==='MANTLING' && name==='idle' ? .3 : ['LANDING','ROLLING'].includes(state) ? 0.06 : grounded ? 0.18 : 0.12);
     if (STRIDES.includes(name)) {
       const measuredSpeed = this.activeAction?.getClip().userData?.nominalSpeed;
       const strideSpeed = measuredSpeed > 0.1 ? measuredSpeed : ({walk:2.8,regularRun:4.8,run:6.5}[name]);
@@ -759,8 +759,13 @@ export class Character {
       this.activeAction.time=this.activeAction.getClip().duration*THREE.MathUtils.clamp(this.recoveryProgress,0,.999999);
       this.activeAction.setEffectiveTimeScale(0);
     }
-    if((name==='airTrick'||name==='backTrick') && this.airTrick)this.activeAction?.setEffectiveTimeScale(
-      this.activeAction.getClip().duration / AIR_TRICKS[this.airTrick.key].duration);
+    if((name==='airTrick'||name==='backTrick') && this.airTrick){
+      // One clock owns local, remote and resumed flips; no double step on entry.
+      this.activeAction.enabled=true;this.activeAction.paused=false;
+      this.activeAction.time=this.activeAction.getClip().duration * THREE.MathUtils.clamp(
+        this.airTrick.elapsed/(this.airTrick.duration || AIR_TRICKS[this.airTrick.key].duration),0,.999999);
+      this.activeAction.setEffectiveTimeScale(0);
+    }
     if(name==='wall')this.activeAction?.setEffectiveTimeScale(state==='MANTLING'?0:THREE.MathUtils.clamp(velocity.length()/(this.activeAction.getClip().userData.climbSpeed || 3),0,6));
     if(this.lowStance && combatGround && !combat?.duration && name==='idle'){
       this.activeAction.time=0;this.activeAction.setEffectiveTimeScale(0);
@@ -772,7 +777,7 @@ export class Character {
       this.activeAction.time=0;this.activeAction.setEffectiveTimeScale(0);
     }
     this.mixer.update(delta);
-    if(this.networkAnimation && !(this.combatAction?.key==='heavy' && this.activeAction===this.actions.heavy) && this.activeAction===this.actions[this.networkAnimation.key]){
+    if(!this.airTrick && this.networkAnimation && !(this.combatAction?.key==='heavy' && this.activeAction===this.actions.heavy) && this.activeAction===this.actions[this.networkAnimation.key]){
       this.activeAction.time=this.networkAnimation.time;
       this.mixer.update(0);
     }
@@ -913,7 +918,7 @@ export class Character {
       this.model.position.y-=.1*THREE.MathUtils.smoothstep(this.airModelRelease/.14,0,1);
     this.model.position.x=0;this.model.position.z=0;
     if (this.airTrick && !['airTrick','backTrick'].includes(name)) {
-      const angles = trickRotation(this.airTrick.key, this.airTrick.elapsed);
+      const angles = trickRotation(this.airTrick.key, this.airTrick.elapsed, this.airTrick.duration);
       const rotation = new THREE.Quaternion().setFromEuler(new THREE.Euler(angles.x, angles.y, angles.z, 'YXZ'));
       this.model.quaternion.multiply(rotation);
       // Rotate around the torso, keeping the body centre on its flight path.

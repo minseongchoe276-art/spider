@@ -51,8 +51,8 @@ check('Mouse and gamepad release preserve the other device tether; middle drag s
   mouse(g,'mousedown',1);mouse(g,'mousedown',0);mouse(g,'mouseup',0);assert(g.cameraDragActive);
   mouse(g,'mouseup',1);assert(!g.cameraDragActive);
 }));
-check('Ascending contact time rejects unfinished tricks while a high jump allows them',()=>{
-  const p=body();p.state='JUMPING';p.position.y=3;p.velocity.y=1;p.update(0,{},camera);
+check('Insufficient contact time rejects unfinished tricks while a high jump allows them',()=>{
+  const p=body();p.state='JUMPING';p.position.y=.8;p.velocity.y=1;p.update(0,{},camera);
   assert(p.character.contactTime<.7);assert(!p.performAirTrick('front'));
   p.position.y=12;p.velocity.y=12;p.update(0,{},camera);assert(p.performAirTrick('front'));
 });

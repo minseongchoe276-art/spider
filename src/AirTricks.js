@@ -6,9 +6,9 @@ export const AIR_TRICKS = Object.freeze({
 export function selectAirTrick() {
   return 'front';
 }
-export function trickRotation(key, elapsed) {
+export function trickRotation(key, elapsed, duration) {
   const trick = AIR_TRICKS[key] || AIR_TRICKS.front;
-  const t = Math.max(0, Math.min(1, elapsed / trick.duration));
+  const t = Math.max(0, Math.min(1, elapsed / (duration || trick.duration)));
   // Ease into and out of the rotation, returning exactly to the base pose.
   const angle = (t * t * (3 - 2 * t)) * Math.PI * 2;
   return { x: trick.x * angle, y: trick.y * angle, z: trick.z * angle };

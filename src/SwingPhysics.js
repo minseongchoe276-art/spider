@@ -466,18 +466,20 @@ export class SwingPhysics {
   performAirTrick(input = {}) {
     const key = typeof input === 'string' ? input : selectAirTrick(input);
     const trick = AIR_TRICKS[key];
-    if (!Object.hasOwn(AIR_TRICKS, key) || this.character.isTricking) return false;
+    if (!Object.hasOwn(AIR_TRICKS, key) || this.character.isTricking || this.character.combatAction?.duration>0) return false;
     if (this.character.webShotTimer>0 || this.webs.length || !['FALLING', 'JUMPING'].includes(this.state) || this.isSwinging) {
-      if (this.state === 'SWINGING') this.onStuntCallback?.(key === 'back'
-        ? '줄을 놓고 R로 공중 백플립을 연결하세요'
-        : '줄을 놓고 T로 공중 묘기를 연결하세요', 0);
+      if (this.state === 'SWINGING') this.onStuntCallback?.('에너지 와이어를 놓고 R로 공중 묘기를 연결하세요', 0);
       return false;
     }
-    if (this.character.contactTime < trick.duration + .15 || this.position.y < 3) {
+    // Fit a quick tuck into a combat hop, but never speed a flip beyond
+    // its readable minimum. The physics flight path remains untouched.
+    const available = Number.isFinite(this.character.contactTime) ? this.character.contactTime - .06 : trick.duration;
+    const duration = Math.min(trick.duration, available);
+    if (duration < .42) {
       this.onStuntCallback?.('묘기를 마칠 높이가 부족합니다', 0);
       return false;
     }
-    this.character.triggerAirTrick(key);
+    this.character.triggerAirTrick(key, duration);
     this.audio.playTrickSound();
     this.onStuntCallback?.(trick.label, 0);
     return true;

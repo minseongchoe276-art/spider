@@ -1,5 +1,6 @@
 // Longest phrases are matched first; numbers and rebound control keys stay intact.
 export const EN = {
+'에너지 와이어를 놓고 R로 공중 묘기를 연결하세요':'Release the energy wire and press R for a random aerial flip',
 '돌진 어퍼컷':'Dashing uppercut','정면 방어 시':'When guarded from the front','재사용 8초':'8-second cooldown','명중 48 피해':'48 damage on hit',
 '앉기 / 일어서기':'Crouch / stand','앉기':'Crouch',
 '속도':'Speed',
@@ -63,6 +64,7 @@ export const EN = {
 '반대 손에서 같은 진자 스윙. 꾹 누르면 매달리고, 떼면 그 손만 놓습니다. 땅의 전투는 오른손 펀칭':'Swing from the other hand. Hold to hang; release to detach that hand. Right-hand punch in grounded combat.',
 '누르는 동안 방어. 온라인: 지상에서 캐릭터 정면 좌우 60°의 피해 60% 감소(주먹 10 / 와이어 6). 후방·공중은 감소하지 않습니다. 기력 12 이상일 때 가능. 와이어 모드의 F는 벽 타기':'Hold to guard. Online: grounded frontal ±60° guard reduces damage by 60% (punch 10 / wire 6). No protection from behind or in the air. Requires 12 stamina. In wire mode, F controls wall traversal.',
 '공중에서 한 번 눌러 짧게 이동 (최대 12m) · 지상 출발은 좌/우클릭 · 전투 모드에서는 훅':'Tap in the air to zip up to 12m · Use left/right click from the ground · Hook in combat mode',
+'공중 백플립 / 앞구르기 무작위 재생 · 와이어·전투 모드 공통 · 줄을 놓은 뒤 사용 · 남은 체공 시간에 맞춰 회전':'Random aerial backflip / front flip · Both modes · Release the wire first · Speed adapts to airtime',
 '높은 곳에서 줄을 놓고':'Release the wire high in the air and press',': 백플립. T: 앞구르기. 동작을 마친 뒤 다시 사용할 수 있습니다.':': backflip. T: forward flip. Available again after the motion finishes.',
 '마우스 이동':'Mouse movement','카메라 회전':'Rotate camera','벽 기어가기':'Climb wall','카메라를 등 뒤로 정렬':'Align camera behind you','키보드로 좌우 / 위아래 조준':'Aim left/right and up/down with the keyboard','근접 · 기본 · 원거리 시점 전환':'Cycle close / default / distant camera','전체 지도 열기 · 닫기':'Open / close world map','카메라 거리 줌 인/아웃':'Zoom camera in/out','마우스 휠':'Mouse wheel','메뉴 · 도움말 · 전체 지도':'Menu · Help · World map',
 '전투/와이어 모드 전환 · 전투 모드에서는 와이어 불가 · 좌클릭 꾹: 조준한 표면에 에너지 와이어 · 우클릭 꾹: 반대 손 스윙 · 떼기: 관성 비행 ·':'Switch combat/wire mode · Wire is disabled in combat · Hold left click: tether to aimed surface · Hold right click: offhand swing · Release: coast ·',

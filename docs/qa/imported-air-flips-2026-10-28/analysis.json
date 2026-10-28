@@ -1,0 +1,38 @@
+{
+  "results": [
+    {
+      "source": "Front Flip",
+      "sha256": "9d21a55d81a96401e11f7c22697a4a8126c44087ab0458d2be4bb4c73f3cfd57",
+      "sourceDuration": 1.6666666269302368,
+      "airborneWindow": [
+        0.5,
+        1.57
+      ],
+      "rotationDegrees": 349.67949886764706
+    },
+    {
+      "source": "Stylish Flip",
+      "sha256": "1fed54de0c9ecb2b31f8ab665b5db77abc7ee9598bf6b8731f37c317036ef51d",
+      "sourceDuration": 2.133333444595337,
+      "airborneWindow": [
+        0,
+        1.23
+      ],
+      "rotationDegrees": -359.36738558515594
+    }
+  ],
+  "fps": [
+    30,
+    60,
+    144
+  ],
+  "modes": [
+    "web",
+    "combat"
+  ],
+  "contactTimes": [
+    0.56,
+    3
+  ],
+  "status": "PASS"
+}

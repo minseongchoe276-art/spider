@@ -464,6 +464,10 @@ export class GameApp {
           this.physics.clearPendingInput();
         }
       }
+      if(k==='KeyR'){
+        this.physics.performAirTrick(Math.random() < .5 ? 'front' : 'back');
+        return;
+      }
       if(k==='KeyG' && this.combat?.mode==='combat'){if(this.combat.special(this.camera))this.multiplayer?.attack('punch');return;}
       if (k === 'KeyF' && this.combat?.mode==='combat') this.combat.guard(true);
       if (k === 'KeyE') {

@@ -55,7 +55,7 @@ export function sanitizePose(pose) {
     mantle,wallDistance:Number.isFinite(pose.wallDistance)?THREE.MathUtils.clamp(pose.wallDistance,0,2):.7,
     landingSpeed:Number.isFinite(pose.landingSpeed)?THREE.MathUtils.clamp(pose.landingSpeed,0,100):0,
     airTrick: pose.tricking && Object.hasOwn(AIR_TRICKS, pose.airTrick?.key) && Number.isFinite(pose.airTrick.elapsed)
-      ? { key: pose.airTrick.key, elapsed: THREE.MathUtils.clamp(pose.airTrick.elapsed, 0, AIR_TRICKS[pose.airTrick.key].duration) } : null,
+      ? { key: pose.airTrick.key, duration: Number.isFinite(pose.airTrick.duration) ? THREE.MathUtils.clamp(pose.airTrick.duration,.42,AIR_TRICKS[pose.airTrick.key].duration) : AIR_TRICKS[pose.airTrick.key].duration, elapsed: THREE.MathUtils.clamp(pose.airTrick.elapsed, 0, AIR_TRICKS[pose.airTrick.key].duration) } : null,
     pendingTurn:pose.pendingTurn==='left'?'left':'right',combat,combatStance:pose.combatStance===true,tricking:!!pose.tricking};
 }
 
@@ -63,7 +63,8 @@ export function capturePose(physics,character) {
   const action=character.activeAction,clip=action?.getClip();
   return sanitizePose({lowStance:character.lowStance,state:physics.animationState || physics.state,velocity:physics.velocity,webs:physics.webs,
     animation:clip?{key:clip.name,phase:action.time/clip.duration,
-      rate:clip.name==='roll' && physics.recoveryTime>0?clip.duration/physics.recoveryTime
+      rate:character.airTrick?clip.duration/(character.airTrick.duration || AIR_TRICKS[character.airTrick.key].duration)
+        :clip.name==='roll' && physics.recoveryTime>0?clip.duration/physics.recoveryTime
         :character.combatAction?.duration && action.getEffectiveTimeScale()===0
         ?clip.duration/character.combatAction.duration:action.getEffectiveTimeScale()}:null,
     visualYaw:character.visualYaw,contactTime:character.contactTime,wallPhase:character.wallPhase,wallRate:character.wallPhaseRate,
