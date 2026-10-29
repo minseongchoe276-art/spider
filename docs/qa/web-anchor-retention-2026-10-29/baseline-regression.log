@@ -1,0 +1,15 @@
+node:internal/modules/run_main:123
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Coverage refresh deleted the actual pinned collider
+    at file:///private/var/folders/2s/myqxyk555vd84268xfsrgl000000gn/T/hk-frame-profile-77y65cn6/scripts/check-web-anchor-baseline.mjs:11:115 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
+
+Node.js v22.19.0

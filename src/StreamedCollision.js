@@ -8,6 +8,7 @@ export class StreamedCollision {
     this.ready = false;
     this.meshes = new Map();
     this.colliderToMesh = new Map();
+    this.retainedTethers = new Map();
     this.pending = [];
     this.center = new THREE.Vector3();
     this.initialized = initialized.then(() => {
@@ -32,7 +33,17 @@ export class StreamedCollision {
   }
 
   setActiveMeshes(meshes) { this.activeMeshes = new Set(meshes.map(mesh=>mesh.uuid)); }
-  setTetherColliders(handles) { this.tetherColliders=new Set(handles); }
+  setTetherColliders(handles) {
+    this.tetherColliders=new Set(handles);
+    for(const [handle] of this.retainedTethers)if(!this.tetherColliders.has(handle)){
+      const collider=this.world.getCollider(handle);
+      if(collider)this.world.removeCollider(collider,true);
+      this.colliderToMesh.delete(handle);this.retainedTethers.delete(handle);
+    }
+  }
+  hasCollider(collider) {
+    return this.ready&&!!collider&&this.colliderToMesh.has(collider.handle)&&this.world.getCollider(collider.handle)===collider;
+  }
   setRecoveryCollider(collider) { this.recoveryHandle=collider?.handle; }
 
   dispose() {
@@ -40,6 +51,8 @@ export class StreamedCollision {
     this.pending.length = 0;
     this.meshes.clear();
     this.colliderToMesh.clear();
+    this.retainedTethers.clear();
+    this.tetherColliders?.clear();
     this.job = null;
     this.world?.free();
     this.ready = false;
@@ -205,8 +218,16 @@ export class StreamedCollision {
             new Float32Array(vertices),new Uint32Array(indices))) : null;
           if(previous && this.recoveryHandle===previous.collider.handle)this.recoveryHandle=collider?.handle;
           if (previous) {
-            this.world.removeCollider(previous.collider,true);
-            this.colliderToMesh.delete(previous.collider.handle);
+            if(this.tetherColliders?.has(previous.collider.handle)){
+              // Keep a real validated pivot while still expanding collision
+              // coverage around the moving player. Only live ropes own these
+              // retired shapes; releasing the last owner frees them above.
+              previous.queued=false;
+              this.retainedTethers.set(previous.collider.handle,previous);
+            }else{
+              this.world.removeCollider(previous.collider,true);
+              this.colliderToMesh.delete(previous.collider.handle);
+            }
           }
           if (collider) {
             this.meshes.set(mesh.uuid,{collider,mesh,queued:false,

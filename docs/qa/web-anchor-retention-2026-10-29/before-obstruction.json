@@ -1,0 +1,50 @@
+{
+  "scope": "Real Hong Kong failure captured before this change. Only the last active obstruction and automatic release are retained here.",
+  "obstruction": {
+    "t": 48967.20000000298,
+    "supportMissing": false,
+    "anchor": [
+      0,
+      115.44014451074733,
+      74.5636594514578
+    ],
+    "normal": [
+      0.27207320213587866,
+      -0.002490648701527399,
+      -0.9622733340109633
+    ],
+    "position": [
+      26.765306564047933,
+      30.132600047718732,
+      82.41411916166544
+    ],
+    "hits": [
+      {
+        "distance": 80.85539245605469,
+        "point": [
+          2.342893836442709,
+          108.07781346293294,
+          75.25084730877877
+        ],
+        "normal": [
+          0.2747798562049866,
+          -0.01685004122555256,
+          -0.961359441280365
+        ],
+        "handle": 2e-323
+      }
+    ]
+  },
+  "release": {
+    "t": 48967.30000001192,
+    "position": [
+      26.765306564047933,
+      30.132600047718732,
+      82.41411916166544
+    ],
+    "stack": "Error\n    at SwingPhysics.releaseSwing (http://127.0.0.1:5201/src/SwingPhysics.js:1294:821)\n    at SwingPhysics.updateSwingPhysics (http://127.0.0.1:5201/src/SwingPhysics.js:669:74)\n    at SwingPhysics.update (http://127.0.0.1:5201/src/SwingPhysics.js:579:12)\n    at GameApp.animate (http://127.0.0.1:5201/src/main.js:1081:22)"
+  },
+  "anchorDistance": 7.756629238122859,
+  "planeOffset": 0.005486941946272937,
+  "normalDot": 0.9998927576371998
+}

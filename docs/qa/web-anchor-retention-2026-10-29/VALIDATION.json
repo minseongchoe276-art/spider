@@ -1,0 +1,27 @@
+{
+  "status": "PASS",
+  "continuedOn": "2026-10-30",
+  "baseRevision": "2ecde5a221b93a58f69bce3ea120397124530e32",
+  "candidateFiles": {
+    "src/SwingPhysics.js": "10688efbdb10987ccd4ab4f7ef4582ef9b74e2f55c41780a165ddaeb82d1429e",
+    "src/StreamedCollision.js": "21828a9d4e90c994bc988b7dce866ac9ab0647ea512d493aa3cf4786be2d1bca",
+    "scripts/check-web-anchor-retention.mjs": "014748be99b367a2d5c931b8049dbe9b35e74b7d6686ee08bac9fea705c4fb90",
+    "scripts/play-web-anchor-retention.mjs": "6adbee1618733e0f9c3bff9acf2bd22832e67b424c6bb4c12f4d17de6c0451a9",
+    "package.json": "3140c61eeb6792076eab67e8d45555e58c60591195f77e914cc895d20a4a8d8b"
+  },
+  "checks": [
+    "old collision implementation fails preservation regression",
+    "retained real collider survives queued and in-progress coverage rebakes",
+    "coplanar/reversed-winding/replacement-LOD seams versus genuine perpendicular and parallel walls",
+    "30/60/144 FPS low-anchor landing without auto-release or artificial jump",
+    "pull-to-swing collider ownership transfer",
+    "18 dual-web cases",
+    "12 player audit cases",
+    "pendulum and manual release momentum checks",
+    "10 Hong Kong collision cases and wall/fall recovery",
+    "actual Hong Kong 8-second held fixed pivot with forced real rebake and camera/LOD changes",
+    "explicit mouse release frees ownership and retired shapes",
+    "isolated production build"
+  ],
+  "scope": "Desktop Chrome, real Hong Kong tiles. Ordinary mouse handler via existing QA API. Test-only module capture and single-frame camera aim at a validated far target; forced coverage-center refresh is an identified fixture, not player travel."
+}

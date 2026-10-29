@@ -17,7 +17,7 @@
     "test:hong-kong:operating": "node scripts/check-hong-kong-operating.mjs",
     "test:swing": "node scripts/check-swing-accessibility.mjs",
     "test:audit": "node scripts/check-cross-system-regressions.mjs",
-    "test:web-continuity": "node scripts/check-web-continuity.mjs",
+    "test:web-continuity": "node scripts/check-web-continuity.mjs && node scripts/check-web-anchor-retention.mjs",
     "test:map-locators": "node scripts/check-compact-map-and-locators.mjs",
     "test:expert": "node scripts/check-expert-audit.mjs && node scripts/check-connection-lifecycle.mjs",
     "test:camera-motion-web": "node scripts/check-camera-motion-web.mjs",
@@ -98,7 +98,8 @@
     "test:hong-kong:district": "node scripts/check-hong-kong-district.mjs && node scripts/check-hong-kong-tile-recovery.mjs",
     "test:hong-kong:resilience": "node scripts/check-hong-kong-resilience.mjs && node scripts/check-hong-kong-tile-recovery.mjs",
     "qa:hong-kong:resilience": "node scripts/play-hong-kong-resilience.mjs",
-    "qa:hong-kong:frames": "node scripts/profile-hong-kong-streaming.mjs"
+    "qa:hong-kong:frames": "node scripts/profile-hong-kong-streaming.mjs",
+    "qa:web-anchors": "node scripts/play-web-anchor-retention.mjs"
   },
   "dependencies": {
     "@dimforge/rapier3d-compat": "^0.21.0",

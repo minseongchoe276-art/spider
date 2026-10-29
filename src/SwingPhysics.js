@@ -252,7 +252,8 @@ export class SwingPhysics {
 
   enterSwingFromPull(camera, button = 0) {
     const anchor = this.zipAnchor || this.lastWebAnchor;
-    if (!anchor || !this.anchorSupported({anchor,normal:this.lastWebNormal})) return false;
+    const attachment={anchor,normal:this.lastWebNormal};
+    if (!anchor || !this.anchorSupported(attachment)) return false;
     const radial = this.position.clone().sub(anchor).normalize();
     const radialSpeed = this.velocity.dot(radial);
     if(radialSpeed>0)this.velocity.addScaledVector(radial, -radialSpeed);
@@ -261,7 +262,7 @@ export class SwingPhysics {
     this.ropeLength = Math.max(1.45, this.position.distanceTo(anchor));
     const hand=this.pullHand || this.character.currentHand || 'left';
     this.webs=[{hand,button,anchor:anchor.clone(),normal:this.lastWebNormal?.clone(),
-      object:this.anchorObject,length:this.ropeLength}];
+      object:this.anchorObject,length:this.ropeLength,supportCollider:attachment.supportCollider}];
     this.syncWebHands();
     this.isSwinging = true;
     this.state = 'SWINGING';
@@ -733,6 +734,7 @@ export class SwingPhysics {
     if(!this.city.isStreamed)return true;
     if(!this.city.collisionWorld?.ready || !web.anchor)return false;
     // The original validated triangle remains a real attachment during LOD changes.
+    if(web.supportCollider&&this.city.collisionWorld.hasCollider?.(web.supportCollider))return true;
     if(web.supportCollider && this.city.collisionWorld.meshes &&
       [...this.city.collisionWorld.meshes.values()].some(entry=>entry?.collider===web.supportCollider))return true;
     const normal=(web.normal || this.lastWebNormal || new THREE.Vector3(0,1,0)).clone().normalize();
@@ -753,12 +755,23 @@ export class SwingPhysics {
     // The tether must be allowed to terminate on the facade it is attached to.
     // Leave a small endpoint margin so triangle seams do not sever valid webs.
     this.raycaster.far = Math.max(0, line.length() - 1.0);
-    const collisionObstruction = this.city.raycast?.(lineStart,line.clone().normalize(),this.raycaster.far,false);
+    let collisionObstruction = this.city.raycast?.(lineStart,line.clone().normalize(),this.raycaster.far,false);
     const visualObstruction = this.city.collisionWorld ? null :
       this.raycaster.intersectObjects(this.city.buildingMeshes, true)[0];
     this.raycaster.far = 140;
     const nearEndpoint=hit=>hit?.point && hit.point.distanceTo(web.anchor)<1.5 &&
       web.normal && (hit.normal || (hit.face && surfaceNormal(hit)))?.dot(web.normal)>.5;
+    // A grazing ray can hit a different triangle on the anchored facade many
+    // metres before the endpoint. Validate just outside that same plane rather
+    // than cutting at its seam, or ignoring the whole collider (which may also
+    // contain a genuine intervening wall).
+    if(collisionObstruction&&!nearEndpoint(collisionObstruction)&&web.normal&&web.supportCollider){
+      const normal=web.normal.clone().normalize();
+      const coplanar=Math.abs(collisionObstruction.normal?.dot(normal)||0)>.98 &&
+        Math.abs(collisionObstruction.point.clone().sub(web.anchor).dot(normal))<.12;
+      if(coplanar)collisionObstruction=this.city.raycast(lineStart.clone().addScaledVector(normal,.2),
+        line.clone().normalize(),Math.max(0,line.length()-1),false);
+    }
     return !!((collisionObstruction && !nearEndpoint(collisionObstruction)) ||
       (visualObstruction && !nearEndpoint(visualObstruction)));
   }
@@ -1064,13 +1077,14 @@ export class SwingPhysics {
     const support = this.supportHeight(this.position);
     if (this.velocity.y <= 0 && (floor !== null || support !== null)) {
       const supportY=(floor ?? support)+.1;
-      if(this.isSwinging && (input.webHold || input.webFireHeld || input.webHoldRight || input.webFireHeldRight) &&
-        this.webs.some(web=>web.anchor.y>supportY+4)){
+      if(this.isSwinging && (input.webHold || input.webFireHeld || input.webHoldRight || input.webFireHeldRight)){
         // A taut held strand catches a grazing floor contact and returns the
         // player to its arc, matching the established swing rhythm.
         this.position.y=this.city.resolveMovement?Math.max(supportY,resolved.position.y):supportY;
-        this.velocity.y=Math.max(this.velocity.y,this.jumpForce);
-        for(const web of this.webs)web.launchPending=true;
+        if(this.webs.some(web=>web.anchor.y>supportY+4)){
+          this.velocity.y=Math.max(this.velocity.y,this.jumpForce);
+          for(const web of this.webs)web.launchPending=true;
+        }else this.velocity.y=0; // Low, held anchors survive landing without an artificial hop.
         this.recoveryTime=0;this.state='SWINGING';return;
       }
       const airborne = !GROUNDED.includes(this.state);
