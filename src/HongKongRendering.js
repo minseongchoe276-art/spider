@@ -36,9 +36,10 @@ export function configureHongKongTiles(tiles,index,profile) {
 // Hide the streaming boundary before tiles enter/leave the requested frustum.
 // Linear depth fog reaches full coverage inside that boundary; exponential
 // sky haze left distant buildings almost completely visible at the cutoff.
-export function configureHongKongFog(scene,profile) {
+export function configureHongKongFog(scene,profile,viewDistance=profile.streamDistance) {
   if(!scene?.fog)return;
-  const near=profile.streamDistance*.55,far=profile.streamDistance*.85;
+  const distance=Math.min(profile.streamDistance,viewDistance);
+  const near=distance*.55,far=distance*.85;
   if(!scene.fog.isFog)scene.fog=new THREE.Fog(scene.fog.color,near,far);
   else {scene.fog.near=near;scene.fog.far=far;}
 }

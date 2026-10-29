@@ -1,0 +1,29 @@
+{
+  "status": "PASS",
+  "baseRevision": "2adb2cf829902c67eaed770efe8b5e36d41fd841",
+  "candidateFiles": {
+    "src/HongKongRendering.js": "cbad3182b720d2344d1de2b9cd949402a7f7e2991862c99d3183eef2fed1214f",
+    "src/UrbanGroundCity.js": "c2bd567483f21970f8926d6ef863de0546b0f9809c6a8414ed5c0fa254c9d758",
+    "src/StreamedCollision.js": "2e86a1db61da8fea4815824063e6b1828ba85b30f7548aa3a31a255702ddebdd",
+    "scripts/check-hong-kong-resilience.mjs": "490e9a99a1c2f5c94711d58e3cd4f43087f4786757f46596846c3cbf5ba48d2c",
+    "scripts/play-hong-kong-resilience.mjs": "308875523b31aa4cfc52e5b90e4514ca9bed2098e370f8e183237fa8c69b87e8",
+    "package.json": "9b63943646bbaa313be3e3e87c4fb3324727a2a4f95e6cb257f38521370a7999"
+  },
+  "checks": [
+    "resilience regression",
+    "lazy sibling recovery",
+    "loading performance",
+    "Hong Kong rendering",
+    "nine streamed collision scenarios",
+    "wall and fall recovery",
+    "clean candidate production build",
+    "clean candidate keyboard play and settings",
+    "clean candidate WebGL fog pixels",
+    "real server six-failure recovery and landing"
+  ],
+  "scope": "Candidate = tracked base revision plus listed task changes; unrelated working tree edits excluded. Real remote tiles, desktop headless Chrome. Test-only instrumentation captures the city instance; pressure adaptation is temporarily frozen only during the settings assertion. Web anchor aim/reset use the existing QA API; movement uses normal key/mouse handlers.",
+  "limitations": [
+    "Network timing and headless rendering are not an FPS benchmark. Frame stalls remain during streaming.",
+    "No physical mobile or long-duration whole-map soak claim."
+  ]
+}

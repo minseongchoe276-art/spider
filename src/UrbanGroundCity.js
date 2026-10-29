@@ -87,7 +87,7 @@ export class UrbanGroundCity {
     if(this.quality===quality)return;
     this.quality=quality;
     this.renderingProfile=hongKongRenderingProfile(quality);
-    configureHongKongFog(this.scene,this.renderingProfile);
+    configureHongKongFog(this.scene,this.renderingProfile,this.camera?.far);
     const budget=streamingBudget(quality,{mobile:globalThis.matchMedia?.('(pointer:coarse)').matches||false,memoryGB:globalThis.navigator?.deviceMemory});
     this.tileCache.maxSize=budget.maxTiles;this.tileCache.minSize=budget.minTiles;
     this.tileCache.maxBytesSize=budget.maxBytes;this.tileCache.minBytesSize=budget.minBytes;
@@ -198,6 +198,7 @@ export class UrbanGroundCity {
   updateStreamingCamera(now = performance.now()) {
     this.streamCamera.copy(this.camera, false);
     this.streamCamera.far = Math.min(this.camera.far, this.renderingProfile?.streamDistance ?? 750);
+    if(this.renderingProfile)configureHongKongFog(this.scene,this.renderingProfile,this.streamCamera.far);
     this.streamCamera.updateProjectionMatrix();
     this.streamCamera.updateMatrixWorld(true);
   }

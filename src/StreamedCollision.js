@@ -132,7 +132,10 @@ export class StreamedCollision {
     if ((this.priorityFrame = (this.priorityFrame || 0) + 1) % 30 === 1) {
       for (const candidate of this.pending) {
         candidate.updateWorldMatrix(true, false);
-        candidate.geometry.computeBoundingBox();
+        // Tile vertices are static; only their world transform changes.
+        // Reuse bounds computed during streaming instead of scanning every
+        // vertex in every pending tile on each priority refresh.
+        if (!candidate.geometry.boundingBox) candidate.geometry.computeBoundingBox();
         candidate.userData.collisionPriority = candidate.geometry.boundingBox.clone()
           .applyMatrix4(candidate.matrixWorld).distanceToPoint(center);
       }
