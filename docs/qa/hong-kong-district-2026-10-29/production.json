@@ -1,0 +1,28 @@
+{
+  "pageErrors": [],
+  "shaderErrors": [],
+  "networkErrors": [
+    "WebSocket connection to 'wss://minogame-room-authority.onrender.com/ws' failed: Error during WebSocket handshake: Unexpected response code: 403",
+    "WebSocket connection to 'wss://minogame-room-authority.onrender.com/ws' failed: Error during WebSocket handshake: Unexpected response code: 403",
+    "WebSocket connection to 'wss://minogame-room-authority.onrender.com/ws' failed: Error during WebSocket handshake: Unexpected response code: 403",
+    "WebSocket connection to 'wss://minogame-room-authority.onrender.com/ws' failed: Error during WebSocket handshake: Unexpected response code: 403",
+    "WebSocket connection to 'wss://minogame-room-authority.onrender.com/ws' failed: Error during WebSocket handshake: Unexpected response code: 403",
+    "WebSocket connection to 'wss://minogame-room-authority.onrender.com/ws' failed: Error during WebSocket handshake: Unexpected response code: 403",
+    "WebSocket connection to 'wss://minogame-room-authority.onrender.com/ws' failed: Error during WebSocket handshake: Unexpected response code: 403",
+    "WebSocket connection to 'wss://minogame-room-authority.onrender.com/ws' failed: Error during WebSocket handshake: Unexpected response code: 403",
+    "WebSocket connection to 'wss://minogame-room-authority.onrender.com/ws' failed: Error during WebSocket handshake: Unexpected response code: 403"
+  ],
+  "treeResponses": [
+    {
+      "url": "http://127.0.0.1:5231/models/environment/hong-kong-pine.glb",
+      "status": 200
+    }
+  ],
+  "scope": "Production dist; public UI and real keyboard; no development QA API",
+  "bootMs": 18475,
+  "hasQaApi": false,
+  "before": "기초 안내 1/6\n\nW · 20m 이동하세요 (0/20m)",
+  "after": "기초 안내 1/6\n\nW · 20m 이동하세요 (5/20m)",
+  "contextCycle": true,
+  "status": "PASS"
+}

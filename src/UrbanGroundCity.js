@@ -1,5 +1,10 @@
 import * as THREE from 'three';
+import {streamingBudget} from './StreamingBudget.js';
+import {hongKongRenderingProfile,tuneHongKongTexture,prepareHongKongTile,configureHongKongTiles,configureHongKongFog,nextHongKongError} from './HongKongRendering.js';
 import {createTileTexturePlugin} from './TileTextures.js';
+import {HongKongDistrict} from './HongKongDistrict.js';
+import {scheduleTileRetry,recoverFailedTiles} from './TileRecovery.js';
+import {prepareStartDistrict} from './HongKongStartDistrict.js';
 import { KTX2Loader } from 'three/addons/loaders/KTX2Loader.js';
 import { StreamedCollision } from './StreamedCollision.js';
 import { TilesRenderer } from '3d-tiles-renderer/three';
@@ -41,7 +46,7 @@ export class UrbanGroundCity {
     this.playableHalfExtent = 2400;
     this.scene = scene;
     this.camera = camera;
-    // Maintain full camera view distance from startup so all buildings render in full
+    // Limit tile requests by quality; the display camera keeps its own range.
     this.streamCamera = camera.clone();
     this.streamCamera.far = camera.far;
     this.streamCamera.updateProjectionMatrix();
@@ -52,10 +57,7 @@ export class UrbanGroundCity {
     // The library default cache is shared globally. Own one cache per city so
     // later layers cannot overwrite an earlier layer's memory budget.
     this.tileCache = new LRUCache();
-    this.tileCache.maxSize = 3200;
-    this.tileCache.minSize = 1600;
-    this.tileCache.minBytesSize = 512 * 1024 * 1024;
-    this.tileCache.maxBytesSize = 800 * 1024 * 1024;
+    this.setStreamingQuality('balanced');
     this.buildingMeshes = [];
     this.rooftopSpawns = [new THREE.Vector3(0, 18, 0)];
     this.rooftopPoints = this.rooftopSpawns;
@@ -75,7 +77,25 @@ export class UrbanGroundCity {
     this.root.name = 'UrbanGroundHongKong';
     this.scene.add(this.root);
 
+    this.district=typeof document==='undefined'?null:new HongKongDistrict(scene);
+
     TILESETS.forEach((tileset, index) => this.addTileset(tileset, index));
+  }
+
+  setStreamingQuality(quality) {
+    quality=['low','balanced','high'].includes(quality)?quality:'balanced';
+    if(this.quality===quality)return;
+    this.quality=quality;
+    this.renderingProfile=hongKongRenderingProfile(quality);
+    configureHongKongFog(this.scene,this.renderingProfile);
+    const budget=streamingBudget(quality,{mobile:globalThis.matchMedia?.('(pointer:coarse)').matches||false,memoryGB:globalThis.navigator?.deviceMemory});
+    this.tileCache.maxSize=budget.maxTiles;this.tileCache.minSize=budget.minTiles;
+    this.tileCache.maxBytesSize=budget.maxBytes;this.tileCache.minBytesSize=budget.minBytes;
+    this.streamingBudget=budget;
+    for(const tiles of this.tilesets||[]){
+      const baseline=this.renderingProfile.errors[tiles.tilesetIndex];
+      tiles.userData.baseErrorTarget=baseline;tiles.errorTarget=baseline;
+    }
   }
 
   addTileset(tilesetConfig, index) {
@@ -86,8 +106,12 @@ export class UrbanGroundCity {
     tiles.surfaceType = surfaceType;
     tiles.group.userData.tilesetIndex = index;
     tiles.group.userData.surfaceType = surfaceType;
-    // Low error target ensures buildings and textures refine fully into complete geometry
-    tiles.errorTarget = index === 1 ? 12 : (index === 2 ? 16 : 20);
+    // These two datasets have empty JSON ancestors, not coarse visual fallback
+    // meshes. Requiring all sibling branches to load before showing a building
+    // can fill the shared cache while displaying ZERO buildings indefinitely.
+    // The photographic terrain retains parent/sibling coverage; structural
+    // overlays can appear independently as soon as their own content is ready.
+    configureHongKongTiles(tiles,index,this.renderingProfile);
     tiles.userData = { baseErrorTarget: tiles.errorTarget, retryAt: 0, retries: 0 };
     tiles.downloadQueue.maxJobsPerOrigin = 12;
     tiles.parseQueue.maxJobs = 3;
@@ -99,6 +123,14 @@ export class UrbanGroundCity {
     tiles.registerPlugin(new GLTFExtensionsPlugin({ktxLoader,autoDispose:false,plugins:[parser=>createTileTexturePlugin(parser,ktxLoader,this)]}));
     // All three roots carry ECEF transforms; use one shared local origin.
     tiles.registerPlugin(new ReorientationPlugin(reorientation));
+    tiles.registerPlugin({name:'HongKongSurfacePresentation',processTileModel:scene=>{
+      prepareHongKongTile(scene,surfaceType,this.renderingProfile,this.renderer.capabilities.getMaxAnisotropy());
+      if(surfaceType==='terrain'){
+        tiles.group.updateWorldMatrix(true,false);
+        prepareStartDistrict(scene,tiles.group.matrixWorld);
+      }
+      if(this.district)scene.traverse(mesh=>{if(mesh.isMesh)for(const material of Array.isArray(mesh.material)?mesh.material:[mesh.material])this.district.applySourceMask(material,surfaceType);});
+    }});
     tiles.setCamera(this.streamCamera);
     tiles.setResolutionFromRenderer(this.streamCamera, this.renderer);
     tiles.addEventListener('load-root-tileset', () => {
@@ -107,7 +139,7 @@ export class UrbanGroundCity {
         `홍콩 3D 도시 타일 ${this.loadedRoots}/${TILESETS.length} 준비 중...`);
     });
     tiles.addEventListener('load-error', event => {
-      tiles.userData.retryAt = performance.now() + Math.min(30000, 2000 * 2 ** Math.min(tiles.userData.retries, 4));
+      scheduleTileRetry(tiles);
       this.lastError = event.error || new Error('도시 데이터를 불러오지 못했습니다.');
       if (!this.isReady) this.onError?.(this.lastError);
       if (new URLSearchParams(location.search).has('debugCity')) {
@@ -131,6 +163,7 @@ export class UrbanGroundCity {
     const meshes = [];
     this.root.traverseVisible(object => {
       if (object.isMesh) {
+        if(object.geometry.index?.count===0)return;
         if (!object.userData.surfaceType) {
           let cur = object.parent;
           while (cur && cur !== this.root) {
@@ -141,6 +174,9 @@ export class UrbanGroundCity {
             cur = cur.parent;
           }
           if (!object.userData.surfaceType) object.userData.surfaceType = 'terrain';
+        }
+        for(const material of Array.isArray(object.material)?object.material:[object.material]){
+          tuneHongKongTexture(material.map,this.renderingProfile.anisotropy,this.renderer.capabilities.getMaxAnisotropy());
         }
         meshes.push(object);
         if (!this.collisionWorld.meshes.has(object.uuid) &&
@@ -161,7 +197,7 @@ export class UrbanGroundCity {
 
   updateStreamingCamera(now = performance.now()) {
     this.streamCamera.copy(this.camera, false);
-    this.streamCamera.far = this.camera.far;
+    this.streamCamera.far = Math.min(this.camera.far, this.renderingProfile?.streamDistance ?? 750);
     this.streamCamera.updateProjectionMatrix();
     this.streamCamera.updateMatrixWorld(true);
   }
@@ -173,16 +209,13 @@ export class UrbanGroundCity {
       this.onError?.(new Error('도시 준비가 지연되고 있습니다. 재시도하거나 로컬 도시로 시작하세요.'));
     }
     this.root.updateMatrixWorld(true);
+    if(this.isReady&&this.district?.report.treeStatus==='ready'&&this.quality!=='low')this.district.captureReflection(this.renderer);
     this.camera.updateMatrixWorld(true);
     this.updateStreamingCamera();
     for (const tiles of this.tilesets) {
       tiles.setCamera(this.streamCamera);
       tiles.setResolutionFromRenderer(this.streamCamera, this.renderer);
-      const recovery = tiles.userData;
-      if (recovery?.retryAt && performance.now() >= recovery.retryAt && recovery.retries < 5) {
-        recovery.retryAt = 0; recovery.retries++;
-        tiles.resetFailedTiles();
-      }
+      recoverFailedTiles(tiles);
       tiles.update();
     }
     if (performance.now() - (this.lastBudgetCheck || 0) > 2000) {
@@ -190,8 +223,10 @@ export class UrbanGroundCity {
       const pressured = this.tileCache.isFull();
       for (const tiles of this.tilesets) {
         const baseline = tiles.userData?.baseErrorTarget ?? 20;
-        tiles.errorTarget = pressured ? Math.min(28, tiles.errorTarget * 1.05)
-          : Math.max(baseline, tiles.errorTarget / 1.1);
+        // A full photographic cache must not blur unrelated structural layers
+        // which already fit. Apply pressure only to a layer refusing requests.
+        tiles.errorTarget=nextHongKongError(tiles.errorTarget,baseline,{full:pressured,refused:tiles.stats.refused,
+          utilization:Math.max(this.tileCache.cachedBytes/this.tileCache.maxBytesSize,this.tileCache.itemSet.size/this.tileCache.maxSize)});
       }
     }
     this.root.updateMatrixWorld(true);
@@ -250,6 +285,35 @@ export class UrbanGroundCity {
     return this.rooftopSpawns[0].clone();
   }
 
+  renderingDiagnostics() {
+    const layers=this.tilesets.map(t=>({surface:t.surfaceType,errorTarget:t.errorTarget,distantError:t.errorFalloff,loadAncestors:t.loadAncestors,loadSiblings:t.loadSiblings,stats:{...t.stats},meshes:0,shadowCasters:0,materials:{},samples:[]}));
+    for(const mesh of this.buildingMeshes){
+      const row=layers.find(l=>l.surface===mesh.userData.surfaceType);if(!row)continue;
+      row.meshes++;
+      if(mesh.castShadow)row.shadowCasters++;
+      for(const m of Array.isArray(mesh.material)?mesh.material:[mesh.material]){
+        const key=`${m.type}:${m.map?'texture':m.vertexColors?'vertex':'plain'}`;row.materials[key]=(row.materials[key]||0)+1;
+        if(row.samples.length<4)row.samples.push({type:m.type,color:m.color?.getHexString(),image:m.map?{width:m.map.image?.width,height:m.map.image?.height,anisotropy:m.map.anisotropy,minFilter:m.map.minFilter}:null,normals:!!mesh.geometry.attributes.normal,side:m.side});
+      }
+    }
+    const startSurfaces={meshes:0,triangles:0};
+    for(const mesh of this.buildingMeshes)if(mesh.userData.startSurface){
+      startSurfaces.meshes++;
+      startSurfaces.triangles+=(mesh.geometry.index?.count??mesh.geometry.attributes.position.count)/3;
+    }
+    return {district:{...this.district?.report},startSurfaces,layers,cacheBytes:this.tileCache.cachedBytes,budget:this.streamingBudget,textureFailures:this.textureDiagnostics,decodedRGBTextures:this.decodedRGBTextures||0};
+  }
+
+  surveySurfaces() {
+    const rows=[];
+    for(let x=-60;x<=60;x+=20)for(let z=-60;z<=60;z+=20){
+      const origin=new THREE.Vector3(this.playerPosition.x+x,this.playerPosition.y+250,this.playerPosition.z+z);
+      const hit=this.raycast(origin,new THREE.Vector3(0,-1,0),600);
+      rows.push({x:+origin.x.toFixed(2),z:+origin.z.toFixed(2),height:hit?+hit.point.y.toFixed(2):null,normalY:hit?+hit.normal.y.toFixed(3):null,surface:hit?.mesh?.userData.surfaceType||null});
+    }
+    return rows;
+  }
+
   findWalkableSpawn() {
     // Reject sloped awnings and parapets using the capsule's footprint.
     for (const [x,z] of [[0,0],[2,0],[-2,0],[0,2],[0,-2],[4,4],[-4,4],[4,-4],[-4,-4],[8,0],[0,8]]) {
@@ -282,6 +346,7 @@ export class UrbanGroundCity {
     this.disposed = true;
     for (const tiles of this.tilesets) tiles.dispose();
     this.ktxLoader.dispose();
+    this.district?.dispose();
     this.collisionWorld.dispose();
     this.scene.remove(this.root);
   }

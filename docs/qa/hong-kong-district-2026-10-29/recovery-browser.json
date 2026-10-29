@@ -1,0 +1,537 @@
+{
+  "pageErrors": [],
+  "console": [
+    "Failed to load resource: the server responded with a status of 500 (Internal Server Error)",
+    "TilesRenderer : Failed to load tile at url \"../F_Tile_+3_0_0/F_Tile_+3_0_0+R5_19.b3dm\".",
+    "Error: Failed to load model with error code 500\n    at http://127.0.0.1:5209/node_modules/.vite/deps/chunk-IMRO23OF.js?v=6dcea0b3:808:15"
+  ],
+  "injected": 1,
+  "url": "http://127.0.0.1:5209/urban-tiles/api/3d-data/3dsd/WGS84/infrastructure/Data/F_Tile_+3_0_0/F_Tile_+3_0_0+R5_19.b3dm",
+  "diagnostics": {
+    "facades": {
+      "meshes": 23,
+      "decorated": 3,
+      "textured": 23,
+      "vertexColored": 0
+    },
+    "city": {
+      "district": {
+        "facades": 6,
+        "windows": 1967,
+        "frameParts": 7868,
+        "trees": 7,
+        "treeStatus": "ready",
+        "source": "Existing workspace tree.glb; authored facade geometry from reviewed local planes",
+        "treeBounds": {
+          "min": [
+            -3.2302865982055664,
+            0,
+            -3.1531896816791614
+          ],
+          "max": [
+            3.3187150955200195,
+            15.945454459568655,
+            3.346383342541217
+          ]
+        },
+        "foliageClusters": 140,
+        "reflection": "local-city-128"
+      },
+      "startSurfaces": {
+        "meshes": 2,
+        "triangles": 57
+      },
+      "layers": [
+        {
+          "surface": "terrain",
+          "errorTarget": 13.400956406250003,
+          "distantError": 0,
+          "loadAncestors": true,
+          "loadSiblings": true,
+          "stats": {
+            "inCacheSinceLoad": 0,
+            "inCache": 192,
+            "queued": 0,
+            "downloading": 0,
+            "parsing": 0,
+            "loaded": 192,
+            "failed": 0,
+            "inFrustum": 156,
+            "used": 223,
+            "active": 73,
+            "visible": 35,
+            "refused": 29,
+            "tilesProcessed": 0
+          },
+          "meshes": 58,
+          "shadowCasters": 0,
+          "materials": {
+            "MeshBasicMaterial:texture": 21,
+            "MeshStandardMaterial:texture": 37
+          },
+          "samples": [
+            {
+              "type": "MeshBasicMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 512,
+                "height": 256,
+                "anisotropy": 8,
+                "minFilter": 1008
+              },
+              "normals": false,
+              "side": 2
+            },
+            {
+              "type": "MeshBasicMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 512,
+                "height": 256,
+                "anisotropy": 8,
+                "minFilter": 1008
+              },
+              "normals": false,
+              "side": 2
+            },
+            {
+              "type": "MeshBasicMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 256,
+                "height": 128,
+                "anisotropy": 8,
+                "minFilter": 1008
+              },
+              "normals": false,
+              "side": 2
+            },
+            {
+              "type": "MeshBasicMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 128,
+                "height": 128,
+                "anisotropy": 8,
+                "minFilter": 1008
+              },
+              "normals": false,
+              "side": 2
+            }
+          ]
+        },
+        {
+          "surface": "building",
+          "errorTarget": 15.315378750000004,
+          "distantError": 0,
+          "loadAncestors": false,
+          "loadSiblings": false,
+          "stats": {
+            "inCacheSinceLoad": 0,
+            "inCache": 21,
+            "queued": 0,
+            "downloading": 0,
+            "parsing": 0,
+            "loaded": 21,
+            "failed": 0,
+            "inFrustum": 51,
+            "used": 51,
+            "active": 12,
+            "visible": 12,
+            "refused": 0,
+            "tilesProcessed": 0
+          },
+          "meshes": 23,
+          "shadowCasters": 23,
+          "materials": {
+            "MeshStandardMaterial:texture": 23
+          },
+          "samples": [
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 256,
+                "height": 256,
+                "anisotropy": 8,
+                "minFilter": 1008
+              },
+              "normals": true,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 256,
+                "height": 256,
+                "anisotropy": 8,
+                "minFilter": 1008
+              },
+              "normals": true,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 256,
+                "height": 256,
+                "anisotropy": 8,
+                "minFilter": 1008
+              },
+              "normals": true,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 512,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1008
+              },
+              "normals": true,
+              "side": 0
+            }
+          ]
+        },
+        {
+          "surface": "infrastructure",
+          "errorTarget": 20.420505000000006,
+          "distantError": 0,
+          "loadAncestors": false,
+          "loadSiblings": false,
+          "stats": {
+            "inCacheSinceLoad": 0,
+            "inCache": 7,
+            "queued": 0,
+            "downloading": 0,
+            "parsing": 0,
+            "loaded": 7,
+            "failed": 0,
+            "inFrustum": 8,
+            "used": 8,
+            "active": 2,
+            "visible": 2,
+            "refused": 0,
+            "tilesProcessed": 0
+          },
+          "meshes": 3,
+          "shadowCasters": 3,
+          "materials": {
+            "MeshStandardMaterial:texture": 3
+          },
+          "samples": [
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 8,
+                "height": 8,
+                "anisotropy": 8,
+                "minFilter": 1008
+              },
+              "normals": true,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 512,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1008
+              },
+              "normals": true,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 512,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1008
+              },
+              "normals": true,
+              "side": 0
+            }
+          ]
+        }
+      ],
+      "cacheBytes": 406617577,
+      "budget": {
+        "maxBytes": 402653184,
+        "minBytes": 221249536,
+        "maxTiles": 2400,
+        "minTiles": 800
+      },
+      "textureFailures": [],
+      "decodedRGBTextures": 3
+    },
+    "programs": 39,
+    "drawCalls": 118,
+    "triangles": 594250,
+    "geometries": 102,
+    "textures": 94,
+    "heap": 738439351
+  },
+  "snapshot": {
+    "t": 42556.20000000298,
+    "scenario": null,
+    "scenarioMs": 0,
+    "dt": 0,
+    "position": [
+      0,
+      20.513,
+      0
+    ],
+    "velocity": [
+      0,
+      0,
+      0
+    ],
+    "acceleration": null,
+    "speed": 0,
+    "facing": 0,
+    "state": "IDLE",
+    "grounded": true,
+    "support": 20.388,
+    "animation": "idle",
+    "animationTime": 3.534,
+    "blends": [
+      {
+        "key": "idle",
+        "weight": 1,
+        "time": 3.534
+      },
+      {
+        "key": "walk",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "regularRun",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "run",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "stop",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "runStop",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "zip",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "turnLeft",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "turnRight",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "jump",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "drop",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "jumpDown",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "fall",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "swing",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "jumpDownVariant",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "fallVariant",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "fallIdle",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "roll",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "wall",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "injuredIdle",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "land",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "combatIdle",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "jab",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "guard",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "slam",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "slamLand",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "hitHead",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "rightHook",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "cross",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "hook",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "heavy",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "airTrick",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "backTrick",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "hitBody",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "hitUppercut",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "hitHeavy",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "special",
+        "weight": 1,
+        "time": 0
+      }
+    ],
+    "combatMode": "web",
+    "attack": null,
+    "feet": {
+      "left": {
+        "x": 0.085,
+        "y": 20.54,
+        "z": 0.327,
+        "support": 20.388,
+        "gap": 0.152
+      },
+      "right": {
+        "x": -0.056,
+        "y": 20.527,
+        "z": -0.319,
+        "support": 20.388,
+        "gap": 0.139
+      }
+    },
+    "camera": {
+      "position": [
+        0,
+        23.137,
+        -5.726
+      ],
+      "yaw": 0,
+      "pitch": 0.16,
+      "fov": 64
+    },
+    "webs": [],
+    "swinging": false,
+    "ropeLength": 0,
+    "swingTension": null,
+    "pointerLock": false,
+    "fps": null,
+    "memory": 757604891,
+    "drawCalls": 117,
+    "triangles": 539367,
+    "geometries": 102,
+    "textures": 94,
+    "latencyMs": null,
+    "paused": false,
+    "playing": true
+  },
+  "status": "PASS"
+}

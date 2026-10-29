@@ -5,6 +5,7 @@ import * as THREE from 'three';
 import { GROUNDED } from './MotionCatalog.js';
 import { boneId } from './MotionRetarget.js';
 import { sidewalkAnchor } from './CitizenNavigation.js';
+import {collectFacadeCandidates} from './HongKongDistrictGeometry.js';
 
 const HOSTS = new Set(['127.0.0.1', 'localhost']);
 
@@ -36,7 +37,8 @@ class QualityDirector {
     this.captureErrors();
     this.panel = this.mountPanel();
     this.api = {
-      build: 'quality-director-v5',
+      build: 'quality-upgrade-2026-10-28',
+      experience: () => this.experienceSample(),
       production: false,
       ready: () => !!(app.assetsReady && app.character?.isLoaded),
       playing: () => !!(app.isPlaying && !app.isPaused),
@@ -93,6 +95,68 @@ class QualityDirector {
       }),
       spikes: () => this.spikes.slice(),
       diagnostics: () => this.diagnostics(),
+      citySurvey: () => app.city?.surveySurfaces?.()||[],
+      resetToSupportedStart: () => {app.physics.resetPosition();app.resetCamera();return this.snapshot(0);},
+      findParkingFixture: () => {
+        const p=app.physics.position,original=p.clone(),facing=app.physics.facingAngle,normal=app.vehicle.playerSurfaceNormal?.clone();let found=null;
+        try{
+          for(const [dx,dz]of [[0,0],[0,7],[7,0],[-7,0],[0,-7],[0,14],[14,0],[-14,0],[0,-14],[14,14],[-14,14],[14,-14],[-14,-14]]){
+            const x=original.x+dx,z=original.z+dz,hit=app.city.raycast(new THREE.Vector3(x,original.y+8,z),new THREE.Vector3(0,-1,0),20);
+            if(!hit||hit.normal.y<.95||Math.abs(hit.point.y-original.y)>6)continue;
+            p.set(x,hit.point.y+.1,z);app.physics.facingAngle=0;
+            if(!app.vehicle.findParking())continue;
+            found={position:p.toArray(),yaw:0,scope:'QA position on existing support, verified with the unchanged vehicle parking rules'};break;
+          }
+        }finally{p.copy(original);app.physics.facingAngle=facing;app.vehicle.playerSurfaceNormal=normal;}
+        if(found)this.place(...found.position,found.yaw);return found;
+      },
+      districtView: enabled => app.city?.district?.setEnabled(enabled),
+      districtComparison: () => {
+        const district=app.city?.district;if(!district)return null;
+        const visible=district.group.visible;
+        district.setEnabled(false);app.renderer.render(app.scene,app.camera);const before=app.canvas.toDataURL('image/png');
+        district.setEnabled(true);app.renderer.render(app.scene,app.camera);const after=app.canvas.toDataURL('image/png');
+        district.setEnabled(visible);return {before,after};
+      },
+      vegetationReview: () => {
+        const district=app.city?.district;if(!district)return null;
+        const camera=new THREE.PerspectiveCamera(55,app.camera.aspect,.2,500);
+        camera.position.set(-12,13,-53);camera.lookAt(-40,12,-28);camera.updateMatrixWorld(true);
+        const visible=district.group.visible;
+        district.setEnabled(false);app.renderer.render(app.scene,camera);const before=app.canvas.toDataURL('image/png');
+        district.setEnabled(true);app.renderer.render(app.scene,camera);const after=app.canvas.toDataURL('image/png');
+        district.setEnabled(visible);return {before,after};
+      },
+      vegetationHits: () => {
+        const camera=new THREE.PerspectiveCamera(55,app.camera.aspect,.2,500);
+        camera.position.set(-12,13,-53);camera.lookAt(-40,12,-28);camera.updateMatrixWorld(true);
+        const rows=[],ray=new THREE.Raycaster();
+        for(const u of [-.8,-.6,-.4,-.2,0,.2])for(const v of [.2,0,-.2]){
+          ray.setFromCamera(new THREE.Vector2(u,v),camera);const hit=app.city.raycast(ray.ray.origin,ray.ray.direction,180);
+          rows.push({u,v,point:hit?.point.toArray()||null,normal:hit?.normal.toArray()||null});
+        }
+        return rows;
+      },
+      treeSurvey: () => (app.city?.district?.treeSites||[]).map(t=>{
+        const hit=app.city.raycast(new THREE.Vector3(t.x,300,t.z),new THREE.Vector3(0,-1,0),350);
+        return {...t,sourceTop:hit?.point.y??null,normalY:hit?.normal.y??null};
+      }),
+      districtSurvey: () => {
+        const origin=new THREE.Vector3(),rows=[];
+        for(const mesh of app.city.buildingMeshes||[]){
+          if(mesh.userData.surfaceType==='terrain')continue;
+          const bounds=new THREE.Box3().setFromObject(mesh);
+          if(bounds.distanceToPoint(origin)>220)continue;
+          rows.push({surface:mesh.userData.surfaceType,min:bounds.min.toArray(),max:bounds.max.toArray(),vertices:mesh.geometry.attributes.position.count});
+        }
+        return {meshes:rows,facades:collectFacadeCandidates(app.city.buildingMeshes||[])};
+      },
+      districtOverview: () => {
+        const camera=new THREE.OrthographicCamera(-150,150,150,-150,1,800);
+        camera.position.set(0,400,.01);camera.lookAt(0,0,0);camera.updateMatrixWorld(true);
+        app.renderer.render(app.scene,camera);
+        return app.canvas.toDataURL('image/png');
+      },
     };
   }
 
@@ -238,6 +302,13 @@ class QualityDirector {
         z: Number.isFinite(player.z) ? +player.z.toFixed(2) : null,
       })),
     };
+  }
+
+  experienceSample() {
+    const app=this.app,j=app.experience?.journey,m=j?.mission;
+    return {controls:{pointers:app.touchControls?.pointers?.size||0,forward:!!app.input.forward,backward:!!app.input.backward,left:!!app.input.left,right:!!app.input.right,jump:!!app.input.jump},lesson:j?.progress.data.lesson,mission:m?{type:m.type,elapsed:m.elapsed,distance:m.distance,index:m.index,target:j.target}:null,records:j?.progress.data.records,
+      audio:{state:app.audio?.ctx?.state,engine:app.audio?.engineGain?.gain.value,city:app.audio?.cityGain?.gain.value},
+      enemies:app.combat.enemies.map(e=>({type:e.type,health:e.health,position:e.position.toArray(),defeatTime:e.defeatTime||0}))};
   }
 
   combatSample() {
@@ -600,8 +671,7 @@ class QualityDirector {
       aim: app.physics.webAimNdc.toArray(),
       hits,
       anchor: anchor ? anchor.toArray().map(value => +value.toFixed(2)) : null,
-      // A successful anchor leaves the previous miss string in SwingPhysics.
-      // The probe reports that string only when no anchor was found.
+      // Failed aim diagnostics only belong to a missing anchor.
       reason: anchor ? null : app.physics.webFailureReason,
       pitch: +app.tpsCamera.pitch.toFixed(3),
       yaw: +app.tpsCamera.yaw.toFixed(3),
@@ -626,7 +696,9 @@ class QualityDirector {
 
   diagnostics() {
     const info = this.app.renderer?.info;
-    return {
+    const facades={meshes:0,decorated:0,textured:0,vertexColored:0};
+    this.app.city?.root?.traverseVisible(object=>{if(!object.isMesh||object.userData.surfaceType!=='building')return;facades.meshes++;for(const m of Array.isArray(object.material)?object.material:[object.material]){if(m.userData?.cityFacade)facades.decorated++;if(m.map)facades.textured++;if(m.vertexColors)facades.vertexColored++;}});
+    return {facades,city:this.app.city?.renderingDiagnostics?.()||null,
       programs: info?.programs?.length ?? null,
       drawCalls: info?.render?.calls ?? null,
       triangles: info?.render?.triangles ?? null,
@@ -802,7 +874,7 @@ class QualityDirector {
 
   dump() {
     return {
-      build: 'quality-director-v5',
+      build: 'quality-upgrade-2026-10-28',
       href: location.href,
       ready: !!(this.app.assetsReady && this.app.character?.isLoaded),
       map: this.app.city?.mapId || (this.app.city?.isStreamed ? 'hong-kong' : 'unknown'),

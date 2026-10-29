@@ -32,6 +32,7 @@ import {COMBAT_GROUND_STATES} from './AttackRules.js';
 import {AmbientCitizens,AMBIENT_COUNTS} from './AmbientCitizens.js';
 import {VehicleSystem} from './VehicleSystem.js';
 import {abilitySlotState,updateVitalsHud} from './VitalsHud.js';
+import {updateHongKongSun,createHongKongEnvironment} from './HongKongRendering.js';
 let stopLoadingStatus=()=>{};
 
 const ONE_SHOT_KEYS = new Set(['Space','KeyG','KeyE','KeyT','KeyR','KeyC','KeyX','KeyV','KeyQ','KeyB','ControlLeft','ControlRight']);
@@ -129,6 +130,10 @@ export class GameApp {
     });
     this.canvas.addEventListener('webglcontextrestored', () => {
       this.contextLost = false;
+      if(this.city?.isStreamed){
+        this.hongKongEnvironment?.dispose();this.hongKongEnvironment=createHongKongEnvironment(this.renderer);
+        this.scene.environment=this.hongKongEnvironment.texture;this.city.district?.resetReflection();
+      }
       if(this.assetsReady)this.loadingScreen?.classList.add('hidden');
       document.getElementById('loading-recovery')?.classList.add('hidden');
       this.showNotice('그래픽 연결 복구 완료. 계속하기를 눌러 재개하세요.');
@@ -154,7 +159,7 @@ export class GameApp {
     this.renderer.shadowMap.enabled = true;
     this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    this.renderer.toneMappingExposure = 1.3;
+    this.renderer.toneMappingExposure = 1.12;
 
     // Scene
     this.scene = new THREE.Scene();
@@ -166,17 +171,22 @@ export class GameApp {
 
     // Lighting
     const localCity=selectedCity(location.search)!=='hong-kong';
+    if(!localCity){
+      this.hongKongEnvironment=createHongKongEnvironment(this.renderer);
+      this.scene.environment=this.hongKongEnvironment.texture;
+      this.scene.environmentIntensity=.7;
+    }
     const profile=localMap(selectedCity(location.search));
-    if(localCity){this.scene.background.setHex(profile.sky);this.scene.fog.color.setHex(profile.sky);}
-    const ambientLight = new THREE.HemisphereLight(0xd8f1ff, localCity?0xb8c6d5:0x536273, localCity?2.4:1.25);
+    if(localCity){this.scene.background.setHex(profile.sky);this.scene.fog.color.setHex(profile.sky);this.scene.fog.density=.0013;}
+    const ambientLight = new THREE.HemisphereLight(0xd8f1ff, localCity?0xb8c6d5:0x777c82, 1.55);
     this.scene.add(ambientLight);
     if(localCity){
-      this.scene.add(new THREE.AmbientLight(0xffffff,.55));
-      const fill=new THREE.DirectionalLight(0xe4f1ff,1.2);
+      this.scene.add(new THREE.AmbientLight(0xffffff,.22));
+      const fill=new THREE.DirectionalLight(0xe4f1ff,.55);
       fill.position.set(-160,180,-140);this.scene.add(fill);
     }
 
-    const sunLight = new THREE.DirectionalLight(0xfff8e8, 3.2);
+    const sunLight = new THREE.DirectionalLight(0xfff8e8, localCity?3.2:2.6);
     sunLight.position.set(160, 280, 140);
     sunLight.castShadow = true;
     sunLight.shadow.mapSize.width = 2048;
@@ -189,16 +199,23 @@ export class GameApp {
     sunLight.shadow.camera.top = shadowD;
     sunLight.shadow.camera.bottom = -shadowD;
     sunLight.shadow.bias = -0.0003;
+    sunLight.shadow.normalBias = localCity?0:.035;
+    this.sunLight=sunLight;
     this.scene.add(sunLight);
+    if(!localCity)this.scene.add(sunLight.target);
 
     // Sky Dome Gradient
-    const skyGeom = new THREE.SphereGeometry(1900, 32, 16);
+    const skyGeom = new THREE.SphereGeometry(900, 32, 16);
     const skyMat = new THREE.MeshBasicMaterial({
-      color: localCity?profile.sky:0x9bd5f0,
+      color: 0xffffff,
+      map: this.createSkyTexture(localCity?profile.sky:0x9bd5f0),
+      depthWrite:false,
+      fog:false,
+      toneMapped:false,
       side: THREE.BackSide
     });
     const sky = new THREE.Mesh(skyGeom, skyMat);
-    this.scene.add(sky);
+    sky.frustumCulled=false;this.sky=sky;this.scene.add(sky);
 
     window.addEventListener('resize', () => this.resizeViewport());
   }
@@ -841,6 +858,7 @@ export class GameApp {
       this.appliedAutoQuality=settings.autoQuality;
     }
     this.renderer.shadowMap.enabled = quality !== 'low';
+    this.city?.setStreamingQuality?.(quality);
     this.applyWebTheme();
   }
 
@@ -848,6 +866,16 @@ export class GameApp {
     const color=this.progression?.color||0xf4f8ff;
     for(const mesh of [this.character.webMesh,this.character.webMeshOffhand])mesh?.material?.color?.setHex(color);
     for(const line of [this.character.webLine,this.character.webLineOffhand])line?.material?.color?.setHex(color);
+  }
+
+  createSkyTexture(color) {
+    const canvas=document.createElement('canvas');canvas.width=16;canvas.height=256;
+    const ctx=canvas.getContext('2d'),base=new THREE.Color(color);
+    const gradient=ctx.createLinearGradient(0,0,0,256);
+    gradient.addColorStop(0,'#'+base.clone().multiplyScalar(.62).getHexString());gradient.addColorStop(.35,'#'+base.getHexString());
+    gradient.addColorStop(.5,'#dce7e8');gradient.addColorStop(1,'#e6e8df');
+    ctx.fillStyle=gradient;ctx.fillRect(0,0,16,256);
+    const texture=new THREE.CanvasTexture(canvas);texture.colorSpace=THREE.SRGBColorSpace;return texture;
   }
 
   resetCamera() {
@@ -1106,7 +1134,11 @@ export class GameApp {
     if (this.assetsReady && !this.contextLost && !globalThis.document?.hidden) {
       const interactive=this.isPlaying&&!this.isPaused&&!this.gameplaySuspended;
       const now=performance.now();
-      if(interactive||spectating||now-(this.lastIdleRender||0)>=100){this.renderer.render(this.scene,this.camera);this.lastIdleRender=now;}
+      if(interactive||spectating||now-(this.lastIdleRender||0)>=100){
+        this.sky?.position.copy(this.camera.position);
+        if(this.city.isStreamed)updateHongKongSun(this.sunLight,this.physics.position,this.preferences.values.quality);
+        this.renderer.render(this.scene,this.camera);this.lastIdleRender=now;
+      }
     }
 
     // Render 2D Speed lines overlay

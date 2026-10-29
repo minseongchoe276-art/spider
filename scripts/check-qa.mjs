@@ -13,6 +13,7 @@ import { SpeedLinesEffect } from '../src/SpeedLines.js';
 import { SoundController } from '../src/Audio.js';
 import { GameApp } from '../src/main.js';
 import { fetchAsset } from '../src/AssetLoader.js';
+import {streamingBudget} from '../src/StreamingBudget.js';
 
 let count = 0;
 async function check(name, run) { await run(); count++; console.log(`PASS QA ${count}: ${name}`); }
@@ -26,7 +27,10 @@ await check('Hong Kong layers share a city-owned budget without overwriting the 
   assert(first.tilesets.every(t=>t.lruCache===first.tileCache));
   assert(second.tilesets.every(t=>t.lruCache===second.tileCache));
   assert.notEqual(first.tileCache,second.tileCache);
-  assert.equal(first.tileCache.maxBytesSize,800*1024*1024);
+  assert.equal(first.tileCache.maxBytesSize,streamingBudget('balanced').maxBytes);
+  first.setStreamingQuality('low');
+  assert.equal(first.tileCache.maxBytesSize,streamingBudget('low').maxBytes);
+  assert.equal(second.tileCache.maxBytesSize,streamingBudget('balanced').maxBytes);
   first.dispose();second.dispose();
   await Promise.all([first.collisionWorld.initialized,second.collisionWorld.initialized]);
 });

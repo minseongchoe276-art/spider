@@ -92,7 +92,10 @@
     "test:vehicle:live": "node scripts/check-vehicle-live.mjs",
     "qa:director": "node scripts/quality-director/play.mjs",
     "qa:motions": "node scripts/quality-director/audit-motions.mjs",
-    "build:vehicle": "node scripts/build-vehicle.mjs"
+    "build:vehicle": "node scripts/build-vehicle.mjs",
+    "postbuild": "node scripts/compress-assets.mjs && node scripts/build-release-manifest.mjs",
+    "test:hong-kong:rendering": "node scripts/check-hong-kong-rendering.mjs && node scripts/check-tile-textures.mjs && node scripts/check-hong-kong-streaming.mjs",
+    "test:hong-kong:district": "node scripts/check-hong-kong-district.mjs && node scripts/check-hong-kong-tile-recovery.mjs"
   },
   "dependencies": {
     "@dimforge/rapier3d-compat": "^0.21.0",
