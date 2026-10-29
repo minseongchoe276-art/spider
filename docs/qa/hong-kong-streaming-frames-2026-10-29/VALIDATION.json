@@ -1,0 +1,38 @@
+{
+  "status": "PASS",
+  "baseRevision": "65b40bf739ab102044659a03318db707560a0ae8",
+  "candidateFiles": {
+    "src/UrbanGroundCity.js": "519286eeb899a5395e513c4f7097b17559cf894fdf11db9b2beba706432a2e8a",
+    "src/TileTextures.js": "84932dd879728d968f878638a0589bdd81c201385375ffd057f8f39762c97c01",
+    "src/TileRenderPreparation.js": "383227210b96b7081129c03bcb0f7c2bd6cddaeb934a7ad86c9f2c17f61e358a",
+    "scripts/check-tile-textures.mjs": "cf32f2f5eefed75d1179c90c3442efdf04127bd854040c9be91379580d3d431a",
+    "scripts/check-tile-render-preparation.mjs": "0f455c99ee2bd8f21d6c2032597cbfb143f59f03a3afac3039467835aeb5bba6",
+    "scripts/profile-hong-kong-streaming.mjs": "26cc00bee94963699723933b2b54fd0cb40f307335ac8cac757cfd3fb22ace1e",
+    "scripts/play-hong-kong-resilience.mjs": "e8cdd6cd8216de6cc24193b16deb6c8a1bada216a6d970350f7d2190706513ad",
+    "package.json": "eb8529dbee10e677ee7f7b994065f47953e3f624d74f2688a8488fed17545aa8"
+  },
+  "checks": [
+    "real GLTF embedded KTX2 parse/cache/sampler/transform/color and worker transfer preservation",
+    "cooperative shader readiness/fallback/cancellation/context-loss/timeout and program cleanup",
+    "ten streamed collision and support replacement cases",
+    "start district triangle and support equivalence",
+    "wall/fall recovery",
+    "24/60/144 FPS camera motion and minimap projection/lifecycle",
+    "isolated production build and ordinary DOM/keyboard production play",
+    "no duplicate 3dsd network requests in production play",
+    "matched-input keyboard jump and real wire traversal before/after with CPU profile and raw RAF intervals",
+    "pixel-matched overlay comparison in one JS task"
+  ],
+  "limitations": [
+    "Single matched-input before/after play pair; real network and LOD arrival vary. Same controls, not identical travel distance.",
+    "CPU sampling profiler enabled in both timing runs; headless desktop Chrome 1280x800 balanced quality. Not a physical-mobile or long-soak benchmark.",
+    "Timing ends at the last fixed camera checkpoint; fixture-only web-anchor search is excluded. Subsequent actual wire attachment is a functional check.",
+    "Native photographic mesh roughness, low-resolution imagery and some triangular vegetation/terrain remain. Duplicate structural overlays are fixed; the entire source mesh has not been remastered."
+  ],
+  "builtSourceId": "e4d819c791a8060fabc9653f1b5d79862e67dfb4308cbafbca86ef276281f875",
+  "buildChecks": {
+    "bootstrap": true,
+    "character": true,
+    "total": true
+  }
+}

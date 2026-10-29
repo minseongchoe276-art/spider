@@ -4,6 +4,7 @@ import {hongKongRenderingProfile,tuneHongKongTexture,prepareHongKongTile,configu
 import {createTileTexturePlugin} from './TileTextures.js';
 import {HongKongDistrict} from './HongKongDistrict.js';
 import {scheduleTileRetry,recoverFailedTiles} from './TileRecovery.js';
+import {TileRenderPreparation} from './TileRenderPreparation.js';
 import {prepareStartDistrict} from './HongKongStartDistrict.js';
 import { KTX2Loader } from 'three/addons/loaders/KTX2Loader.js';
 import { StreamedCollision } from './StreamedCollision.js';
@@ -24,17 +25,13 @@ const HONG_KONG_ORIGIN = {
   lon: THREE.MathUtils.degToRad(114.165495),
   height: 0,
 };
+// The photographic mesh already includes buildings, bridges and the ground.
+// Overlaying the independent 3dsd building/infrastructure surveys introduces
+// intersecting grey walls and duplicate walkways. Render and collide against
+// the same photographic exterior instead of keeping invisible solid overlays.
 const TILESETS = [
   {
     url: `${TILE_PREFIX}/api/3d-data/3dtiles/f2/tileset.json`,
-    reorientation: HONG_KONG_ORIGIN,
-  },
-  {
-    url: `${TILE_PREFIX}/api/3d-data/3dsd/WGS84/building/tileset.json`,
-    reorientation: HONG_KONG_ORIGIN,
-  },
-  {
-    url: `${TILE_PREFIX}/api/3d-data/3dsd/WGS84/infrastructure/tileset.json`,
     reorientation: HONG_KONG_ORIGIN,
   },
 ];
@@ -51,6 +48,7 @@ export class UrbanGroundCity {
     this.streamCamera.far = camera.far;
     this.streamCamera.updateProjectionMatrix();
     this.renderer = renderer;
+    this.tilePreparation = new TileRenderPreparation(renderer,camera,scene);
     this.onProgress = onProgress;
     this.tilesets = [];
     this.textureDiagnostics=[];
@@ -106,11 +104,8 @@ export class UrbanGroundCity {
     tiles.surfaceType = surfaceType;
     tiles.group.userData.tilesetIndex = index;
     tiles.group.userData.surfaceType = surfaceType;
-    // These two datasets have empty JSON ancestors, not coarse visual fallback
-    // meshes. Requiring all sibling branches to load before showing a building
-    // can fill the shared cache while displaying ZERO buildings indefinitely.
-    // The photographic terrain retains parent/sibling coverage; structural
-    // overlays can appear independently as soon as their own content is ready.
+    // Keep photographic parent coverage while detailed replacements download.
+    // Duplicate structural surveys are intentionally not queued for this city.
     configureHongKongTiles(tiles,index,this.renderingProfile);
     tiles.userData = { baseErrorTarget: tiles.errorTarget, retryAt: 0, retries: 0 };
     tiles.downloadQueue.maxJobsPerOrigin = 12;
@@ -121,16 +116,17 @@ export class UrbanGroundCity {
     tiles.lruCache = this.tileCache;
     const ktxLoader = this.ktxLoader;
     tiles.registerPlugin(new GLTFExtensionsPlugin({ktxLoader,autoDispose:false,plugins:[parser=>createTileTexturePlugin(parser,ktxLoader,this)]}));
-    // All three roots carry ECEF transforms; use one shared local origin.
+    // The dataset carries ECEF transforms; use the city's local origin.
     tiles.registerPlugin(new ReorientationPlugin(reorientation));
-    tiles.registerPlugin({name:'HongKongSurfacePresentation',processTileModel:scene=>{
+    tiles.registerPlugin({name:'HongKongSurfacePresentation',processTileModel:async (scene,tile)=>{
       prepareHongKongTile(scene,surfaceType,this.renderingProfile,this.renderer.capabilities.getMaxAnisotropy());
       if(surfaceType==='terrain'){
         tiles.group.updateWorldMatrix(true,false);
         prepareStartDistrict(scene,tiles.group.matrixWorld);
       }
       if(this.district)scene.traverse(mesh=>{if(mesh.isMesh)for(const material of Array.isArray(mesh.material)?mesh.material:[mesh.material])this.district.applySourceMask(material,surfaceType);});
-    }});
+      await this.tilePreparation.prepare(scene,tile);
+    },disposeTile:tile=>this.tilePreparation.cancel(tile)});
     tiles.setCamera(this.streamCamera);
     tiles.setResolutionFromRenderer(this.streamCamera, this.renderer);
     tiles.addEventListener('load-root-tileset', () => {
@@ -345,6 +341,7 @@ export class UrbanGroundCity {
 
   dispose() {
     this.disposed = true;
+    this.tilePreparation.dispose();
     for (const tiles of this.tilesets) tiles.dispose();
     this.ktxLoader.dispose();
     this.district?.dispose();

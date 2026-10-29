@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import assert from 'node:assert/strict';
 import {chromium} from '/Users/choeminseong/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/index.mjs';
 const base=process.env.HK_TEST_URL||'http://127.0.0.1:5195';
-const out='docs/qa/hong-kong-resilience-2026-10-29';fs.mkdirSync(out,{recursive:true});
+const out=process.env.HK_RESILIENCE_OUT||'docs/qa/hong-kong-resilience-2026-10-29';fs.mkdirSync(out,{recursive:true});
 const browser=await chromium.launch({channel:'chrome',headless:true,args:['--disable-background-timer-throttling']});
 const qa=(p,m,...args)=>p.evaluate(({m,args})=>__shadowPulseQuality[m](...args),{m,args});
 async function captureCity(p){await p.route('**/src/UrbanGroundCity.js*',async route=>{const response=await route.fetch(),body=await response.text();assert(body.includes('this.isStreamed = true;'));await route.fulfill({response,body:body.replace('this.isStreamed = true;','this.isStreamed = true; globalThis.__testCity = this;')});});}

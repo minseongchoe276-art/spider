@@ -1,0 +1,30 @@
+{
+  "status": "PASS",
+  "scope": "Desktop headless Chrome 1280x800, real network tiles, balanced quality, isolated tracked candidate; one matched-input play pair. Raw timing window excludes QA camera anchor search. Network/LOD arrival and travel distance vary.",
+  "runs": {
+    "play-before": {
+      "measurementSeconds": 26.39179999999702,
+      "rawFps": 36.37493463879343,
+      "frameCount": 960,
+      "p99Ms": 99.90000000000146,
+      "maxFrameMs": 500,
+      "framesOver50Ms": 35,
+      "framesOver100Ms": 7,
+      "longTasks": 42,
+      "longTaskMs": 3947,
+      "completedTileRequestsAfterReady": 397
+    },
+    "play-after": {
+      "measurementSeconds": 26.148099999994038,
+      "rawFps": 47.498671031558054,
+      "frameCount": 1242,
+      "p99Ms": 50,
+      "maxFrameMs": 83.39999999999782,
+      "framesOver50Ms": 8,
+      "framesOver100Ms": 0,
+      "longTasks": 11,
+      "longTaskMs": 685,
+      "completedTileRequestsAfterReady": 357
+    }
+  }
+}

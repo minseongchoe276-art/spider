@@ -94,10 +94,11 @@
     "qa:motions": "node scripts/quality-director/audit-motions.mjs",
     "build:vehicle": "node scripts/build-vehicle.mjs",
     "postbuild": "node scripts/compress-assets.mjs && node scripts/build-release-manifest.mjs",
-    "test:hong-kong:rendering": "node scripts/check-hong-kong-rendering.mjs && node scripts/check-tile-textures.mjs && node scripts/check-hong-kong-streaming.mjs",
+    "test:hong-kong:rendering": "node scripts/check-hong-kong-rendering.mjs && node scripts/check-tile-textures.mjs && node scripts/check-tile-render-preparation.mjs && node scripts/check-hong-kong-streaming.mjs",
     "test:hong-kong:district": "node scripts/check-hong-kong-district.mjs && node scripts/check-hong-kong-tile-recovery.mjs",
     "test:hong-kong:resilience": "node scripts/check-hong-kong-resilience.mjs && node scripts/check-hong-kong-tile-recovery.mjs",
-    "qa:hong-kong:resilience": "node scripts/play-hong-kong-resilience.mjs"
+    "qa:hong-kong:resilience": "node scripts/play-hong-kong-resilience.mjs",
+    "qa:hong-kong:frames": "node scripts/profile-hong-kong-streaming.mjs"
   },
   "dependencies": {
     "@dimforge/rapier3d-compat": "^0.21.0",

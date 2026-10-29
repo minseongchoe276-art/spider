@@ -27,11 +27,32 @@ export function decodeRGBKTX2(buffer) {
 export function createTileTexturePlugin(parser,ktxLoader,city) {
   return {name:'HongKongEmbeddedTextures',beforeRoot(){
     const original=parser.loadTextureImage.bind(parser);
+    const originalSource=parser.loadImageSource?.bind(parser),embedded=new Map();
+    if(originalSource)parser.loadImageSource=(sourceIndex,loader)=>{
+      const entry=embedded.get(sourceIndex);
+      if(!entry)return originalSource(sourceIndex,loader);
+      if(parser.sourceCache[sourceIndex])return parser.sourceCache[sourceIndex].then(texture=>texture.clone());
+      const image=parser.json.images[sourceIndex];
+      const promise=Promise.resolve().then(()=>entry.rgb||new Promise((resolve,reject)=>{
+        // KTX2 workers transfer their input. Preserve the parser's bufferView
+        // for other accessors/samplers instead of detaching shared glTF data.
+        ktxLoader.parse(entry.buffer.slice(0),resolve,reject);
+      })).then(texture=>{
+        if(image.extras&&typeof image.extras==='object')Object.assign(texture.userData,image.extras);
+        texture.userData.mimeType=image.mimeType||'image/ktx2';
+        return texture;
+      });
+      parser.sourceCache[sourceIndex]=promise;
+      return promise;
+    };
     // Wrap the common image path so standard extension plugins are covered too.
     parser.loadTextureImage=async(textureIndex,sourceIndex,loader)=>{
       const image=parser.json.images[sourceIndex];
       const buffer=image?.bufferView===undefined?null:await parser.getDependency('bufferView',image.bufferView);
-      const rgb=buffer?decodeRGBKTX2(buffer):null;
+      const rgb=embedded.get(sourceIndex)?.rgb||(buffer?decodeRGBKTX2(buffer):null);
+      // Keep GLTFLoader's sampler, association and texture-transform handling,
+      // but avoid its Blob -> object URL -> fetch round trip for embedded KTX2.
+      if(originalSource&&buffer&&isKTX2(buffer)&&!embedded.has(sourceIndex))embedded.set(sourceIndex,{buffer,rgb});
       const selected=rgb?{load(uri,onLoad){onLoad(rgb);}}:buffer&&isKTX2(buffer)?ktxLoader:loader;
       const result=await original(textureIndex,sourceIndex,selected);
       if(rgb)city.decodedRGBTextures=(city.decodedRGBTextures || 0)+1;
