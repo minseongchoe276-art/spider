@@ -115,13 +115,24 @@ export class StreamedCollision {
           entry.inactiveSince ??= now;
           const holdsPlayer=support?.collider.handle===entry.collider.handle;
           // Release an obsolete supporting LOD only once an active baked
-          // replacement supports the same feet height, even if queues are idle.
+          // replacement safely covers the feet, even if queues are idle.
           const activeHandles = holdsPlayer ? new Set([...this.meshes.values()]
             .filter(e => e && this.activeMeshes.has(e.mesh.uuid)).map(e => e.collider.handle)) : null;
-          const replacement = holdsPlayer ? this.world.castRay(new RAPIER.Ray(
-            {x:center.x,y:center.y+1,z:center.z},{x:0,y:-1,z:0}),2,false,
+          const replacement = holdsPlayer ? this.world.castRayAndGetNormal(new RAPIER.Ray(
+            {x:center.x,y:center.y+1,z:center.z},{x:0,y:-1,z:0}),2.5,false,
             undefined,undefined,this.body,undefined,c => activeHandles.has(c.handle)) : null;
-          const replaced = replacement && Math.abs(replacement.timeOfImpact-support.timeOfImpact)<0.25;
+          // Photogrammetry LODs can disagree by nearly a metre. Requiring
+          // identical heights retained an invisible coarse floor forever.
+          // Allow a bounded descent only after baked active terrain covers
+          // the capsule footprint; missing/partial tiles still keep support.
+          let replaced = replacement && replacement.normal.y>=Math.cos(Math.PI/4) && replacement.timeOfImpact-support.timeOfImpact>-.25 &&
+            replacement.timeOfImpact-support.timeOfImpact<1.25;
+          if(replaced)for(const [dx,dz] of [[.3,0],[-.3,0],[0,.3],[0,-.3]]){
+            const edge=this.world.castRayAndGetNormal(new RAPIER.Ray(
+              {x:center.x+dx,y:center.y+1,z:center.z+dz},{x:0,y:-1,z:0}),2.5,false,
+              undefined,undefined,this.body,undefined,c=>activeHandles.has(c.handle));
+            if(!edge || edge.normal.y<Math.cos(Math.PI/4) || Math.abs(edge.timeOfImpact-replacement.timeOfImpact)>.3){replaced=false;break;}
+          }
           if(replaced&&this.recoveryHandle===entry.collider.handle)this.recoveryHandle=replacement.collider.handle;
           if (now-entry.inactiveSince>2000 && entry.collider.handle!==this.recoveryHandle && !this.tetherColliders?.has(entry.collider.handle) && (!nearby.has(entry.collider.handle) || (holdsPlayer && replaced)) && (!holdsPlayer || replaced)) {
             this.world.removeCollider(entry.collider,true); this.colliderToMesh.delete(entry.collider.handle); this.meshes.delete(id);

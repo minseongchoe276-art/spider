@@ -70,4 +70,21 @@ check('Collision baking keeps the old support while a replacement is pending',()
   for(let i=0;i<20;i++)world.update(new THREE.Vector3(0,20.1,0));assert(!world.meshes.has(roof.uuid));assert(Math.abs(world.groundAt(new THREE.Vector3(0,20.3,0),1)-20)<.01);
  } finally {globalThis.performance=originalPerformance;}
 });
+const lodWorld=new StreamedCollision();await lodWorld.initialized;
+check('A lower detailed LOD replaces the invisible coarse floor only with full foot coverage',()=>{
+ const savedPerformance=globalThis.performance;let now=0;globalThis.performance={now:()=>now};
+ const at=new THREE.Vector3(0,20.1,0);
+ const surface=(width,height)=>{const m=new THREE.Mesh(new THREE.BoxGeometry(width,.2,width));m.position.y=height-.1;m.updateMatrixWorld(true);return m;};
+ try{
+  const coarse=surface(10,20);lodWorld.setActiveMeshes([coarse]);lodWorld.enqueue(coarse);
+  for(let i=0;i<10;i++)lodWorld.update(at);
+  const partial=surface(.1,19.1);lodWorld.setActiveMeshes([partial]);lodWorld.enqueue(partial);
+  for(let i=0;i<10;i++)lodWorld.update(at);now=5000;lodWorld.update(at);
+  assert(lodWorld.meshes.has(coarse.uuid),'Partial replacement removed capsule support');
+  const detailed=surface(10,19.1);lodWorld.setActiveMeshes([detailed]);lodWorld.enqueue(detailed);
+  for(let i=0;i<10;i++)lodWorld.update(at);
+  assert(!lodWorld.meshes.has(coarse.uuid),'Invisible coarse floor remained above detailed terrain');
+  assert(Math.abs(lodWorld.groundAt(at,2)-19.1)<.001,'Ground did not descend to the visible detailed LOD');
+ }finally{globalThis.performance=savedPerformance;lodWorld.dispose();}
+});
 world.dispose();console.log(`PASS: ${checks} streamed Hong Kong adapter scenarios`);

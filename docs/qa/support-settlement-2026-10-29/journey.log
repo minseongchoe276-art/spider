@@ -1,0 +1,14 @@
+PASS  [
+  [ 'start', 'IDLE' ],
+  [ 'walk', 'RUNNING' ],
+  [ 'run', 'SPRINTING' ],
+  [ 'stop', 'IDLE' ],
+  [ 'jump', 'JUMPING' ],
+  [ 'air', 'JUMPING' ],
+  [ 'land', 'IDLE' ],
+  [ 'crouch', 'IDLE' ],
+  [ 'stand', 'IDLE' ],
+  [ 'combat', 'IDLE' ],
+  [ 'guard', 'IDLE' ],
+  [ 'vehicleExit', 'IDLE' ]
+]

@@ -1,0 +1,64 @@
+{
+  "baseCommit": "2c013d80ad1eb46b8d94d4dbcb586411370b8c89",
+  "environment": "Only staged changes applied to HEAD; dependencies linked; live game served on loopback port 5211",
+  "checks": {
+    "supportSettlement": {
+      "cases": 18,
+      "exitCode": 0
+    },
+    "webCombat": {
+      "cases": 54,
+      "exitCode": 0
+    },
+    "gait": {
+      "cases": 71,
+      "exitCode": 0
+    },
+    "streaming": {
+      "cases": 10,
+      "exitCode": 0
+    },
+    "wallFall": {
+      "cases": 4,
+      "exitCode": 0
+    },
+    "vehicleSlopes": {
+      "exitCode": 0
+    },
+    "build": {
+      "exitCode": 0
+    },
+    "realPlayJourney": {
+      "exitCode": 0
+    },
+    "realPlaySettlement": {
+      "exitCode": 0,
+      "scenarios": [
+        {
+          "city": "procedural",
+          "name": "turnStop",
+          "maxPhysicalGap": 0.0029748343042689395,
+          "maxVisualGap": 0.0029748343042696928
+        },
+        {
+          "city": "procedural",
+          "name": "combatStop",
+          "maxPhysicalGap": 0.0030001202406396365,
+          "maxVisualGap": 0.0030001202406400454
+        },
+        {
+          "city": "hong-kong",
+          "name": "turnStop",
+          "maxPhysicalGap": 0.0030098017377008634,
+          "maxVisualGap": 0.0031583064744751255
+        },
+        {
+          "city": "hong-kong",
+          "name": "combatStop",
+          "maxPhysicalGap": 0.003000115630861262,
+          "maxVisualGap": 0.0030006636479313897
+        }
+      ]
+    }
+  }
+}

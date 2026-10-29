@@ -6,6 +6,7 @@ import { GROUNDED } from './MotionCatalog.js';
 import { boneId } from './MotionRetarget.js';
 import { sidewalkAnchor } from './CitizenNavigation.js';
 import {collectFacadeCandidates} from './HongKongDistrictGeometry.js';
+import {soleSamples,groundSoleNormal,footSupport} from './CharacterPose.js';
 
 const HOSTS = new Set(['127.0.0.1', 'localhost']);
 
@@ -96,6 +97,31 @@ class QualityDirector {
       spikes: () => this.spikes.slice(),
       diagnostics: () => this.diagnostics(),
       citySurvey: () => app.city?.surveySurfaces?.()||[],
+      soleReview: () => {
+        const c=app.character,p=app.physics,feet={};c.group.updateMatrixWorld(true);
+        for(const side of ['left','right']){
+          const foot=Object.values(c.bones||{}).find(b=>boneId(b.name)===side+'foot');if(!foot)continue;
+          const points=soleSamples(c,side).map(({mesh,vertex})=>mesh.localToWorld(mesh.applyBoneTransform(vertex,new THREE.Vector3().fromBufferAttribute(mesh.geometry.attributes.position,vertex))));
+          if(!points.length)continue;
+          const low=points.reduce((a,b)=>a.y<b.y?a:b),ankle=foot.getWorldPosition(new THREE.Vector3()),support=footSupport(c,ankle),rotation=foot.getWorldQuaternion(new THREE.Quaternion()),normal=groundSoleNormal(c,side,rotation);
+          const ray=new THREE.Raycaster(new THREE.Vector3(low.x,c.group.position.y+.6,low.z),new THREE.Vector3(0,-1,0),0,2);
+          const visual=ray.intersectObjects([...(app.city.buildingMeshes||[]),...(app.city.mapSurfaceMeshes||[]),...(app.city.groundMesh?[app.city.groundMesh]:[])],false).find(h=>h.face&&h.face.normal.clone().applyNormalMatrix(new THREE.Matrix3().getNormalMatrix(h.object.matrixWorld)).y>.7);
+          const constraint=c.jointConstraints?.find(r=>r.bone===foot);
+          const rawSupport=c.surfaceProbe?.(new THREE.Vector3(ankle.x,c.group.position.y+.45,ankle.z),1.1);
+          const toe=Object.values(c.bones||{}).find(b=>boneId(b.name)===side+'toebase');
+          const heading=toe?.getWorldPosition(new THREE.Vector3()).sub(ankle).setY(0).normalize();
+          const lateral=heading && new THREE.Vector3().crossVectors(heading,new THREE.Vector3(0,1,0));
+          let gap=null;if(support)gap=Math.min(...points.map(v=>v.y-support.height+(support.normal.x*(v.x-ankle.x)+support.normal.z*(v.z-ankle.z))/support.normal.y));
+          feet[side]={low:low.toArray(),ankle:ankle.toArray(),physicalHeight:support?.height??null,
+            supportActive:rawSupport?.collider?app.city.collisionWorld?.activeMeshes?.has(app.city.collisionWorld.colliderToMesh.get(rawSupport.collider.handle)?.uuid):null,
+            toeMarkerGap:toe&&support?toe.getWorldPosition(new THREE.Vector3()).y-support.height:null,physicalGap:gap,visualHeight:visual?.point.y??null,visualGap:visual?low.y-visual.point.y:null,
+            tilt:normal&&support?THREE.MathUtils.radToDeg(normal.angleTo(support.normal)):null,
+            lateralRoll:normal&&lateral?THREE.MathUtils.radToDeg(Math.asin(THREE.MathUtils.clamp(normal.dot(lateral),-1,1))):null,
+            ankleAngle:constraint?THREE.MathUtils.radToDeg(constraint.rest.angleTo(foot.quaternion)):null,
+            plant:c.movingPlants?.[side]?{age:c.movingPlants[side].age,offset:c.movingPlants[side].offset}:null};
+        }
+        return {state:p.state,motion:c.activeAction?.getClip().name,position:p.position.toArray(),renderPosition:p.renderPosition.toArray(),modelY:c.model.position.y,held:!!c.solvedGroundPose,feet};
+      },
       resetToSupportedStart: () => {app.physics.resetPosition();app.resetCamera();return this.snapshot(0);},
       findParkingFixture: () => {
         const p=app.physics.position,original=p.clone(),facing=app.physics.facingAngle,normal=app.vehicle.playerSurfaceNormal?.clone();let found=null;

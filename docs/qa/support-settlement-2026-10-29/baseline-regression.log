@@ -1,0 +1,15 @@
+node:internal/modules/run_main:123
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: web/24: settled combat right boot floats
+    at file:///private/var/folders/2s/myqxyk555vd84268xfsrgl000000gn/T/shadow-support-53_8kb3y/scripts/check-support-settlement.mjs:15:38 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
+
+Node.js v22.19.0

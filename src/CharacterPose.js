@@ -72,7 +72,7 @@ export function reuseHeldGroundPose(c,delta,grounded) {
   }
   const same=c.groundPoseInput?.length===input.length && input.every((v,i)=>v===null?c.groundPoseInput[i]===null:Math.abs(v-c.groundPoseInput[i])<1e-8);
   c.groundPoseInput=input;c.groundPoseStillTime=same?(c.groundPoseStillTime || 0)+delta:0;
-  if(!same || !c.solvedGroundPose || Object.values(c.groundSoleSettling || {}).some(Boolean) || (delta>0 && c.groundPoseStillTime<.3))return false;
+  if(!same || !c.solvedGroundPose || Object.values(c.groundSoleSettling || {}).some(Boolean) || Object.values(c.groundClearanceSettling || {}).some(Boolean) || (delta>0 && c.groundPoseStillTime<.3))return false;
   // An unchanged authored sample, root and support have one solved pose.
   // Re-running a stateful contact solve must not make a held boot creep.
   for(const {bone,p,q} of c.solvedGroundPose){bone.position.copy(p);bone.quaternion.copy(q);}
@@ -149,7 +149,7 @@ function fitEndRotation(c,upper,lower,end,rotation) {
       }else if(constraint.kind==='foot'){
         pole=new THREE.Vector3(0,0,1).applyQuaternion(c.model.getWorldQuaternion(new THREE.Quaternion()));
       }else pole=anchor.clone().sub(end.position.clone().applyQuaternion(idealParent)).sub(worldPosition(upper));
-      c.solveLimb(upper,lower,end,anchor,constraint.kind==='foot'?.985:.995,pole);
+      c.solveLimb(upper,lower,end,anchor,.995,pole);
       // The position solve leaves the shin/forearm's axial roll arbitrary.
       // Fit that roll to the requested end orientation without moving its
       // endpoint. Repeatedly adding twist after IK caused held poses to drift.
@@ -185,15 +185,19 @@ export function soleSamples(c,side) {
 }
 
 export function clearGroundSoles(c,{preserveLocal=false}={}) {
+  c.groundClearanceSettling ||= {};
   for(const side of ['left','right']){
     const hip=find(c,side+'upleg'),knee=find(c,side+'leg'),foot=find(c,side+'foot');if(!hip||!knee||!foot)continue;
     const samples=soleSamples(c,side);if(!samples.length)continue;
     const rotation=foot.getWorldQuaternion(new THREE.Quaternion());
     const local=foot.quaternion.clone();
+    c.groundClearanceSettling[side]=false;
     for(let pass=0;pass<4;pass++){
       const ankle=worldPosition(foot);
       const points=samples.map(({mesh,vertex})=>mesh.localToWorld(mesh.applyBoneTransform(vertex,new THREE.Vector3().fromBufferAttribute(mesh.geometry.attributes.position,vertex))));
-      const toe=find(c,side+'toebase');if(toe)points.push(worldPosition(toe));
+      // Toe bones are probe locations, not the rendered sole. The rear toe
+      // marker can lie below the boot and used to hold its skin 2cm afloat.
+      const toe=find(c,side+'toebase');
       const probes=[];
       const probe=point=>{const support=footSupport(c,point);if(support)probes.push({point,support});};
       probe(ankle);
@@ -204,7 +208,7 @@ export function clearGroundSoles(c,{preserveLocal=false}={}) {
         probe(points.reduce((a,b)=>a[axis]*sign>b[axis]*sign?a:b));
       if(!probes.length)break;
       const {point:basePoint,support:base}=probes[0];
-      let lift=0;
+      let lift=-Infinity;
       // Raise a swinging boot before its outline crosses a discrete riser.
       // Continuous ramps are handled by their plane and receive no extra lift.
       const advance=c.groundMotionVelocity?.clone().multiplyScalar(.15).clampLength(0,.7);
@@ -229,8 +233,22 @@ export function clearGroundSoles(c,{preserveLocal=false}={}) {
         const expected=base.height-(base.normal.x*(probe.point.x-basePoint.x)+base.normal.z*(probe.point.z-basePoint.z))/base.normal.y;
         if(height-expected>.08)delete c.movingPlants?.[side];
       }
-      if(lift<.0001)break;
-      c.solveLimb(hip,knee,foot,ankle.addScaledVector(up,lift),.98);
+      if(lift<0){
+        const clip=c.activeAction?.getClip(),contacts=clip?.userData?.footContacts;
+        const phase=clip?c.activeAction.time%clip.duration:0;
+        const contact=contacts?.[Math.min(contacts.length-1,Math.round(phase/clip.duration*(contacts.length-1)))]?.[side];
+        const still=['IDLE','TURNING'].includes(c.poseState) && (c.groundMotionVelocity?.lengthSq() || 0)<.0025 && !c.combatAction?.duration;
+        // Clearance used to push up only. A final ankle clamp could leave a
+        // supporting boot 2–3cm above the plane, then the held-pose cache kept
+        // it there. Settle only a small existing support gap, never swing lift.
+        const supported=!!c.movingPlants?.[side] || contact || still;
+        if(!supported || lift<-.06 || c.mantleFootRelease>0)break;
+        c.groundClearanceSettling[side]=lift<-.003;
+        const step=.2*(c.limbPoseDelta ?? 1/60)/4;
+        lift=Math.max(lift,-step);
+      }
+      if(Math.abs(lift)<.0001)break;
+      c.solveLimb(hip,knee,foot,ankle.addScaledVector(up,lift),.995);
       if(preserveLocal){foot.quaternion.copy(local);foot.updateMatrixWorld(true);}
       else fitGroundAnkle(c,side,foot,rotation);
       constrainJoints(c.jointConstraints?.filter(item=>item.bone===foot));
@@ -248,7 +266,7 @@ export function clearGroundSoles(c,{preserveLocal=false}={}) {
         // The uppercut transfers weight onto one boot while the other lifts.
         // Retire an airborne support rather than keeping a floating IK anchor.
         if(c.combatAction?.key==='special' && clearance>.035)delete c.movingPlants[side];
-        if(clearance>=-.005 && clearance<.06){
+        if(plant && clearance>=-.005 && clearance<.06){
           plant.offset=actual.y-support.height+THREE.MathUtils.clamp(.003-clearance,-.012,.012);
           plant.position.y=support.height+plant.offset;
         }
@@ -454,7 +472,12 @@ export function plantMovingFeet(c,delta) {
     // old contact drags the foot across the new thigh and folds the knee back.
     const turned=plant && Math.abs(Math.atan2(Math.sin((c.strikeHipYaw || 0)-(plant.yaw || 0)), Math.cos((c.strikeHipYaw || 0)-(plant.yaw || 0))))>0.4;
     const crossed=plant && laneAxis && (plant.position.clone().sub(laneCenter).dot(laneAxis)*(side==='left'?1:-1)<.065);
-    const stance=sample[side] && supported && action.getEffectiveWeight()>=0.8 && reachable && !changedSupport && !turned && !crossed;
+    // Straight punches keep the rear toe supporting the body even when the
+    // source take lifts its heel above the ankle-height contact threshold.
+    // Admit that low rear support so it receives the same compact, flat IK
+    // stance instead of repeatedly releasing and rolling onto its outer edge.
+    const rearStraight=side==='right' && ['jab','cross'].includes(clip.name) && current.y-root.y<.25;
+    const stance=(sample[side] || rearStraight) && supported && action.getEffectiveWeight()>=0.8 && reachable && !changedSupport && !turned && !crossed;
     const yaw=(c.targetFacingAngle || 0)+(c.strikeHipYaw || 0);
     const kneePole=Math.abs(c.strikeHipYaw || 0)>0.15
       ?new THREE.Vector3(Math.sin(yaw),0.2,Math.cos(yaw))
