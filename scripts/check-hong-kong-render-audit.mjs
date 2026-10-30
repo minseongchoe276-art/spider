@@ -1,0 +1,11 @@
+import assert from 'node:assert/strict';
+import * as T from 'three';
+import {collectHongKongRenderAudit} from '../src/HongKongRenderAudit.js';
+const scene=new T.Scene(),camera=new T.PerspectiveCamera(),geometry=new T.BufferGeometry();geometry.setAttribute('position',new T.Float32BufferAttribute([0,0,0,1,0,0,0,1,0],3));
+const material=new T.MeshStandardMaterial({flatShading:true}),mesh=new T.Mesh(geometry,material);mesh.userData.surfaceType='terrain';scene.add(mesh);
+const app={scene,camera,city:{playableHalfExtent:2400},physics:{position:new T.Vector3()},renderer:{info:{render:{calls:1,triangles:1},memory:{textures:0,geometries:1}}}};
+assert.deepEqual(collectHongKongRenderAudit(app).meshes[0].issues,[],'GLTF flat shading uses derivative normals and is valid without a NORMAL attribute');
+material.flatShading=false;assert(collectHongKongRenderAudit(app).meshes[0].issues.includes('lit-mesh-without-normals'));
+const texture=new T.DataTexture(new Uint8Array([255,255,255,255]),1,1);material.map=texture;assert(collectHongKongRenderAudit(app).meshes[0].issues.includes('textured-mesh-without-uv'));
+const original=Array.from(geometry.attributes.position.array);collectHongKongRenderAudit(app);assert.deepEqual(Array.from(geometry.attributes.position.array),original);assert.equal(mesh.visible,true);assert.equal(material.map,texture);
+geometry.dispose();material.dispose();texture.dispose();console.log('PASS read-only scene audit, valid GLTF flat shading, genuinely missing normals and textured UV omissions');

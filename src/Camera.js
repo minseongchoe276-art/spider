@@ -135,6 +135,7 @@ export class ThirdPersonCamera {
   recenterBehind(facingAngle) {
     this.mobileLookDelay=0;
     this.recenterYaw = facingAngle;
+    this.recenterPitch = 0.16;
     this.isRecentering = true;
     this.lockBehind = true;
     this.followMovement = true;
@@ -195,9 +196,10 @@ export class ThirdPersonCamera {
     if (movement?.backward || movement?.left || movement?.right) this.followMovement = false;
     else if (movement?.forward) this.followMovement = true;
     if (this.isRecentering) {
+      this.pitch=THREE.MathUtils.damp(this.pitch,this.recenterPitch ?? .16,7,delta);
       const difference = Math.atan2(Math.sin(this.recenterYaw - this.yaw), Math.cos(this.recenterYaw - this.yaw));
       this.yaw += difference * (1 - Math.exp(-7 * delta));
-      if (Math.abs(difference) < 0.008) {
+      if (Math.abs(difference) < 0.008 && Math.abs(this.pitch-(this.recenterPitch ?? .16))<.008) {
         this.yaw = this.recenterYaw;
         this.isRecentering = false;
       }

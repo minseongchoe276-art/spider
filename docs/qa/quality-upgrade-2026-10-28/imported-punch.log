@@ -1,0 +1,17 @@
+PASS: supplied punch integrity, contact timing, 12 rendered motion/recovery scenarios, damage selection, guard and airborne exclusion
+┌─────────┬────────────┬───────┬─────────┬─────────┐
+│ (index) │ key        │ speed │ maxStep │ minFoot │
+├─────────┼────────────┼───────┼─────────┼─────────┤
+│ 0       │ 'cross'    │ 0     │ 0.229   │ 0.119   │
+│ 1       │ 'hitHead'  │ 0     │ 0.225   │ 0.121   │
+│ 2       │ 'hitBody'  │ 0     │ 0.223   │ 0.121   │
+│ 3       │ 'hitHeavy' │ 0     │ 0.223   │ 0.121   │
+│ 4       │ 'cross'    │ 4.4   │ 0.087   │ 0.127   │
+│ 5       │ 'hitHead'  │ 4.4   │ 0.033   │ 0.127   │
+│ 6       │ 'hitBody'  │ 4.4   │ 0.057   │ 0.127   │
+│ 7       │ 'hitHeavy' │ 4.4   │ 0.065   │ 0.127   │
+│ 8       │ 'cross'    │ 6.5   │ 0.084   │ 0.121   │
+│ 9       │ 'hitHead'  │ 6.5   │ 0.023   │ 0.121   │
+│ 10      │ 'hitBody'  │ 6.5   │ 0.063   │ 0.121   │
+│ 11      │ 'hitHeavy' │ 6.5   │ 0.053   │ 0.121   │
+└─────────┴────────────┴───────┴─────────┴─────────┘

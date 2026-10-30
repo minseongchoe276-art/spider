@@ -1,0 +1,22 @@
+{
+  "regressions": {
+    "passed": 90,
+    "total": 90,
+    "record": "final-suite.json"
+  },
+  "inputScenarios": 25,
+  "browserScenarios": 8,
+  "browserErrors": [],
+  "production": {
+    "pass": true,
+    "errors": [],
+    "checks": [
+      "Production loads",
+      "Development probe absent",
+      "Pause and resume via menu",
+      "Movement input smoke"
+    ]
+  },
+  "build": "PASS",
+  "scope": "Local automated regression suite, Chrome procedural-city scenarios and production smoke. Physical mobile devices and public online sessions not tested."
+}

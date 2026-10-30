@@ -1,0 +1,849 @@
+{
+  "snapshot": {
+    "t": 51709.90000000596,
+    "scenario": null,
+    "scenarioMs": 0,
+    "dt": 0,
+    "position": [
+      0,
+      20.513,
+      0
+    ],
+    "velocity": [
+      0,
+      0,
+      0
+    ],
+    "acceleration": null,
+    "speed": 0,
+    "facing": 0,
+    "state": "IDLE",
+    "grounded": true,
+    "support": 20.388,
+    "animation": "idle",
+    "animationTime": 2,
+    "blends": [
+      {
+        "key": "walk",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "idle",
+        "weight": 1,
+        "time": 2
+      },
+      {
+        "key": "run",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "regularRun",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "stop",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "runStop",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "zip",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "turnLeft",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "turnRight",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "jump",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "jumpDown",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "drop",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "jumpDownVariant",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "swing",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "fall",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "fallVariant",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "fallIdle",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "roll",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "wall",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "injuredIdle",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "land",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "combatIdle",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "jab",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "guard",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "slamLand",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "slam",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "hitHead",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "rightHook",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "cross",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "hook",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "heavy",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "airTrick",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "backTrick",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "hitBody",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "hitHeavy",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "hitUppercut",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "special",
+        "weight": 1,
+        "time": 0
+      }
+    ],
+    "combatMode": "web",
+    "attack": null,
+    "feet": {
+      "left": {
+        "x": 0.085,
+        "y": 20.542,
+        "z": 0.327,
+        "support": 20.388,
+        "gap": 0.154
+      },
+      "right": {
+        "x": -0.056,
+        "y": 20.553,
+        "z": -0.319,
+        "support": 20.388,
+        "gap": 0.165
+      }
+    },
+    "camera": {
+      "position": [
+        0,
+        23.137,
+        -5.726
+      ],
+      "yaw": 0,
+      "pitch": 0.16,
+      "fov": 64
+    },
+    "webs": [],
+    "swinging": false,
+    "ropeLength": 0,
+    "swingTension": null,
+    "pointerLock": false,
+    "fps": null,
+    "memory": 620060975,
+    "drawCalls": 113,
+    "triangles": 281992,
+    "geometries": 98,
+    "textures": 88,
+    "latencyMs": null,
+    "paused": false,
+    "playing": true
+  },
+  "diagnostics": {
+    "facades": {
+      "meshes": 29,
+      "decorated": 2,
+      "textured": 29,
+      "vertexColored": 0
+    },
+    "city": {
+      "layers": [
+        {
+          "surface": "terrain",
+          "errorTarget": 13.400956406250003,
+          "distantError": 0,
+          "loadAncestors": true,
+          "loadSiblings": true,
+          "stats": {
+            "inCacheSinceLoad": 0,
+            "inCache": 191,
+            "queued": 0,
+            "downloading": 0,
+            "parsing": 0,
+            "loaded": 191,
+            "failed": 0,
+            "inFrustum": 163,
+            "used": 227,
+            "active": 73,
+            "visible": 36,
+            "refused": 34,
+            "tilesProcessed": 0
+          },
+          "meshes": 57,
+          "shadowCasters": 0,
+          "materials": {
+            "MeshBasicMaterial:texture": 21,
+            "MeshStandardMaterial:texture": 36
+          },
+          "samples": [
+            {
+              "type": "MeshBasicMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 512,
+                "height": 256,
+                "anisotropy": 8,
+                "minFilter": 1008
+              },
+              "normals": false,
+              "side": 2
+            },
+            {
+              "type": "MeshBasicMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 512,
+                "height": 256,
+                "anisotropy": 8,
+                "minFilter": 1008
+              },
+              "normals": false,
+              "side": 2
+            },
+            {
+              "type": "MeshBasicMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 256,
+                "height": 128,
+                "anisotropy": 8,
+                "minFilter": 1008
+              },
+              "normals": false,
+              "side": 2
+            },
+            {
+              "type": "MeshBasicMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 128,
+                "height": 128,
+                "anisotropy": 8,
+                "minFilter": 1008
+              },
+              "normals": false,
+              "side": 2
+            }
+          ]
+        },
+        {
+          "surface": "building",
+          "errorTarget": 16.081147687500007,
+          "distantError": 0,
+          "loadAncestors": false,
+          "loadSiblings": false,
+          "stats": {
+            "inCacheSinceLoad": 0,
+            "inCache": 22,
+            "queued": 0,
+            "downloading": 0,
+            "parsing": 0,
+            "loaded": 22,
+            "failed": 0,
+            "inFrustum": 54,
+            "used": 54,
+            "active": 13,
+            "visible": 13,
+            "refused": 1,
+            "tilesProcessed": 0
+          },
+          "meshes": 29,
+          "shadowCasters": 29,
+          "materials": {
+            "MeshStandardMaterial:texture": 29
+          },
+          "samples": [
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 512,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1008
+              },
+              "normals": true,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 512,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1008
+              },
+              "normals": true,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 512,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1008
+              },
+              "normals": true,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 256,
+                "height": 256,
+                "anisotropy": 8,
+                "minFilter": 1008
+              },
+              "normals": true,
+              "side": 0
+            }
+          ]
+        },
+        {
+          "surface": "infrastructure",
+          "errorTarget": 16,
+          "distantError": 0,
+          "loadAncestors": false,
+          "loadSiblings": false,
+          "stats": {
+            "inCacheSinceLoad": 0,
+            "inCache": 7,
+            "queued": 0,
+            "downloading": 0,
+            "parsing": 0,
+            "loaded": 7,
+            "failed": 0,
+            "inFrustum": 9,
+            "used": 9,
+            "active": 2,
+            "visible": 2,
+            "refused": 0,
+            "tilesProcessed": 0
+          },
+          "meshes": 3,
+          "shadowCasters": 3,
+          "materials": {
+            "MeshStandardMaterial:texture": 3
+          },
+          "samples": [
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 8,
+                "height": 8,
+                "anisotropy": 8,
+                "minFilter": 1008
+              },
+              "normals": true,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 512,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1008
+              },
+              "normals": true,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 512,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1008
+              },
+              "normals": true,
+              "side": 0
+            }
+          ]
+        }
+      ],
+      "cacheBytes": 402761520,
+      "budget": {
+        "maxBytes": 402653184,
+        "minBytes": 221249536,
+        "maxTiles": 2400,
+        "minTiles": 800
+      },
+      "textureFailures": [],
+      "decodedRGBTextures": 2
+    },
+    "programs": 13,
+    "drawCalls": 113,
+    "triangles": 281992,
+    "geometries": 98,
+    "textures": 88,
+    "heap": 620060975
+  },
+  "survey": [
+    {
+      "x": -60,
+      "z": -60,
+      "height": 4.92,
+      "normalY": 1,
+      "surface": "terrain"
+    },
+    {
+      "x": -60,
+      "z": -40,
+      "height": 4.33,
+      "normalY": 1,
+      "surface": "terrain"
+    },
+    {
+      "x": -60,
+      "z": -20,
+      "height": 4.43,
+      "normalY": 1,
+      "surface": "terrain"
+    },
+    {
+      "x": -60,
+      "z": 0,
+      "height": 16,
+      "normalY": 1,
+      "surface": "building"
+    },
+    {
+      "x": -60,
+      "z": 20,
+      "height": 16,
+      "normalY": 1,
+      "surface": "building"
+    },
+    {
+      "x": -60,
+      "z": 40,
+      "height": 5.01,
+      "normalY": 1,
+      "surface": "terrain"
+    },
+    {
+      "x": -60,
+      "z": 60,
+      "height": 5.08,
+      "normalY": 1,
+      "surface": "terrain"
+    },
+    {
+      "x": -40,
+      "z": -60,
+      "height": 4.98,
+      "normalY": 1,
+      "surface": "terrain"
+    },
+    {
+      "x": -40,
+      "z": -40,
+      "height": 4.38,
+      "normalY": 0.999,
+      "surface": "terrain"
+    },
+    {
+      "x": -40,
+      "z": -20,
+      "height": 12.76,
+      "normalY": 0.868,
+      "surface": "terrain"
+    },
+    {
+      "x": -40,
+      "z": 0,
+      "height": 16,
+      "normalY": 1,
+      "surface": "building"
+    },
+    {
+      "x": -40,
+      "z": 20,
+      "height": 19.62,
+      "normalY": 0.998,
+      "surface": "terrain"
+    },
+    {
+      "x": -40,
+      "z": 40,
+      "height": 12.14,
+      "normalY": 1,
+      "surface": "terrain"
+    },
+    {
+      "x": -40,
+      "z": 60,
+      "height": 102.6,
+      "normalY": 1,
+      "surface": "terrain"
+    },
+    {
+      "x": -20,
+      "z": -60,
+      "height": 5.22,
+      "normalY": 1,
+      "surface": "terrain"
+    },
+    {
+      "x": -20,
+      "z": -40,
+      "height": 4.65,
+      "normalY": 1,
+      "surface": "terrain"
+    },
+    {
+      "x": -20,
+      "z": -20,
+      "height": 4.72,
+      "normalY": 0.747,
+      "surface": "terrain"
+    },
+    {
+      "x": -20,
+      "z": 0,
+      "height": 16,
+      "normalY": 1,
+      "surface": "building"
+    },
+    {
+      "x": -20,
+      "z": 20,
+      "height": 128.44,
+      "normalY": 1,
+      "surface": "terrain"
+    },
+    {
+      "x": -20,
+      "z": 40,
+      "height": 127.22,
+      "normalY": 0.953,
+      "surface": "terrain"
+    },
+    {
+      "x": -20,
+      "z": 60,
+      "height": 126.44,
+      "normalY": 1,
+      "surface": "terrain"
+    },
+    {
+      "x": 0,
+      "z": -60,
+      "height": 6.02,
+      "normalY": 0.999,
+      "surface": "terrain"
+    },
+    {
+      "x": 0,
+      "z": -40,
+      "height": 5.21,
+      "normalY": 0.999,
+      "surface": "terrain"
+    },
+    {
+      "x": 0,
+      "z": -20,
+      "height": 4.75,
+      "normalY": 0.99,
+      "surface": "terrain"
+    },
+    {
+      "x": 0,
+      "z": 0,
+      "height": 20.39,
+      "normalY": 0.996,
+      "surface": "terrain"
+    },
+    {
+      "x": 0,
+      "z": 20,
+      "height": 17.71,
+      "normalY": 0.506,
+      "surface": "terrain"
+    },
+    {
+      "x": 0,
+      "z": 40,
+      "height": 118.79,
+      "normalY": 0.803,
+      "surface": "terrain"
+    },
+    {
+      "x": 0,
+      "z": 60,
+      "height": 16.7,
+      "normalY": 1,
+      "surface": "terrain"
+    },
+    {
+      "x": 20,
+      "z": -60,
+      "height": 14.16,
+      "normalY": 0.928,
+      "surface": "terrain"
+    },
+    {
+      "x": 20,
+      "z": -40,
+      "height": 18.51,
+      "normalY": 0.999,
+      "surface": "terrain"
+    },
+    {
+      "x": 20,
+      "z": -20,
+      "height": 14.67,
+      "normalY": 0.207,
+      "surface": "terrain"
+    },
+    {
+      "x": 20,
+      "z": 0,
+      "height": 8.1,
+      "normalY": 0.345,
+      "surface": "terrain"
+    },
+    {
+      "x": 20,
+      "z": 20,
+      "height": 16.57,
+      "normalY": 1,
+      "surface": "terrain"
+    },
+    {
+      "x": 20,
+      "z": 40,
+      "height": 105.71,
+      "normalY": 0.979,
+      "surface": "terrain"
+    },
+    {
+      "x": 20,
+      "z": 60,
+      "height": 126.78,
+      "normalY": 0.901,
+      "surface": "terrain"
+    },
+    {
+      "x": 40,
+      "z": -60,
+      "height": 131.02,
+      "normalY": 0.993,
+      "surface": "terrain"
+    },
+    {
+      "x": 40,
+      "z": -40,
+      "height": 16.05,
+      "normalY": 0.965,
+      "surface": "terrain"
+    },
+    {
+      "x": 40,
+      "z": -20,
+      "height": 15.76,
+      "normalY": 0.999,
+      "surface": "terrain"
+    },
+    {
+      "x": 40,
+      "z": 0,
+      "height": 4.85,
+      "normalY": 1,
+      "surface": "terrain"
+    },
+    {
+      "x": 40,
+      "z": 20,
+      "height": 5.06,
+      "normalY": 1,
+      "surface": "terrain"
+    },
+    {
+      "x": 40,
+      "z": 40,
+      "height": 16.94,
+      "normalY": 1,
+      "surface": "terrain"
+    },
+    {
+      "x": 40,
+      "z": 60,
+      "height": 128.65,
+      "normalY": 1,
+      "surface": "terrain"
+    },
+    {
+      "x": 60,
+      "z": -60,
+      "height": 131.9,
+      "normalY": 0.999,
+      "surface": "terrain"
+    },
+    {
+      "x": 60,
+      "z": -40,
+      "height": 130.55,
+      "normalY": 0.958,
+      "surface": "terrain"
+    },
+    {
+      "x": 60,
+      "z": -20,
+      "height": 5.64,
+      "normalY": 0.999,
+      "surface": "terrain"
+    },
+    {
+      "x": 60,
+      "z": 0,
+      "height": 6.35,
+      "normalY": 0.983,
+      "surface": "terrain"
+    },
+    {
+      "x": 60,
+      "z": 20,
+      "height": 5.18,
+      "normalY": 1,
+      "surface": "terrain"
+    },
+    {
+      "x": 60,
+      "z": 40,
+      "height": 5.77,
+      "normalY": 0.973,
+      "surface": "terrain"
+    },
+    {
+      "x": 60,
+      "z": 60,
+      "height": 127.48,
+      "normalY": 0.859,
+      "surface": "terrain"
+    }
+  ],
+  "errors": [],
+  "observedAt": "2026-10-29T00:59:12.901Z"
+}

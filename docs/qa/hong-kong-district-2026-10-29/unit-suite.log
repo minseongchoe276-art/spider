@@ -1,0 +1,10 @@
+
+> shadow-pulse@1.0.0 test:hong-kong:district
+> node scripts/check-hong-kong-district.mjs && node scripts/check-hong-kong-tile-recovery.mjs
+
+PASS six reviewed facade polygons: 1967 windows, all corners supported, plane error <10cm and intended 14cm visual relief
+PASS polygon holes stay open instead of turning a bounding box into a solid facade
+PASS wall surveying uses world transforms without modifying source or collision vertices
+PASS source masks preserve existing shader hooks, exclude horizontal floors, and enable canopy removal only after model readiness
+PASS seven verified canopy sites reuse the existing workspace model without changing its embedded source pixels
+PASS actual TilesRenderer lazy sibling recovery: reproduces old TypeError, resets failed/root records, retains loaded tiles, no forced hierarchy parsing

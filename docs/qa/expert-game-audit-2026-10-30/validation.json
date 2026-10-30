@@ -1,0 +1,25 @@
+{
+  "regressionScripts": {
+    "total": 90,
+    "passed": 90,
+    "report": "regressions/final-suite.json"
+  },
+  "browser": {
+    "scenarios": 7,
+    "passed": 7,
+    "uncaughtErrors": 0,
+    "report": "browser.json"
+  },
+  "productionStartup": {
+    "pass": true,
+    "scope": "Final built production solo startup and rendered HUD; development quality API absent",
+    "errors": []
+  },
+  "crossJointAudit": {
+    "cases": 16,
+    "frames": 8454,
+    "report": "cross-joints/results.json"
+  },
+  "build": "npm run build passed",
+  "scope": "Local code and production-build checks; touch emulation and local network impairment. Live hosted multiplayer and physical mobile endurance were not verified."
+}

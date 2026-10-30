@@ -41,39 +41,39 @@
     "procedural": {
       "count": 8,
       "cap": 8,
-      "cpuP95": 4.424,
+      "cpuP95": 45.51,
       "walked": 8
     },
     "harbor": {
       "count": 6,
       "cap": 6,
-      "cpuP95": 2.608,
+      "cpuP95": 18.209,
       "walked": 6
     },
     "gardens": {
       "count": 6,
       "cap": 6,
-      "cpuP95": 4.036,
+      "cpuP95": 18.547,
       "walked": 6
     },
     "old-town": {
       "count": 5,
       "cap": 5,
-      "cpuP95": 3.72,
+      "cpuP95": 24.266,
       "walked": 5
     },
     "skyline": {
       "count": 5,
       "cap": 5,
-      "cpuP95": 3.198,
+      "cpuP95": 19.609,
       "walked": 5
     }
   },
   "roofCitizens": 8,
   "recovery": {
-    "x": 4.85,
-    "state": "IDLE",
-    "worst": 0.04
+    "x": 0,
+    "state": "WALK",
+    "worst": 0
   },
   "pierce": true,
   "together": {

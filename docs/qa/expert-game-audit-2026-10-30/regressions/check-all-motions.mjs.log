@@ -1,0 +1,186 @@
+PASS 24fps hitHead keeps a supported foot during the full hit reaction
+PASS 24fps three-point landing stays grounded throughout its recovery
+PASS 24fps long-running mixer starts a fade without a precision jump
+PASS 24fps reversal keeps the current blended rig pose
+PASS 30fps hitHead keeps a supported foot during the full hit reaction
+PASS 30fps three-point landing stays grounded throughout its recovery
+PASS 30fps long-running mixer starts a fade without a precision jump
+PASS 30fps reversal keeps the current blended rig pose
+PASS 60fps hitHead keeps a supported foot during the full hit reaction
+PASS 60fps three-point landing stays grounded throughout its recovery
+PASS 60fps long-running mixer starts a fade without a precision jump
+PASS 60fps reversal keeps the current blended rig pose
+PASS 144fps hitHead keeps a supported foot during the full hit reaction
+PASS 144fps three-point landing stays grounded throughout its recovery
+PASS 144fps long-running mixer starts a fade without a precision jump
+PASS 144fps reversal keeps the current blended rig pose
+PASS Every registered clip and embedded fallback has explicit coverage
+PASS idle: entire timeline at 24fps
+PASS idle: entire timeline at 30fps
+PASS idle: entire timeline at 60fps
+PASS idle: entire timeline at 144fps
+PASS walk: entire timeline at 24fps
+PASS walk: entire timeline at 30fps
+PASS walk: entire timeline at 60fps
+PASS walk: entire timeline at 144fps
+PASS regularRun: entire timeline at 24fps
+PASS regularRun: entire timeline at 30fps
+PASS regularRun: entire timeline at 60fps
+PASS regularRun: entire timeline at 144fps
+PASS run: entire timeline at 24fps
+PASS run: entire timeline at 30fps
+PASS run: entire timeline at 60fps
+PASS run: entire timeline at 144fps
+PASS stop: entire timeline at 24fps
+PASS stop: entire timeline at 30fps
+PASS stop: entire timeline at 60fps
+PASS stop: entire timeline at 144fps
+PASS runStop: entire timeline at 24fps
+PASS runStop: entire timeline at 30fps
+PASS runStop: entire timeline at 60fps
+PASS runStop: entire timeline at 144fps
+PASS zip: entire timeline at 24fps
+PASS zip: entire timeline at 30fps
+PASS zip: entire timeline at 60fps
+PASS zip: entire timeline at 144fps
+PASS turnLeft: entire timeline at 24fps
+PASS turnLeft: entire timeline at 30fps
+PASS turnLeft: entire timeline at 60fps
+PASS turnLeft: entire timeline at 144fps
+PASS turnRight: entire timeline at 24fps
+PASS turnRight: entire timeline at 30fps
+PASS turnRight: entire timeline at 60fps
+PASS turnRight: entire timeline at 144fps
+PASS jump: entire timeline at 24fps
+PASS jump: entire timeline at 30fps
+PASS jump: entire timeline at 60fps
+PASS jump: entire timeline at 144fps
+PASS jumpDown: entire timeline at 24fps
+PASS jumpDown: entire timeline at 30fps
+PASS jumpDown: entire timeline at 60fps
+PASS jumpDown: entire timeline at 144fps
+PASS drop: entire timeline at 24fps
+PASS drop: entire timeline at 30fps
+PASS drop: entire timeline at 60fps
+PASS drop: entire timeline at 144fps
+PASS jumpDownVariant: entire timeline at 24fps
+PASS jumpDownVariant: entire timeline at 30fps
+PASS jumpDownVariant: entire timeline at 60fps
+PASS jumpDownVariant: entire timeline at 144fps
+PASS swing: entire timeline at 24fps
+PASS swing: entire timeline at 30fps
+PASS swing: entire timeline at 60fps
+PASS swing: entire timeline at 144fps
+PASS fall: entire timeline at 24fps
+PASS fall: entire timeline at 30fps
+PASS fall: entire timeline at 60fps
+PASS fall: entire timeline at 144fps
+PASS fallVariant: entire timeline at 24fps
+PASS fallVariant: entire timeline at 30fps
+PASS fallVariant: entire timeline at 60fps
+PASS fallVariant: entire timeline at 144fps
+PASS fallIdle: entire timeline at 24fps
+PASS fallIdle: entire timeline at 30fps
+PASS fallIdle: entire timeline at 60fps
+PASS fallIdle: entire timeline at 144fps
+PASS roll: entire timeline at 24fps
+PASS roll: entire timeline at 30fps
+PASS roll: entire timeline at 60fps
+PASS roll: entire timeline at 144fps
+PASS injuredIdle: entire timeline at 24fps
+PASS injuredIdle: entire timeline at 30fps
+PASS injuredIdle: entire timeline at 60fps
+PASS injuredIdle: entire timeline at 144fps
+PASS wall: entire timeline at 24fps
+PASS wall: entire timeline at 30fps
+PASS wall: entire timeline at 60fps
+PASS wall: entire timeline at 144fps
+PASS land: entire timeline at 24fps
+PASS land: entire timeline at 30fps
+PASS land: entire timeline at 60fps
+PASS land: entire timeline at 144fps
+PASS combatIdle: entire timeline at 24fps
+PASS combatIdle: entire timeline at 30fps
+PASS combatIdle: entire timeline at 60fps
+PASS combatIdle: entire timeline at 144fps
+PASS jab: entire timeline at 24fps
+PASS jab: entire timeline at 30fps
+PASS jab: entire timeline at 60fps
+PASS jab: entire timeline at 144fps
+PASS guard: entire timeline at 24fps
+PASS guard: entire timeline at 30fps
+PASS guard: entire timeline at 60fps
+PASS guard: entire timeline at 144fps
+PASS slam: entire timeline at 24fps
+PASS slam: entire timeline at 30fps
+PASS slam: entire timeline at 60fps
+PASS slam: entire timeline at 144fps
+PASS slamLand: entire timeline at 24fps
+PASS slamLand: entire timeline at 30fps
+PASS slamLand: entire timeline at 60fps
+PASS slamLand: entire timeline at 144fps
+PASS hitHead: entire timeline at 24fps
+PASS hitHead: entire timeline at 30fps
+PASS hitHead: entire timeline at 60fps
+PASS hitHead: entire timeline at 144fps
+PASS rightHook: entire timeline at 24fps
+PASS rightHook: entire timeline at 30fps
+PASS rightHook: entire timeline at 60fps
+PASS rightHook: entire timeline at 144fps
+PASS cross: entire timeline at 24fps
+PASS cross: entire timeline at 30fps
+PASS cross: entire timeline at 60fps
+PASS cross: entire timeline at 144fps
+PASS hook: entire timeline at 24fps
+PASS hook: entire timeline at 30fps
+PASS hook: entire timeline at 60fps
+PASS hook: entire timeline at 144fps
+PASS heavy: entire timeline at 24fps
+PASS heavy: entire timeline at 30fps
+PASS heavy: entire timeline at 60fps
+PASS heavy: entire timeline at 144fps
+PASS airTrick: entire timeline at 24fps
+PASS airTrick: entire timeline at 30fps
+PASS airTrick: entire timeline at 60fps
+PASS airTrick: entire timeline at 144fps
+PASS backTrick: entire timeline at 24fps
+PASS backTrick: entire timeline at 30fps
+PASS backTrick: entire timeline at 60fps
+PASS backTrick: entire timeline at 144fps
+PASS hitBody: entire timeline at 24fps
+PASS hitBody: entire timeline at 30fps
+PASS hitBody: entire timeline at 60fps
+PASS hitBody: entire timeline at 144fps
+PASS hitHeavy: entire timeline at 24fps
+PASS hitHeavy: entire timeline at 30fps
+PASS hitHeavy: entire timeline at 60fps
+PASS hitHeavy: entire timeline at 144fps
+PASS hitUppercut: entire timeline at 24fps
+PASS hitUppercut: entire timeline at 30fps
+PASS hitUppercut: entire timeline at 60fps
+PASS hitUppercut: entire timeline at 144fps
+PASS special: entire timeline at 24fps
+PASS special: entire timeline at 30fps
+PASS special: entire timeline at 60fps
+PASS special: entire timeline at 144fps
+PASS 24fps complete authored front trick, interruption and repeat
+PASS 24fps complete authored back trick, interruption and repeat
+PASS 30fps complete authored front trick, interruption and repeat
+PASS 30fps complete authored back trick, interruption and repeat
+PASS 60fps complete authored front trick, interruption and repeat
+PASS 60fps complete authored back trick, interruption and repeat
+PASS 144fps complete authored front trick, interruption and repeat
+PASS 144fps complete authored back trick, interruption and repeat
+PASS 24fps remote rig plays every combat motion without modifying the source rig
+PASS 24fps remote rig reproduces and completes remaining airborne trick
+PASS 30fps remote rig plays every combat motion without modifying the source rig
+PASS 30fps remote rig reproduces and completes remaining airborne trick
+PASS 60fps remote rig plays every combat motion without modifying the source rig
+PASS 60fps remote rig reproduces and completes remaining airborne trick
+PASS 144fps remote rig plays every combat motion without modifying the source rig
+PASS 144fps remote rig reproduces and completes remaining airborne trick
+PASS 24fps every directed clip pair can reverse mid-blend without a pose snap
+PASS 30fps every directed clip pair can reverse mid-blend without a pose snap
+PASS 60fps every directed clip pair can reverse mid-blend without a pose snap
+PASS 144fps every directed clip pair can reverse mid-blend without a pose snap
+Complete motion review: 185 passed, 0 failed.

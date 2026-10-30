@@ -1,3 +1,5 @@
+import {HongKongPresentation} from './HongKongPresentation.js';
+import {PHOTO_SURFACE_TIME} from './HongKongSurfaceFinish.js';
 import * as THREE from 'three';
 import {streamingBudget} from './StreamingBudget.js';
 import {hongKongRenderingProfile,tuneHongKongTexture,prepareHongKongTile,configureHongKongTiles,configureHongKongFog,nextHongKongError} from './HongKongRendering.js';
@@ -76,6 +78,7 @@ export class UrbanGroundCity {
     this.scene.add(this.root);
 
     this.district=typeof document==='undefined'?null:new HongKongDistrict(scene);
+    this.presentation=this.district?new HongKongPresentation(this):null;
 
     TILESETS.forEach((tileset, index) => this.addTileset(tileset, index));
   }
@@ -193,7 +196,8 @@ export class UrbanGroundCity {
 
   updateStreamingCamera(now = performance.now()) {
     this.streamCamera.copy(this.camera, false);
-    this.streamCamera.far = Math.min(this.camera.far, this.renderingProfile?.streamDistance ?? 750);
+    this.streamCamera.far = Math.min(this.camera.far,(this.renderingProfile?.streamDistance ?? 650)*(this.pressureDistanceFactor??1));
+    this.activeStreamDistance=this.streamCamera.far;
     if(this.renderingProfile)configureHongKongFog(this.scene,this.renderingProfile,this.streamCamera.far);
     this.streamCamera.updateProjectionMatrix();
     this.streamCamera.updateMatrixWorld(true);
@@ -201,6 +205,7 @@ export class UrbanGroundCity {
 
   update() {
     if (this.disposed) return;
+    PHOTO_SURFACE_TIME.value=performance.now()/1000;
     if (!this.isReady && !this.timeoutReported && performance.now() - this.startedAt > 30000) {
       this.timeoutReported = true;
       this.onError?.(new Error('도시 준비가 지연되고 있습니다. 재시도하거나 로컬 도시로 시작하세요.'));
@@ -218,6 +223,9 @@ export class UrbanGroundCity {
     if (performance.now() - (this.lastBudgetCheck || 0) > 2000) {
       this.lastBudgetCheck = performance.now();
       const pressured = this.tileCache.isFull();
+      const refused=this.tilesets.some(t=>t.stats.refused>0);
+      const utilization=this.tileCache.cachedBytes/this.tileCache.maxBytesSize;
+      this.pressureDistanceFactor=pressured&&refused?Math.max(.58,(this.pressureDistanceFactor??1)*.88):utilization<.75?Math.min(1,(this.pressureDistanceFactor??1)+.04):(this.pressureDistanceFactor??1);
       for (const tiles of this.tilesets) {
         const baseline = tiles.userData?.baseErrorTarget ?? 20;
         // A full photographic cache must not blur unrelated structural layers
@@ -232,6 +240,7 @@ export class UrbanGroundCity {
       this.lastMeshRefresh = performance.now();
       this.refreshBuildingMeshes();
     }
+    this.presentation?.update(performance.now()/1000,this.playerPosition);
     this.collisionWorld.setActiveMeshes(this.buildingMeshes);
     this.collisionWorld.update(this.playerPosition, this.isReady
       ? undefined : { budgetMs: 8, maxIndices: 24000 });
@@ -298,7 +307,7 @@ export class UrbanGroundCity {
       startSurfaces.meshes++;
       startSurfaces.triangles+=(mesh.geometry.index?.count??mesh.geometry.attributes.position.count)/3;
     }
-    return {district:{...this.district?.report},startSurfaces,layers,cacheBytes:this.tileCache.cachedBytes,budget:this.streamingBudget,textureFailures:this.textureDiagnostics,decodedRGBTextures:this.decodedRGBTextures||0};
+    return {presentation:{...this.presentation?.report},activeStreamDistance:this.activeStreamDistance,district:{...this.district?.report},startSurfaces,layers,cacheBytes:this.tileCache.cachedBytes,budget:this.streamingBudget,textureFailures:this.textureDiagnostics,decodedRGBTextures:this.decodedRGBTextures||0};
   }
 
   surveySurfaces() {
@@ -344,6 +353,7 @@ export class UrbanGroundCity {
     this.tilePreparation.dispose();
     for (const tiles of this.tilesets) tiles.dispose();
     this.ktxLoader.dispose();
+    this.presentation?.dispose();
     this.district?.dispose();
     this.collisionWorld.dispose();
     this.scene.remove(this.root);

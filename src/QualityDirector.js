@@ -1,3 +1,4 @@
+import {collectHongKongRenderAudit} from './HongKongRenderAudit.js';
 // Local development probe. Production builds never attach this module:
 // main.js imports it only when import.meta.env.DEV, the host is loopback,
 // and the page was opened with ?qualityDirector=1.
@@ -45,6 +46,8 @@ class QualityDirector {
       playing: () => !!(app.isPlaying && !app.isPaused),
       pointerLocked: () => document.pointerLockElement === app.canvas,
       snapshot: () => this.snapshot(0),
+      weather: epoch => {if(app.weather){app.weather.overrideEpoch=epoch??undefined;app.weather.update(0,app.physics.position);}return app.weather?.state;},
+      stance:()=>({active:app.character.combatStance,action:app.character.combatAction,health:app.combat.health,evading:app.combat.isEvading()}),
       errors: () => this.errors.slice(),
       audioCounts: () => ({ ...this.audioCounts }),
       vfxCounts: () => ({ ...this.vfxCounts }),
@@ -97,6 +100,37 @@ class QualityDirector {
       spikes: () => this.spikes.slice(),
       diagnostics: () => this.diagnostics(),
       citySurvey: () => app.city?.surveySurfaces?.()||[],
+      renderIntegrity:()=>collectHongKongRenderAudit(app),
+      renderAuditRegion:(x,z,detail=false)=>{
+        if(!this.auditRegionSaved){
+          this.auditRegionSaved={fog:app.scene.fog,far:app.camera.far,update:app.city.updateStreamingCamera,targets:app.city.tilesets.map(t=>({target:t.errorTarget,base:t.userData.baseErrorTarget}))};
+          const director=this;
+          app.city.updateStreamingCamera=function(...args){director.auditRegionSaved.update.apply(this,args);if(director.auditCamera?.far){this.streamCamera.far=director.auditCamera.far;this.streamCamera.updateProjectionMatrix();}};
+        }
+        const meshes=[];app.city.root.traverseVisible(m=>{if(m.isMesh)meshes.push(m);});
+        let height=null;const samples=[];
+        for(const dx of [-150,0,150])for(const dz of [-150,0,150]){
+          const hits=new THREE.Raycaster(new THREE.Vector3(x+dx,2000,z+dz),new THREE.Vector3(0,-1,0),0,2400).intersectObjects(meshes,false);
+          if(hits[0])samples.push(hits[0].point.y);
+        }
+        if(samples.length)height=Math.max(...samples);
+        const y=detail&&height!==null?height+170:1100;
+        app.scene.fog=null;
+        this.auditCamera={position:new THREE.Vector3(x,y,z+130),target:new THREE.Vector3(x,detail&&height!==null?height:0,z-100),far:detail?1300:2600};
+        for(const t of app.city.tilesets){t.errorTarget=detail?20:64;t.userData.baseErrorTarget=detail?20:64;}
+        return {x,z,height,samples,position:this.auditCamera.position.toArray(),target:this.auditCamera.target.toArray(),detail};
+      },
+      finishRenderAudit:()=>{
+        const saved=this.auditRegionSaved;if(saved){app.city.updateStreamingCamera=saved.update;app.scene.fog=saved.fog;app.camera.far=saved.far;app.camera.updateProjectionMatrix();app.city.tilesets.forEach((t,i)=>{t.errorTarget=saved.targets[i].target;t.userData.baseErrorTarget=saved.targets[i].base;});}
+        this.auditCamera=null;this.auditRegionSaved=null;
+      },
+
+      renderAuditCamera:(position,target)=>{
+        if(!position){this.auditCamera=null;return null;}
+        if(![...position,...target].every(Number.isFinite))throw new Error('Invalid audit camera');
+        this.auditCamera={position:new THREE.Vector3(...position),target:new THREE.Vector3(...target)};
+        return {position,target};
+      },
       soleReview: () => {
         const c=app.character,p=app.physics,feet={};c.group.updateMatrixWorld(true);
         for(const side of ['left','right']){
@@ -534,7 +568,10 @@ class QualityDirector {
     return this.latest;
   }
 
-  sample(delta) { this.snapshot(delta); }
+  sample(delta) {
+    if(this.auditCamera){if(this.auditCamera.far){this.app.camera.far=this.auditCamera.far;this.app.camera.updateProjectionMatrix();}this.app.camera.position.copy(this.auditCamera.position);this.app.camera.lookAt(this.auditCamera.target);this.app.camera.updateMatrixWorld(true);}
+    this.snapshot(delta);
+  }
 
   // Settles the same yaw and pitch the mouse-look path writes, then accepts
   // only an anchor findBestAnchor would accept. A single smoothing step can

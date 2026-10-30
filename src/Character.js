@@ -11,7 +11,7 @@ import { retargetMotion, prepareMotion, boneId } from './MotionRetarget.js';
 import { MOTIONS, STRIDES, GROUNDED } from './MotionCatalog.js';
 import { fetchAsset, forEachConcurrent } from './AssetLoader.js';
 import { clone as cloneSkeleton } from 'three/addons/utils/SkeletonUtils.js';
-import { plantMovingFeet, poseWall, poseZipLegs, poseMantle, adaptPelvisToTerrain, footSupport, soleRotation, clearGroundSoles, fitGroundAnkle, alignCombatWrists, alignCombatGaze, alignStrikeFootwork, poseCombatLife, settleStrikeBalance, heavyClipPhase, leadAirborneKnees, settleHeldStance, reuseHeldGroundPose, cacheGroundPose, clearImpactBody, prepareImpactBody } from './CharacterPose.js';
+import { poseDodgeFeet, plantMovingFeet, poseWall, poseZipLegs, poseMantle, adaptPelvisToTerrain, footSupport, soleRotation, clearGroundSoles, fitGroundAnkle, alignCombatWrists, alignCombatGaze, alignStrikeFootwork, poseCombatLife, settleStrikeBalance, heavyClipPhase, leadAirborneKnees, settleHeldStance, reuseHeldGroundPose, cacheGroundPose, clearImpactBody, prepareImpactBody } from './CharacterPose.js';
 import {createHandPoseRig,restoreHandPose,updateWebHandPose} from './WebHandPose.js';
 
 export class Character {
@@ -378,6 +378,7 @@ export class Character {
   }
 
   stopAnimation() {
+    this.dodgeFootState=null;this.guardChestOffset=null;
     this.rememberRestPose();
     // Mixer.stopAllAction restores clip bindings, but procedural IK, body
     // tilt and contact filters live outside the mixer. A respawn must not
@@ -654,20 +655,20 @@ export class Character {
     const legsMoving=['RUNNING','SPRINTING'].includes(state) || horizontalSpeed>.25;
     const combatMoving=combatGround && legsMoving;
     const gait=['RUNNING','SPRINTING'].includes(state);
-    const strikeKey=!!(combat?.duration && ['jab','cross','hook','heavy','special'].includes(combat.key));
+    const strikeKey=!!(combat?.duration && ['jab','cross','rightHook','hook','heavy','special'].includes(combat.key));
     const reactKey=!!(combat && (combat.key?.startsWith('dodge') || combat.key==='hit' || combat.key==='hitHead' || combat.key==='hitBody' || combat.key==='hitHeavy' || combat.key==='hitUppercut'));
     // A traveling punch keeps a stride carrier underneath the attack legs.
     // Replacing it with the in-place boxing take nailed the flight foot down
     // and left the pelvis ahead of both boots. A standing punch still owns
     // the whole clip. The choice is latched for the action so a slowing
     // recovery does not swap bodies halfway through the fist.
-    if(strikeKey && combat.id!=null){
+    if(strikeKey && combat.key!=='special' && combat.id!=null){
       if(this.strikeTravelId!==combat.id){
         this.strikeTravelId=combat.id;
         this.strikeKeepsGait=!!(combat.travel) || (rollRecovering && gait) || (gait && horizontalSpeed>0.9);
       }
-    }else if(!strikeKey){this.strikeTravelId=null;this.strikeKeepsGait=false;}
-    if(strikeKey && (combat.travel || (gait && horizontalSpeed>.9)))this.strikeKeepsGait=true;
+    }else if(!strikeKey || combat.key==='special'){this.strikeTravelId=null;this.strikeKeepsGait=false;}
+    if(strikeKey && combat.key!=='special' && (combat.travel || (gait && horizontalSpeed>.9)))this.strikeKeepsGait=true;
     const movingStrike=!!(strikeKey && combat.key!=='special' && ['IDLE','RUNNING','SPRINTING'].includes(state) && this.strikeKeepsGait);
     const movingGuard=combatMoving && combat?.key==='guard';
     const dodgeKey=!!combat?.key?.startsWith('dodge');
@@ -825,7 +826,10 @@ export class Character {
         const token=upperAction?combat.id || combat.key:movingGuard?'movingGuard':'guard';
         if(this.movingStrikeToken!==token){
           this.movingStrikeToken=token;this.movingStrikeBlend=0;
-          this.movingStrikeFrom=this.movingStrikePose;
+          // A first moving strike has no prior combat layer. Enter from
+          // the carrier stride instead of immediately rebasing every joint
+          // onto the fighting pelvis, which can pop the wrist at high FPS.
+          this.movingStrikeFrom=this.movingStrikePose || new Map(layers.map(({bone})=>[bone,bone.quaternion.clone()]));
         }
         const entryDuration=combat?.duration?Math.min(.08,combat.duration*.1):.12;
         this.movingStrikeBlend=Math.min(entryDuration,(this.movingStrikeBlend || 0)+delta);
@@ -894,7 +898,11 @@ export class Character {
     this.model.rotation.set(this.bodyPitch + this.trickRotation, this.visualYaw, 0, 'YXZ');
     this.group.updateMatrixWorld(true);
     alignStrikeFootwork(this, delta, !!(combatGround && combatMoving && this.combatStance && (!combat?.duration || strikeKey) && horizontalSpeed>0.35), this.strikeMoveOffset || 0, combat);
-    poseCombatLife(this, combat);
+    poseCombatLife(this, combat, !!movingStrike);
+    if(combatGround && this.combatStance && !strikeKey && !reactKey){
+      const left=Object.values(this.bones).find(b=>boneId(b.name)==='leftshoulder'),right=Object.values(this.bones).find(b=>boneId(b.name)==='rightshoulder');
+      if(left&&right){const across=right.getWorldPosition(new THREE.Vector3()).sub(left.getWorldPosition(new THREE.Vector3())),chest=new THREE.Vector3().crossVectors(new THREE.Vector3(0,1,0),across);const yaw=Math.atan2(chest.x,chest.z)-(this.visualYaw||0);this.guardChestOffset=Math.atan2(Math.sin(yaw),Math.cos(yaw));}
+    }
     if(strikeKey && grounded)settleStrikeBalance(this, combat, !!movingStrike);
     if(!combatGround)this.combatGazeWeight=0;
     alignCombatGaze(this,delta,combatGround&&(this.combatStance||combat?.key==='guard')&&(!combat||['combatIdle','guard'].includes(combat.key)||combat.key.startsWith('dodge')));
@@ -983,8 +991,10 @@ export class Character {
       if(!heldGround){this.idlePlantDelay=0;this.idleFootAnchors=null;}
     }
     if(groundContacts){if(!heldGround)plantMovingFeet(this,delta);}
-    if(groundContacts)settleHeldStance(this,delta);
-    else {this.movingPlants=null;this.movingReleases=null;this.plantLastFeet=null;this.plantVelocityRoot=null;this.groundFootRotations=null;this.groundSoleTargets=null;this.groundSoleSettling=null;}
+    if(groundContacts){
+      settleHeldStance(this,delta);
+      if(!lowPose)poseDodgeFeet(this,combat,delta);else this.dodgeFootState=null;
+    }else {this.dodgeFootState=null;this.movingPlants=null;this.movingReleases=null;this.plantLastFeet=null;this.plantVelocityRoot=null;this.groundFootRotations=null;this.groundSoleTargets=null;this.groundSoleSettling=null;}
     if(state==='WEB_ZIP') poseZipLegs(this,delta);
     else this.zipPoseWeight=0;
     const firingAnchor = this.webShotTimer > 0 ? this.webShotAnchor : null;

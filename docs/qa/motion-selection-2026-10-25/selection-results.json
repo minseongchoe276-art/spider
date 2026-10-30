@@ -1,6 +1,6 @@
 {
   "motions": 37,
-  "cases": 154,
+  "cases": 158,
   "results": [
     {
       "fps": 24,
@@ -136,6 +136,12 @@
     {
       "fps": 24,
       "state": "IDLE",
+      "combat": "rightHook",
+      "selected": "rightHook"
+    },
+    {
+      "fps": 24,
+      "state": "IDLE",
       "combat": "hook",
       "selected": "hook"
     },
@@ -339,6 +345,12 @@
     {
       "fps": 30,
       "state": "IDLE",
+      "combat": "rightHook",
+      "selected": "rightHook"
+    },
+    {
+      "fps": 30,
+      "state": "IDLE",
       "combat": "hook",
       "selected": "hook"
     },
@@ -542,6 +554,12 @@
     {
       "fps": 60,
       "state": "IDLE",
+      "combat": "rightHook",
+      "selected": "rightHook"
+    },
+    {
+      "fps": 60,
+      "state": "IDLE",
       "combat": "hook",
       "selected": "hook"
     },
@@ -741,6 +759,12 @@
       "state": "IDLE",
       "combat": "cross",
       "selected": "cross"
+    },
+    {
+      "fps": 144,
+      "state": "IDLE",
+      "combat": "rightHook",
+      "selected": "rightHook"
     },
     {
       "fps": 144,
@@ -833,18 +857,18 @@
     {
       "preview": "cross",
       "key": "cross",
-      "fraction": 0.54,
+      "fraction": 0.57,
       "state": "IDLE",
       "active": "cross",
-      "clipPhase": 0.54
+      "clipPhase": 0.57
     },
     {
       "preview": "rightHook",
       "key": "rightHook",
-      "fraction": 0.58,
+      "fraction": 0.43,
       "state": "IDLE",
       "active": "rightHook",
-      "clipPhase": 0.58
+      "clipPhase": 0.43
     },
     {
       "preview": "hook",

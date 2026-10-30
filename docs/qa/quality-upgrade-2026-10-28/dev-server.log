@@ -1,0 +1,153 @@
+
+> shadow-pulse@1.0.0 predev
+> node scripts/build-motions.mjs
+
+PASS: compiled motions match current model and FBX sources
+
+> shadow-pulse@1.0.0 dev
+> vite --host 127.0.0.1 --port 5192 --strictPort
+
+
+  VITE v7.3.7  ready in 6524 ms
+
+  ➜  Local:   http://127.0.0.1:5192/
+3:43:52 PM [vite] src/VehicleController.js changed, restarting server...
+3:43:59 PM [vite] server restarted.
+3:46:04 PM [vite] src/CharacterPose.js changed, restarting server...
+3:46:04 PM [vite] src/Character.js changed, restarting server...
+3:46:12 PM [vite] server restarted.
+3:48:30 PM [vite] src/City.js changed, restarting server...
+3:48:30 PM [vite] (client) page reload src/main.js
+3:48:30 PM [vite] (client) page reload src/SoloJourney.js
+3:48:37 PM [vite] server restarted.
+3:48:44 PM [vite] (client) page reload src/VehicleSystem.js
+3:51:15 PM [vite] (client) page reload src/Multiplayer.js
+3:51:15 PM [vite] (client) page reload src/locales/en.js
+3:51:15 PM [vite] (client) page reload src/SoloJourney.js
+3:51:55 PM [vite] (client) page reload src/VehicleSystem.js
+3:52:31 PM [vite] (client) page reload index.html
+3:52:31 PM [vite] (client) page reload src/SettingsPanel.js
+3:52:31 PM [vite] (client) page reload src/TouchControls.js
+3:52:31 PM [vite] (client) page reload src/main.js
+3:52:31 PM [vite] (client) page reload src/locales/en.js
+3:53:01 PM [vite] (client) page reload src/locales/en.js
+3:53:01 PM [vite] (client) page reload src/SoloJourney.js
+10:27:45 PM [vite] vite.config.js changed, restarting server...
+10:27:45 PM [vite] (client) page reload src/Combat.js
+10:27:51 PM [vite] server restarted.
+10:35:53 PM [vite] (client) page reload src/QualityDirector.js
+10:38:07 PM [vite] (client) page reload src/Audio.js
+10:38:07 PM [vite] (client) page reload src/PlayerExperience.js
+10:38:07 PM [vite] (client) page reload src/Combat.js
+10:40:43 PM [vite] (client) page reload src/CityFacades.js
+10:40:43 PM [vite] (client) page reload src/UrbanGroundCity.js
+10:40:43 PM [vite] (client) page reload src/QualityDirector.js
+10:42:16 PM [vite] (client) page reload src/CityFacades.js
+10:42:16 PM [vite] (client) page reload src/TrainingOpponent.js
+10:48:55 PM [vite] src/CharacterPose.js changed, restarting server...
+10:48:55 PM [vite] src/Character.js changed, restarting server...
+10:48:59 PM [vite] server restarted.
+10:49:45 PM [vite] src/Character.js changed, restarting server...
+10:49:52 PM [vite] server restarted.
+10:55:12 PM [vite] src/CharacterPose.js changed, restarting server...
+10:55:17 PM [vite] server restarted.
+10:55:51 PM [vite] src/VehicleAsset.js changed, restarting server...
+10:55:56 PM [vite] server restarted.
+10:56:42 PM [vite] (client) ✨ new dependencies optimized: three/addons/utils/BufferGeometryUtils.js
+10:56:42 PM [vite] (client) ✨ optimized dependencies changed. reloading
+10:56:47 PM [vite] src/VehicleAsset.js changed, restarting server...
+10:56:53 PM [vite] server restarted.
+10:57:24 PM [vite] src/VehicleRender.js changed, restarting server...
+10:57:28 PM [vite] server restarted.
+
+> shadow-pulse@1.0.0 predev
+> node scripts/build-motions.mjs
+
+PASS: compiled motions match current model and FBX sources
+
+> shadow-pulse@1.0.0 dev
+> vite --host 127.0.0.1 --port 5192 --strictPort
+
+
+  VITE v7.3.7  ready in 3121 ms
+
+  ➜  Local:   http://127.0.0.1:5192/
+11:02:30 PM [vite] src/Character.js changed, restarting server...
+✘ [ERROR] Unexpected "else"
+
+    src/Character.js:989:4:
+      989 │     else {this.movingPlants=null;this.movingReleases=null;this.pl...
+          ╵     ~~~~
+
+failed to load config from /Users/choeminseong/Desktop/게임/vite.config.js
+11:02:32 PM [vite] Build failed with 1 error:
+src/Character.js:989:4: ERROR: Unexpected "else"
+11:02:32 PM [vite] server restart failed
+11:04:51 PM [vite] src/Character.js changed, restarting server...
+11:04:55 PM [vite] server restarted.
+11:08:23 PM [vite] src/Character.js changed, restarting server...
+11:08:23 PM [vite] src/CharacterPose.js changed, restarting server...
+11:08:26 PM [vite] server restarted.
+11:19:52 PM [vite] (client) page reload src/Multiplayer.js
+11:23:33 PM [vite] (client) page reload src/SoloJourney.js
+
+> shadow-pulse@1.0.0 predev
+> node scripts/build-motions.mjs
+
+PASS: compiled motions match current model and FBX sources
+
+> shadow-pulse@1.0.0 dev
+> vite --host 127.0.0.1 --port 5192 --strictPort
+
+
+  VITE v7.3.7  ready in 2469 ms
+
+  ➜  Local:   http://127.0.0.1:5192/
+8:20:44 AM [vite] (client) page reload src/QualityDirector.js
+8:20:44 AM [vite] (client) page reload src/UrbanGroundCity.js
+8:24:15 AM [vite] (client) page reload src/UrbanGroundCity.js
+8:51:31 AM [vite] (client) page reload src/CityFacades.js
+8:51:31 AM [vite] (client) page reload src/HongKongRendering.js
+8:51:31 AM [vite] (client) page reload src/UrbanGroundCity.js
+8:51:31 AM [vite] (client) page reload src/main.js
+8:52:21 AM [vite] (client) page reload src/HongKongRendering.js
+8:52:22 AM [vite] (client) page reload src/UrbanGroundCity.js
+8:57:10 AM [vite] (client) page reload src/HongKongRendering.js
+8:57:10 AM [vite] (client) page reload src/main.js
+8:57:10 AM [vite] (client) page reload src/UrbanGroundCity.js
+8:58:05 AM [vite] (client) page reload src/UrbanGroundCity.js
+8:58:05 AM [vite] (client) page reload src/QualityDirector.js
+9:00:07 AM [vite] (client) page reload src/HongKongRendering.js
+9:00:07 AM [vite] (client) page reload src/UrbanGroundCity.js
+9:02:01 AM [vite] (client) page reload src/HongKongRendering.js
+9:02:01 AM [vite] (client) page reload src/UrbanGroundCity.js
+9:05:10 AM [vite] (client) page reload docs/qa/hong-kong-polish-2026-10-29/comparison.html
+9:55:10 AM [vite] (client) page reload src/QualityDirector.js
+9:58:06 AM [vite] (client) page reload src/QualityDirector.js
+10:03:18 AM [vite] (client) page reload src/UrbanGroundCity.js
+10:04:05 AM [vite] (client) page reload src/UrbanGroundCity.js
+10:04:32 AM [vite] (client) page reload src/UrbanGroundCity.js
+10:05:19 AM [vite] (client) page reload src/HongKongDistrictGeometry.js
+10:06:01 AM [vite] (client) page reload src/HongKongStartDistrict.js
+10:06:44 AM [vite] (client) page reload src/HongKongStartDistrict.js
+10:10:25 AM [vite] (client) page reload src/HongKongStartDistrict.js
+10:10:26 AM [vite] (client) page reload src/UrbanGroundCity.js
+10:13:34 AM [vite] (client) page reload docs/qa/hong-kong-start-upgrade-2026-10-29/comparison.html
+10:13:49 AM [vite] (client) page reload src/HongKongDistrict.js
+10:17:12 AM [vite] (client) page reload src/QualityDirector.js
+10:17:12 AM [vite] (client) page reload src/HongKongDistrict.js
+10:17:12 AM [vite] (client) page reload src/UrbanGroundCity.js
+10:21:37 AM [vite] (client) page reload src/HongKongDistrict.js
+10:21:37 AM [vite] (client) page reload src/UrbanGroundCity.js
+10:25:41 AM [vite] (client) page reload src/HongKongDistrict.js
+10:25:41 AM [vite] (client) page reload src/QualityDirector.js
+10:31:21 AM [vite] (client) page reload src/HongKongDistrict.js
+10:31:21 AM [vite] (client) page reload src/QualityDirector.js
+10:36:26 AM [vite] (client) page reload src/QualityDirector.js
+10:36:26 AM [vite] (client) page reload src/HongKongDistrict.js
+10:39:55 AM [vite] (client) page reload src/QualityDirector.js
+10:42:27 AM [vite] (client) page reload src/HongKongDistrict.js
+10:46:10 AM [vite] (client) page reload src/QualityDirector.js
+10:49:40 AM [vite] (client) page reload src/UrbanGroundCity.js
+10:53:16 AM [vite] (client) page reload src/HongKongDistrict.js
+10:53:16 AM [vite] (client) page reload src/main.js

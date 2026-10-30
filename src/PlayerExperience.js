@@ -74,6 +74,8 @@ export class PlayerExperience {
     const g=this.game,p=g.physics,s=g.preferences.values.settings,active=g.isPlaying&&!g.isPaused&&!g.multiplayer?.spectating&&!g.gameplaySuspended&&!g.contextLost&&!document.hidden;
     if(this.diagnosticsActive!==active){this.diagnostics?.record(active?'resume':'pause');this.diagnosticsActive=active;}
     if(active){this.study?.tick(elapsed);this.diagnostics?.sample(elapsed,g);}
+    if(active)g.audio.updateListener?.(g.camera);
+    g.audio.updateSceneAudio?.({active,driving:g.vehicle?.state==='DRIVING',speed:g.vehicle?.controller?.speed||0,height:p.position.y,braking:g.vehicle?.brakeHeld});
     this.journey?.update(delta);
     const ceiling={low:1,balanced:1.5,high:2}[g.preferences.values.quality];
     // Menus and hidden tabs are not gameplay performance samples. Preserve
@@ -103,8 +105,8 @@ export class PlayerExperience {
       attr.needsUpdate=true;this.trajectory.computeLineDistances();}
     const grounded=GROUNDED.includes(p.state),mode=grounded&&g.combat.mode==='combat';
     document.body.classList.toggle('hud-combat',mode);document.body.classList.toggle('hud-quiet',!mode);
-    if(grounded&&p.velocity.length()>1){this.stepTime=(this.stepTime||0)+delta;if(this.stepTime>(p.velocity.length()>5?.27:.4)){this.stepTime=0;g.audio.playSurfaceStep?.(p.position.y>8?'roof':'street',.35);}}
-    g.audio.updateMusic?.(delta,!!g.multiplayer?.room);
+    if(!g.vehicle?.driving&&grounded&&p.velocity.length()>1){this.stepTime=(this.stepTime||0)+delta;if(this.stepTime>(p.velocity.length()>5?.27:.4)){this.stepTime=0;g.audio.playSurfaceStep?.(p.position.y>8?'roof':'street',.35);}}
+    g.audio.updateMusic?.(delta,!!g.multiplayer?.room||!!g.practice?.active||p.state==='SWINGING');
   }
   previewAnchor(){const g=this.game,p=g.physics,marker=document.getElementById('anchor-preview'),hands=document.getElementById('hand-status');
     const inCombat=g.combat.mode==='combat';

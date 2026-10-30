@@ -1,0 +1,12 @@
+file:///Users/choeminseong/Desktop/%E1%84%80%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%B7/src/Character.js:989
+    else {this.movingPlants=null;this.movingReleases=null;this.plantLastFeet=null;this.plantVelocityRoot=null;this.groundFootRotations=null;this.groundSoleTargets=null;this.groundSoleSettling=null;}
+    ^^^^
+
+SyntaxError: Unexpected token 'else'
+    at compileSourceTextModule (node:internal/modules/esm/utils:346:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:107:18)
+    at #translate (node:internal/modules/esm/loader:540:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:587:27)
+    at async ModuleJob._link (node:internal/modules/esm/module_job:162:19)
+
+Node.js v22.19.0

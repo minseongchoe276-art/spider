@@ -1,17 +1,31 @@
 {
-  "passed": 25,
-  "failed": 1,
+  "passed": 26,
+  "failed": 0,
   "results": [
     {
       "name": "Requested motions are absent from catalog, generated assets and loaded actors",
-      "status": "FAIL",
-      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ '/models/Punching.fbx'\n- '/models/Lead Jab (3).fbx'\n           ^\n"
+      "status": "PASS",
+      "detail": {
+        "removed": [
+          "hit",
+          "dodgeBack",
+          "dodgeLeft",
+          "dodgeRight",
+          "dodgeForward",
+          "femaleStop",
+          "jog"
+        ],
+        "retainedAirTricks": [
+          "front",
+          "back"
+        ]
+      }
     },
     {
       "name": "Every retained compiled motion respects ankle, wrist and toe limits between keyframes",
       "status": "PASS",
       "detail": {
-        "frames": 3746,
+        "frames": 3787,
         "maxDegrees": {
           "foot": 18.000036656104236,
           "toebase": 5.00012913211294,
@@ -99,7 +113,7 @@
       "detail": {
         "frames": 435,
         "maxDegrees": {
-          "foot": 18.00000000000013,
+          "foot": 17.999999999999968,
           "toebase": 5.000000000000781,
           "hand": 12.000000000000174
         }

@@ -6,6 +6,15 @@ import {loadMotionRig,point,joint,disposeRig} from './lib/motion-rig.mjs';
 import {SwingPhysics} from '../src/SwingPhysics.js';
 import {sanitizePose,capturePose} from '../src/RemoteMotion.js';
 import {BINDINGS,cleanSettings,canonicalKey} from '../src/PlayerSettings.js';
+assert.equal(BINDINGS.crouch,undefined);assert.equal(BINDINGS.recenter,'KeyZ');
+const saved=cleanSettings({bindings:{...BINDINGS,recenter:'KeyC',crouch:undefined}});
+const legacyBindings={...BINDINGS,forward:'KeyI',recenter:'KeyC'};delete legacyBindings.crouch;
+const migrated=cleanSettings({bindings:legacyBindings});
+assert.equal(migrated.bindings.forward,'KeyI','Stance upgrade erased an unrelated saved remap');
+assert.equal(migrated.bindings.crouch,undefined);assert.equal(migrated.bindings.recenter,'KeyC');
+assert.equal(canonicalKey('KeyC',saved),'KeyZ');assert.equal(canonicalKey('KeyZ',saved),null);
+for(const state of ['FALLING','SWINGING','ROLLING'])assert.equal(sanitizePose({state,velocity:{x:0,y:0,z:0},lowStance:'crouch'}).lowStance,null);
+assert.equal(sanitizePose({state:'IDLE',velocity:{x:0,y:0,z:0},lowStance:'invalid'}).lowStance,null);
 const rig=await loadMotionRig(),results=[];
 const raw=fs.readFileSync('public/models/appearance-web.glb'),length=raw.readUInt32LE(12),json=JSON.parse(raw.subarray(20,20+length));
 json.buffers[0].uri='data:application/octet-stream;base64,'+raw.subarray(28+length).toString('base64');
@@ -81,19 +90,11 @@ for(const fps of [24,60,144])for(const key of ['jab','cross','hook','heavy','spe
    a.combatAction={id:1,key,time:i*dt,duration:.8};a.update(dt,'RUNNING',v);b.update(dt,'RUNNING',v);
    maxFootDeviation=Math.max(maxFootDeviation,...['leftfoot','rightfoot'].map(id=>point(a,id).distanceTo(point(b,id))));
   }
-  assert(maxFootDeviation<.08,`${key}: in-place attack moved the carrier feet ${maxFootDeviation}m`);
+  if(key==='special')assert.equal(a.activeAction,a.actions.special,'The authored full-body uppercut must own its dash');
+  else assert(maxFootDeviation<.08,`${key}: in-place attack moved the carrier feet ${maxFootDeviation}m`);
   results.push({fps,key,maxFootDeviation});
  }finally{disposeRig(a);disposeRig(b);}
 }
-assert.equal(BINDINGS.crouch,undefined);assert.equal(BINDINGS.recenter,'KeyX');
-const saved=cleanSettings({bindings:{...BINDINGS,recenter:'KeyC',crouch:undefined}});
-const legacyBindings={...BINDINGS,forward:'KeyI',recenter:'KeyC'};delete legacyBindings.crouch;
-const migrated=cleanSettings({bindings:legacyBindings});
-assert.equal(migrated.bindings.forward,'KeyI','Stance upgrade erased an unrelated saved remap');
-assert.equal(migrated.bindings.crouch,undefined);assert.equal(migrated.bindings.recenter,'KeyC');
-assert.equal(canonicalKey('KeyC',saved),'KeyX');assert.equal(canonicalKey('KeyX',saved),null);
-for(const state of ['FALLING','SWINGING','ROLLING'])assert.equal(sanitizePose({state,velocity:{x:0,y:0,z:0},lowStance:'crouch'}).lowStance,null);
-assert.equal(sanitizePose({state:'IDLE',velocity:{x:0,y:0,z:0},lowStance:'invalid'}).lowStance,null);
 fs.mkdirSync('docs/qa/stance-combat-2026-10-26',{recursive:true});
 fs.writeFileSync('docs/qa/stance-combat-2026-10-26/results.json',JSON.stringify(results,null,2)+'\n');
 console.log(`PASS ${results.length} rig cases: attack legs, crouch, input, sprint limits, jumps, interruptions, reset, network validation at 24/60/144 FPS`);

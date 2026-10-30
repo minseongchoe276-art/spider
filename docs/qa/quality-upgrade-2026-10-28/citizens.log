@@ -1,0 +1,11 @@
+┌─────────┬──────────┬──────────────────────────────────────────────────────────┬─────┬────────────┬──────┬──────────────────────┬────────────────────┬──────────┐
+│ (index) │ asset    │ rig                                                      │ fps │ population │ pool │ cpuP50               │ cpuP95             │ recycled │
+├─────────┼──────────┼──────────────────────────────────────────────────────────┼─────┼────────────┼──────┼──────────────────────┼────────────────────┼──────────┤
+│ 0       │ 'remy'   │ '11 clips, unique bones, deformed gait/body bounds pass' │     │            │      │                      │                    │          │
+│ 1       │ 'megan'  │ '11 clips, unique bones, deformed gait/body bounds pass' │     │            │      │                      │                    │          │
+│ 2       │ 'louise' │ '11 clips, unique bones, deformed gait/body bounds pass' │     │            │      │                      │                    │          │
+│ 3       │          │                                                          │ 24  │ 10         │ 10   │ 0.22245799999996052  │ 1.6454589999998461 │ 10       │
+│ 4       │          │                                                          │ 60  │ 10         │ 10   │ 0.07345800000030067  │ 0.8302920000000995 │ 10       │
+│ 5       │          │                                                          │ 144 │ 10         │ 10   │ 0.029791999999815744 │ 0.4542500000002292 │ 10       │
+└─────────┴──────────┴──────────────────────────────────────────────────────────┴─────┴────────────┴──────┴──────────────────────┴────────────────────┴──────────┘
+PASS citizens: 3 textured-source rigs / 11 motions, 10-person cap, hits->startle->flee, one hit per action, no rewards, walls/ground, pause, offscreen spawn, missing terrain, pool reuse and CPU measurements at 24/60/144 FPS

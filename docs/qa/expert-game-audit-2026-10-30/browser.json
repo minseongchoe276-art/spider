@@ -1,0 +1,34 @@
+{
+  "scope": "Local procedural city; real keyboard/menu input. No live online or physical mobile-device validation.",
+  "results": [
+    {
+      "name": "Fresh solo tutorial respects wire toggle and names its progress meter",
+      "pass": true
+    },
+    {
+      "name": "Live W movement after pause and resume",
+      "pass": true
+    },
+    {
+      "name": "Rooftop mission begins with destination 1 of 3",
+      "pass": true
+    },
+    {
+      "name": "390px viewport keeps a readable objective without notice overlap or horizontal overflow",
+      "pass": true
+    },
+    {
+      "name": "Three supported arrival fixtures complete the real mission and save a personal result",
+      "pass": true
+    },
+    {
+      "name": "Real W and left mouse perform a moving jab without stopping travel",
+      "pass": true
+    },
+    {
+      "name": "Emulated touch device starts solo play and renders its touch HUD at 390px",
+      "pass": true
+    }
+  ],
+  "errors": []
+}

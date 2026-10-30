@@ -1,7 +1,8 @@
 [
   {
     "case": "imported dashing uppercut and retained hook",
-    "hookElbowDegrees": 87.95336346828356,
+    "maxHookStep": 0.05925846939614483,
+    "maxHookReach": 0.689602094338256,
     "pass": true
   },
   {
@@ -9,7 +10,7 @@
     "key": "jab",
     "sprint": false,
     "travel": 3.299941968579775,
-    "maxHandStep": 0.11989045855401217,
+    "maxHandStep": 0.34507065150601435,
     "pass": true
   },
   {
@@ -17,23 +18,39 @@
     "key": "jab",
     "sprint": true,
     "travel": 4.874914271765563,
-    "maxHandStep": 0.10237609190572339,
+    "maxHandStep": 0.18266126570364766,
     "pass": true
   },
   {
     "fps": 24,
     "key": "cross",
     "sprint": false,
-    "travel": 3.6666085993528794,
-    "maxHandStep": 0.21940885643535699,
+    "travel": 2.3832756774804063,
+    "maxHandStep": 0.3652072334347788,
     "pass": true
   },
   {
     "fps": 24,
     "key": "cross",
     "sprint": true,
-    "travel": 5.416580885407647,
-    "maxHandStep": 0.1840646531832984,
+    "travel": 3.5207481599142287,
+    "maxHandStep": 0.32877529719825316,
+    "pass": true
+  },
+  {
+    "fps": 24,
+    "key": "rightHook",
+    "sprint": false,
+    "travel": 2.5666088720969027,
+    "maxHandStep": 0.4061539675625792,
+    "pass": true
+  },
+  {
+    "fps": 24,
+    "key": "rightHook",
+    "sprint": true,
+    "travel": 3.7915812883249593,
+    "maxHandStep": 0.3813804139424822,
     "pass": true
   },
   {
@@ -41,7 +58,7 @@
     "key": "jab",
     "sprint": false,
     "travel": 3.226608646255614,
-    "maxHandStep": 0.049731779150592084,
+    "maxHandStep": 0.30300193176512014,
     "pass": true
   },
   {
@@ -49,23 +66,39 @@
     "key": "jab",
     "sprint": true,
     "travel": 4.76658095469578,
-    "maxHandStep": 0.04340976632237606,
+    "maxHandStep": 0.06847758450978648,
     "pass": true
   },
   {
     "fps": 60,
     "key": "cross",
     "sprint": false,
-    "travel": 3.6666085993528794,
-    "maxHandStep": 0.09719554966783787,
+    "travel": 2.419942312094462,
+    "maxHandStep": 0.17994509594508146,
     "pass": true
   },
   {
     "fps": 60,
     "key": "cross",
     "sprint": true,
-    "travel": 5.416580885407647,
-    "maxHandStep": 0.08127289212368198,
+    "travel": 3.574914779230447,
+    "maxHandStep": 0.2282193022002319,
+    "pass": true
+  },
+  {
+    "fps": 60,
+    "key": "rightHook",
+    "sprint": false,
+    "travel": 2.5666088720969027,
+    "maxHandStep": 0.1761067215538891,
+    "pass": true
+  },
+  {
+    "fps": 60,
+    "key": "rightHook",
+    "sprint": true,
+    "travel": 3.7915812883249593,
+    "maxHandStep": 0.24676712265435932,
     "pass": true
   },
   {
@@ -73,7 +106,7 @@
     "key": "jab",
     "sprint": false,
     "travel": 3.153275325713114,
-    "maxHandStep": 0.021530734115519343,
+    "maxHandStep": 0.13961448132697915,
     "pass": true
   },
   {
@@ -81,46 +114,62 @@
     "key": "jab",
     "sprint": true,
     "travel": 4.658247640257997,
-    "maxHandStep": 0.019032881891608167,
+    "maxHandStep": 0.03959322738609851,
     "pass": true
   },
   {
     "fps": 144,
     "key": "cross",
     "sprint": false,
-    "travel": 3.629941935188934,
-    "maxHandStep": 0.0417305235939768,
+    "travel": 2.3832756774804063,
+    "maxHandStep": 0.08774602961241741,
     "pass": true
   },
   {
     "fps": 144,
     "key": "cross",
     "sprint": true,
-    "travel": 5.362414222438183,
-    "maxHandStep": 0.03518201626988879,
+    "travel": 3.5207481599142287,
+    "maxHandStep": 0.10971728168380936,
+    "pass": true
+  },
+  {
+    "fps": 144,
+    "key": "rightHook",
+    "sprint": false,
+    "travel": 2.5666088720969027,
+    "maxHandStep": 0.07595887636692321,
+    "pass": true
+  },
+  {
+    "fps": 144,
+    "key": "rightHook",
+    "sprint": true,
+    "travel": 3.7915812883249593,
+    "maxHandStep": 0.11845529237992862,
     "pass": true
   },
   {
     "case": "jab contact boots retain bounded authored pivot",
     "tiltDegrees": {
       "left": 0.000003306651113363206,
-      "right": 9.087868614668743
+      "right": 8.732241518970218
     },
     "pass": true
   },
   {
     "case": "cross contact boots retain bounded authored pivot",
     "tiltDegrees": {
-      "left": 0.00002168316139719411,
-      "right": 24.148918094987398
+      "left": 0.00006395898695146589,
+      "right": 11.333604437425537
     },
     "pass": true
   },
   {
     "case": "special contact boots retain bounded authored pivot",
     "tiltDegrees": {
-      "left": 0.000052837484341132565,
-      "right": 4.752330821413326
+      "left": 0.051218208376697695,
+      "right": 3.928928048630874
     },
     "pass": true
   },

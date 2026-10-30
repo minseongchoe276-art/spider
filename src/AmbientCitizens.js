@@ -297,6 +297,16 @@ export class AmbientCitizens{
 
  think(n,dt){
   const player=this.player.position;
+  const car=this.player.vehicleSystem;
+  if(car?.state==='DRIVING' && car.controller && ['WALK','IDLE'].includes(n.state)){
+   const v=car.controller,offset=n.position.clone().sub(v.position),speed=Math.abs(v.speed||0);
+   const heading=new T.Vector3(Math.sin(v.yaw),0,Math.cos(v.yaw)).multiplyScalar(Math.sign(v.speed)||1);
+   const along=offset.dot(heading),lateral=Math.abs(offset.x*heading.z-offset.z*heading.x);
+   if(speed>2 && Math.abs(offset.y)<2 && along>0 && along<Math.min(12,3+speed*.8) && lateral<2.8 && !this.ray(v.position.clone().addScaledVector(up,1),offset.clone().normalize(),Math.max(0,offset.length()-.5))){
+    n.threat=v.position.clone();n.fearUntil=this.time+4;n.avoidUntil=this.time+2;
+    n.targetYaw=this.findOpenStreetYaw(n,Math.atan2(offset.x,offset.z));this.change(n,'STARTLED',.35);
+   }
+  }
   if(n.state==='DEAD'){if(this.time>=n.stateUntil&&!this.visible(n.position))this.retire(n);return;}
   if(n.state==='HURT' && this.time>=n.stateUntil)this.change(n,'WARN',.9);
   else if(n.state==='WARN' && this.time>=n.stateUntil)this.change(n,n.retaliates?'DEFEND':'FLEE',0);
@@ -418,7 +428,7 @@ export class AmbientCitizens{
   const travel=Math.min(distance,speed*dt);
   const target=n.position.clone().addScaledVector(direction,travel);
   const height=this.floor(target);
-  const leaving=!n.route[0].cross&&!n.route[0].recover;
+  const leaving=(this.city.isStreamed&&!this.city.footpaths)||(n.route[0].cross!==true&&n.route[0].recover!==true);
   if(height==null||!this.open(n.position,direction,travel+.35)||(leaving&&this.lane(target))){
    n.speed=0;
    n.route=[];
@@ -465,6 +475,12 @@ export class AmbientCitizens{
    const distance=separated?horizontal:n.position.distanceTo(this.player.position),visible=this.visible(n.position);
    n.mesh.visible=!this.camera||visible;
    if(distance>CITIZEN_LIMITS.hardRetire || (distance>CITIZEN_LIMITS.retire&&!visible)){
+    this.retire(n);
+    continue;
+   }
+   // Recycle invalid legacy/streamed positions out of view instead of walking
+   // across traffic to repair them. New spawns use the frontage ribbon.
+   if(this.city.isStreamed&&!this.city.footpaths&&n.health>0&&!visible&&this.lane(n.position)){
     this.retire(n);
     continue;
    }

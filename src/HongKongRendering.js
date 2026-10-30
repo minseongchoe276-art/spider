@@ -1,3 +1,6 @@
+import {preparePhotoSurfaceFinish} from './HongKongSurfaceFinish.js';
+import {toCreasedNormals} from 'three/addons/utils/BufferGeometryUtils.js';
+import {repairTileGeometry} from './TileGeometryIntegrity.js';
 import * as THREE from 'three';
 import {prepareCityFacade} from './CityFacades.js';
 
@@ -19,9 +22,9 @@ export function createHongKongEnvironment(renderer) {
 // detailed near the player without increasing the territory's draw distance.
 export function hongKongRenderingProfile(quality='balanced') {
   return {
-    low:{errors:[20,20,24],streamDistance:500,anisotropy:2,shadowRadius:65},
-    balanced:{errors:[10,12,16],streamDistance:750,anisotropy:8,shadowRadius:85},
-    high:{errors:[6,8,10],streamDistance:1200,anisotropy:8,shadowRadius:100},
+    low:{errors:[14,20,24],streamDistance:450,anisotropy:2,shadowRadius:65},
+    balanced:{errors:[8,12,16],streamDistance:650,anisotropy:8,shadowRadius:85},
+    high:{errors:[4,8,10],streamDistance:1000,anisotropy:8,shadowRadius:100},
   }[quality] || hongKongRenderingProfile('balanced');
 }
 
@@ -45,11 +48,9 @@ export function configureHongKongFog(scene,profile,viewDistance=profile.streamDi
 }
 
 export function nextHongKongError(current,baseline,{full,refused,utilization}) {
-  // A 5% step took many two-second checks to release a saturated photo cache.
-  if(full&&refused>0)return Math.min(28,current*1.25);
-  // Hysteresis: do not sharpen immediately when one refused request finishes,
-  // only to exhaust the same cache and coarsen again two seconds later.
-  return utilization<.8?Math.max(baseline,current/1.1):current;
+  // Memory pressure reduces the far request volume in UrbanGroundCity.
+  // Never coarsen the player's nearby geometry to make room for distant tiles.
+  return baseline;
 }
 
 export function tuneHongKongTexture(texture,anisotropy=8,maxAnisotropy=8) {
@@ -62,8 +63,24 @@ export function tuneHongKongTexture(texture,anisotropy=8,maxAnisotropy=8) {
 }
 
 export function prepareHongKongTile(scene,surfaceType,profile,maxAnisotropy) {
+  const uses=new Map();scene.traverse(mesh=>{if(mesh.isMesh)uses.set(mesh.geometry,(uses.get(mesh.geometry)||0)+1);});
   scene.traverse(mesh=>{
     if(!mesh.isMesh)return;
+    if(!mesh.geometry.userData.integrityChecked){
+      mesh.geometry.userData.integrityReport=repairTileGeometry(mesh.geometry);
+      mesh.geometry.userData.integrityChecked=true;
+    }
+    const materials=Array.isArray(mesh.material)?mesh.material:[mesh.material];
+    if(!mesh.geometry.attributes.normal && materials.some(m=>m?.isMeshStandardMaterial)){
+      const original=mesh.geometry;mesh.geometry=toCreasedNormals(original,Math.PI/3);
+      mesh.geometry.userData={...original.userData,creasedPhotoNormals:true};
+      // The source is replaced before the tile loader collects its resources.
+      // Keep shared source buffers alive until their last node is replaced.
+      // If a node still uses them, the tile loader collects/disposes them.
+      uses.set(original,uses.get(original)-1);
+      if(uses.get(original)===0)original.dispose();
+      for(const material of materials){if(material.isMeshStandardMaterial){material.flatShading=false;material.needsUpdate=true;}}
+    }
     mesh.userData.surfaceType=surfaceType;
     mesh.receiveShadow=true;
     // Photogrammetry already contains baked lighting. Structural geometry
@@ -73,6 +90,7 @@ export function prepareHongKongTile(scene,surfaceType,profile,maxAnisotropy) {
     let facade=false;
     for(const material of Array.isArray(mesh.material)?mesh.material:[mesh.material]){
       tuneHongKongTexture(material.map,profile.anisotropy,maxAnisotropy);
+      if(surfaceType==='terrain')preparePhotoSurfaceFinish(material);
       if(surfaceType==='building')facade=prepareCityFacade(material,{allowFlatTexture:true})||!!material.userData.cityFacade||facade;
     }
     // Generate normals only for placeholder buildings that need the facade

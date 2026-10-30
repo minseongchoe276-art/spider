@@ -26,7 +26,7 @@ function app(){const g=Object.create(GameApp.prototype),scene=new THREE.Scene();
   const physics=new SwingPhysics(scene,city,character,audio);physics.position.set(0,.1,0);physics.state='IDLE';
   Object.assign(g,{scene,canvas:new EventTarget(),camera,character,city,physics,audio,input:{},heldKeys:new Set(),
     preferences:{values:{settings:cleanSettings(),quality:'balanced',bestTimes:{}}},isPlaying:true,isPaused:false,
-    combat:{mode:'web',guard(){},clearHeld(){},before(){},after(){}},tpsCamera:{mode:'follow',update(){}},timeTrial:{isActive:false,update(){}},
+    combat:{mode:'web',guard(){},heavy(){return false;},clearHeld(){},before(){},after(){}},tpsCamera:{mode:'follow',update(){}},timeTrial:{isActive:false,update(){}},
     vfx:{update(){}},renderer:{render(){}},showNotice(){},updateHUD(){},updateTrialHUD(){}});
   g.canvas.getBoundingClientRect=()=>({left:0,top:0,width:800,height:600});g.initInputListeners();return g;
 }
@@ -34,22 +34,78 @@ function key(type,code,pad=false,touch=false){const event=new Event(type,{cancel
 function mouse(g,type,button,pad=false,touch=false){const event=new Event(type,{cancelable:true});Object.defineProperties(event,{button:{value:button},target:{value:g.canvas},gamepadInput:{value:pad},touchInput:{value:touch},clientX:{value:400},clientY:{value:300}});window.dispatchEvent(event);}
 function fakeClock(g){let now=0,last=0;g.clock={elapsedTime:0,getDelta(){const d=now-last;last=now;this.elapsedTime+=d;return d;}};return seconds=>{now+=seconds;};}
 
+check('Suspended, background and context-lost gameplay rejects keyboard actions',()=>dom(()=>{
+ const g=app();let jumps=0;g.physics.performAirJump=()=>jumps++;
+ for(const reason of ['contextLost','hidden','helpOpen']){
+  if(reason==='hidden')document.hidden=true;else g[reason]=true;
+  key('keydown','KeyW');key('keydown','Space');
+  assert(!g.input.forward);assert.equal(jumps,0);
+  if(reason==='hidden')document.hidden=false;else g[reason]=false;
+ }
+ key('keydown','KeyW');assert(g.input.forward);key('keyup','KeyW');
+}));
+check('Gamepad ignores background input and bounds camera jumps after a long frame',()=>dom(()=>{
+ const descriptor=Object.getOwnPropertyDescriptor(globalThis,'navigator');
+ const pad={index:0,mapping:'standard',buttons:[],axes:[0,0,1,0]};
+ Object.defineProperty(globalThis,'navigator',{configurable:true,value:{getGamepads:()=>[pad]}});
+ try{
+  const g=app(),moves=[];g.tpsCamera.handleMouseMove=(x,y)=>moves.push([x,y]);
+  const input=new GamepadInput(g);
+  for(const dt of [NaN,Infinity,-1,0])input.update(dt);assert.equal(moves.length,0);
+  input.update(3);assert.equal(moves.length,1);assert.equal(moves[0][0],70);
+  g.helpOpen=true;input.update(.016);assert.equal(moves.length,1);
+  g.multiplayer={room:{phase:'playing'}};input.update(.016);assert.equal(moves.length,1,'Online help must also block the stick');
+  g.helpOpen=false;document.hidden=true;input.update(.016);assert.equal(moves.length,1);
+ }finally{if(descriptor)Object.defineProperty(globalThis,'navigator',descriptor);else delete globalThis.navigator;}
+}));
+
+check('Blocked gameplay rejects clicks, camera and zoom across devices, then resumes cleanly',()=>dom(()=>{
+ const g=app();let hits=0,turns=0,zooms=0;
+ g.combat.mode='combat';g.combat.attack=g.combat.straight=()=>{hits++;return true;};
+ g.tpsCamera.handleMouseMove=()=>turns++;g.tpsCamera.handleWheel=()=>zooms++;
+ document.pointerLockElement=g.canvas;
+ const move=()=>{const e=new Event('mousemove');Object.assign(e,{movementX:12,movementY:4});window.dispatchEvent(e);};
+ const wheel=()=>{const e=new Event('wheel',{cancelable:true});Object.assign(e,{deltaY:40});g.canvas.dispatchEvent(e);};
+ for(const reason of ['contextLost','hidden','helpOpen','worldMap','dialog']){
+  if(reason==='hidden')document.hidden=true;
+  else if(reason==='worldMap')g.worldMap={isOpen:true};
+  else if(reason==='dialog')document.querySelector=selector=>selector==='dialog[open]'?{}:null;
+  else g[reason]=true;
+  // Online help does not suspend simulation, but must still own all controls.
+  if(reason==='helpOpen')g.multiplayer={room:{phase:'playing'}};
+  for(const mode of ['combat','web'])for(const [pad,touch] of [[false,false],[true,false],[false,true]]){
+   g.combat.mode=mode;mouse(g,'mousedown',0,pad,touch);mouse(g,'mousedown',2,pad,touch);
+   assert.equal(hits,0,reason);assert(!g.input.webHold&&!g.input.webHoldRight,reason);
+   mouse(g,'mouseup',0,pad,touch);mouse(g,'mouseup',2,pad,touch);
+  }
+  move();wheel();assert.equal(turns+zooms,0,reason);
+  key('keydown','KeyW');assert(!g.input.forward,reason);key('keyup','KeyW');
+  if(reason==='hidden')document.hidden=false;
+  else if(reason==='worldMap')g.worldMap=null;
+  else if(reason==='dialog')document.querySelector=()=>null;
+  else g[reason]=false;
+  g.multiplayer=null;
+ }
+ g.combat.mode='combat';mouse(g,'mousedown',0);mouse(g,'mouseup',0);move();wheel();
+ assert.equal(hits,1);assert.equal(turns,1);assert.equal(zooms,1);
+ g.combat.mode='web';mouse(g,'mousedown',0);assert(g.input.webHold);mouse(g,'mouseup',0);assert(!g.input.webHold);
+}));
 check('Vehicle B toggles once across devices and driving owns movement without combat or jump',()=>dom(()=>{
  const g=app();let interactions=0,toggles=0,zips=0,punches=0;g.vehicle={driving:true,interact:()=>interactions++};g.combat.toggle=()=>toggles++;g.combat.attack=()=>punches++;g.physics.performAirJump=()=>zips++;
  key('keydown','KeyB');key('keydown','KeyB',true);assert.equal(interactions,1);key('keyup','KeyB');key('keyup','KeyB',true);
- for(const code of ['KeyQ','KeyE','KeyG','Space']){key('keydown',code);key('keyup',code);}mouse(g,'mousedown',0);assert.equal(toggles+zips+punches,0);assert(!g.input.jump);
- key('keydown','KeyW');key('keydown','KeyA');assert(g.input.forward&&g.input.left);key('keyup','KeyW');key('keyup','KeyA');g.vehicle.driving=false;key('keydown','KeyQ');assert.equal(toggles,1);
+ for(const code of ['KeyX','KeyE','KeyG','Space']){key('keydown',code);key('keyup',code);}mouse(g,'mousedown',0);assert.equal(toggles+zips+punches,0);assert(!g.input.jump);
+ key('keydown','KeyW');key('keydown','KeyA');assert(g.input.forward&&g.input.left);key('keyup','KeyW');key('keyup','KeyA');g.vehicle.driving=false;key('keydown','KeyX');assert.equal(toggles,1);
 }));
 check('Keyboard and pad mode presses share one action until every source releases',()=>dom(()=>{
   const g=app();let calls=0;g.combat.toggle=()=>calls++;
-  key('keydown','KeyQ');key('keydown','KeyQ',true);assert.equal(calls,1);
-  key('keyup','KeyQ');key('keydown','KeyQ');assert.equal(calls,1,'The pad still owns the held action');
-  key('keyup','KeyQ',true);key('keyup','KeyQ');key('keydown','KeyQ',true);assert.equal(calls,2);
+  key('keydown','KeyX');key('keydown','KeyX',true);assert.equal(calls,1);
+  key('keyup','KeyX');key('keydown','KeyX');assert.equal(calls,1,'The pad still owns the held action');
+  key('keyup','KeyX',true);key('keyup','KeyX');key('keydown','KeyX',true);assert.equal(calls,2);
 }));
 check('Remapped left/right modifiers do not double-toggle modes',()=>dom(()=>{
   const g=app();rebind(g.preferences.values.settings,'mode','ShiftLeft');let calls=0;g.combat.toggle=()=>calls++;
   key('keydown','ShiftLeft');key('keydown','ShiftRight');assert.equal(calls,1);
-  key('keyup','ShiftLeft');assert(g.heldKeys.has('KeyQ'));key('keyup','ShiftRight');assert(!g.heldKeys.has('KeyQ'));
+  key('keyup','ShiftLeft');assert(g.heldKeys.has('KeyX'));key('keyup','ShiftRight');assert(!g.heldKeys.has('KeyX'));
 }));
 check('R randomly selects both flips in both modes, independent of W; devices share one press',()=>dom(()=>{
   const g=app();const tricks=[];g.physics.performAirTrick=key=>tricks.push(key);
@@ -65,39 +121,39 @@ check('R randomly selects both flips in both modes, independent of W; devices sh
     const before=tricks.length;key('keydown','KeyT');key('keyup','KeyT');assert.equal(tricks.length,before);
   }finally{Math.random=random;}
 }));
-check('Retired crouch remains inactive and X retains camera recenter',()=>dom(()=>{
+check('Retired crouch remains inactive and Z retains camera recenter',()=>dom(()=>{
   const g=app();let recentered=0;g.tpsCamera.recenterBehind=()=>recentered++;
   for(const code of ['KeyC','KeyG','KeyR','KeyT','KeyB','ControlLeft']){
     key('keydown',code);key('keydown',code,true);key('keyup',code);key('keyup',code,true);
     assert(!g.physics.lowStance);
   }
-  key('keydown','KeyX');assert.equal(recentered,1);key('keyup','KeyX');
+  key('keydown','KeyZ');assert.equal(recentered,1);key('keyup','KeyZ');
 }));
 check('E and F have strict mode ownership on ground and in air',()=>dom(()=>{
-  const g=app();let zip=0,heavy=0;g.physics.performAirJump=()=>zip++;g.combat.heavy=()=>heavy++;
+  const g=app();let zip=0,heavy=0,slips=0;g.physics.performAirJump=()=>zip++;g.combat.heavy=()=>heavy++;g.combat.dodge=()=>slips++;
   let guard=false;g.combat.guard=value=>guard=value;
   key('keydown','KeyF');assert(g.input.wallRun&&!g.input.guard&&!guard);key('keyup','KeyF');
   key('keydown','KeyE');key('keyup','KeyE');assert.equal(zip,1);assert.equal(heavy,0);
   g.combat.mode='combat';key('keydown','KeyF');assert(g.input.guard&&!g.input.wallRun&&guard);key('keyup','KeyF');assert(!guard);
   for(const state of ['IDLE','FALLING']){g.physics.state=state;key('keydown','KeyE');key('keyup','KeyE');}
-  assert.equal(zip,1,'Combat E invoked the aerial web ability');assert.equal(heavy,2,'Combat decides grounded strike eligibility');
+  assert.equal(zip,1,'Combat E invoked the aerial web ability');assert.equal(slips,2,'Combat decides grounded slip eligibility');assert.equal(heavy,0);
 }));
-check('Q completes the current strike, clears held web actions and preserves momentum',()=>dom(()=>{
+check('X completes the current strike, clears held web actions and preserves momentum',()=>dom(()=>{
   const g=app();g.combat=new CombatSystem(g.scene,g.physics,g.character);g.combat.toggle(g.input);
   g.physics.velocity.set(1,2,3);assert(g.combat.attack(g.camera));
-  key('keydown','KeyQ');key('keyup','KeyQ');assert.equal(g.combat.mode,'combat');assert.equal(g.combat.action.key,'jab');
+  key('keydown','KeyX');key('keyup','KeyX');assert.equal(g.combat.mode,'combat');assert.equal(g.combat.action.key,'jab');
   for(let i=0;i<10;i++)g.combat.before(.1,g.camera,g.input);
   assert.equal(g.combat.mode,'web');assert(!g.combat.action);assert.deepEqual(g.physics.velocity.toArray(),[1,2,3]);
   g.input.webHold=g.input.webFireHeld=g.input.webHoldRight=g.input.webFireHeldRight=true;
-  key('keydown','KeyQ');key('keyup','KeyQ');assert.equal(g.combat.mode,'combat');
+  key('keydown','KeyX');key('keyup','KeyX');assert.equal(g.combat.mode,'combat');
   assert(!g.input.webHold&&!g.input.webHoldRight&&!g.input.webFireHeld&&!g.input.webFireHeldRight);
 }));
 check('Actual combat keys select distinct clips and reject attacks while guarding or airborne',()=>dom(()=>{
   const g=app();g.combat=new CombatSystem(g.scene,g.physics,g.character);g.combat.toggle(g.input);
   for(const [button,clip]of [[0,'jab'],[2,'cross']]){mouse(g,'mousedown',button);assert.equal(g.combat.action.key,clip);mouse(g,'mouseup',button);g.combat.cancel();}
-  key('keydown','KeyE');assert.equal(g.combat.action.key,'heavy');key('keyup','KeyE');g.combat.cancel();
-  key('keydown','KeyF');assert(g.combat.blocking);key('keydown','KeyE');assert(!g.combat.action);key('keyup','KeyE');key('keyup','KeyF');
-  g.physics.state='FALLING';key('keydown','KeyE');assert(!g.combat.action);key('keyup','KeyE');
+  key('keydown','KeyT');assert.equal(g.combat.action.key,'heavy');key('keyup','KeyT');g.combat.cancel();
+  key('keydown','KeyF');assert(g.combat.blocking);key('keydown','KeyT');assert(!g.combat.action);key('keyup','KeyT');key('keyup','KeyF');
+  g.physics.state='FALLING';key('keydown','KeyT');assert(!g.combat.action);key('keyup','KeyT');
 }));
 check('Pad B / LB / D-pad share F without releasing another held source',()=>dom(()=>{
   const originalEvent=globalThis.KeyboardEvent;

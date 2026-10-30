@@ -192,16 +192,16 @@ export class Multiplayer {
       const player=this.players.find(p=>p.id===data.target);if(player){player.health=data.health;player.eliminated=data.eliminated;}
       if(data.target===this.id){
         const attacker=this.players.find(p=>p.id===data.attacker);
-        this.feedback?.show(`${data.blocked?'정면 방어 · ':''}${attacker?.name||'상대'}의 ${data.kind==='web'?'에너지 와이어':'주먹'} 명중 −${data.damage??MATCH[data.kind]?.damage??0} · 내 HP ${data.health}${data.eliminated?' · 탈락 / 관전':''}`);
-        this.game.tpsCamera?.triggerShake?.(.18);
-        if(!data.blocked && !data.eliminated)this.game.combat?.reactToHit?.(data.damage ?? MATCH[data.kind]?.damage ?? 0,{hitRegion:data.kind==='web'?'body':'head',variant:data.variant});
+        this.feedback?.show(`${data.evaded?'회피 성공 · ':data.blocked?'정면 방어 · ':''}${attacker?.name||'상대'}의 ${data.kind==='web'?'에너지 와이어':'주먹'} 명중 −${data.damage??MATCH[data.kind]?.damage??0} · 내 HP ${data.health}${data.eliminated?' · 탈락 / 관전':''}`);
+        if(!data.evaded)this.game.tpsCamera?.triggerShake?.(.18);
+        if(!data.evaded && (data.damage??1)>0 && !data.blocked && !data.eliminated)this.game.combat?.reactToHit?.(data.damage ?? MATCH[data.kind]?.damage ?? 0,{hitRegion:data.kind==='web'?'body':'head',variant:data.variant});
         if(data.eliminated){this.setSpectating(true);this.game.physics.clearWebAnchor();this.game.clearInput();this.game.combat?.cancel();this.pendingPunch=null;}
       }
       else if(data.attacker===this.id){
         this.feedback?.hit(data,player);
         if(!this.feedback)this.game.showNotice(`명중! 상대 체력 ${data.health}`);
       }
-      if(data.variant==='uppercut' && !data.blocked && player){
+      if(data.variant==='uppercut' && !data.evaded && !data.blocked && player){
         const point=new THREE.Vector3(player.x,player.y+1.6,player.z);
         const source=this.players.find(p=>p.id===data.attacker);
         const direction=new THREE.Vector3(Math.sin(source?.facing||0),0,Math.cos(source?.facing||0));
@@ -275,7 +275,7 @@ export class Multiplayer {
       ? `지금은 ${waitingCount}명 · 시작하면 ${waitingMinutes}분 · 2명 3분, 3~6명 4분, 7~8명 5분 · 목표 3개로 탈출 · 다음 경기 역할 순환`
       : '5분 생존';
     const waitingText=this.room.mode==='custom'
-      ? `${this.room.format==='ffa'?'개인전 · 마지막 1명 생존 시 승리':'팀전 · 상대 팀 전원 탈락 시 승리 · 팀 변경 시 전원 준비 초기화'} · 2~8명 · HP 100 · 주먹 25 / 에너지 와이어 15 · 시작 보호 8초 · 부활 없음. Q로 전투/에너지 와이어 전환.`
+      ? `${this.room.format==='ffa'?'개인전 · 마지막 1명 생존 시 승리':'팀전 · 상대 팀 전원 탈락 시 승리 · 팀 변경 시 전원 준비 초기화'} · 2~8명 · HP 100 · 주먹 25 / 에너지 와이어 15 · 시작 보호 8초 · 부활 없음. X로 전투/에너지 와이어 전환.`
       : this.room.mode==='tag'
       ? `최소 ${MATCH.minPlayers}명 · 모두 지형 로딩 후 준비. 6명 이하는 경찰 1명, 7명 이상은 경찰 2명. ${waitingTime}. 시작 ${MATCH.graceMs/1000}초는 공격 불가.`
       : `최소 ${MATCH.minPlayers}명 · 모두 준비하면 방장이 시작할 수 있습니다.`;
@@ -331,11 +331,11 @@ export class Multiplayer {
     game.resetCamera();game.combat.cancel();game.combat.clearEnemies();
     if(me?.vehicle&&me.vehicle.phase!=='NONE')game.vehicle?.restore(me.vehicle).catch(()=>game.showNotice('차량 복원에 실패했습니다. 다시 불러주세요.'));
     const desiredMode=(this.room.mode==='custom'||me?.team==='police')?'combat':'web';
-    game.combat.allowGuardInWeb=this.room.mode==='tag'&&me?.team==='runner';
+    game.combat.allowGuardInWeb=false;
     game.applyPreferences();
     if(game.combat.mode!==desiredMode)game.combat.toggle(game.input);
     const startMinutes=tagMinutes(!!this.room.enhanced, this.players.length);
-    this.game.showNotice(this.room.mode==='custom'?'사용자 설정 경기 · HP 100 · 상대 전원 제압! Q로 전투/에너지 와이어 전환 · 주먹 25 / 에너지 와이어 15 · 시작 보호 8초':this.room.mode==='tag'
+    this.game.showNotice(this.room.mode==='custom'?'사용자 설정 경기 · HP 100 · 상대 전원 제압! X로 전투/에너지 와이어 전환 · 주먹 25 / 에너지 와이어 15 · 시작 보호 8초':this.room.mode==='tag'
       ? (this.arena
         ? `경찰은 추격합니다. 도망자는 이동 목표 3개를 완료하거나 ${startMinutes}분 생존하면 승리합니다. 화면의 남은 시간은 서버 종료 시각입니다. 쓰러진 팀원 곁에서 3초 유지하면 구조합니다. 시작 8초는 공격이 없습니다.`
         : `경찰은 주먹 25, 에너지 와이어 15로 추격합니다. 도망자는 ${startMinutes}분 생존하면 승리합니다. 화면의 남은 시간은 서버 종료 시각입니다.`)
@@ -397,9 +397,15 @@ export class Multiplayer {
       game.physics.position.copy(start.position);game.physics.previousFixedPosition.copy(start.position);game.physics.renderPosition.copy(start.position);
       game.physics.facingAngle=start.yaw;game.character.targetFacingAngle=start.yaw;game.resetCamera();
     }
+    if(!restored && !start && !game.city?.isStreamed){
+      const p=game.physics.position;
+      const candidates=(game.city?.buildings||[]).filter(b=>Math.hypot(b.x-p.x,b.z-p.z)>25 && b.height>p.y+6);
+      candidates.sort((a,b)=>Math.hypot(a.x-p.x,a.z-p.z)-Math.hypot(b.x-p.x,b.z-p.z));
+      if(candidates.length){game.physics.facingAngle=Math.atan2(candidates[0].x-p.x,candidates[0].z-p.z);game.character.targetFacingAngle=game.physics.facingAngle;game.resetCamera();}
+    }
     game.applyPreferences();
     this.render();
-    game.showNotice('화면 클릭: 카메라 조작 · H: 조작 가이드 · M: 전체 지도');
+    if(!game.touchControls?.enabled)game.showNotice('화면 클릭: 카메라 조작 · H: 조작 가이드 · M: 전체 지도');
   }
   finish(){this.pendingPunch=null;clearInterval(this.beginTimer);this.beginTimer=null;this.setSpectating(false);this.game.isPlaying=false;this.game.clearInput();this.game.setPaused(true);this.game.clickToPlayOverlay?.classList.add('hidden');this.clearAvatars();}
   leaveLocal(){this.game.vehicle?.resetSession();if(this.game.experience?.study)this.game.experience.study.match=null;this.game.character.group.visible=true;this.rescueStarted=null;this.rescueTarget=null;this.goalLive=false;if(this.goalMarker)this.goalMarker.visible=false;$('pursuit-hud').textContent='';$('spectate-next')?.classList.add('hidden');try{sessionStorage.removeItem('web-runner-room-resume');}catch{}this.arena=null;this.pulseUntil=0;this.game.practice?.stop();this.room=null;this.pendingPunch=null;clearInterval(this.beginTimer);this.beginTimer=null;this.spectating=false;this.solo=false;clearInterval(this.soloStartTimer);this.soloStartTimer=null;this.players=[];this.id=null;this.lastPhase=null;this.game.isPlaying=false;this.game.clearInput();this.game.setPaused(true);this.game.clickToPlayOverlay?.classList.add('hidden');this.clearAvatars();showLobbyView('solo');this.render();this.reportPresence();this.send({type:'list'});}
@@ -462,7 +468,7 @@ export class Multiplayer {
     return avatar ? avatar.mesh.position : new THREE.Vector3(ally.x,ally.y,ally.z);
   }
   update(delta) {
-    if(this.game.combat)this.game.combat.allowGuardInWeb=this.room?.phase==='playing'&&this.room.mode==='tag'&&this.players.find(p=>p.id===this.id)?.team==='runner'&&!this.spectating;
+    if(this.game.combat)this.game.combat.allowGuardInWeb=false;
     this.feedback?.update(this);
     const networkNow=performance.now();
     if(this.networkHealth&&!(this.ws instanceof SupabaseRooms)&&this.ws?.readyState===WebSocket.OPEN&&!document.hidden){

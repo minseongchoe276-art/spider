@@ -1,0 +1,15 @@
+node:internal/modules/run_main:123
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: hook 60FPS 0m/s: excessive heel lift/roll {"fps":60,"speed":0,"key":"hook","maxContactTilt":27.72174184002511,"maxFlatTilt":0,"maxLateralRoll":25.06483914382339,"maxHeelPitch":12.301496527027322,"forefootContacts":44,"minSkinClearance":0.002938931898385405,"maxSupportGap":0.024993709779717557,"maxBootDegreesPerSecond":237.1303262137736,"contacts":44,"minimumSole":0.0029031924845331902}
+    at file:///Users/choeminseong/Desktop/%E1%84%80%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%B7/scripts/check-combat-feet.mjs:92:2 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
+
+Node.js v22.19.0

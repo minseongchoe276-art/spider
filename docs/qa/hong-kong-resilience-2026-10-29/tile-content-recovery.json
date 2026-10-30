@@ -1,0 +1,8 @@
+{
+  "errors": [],
+  "scope": "Desktop headless Chrome, real remote Hong Kong tiles; test-only module instrumentation captures city instance. No production QA hooks added.",
+  "injectedFailures": 1,
+  "url": "http://127.0.0.1:5195/urban-tiles/api/3d-data/3dtiles/f2/11/Data/temp0/Tile_3_1_L6.b3dm",
+  "status": "FAIL",
+  "error": "page.waitForResponse: Timeout 90000ms exceeded while waiting for event \"response\"\n    at /Users/choeminseong/Desktop/게임/scripts/play-hong-kong-resilience.mjs:38:24\n    at async run (/Users/choeminseong/Desktop/게임/scripts/play-hong-kong-resilience.mjs:11:382)\n    at async file:///Users/choeminseong/Desktop/%E1%84%80%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%B7/scripts/play-hong-kong-resilience.mjs:12:15"
+}

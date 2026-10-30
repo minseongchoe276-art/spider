@@ -1,0 +1,44 @@
+{
+  "scope": "Chrome touch emulation, not a physical phone",
+  "results": [
+    {
+      "name": "Real touch pointer drag moves the player",
+      "pass": true,
+      "speed": 11.997
+    },
+    {
+      "name": "Moving thumb and jump work simultaneously",
+      "pass": true,
+      "controls": {
+        "pointers": 2,
+        "forward": true,
+        "backward": false,
+        "left": false,
+        "right": false,
+        "jump": false
+      }
+    },
+    {
+      "name": "Touch cancellation clears both pointers and movement",
+      "pass": true,
+      "controls": {
+        "pointers": 0,
+        "forward": false,
+        "backward": false,
+        "left": false,
+        "right": false,
+        "jump": false
+      }
+    },
+    {
+      "name": "Rotation clears held movement and fits viewport",
+      "pass": true
+    },
+    {
+      "name": "Touch menu pauses gameplay",
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "status": "PASS"
+}

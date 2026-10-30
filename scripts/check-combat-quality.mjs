@@ -8,7 +8,7 @@ import {City} from '../src/City.js';
 const {actor}=await loadMotionRig(),results=[];
 const sample=(c,key,phase)=>{c.stopAnimation();c.fadeToAction(key,0);c.activeAction.time=c.activeAction.getClip().duration*phase;c.mixer.update(0);c.group.updateMatrixWorld(true);return {left:point(c,'lefthand'),right:point(c,'righthand'),elbow:point(c,'rightforearm')};};
 const c=actor();try{
- for(const [key,file] of [['jab','Lead Jab'],['cross','Punching'],['special','Surprise Uppercut']]){
+ for(const [key,file] of [['jab','Lead Jab'],['cross','Mixamo Cross Punch'],['rightHook','Mixamo Rear Hook'],['special','Surprise Uppercut']]){
   const clip=c.actions[key].getClip();
   assert.equal(clip.userData.source,`/models/${file}.fbx`);
   assert.equal(clip.userData.authoredMixamo,true);
@@ -16,14 +16,18 @@ const c=actor();try{
   const impact=clip.userData.impactPhase*ATTACKS[key].duration;
   assert(impact>=ATTACKS[key].from && impact<=ATTACKS[key].to,'Imported punch must match damage timing');
  }
- const guard=sample(c,'rightHook',0),load=sample(c,'rightHook',.28),contact=sample(c,'rightHook',.58),follow=sample(c,'rightHook',.73),recover=sample(c,'rightHook',.999999);
- const elbow=point(c,'rightarm');sample(c,'rightHook',.58);
- const bend=point(c,'rightarm').sub(contact.elbow).angleTo(contact.right.clone().sub(contact.elbow))*180/Math.PI;
- assert(bend>75&&bend<115,`Hook elbow must remain near 90 degrees: ${bend}`);
- assert(load.right.x<guard.right.x-.15 && contact.right.x>load.right.x+.35,'Hook must arc from outside across the target');
- assert(follow.right.x>contact.right.x+.08,'Hook must follow through instead of retracing the approach');
- assert(contact.left.distanceTo(guard.left)<.03,'Opposite hand must protect the cheek');
- assert(recover.right.distanceTo(guard.right)<.01,'Hook must return to guard');
+ // The authored rear hook has its own arc and supporting-hand motion.
+ // Validate its usable motion and continuity instead of matching the retired
+ // procedural hook's exact 90-degree elbow and fixed opposite-hand position.
+ const guard=sample(c,'rightHook',0);let previous=guard.right,maxHookStep=0,maxHookReach=0;
+ for(let frame=1;frame<=100;frame++){
+  const pose=sample(c,'rightHook',frame/100);
+  assert([...pose.left.toArray(),...pose.right.toArray(),...pose.elbow.toArray()].every(Number.isFinite));
+  maxHookStep=Math.max(maxHookStep,pose.right.distanceTo(previous));
+  maxHookReach=Math.max(maxHookReach,pose.right.distanceTo(guard.right));previous=pose.right;
+ }
+ assert(maxHookReach>.2,'Imported hook must visibly articulate');
+ assert(maxHookStep<.2,'Imported hook contains a discontinuous hand jump between adjacent samples');
  const impact=c.actions.special.getClip().userData.impactPhase;
  const ready=sample(c,'special',0),wind=sample(c,'special',.12),hit=sample(c,'special',impact),recoverPower=sample(c,'special',.999999);
  assert(wind.right.y<ready.right.y+.2,'G must load low before rising');
@@ -33,17 +37,20 @@ const c=actor();try{
  assert(ATTACKS.special.from<=impact*ATTACKS.special.duration && ATTACKS.special.to>=impact*ATTACKS.special.duration);
  assert(ATTACKS.special.from>.4,'G wind-up must not deal damage');
  assert(ATTACKS.special.damage>ATTACKS.cross.damage && ATTACKS.special.damage>ATTACKS.jab.damage);
- results.push({case:'imported dashing uppercut and retained hook',hookElbowDegrees:bend,pass:true});
+ results.push({case:'imported dashing uppercut and retained hook',maxHookStep,maxHookReach,pass:true});
 }finally{disposeRig(c);}
-for(const fps of [24,60,144])for(const key of ['jab','cross'])for(const sprint of [false,true]){
+for(const fps of [24,60,144])for(const key of ['jab','cross','rightHook'])for(const sprint of [false,true]){
+ const requested=process.argv.find(arg=>arg.startsWith('--case='))?.slice(7);if(requested&&requested!==`${fps}:${key}:${sprint}`)continue;
  const c=actor(),city={colliders:[],buildingMeshes:[],raycast:City.prototype.raycast,checkCollision:City.prototype.checkCollision};
  const p=new SwingPhysics(c.scene,city,c,new Proxy({},{get:()=>()=>{}})),combat=new CombatSystem(c.scene,p,c),camera=new THREE.PerspectiveCamera();camera.lookAt(0,0,1);camera.updateMatrixWorld(true);combat.toggle();
  p.position.set(0,.1,0);p.previousFixedPosition.copy(p.position);p.renderPosition.copy(p.position);p.state='IDLE';
  try{
   // Establish a moving guard before entering the strike, as during real play.
   for(let i=0;i<fps;i++){combat.before(1/fps,camera);p.update(1/fps,{forward:true,sprint},camera);combat.after(1/fps);}
-  const start=p.position.clone();assert(({jab:()=>combat.attack(camera),cross:()=>combat.straight(camera),special:()=>combat.special(camera)})[key]());
-  let active=0,maxStep=0,last=null;
+  const start=p.position.clone();
+  if(key==='jab')assert(combat.attack(camera));
+  else {const random=Math.random;try{Math.random=()=>key==='rightHook'?0:.99;assert(combat.straight(camera));assert.equal(combat.action.key,key);}finally{Math.random=random;}}
+  let active=0,maxStep=0,last=null,maxStepPhase=null;
   for(let i=0;i<Math.ceil(fps*ATTACKS[key].duration);i++){
    combat.before(1/fps,camera);p.update(1/fps,{forward:true,sprint},camera);combat.after(1/fps);
    if(combat.action){
@@ -54,7 +61,7 @@ for(const fps of [24,60,144])for(const key of ['jab','cross'])for(const sprint o
       assert(Math.hypot(p.velocity.x,p.velocity.z)>1,'Moving strike braked the stride');
    }
    const hand=point(c,key==='jab'?'lefthand':'righthand').sub(c.group.position);
-   if(last)maxStep=Math.max(maxStep,hand.distanceTo(last));last=hand;
+   if(last&&hand.distanceTo(last)>maxStep){maxStep=hand.distanceTo(last);maxStepPhase=combat.action?.time??null;}last=hand;
    for(const {bone,rest,limit} of c.jointConstraints)assert(rest.angleTo(bone.quaternion)<=limit+1e-5,'Rendered joint exceeded anatomical bounds');
   }
   const travel=p.position.distanceTo(start);
@@ -62,7 +69,7 @@ for(const fps of [24,60,144])for(const key of ['jab','cross'])for(const sprint o
   combat.cancel();
   for(let i=0;i<Math.ceil(fps*.3);i++){combat.before(1/fps,camera);p.update(1/fps,{forward:true,sprint},camera);}
   assert(Math.hypot(p.velocity.x,p.velocity.z)>2,'Held movement did not resume after recovery');
-  assert(active>fps*ATTACKS[key].duration*.7);assert(maxStep<25/fps,`Visible hand snapped: ${maxStep}m at ${fps}fps`);
+  assert(active>fps*ATTACKS[key].duration*.7);assert(maxStep<25/fps,`${key} (sprint=${sprint}): visible hand snapped ${maxStep}m at ${fps}fps phase ${maxStepPhase}`);
   results.push({fps,key,sprint,travel,maxHandStep:maxStep,pass:true});
  }finally{disposeRig(c);}
 }

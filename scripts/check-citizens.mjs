@@ -51,10 +51,25 @@ for(const fps of [24,60,144]){
  assert(!manager.lane(new T.Vector3(6.8,2.01,4)),'Sidewalk beside the building was rejected');
  const stranded={position:new T.Vector3(0,2.01,12)};
  const out=citizenRoute(manager,stranded,0);
- assert(out.length>0&&out.every(p=>Math.abs(p.x)>5),`Route stayed in the carriageway ${out.map(p=>p.x.toFixed(2))}`);
+ assert.equal(out.length,0,'A stranded resident must not walk across the carriageway');
+ assert(manager.lane(new T.Vector3(4,2.01,12)),'Road edge within four metres of a facade was accepted');
+ assert(!manager.lane(new T.Vector3(6.8,2.01,12)),'Valid sidewalk was rejected after a nearby road query');
+ assert(manager.lane(new T.Vector3(6.8,22,12)),'Sidewalk cache reused a different elevation');
  const walker={position:new T.Vector3(6.8,2.01,0)};
  const along=citizenRoute(manager,walker,0);
  assert(along.length>=3&&along.every(p=>p.x>5&&p.x<8.4)&&Math.abs(along.at(-1).z)>2,`Sidewalk route left the frontage ${along.map(p=>[p.x,p.z].map(v=>v.toFixed(1)).join(','))}`);
+ // Walk past the end of both frontages: never bridge the road to another face.
+ for(const yaw of [0,Math.PI]){
+  const edge={position:new T.Vector3(6.8,2.01,yaw===0?78:-78)};
+  const route=citizenRoute(manager,edge,yaw);
+  let from=edge.position;
+  for(const to of route){
+   assert(to.cross!==true,'Unmarked crossing was generated');
+   const count=Math.ceil(from.distanceTo(to)/.1);
+   for(let j=1;j<=count;j++)assert(!manager.lane(from.clone().lerp(to,j/count)),'Corner cut through the road');
+   from=to;
+  }
+ }
  for(let i=0;i<90;i++)manager.update(1/30);
  assert(manager.targets.length>0,'No residents spawned on the sidewalk');
  assert(manager.targets.every(n=>Math.abs(n.position.x)>5),`Resident walked into the carriageway ${manager.targets.map(n=>n.position.x.toFixed(2))}`);

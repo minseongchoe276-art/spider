@@ -159,7 +159,8 @@ for (const key of ['jab', 'cross', 'hook', 'heavy', 'special', 'guard']) {
     state: 'SPRINTING', velocity: v(0, 0, speed), stance: true,
     combat: key === 'guard' ? {key} : (t < duration ? {id: 3, key, time: t, duration} : null),
   }));
-  assert(result.names.every(name => name === 'run'), `${key} replaced the run: ${result.names}`);
+  if(key==='special')assert.deepEqual(result.names,['special'],'The authored full-body uppercut must own the dash');
+  else assert(result.names.every(name => name === 'run'), `${key} replaced the run: ${result.names}`);
   assert(result.slip < 0.025, `${key} slip ${(result.slip * 1000).toFixed(1)}mm`);
 }
 
@@ -348,7 +349,8 @@ function movingJab(label, state, velocity, key = 'jab') {
     names.push(clipName());
     jointMax = Math.max(jointMax, poseError());
     wristMax = Math.max(wristMax, wristBend());
-    const impact = Math.abs((t - leadIn) - duration * 0.34);
+    const impactPhase=c.actions[key]?.getClip().userData?.impactPhase ?? .34;
+    const impact = Math.abs((t - leadIn) - duration * impactPhase);
     if (chestDot === null || impact < 0.02) {
       const hip = find('hips').getWorldPosition(new THREE.Vector3());
       const neck = find('neck').getWorldPosition(new THREE.Vector3());
@@ -426,7 +428,7 @@ function liveStrike(label, hold) {
   const combat = new CombatSystem(new THREE.Scene(), physics, character, {vfx: null, audio: silent});
   combat.toggle();
   combat.stamina = 100;
-  const blank = {forward: false, backward: false, left: false, right: false, sprint: false, jump: false, guard: false, wallRun: false};
+  const blank = {forward: false, backward: false, left: false, right: false, sprint: false, jump: false, guard: false, wallRun: false, combatStance: true};
   let fired = false;
   const prev = new Map();
   const swing = new THREE.Vector3();

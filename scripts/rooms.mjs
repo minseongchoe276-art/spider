@@ -232,7 +232,7 @@ async function handle(ws, data, terrain) {
     const previousMove=p.lastMove;
     p.x=data.x;p.y=data.y;p.z=data.z;p.facing=data.facing;p.seen=true;p.lastMove=now;
     if(room.enhanced){p.history||=[];p.history.push({x:p.x,y:p.y,z:p.z,time:now});p.history=p.history.filter(h=>now-h.time<600);advanceGoal(room,p,now,previousMove);}
-    p.pose=cleanPose;p.vehicleAt=now;p.vehicleLifeEpoch=p.lifeEpoch;p.allowRunnerGuard=room.mode==='tag'&&p.team==='runner';
+    p.pose=cleanPose;p.vehicleAt=now;p.vehicleLifeEpoch=p.lifeEpoch;p.allowRunnerGuard=false;
     broadcast(room,{type:'move',id:p.id,x:p.x,y:p.y,z:p.z,facing:p.facing,pose:p.pose,vehicle:p.pose?.vehicle||null});return;
   }
   if(data.type==='attack' && canAttack(room,p)) {

@@ -69,16 +69,31 @@ try{
  game.combat.allowGuardInWeb=true;controls.update();assert(buttons.guard.hidden,'Wire mode must keep F assigned to walls');game.combat.allowGuardInWeb=false;controls.update();
  const steady=writes;controls.update();assert.equal(writes,steady,'Unchanged HUD rewrote icons/labels every animation frame');
  game.combat.mode='combat';controls.update();assert(!buttons.guard.hidden&&buttons.wall.hidden);
- assert.equal(zip.textContent,'훅');
+ assert.equal(zip.textContent,'강공격');
  buttons.guard.dataset.key='wall';const guard=target({key:'wall'});controls.down(event(20,guard));controls.down(event(21,left));
  game.physics.state='FALLING';controls.update();assert(!controls.pointers.has(20),'A hidden guard retained its held key');assert(controls.pointers.has(21),'Changing context cancelled an independent strand');
- assert(calls.some(c=>c[0]==='wall'&&c[1]===false));assert.equal(zip.textContent,'착지 후 훅');assert(webButtons.every(b=>b.disabled));
+ assert(calls.some(c=>c[0]==='wall'&&c[1]===false));assert.equal(zip.textContent,'착지 후 강공격');assert(webButtons.every(b=>b.disabled));
  controls.up({pointerId:21});
- game.physics.state='ROLLING';controls.update();assert.equal(zip.textContent,'회복 후 훅','Recovery labels must update even while both states are airborne');
- controls.extra={hidden:false,contains:el=>el===right};
- controls.root.querySelector=s=>s==='[data-ui=more]'?{setAttribute(){}}:null;
- controls.down(event(30,right));controls.down(event(31,movement));
- controls.setExpanded(false);assert(!controls.pointers.has(30)&&controls.pointers.has(31),'Closing extra actions must release only their owned pointers');
+ game.physics.state='ROLLING';controls.update();assert.equal(zip.textContent,'회복 후 강공격','Recovery labels must update even while both states are airborne');
  controls.release();
  console.log('PASS: contextual combat HUD, cached DOM updates, airborne guard cleanup and independent held strand');
 }finally{if(oldDocument===undefined)delete globalThis.document;else globalThis.document=oldDocument;}
+
+// Split road buttons own independent fingers; a screen tap is distinct from orbit.
+{
+ const road=Object.create(TouchControls.prototype),events=[];
+ const canvas=target();canvas.getBoundingClientRect=()=>({left:0,top:0,width:800,height:400});
+ const physics={setWebAimPoint:(...args)=>events.push(['aim',...args]),findBestAnchor:()=>true};
+ const g={isPlaying:true,canvas,physics,camera:{},input:{},combat:{mode:'web'},vehicle:{driving:true},audio:{ensureContext(){}},syncHeldInput(){},showNotice(){}};
+ Object.assign(road,{game:g,enabled:true,pointers:new Map(),key(){},mouse:(...args)=>events.push(['mouse',...args])});
+ road.down(event(101,target({drive:'forward'})));road.down(event(102,target({drive:'left'})));
+ assert.deepEqual(g.touchDirections,{forward:true,left:true});
+ road.up({pointerId:102,type:'pointerup'});assert.deepEqual(g.touchDirections,{forward:true});
+ road.up({pointerId:101,type:'pointercancel'});assert.deepEqual(g.touchDirections,{});
+ g.vehicle.driving=false;road.down(event(103,canvas,190,70));road.up({pointerId:103,type:'pointerup'});
+ assert(road.wireLatched&&physics.mobileExactAim);assert.equal(g.input.webFireHeld,false);
+ assert(events.some(e=>e[0]==='aim'&&e[1]===190&&e[2]===70),'Screen tap must use the touched coordinates');
+ road.releaseWire();const count=events.length;
+ road.down(event(104,canvas,190,70));road.up({pointerId:104,type:'pointercancel'});assert.equal(events.length,count,'Cancelled tap fired a web');
+ console.log('PASS: split pedals/steering, independent road release, exact screen attachment and canceled tap');
+}

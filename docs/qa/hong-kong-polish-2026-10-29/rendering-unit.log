@@ -1,0 +1,6 @@
+PASS: quality presets refine photographic terrain instead of using one error target for every device
+PASS: anisotropic filtering respects GPU limits and quality changes without replacing authored pixels or mip chains
+PASS: contact shadow volume follows distant players, contains their ground and snaps sub-texel movement
+PASS: real tile renderers preserve photographic parent coverage and let independent structural overlays appear without sibling starvation
+PASS: cache hysteresis prevents repeated blur/sharpen cycles and does not degrade a layer without refused requests
+PASS: constant-grey building textures gain facades and normals; photos, late replacement textures and other maps remain protected

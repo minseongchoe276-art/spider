@@ -1,0 +1,263 @@
+{
+  "animationAssetsRegenerated": false,
+  "total": 89,
+  "finished": 51,
+  "passed": 49,
+  "results": [
+    {
+      "name": "check-motions.mjs",
+      "status": "PASS",
+      "milliseconds": 1713
+    },
+    {
+      "name": "check-pose.mjs",
+      "status": "PASS",
+      "milliseconds": 144888
+    },
+    {
+      "name": "check-controller.mjs",
+      "status": "PASS",
+      "milliseconds": 157
+    },
+    {
+      "name": "check-gameplay.mjs",
+      "status": "PASS",
+      "milliseconds": 958
+    },
+    {
+      "name": "check-air-tricks.mjs",
+      "status": "PASS",
+      "milliseconds": 95
+    },
+    {
+      "name": "check-dual-web.mjs",
+      "status": "PASS",
+      "milliseconds": 123
+    },
+    {
+      "name": "check-pendulum.mjs",
+      "status": "PASS",
+      "milliseconds": 98
+    },
+    {
+      "name": "check-mechanics-audit.mjs",
+      "status": "PASS",
+      "milliseconds": 104
+    },
+    {
+      "name": "check-player-audit.mjs",
+      "status": "PASS",
+      "milliseconds": 129
+    },
+    {
+      "name": "check-traversal.mjs",
+      "status": "PASS",
+      "milliseconds": 1000
+    },
+    {
+      "name": "check-qa.mjs",
+      "status": "PASS",
+      "milliseconds": 267
+    },
+    {
+      "name": "check-review-2.mjs",
+      "status": "PASS",
+      "milliseconds": 375
+    },
+    {
+      "name": "check-combat.mjs",
+      "status": "FAIL",
+      "milliseconds": 52
+    },
+    {
+      "name": "check-web-vfx.mjs",
+      "status": "PASS",
+      "milliseconds": 64
+    },
+    {
+      "name": "check-superhero-landing-vfx.mjs",
+      "status": "PASS",
+      "milliseconds": 74
+    },
+    {
+      "name": "check-combat-rig.mjs",
+      "status": "PASS",
+      "milliseconds": 25921
+    },
+    {
+      "name": "check-motion-timeline.mjs",
+      "status": "PASS",
+      "milliseconds": 9439
+    },
+    {
+      "name": "check-motion-transitions.mjs",
+      "status": "PASS",
+      "milliseconds": 5671
+    },
+    {
+      "name": "check-hong-kong-streaming.mjs",
+      "status": "PASS",
+      "milliseconds": 1008
+    },
+    {
+      "name": "check-minimap.mjs",
+      "status": "PASS",
+      "milliseconds": 94
+    },
+    {
+      "name": "check-remote-motion.mjs",
+      "status": "PASS",
+      "milliseconds": 6153
+    },
+    {
+      "name": "check-tile-textures.mjs",
+      "status": "PASS",
+      "milliseconds": 55
+    },
+    {
+      "name": "check-multiplayer.mjs",
+      "status": "PASS",
+      "milliseconds": 5285
+    },
+    {
+      "name": "check-admin.mjs",
+      "status": "PASS",
+      "milliseconds": 237
+    },
+    {
+      "name": "check-upgrade.mjs",
+      "status": "PASS",
+      "milliseconds": 122
+    },
+    {
+      "name": "check-upgrade-online.mjs",
+      "status": "PASS",
+      "milliseconds": 13179
+    },
+    {
+      "name": "check-release-audit.mjs",
+      "status": "PASS",
+      "milliseconds": 4137
+    },
+    {
+      "name": "check-online-edge-cases.mjs",
+      "status": "PASS",
+      "milliseconds": 100
+    },
+    {
+      "name": "check-room-reconnect.mjs",
+      "status": "PASS",
+      "milliseconds": 1388
+    },
+    {
+      "name": "check-hong-kong-geometry-codec.mjs",
+      "status": "PASS",
+      "milliseconds": 66
+    },
+    {
+      "name": "check-swing-accessibility.mjs",
+      "status": "PASS",
+      "milliseconds": 1175
+    },
+    {
+      "name": "check-cross-system-regressions.mjs",
+      "status": "PASS",
+      "milliseconds": 222
+    },
+    {
+      "name": "check-web-continuity.mjs",
+      "status": "PASS",
+      "milliseconds": 1104
+    },
+    {
+      "name": "check-compact-map-and-locators.mjs",
+      "status": "PASS",
+      "milliseconds": 121
+    },
+    {
+      "name": "check-expert-audit.mjs",
+      "status": "PASS",
+      "milliseconds": 106
+    },
+    {
+      "name": "check-connection-lifecycle.mjs",
+      "status": "PASS",
+      "milliseconds": 88
+    },
+    {
+      "name": "check-camera-motion-web.mjs",
+      "status": "PASS",
+      "milliseconds": 177
+    },
+    {
+      "name": "check-full-game-audit.mjs",
+      "status": "PASS",
+      "milliseconds": 203
+    },
+    {
+      "name": "check-input-lifecycle.mjs",
+      "status": "PASS",
+      "milliseconds": 112
+    },
+    {
+      "name": "check-race-removal.mjs",
+      "status": "PASS",
+      "milliseconds": 41
+    },
+    {
+      "name": "check-session-flow.mjs",
+      "status": "PASS",
+      "milliseconds": 99
+    },
+    {
+      "name": "check-visibility.mjs",
+      "status": "PASS",
+      "milliseconds": 119
+    },
+    {
+      "name": "check-loading-performance.mjs",
+      "status": "FAIL",
+      "milliseconds": 134
+    },
+    {
+      "name": "check-wall-ledge.mjs",
+      "status": "PASS",
+      "milliseconds": 8054
+    },
+    {
+      "name": "check-wall-ledge-rig.mjs",
+      "status": "PASS",
+      "milliseconds": 4179
+    },
+    {
+      "name": "check-all-motions.mjs",
+      "status": "PASS",
+      "milliseconds": 26574
+    },
+    {
+      "name": "check-motion-sources.mjs",
+      "status": "PASS",
+      "milliseconds": 3994
+    },
+    {
+      "name": "check-web-hand-pose.mjs",
+      "status": "PASS",
+      "milliseconds": 27564
+    },
+    {
+      "name": "check-silk-gait.mjs",
+      "status": "PASS",
+      "milliseconds": 163458
+    },
+    {
+      "name": "check-wall-crawl.mjs",
+      "status": "PASS",
+      "milliseconds": 99066
+    },
+    {
+      "name": "check-natural-wall-motion.mjs",
+      "status": "PASS",
+      "milliseconds": 15054
+    }
+  ]
+}

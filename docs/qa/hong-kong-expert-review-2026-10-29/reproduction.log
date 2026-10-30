@@ -1,0 +1,4 @@
+REPRODUCED: a later failed request stays FAILED after five earlier retry cycles, even with an expired retry deadline
+REPRODUCED: reapplying unchanged balanced quality resets adapted error 25 -> 10
+DISTANCE REVIEW: fog retains 97.5% object visibility at 500m; no distance fade masks the stream cutoff
+DISTANCE REVIEW: fog retains 94.4% object visibility at 750m; no distance fade masks the stream cutoff

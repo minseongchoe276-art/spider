@@ -4,10 +4,17 @@ export const COMBAT_GROUND_STATES=Object.freeze(['IDLE','RUNNING','SPRINTING','L
 export function guardedDamage(attacker,defender,kind,now=Date.now()) {
   const base=MATCH[kind]?.damage || 0,pose=defender.pose;
   const guarding=pose?.combat?.key==='guard' && COMBAT_GROUND_STATES.includes(pose.state) &&
-    (pose.combatStance || (defender.team==='runner' && defender.allowRunnerGuard)) &&
+    pose.combatStance && defender.team!=='runner' &&
     now-defender.lastMove<=MATCH.guard.freshnessMs;
   const dx=attacker.x-defender.x,dz=attacker.z-defender.z,d=Math.hypot(dx,dz);
   const front=d>.001 && (dx*Math.sin(defender.facing)+dz*Math.cos(defender.facing))/d>=MATCH.guard.cone;
+  const a=pose?.combat;
+  const evaded=kind==='punch' && COMBAT_GROUND_STATES.includes(pose?.state) &&
+    ['dodgeLeft','dodgeRight','dodgeBack','dodgeForward'].includes(a?.key) &&
+    a.duration>=.3 && a.duration<=.55 && a.time>=a.duration*.12 &&
+    a.time+(now-defender.lastMove)/1000<=a.duration*.82 &&
+    now>=defender.lastMove && now-defender.lastMove<=150;
+  if(evaded)return {damage:0,baseDamage:base,blocked:false,evaded:true};
   const blocked=!!(guarding && front);
   return {damage:blocked?Math.ceil(base*MATCH.guard.damageMultiplier):base,baseDamage:base,blocked};
 }

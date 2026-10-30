@@ -517,14 +517,14 @@ export function plantMovingFeet(c,delta) {
         const forward=new THREE.Vector3(0,0,1).applyQuaternion(c.model.getWorldQuaternion(new THREE.Quaternion())).projectOnPlane(support.normal).normalize();
         // Braking into a full-body punch needs a slightly shorter rear
         // support than a travelling guard, keeping the boot off its outer edge.
-        const strike=!!c.combatAction?.duration && (c.groundMotionVelocity?.lengthSq() || 0)>.0025 && ['jab','cross','hook','heavy','special'].includes(c.combatAction.key);
+        const strike=!!c.combatAction?.duration && (c.groundMotionVelocity?.lengthSq() || 0)>.0025 && ['jab','cross','rightHook','hook','heavy','special'].includes(c.combatAction.key);
         // Compact straights retain the boxing pelvis but inherited the source's
         // long rear reach. A flat sole then required more ankle inversion than
         // the rig allows, so the final joint clamp rolled the entire boot onto
         // its outer edge. Shorten this support at acquisition, never by moving
         // an already planted foot or by relaxing the anatomical joint limit.
         const compactStraight=['jab','cross'].includes(clip.name);
-        plant.position.addScaledVector(forward,clip.name==='special' ? .22 : compactStraight ? .35 : strike ? .22 : .10);
+        plant.position.addScaledVector(forward,clip.name==='special' ? .22 : compactStraight ? .35 : strike ? .22 : ['hook','heavy'].includes(clip.name) ? .12 : .10);
       }
       plant.position.y=surface+0.11;
     }
@@ -782,18 +782,18 @@ export function poseMantle(c,delta) {
     const lift=steppingDown?ease(side==='left'?.16:.30,side==='left'?.40:.54):ease(side==='left'?.2:.43,side==='left'?.5:.65);
     const target=worldPosition(foot);
     if(c.mantleStartFeet?.[side])target.lerpVectors(c.mantleStartFeet[side],target,ease(.12,.4));
-    const roofFoot=plan.edge.clone().addScaledVector(plan.normal,-0.35).addScaledVector(right,sign*0.22);
+    const roofFoot=plan.edge.clone().addScaledVector(plan.normal,-0.35).addScaledVector(right,sign*0.16);
     roofFoot.y=plan.height+0.11;
     if(steppingDown){
       const transfer=ease(side==='left'?.55:.60,side==='left'?.84:.89);
-      roofFoot.x=THREE.MathUtils.lerp(roofFoot.x,plan.end.x+right.x*sign*.22,transfer);
-      roofFoot.z=THREE.MathUtils.lerp(roofFoot.z,plan.end.z+right.z*sign*.22,transfer);
+      roofFoot.x=THREE.MathUtils.lerp(roofFoot.x,plan.end.x+right.x*sign*.16,transfer);
+      roofFoot.z=THREE.MathUtils.lerp(roofFoot.z,plan.end.z+right.z*sign*.16,transfer);
       roofFoot.y=THREE.MathUtils.lerp(plan.height+.11,plan.end.y+.01,ease(.78,1));
-    }else if(t>0.65)roofFoot.lerp(plan.end.clone().addScaledVector(right,sign*0.22).addScaledVector(up,0.01),ease(0.65,1));
+    }else if(t>0.65)roofFoot.lerp(plan.end.clone().addScaledVector(right,sign*0.16).addScaledVector(up,0.01),ease(0.65,1));
     target.lerp(roofFoot,lift);
     if(steppingDown){
       const plant=ease(side==='left'?.40:.54,side==='left'?.48:.62);
-      const facadeFoot=plan.edge.clone().addScaledVector(plan.normal,.09).addScaledVector(right,sign*.22);
+      const facadeFoot=plan.edge.clone().addScaledVector(plan.normal,.09).addScaledVector(right,sign*.16);
       const initial=c.mantleStartFeet?.[side];
       if(initial){
         facadeFoot.x=THREE.MathUtils.lerp(initial.x,facadeFoot.x,ease(0,.2));
@@ -804,10 +804,9 @@ export function poseMantle(c,delta) {
       target.z=THREE.MathUtils.lerp(facadeFoot.z,roofFoot.z,plant);
     }
     const brace=steppingDown?1-ease(.45,.70):0;
-    // Brace knees to each side of the facade rather than folding both legs
-    // straight backwards; draw them forward once the feet clear the lip.
+    // Keep knees in the forward sagittal plane throughout the transfer.
     const kneePole=up.clone().multiplyScalar(.8-.2*brace)
-      .addScaledVector(plan.normal,-.35+.6*brace).addScaledVector(right,sign*(.3+.6*brace));
+      .addScaledVector(plan.normal,-.35+1.1*brace).addScaledVector(right,sign*.12);
     const authoredSole=foot.getWorldQuaternion(new THREE.Quaternion());
     c.solveLimb(hip,knee,foot,target,0.995,kneePole);
     const flat=soleRotation(c,side,up);
@@ -962,7 +961,7 @@ export function heavyClipPhase(t) {
 
 // Dodge, hit, guard and heavy read through the body. The sourced clips for
 // those actions are a still stance, a tiny flinch, or the same hook.
-export function poseCombatLife(c, combat) {
+export function poseCombatLife(c, combat, moving=false) {
   const key = combat?.key;
   if (!key) return;
   if (['hitHead','hitBody','hitHeavy','hitUppercut'].includes(key) && c.actions[key]?.getClip().userData?.authoredMixamo) return;
@@ -1008,7 +1007,9 @@ export function poseCombatLife(c, combat) {
     const drive = visual <= impact ? smooth01(visual / impact) : 1 - smooth01((visual - impact) / Math.max(1 - impact, 0.05));
     const wind = visual < impact ? 1 - drive : 0;
     const yaw = -0.58 * wind + 0.64 * drive;
-    const hip = combat.travel ? 0.16 : 0.4;
+    // A travelling strike layers its pelvis turn into the chest upstream.
+    // Rotating the actual hips here also rotated the carrier legs.
+    const hip = moving || combat.travel ? 0 : 0.4;
     yawWorld(find(c, 'hips'), yaw * hip);
     yawWorld(find(c, 'spine'), yaw * 0.72);
     yawWorld(find(c, 'spine1'), yaw * 0.5);
@@ -1021,7 +1022,7 @@ export function poseCombatLife(c, combat) {
 function strikeDrive(combat) {
   const phase = THREE.MathUtils.clamp((combat.time || 0) / (combat.duration || 1), 0, 1);
   const visual = combat.key === 'heavy' ? heavyClipPhase(phase) : phase;
-  const impact = {jab: 0.28, cross: 0.57, hook: 0.43, heavy: 0.43, special: 0.36}[combat.key] ?? 0.45;
+  const impact = {jab: 0.28, cross: 0.57, rightHook: 0.43, hook: 0.43, heavy: 0.43, special: 0.36}[combat.key] ?? 0.45;
   if (visual <= impact) return smooth01(visual / Math.max(impact, 0.05));
   return 1 - smooth01((visual - impact) / Math.max(1 - impact, 0.05));
 }
@@ -1050,8 +1051,8 @@ function shiftBone(bone, worldDelta) {
 // in, on a point the arm can actually hold.
 export function settleStrikeBalance(c, combat, moving) {
   const key = combat?.key;
-  if(key==='special')return; // The imported rising fist must not be straight-punch IK.
-  if (!combat?.duration || !['jab', 'cross', 'hook', 'heavy', 'special'].includes(key)) return;
+  if(key==='special' || key==='rightHook')return; // Preserve authored rising/curved fist paths.
+  if (!combat?.duration || !['jab', 'cross', 'rightHook', 'hook', 'heavy', 'special'].includes(key)) return;
   const drive = strikeDrive(combat);
   if (drive < 0.02) return;
   const aim = new THREE.Vector3(Math.sin(c.targetFacingAngle || 0), 0, Math.cos(c.targetFacingAngle || 0));
@@ -1059,6 +1060,18 @@ export function settleStrikeBalance(c, combat, moving) {
   const hooking = key === 'hook' || key === 'heavy';
   const authoredStraight=key==='jab'||key==='cross';
   const left = find(c, 'leftshoulder'), right = find(c, 'rightshoulder');
+  if(moving && key==='cross' && left && right){
+    // Rebased source pelvis rotation can swing the running ribcage past the
+    // opponent. Keep the authored arm and the carrier legs, limiting only the
+    // chest's yaw relative to the guard that preceded this moving strike.
+    const across=worldPosition(right).sub(worldPosition(left)),chest=new THREE.Vector3().crossVectors(up,across);
+    const reference=(c.visualYaw||0)+(c.guardChestOffset||0),yaw=Math.atan2(chest.x,chest.z);
+    const turn=Math.atan2(Math.sin(yaw-reference),Math.cos(yaw-reference));
+    // Release the chest correction with the strike envelope. Dropping its
+    // full yaw at the drive cutoff snapped the moving fist during recovery.
+    const recoveryWeight=THREE.MathUtils.smoothstep(drive,.02,.3);
+    yawWorld(find(c,'spine'),(THREE.MathUtils.clamp(turn,-.48,.48)-turn)*recoveryWeight);
+  }
   if (!authoredStraight && left && right) {
     const across = worldPosition(right).sub(worldPosition(left));
     const facing = new THREE.Vector3().crossVectors(up, across);
@@ -1289,5 +1302,50 @@ export function settleHeldStance(c, delta) {
     if (!moved.includes(sample.bone)) continue;
     sample.p.copy(sample.bone.position);
     sample.q.copy(sample.bone.quaternion);
+  }
+}
+
+// A split step follows the existing capsule curve; no gameplay displacement or
+// invulnerability is changed. Solve after ground planting so it cannot erase
+// the lifting foot. Both offsets return to zero before the action releases.
+export function poseDodgeFeet(c, combat, delta=1/60) {
+  const active=!!(combat?.key?.startsWith('dodge') && combat.duration);
+  const root=worldPosition(c.group);
+  if(c.dodgeFootState && (c.dodgeFootState.root.distanceTo(root)>.8 || (active && (c.dodgeFootState.id!==combat.id || combat.time<c.dodgeFootState.time))))c.dodgeFootState=null;
+  if(!active){
+    const state=c.dodgeFootState;if(!state)return;
+    let gap=0;
+    for(const side of ['left','right']){
+      const hip=find(c,side+'upleg'),knee=find(c,side+'leg'),foot=find(c,side+'foot'),last=state.feet[side];if(!hip||!knee||!foot||!last)continue;
+      const target=worldPosition(foot),d=target.clone().sub(last);gap=Math.max(gap,d.length());
+      if(d.length()>3*Math.max(0,delta))target.copy(last).add(d.setLength(3*Math.max(0,delta)));
+      const rotation=foot.getWorldQuaternion(new THREE.Quaternion());c.solveLimb(hip,knee,foot,target,.985);worldRotation(foot,rotation);last.copy(worldPosition(foot));
+    }
+    state.root.copy(root);if(gap<.015)c.dodgeFootState=null;return;
+  }
+  const cache=c.dodgeFootState??={id:combat.id,root:root.clone(),time:combat.time,feet:{}};cache.root.copy(root);cache.time=combat.time;
+  const t=THREE.MathUtils.clamp(combat.time/combat.duration,0,1);
+  const forward=new THREE.Vector3(Math.sin(c.visualYaw||0),0,Math.cos(c.visualYaw||0));
+  const left=new THREE.Vector3(forward.z,0,-forward.x);
+  const direction=combat.key==='dodgeLeft'?left:combat.key==='dodgeRight'?left.clone().negate():forward.clone().multiplyScalar(combat.key==='dodgeBack'?-1:1);
+  const peak={dodgeLeft:.8,dodgeRight:.8,dodgeBack:1.35,dodgeForward:2.3}[combat.key];
+  const travel=peak*combat.duration*2/Math.PI,body=(1-Math.cos(Math.PI*t))*.5;
+  for(const side of ['left','right']){
+    const hip=find(c,side+'upleg'),knee=find(c,side+'leg'),foot=find(c,side+'foot');
+    if(!hip||!knee||!foot)continue;
+    const lead=side===(combat.key==='dodgeRight'||combat.key==='dodgeBack'?'right':'left');
+    const phase=THREE.MathUtils.clamp((t-(lead?.02:.42))/(lead?.52:.55),0,1);
+    const stepped=phase*phase*(3-2*phase);
+    const target=worldPosition(foot).addScaledVector(direction,THREE.MathUtils.clamp((stepped-body)*travel,-.28,.28));
+    const support=footSupport(c,target);if(!support)continue;
+    target.y=Math.max(target.y,support.height+.11)+Math.sin(Math.PI*phase)*.085;
+    const last=cache.feet[side],step=target.clone().sub(last||target);
+    if(last && step.length()>3*Math.max(0,delta))target.copy(last).add(step.setLength(3*Math.max(0,delta)));
+    const rotation=foot.getWorldQuaternion(new THREE.Quaternion());
+    c.solveLimb(hip,knee,foot,target,.985,forward.clone().addScaledVector(left,side==='left'?.15:-.15));
+    worldRotation(foot,rotation);cache.feet[side]=worldPosition(foot);
+    const plant=c.movingPlants?.[side];
+    // A lifted or relocated step is no longer the old support contact.
+    if(plant && (cache.feet[side].y>support.height+.15 || cache.feet[side].distanceTo(plant.position)>.03))delete c.movingPlants[side];
   }
 }

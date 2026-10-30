@@ -9,7 +9,7 @@ import { attachRooms,ROOM_FEATURES } from './rooms.mjs';
 import {assetEncoding} from './asset-encoding.mjs';
 import {releaseIdentity} from './lib/release-identity.mjs';
 
-process.env.GAME_ADMIN_TOKEN ||= 'alalal1010';
+// Administrator access requires an explicitly configured GAME_ADMIN_TOKEN.
 
 // Production assets and an allowlisted, read-only Hong Kong tile proxy.
 const root=fileURLToPath(new URL('../dist/',import.meta.url));

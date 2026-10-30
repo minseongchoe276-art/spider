@@ -1,0 +1,13 @@
+import assert from 'node:assert/strict';
+import * as T from 'three';
+import {collectWalkwayEdges} from '../src/HongKongWalkwayEdges.js';
+import {isVegetationColor,detectCanopyCandidates} from '../src/HongKongVegetation.js';
+import {preparePhotoSurfaceFinish} from '../src/HongKongSurfaceFinish.js';
+const base=new T.Mesh(new T.PlaneGeometry(50,50).rotateX(-Math.PI/2),new T.MeshBasicMaterial());base.updateMatrixWorld(true);
+const deck=new T.Mesh(new T.PlaneGeometry(4,20).rotateX(-Math.PI/2),new T.MeshBasicMaterial());deck.position.y=8;deck.updateMatrixWorld(true);
+const focus=new T.Vector3(0,8,0),edges=collectWalkwayEdges([base,deck],focus);assert.equal(edges.length,2,'Only exposed narrow deck sides get rails, not the broad ground or triangulation seam');
+assert.equal(collectWalkwayEdges([deck],focus).length,0,'An unloaded lower surface must not invent a railing');
+assert(isVegetationColor([50,90,40]));assert(!isVegetationColor([50,55,90]));
+const green={width:1,height:1,data:new Uint8Array([50,90,40,255])};
+assert.equal(detectCanopyCandidates(base,green).length,0,'A green lawn is not a tree');
+const m=new T.MeshBasicMaterial();preparePhotoSurfaceFinish(m);preparePhotoSurfaceFinish(m);assert(m.customProgramCacheKey().includes('photo-surface-finish-v1'));assert(!m.transparent&&m.depthWrite);console.log('PASS: narrow supported walkway edges, no missing-LOD rails, vegetation/lawn separation, idempotent surface finish');

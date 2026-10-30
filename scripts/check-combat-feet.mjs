@@ -30,6 +30,14 @@ for(const fps of [24,60,144])for(const speed of [0,4.4,6.5])for(const key of ['c
     const foot=joint(c,side+'foot'),plant=c.movingPlants?.[side];
     const rotation=foot.quaternion.clone(),last=previous.get(side);
     if(last)maxBootStep=Math.max(maxBootStep,last.angleTo(rotation));previous.set(side,rotation);
+    // Measure the skinned sole in every frame. The ankle/toe skeleton
+    // markers can sit below the visible boot and are not ground contacts.
+    let clearance=Infinity;
+    for(const {mesh,vertex} of soleSamples(c,side)){
+     const p=mesh.localToWorld(mesh.applyBoneTransform(vertex,new T.Vector3().fromBufferAttribute(mesh.geometry.attributes.position,vertex)));
+     clearance=Math.min(clearance,p.y);
+    }
+    minimumSole=Math.min(minimumSole,clearance);
     if(plant?.age>.1){
      const normal=groundSoleNormal(c,side,foot.getWorldQuaternion(new T.Quaternion()));
      const tilt=normal.angleTo(plant.normal)*180/Math.PI;maxContactTilt=Math.max(maxContactTilt,tilt);contacts++;
@@ -44,15 +52,9 @@ for(const fps of [24,60,144])for(const speed of [0,4.4,6.5])for(const key of ['c
       maxLateralRoll=Math.max(maxLateralRoll,Math.abs(Math.asin(T.MathUtils.clamp(normal.dot(lateral),-1,1))*180/Math.PI));
       maxHeelPitch=Math.max(maxHeelPitch,Math.abs(Math.atan2(normal.dot(forward),normal.dot(plant.normal))*180/Math.PI));
      }else maxFlatTilt=Math.max(maxFlatTilt,tilt);
-     let clearance=Infinity;
-     for(const {mesh,vertex} of soleSamples(c,side)){
-      const p=mesh.localToWorld(mesh.applyBoneTransform(vertex,new T.Vector3().fromBufferAttribute(mesh.geometry.attributes.position,vertex)));
-      clearance=Math.min(clearance,p.y); // This test's support plane is y=0.
-     }
      minSkinClearance=Math.min(minSkinClearance,clearance);maxSupportGap=Math.max(maxSupportGap,clearance);
     }
-    const toe=joint(c,side+'toebase');
-    minimumSole=Math.min(minimumSole,point(c,side+'foot').y,toe.getWorldPosition(new T.Vector3()).y);
+
    }
   }
   results.push({fps,speed,key,maxContactTilt,maxFlatTilt,maxLateralRoll,maxHeelPitch,forefootContacts,minSkinClearance,maxSupportGap,maxBootDegreesPerSecond:maxBootStep*fps*180/Math.PI,contacts,minimumSole});
@@ -63,7 +65,7 @@ for(const fps of [24,60,144])for(const speed of [0,4.4,6.5])for(const key of ['c
 // the rear ankle above 0.6m as cached mixer values stopped resetting the IK.
 const heldResults=[];
 if(!process.argv.includes('--continuous-only'))for(const fps of [24,60,144])for(const key of ['combatIdle','jab','cross','hook','special'])for(const phase of [.15,.3,.56,.75,.98]){
- if(caseFilter && !caseFilter.split(',').includes(`${fps}:${speed}:${key}`))continue;
+ if(caseFilter && !caseFilter.split(',').includes(`${fps}:0:${key}`))continue;
  const c=actor(),dt=1/fps,velocity=new T.Vector3();
  try{
   c.combatAction={id:1,key:'jab',time:.58*.72,duration:.72};

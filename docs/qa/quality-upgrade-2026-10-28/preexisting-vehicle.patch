@@ -1,0 +1,275 @@
+diff --git a/src/VehicleAsset.js b/src/VehicleAsset.js
+index 99575d2..29ced34 100644
+--- a/src/VehicleAsset.js
++++ b/src/VehicleAsset.js
+@@ -3,6 +3,12 @@ import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
+ import {clone} from 'three/addons/utils/SkeletonUtils.js';
+ import {fetchAsset} from './AssetLoader.js';
+ import {VEHICLE_IDS} from './VehicleNetwork.js';
++// Per-vehicle physics parameters. VehicleController uses these to set correct
++// collision extents and steering geometry for each model.
++export const VEHICLE_PARAMS={
++ bmw:    {length:4.70,halfLen:2.35,halfWid:1.33,wheelbase:2.80,doorOffset:new T.Vector3(1.65,.1,.15)},
++ corvette:{length:4.46,halfLen:2.23,halfWid:1.33,wheelbase:2.69,doorOffset:new T.Vector3(1.65,.1,-.30)},
++};
+ const cache=new Map(),lateralAxle=new T.Vector3(1,0,0);
+ function normalize(model,length,rotation=0){
+  const frame=new T.Group(),visual=new T.Group();frame.add(visual);visual.add(model);model.rotation.y=rotation;model.updateMatrixWorld(true);
+@@ -170,7 +176,7 @@ function glass(model){model.traverse(n=>{if(n.isMesh){n.castShadow=false;n.recei
+ export function prepareBMW(model){
+  const asset=normalize(model,4.7,-Math.PI/2);asset.frame.name='BMW330i';asset.wheels=wheelPivots(asset,['Object_13_169','Object_13004_172','Object_13001_173','Object_13002_174'].map(name=>model.getObjectByName(name)).filter(Boolean));
+  const door=new T.Group();door.position.set(asset.size.x*.36,.6,.85);asset.visual.add(door);const parts=[];model.traverse(n=>{if(/^SK_Door_FL_/.test(n.name))parts.push(n);});for(const p of parts)door.attach(p);glass(model);
+- const ready={...asset,door,modelId:'bmw',seat:new T.Vector3(.43,.62,.02),pedals:[new T.Vector3(.58,.32,.85),new T.Vector3(.27,.32,.9)],wheel:new T.Vector3(.43,1,.54)};
++ const ready={...asset,door,modelId:'bmw',vehicleParams:VEHICLE_PARAMS.bmw,seat:new T.Vector3(.43,.62,.02),pedals:[new T.Vector3(.58,.32,.85),new T.Vector3(.27,.32,.9)],wheel:new T.Vector3(.43,1,.54)};
+  seatOnTires(ready);return ready;
+ }
+ export function prepareCorvette(model){
+@@ -187,7 +193,7 @@ export function prepareCorvette(model){
+   const part=new T.Mesh(subset(moving),mesh.material);part.position.copy(mesh.position);part.quaternion.copy(mesh.quaternion);part.scale.copy(mesh.scale);mesh.parent.add(part);part.updateWorldMatrix(true,false);door.attach(part);mesh.geometry=subset(closed);
+  }
+  glass(model);
+- const ready={...asset,door,modelId:'corvette',seat:new T.Vector3(.375,.35,-.46),pedals:[new T.Vector3(.52,.18,.33),new T.Vector3(.23,.18,.38)],wheel:new T.Vector3(.375,.73,-.03)};
++ const ready={...asset,door,modelId:'corvette',vehicleParams:VEHICLE_PARAMS.corvette,seat:new T.Vector3(.375,.35,-.25),pedals:[new T.Vector3(.52,.18,.15),new T.Vector3(.23,.18,.20)],wheel:new T.Vector3(.375,.73,.18)};
+  seatOnTires(ready);return ready;
+ }
+ export async function loadVehicle(id='bmw'){
+diff --git a/src/VehicleController.js b/src/VehicleController.js
+index 0fd9aa3..6b7a7c7 100644
+--- a/src/VehicleController.js
++++ b/src/VehicleController.js
+@@ -1,9 +1,12 @@
+ import * as T from 'three';
+ const up=new T.Vector3(0,1,0),down=new T.Vector3(0,-1,0);
+-export const VEHICLE=Object.freeze({length:4.7,width:2.65,wheelbase:2.8,maxSpeed:24,reverseSpeed:6,acceleration:5.8,brake:13,maxSlope:28*Math.PI/180,maxStep:.24,maxSupportWarp:.45,step:1/90});
++export const VEHICLE=Object.freeze({length:4.7,halfLen:2.35,halfWid:1.33,width:2.65,wheelbase:2.8,maxSpeed:24,reverseSpeed:6,acceleration:5.8,brake:13,maxSlope:28*Math.PI/180,maxStep:.24,maxSupportWarp:.45,step:1/90});
+ export class VehicleController{
+- constructor(city,position=new T.Vector3(),yaw=0){this.city=city;this.position=position.clone();this.yaw=yaw;this.speed=0;this.steering=0;this.spin=0;this.accumulator=0;this.velocity=new T.Vector3();this.occupied=()=>false;
++ constructor(city,position=new T.Vector3(),yaw=0,vehicleParams={}){this.city=city;this.position=position.clone();this.yaw=yaw;this.speed=0;this.steering=0;this.spin=0;this.accumulator=0;this.velocity=new T.Vector3();this.occupied=()=>false;
++  // Merge per-vehicle dimensions with defaults so each model has correct physics
++  this.p=Object.assign({},VEHICLE,vehicleParams);
+   const ground=this.support(this.position,yaw);if(ground){this.position.y=ground.height+.02;this.rideY=ground.height;this.pitch=ground.pitch;this.roll=ground.roll;this.contacts=ground.contacts;this.groundPlane=ground;this.supportPosition=this.position.clone();this.supportYaw=yaw;}
++  this.resetRenderPose();
+  }
+  ground(point,spawn=false){return this.groundSample(point,spawn)?.height??null;}
+  groundSample(point,spawn=false){
+@@ -19,12 +22,12 @@ export class VehicleController{
+   // height differences are the road grade, not a step or a bad sample.
+   const slopeZ=(samples[1]+samples[2]-samples[3]-samples[4])/6.2;
+   const slopeX=(samples[2]+samples[4]-samples[1]-samples[3])/3.52;
+-  if(Math.hypot(slopeX,slopeZ)>Math.tan(VEHICLE.maxSlope))return null;
+-  if(Math.max(...samples)-Math.min(...samples)>VEHICLE.maxStep && normals.every(n=>n&&n.y>.999))return null;
++  if(Math.hypot(slopeX,slopeZ)>Math.tan(this.p.maxSlope))return null;
++  if(Math.max(...samples)-Math.min(...samples)>this.p.maxStep && normals.every(n=>n&&n.y>.999))return null;
+   const offsets=[[0,0],[-.88,1.55],[.88,1.55],[-.88,-1.55],[.88,-1.55]];
+   const bases=samples.map((y,i)=>y-slopeX*offsets[i][0]-slopeZ*offsets[i][1]);
+   const median=[...bases].sort((a,b)=>a-b)[2];
+-  if(bases.some(y=>Math.abs(y-median)>VEHICLE.maxSupportWarp))return null;
++  if(bases.some(y=>Math.abs(y-median)>this.p.maxSupportWarp))return null;
+   const height=bases.reduce((a,b)=>a+b,0)/bases.length;
+   if(Math.abs(height-position.y)>.4)return null;
+   return {height,pitch:-Math.atan(slopeZ),roll:Math.atan(slopeX),slopeX,slopeZ,contacts:offsets.slice(1).map(([x,z],i)=>({x,z,y:samples[i+1]}))};
+@@ -36,7 +39,7 @@ export class VehicleController{
+    if(box.maxY<=position.y+.35||box.minY>=position.y+1.5)continue;
+    const dx=(box.minX+box.maxX)/2-position.x,dz=(box.minZ+box.maxZ)/2-position.z,hx=(box.maxX-box.minX)/2,hz=(box.maxZ-box.minZ)/2;
+    if(Math.abs(dx)>hx+3||Math.abs(dz)>hz+3)continue;
+-   const separated=[[1,0],[0,1],[right.x,right.z],[forward.x,forward.z]].some(([x,z])=>Math.abs(dx*x+dz*z)>1.33*Math.abs(right.x*x+right.z*z)+2.35*Math.abs(forward.x*x+forward.z*z)+hx*Math.abs(x)+hz*Math.abs(z)+.025);
++   const separated=[[1,0],[0,1],[right.x,right.z],[forward.x,forward.z]].some(([x,z])=>Math.abs(dx*x+dz*z)>this.p.halfWid*Math.abs(right.x*x+right.z*z)+this.p.halfLen*Math.abs(forward.x*x+forward.z*z)+hx*Math.abs(x)+hz*Math.abs(z)+.025);
+    if(!separated)return true;
+   }return false;
+  }
+@@ -45,26 +48,50 @@ export class VehicleController{
+   const previous=this.supportPosition?.distanceToSquared(from)<1e-10 && this.supportYaw===oldYaw?this.groundPlane:this.support(from,oldYaw);if(!previous)return false;
+   const start=from.clone();start.y=previous.height+.02;
+   if(this.overlapsBuildings(to,yaw)||this.city.collisionWorld?.vehicleBlocked?.(start,to,yaw,ground.pitch,ground.roll,{yaw:oldYaw,pitch:previous.pitch,roll:previous.roll}))return false;
+-  for(const [x,z] of [[-1.33,-2.35],[1.33,-2.35],[-1.33,2.35],[1.33,2.35],[0,0]])for(const height of [.5,1.0]){
++  for(const [x,z] of [[-this.p.halfWid,-this.p.halfLen],[this.p.halfWid,-this.p.halfLen],[-this.p.halfWid,this.p.halfLen],[this.p.halfWid,this.p.halfLen],[0,0]])for(const height of [.5,1.0]){
+    const a=this.bodyPoint(x,height,z,start,oldYaw,previous.pitch,previous.roll),b=this.bodyPoint(x,height,z,to,yaw,ground.pitch,ground.roll),dir=b.sub(a),distance=dir.length();
+    if(distance>.00001&&this.city.raycast?.(a,dir.divideScalar(distance),distance+.025))return false;
+   }
+   return !this.occupied(to,yaw);
+  }
+ 
++ // Keep collision state on its fixed clock; presentation samples the interval
++ // between two completed ticks rather than displaying a staircase at 90 Hz.
++ savePreviousPose(){
++  const previous=this.renderPrevious??={position:new T.Vector3(),contacts:Array.from({length:4},()=>({x:0,z:0,y:0}))};
++  previous.position.copy(this.position);
++  for(const key of ['yaw','spin','steering','pitch','roll'])previous[key]=this[key]||0;
++  previous.rideY=this.rideY??this.position.y-.02;
++  previous.slopeX=this.groundPlane?.slopeX||0;previous.slopeZ=this.groundPlane?.slopeZ||0;
++  for(let i=0;i<4;i++)if(this.contacts?.[i])Object.assign(previous.contacts[i],this.contacts[i]);
++ }
++ resetRenderPose(){
++  this.savePreviousPose();this.accumulator=0;
++  this.renderPose??={position:new T.Vector3(),contacts:Array.from({length:4},()=>({x:0,z:0,y:0})),plane:{slopeX:0,slopeZ:0}};
++ }
++ sampleRenderPose(){
++  const previous=this.renderPrevious,out=this.renderPose,alpha=T.MathUtils.clamp(this.accumulator/this.p.step,0,1);
++  out.position.copy(previous.position).lerp(this.position,alpha);
++  out.yaw=previous.yaw+Math.atan2(Math.sin(this.yaw-previous.yaw),Math.cos(this.yaw-previous.yaw))*alpha;
++  for(const key of ['spin','steering','pitch','roll'])out[key]=T.MathUtils.lerp(previous[key],this[key]||0,alpha);
++  out.rideY=T.MathUtils.lerp(previous.rideY,this.rideY??this.position.y-.02,alpha);
++  for(const key of ['slopeX','slopeZ'])out.plane[key]=T.MathUtils.lerp(previous[key],this.groundPlane?.[key]||0,alpha);
++  for(let i=0;i<4;i++){const current=this.contacts?.[i];if(current){out.contacts[i].x=current.x;out.contacts[i].z=current.z;out.contacts[i].y=T.MathUtils.lerp(previous.contacts[i].y,current.y,alpha);}}
++  return out;
++ }
+  update(delta,input={}){
+   if(!Number.isFinite(delta)||delta<=0)return;this.accumulator+=Math.min(delta,.1);
+-  while(this.accumulator>=VEHICLE.step){this.tick(VEHICLE.step,input);this.accumulator-=VEHICLE.step;}
++  while(this.accumulator>=this.p.step){this.savePreviousPose();this.tick(this.p.step,input);this.accumulator-=this.p.step;}
+  }
+  tick(dt,input){
+   const steer=(input.left?1:0)-(input.right?1:0),target=steer*(.5/(1+Math.abs(this.speed)*.045));this.steering=T.MathUtils.damp(this.steering,target,7,dt);
+   const throttle=(input.forward?1:0)-(input.backward?1:0),braking=(throttle&&Math.sign(throttle)!==Math.sign(this.speed)&&Math.abs(this.speed)>.15)||input.jump;
+   if(input.jump)this.speed=T.MathUtils.damp(this.speed,0,12,dt);
+-  else if(braking){const step=VEHICLE.brake*dt;this.speed=Math.abs(this.speed)<=step?0:this.speed-Math.sign(this.speed)*step;}
+-  else if(throttle)this.speed+=throttle*VEHICLE.acceleration*dt;
++  else if(braking){const step=this.p.brake*dt;this.speed=Math.abs(this.speed)<=step?0:this.speed-Math.sign(this.speed)*step;}
++  else if(throttle)this.speed+=throttle*this.p.acceleration*dt;
+   else this.speed=T.MathUtils.damp(this.speed,0,.7,dt);
+-  this.speed=T.MathUtils.clamp(this.speed,-VEHICLE.reverseSpeed,VEHICLE.maxSpeed);
+-  const yaw=this.yaw+this.speed/VEHICLE.wheelbase*Math.tan(this.steering)*dt,targetPosition=this.position.clone().addScaledVector(new T.Vector3(Math.sin(yaw),0,Math.cos(yaw)),this.speed*dt),ground=this.support(targetPosition,yaw);
++  this.speed=T.MathUtils.clamp(this.speed,-this.p.reverseSpeed,this.p.maxSpeed);
++  const yaw=this.yaw+this.speed/this.p.wheelbase*Math.tan(this.steering)*dt,targetPosition=this.position.clone().addScaledVector(new T.Vector3(Math.sin(yaw),0,Math.cos(yaw)),this.speed*dt),ground=this.support(targetPosition,yaw);
+   if(ground)targetPosition.y=ground.height+.02;
+   if(!ground||!this.clearMove(this.position,this.yaw,targetPosition,yaw,ground)){this.speed=0;this.velocity.set(0,0,0);return;}
+   // Physics follows the fitted road immediately. Only the rendered ride
+diff --git a/src/VehicleNetwork.js b/src/VehicleNetwork.js
+index 1103a79..b37fe3a 100644
+--- a/src/VehicleNetwork.js
++++ b/src/VehicleNetwork.js
+@@ -6,11 +6,13 @@ export function sanitizeVehicle(v){
+  if(!v||!Number.isInteger(v.sequence)||v.sequence<0||v.sequence>2147483647||!phases.has(v.phase))return null;
+  if(v.phase==='NONE')return {phase:'NONE',sequence:v.sequence};
+  if(!VEHICLE_IDS.includes(v.model)||!point(v.position)||!point(v.start)||!point(v.exit))return null;
+- const limits={yaw:Math.PI*2,pitch:.55,roll:.55,speed:24.1,steering:.6,spin:1000000,elapsed:1.5,startYaw:Math.PI*2};
++ // speed: forward max 24 m/s, reverse max -6 m/s — both directions validated
++ const limits={yaw:Math.PI*2,pitch:.55,roll:.55,steering:.6,spin:1000000,elapsed:1.5,startYaw:Math.PI*2};
+  if(Object.entries(limits).some(([k,max])=>!Number.isFinite(v[k])||Math.abs(v[k])>max)||v.elapsed<0)return null;
++ if(!Number.isFinite(v.speed)||v.speed>24.1||v.speed<-6.1)return null;
+  const drops=v.wheelDrops||[0,0,0,0];if(!Array.isArray(drops)||drops.length!==4||drops.some(n=>!Number.isFinite(n)||Math.abs(n)>.2))return null;
+  if(['PARKED','EXITING'].includes(v.phase)&&Math.abs(v.speed)>1.21)return null;
+- return {wheelDrops:drops.slice(),phase:v.phase,sequence:v.sequence,model:v.model,position:point(v.position),start:point(v.start),exit:point(v.exit),...Object.fromEntries(Object.keys(limits).map(k=>[k,v[k]]))};
++ return {wheelDrops:drops.slice(),phase:v.phase,sequence:v.sequence,model:v.model,position:point(v.position),start:point(v.start),exit:point(v.exit),speed:v.speed,...Object.fromEntries(Object.keys(limits).map(k=>[k,v[k]]))};
+ }
+ export function vehicleOverlap(a,b,margin=0){
+  if(!a||!b||a.phase==='NONE'||b.phase==='NONE'||Math.abs(a.position.y-b.position.y)>1.5)return false;
+@@ -33,6 +35,8 @@ export function vehicleUpdateError(next,previous,{player,previousPlayer=player,e
+   if(driving&&travel>Math.min(1,Math.max(.04,elapsed))*28+.5)return 'speed';
+   if(!driving&&next.phase!=='PARKED'&&travel>.15)return 'entry-moved-car';
+   if(next.phase==='PARKED'&&!driving&&travel>.15&&distance(p,player)>55)return 'spawn-distance';
++  // PARKED→PARKED: car must not teleport while no one is driving it
++  if(next.phase==='PARKED'&&previous.phase==='PARKED'&&travel>1.0)return 'parked-moved';
+   if(previous.phase==='PARKED'&&next.phase!=='PARKED'&&distance(previous.position,previousPlayer)>6)return 'entry-distance';
+  }else if(next.phase!=='PARKED')return 'spawn-required';
+  else if(distance(p,player)>55)return 'spawn-distance';
+diff --git a/src/VehicleSystem.js b/src/VehicleSystem.js
+index 8a8df1a..894fbf1 100644
+--- a/src/VehicleSystem.js
++++ b/src/VehicleSystem.js
+@@ -29,17 +29,27 @@ export class VehicleSystem{
+   const actions=document.createElement('div');actions.className='vehicle-actions';actions.append(button,brake);root.append(slots,actions,label);let dock=document.getElementById('game-action-dock');if(!dock){dock=document.createElement('div');dock.id='game-action-dock';const skills=document.getElementById('ability-bar');if(skills)dock.append(skills);document.body.append(dock);}dock.append(root);this.ui={root,label,button,brake,tiles,actionText};
+  }
+  syncUI(active){
+-  if(!this.ui)return;const {root,label,button,brake,tiles,actionText}=this.ui;
+-  for(const [id,tile] of tiles){tile.disabled=this.driving||!!this.loading;tile.setAttribute('aria-pressed',String(id===this.selected));tile.classList.toggle('is-loading',!!this.loading&&id===this.selected);}
+-  root.setAttribute('aria-busy',String(!!this.loading));const name=VEHICLE_LABELS[this.selected];document.body.classList.toggle('vehicle-driving',this.driving);root.hidden=!active||!this.allowed();if(root.hidden){this.brakeHeld=false;return;}
+-  const distance=this.asset?this.physics.position.distanceTo(this.doorPoint()):0;
+-  const direction=this.asset?this.doorPoint().sub(this.physics.position):new T.Vector3(),angle=Math.atan2(direction.x,direction.z)-(this.cameraRig?.yaw||0),arrow=['↑','↖','←','↙','↓','↘','→','↗'][((Math.round(angle/(Math.PI/4))%8)+8)%8];
+-  const status=this.state==='DRIVING'?`${Math.round(Math.abs(this.controller.speed)*3.6)} km/h · W/S 가속·후진 · A/D 조향 · Space 브레이크`:this.state==='ENTERING'?'탑승 중…':this.state==='EXITING'?'하차 중…':this.loading?`${name} 준비 중…`:this.asset?.frame.visible?`${name} · 운전석 ${Math.round(distance)} m ${arrow}`:name;
+-  if(label.textContent!==status)label.textContent=status;
+-  button.disabled=!!this.loading||['ENTERING','EXITING'].includes(this.state);
+-  actionText.textContent=this.loading?'준비 중':this.driving?'하차':this.asset?.frame.visible&&distance<25?'탑승':'불러오기';button.setAttribute('aria-label',`${name} ${actionText.textContent} · B`);brake.hidden=this.state!=='DRIVING';
+-
++  if(!this.ui)return;const {root,label,button,brake,tiles,actionText}=this.ui,shown=this.ui.shown??={};
++  const driving=this.driving,loading=!!this.loading,locked=driving||loading;
++  if(shown.selected!==this.selected||shown.locked!==locked||shown.loading!==loading){
++   for(const [id,tile] of tiles){tile.disabled=locked;tile.setAttribute('aria-pressed',String(id===this.selected));tile.classList.toggle('is-loading',loading&&id===this.selected);}
++   shown.selected=this.selected;shown.locked=locked;
++  }
++  if(shown.loading!==loading){root.setAttribute('aria-busy',String(loading));shown.loading=loading;}
++  if(shown.driving!==driving){document.body.classList.toggle('vehicle-driving',driving);shown.driving=driving;}
++  const hidden=!active||!this.allowed();if(root.hidden!==hidden)root.hidden=hidden;if(hidden){this.brakeHeld=false;return;}
++  const name=VEHICLE_LABELS[this.selected];let distance=0,arrow='';
++  if(!driving&&this.asset?.frame.visible){const direction=this.doorPoint().sub(this.physics.position);distance=direction.length();const angle=Math.atan2(direction.x,direction.z)-(this.cameraRig?.yaw||0);arrow=['↑','↖','←','↙','↓','↘','→','↗'][((Math.round(angle/(Math.PI/4))%8)+8)%8];}
++  const status=this.state==='DRIVING'?`${Math.round(Math.abs(this.controller.speed)*3.6)} km/h · W/S 가속·후진 · A/D 조향 · Space 브레이크`:this.state==='ENTERING'?'탑승 중…':this.state==='EXITING'?'하차 중…':loading?`${name} 준비 중…`:this.asset?.frame.visible?`${name} · 운전석 ${Math.round(distance)} m ${arrow}`:name;
++  // Compare source values, not translated DOM text. Rewriting an unchanged
++  // label every frame also retriggered the English translation observer.
++  if(shown.status!==status){label.textContent=status;shown.status=status;}
++  const disabled=loading||['ENTERING','EXITING'].includes(this.state);if(button.disabled!==disabled)button.disabled=disabled;
++  const action=loading?'준비 중':driving?'하차':this.asset?.frame.visible&&distance<25?'탑승':'불러오기';
++  if(shown.action!==action||shown.actionModel!==this.selected){actionText.textContent=action;button.setAttribute('aria-label',`${name} ${action} · B`);shown.action=action;shown.actionModel=this.selected;}
++  const brakeHidden=this.state!=='DRIVING';if(brake.hidden!==brakeHidden)brake.hidden=brakeHidden;
+  }
++
+  doorPoint(){return this.asset.frame.localToWorld(new T.Vector3(1.65,.1,.15));}
+  async interact(){
+   if(this.loading||['ENTERING','EXITING'].includes(this.state))return false;
+@@ -119,7 +129,7 @@ export class VehicleSystem{
+  exit(){
+   if(Math.abs(this.controller.speed)>1.2){this.onNotice('브레이크로 멈춘 뒤 하차하세요.');return false;}
+   const point=this.findExit();if(!point){this.onNotice('차 옆이 막혀 있습니다. 넓은 곳에 주차한 뒤 하차하세요.');return false;}
+-  this.controller.speed=0;this.controller.velocity.set(0,0,0);this.exitPoint=point;this.state='EXITING';this.time=0;return true;
++  this.controller.speed=0;this.controller.velocity.set(0,0,0);this.controller.resetRenderPose();this.exitPoint=point;this.state='EXITING';this.time=0;return true;
+  }
+  findExit(){
+   for(const [x,z] of [[1.65,.15],[-1.65,.15],[1.65,-1.2],[-1.65,-1.2],[0,-3.2]]){
+@@ -136,17 +146,25 @@ export class VehicleSystem{
+   if(this.savedCamera)Object.assign(this.cameraRig,this.savedCamera);this.cameraRig?.placeBehind(p.position,p.facingAngle,this.savedCamera?.pitch??.16);this.state='PARKED';this.brakeHeld=false;this.onNotice('하차했습니다.');
+  }
+  syncCar(delta){
+-  const {asset,controller:c}=this;if(!asset||!c)return;asset.frame.position.copy(c.position);asset.frame.rotation.y=c.yaw;asset.visual.position.y=(c.rideY??c.position.y-.02)-(c.position.y-.02);asset.visual.rotation.x=delta>0?T.MathUtils.damp(asset.visual.rotation.x,c.pitch||0,14,delta):(c.pitch||0);asset.visual.rotation.z=delta>0?T.MathUtils.damp(asset.visual.rotation.z,c.roll||0,14,delta):(c.roll||0);asset.frame.updateMatrixWorld(true);
+-  poseWheels(asset,c.spin,c.steering,{chassisY:c.position.y,contacts:c.contacts,plane:c.groundPlane,dt:delta});
+-  const open=this.state==='ENTERING'?this.time<.65: this.state==='EXITING';asset.door.rotation.y=T.MathUtils.damp(asset.door.rotation.y,open?-.95:0,10,delta);this.cameraTarget.copy(c.position);
++  const {asset,controller:c}=this;if(!asset||!c)return;
++  const pose=this.state==='DRIVING'&&delta>0?c.sampleRenderPose():c;
++  asset.frame.position.copy(pose.position);asset.frame.rotation.y=pose.yaw;
++  asset.visual.position.y=(pose.rideY??pose.position.y-.02)-(pose.position.y-.02);
++  asset.visual.rotation.x=delta>0?T.MathUtils.damp(asset.visual.rotation.x,pose.pitch||0,14,delta):(pose.pitch||0);
++  asset.visual.rotation.z=delta>0?T.MathUtils.damp(asset.visual.rotation.z,pose.roll||0,14,delta):(pose.roll||0);asset.frame.updateMatrixWorld(true);
++  poseWheels(asset,pose.spin,pose.steering,{chassisY:pose.position.y,contacts:pose.contacts,plane:pose.plane||c.groundPlane,dt:delta});
++  const open=this.state==='ENTERING'?this.time<.65: this.state==='EXITING';asset.door.rotation.y=T.MathUtils.damp(asset.door.rotation.y,open?-.95:0,10,delta);
++  // Camera and driver follow the exact chassis transform submitted to rendering.
++  this.cameraTarget.copy(asset.frame.position);this.cameraTarget.y+=asset.visual.position.y;
+  }
++
+  update(delta,input={},active=true){
+   this.syncUI(active);if(!this.controller)return;
+   if(!this.allowed()){if(this.driving){this.controller.speed=0;this.exitPoint=this.findExit()||this.city.getRooftopSpawn?.()||this.entryStart;this.finishExit();this.syncCar(delta);}this.asset.frame.visible=false;return;}
+   if(!active)return;
+   if(this.driving){
+    this.time+=Math.min(delta,.1);if(this.state==='DRIVING')this.controller.update(delta,{...input,jump:input.jump||this.brakeHeld});this.syncCar(delta);
+-   const p=this.physics;p.position.copy(this.controller.position).addScaledVector(up,.1);p.renderPosition.copy(p.position);p.previousFixedPosition?.copy(p.position);p.velocity.copy(this.controller.velocity);p.accumulator=0;p.facingAngle=this.controller.yaw;p.state='DRIVING';this.city.playerPosition?.copy(p.position);
++   const p=this.physics;p.position.copy(this.controller.position).addScaledVector(up,.1);p.renderPosition.copy(this.cameraTarget).addScaledVector(up,.1);p.previousFixedPosition?.copy(p.position);p.velocity.copy(this.controller.velocity);p.accumulator=0;p.facingAngle=this.controller.yaw;p.state='DRIVING';this.city.playerPosition?.copy(p.position);
+    let blend=1,standing=null;if(this.state==='ENTERING'){blend=smooth(this.time/.9);standing=this.entryStart;if(this.time>=.9)this.state='DRIVING';}else if(this.state==='EXITING'){blend=1-smooth(this.time/.75);standing=this.exitPoint;}
+    poseDriver(this.character,this.asset,this.controller.steering,blend,standing,this.state==='ENTERING'?this.entryFacing:this.controller.yaw);if(this.state==='EXITING'&&this.time>=.75)this.finishExit();
+   }else this.syncCar(delta);
+@@ -172,7 +190,7 @@ export class VehicleSystem{
+  networkSnapshot(){
+   const sequence=++this.sequence;if(!this.asset?.frame.visible||!this.controller)return {phase:'NONE',sequence};
+   const c=this.controller,point=p=>({x:p.x,y:p.y,z:p.z}),angle=a=>Math.atan2(Math.sin(a||0),Math.cos(a||0));
+-  return sanitizeVehicle({wheelDrops:this.asset.wheels.map(w=>w.drop||0),sequence,model:this.selected,phase:this.state,position:point(c.position.clone().addScaledVector(up,this.asset.visual.position.y)),yaw:angle(c.yaw),pitch:this.asset.visual.rotation.x,roll:this.asset.visual.rotation.z,speed:this.state==='PARKED'?0:c.speed,steering:c.steering,spin:c.spin%(Math.PI*2),elapsed:['ENTERING','EXITING'].includes(this.state)?Math.min(1.5,this.time):0,start:point(this.entryStart||this.physics.position),startYaw:angle(this.entryFacing),exit:point(this.exitPoint||this.doorPoint())});
++  return sanitizeVehicle({wheelDrops:this.asset.wheels.map(w=>w.drop||0),sequence,model:this.selected,phase:this.state,position:point(this.asset.visual.getWorldPosition(new T.Vector3())),yaw:angle(c.yaw),pitch:this.asset.visual.rotation.x,roll:this.asset.visual.rotation.z,speed:this.state==='PARKED'?0:c.speed,steering:c.steering,spin:c.spin%(Math.PI*2),elapsed:['ENTERING','EXITING'].includes(this.state)?Math.min(1.5,this.time):0,start:point(this.entryStart||this.physics.position),startYaw:angle(this.entryFacing),exit:point(this.exitPoint||this.doorPoint())});
+  }
+  resetSession(){
+   this.restoreEpoch++;if(this.driving){this.exitPoint=this.findExit()||this.city.getRooftopSpawn?.()||this.entryStart;this.finishExit();}
+@@ -182,16 +200,16 @@ export class VehicleSystem{
+   const v=sanitizeVehicle(snapshot);if(!v||v.phase==='NONE')return;const epoch=++this.restoreEpoch;
+   if(this.asset&&this.selected!==v.model){this.releaseAsset(this.asset);this.asset=null;}
+   this.selected=v.model;if(!this.asset){const asset=await this.loadAsset(v.model);if(this.disposed||epoch!==this.restoreEpoch){this.releaseAsset(asset);return;}this.asset=asset;this.scene.add(asset.frame);}
+-  this.controller=new VehicleController(this.city,new T.Vector3().copy(v.position),v.yaw);this.controller.wheelRadius=this.asset.wheels.reduce((sum,w)=>sum+w.radius,0)/this.asset.wheels.length||.38;Object.assign(this.controller,{speed:0,steering:v.steering,spin:v.spin,pitch:v.pitch,roll:v.roll});this.controller.occupied=(p,yaw)=>this.citizenInBody(p,yaw);this.asset.frame.visible=true;this.sequence=Math.max(this.sequence,v.sequence);this.entryStart=new T.Vector3().copy(v.start);this.entryFacing=v.startYaw;this.exitPoint=new T.Vector3().copy(v.exit);this.time=v.elapsed;this.state=v.phase;
++  this.controller=new VehicleController(this.city,new T.Vector3().copy(v.position),v.yaw);this.controller.wheelRadius=this.asset.wheels.reduce((sum,w)=>sum+w.radius,0)/this.asset.wheels.length||.38;Object.assign(this.controller,{speed:0,steering:v.steering,spin:v.spin,pitch:v.pitch,roll:v.roll});this.controller.occupied=(p,yaw)=>this.citizenInBody(p,yaw);this.controller.resetRenderPose();this.asset.frame.visible=true;this.sequence=Math.max(this.sequence,v.sequence);this.entryStart=new T.Vector3().copy(v.start);this.entryFacing=v.startYaw;this.exitPoint=new T.Vector3().copy(v.exit);this.time=v.elapsed;this.state=v.phase;
+   if(this.driving){prepareDriver(this.character);this.combat?.cancel();this.physics.clearWebAnchor?.();if(this.cameraRig){this.savedCamera=Object.fromEntries(['targetDistance','maxDistance','minDistance','mode','pitch','followMovement','lockBehind'].map(k=>[k,this.cameraRig[k]]));Object.assign(this.cameraRig,{targetDistance:8.5,maxDistance:12,minDistance:3.5,mode:'follow',pitch:.23,followMovement:true,lockBehind:true});}}
+   this.syncCar(0);
+  }
+  applyCorrection(data){
+   if(!this.controller)return false;
+-  if(!Object.hasOwn(data,'vehicle')){if(!this.driving)return false;this.controller.position.set(data.x,data.y-.1,data.z);this.controller.speed=0;this.controller.velocity.set(0,0,0);this.syncCar(0);return true;}
++  if(!Object.hasOwn(data,'vehicle')){if(!this.driving)return false;this.controller.position.set(data.x,data.y-.1,data.z);this.controller.speed=0;this.controller.velocity.set(0,0,0);this.controller.resetRenderPose();this.syncCar(0);return true;}
+   const v=sanitizeVehicle(data.vehicle);if(!v||v.phase==='NONE'){this.resetSession();return false;}
+   if(v.model!==this.selected){this.resetSession();this.restore(v).catch(error=>{this.lastError=error;});return false;}
+-  const wasDriving=this.driving;this.controller.position.copy(v.position);this.controller.yaw=v.yaw;this.controller.speed=0;this.controller.velocity.set(0,0,0);this.sequence=Math.max(this.sequence,v.sequence);
++  const wasDriving=this.driving;this.controller.position.copy(v.position);this.controller.yaw=v.yaw;this.controller.speed=0;this.controller.velocity.set(0,0,0);this.controller.resetRenderPose();this.sequence=Math.max(this.sequence,v.sequence);
+   if(v.phase==='PARKED'){if(wasDriving){this.exitPoint=new T.Vector3(data.x,data.y,data.z);this.finishExit();}this.state='PARKED';this.syncCar(0);return false;}
+   this.state=v.phase;if(!wasDriving)prepareDriver(this.character);this.syncCar(0);this.physics.position.copy(this.controller.position).addScaledVector(up,.1);this.physics.renderPosition.copy(this.physics.position);this.physics.previousFixedPosition?.copy(this.physics.position);this.physics.velocity.set(0,0,0);return true;
+  }

@@ -1,0 +1,400 @@
+{
+  "input": "X switches mode; Ctrl holds stance; Q/E activate directional slips",
+  "punches": [
+    "rightHook",
+    "cross"
+  ],
+  "start": {
+    "t": 21418.59999999404,
+    "scenario": null,
+    "scenarioMs": 0,
+    "dt": 0,
+    "position": [
+      0,
+      20.144,
+      0
+    ],
+    "velocity": [
+      0,
+      -4.433,
+      0
+    ],
+    "acceleration": null,
+    "speed": 4.433,
+    "facing": 0,
+    "state": "FALLING",
+    "grounded": false,
+    "support": null,
+    "animation": "drop",
+    "animationTime": 0.159,
+    "blends": [
+      {
+        "key": "idle",
+        "weight": 0.556,
+        "time": 0
+      },
+      {
+        "key": "walk",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "regularRun",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "run",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "stop",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "runStop",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "zip",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "turnLeft",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "jump",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "turnRight",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "jumpDown",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "drop",
+        "weight": 1,
+        "time": 0.159
+      },
+      {
+        "key": "fall",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "swing",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "jumpDownVariant",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "fallVariant",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "fallIdle",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "roll",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "injuredIdle",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "wall",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "land",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "combatIdle",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "jab",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "guard",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "slamLand",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "hitHead",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "slam",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "rightHook",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "cross",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "hook",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "heavy",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "airTrick",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "backTrick",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "hitBody",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "hitHeavy",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "hitUppercut",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "special",
+        "weight": 1,
+        "time": 0
+      }
+    ],
+    "combatMode": "web",
+    "attack": null,
+    "feet": {
+      "left": {
+        "x": 0.295,
+        "y": 20.576,
+        "z": -0.7,
+        "support": null,
+        "gap": null
+      },
+      "right": {
+        "x": -0.338,
+        "y": 20.475,
+        "z": -0.581,
+        "support": null,
+        "gap": null
+      }
+    },
+    "camera": {
+      "position": [
+        0,
+        22.928,
+        -5.726
+      ],
+      "yaw": 0,
+      "pitch": 0.16,
+      "fov": 64.21114714898417
+    },
+    "webs": [],
+    "swinging": false,
+    "ropeLength": 0,
+    "swingTension": null,
+    "pointerLock": false,
+    "fps": null,
+    "memory": 682929308,
+    "drawCalls": 70,
+    "triangles": 401495,
+    "geometries": 52,
+    "textures": 53,
+    "latencyMs": null,
+    "paused": false,
+    "playing": true
+  },
+  "diagnostics": {
+    "facades": {
+      "meshes": 0,
+      "decorated": 0,
+      "textured": 0,
+      "vertexColored": 0
+    },
+    "city": {
+      "district": {
+        "facades": 6,
+        "windows": 1967,
+        "frameParts": 7868,
+        "trees": 7,
+        "treeStatus": "ready",
+        "source": "Existing workspace tree.glb; authored facade geometry from reviewed local planes",
+        "treeBounds": {
+          "min": [
+            -3.2302865982055664,
+            0,
+            -3.1531896816791614
+          ],
+          "max": [
+            3.3187150955200195,
+            15.945454459568655,
+            3.346383342541217
+          ]
+        },
+        "foliageClusters": 140,
+        "reflection": "local-city-128"
+      },
+      "startSurfaces": {
+        "meshes": 2,
+        "triangles": 57
+      },
+      "layers": [
+        {
+          "surface": "terrain",
+          "errorTarget": 15.625,
+          "distantError": 0,
+          "loadAncestors": true,
+          "loadSiblings": true,
+          "stats": {
+            "inCacheSinceLoad": 33,
+            "inCache": 191,
+            "queued": 20,
+            "downloading": 12,
+            "parsing": 0,
+            "loaded": 159,
+            "failed": 0,
+            "inFrustum": 134,
+            "used": 193,
+            "active": 46,
+            "visible": 17,
+            "refused": 0,
+            "tilesProcessed": 0
+          },
+          "meshes": 38,
+          "shadowCasters": 0,
+          "materials": {
+            "MeshStandardMaterial:texture": 19,
+            "MeshBasicMaterial:texture": 19
+          },
+          "samples": [
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshBasicMaterial",
+              "color": "7c7c7c",
+              "image": {
+                "width": 512,
+                "height": 256,
+                "anisotropy": 8,
+                "minFilter": 1008
+              },
+              "normals": false,
+              "side": 2
+            },
+            {
+              "type": "MeshBasicMaterial",
+              "color": "7c7c7c",
+              "image": {
+                "width": 512,
+                "height": 256,
+                "anisotropy": 8,
+                "minFilter": 1008
+              },
+              "normals": false,
+              "side": 2
+            }
+          ]
+        }
+      ],
+      "cacheBytes": 353142610,
+      "budget": {
+        "maxBytes": 402653184,
+        "minBytes": 221249536,
+        "maxTiles": 2400,
+        "minTiles": 800
+      },
+      "textureFailures": [],
+      "decodedRGBTextures": 0
+    },
+    "programs": 30,
+    "drawCalls": 70,
+    "triangles": 401495,
+    "geometries": 52,
+    "textures": 53,
+    "heap": 623390133
+  },
+  "weather": [
+    "구름 조금",
+    "뇌우",
+    "흐림",
+    "비",
+    "맑음",
+    "안개"
+  ],
+  "errors": []
+}

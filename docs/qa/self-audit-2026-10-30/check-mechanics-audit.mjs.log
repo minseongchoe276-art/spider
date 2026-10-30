@@ -1,0 +1,38 @@
+PASS MECHANICS: A miss clears the old target marker and surface metadata
+PASS MECHANICS: Web reach is measured from the player rather than the camera
+PASS MECHANICS: Historical attachment cannot grant repeated Space jumps in the air
+PASS MECHANICS: Zip arrival without left mouse held releases immediately without generated tangent speed
+PASS MECHANICS: Zip arrival with left mouse held keeps exactly one original tether
+PASS MECHANICS: Zip timeout clears its visible strand and cannot grant a later air jump
+PASS MECHANICS: A wall interrupting a zip removes the persistent web in that physics step
+PASS MECHANICS: Grounded E does not replace a jump with a zip
+PASS MECHANICS: Jumping during a grounded attack cancels it before landing
+PASS MECHANICS: High downward speed is capped before movement rather than after crossing a roof
+PASS MECHANICS: A facade visible to the camera behind an obstacle is not offered as a usable web target
+PASS MECHANICS: Swing facing carries through release rather than turning back to the old ground facing
+Mechanics audit: 12 passed, 2 failed.
+FAIL MECHANICS: Jumping off a live web consumes the jump and the old attachment cannot jump again: The expression evaluated to a falsy value:
+
+  assert(!p.isSwinging)
+
+FAIL MECHANICS: Mouse movement keeps the aim at the fixed center and E uses that aim: The expression evaluated to a falsy value:
+
+  assert(actual?.equals(new THREE.Vector2()))
+
+node:internal/event_target:1101
+  process.nextTick(() => { throw err; });
+                           ^
+
+TypeError: document.querySelector is not a function
+    at get gameplayInputBlocked (file:///Users/choeminseong/Desktop/%E1%84%80%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%B7/src/main.js:732:43)
+    at EventTarget.<anonymous> (file:///Users/choeminseong/Desktop/%E1%84%80%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%B7/src/main.js:434:31)
+    at [nodejs.internal.kHybridDispatch] (node:internal/event_target:827:20)
+    at EventTarget.dispatchEvent (node:internal/event_target:762:26)
+    at key (file:///Users/choeminseong/Desktop/%E1%84%80%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%B7/scripts/check-mechanics-audit.mjs:35:119)
+    at file:///Users/choeminseong/Desktop/%E1%84%80%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%B7/scripts/check-mechanics-audit.mjs:57:27
+    at withInput (file:///Users/choeminseong/Desktop/%E1%84%80%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%B7/scripts/check-mechanics-audit.mjs:36:7)
+    at file:///Users/choeminseong/Desktop/%E1%84%80%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%B7/scripts/check-mechanics-audit.mjs:57:3
+    at check (file:///Users/choeminseong/Desktop/%E1%84%80%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%B7/scripts/check-mechanics-audit.mjs:39:30)
+    at file:///Users/choeminseong/Desktop/%E1%84%80%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%B7/scripts/check-mechanics-audit.mjs:55:1
+
+Node.js v22.19.0

@@ -31,7 +31,12 @@ export function advanceMission(m,{position,state,webs=0,distance=0,safe=false},d
     m.type==='travel'?m.distance>=500:m.type==='discover'?m.found.size>=3:m.type==='technique'&&m.index>=3;
 }
 export function missionFraction(m){
-  return Math.min(1,targetedMission(m.type)?m.index/m.points.length:m.type==='travel'?m.distance/500:m.type==='discover'?m.found.size/3:m.index/3);
+  let fraction;
+  if(targetedMission(m.type))fraction=(m.index+Math.min(1,m.dwell/.6))/Math.max(1,m.points.length);
+  else if(m.type==='travel')fraction=m.distance/500;
+  else if(m.type==='discover')fraction=m.found.size/3;
+  else fraction=(m.index+Math.min(1,m.index===0?m.skillTime/3:m.index===1?m.skillTime:m.dwell/.6))/3;
+  return Math.max(0,Math.min(1,fraction));
 }
 export function completionRecord(m){return {type:m.type,distance:Math.round(m.distance),seconds:Math.round(m.elapsed),sectors:m.found.size};}
 export function validCompletion(value){

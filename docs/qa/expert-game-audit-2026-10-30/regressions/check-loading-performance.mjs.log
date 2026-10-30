@@ -1,0 +1,19 @@
+PASS: bounded parallel loading overlaps requests and processes every item once
+node:internal/modules/run_main:123
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+650 !== 750
+
+    at file:///Users/choeminseong/Desktop/%E1%84%80%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%B7/scripts/check-loading-performance.mjs:23:8 {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: 650,
+  expected: 750,
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+
+Node.js v22.19.0

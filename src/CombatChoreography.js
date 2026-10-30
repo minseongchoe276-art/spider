@@ -92,8 +92,8 @@ export function choreographCombat(base,key,bones,boneId) {
       if(key==='rightHook'){
         // Compact right hook: elbow travels outside, fist arcs across the
         // opponent's jaw, and the left hand stays by the cheek.
-        right=handPath(t,[[0,rightGuard],[.28,v(-.40,1.50,.24)],
-          [impact,v(.02,1.51,.49)],[.73,v(.18,1.48,.47)],[1,rightGuard]]);
+        right=handPath(t,[[0,rightGuard],[.24,v(-.32,1.52,.25)],
+          [impact,v(.02,1.51,.49)],[.70,v(.12,1.50,.47)],[1,rightGuard]]);
       }
       if(key==='special'){
         // A rear-hand overhand: load low, drive up and over the guard,
@@ -110,7 +110,7 @@ export function choreographCombat(base,key,bones,boneId) {
       if(key==='dodgeForward'){left.y-=duck*evade;right.y-=duck*evade;}
       for(const [side,goal,sign] of [['left',left,1],['right',right,-1]]) {
         const hooking=side==='right' && key==='rightHook';
-        const pole=hooking?v(-1,-.10,.12):key==='guard'?v(sign*.26,-1,.22):v(sign*.65,-.75,.05);
+        const pole=hooking?v(-.7,-.15,.22):key==='guard'?v(sign*.26,-1,.22):v(sign*.65,-.75,.05);
         const hand=find(side+'hand');solve(find(side+'arm'),find(side+'forearm'),hand,goal,pole.applyAxisAngle(v(0,1,0),spin));
         // Keep each wrist aligned with its forearm instead of bending the fist
         // backward to preserve the imported take's unrelated hand orientation.

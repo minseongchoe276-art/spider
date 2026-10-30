@@ -4,7 +4,7 @@ import {attachRooms,ROOM_FEATURES} from './rooms.mjs';
 import {HongKongTerrain} from '../supabase/functions/_shared/hong-kong-terrain.js';
 import {releaseIdentity} from './lib/release-identity.mjs';
 
-process.env.GAME_ADMIN_TOKEN ||= 'alalal1010';
+// Administrator access requires an explicitly configured GAME_ADMIN_TOKEN.
 
 // Independent authoritative game service. No Supabase secret is needed:
 // room membership, movement budget, roles and damage belong to this server.

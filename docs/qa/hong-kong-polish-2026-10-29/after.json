@@ -1,0 +1,6341 @@
+{
+  "errors": [],
+  "scope": "Local Chrome, real streamed terrain; not a physical mobile test",
+  "bootMs": 82941,
+  "start": {
+    "t": 82689.59999999404,
+    "scenario": null,
+    "scenarioMs": 0,
+    "dt": 0,
+    "position": [
+      0,
+      20.513,
+      0
+    ],
+    "velocity": [
+      0,
+      0,
+      0
+    ],
+    "acceleration": null,
+    "speed": 0,
+    "facing": 0,
+    "state": "IDLE",
+    "grounded": true,
+    "support": 20.388,
+    "animation": "idle",
+    "animationTime": 0.526,
+    "blends": [
+      {
+        "key": "regularRun",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "walk",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "run",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "idle",
+        "weight": 1,
+        "time": 0.526
+      },
+      {
+        "key": "stop",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "runStop",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "zip",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "turnLeft",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "turnRight",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "jump",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "jumpDown",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "drop",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "jumpDownVariant",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "swing",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "fall",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "fallVariant",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "fallIdle",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "roll",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "injuredIdle",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "wall",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "land",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "combatIdle",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "jab",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "guard",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "hitHead",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "slamLand",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "slam",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "rightHook",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "cross",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "hook",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "heavy",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "airTrick",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "backTrick",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "hitBody",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "hitHeavy",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "hitUppercut",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "special",
+        "weight": 1,
+        "time": 0
+      }
+    ],
+    "combatMode": "web",
+    "attack": null,
+    "feet": {
+      "left": {
+        "x": 0.085,
+        "y": 20.541,
+        "z": 0.327,
+        "support": 20.388,
+        "gap": 0.153
+      },
+      "right": {
+        "x": -0.056,
+        "y": 20.529,
+        "z": -0.319,
+        "support": 20.388,
+        "gap": 0.14
+      }
+    },
+    "camera": {
+      "position": [
+        0,
+        23.137,
+        -5.726
+      ],
+      "yaw": 0,
+      "pitch": 0.16,
+      "fov": 64.04262134904516
+    },
+    "webs": [],
+    "swinging": false,
+    "ropeLength": 0,
+    "swingTension": null,
+    "pointerLock": false,
+    "fps": null,
+    "memory": 594869364,
+    "drawCalls": 95,
+    "triangles": 149486,
+    "geometries": 78,
+    "textures": 71,
+    "latencyMs": null,
+    "paused": false,
+    "playing": true
+  },
+  "movement": {
+    "summary": {
+      "frames": 154,
+      "seconds": 5.141,
+      "travel": 9.51,
+      "start": [
+        0,
+        20.513,
+        0
+      ],
+      "end": [
+        2.057,
+        21.022,
+        9.271
+      ],
+      "maxSpeed": 25.828,
+      "states": [
+        "IDLE",
+        "RUNNING",
+        "JUMPING",
+        "FALLING",
+        "LANDING"
+      ],
+      "animations": [
+        "idle",
+        "walk",
+        "regularRun",
+        "stop",
+        "jump",
+        "drop",
+        "fall",
+        "land"
+      ],
+      "attacks": [],
+      "swingingFrames": 0,
+      "maxWebs": 0,
+      "averageFps": 49.25,
+      "low1Fps": 10,
+      "maxDt": 0.1,
+      "maxDrawCalls": 101,
+      "maxTriangles": 156732,
+      "memoryStart": 601031108,
+      "memoryEnd": 625370854,
+      "pitch": [
+        0.16,
+        0.16
+      ],
+      "yaw": [
+        0,
+        0
+      ]
+    },
+    "samples": [
+      {
+        "t": 89061.59999999404,
+        "scenario": "hong-kong-keyboard",
+        "scenarioMs": 14.899999991059303,
+        "dt": 0.032700000002980234,
+        "position": [
+          0,
+          20.513,
+          0
+        ],
+        "velocity": [
+          0,
+          0,
+          0
+        ],
+        "acceleration": [
+          0,
+          0,
+          0
+        ],
+        "speed": 0,
+        "facing": 0,
+        "state": "IDLE",
+        "grounded": true,
+        "support": 20.388,
+        "animation": "idle",
+        "animationTime": 2.928,
+        "blends": [
+          {
+            "key": "regularRun",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "walk",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "run",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "idle",
+            "weight": 1,
+            "time": 2.928
+          },
+          {
+            "key": "stop",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "runStop",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "zip",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "turnLeft",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "turnRight",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "jump",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "jumpDown",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "drop",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "jumpDownVariant",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "swing",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "fall",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "fallVariant",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "fallIdle",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "roll",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "injuredIdle",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "wall",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "land",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "combatIdle",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "jab",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "guard",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hitHead",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "slamLand",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "slam",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "rightHook",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "cross",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hook",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "heavy",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "airTrick",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "backTrick",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hitBody",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hitHeavy",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hitUppercut",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "special",
+            "weight": 1,
+            "time": 0
+          }
+        ],
+        "combatMode": "web",
+        "attack": null,
+        "feet": {
+          "left": {
+            "x": 0.085,
+            "y": 20.542,
+            "z": 0.327,
+            "support": 20.388,
+            "gap": 0.154
+          },
+          "right": {
+            "x": -0.056,
+            "y": 20.527,
+            "z": -0.319,
+            "support": 20.388,
+            "gap": 0.139
+          }
+        },
+        "camera": {
+          "position": [
+            0,
+            23.137,
+            -5.726
+          ],
+          "yaw": 0,
+          "pitch": 0.16,
+          "fov": 64.00000000000003
+        },
+        "webs": [],
+        "swinging": false,
+        "ropeLength": 0,
+        "swingTension": null,
+        "pointerLock": false,
+        "fps": 30.58,
+        "memory": 601031108,
+        "drawCalls": 95,
+        "triangles": 149486,
+        "geometries": 78,
+        "textures": 71,
+        "latencyMs": null,
+        "paused": false,
+        "playing": true
+      },
+      {
+        "t": 89238.29999999702,
+        "scenario": "hong-kong-keyboard",
+        "scenarioMs": 191.59999999403954,
+        "dt": 0.02529999999701977,
+        "position": [
+          0,
+          20.515,
+          0.024
+        ],
+        "velocity": [
+          0,
+          0.1,
+          1.41
+        ],
+        "acceleration": [
+          0,
+          3.962,
+          55.747
+        ],
+        "speed": 1.414,
+        "facing": 0,
+        "state": "RUNNING",
+        "grounded": true,
+        "support": 20.39,
+        "animation": "walk",
+        "animationTime": 0.017,
+        "blends": [
+          {
+            "key": "regularRun",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "walk",
+            "weight": 0.141,
+            "time": 0.017
+          },
+          {
+            "key": "run",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "idle",
+            "weight": 0.859,
+            "time": 3.087
+          },
+          {
+            "key": "stop",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "runStop",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "zip",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "turnLeft",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "turnRight",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "jump",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "jumpDown",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "drop",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "jumpDownVariant",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "swing",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "fall",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "fallVariant",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "fallIdle",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "roll",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "injuredIdle",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "wall",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "land",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "combatIdle",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "jab",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "guard",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hitHead",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "slamLand",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "slam",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "rightHook",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "cross",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hook",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "heavy",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "airTrick",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "backTrick",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hitBody",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hitHeavy",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hitUppercut",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "special",
+            "weight": 1,
+            "time": 0
+          }
+        ],
+        "combatMode": "web",
+        "attack": null,
+        "feet": {
+          "left": {
+            "x": 0.147,
+            "y": 20.531,
+            "z": 0.274,
+            "support": 20.39,
+            "gap": 0.141
+          },
+          "right": {
+            "x": -0.078,
+            "y": 20.617,
+            "z": -0.254,
+            "support": 20.39,
+            "gap": 0.227
+          }
+        },
+        "camera": {
+          "position": [
+            0,
+            23.138,
+            -5.72
+          ],
+          "yaw": 0,
+          "pitch": 0.16,
+          "fov": 64.00000000000003
+        },
+        "webs": [],
+        "swinging": false,
+        "ropeLength": 0,
+        "swingTension": null,
+        "pointerLock": false,
+        "fps": 39.53,
+        "memory": 601894169,
+        "drawCalls": 95,
+        "triangles": 149486,
+        "geometries": 78,
+        "textures": 71,
+        "latencyMs": null,
+        "paused": false,
+        "playing": true
+      },
+      {
+        "t": 89521.59999999404,
+        "scenario": "hong-kong-keyboard",
+        "scenarioMs": 474.8999999910593,
+        "dt": 0.0395,
+        "position": [
+          0,
+          20.618,
+          1.456
+        ],
+        "velocity": [
+          0,
+          0.467,
+          6.564
+        ],
+        "acceleration": [
+          0,
+          0.357,
+          5.027
+        ],
+        "speed": 6.58,
+        "facing": 0,
+        "state": "RUNNING",
+        "grounded": true,
+        "support": 20.492,
+        "animation": "regularRun",
+        "animationTime": 0.355,
+        "blends": [
+          {
+            "key": "regularRun",
+            "weight": 0.888,
+            "time": 0.355
+          },
+          {
+            "key": "walk",
+            "weight": 0.819,
+            "time": 0
+          },
+          {
+            "key": "run",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "idle",
+            "weight": 0.181,
+            "time": 0
+          },
+          {
+            "key": "stop",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "runStop",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "zip",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "turnLeft",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "turnRight",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "jump",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "jumpDown",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "drop",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "jumpDownVariant",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "swing",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "fall",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "fallVariant",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "fallIdle",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "roll",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "injuredIdle",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "wall",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "land",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "combatIdle",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "jab",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "guard",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hitHead",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "slamLand",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "slam",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "rightHook",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "cross",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hook",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "heavy",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "airTrick",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "backTrick",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hitBody",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hitHeavy",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hitUppercut",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "special",
+            "weight": 1,
+            "time": 0
+          }
+        ],
+        "combatMode": "web",
+        "attack": null,
+        "feet": {
+          "left": {
+            "x": 0.02,
+            "y": 20.67,
+            "z": 1.21,
+            "support": 20.492,
+            "gap": 0.179
+          },
+          "right": {
+            "x": -0.118,
+            "y": 20.86,
+            "z": 1.236,
+            "support": 20.492,
+            "gap": 0.368
+          }
+        },
+        "camera": {
+          "position": [
+            0,
+            23.222,
+            -4.548
+          ],
+          "yaw": 0,
+          "pitch": 0.16,
+          "fov": 64.28303662448444
+        },
+        "webs": [],
+        "swinging": false,
+        "ropeLength": 0,
+        "swingTension": null,
+        "pointerLock": false,
+        "fps": 25.32,
+        "memory": 629823793,
+        "drawCalls": 95,
+        "triangles": 149486,
+        "geometries": 78,
+        "textures": 71,
+        "latencyMs": null,
+        "paused": false,
+        "playing": true
+      },
+      {
+        "t": 89731.29999999702,
+        "scenario": "hong-kong-keyboard",
+        "scenarioMs": 684.5999999940395,
+        "dt": 0.03169999998807907,
+        "position": [
+          0.033,
+          20.721,
+          2.93
+        ],
+        "velocity": [
+          2.66,
+          0,
+          2.023
+        ],
+        "acceleration": [
+          83.921,
+          -15.521,
+          -154.557
+        ],
+        "speed": 3.342,
+        "facing": 0,
+        "state": "RUNNING",
+        "grounded": true,
+        "support": 20.595,
+        "animation": "regularRun",
+        "animationTime": 0.652,
+        "blends": [
+          {
+            "key": "regularRun",
+            "weight": 1,
+            "time": 0.652
+          },
+          {
+            "key": "walk",
+            "weight": 0.819,
+            "time": 0
+          },
+          {
+            "key": "run",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "idle",
+            "weight": 0.181,
+            "time": 0
+          },
+          {
+            "key": "stop",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "runStop",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "zip",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "turnLeft",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "turnRight",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "jump",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "jumpDown",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "drop",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "jumpDownVariant",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "swing",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "fall",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "fallVariant",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "fallIdle",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "roll",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "injuredIdle",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "wall",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "land",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "combatIdle",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "jab",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "guard",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hitHead",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "slamLand",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "slam",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "rightHook",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "cross",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hook",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "heavy",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "airTrick",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "backTrick",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hitBody",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hitHeavy",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hitUppercut",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "special",
+            "weight": 1,
+            "time": 0
+          }
+        ],
+        "combatMode": "web",
+        "attack": null,
+        "feet": {
+          "left": {
+            "x": 0.035,
+            "y": 21.038,
+            "z": 2.642,
+            "support": 20.595,
+            "gap": 0.443
+          },
+          "right": {
+            "x": -0.045,
+            "y": 20.782,
+            "z": 2.831,
+            "support": 20.595,
+            "gap": 0.188
+          }
+        },
+        "camera": {
+          "position": [
+            0.007,
+            23.329,
+            -3.088
+          ],
+          "yaw": 0,
+          "pitch": 0.16,
+          "fov": 64.53414903761376
+        },
+        "webs": [],
+        "swinging": false,
+        "ropeLength": 0,
+        "swingTension": null,
+        "pointerLock": false,
+        "fps": 31.55,
+        "memory": 626854251,
+        "drawCalls": 95,
+        "triangles": 149486,
+        "geometries": 78,
+        "textures": 71,
+        "latencyMs": null,
+        "paused": false,
+        "playing": true
+      },
+      {
+        "t": 89991.59999999404,
+        "scenario": "hong-kong-keyboard",
+        "scenarioMs": 944.8999999910593,
+        "dt": 0.018599999994039537,
+        "position": [
+          0.784,
+          20.753,
+          3.345
+        ],
+        "velocity": [
+          2.901,
+          0.316,
+          1.63
+        ],
+        "acceleration": [
+          -0.078,
+          0.395,
+          0.178
+        ],
+        "speed": 3.343,
+        "facing": 0,
+        "state": "RUNNING",
+        "grounded": true,
+        "support": 20.611,
+        "animation": "regularRun",
+        "animationTime": 0.133,
+        "blends": [
+          {
+            "key": "regularRun",
+            "weight": 1,
+            "time": 0.133
+          },
+          {
+            "key": "walk",
+            "weight": 0.819,
+            "time": 0
+          },
+          {
+            "key": "run",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "idle",
+            "weight": 0.181,
+            "time": 0
+          },
+          {
+            "key": "stop",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "runStop",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "zip",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "turnLeft",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "turnRight",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "jump",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "jumpDown",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "drop",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "jumpDownVariant",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "swing",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "fall",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "fallVariant",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "fallIdle",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "roll",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "injuredIdle",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "wall",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "land",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "combatIdle",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "jab",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "guard",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hitHead",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "slamLand",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "slam",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "rightHook",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "cross",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hook",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "heavy",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "airTrick",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "backTrick",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hitBody",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hitHeavy",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hitUppercut",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "special",
+            "weight": 1,
+            "time": 0
+          }
+        ],
+        "combatMode": "web",
+        "attack": null,
+        "feet": {
+          "left": {
+            "x": 0.791,
+            "y": 21.051,
+            "z": 3.726,
+            "support": 20.611,
+            "gap": 0.44
+          },
+          "right": {
+            "x": 0.574,
+            "y": 20.995,
+            "z": 2.636,
+            "support": 20.611,
+            "gap": 0.384
+          }
+        },
+        "camera": {
+          "position": [
+            0.676,
+            23.368,
+            -2.442
+          ],
+          "yaw": 0,
+          "pitch": 0.16,
+          "fov": 64.11177354408835
+        },
+        "webs": [],
+        "swinging": false,
+        "ropeLength": 0,
+        "swingTension": null,
+        "pointerLock": false,
+        "fps": 53.76,
+        "memory": 638672560,
+        "drawCalls": 95,
+        "triangles": 149486,
+        "geometries": 76,
+        "textures": 70,
+        "latencyMs": null,
+        "paused": false,
+        "playing": true
+      },
+      {
+        "t": 90174.5,
+        "scenario": "hong-kong-keyboard",
+        "scenarioMs": 1127.7999999970198,
+        "dt": 0.020700000002980234,
+        "position": [
+          1.288,
+          20.816,
+          3.634
+        ],
+        "velocity": [
+          2.843,
+          0.341,
+          1.672
+        ],
+        "acceleration": [
+          0.269,
+          -2.294,
+          -0.883
+        ],
+        "speed": 3.316,
+        "facing": 0,
+        "state": "RUNNING",
+        "grounded": true,
+        "support": 20.649,
+        "animation": "regularRun",
+        "animationTime": 0.251,
+        "blends": [
+          {
+            "key": "regularRun",
+            "weight": 1,
+            "time": 0.251
+          },
+          {
+            "key": "walk",
+            "weight": 0.819,
+            "time": 0
+          },
+          {
+            "key": "run",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "idle",
+            "weight": 0.181,
+            "time": 0
+          },
+          {
+            "key": "stop",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "runStop",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "zip",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "turnLeft",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "turnRight",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "jump",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "jumpDown",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "drop",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "jumpDownVariant",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "swing",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "fall",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "fallVariant",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "fallIdle",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "roll",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "injuredIdle",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "wall",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "land",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "combatIdle",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "jab",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "guard",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hitHead",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "slamLand",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "slam",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "rightHook",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "cross",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hook",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "heavy",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "airTrick",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "backTrick",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hitBody",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hitHeavy",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hitUppercut",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "special",
+            "weight": 1,
+            "time": 0
+          }
+        ],
+        "combatMode": "web",
+        "attack": null,
+        "feet": {
+          "left": {
+            "x": 1.251,
+            "y": 21.08,
+            "z": 3.858,
+            "support": 20.649,
+            "gap": 0.431
+          },
+          "right": {
+            "x": 1.141,
+            "y": 21.275,
+            "z": 3.025,
+            "support": 20.649,
+            "gap": 0.626
+          }
+        },
+        "camera": {
+          "position": [
+            1.138,
+            23.421,
+            -2.179
+          ],
+          "yaw": 0,
+          "pitch": 0.16,
+          "fov": 64.03994385713888
+        },
+        "webs": [],
+        "swinging": false,
+        "ropeLength": 0,
+        "swingTension": null,
+        "pointerLock": false,
+        "fps": 48.31,
+        "memory": 626859677,
+        "drawCalls": 95,
+        "triangles": 149486,
+        "geometries": 76,
+        "textures": 70,
+        "latencyMs": null,
+        "paused": false,
+        "playing": true
+      },
+      {
+        "t": 90431,
+        "scenario": "hong-kong-keyboard",
+        "scenarioMs": 1384.2999999970198,
+        "dt": 0.048200000002980234,
+        "position": [
+          1.908,
+          21.063,
+          4.325
+        ],
+        "velocity": [
+          0.947,
+          0.433,
+          5.187
+        ],
+        "acceleration": [
+          -11.168,
+          1.32,
+          21.378
+        ],
+        "speed": 5.29,
+        "facing": 0,
+        "state": "RUNNING",
+        "grounded": true,
+        "support": 20.936,
+        "animation": "regularRun",
+        "animationTime": 0.464,
+        "blends": [
+          {
+            "key": "regularRun",
+            "weight": 1,
+            "time": 0.464
+          },
+          {
+            "key": "walk",
+            "weight": 0.819,
+            "time": 0
+          },
+          {
+            "key": "run",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "idle",
+            "weight": 0.181,
+            "time": 0
+          },
+          {
+            "key": "stop",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "runStop",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "zip",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "turnLeft",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "turnRight",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "jump",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "jumpDown",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "drop",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "jumpDownVariant",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "swing",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "fall",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "fallVariant",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "fallIdle",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "roll",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "injuredIdle",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "wall",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "land",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "combatIdle",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "jab",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "guard",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hitHead",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "slamLand",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "slam",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "rightHook",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "cross",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hook",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "heavy",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "airTrick",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "backTrick",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hitBody",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hitHeavy",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hitUppercut",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "special",
+            "weight": 1,
+            "time": 0
+          }
+        ],
+        "combatMode": "web",
+        "attack": null,
+        "feet": {
+          "left": {
+            "x": 1.912,
+            "y": 21.116,
+            "z": 3.605,
+            "support": 20.936,
+            "gap": 0.179
+          },
+          "right": {
+            "x": 1.794,
+            "y": 21.068,
+            "z": 4.715,
+            "support": 20.936,
+            "gap": 0.132
+          }
+        },
+        "camera": {
+          "position": [
+            1.832,
+            23.631,
+            -1.572
+          ],
+          "yaw": 0,
+          "pitch": 0.16,
+          "fov": 64.00806291292763
+        },
+        "webs": [],
+        "swinging": false,
+        "ropeLength": 0,
+        "swingTension": null,
+        "pointerLock": false,
+        "fps": 20.75,
+        "memory": 659156751,
+        "drawCalls": 95,
+        "triangles": 149486,
+        "geometries": 76,
+        "textures": 70,
+        "latencyMs": null,
+        "paused": false,
+        "playing": true
+      },
+      {
+        "t": 90659.29999999702,
+        "scenario": "hong-kong-keyboard",
+        "scenarioMs": 1612.5999999940395,
+        "dt": 0.03280000001192093,
+        "position": [
+          1.997,
+          21.053,
+          5.787
+        ],
+        "velocity": [
+          0.116,
+          0,
+          6.778
+        ],
+        "acceleration": [
+          -1.237,
+          0,
+          2.368
+        ],
+        "speed": 6.779,
+        "facing": 0,
+        "state": "RUNNING",
+        "grounded": true,
+        "support": 20.928,
+        "animation": "regularRun",
+        "animationTime": 0.075,
+        "blends": [
+          {
+            "key": "regularRun",
+            "weight": 1,
+            "time": 0.075
+          },
+          {
+            "key": "walk",
+            "weight": 0.819,
+            "time": 0
+          },
+          {
+            "key": "run",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "idle",
+            "weight": 0.181,
+            "time": 0
+          },
+          {
+            "key": "stop",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "runStop",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "zip",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "turnLeft",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "turnRight",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "jump",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "jumpDown",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "drop",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "jumpDownVariant",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "swing",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "fall",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "fallVariant",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "fallIdle",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "roll",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "injuredIdle",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "wall",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "land",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "combatIdle",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "jab",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "guard",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hitHead",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "slamLand",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "slam",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "rightHook",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "cross",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hook",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "heavy",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "airTrick",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "backTrick",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hitBody",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hitHeavy",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hitUppercut",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "special",
+            "weight": 1,
+            "time": 0
+          }
+        ],
+        "combatMode": "web",
+        "attack": null,
+        "feet": {
+          "left": {
+            "x": 2.019,
+            "y": 21.14,
+            "z": 5.907,
+            "support": 20.928,
+            "gap": 0.212
+          },
+          "right": {
+            "x": 1.875,
+            "y": 21.147,
+            "z": 5.178,
+            "support": 20.928,
+            "gap": 0.219
+          }
+        },
+        "camera": {
+          "position": [
+            1.987,
+            23.679,
+            -0.247
+          ],
+          "yaw": 0,
+          "pitch": 0.16,
+          "fov": 64.43351167109972
+        },
+        "webs": [],
+        "swinging": false,
+        "ropeLength": 0,
+        "swingTension": null,
+        "pointerLock": false,
+        "fps": 30.49,
+        "memory": 653005492,
+        "drawCalls": 95,
+        "triangles": 149486,
+        "geometries": 76,
+        "textures": 70,
+        "latencyMs": null,
+        "paused": false,
+        "playing": true
+      },
+      {
+        "t": 90863.59999999404,
+        "scenario": "hong-kong-keyboard",
+        "scenarioMs": 1816.8999999910593,
+        "dt": 0.026400000005960465,
+        "position": [
+          2.009,
+          22.524,
+          6.47
+        ],
+        "velocity": [
+          0.032,
+          24.6,
+          1.886
+        ],
+        "acceleration": [
+          -0.008,
+          -26.515,
+          -0.448
+        ],
+        "speed": 24.672,
+        "facing": 0,
+        "state": "JUMPING",
+        "grounded": false,
+        "support": null,
+        "animation": "jump",
+        "animationTime": 0.061,
+        "blends": [
+          {
+            "key": "regularRun",
+            "weight": 0.164,
+            "time": 0
+          },
+          {
+            "key": "walk",
+            "weight": 0.819,
+            "time": 0
+          },
+          {
+            "key": "run",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "idle",
+            "weight": 0.181,
+            "time": 0
+          },
+          {
+            "key": "stop",
+            "weight": 0.836,
+            "time": 0
+          },
+          {
+            "key": "runStop",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "zip",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "turnLeft",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "turnRight",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "jump",
+            "weight": 0.512,
+            "time": 0.061
+          },
+          {
+            "key": "jumpDown",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "drop",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "jumpDownVariant",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "swing",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "fall",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "fallVariant",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "fallIdle",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "roll",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "injuredIdle",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "wall",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "land",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "combatIdle",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "jab",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "guard",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hitHead",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "slamLand",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "slam",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "rightHook",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "cross",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hook",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "heavy",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "airTrick",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "backTrick",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hitBody",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hitHeavy",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hitUppercut",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "special",
+            "weight": 1,
+            "time": 0
+          }
+        ],
+        "combatMode": "web",
+        "attack": null,
+        "feet": {
+          "left": {
+            "x": 2.017,
+            "y": 22.752,
+            "z": 6.768,
+            "support": null,
+            "gap": null
+          },
+          "right": {
+            "x": 1.942,
+            "y": 22.707,
+            "z": 6.261,
+            "support": null,
+            "gap": null
+          }
+        },
+        "camera": {
+          "position": [
+            2.007,
+            24.43,
+            0.64
+          ],
+          "yaw": 0,
+          "pitch": 0.16,
+          "fov": 67.7972037197433
+        },
+        "webs": [],
+        "swinging": false,
+        "ropeLength": 0,
+        "swingTension": null,
+        "pointerLock": false,
+        "fps": 37.88,
+        "memory": 659558213,
+        "drawCalls": 95,
+        "triangles": 149486,
+        "geometries": 76,
+        "textures": 70,
+        "latencyMs": null,
+        "paused": false,
+        "playing": true
+      },
+      {
+        "t": 91019.5,
+        "scenario": "hong-kong-keyboard",
+        "scenarioMs": 1972.7999999970198,
+        "dt": 0.0175,
+        "position": [
+          2.014,
+          26.05,
+          6.763
+        ],
+        "velocity": [
+          0.031,
+          20.167,
+          1.813
+        ],
+        "acceleration": [
+          -0.007,
+          -26.667,
+          -0.433
+        ],
+        "speed": 20.248,
+        "facing": 0,
+        "state": "JUMPING",
+        "grounded": false,
+        "support": null,
+        "animation": "jump",
+        "animationTime": 0.217,
+        "blends": [
+          {
+            "key": "regularRun",
+            "weight": 0.164,
+            "time": 0
+          },
+          {
+            "key": "walk",
+            "weight": 0.819,
+            "time": 0
+          },
+          {
+            "key": "run",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "idle",
+            "weight": 0.181,
+            "time": 0
+          },
+          {
+            "key": "stop",
+            "weight": 0.836,
+            "time": 0
+          },
+          {
+            "key": "runStop",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "zip",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "turnLeft",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "turnRight",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "jump",
+            "weight": 1,
+            "time": 0.217
+          },
+          {
+            "key": "jumpDown",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "drop",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "jumpDownVariant",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "swing",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "fall",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "fallVariant",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "fallIdle",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "roll",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "injuredIdle",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "wall",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "land",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "combatIdle",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "jab",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "guard",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hitHead",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "slamLand",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "slam",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "rightHook",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "cross",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hook",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "heavy",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "airTrick",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "backTrick",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hitBody",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hitHeavy",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hitUppercut",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "special",
+            "weight": 1,
+            "time": 0
+          }
+        ],
+        "combatMode": "web",
+        "attack": null,
+        "feet": {
+          "left": {
+            "x": 1.961,
+            "y": 26.465,
+            "z": 7.084,
+            "support": null,
+            "gap": null
+          },
+          "right": {
+            "x": 1.78,
+            "y": 26.384,
+            "z": 6.558,
+            "support": null,
+            "gap": null
+          }
+        },
+        "camera": {
+          "position": [
+            2.012,
+            27.608,
+            0.943
+          ],
+          "yaw": 0,
+          "pitch": 0.16,
+          "fov": 71.57840652642446
+        },
+        "webs": [],
+        "swinging": false,
+        "ropeLength": 0,
+        "swingTension": null,
+        "pointerLock": false,
+        "fps": 57.14,
+        "memory": 640959572,
+        "drawCalls": 95,
+        "triangles": 149486,
+        "geometries": 76,
+        "textures": 70,
+        "latencyMs": null,
+        "paused": false,
+        "playing": true
+      },
+      {
+        "t": 91159.20000000298,
+        "scenario": "hong-kong-keyboard",
+        "scenarioMs": 2112.5,
+        "dt": 0.01720000000298023,
+        "position": [
+          2.018,
+          28.609,
+          7.015
+        ],
+        "velocity": [
+          0.03,
+          16.2,
+          1.75
+        ],
+        "acceleration": [
+          -0.011,
+          -40.698,
+          -0.638
+        ],
+        "speed": 16.294,
+        "facing": 0,
+        "state": "JUMPING",
+        "grounded": false,
+        "support": null,
+        "animation": "jump",
+        "animationTime": 0.356,
+        "blends": [
+          {
+            "key": "regularRun",
+            "weight": 0.164,
+            "time": 0
+          },
+          {
+            "key": "walk",
+            "weight": 0.819,
+            "time": 0
+          },
+          {
+            "key": "run",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "idle",
+            "weight": 0.181,
+            "time": 0
+          },
+          {
+            "key": "stop",
+            "weight": 0.836,
+            "time": 0
+          },
+          {
+            "key": "runStop",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "zip",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "turnLeft",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "turnRight",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "jump",
+            "weight": 1,
+            "time": 0.356
+          },
+          {
+            "key": "jumpDown",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "drop",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "jumpDownVariant",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "swing",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "fall",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "fallVariant",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "fallIdle",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "roll",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "injuredIdle",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "wall",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "land",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "combatIdle",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "jab",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "guard",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hitHead",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "slamLand",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "slam",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "rightHook",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "cross",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hook",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "heavy",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "airTrick",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "backTrick",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hitBody",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hitHeavy",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hitUppercut",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "special",
+            "weight": 1,
+            "time": 0
+          }
+        ],
+        "combatMode": "web",
+        "attack": null,
+        "feet": {
+          "left": {
+            "x": 2.05,
+            "y": 28.69,
+            "z": 7.336,
+            "support": null,
+            "gap": null
+          },
+          "right": {
+            "x": 1.756,
+            "y": 28.687,
+            "z": 6.64,
+            "support": null,
+            "gap": null
+          }
+        },
+        "camera": {
+          "position": [
+            2.017,
+            30.261,
+            1.191
+          ],
+          "yaw": 0,
+          "pitch": 0.16,
+          "fov": 71.5809270177825
+        },
+        "webs": [],
+        "swinging": false,
+        "ropeLength": 0,
+        "swingTension": null,
+        "pointerLock": false,
+        "fps": 58.14,
+        "memory": 656303135,
+        "drawCalls": 96,
+        "triangles": 153481,
+        "geometries": 77,
+        "textures": 71,
+        "latencyMs": null,
+        "paused": false,
+        "playing": true
+      },
+      {
+        "t": 91702.29999999702,
+        "scenario": "hong-kong-keyboard",
+        "scenarioMs": 2655.5999999940395,
+        "dt": 0.016899999991059303,
+        "position": [
+          2.025,
+          31.678,
+          7.425
+        ],
+        "velocity": [
+          0.028,
+          9.433,
+          1.647
+        ],
+        "acceleration": [
+          -0.007,
+          -27.613,
+          -0.407
+        ],
+        "speed": 9.576,
+        "facing": 0,
+        "state": "JUMPING",
+        "grounded": false,
+        "support": null,
+        "animation": "jump",
+        "animationTime": 0.6,
+        "blends": [
+          {
+            "key": "regularRun",
+            "weight": 0.164,
+            "time": 0
+          },
+          {
+            "key": "walk",
+            "weight": 0.819,
+            "time": 0
+          },
+          {
+            "key": "run",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "idle",
+            "weight": 0.181,
+            "time": 0
+          },
+          {
+            "key": "stop",
+            "weight": 0.836,
+            "time": 0
+          },
+          {
+            "key": "runStop",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "zip",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "turnLeft",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "turnRight",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "jump",
+            "weight": 1,
+            "time": 0.6
+          },
+          {
+            "key": "jumpDown",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "drop",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "jumpDownVariant",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "swing",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "fall",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "fallVariant",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "fallIdle",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "roll",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "injuredIdle",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "wall",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "land",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "combatIdle",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "jab",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "guard",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hitHead",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "slamLand",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "slam",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "rightHook",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "cross",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hook",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "heavy",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "airTrick",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "backTrick",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hitBody",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hitHeavy",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hitUppercut",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "special",
+            "weight": 1,
+            "time": 0
+          }
+        ],
+        "combatMode": "web",
+        "attack": null,
+        "feet": {
+          "left": {
+            "x": 2.02,
+            "y": 32.228,
+            "z": 7.815,
+            "support": null,
+            "gap": null
+          },
+          "right": {
+            "x": 1.738,
+            "y": 32.242,
+            "z": 7.153,
+            "support": null,
+            "gap": null
+          }
+        },
+        "camera": {
+          "position": [
+            2.024,
+            33.812,
+            1.622
+          ],
+          "yaw": 0,
+          "pitch": 0.16,
+          "fov": 68.58926618099953
+        },
+        "webs": [],
+        "swinging": false,
+        "ropeLength": 0,
+        "swingTension": null,
+        "pointerLock": false,
+        "fps": 59.17,
+        "memory": 667625799,
+        "drawCalls": 95,
+        "triangles": 149486,
+        "geometries": 77,
+        "textures": 71,
+        "latencyMs": null,
+        "paused": false,
+        "playing": true
+      },
+      {
+        "t": 92773.09999999404,
+        "scenario": "hong-kong-keyboard",
+        "scenarioMs": 3726.3999999910593,
+        "dt": 0.016100000008940695,
+        "position": [
+          2.031,
+          33.012,
+          7.759
+        ],
+        "velocity": [
+          0.027,
+          3.6,
+          1.563
+        ],
+        "acceleration": [
+          -0.003,
+          -14.493,
+          -0.203
+        ],
+        "speed": 3.925,
+        "facing": 0,
+        "state": "JUMPING",
+        "grounded": false,
+        "support": null,
+        "animation": "jump",
+        "animationTime": 0.6,
+        "blends": [
+          {
+            "key": "regularRun",
+            "weight": 0.164,
+            "time": 0
+          },
+          {
+            "key": "walk",
+            "weight": 0.819,
+            "time": 0
+          },
+          {
+            "key": "run",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "idle",
+            "weight": 0.181,
+            "time": 0
+          },
+          {
+            "key": "stop",
+            "weight": 0.836,
+            "time": 0
+          },
+          {
+            "key": "runStop",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "zip",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "turnLeft",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "turnRight",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "jump",
+            "weight": 1,
+            "time": 0.6
+          },
+          {
+            "key": "jumpDown",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "drop",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "jumpDownVariant",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "swing",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "fall",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "fallVariant",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "fallIdle",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "roll",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "injuredIdle",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "wall",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "land",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "combatIdle",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "jab",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "guard",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hitHead",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "slamLand",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "slam",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "rightHook",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "cross",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hook",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "heavy",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "airTrick",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "backTrick",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hitBody",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hitHeavy",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hitUppercut",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "special",
+            "weight": 1,
+            "time": 0
+          }
+        ],
+        "combatMode": "web",
+        "attack": null,
+        "feet": {
+          "left": {
+            "x": 2.026,
+            "y": 33.613,
+            "z": 8.157,
+            "support": null,
+            "gap": null
+          },
+          "right": {
+            "x": 1.744,
+            "y": 33.627,
+            "z": 7.496,
+            "support": null,
+            "gap": null
+          }
+        },
+        "camera": {
+          "position": [
+            2.03,
+            35.43,
+            1.966
+          ],
+          "yaw": 0,
+          "pitch": 0.16,
+          "fov": 65.46678502193284
+        },
+        "webs": [],
+        "swinging": false,
+        "ropeLength": 0,
+        "swingTension": null,
+        "pointerLock": false,
+        "fps": 62.11,
+        "memory": 681769800,
+        "drawCalls": 95,
+        "triangles": 149486,
+        "geometries": 77,
+        "textures": 71,
+        "latencyMs": null,
+        "paused": false,
+        "playing": true
+      },
+      {
+        "t": 92904,
+        "scenario": "hong-kong-keyboard",
+        "scenarioMs": 3857.2999999970198,
+        "dt": 0.010400000005960464,
+        "position": [
+          2.035,
+          33.227,
+          7.964
+        ],
+        "velocity": [
+          0.026,
+          -0.133,
+          1.512
+        ],
+        "acceleration": [
+          -0.005,
+          -22.436,
+          -0.304
+        ],
+        "speed": 1.518,
+        "facing": 0,
+        "state": "FALLING",
+        "grounded": false,
+        "support": null,
+        "animation": "drop",
+        "animationTime": 0.01,
+        "blends": [
+          {
+            "key": "regularRun",
+            "weight": 0.164,
+            "time": 0
+          },
+          {
+            "key": "walk",
+            "weight": 0.819,
+            "time": 0
+          },
+          {
+            "key": "run",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "idle",
+            "weight": 0.181,
+            "time": 0
+          },
+          {
+            "key": "stop",
+            "weight": 0.836,
+            "time": 0
+          },
+          {
+            "key": "runStop",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "zip",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "turnLeft",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "turnRight",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "jump",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "jumpDown",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "drop",
+            "weight": 0.087,
+            "time": 0.01
+          },
+          {
+            "key": "jumpDownVariant",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "swing",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "fall",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "fallVariant",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "fallIdle",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "roll",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "injuredIdle",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "wall",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "land",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "combatIdle",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "jab",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "guard",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hitHead",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "slamLand",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "slam",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "rightHook",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "cross",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hook",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "heavy",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "airTrick",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "backTrick",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hitBody",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hitHeavy",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hitUppercut",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "special",
+            "weight": 1,
+            "time": 0
+          }
+        ],
+        "combatMode": "web",
+        "attack": null,
+        "feet": {
+          "left": {
+            "x": 2.122,
+            "y": 33.787,
+            "z": 8.364,
+            "support": null,
+            "gap": null
+          },
+          "right": {
+            "x": 1.753,
+            "y": 33.8,
+            "z": 7.693,
+            "support": null,
+            "gap": null
+          }
+        },
+        "camera": {
+          "position": [
+            2.033,
+            35.792,
+            2.165
+          ],
+          "yaw": 0,
+          "pitch": 0.16,
+          "fov": 64.65920082148065
+        },
+        "webs": [],
+        "swinging": false,
+        "ropeLength": 0,
+        "swingTension": null,
+        "pointerLock": false,
+        "fps": 96.15,
+        "memory": 697825961,
+        "drawCalls": 95,
+        "triangles": 149486,
+        "geometries": 77,
+        "textures": 71,
+        "latencyMs": null,
+        "paused": false,
+        "playing": true
+      },
+      {
+        "t": 93073.20000000298,
+        "scenario": "hong-kong-keyboard",
+        "scenarioMs": 4026.5,
+        "dt": 0.010099999994039535,
+        "position": [
+          2.039,
+          32.755,
+          8.222
+        ],
+        "velocity": [
+          0.025,
+          -5.033,
+          1.447
+        ],
+        "acceleration": [
+          -0.005,
+          -23.102,
+          -0.299
+        ],
+        "speed": 5.237,
+        "facing": 0,
+        "state": "FALLING",
+        "grounded": false,
+        "support": null,
+        "animation": "drop",
+        "animationTime": 0.18,
+        "blends": [
+          {
+            "key": "regularRun",
+            "weight": 0.164,
+            "time": 0
+          },
+          {
+            "key": "walk",
+            "weight": 0.819,
+            "time": 0
+          },
+          {
+            "key": "run",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "idle",
+            "weight": 0.181,
+            "time": 0
+          },
+          {
+            "key": "stop",
+            "weight": 0.836,
+            "time": 0
+          },
+          {
+            "key": "runStop",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "zip",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "turnLeft",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "turnRight",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "jump",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "jumpDown",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "drop",
+            "weight": 1,
+            "time": 0.18
+          },
+          {
+            "key": "jumpDownVariant",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "swing",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "fall",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "fallVariant",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "fallIdle",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "roll",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "injuredIdle",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "wall",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "land",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "combatIdle",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "jab",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "guard",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hitHead",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "slamLand",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "slam",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "rightHook",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "cross",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hook",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "heavy",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "airTrick",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "backTrick",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hitBody",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hitHeavy",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hitUppercut",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "special",
+            "weight": 1,
+            "time": 0
+          }
+        ],
+        "combatMode": "web",
+        "attack": null,
+        "feet": {
+          "left": {
+            "x": 2.339,
+            "y": 33.219,
+            "z": 7.525,
+            "support": null,
+            "gap": null
+          },
+          "right": {
+            "x": 1.695,
+            "y": 33.108,
+            "z": 7.655,
+            "support": null,
+            "gap": null
+          }
+        },
+        "camera": {
+          "position": [
+            2.038,
+            35.566,
+            2.421
+          ],
+          "yaw": 0,
+          "pitch": 0.16,
+          "fov": 64.23841866496684
+        },
+        "webs": [],
+        "swinging": false,
+        "ropeLength": 0,
+        "swingTension": null,
+        "pointerLock": false,
+        "fps": 99.01,
+        "memory": 678144101,
+        "drawCalls": 95,
+        "triangles": 149486,
+        "geometries": 77,
+        "textures": 71,
+        "latencyMs": null,
+        "paused": false,
+        "playing": true
+      },
+      {
+        "t": 93217.70000000298,
+        "scenario": "hong-kong-keyboard",
+        "scenarioMs": 4171,
+        "dt": 0.015700000002980233,
+        "position": [
+          2.042,
+          31.744,
+          8.424
+        ],
+        "velocity": [
+          0.024,
+          -9,
+          1.397
+        ],
+        "acceleration": [
+          -0.006,
+          -29.724,
+          -0.372
+        ],
+        "speed": 9.108,
+        "facing": 0,
+        "state": "FALLING",
+        "grounded": false,
+        "support": null,
+        "animation": "fall",
+        "animationTime": 0.086,
+        "blends": [
+          {
+            "key": "regularRun",
+            "weight": 0.164,
+            "time": 0
+          },
+          {
+            "key": "walk",
+            "weight": 0.819,
+            "time": 0
+          },
+          {
+            "key": "run",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "idle",
+            "weight": 0.181,
+            "time": 0
+          },
+          {
+            "key": "stop",
+            "weight": 0.836,
+            "time": 0
+          },
+          {
+            "key": "runStop",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "zip",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "turnLeft",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "turnRight",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "jump",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "jumpDown",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "drop",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "jumpDownVariant",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "swing",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "fall",
+            "weight": 0.718,
+            "time": 0.086
+          },
+          {
+            "key": "fallVariant",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "fallIdle",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "roll",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "injuredIdle",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "wall",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "land",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "combatIdle",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "jab",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "guard",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hitHead",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "slamLand",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "slam",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "rightHook",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "cross",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hook",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "heavy",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "airTrick",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "backTrick",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hitBody",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hitHeavy",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hitUppercut",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "special",
+            "weight": 1,
+            "time": 0
+          }
+        ],
+        "combatMode": "web",
+        "attack": null,
+        "feet": {
+          "left": {
+            "x": 2.171,
+            "y": 32.2,
+            "z": 8.456,
+            "support": null,
+            "gap": null
+          },
+          "right": {
+            "x": 1.946,
+            "y": 32.217,
+            "z": 8.314,
+            "support": null,
+            "gap": null
+          }
+        },
+        "camera": {
+          "position": [
+            2.041,
+            34.738,
+            2.628
+          ],
+          "yaw": 0,
+          "pitch": 0.16,
+          "fov": 64.86323820354103
+        },
+        "webs": [],
+        "swinging": false,
+        "ropeLength": 0,
+        "swingTension": null,
+        "pointerLock": false,
+        "fps": 63.69,
+        "memory": 696055405,
+        "drawCalls": 95,
+        "triangles": 149486,
+        "geometries": 77,
+        "textures": 71,
+        "latencyMs": null,
+        "paused": false,
+        "playing": true
+      },
+      {
+        "t": 93375.40000000596,
+        "scenario": "hong-kong-keyboard",
+        "scenarioMs": 4328.70000000298,
+        "dt": 0.016600000008940696,
+        "position": [
+          2.046,
+          30.062,
+          8.629
+        ],
+        "velocity": [
+          0.023,
+          -13.2,
+          1.345
+        ],
+        "acceleration": [
+          -0.006,
+          -28.112,
+          -0.339
+        ],
+        "speed": 13.268,
+        "facing": 0,
+        "state": "FALLING",
+        "grounded": false,
+        "support": null,
+        "animation": "fall",
+        "animationTime": 0.238,
+        "blends": [
+          {
+            "key": "regularRun",
+            "weight": 0.164,
+            "time": 0
+          },
+          {
+            "key": "walk",
+            "weight": 0.819,
+            "time": 0
+          },
+          {
+            "key": "run",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "idle",
+            "weight": 0.181,
+            "time": 0
+          },
+          {
+            "key": "stop",
+            "weight": 0.836,
+            "time": 0
+          },
+          {
+            "key": "runStop",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "zip",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "turnLeft",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "turnRight",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "jump",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "jumpDown",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "drop",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "jumpDownVariant",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "swing",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "fall",
+            "weight": 1,
+            "time": 0.238
+          },
+          {
+            "key": "fallVariant",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "fallIdle",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "roll",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "injuredIdle",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "wall",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "land",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "combatIdle",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "jab",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "guard",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hitHead",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "slamLand",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "slam",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "rightHook",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "cross",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hook",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "heavy",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "airTrick",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "backTrick",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hitBody",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hitHeavy",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hitUppercut",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "special",
+            "weight": 1,
+            "time": 0
+          }
+        ],
+        "combatMode": "web",
+        "attack": null,
+        "feet": {
+          "left": {
+            "x": 2.037,
+            "y": 30.697,
+            "z": 8.752,
+            "support": null,
+            "gap": null
+          },
+          "right": {
+            "x": 1.943,
+            "y": 30.724,
+            "z": 8.582,
+            "support": null,
+            "gap": null
+          }
+        },
+        "camera": {
+          "position": [
+            2.045,
+            33.241,
+            2.839
+          ],
+          "yaw": 0,
+          "pitch": 0.16,
+          "fov": 66.65699372711278
+        },
+        "webs": [],
+        "swinging": false,
+        "ropeLength": 0,
+        "swingTension": null,
+        "pointerLock": false,
+        "fps": 60.24,
+        "memory": 708414878,
+        "drawCalls": 95,
+        "triangles": 149486,
+        "geometries": 77,
+        "textures": 71,
+        "latencyMs": null,
+        "paused": false,
+        "playing": true
+      },
+      {
+        "t": 93506,
+        "scenario": "hong-kong-keyboard",
+        "scenarioMs": 4459.29999999702,
+        "dt": 0.012900000005960465,
+        "position": [
+          2.049,
+          27.894,
+          8.816
+        ],
+        "velocity": [
+          0.022,
+          -17.167,
+          1.298
+        ],
+        "acceleration": [
+          -0.007,
+          -36.176,
+          -0.421
+        ],
+        "speed": 17.216,
+        "facing": 0,
+        "state": "FALLING",
+        "grounded": false,
+        "support": null,
+        "animation": "fall",
+        "animationTime": 0.375,
+        "blends": [
+          {
+            "key": "regularRun",
+            "weight": 0.164,
+            "time": 0
+          },
+          {
+            "key": "walk",
+            "weight": 0.819,
+            "time": 0
+          },
+          {
+            "key": "run",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "idle",
+            "weight": 0.181,
+            "time": 0
+          },
+          {
+            "key": "stop",
+            "weight": 0.836,
+            "time": 0
+          },
+          {
+            "key": "runStop",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "zip",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "turnLeft",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "turnRight",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "jump",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "jumpDown",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "drop",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "jumpDownVariant",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "swing",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "fall",
+            "weight": 1,
+            "time": 0.375
+          },
+          {
+            "key": "fallVariant",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "fallIdle",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "roll",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "injuredIdle",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "wall",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "land",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "combatIdle",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "jab",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "guard",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hitHead",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "slamLand",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "slam",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "rightHook",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "cross",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hook",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "heavy",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "airTrick",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "backTrick",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hitBody",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hitHeavy",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hitUppercut",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "special",
+            "weight": 1,
+            "time": 0
+          }
+        ],
+        "combatMode": "web",
+        "attack": null,
+        "feet": {
+          "left": {
+            "x": 2.049,
+            "y": 28.622,
+            "z": 8.931,
+            "support": null,
+            "gap": null
+          },
+          "right": {
+            "x": 1.944,
+            "y": 28.666,
+            "z": 8.771,
+            "support": null,
+            "gap": null
+          }
+        },
+        "camera": {
+          "position": [
+            2.048,
+            31.344,
+            3.021
+          ],
+          "yaw": 0,
+          "pitch": 0.16,
+          "fov": 68.70463939479083
+        },
+        "webs": [],
+        "swinging": false,
+        "ropeLength": 0,
+        "swingTension": null,
+        "pointerLock": false,
+        "fps": 77.52,
+        "memory": 681680395,
+        "drawCalls": 95,
+        "triangles": 149486,
+        "geometries": 77,
+        "textures": 71,
+        "latencyMs": null,
+        "paused": false,
+        "playing": true
+      },
+      {
+        "t": 93681.70000000298,
+        "scenario": "hong-kong-keyboard",
+        "scenarioMs": 4635,
+        "dt": 0.041399999991059304,
+        "position": [
+          2.053,
+          24.625,
+          9.028
+        ],
+        "velocity": [
+          0.021,
+          -21.833,
+          1.245
+        ],
+        "acceleration": [
+          -0.005,
+          -28.18,
+          -0.315
+        ],
+        "speed": 21.869,
+        "facing": 0,
+        "state": "FALLING",
+        "grounded": false,
+        "support": null,
+        "animation": "fall",
+        "animationTime": 0.543,
+        "blends": [
+          {
+            "key": "regularRun",
+            "weight": 0.164,
+            "time": 0
+          },
+          {
+            "key": "walk",
+            "weight": 0.819,
+            "time": 0
+          },
+          {
+            "key": "run",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "idle",
+            "weight": 0.181,
+            "time": 0
+          },
+          {
+            "key": "stop",
+            "weight": 0.836,
+            "time": 0
+          },
+          {
+            "key": "runStop",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "zip",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "turnLeft",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "turnRight",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "jump",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "jumpDown",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "drop",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "jumpDownVariant",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "swing",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "fall",
+            "weight": 1,
+            "time": 0.543
+          },
+          {
+            "key": "fallVariant",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "fallIdle",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "roll",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "injuredIdle",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "wall",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "land",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "combatIdle",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "jab",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "guard",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hitHead",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "slamLand",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "slam",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "rightHook",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "cross",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hook",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "heavy",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "airTrick",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "backTrick",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hitBody",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hitHeavy",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hitUppercut",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "special",
+            "weight": 1,
+            "time": 0
+          }
+        ],
+        "combatMode": "web",
+        "attack": null,
+        "feet": {
+          "left": {
+            "x": 2.061,
+            "y": 25.338,
+            "z": 9.157,
+            "support": null,
+            "gap": null
+          },
+          "right": {
+            "x": 1.955,
+            "y": 25.416,
+            "z": 8.992,
+            "support": null,
+            "gap": null
+          }
+        },
+        "camera": {
+          "position": [
+            2.052,
+            28.184,
+            3.244
+          ],
+          "yaw": 0,
+          "pitch": 0.16,
+          "fov": 71.47176651119449
+        },
+        "webs": [],
+        "swinging": false,
+        "ropeLength": 0,
+        "swingTension": null,
+        "pointerLock": false,
+        "fps": 24.15,
+        "memory": 590627505,
+        "drawCalls": 95,
+        "triangles": 149486,
+        "geometries": 77,
+        "textures": 71,
+        "latencyMs": null,
+        "paused": false,
+        "playing": true
+      },
+      {
+        "t": 94170.5,
+        "scenario": "hong-kong-keyboard",
+        "scenarioMs": 5123.79999999702,
+        "dt": 0.02529999999701977,
+        "position": [
+          2.057,
+          21.022,
+          9.27
+        ],
+        "velocity": [
+          0.001,
+          0,
+          0.06
+        ],
+        "acceleration": [
+          -0.023,
+          0,
+          -1.342
+        ],
+        "speed": 0.06,
+        "facing": 0,
+        "state": "LANDING",
+        "grounded": true,
+        "support": 20.897,
+        "animation": "land",
+        "animationTime": 0.18,
+        "blends": [
+          {
+            "key": "regularRun",
+            "weight": 0.164,
+            "time": 0
+          },
+          {
+            "key": "walk",
+            "weight": 0.819,
+            "time": 0
+          },
+          {
+            "key": "run",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "idle",
+            "weight": 0.181,
+            "time": 0
+          },
+          {
+            "key": "stop",
+            "weight": 0.836,
+            "time": 0
+          },
+          {
+            "key": "runStop",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "zip",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "turnLeft",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "turnRight",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "jump",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "jumpDown",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "drop",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "jumpDownVariant",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "swing",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "fall",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "fallVariant",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "fallIdle",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "roll",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "injuredIdle",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "wall",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "land",
+            "weight": 1,
+            "time": 0.18
+          },
+          {
+            "key": "combatIdle",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "jab",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "guard",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hitHead",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "slamLand",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "slam",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "rightHook",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "cross",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hook",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "heavy",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "airTrick",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "backTrick",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hitBody",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hitHeavy",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hitUppercut",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "special",
+            "weight": 1,
+            "time": 0
+          }
+        ],
+        "combatMode": "web",
+        "attack": null,
+        "feet": {
+          "left": {
+            "x": 2.195,
+            "y": 21.043,
+            "z": 9.52,
+            "support": 20.897,
+            "gap": 0.146
+          },
+          "right": {
+            "x": 2.031,
+            "y": 21.139,
+            "z": 8.87,
+            "support": 20.897,
+            "gap": 0.241
+          }
+        },
+        "camera": {
+          "position": [
+            2.057,
+            23.701,
+            3.536
+          ],
+          "yaw": 0,
+          "pitch": 0.16,
+          "fov": 67.3439551698021
+        },
+        "webs": [],
+        "swinging": false,
+        "ropeLength": 0,
+        "swingTension": null,
+        "pointerLock": false,
+        "fps": 39.53,
+        "memory": 611905447,
+        "drawCalls": 99,
+        "triangles": 147046,
+        "geometries": 82,
+        "textures": 76,
+        "latencyMs": null,
+        "paused": false,
+        "playing": true
+      },
+      {
+        "t": 94202.5,
+        "scenario": "hong-kong-keyboard",
+        "scenarioMs": 5155.79999999702,
+        "dt": 0.03,
+        "position": [
+          2.057,
+          21.022,
+          9.271
+        ],
+        "velocity": [
+          0.001,
+          0,
+          0.033
+        ],
+        "acceleration": [
+          -0.015,
+          0,
+          -0.898
+        ],
+        "speed": 0.033,
+        "facing": 0,
+        "state": "LANDING",
+        "grounded": true,
+        "support": 20.897,
+        "animation": "land",
+        "animationTime": 0.21,
+        "blends": [
+          {
+            "key": "regularRun",
+            "weight": 0.164,
+            "time": 0
+          },
+          {
+            "key": "walk",
+            "weight": 0.819,
+            "time": 0
+          },
+          {
+            "key": "run",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "idle",
+            "weight": 0.181,
+            "time": 0
+          },
+          {
+            "key": "stop",
+            "weight": 0.836,
+            "time": 0
+          },
+          {
+            "key": "runStop",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "zip",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "turnLeft",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "turnRight",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "jump",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "jumpDown",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "drop",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "jumpDownVariant",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "swing",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "fall",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "fallVariant",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "fallIdle",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "roll",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "injuredIdle",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "wall",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "land",
+            "weight": 1,
+            "time": 0.21
+          },
+          {
+            "key": "combatIdle",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "jab",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "guard",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hitHead",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "slamLand",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "slam",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "rightHook",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "cross",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hook",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "heavy",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "airTrick",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "backTrick",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hitBody",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hitHeavy",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hitUppercut",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "special",
+            "weight": 1,
+            "time": 0
+          }
+        ],
+        "combatMode": "web",
+        "attack": null,
+        "feet": {
+          "left": {
+            "x": 2.195,
+            "y": 21.046,
+            "z": 9.52,
+            "support": 20.897,
+            "gap": 0.149
+          },
+          "right": {
+            "x": 2.004,
+            "y": 21.138,
+            "z": 8.877,
+            "support": 20.897,
+            "gap": 0.241
+          }
+        },
+        "camera": {
+          "position": [
+            2.057,
+            23.678,
+            3.54
+          ],
+          "yaw": 0,
+          "pitch": 0.16,
+          "fov": 66.79310614163042
+        },
+        "webs": [],
+        "swinging": false,
+        "ropeLength": 0,
+        "swingTension": null,
+        "pointerLock": false,
+        "fps": 33.33,
+        "memory": 625370854,
+        "drawCalls": 99,
+        "triangles": 147046,
+        "geometries": 82,
+        "textures": 76,
+        "latencyMs": null,
+        "paused": false,
+        "playing": true
+      }
+    ]
+  },
+  "end": {
+    "t": 97095.5,
+    "scenario": null,
+    "scenarioMs": 0,
+    "dt": 0,
+    "position": [
+      2.057,
+      21.022,
+      9.273
+    ],
+    "velocity": [
+      0,
+      0,
+      0
+    ],
+    "acceleration": null,
+    "speed": 0,
+    "facing": 0,
+    "state": "IDLE",
+    "grounded": true,
+    "support": 20.897,
+    "animation": "idle",
+    "animationTime": 1.126,
+    "blends": [
+      {
+        "key": "regularRun",
+        "weight": 0.164,
+        "time": 0
+      },
+      {
+        "key": "walk",
+        "weight": 0.819,
+        "time": 0
+      },
+      {
+        "key": "run",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "idle",
+        "weight": 1,
+        "time": 1.126
+      },
+      {
+        "key": "stop",
+        "weight": 0.836,
+        "time": 0
+      },
+      {
+        "key": "runStop",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "zip",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "turnLeft",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "turnRight",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "jump",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "jumpDown",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "drop",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "jumpDownVariant",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "swing",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "fall",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "fallVariant",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "fallIdle",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "roll",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "injuredIdle",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "wall",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "land",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "combatIdle",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "jab",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "guard",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "hitHead",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "slamLand",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "slam",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "rightHook",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "cross",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "hook",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "heavy",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "airTrick",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "backTrick",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "hitBody",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "hitHeavy",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "hitUppercut",
+        "weight": 1,
+        "time": 0
+      },
+      {
+        "key": "special",
+        "weight": 1,
+        "time": 0
+      }
+    ],
+    "combatMode": "web",
+    "attack": null,
+    "feet": {
+      "left": {
+        "x": 2.142,
+        "y": 21.015,
+        "z": 9.6,
+        "support": 20.897,
+        "gap": 0.118
+      },
+      "right": {
+        "x": 2.001,
+        "y": 21.089,
+        "z": 8.954,
+        "support": 20.897,
+        "gap": 0.191
+      }
+    },
+    "camera": {
+      "position": [
+        2.057,
+        23.646,
+        3.547
+      ],
+      "yaw": 0,
+      "pitch": 0.16,
+      "fov": 64.00011063813679
+    },
+    "webs": [],
+    "swinging": false,
+    "ropeLength": 0,
+    "swingTension": null,
+    "pointerLock": false,
+    "fps": null,
+    "memory": 639853771,
+    "drawCalls": 96,
+    "triangles": 143842,
+    "geometries": 83,
+    "textures": 77,
+    "latencyMs": null,
+    "paused": false,
+    "playing": true
+  },
+  "citizens": {
+    "count": 10,
+    "streamed": true,
+    "hasFootpaths": false,
+    "metrics": {
+      "lastMs": 0.5999999940395355,
+      "raycasts": 0,
+      "active": 10
+    },
+    "people": [
+      {
+        "id": 1,
+        "state": "IDLE",
+        "x": -14.69,
+        "y": 5,
+        "z": 12.17,
+        "yaw": -4.985,
+        "speed": 0,
+        "allows": null,
+        "route": 0,
+        "anim": "idle",
+        "anchor": 1.2
+      },
+      {
+        "id": 2,
+        "state": "WALK",
+        "x": -31.84,
+        "y": 5.02,
+        "z": 36.52,
+        "yaw": -0.51,
+        "speed": 1.2,
+        "allows": null,
+        "route": 6,
+        "anim": "walk",
+        "anchor": 1.2
+      },
+      {
+        "id": 3,
+        "state": "WALK",
+        "x": -16.57,
+        "y": 4.98,
+        "z": 11.64,
+        "yaw": -4.986,
+        "speed": 1.2,
+        "allows": null,
+        "route": 5,
+        "anim": "walk",
+        "anchor": 1.2
+      },
+      {
+        "id": 4,
+        "state": "WALK",
+        "x": -36.82,
+        "y": 20.83,
+        "z": 40.52,
+        "yaw": 5.773,
+        "speed": 0,
+        "allows": null,
+        "route": 0,
+        "anim": "idle",
+        "anchor": 1.2
+      },
+      {
+        "id": 5,
+        "state": "WALK",
+        "x": -25.34,
+        "y": 20.85,
+        "z": 18.79,
+        "yaw": 10.907,
+        "speed": 0,
+        "allows": null,
+        "route": 0,
+        "anim": "idle",
+        "anchor": 1.2
+      },
+      {
+        "id": 6,
+        "state": "WALK",
+        "x": -36.59,
+        "y": 20.83,
+        "z": 40.11,
+        "yaw": 8.737,
+        "speed": 1.2,
+        "allows": null,
+        "route": 6,
+        "anim": "walk",
+        "anchor": 1.2
+      },
+      {
+        "id": 7,
+        "state": "IDLE",
+        "x": -27.77,
+        "y": 5.01,
+        "z": 29.26,
+        "yaw": -0.51,
+        "speed": 0,
+        "allows": null,
+        "route": 0,
+        "anim": "idle",
+        "anchor": 1.2
+      },
+      {
+        "id": 8,
+        "state": "WALK",
+        "x": -28.75,
+        "y": 18.87,
+        "z": 31,
+        "yaw": -2.832,
+        "speed": 1.2,
+        "allows": null,
+        "route": 2,
+        "anim": "walk",
+        "anchor": 1.2
+      },
+      {
+        "id": 9,
+        "state": "IDLE",
+        "x": -34.83,
+        "y": 20.83,
+        "z": 36.95,
+        "yaw": -0.51,
+        "speed": 0,
+        "allows": null,
+        "route": 0,
+        "anim": "idle",
+        "anchor": 1.2
+      },
+      {
+        "id": 10,
+        "state": "WALK",
+        "x": -25.75,
+        "y": 20.84,
+        "z": 20.25,
+        "yaw": 6.008,
+        "speed": 0,
+        "allows": null,
+        "route": 0,
+        "anim": "idle",
+        "anchor": 1.2
+      }
+    ]
+  },
+  "diagnostics": {
+    "facades": {
+      "meshes": 25,
+      "decorated": 2,
+      "textured": 25,
+      "vertexColored": 0
+    },
+    "city": {
+      "layers": [
+        {
+          "surface": "terrain",
+          "errorTarget": 17.22027286101452,
+          "stats": {
+            "inCacheSinceLoad": 0,
+            "inCache": 208,
+            "queued": 0,
+            "downloading": 0,
+            "parsing": 0,
+            "loaded": 208,
+            "failed": 0,
+            "inFrustum": 152,
+            "used": 217,
+            "active": 132,
+            "visible": 76,
+            "refused": 7,
+            "tilesProcessed": 0
+          },
+          "meshes": 93,
+          "materials": {
+            "MeshStandardMaterial:texture": 72,
+            "MeshBasicMaterial:texture": 21
+          },
+          "samples": [
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 4096,
+                "height": 1024,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            }
+          ]
+        },
+        {
+          "surface": "building",
+          "errorTarget": 15.490210028460812,
+          "stats": {
+            "inCacheSinceLoad": 0,
+            "inCache": 21,
+            "queued": 0,
+            "downloading": 0,
+            "parsing": 0,
+            "loaded": 21,
+            "failed": 0,
+            "inFrustum": 49,
+            "used": 49,
+            "active": 12,
+            "visible": 12,
+            "refused": 1,
+            "tilesProcessed": 0
+          },
+          "meshes": 25,
+          "materials": {
+            "MeshStandardMaterial:texture": 25
+          },
+          "samples": [
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 512,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1008
+              },
+              "normals": true,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 512,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1008
+              },
+              "normals": true,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 512,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1008
+              },
+              "normals": true,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 256,
+                "height": 256,
+                "anisotropy": 8,
+                "minFilter": 1008
+              },
+              "normals": true,
+              "side": 0
+            }
+          ]
+        },
+        {
+          "surface": "infrastructure",
+          "errorTarget": 16,
+          "stats": {
+            "inCacheSinceLoad": 0,
+            "inCache": 7,
+            "queued": 0,
+            "downloading": 0,
+            "parsing": 0,
+            "loaded": 7,
+            "failed": 0,
+            "inFrustum": 9,
+            "used": 9,
+            "active": 2,
+            "visible": 2,
+            "refused": 0,
+            "tilesProcessed": 0
+          },
+          "meshes": 3,
+          "materials": {
+            "MeshStandardMaterial:texture": 3
+          },
+          "samples": [
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 512,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1008
+              },
+              "normals": true,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 512,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1008
+              },
+              "normals": true,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 8,
+                "height": 8,
+                "anisotropy": 8,
+                "minFilter": 1008
+              },
+              "normals": true,
+              "side": 0
+            }
+          ]
+        }
+      ],
+      "cacheBytes": 406569376,
+      "budget": {
+        "maxBytes": 402653184,
+        "minBytes": 221249536,
+        "maxTiles": 2400,
+        "minTiles": 800
+      },
+      "textureFailures": [],
+      "decodedRGBTextures": 2
+    },
+    "programs": 20,
+    "drawCalls": 147,
+    "triangles": 510376,
+    "geometries": 166,
+    "textures": 168,
+    "heap": 744171206
+  },
+  "status": "PASS"
+}

@@ -17,11 +17,11 @@
     "key": "jab",
     "moving": true,
     "maxDrift": 0,
-    "maxVisualError": 0,
+    "maxVisualError": 0.0003750274339411324,
     "maxContactSpeed": 0,
     "centeredFist": {
-      "lateral": 0.05245342477667214,
-      "reach": 0.6967049881163743
+      "lateral": 0.05218131042371699,
+      "reach": 0.7007247158559933
     },
     "hookFist": null
   },
@@ -33,8 +33,8 @@
     "maxVisualError": 0,
     "maxContactSpeed": 0,
     "centeredFist": {
-      "lateral": 0.018671325404271175,
-      "reach": 0.8190466865095449
+      "lateral": 0.055474047867165324,
+      "reach": 0.7052185152758507
     },
     "hookFist": null
   },
@@ -43,11 +43,11 @@
     "key": "cross",
     "moving": true,
     "maxDrift": 0,
-    "maxVisualError": 0,
+    "maxVisualError": 0.0003750274339411324,
     "maxContactSpeed": 0,
     "centeredFist": {
-      "lateral": 0.015470003652301667,
-      "reach": 0.8135166246685872
+      "lateral": 0.05855275938034299,
+      "reach": 0.6945493226832645
     },
     "hookFist": null
   },
@@ -73,16 +73,16 @@
     "key": "hook",
     "moving": true,
     "maxDrift": 0,
-    "maxVisualError": 0,
+    "maxVisualError": 0.0003750274339411324,
     "maxContactSpeed": 0,
     "centeredFist": null,
     "hookFist": {
-      "bend": 1.5896826698966384,
-      "fistLat": 0.11919777311611068,
-      "shoulderLat": -0.19842632578749397,
-      "reach": 0.42079508253544085,
-      "rearReach": 0.1319963518617417,
-      "chestYaw": -0.8390774215805822
+      "bend": 1.60344896386316,
+      "fistLat": 0.1192385909444107,
+      "shoulderLat": -0.21112642966872142,
+      "reach": 0.4208534401639069,
+      "rearReach": 0.1589437007852027,
+      "chestYaw": -0.9046395668841005
     }
   },
   {
@@ -107,16 +107,16 @@
     "key": "heavy",
     "moving": true,
     "maxDrift": 0,
-    "maxVisualError": 0,
+    "maxVisualError": 0.0003750274339411324,
     "maxContactSpeed": 0,
     "centeredFist": null,
     "hookFist": {
-      "bend": 1.6545401254206387,
-      "fistLat": 0.06877318040410917,
-      "shoulderLat": -0.17930469766056933,
-      "reach": 0.4455153510431469,
-      "rearReach": 0.15906511116085342,
-      "chestYaw": -0.8892200461264061
+      "bend": 1.668753226648973,
+      "fistLat": 0.07160572849282724,
+      "shoulderLat": -0.18964224037291155,
+      "reach": 0.4461055768185209,
+      "rearReach": 0.17365378149989563,
+      "chestYaw": -0.9548657700878479
     }
   },
   {
@@ -134,7 +134,7 @@
     "key": "special",
     "moving": true,
     "maxDrift": 0,
-    "maxVisualError": 0,
+    "maxVisualError": 0.0003750274339411324,
     "maxContactSpeed": 0,
     "centeredFist": null,
     "hookFist": null
@@ -157,11 +157,11 @@
     "key": "jab",
     "moving": true,
     "maxDrift": 0,
-    "maxVisualError": 0,
+    "maxVisualError": 0.001982596837001762,
     "maxContactSpeed": 0,
     "centeredFist": {
-      "lateral": 0.051803306803238414,
-      "reach": 0.6945030969967438
+      "lateral": 0.05163062846390609,
+      "reach": 0.6984135219900435
     },
     "hookFist": null
   },
@@ -173,8 +173,8 @@
     "maxVisualError": 0,
     "maxContactSpeed": 0,
     "centeredFist": {
-      "lateral": 0.016908168951915145,
-      "reach": 0.8211238218517656
+      "lateral": 0.05549840552233168,
+      "reach": 0.7251348622205012
     },
     "hookFist": null
   },
@@ -183,11 +183,11 @@
     "key": "cross",
     "moving": true,
     "maxDrift": 0,
-    "maxVisualError": 0,
+    "maxVisualError": 0.001982596837001762,
     "maxContactSpeed": 0,
     "centeredFist": {
-      "lateral": 0.013234085598564871,
-      "reach": 0.815278776177981
+      "lateral": 0.05830958623569393,
+      "reach": 0.7158016360965023
     },
     "hookFist": null
   },
@@ -213,16 +213,16 @@
     "key": "hook",
     "moving": true,
     "maxDrift": 0,
-    "maxVisualError": 0,
+    "maxVisualError": 0.001982596837001762,
     "maxContactSpeed": 0,
     "centeredFist": null,
     "hookFist": {
-      "bend": 1.5987864300601173,
-      "fistLat": 0.11992334484579392,
-      "shoulderLat": -0.19745642842857758,
-      "reach": 0.4200687235398327,
-      "rearReach": 0.1330821490496505,
-      "chestYaw": -0.8615223883445506
+      "bend": 1.6156139362581343,
+      "fistLat": 0.11992743025499131,
+      "shoulderLat": -0.21002208350925355,
+      "reach": 0.4200740866543189,
+      "rearReach": 0.16115296985008618,
+      "chestYaw": -0.9275418800882216
     }
   },
   {
@@ -247,16 +247,16 @@
     "key": "heavy",
     "moving": true,
     "maxDrift": 0,
-    "maxVisualError": 0,
+    "maxVisualError": 0.001982596837001762,
     "maxContactSpeed": 0,
     "centeredFist": null,
     "hookFist": {
-      "bend": 1.6456174538541237,
-      "fistLat": 0.08295337646789508,
-      "shoulderLat": -0.18045912368753625,
-      "reach": 0.440024621522213,
-      "rearReach": 0.15703354591980845,
-      "chestYaw": -0.8946007646063072
+      "bend": 1.6632668965295887,
+      "fistLat": 0.08534881606370842,
+      "shoulderLat": -0.18784274166685783,
+      "reach": 0.4398557945205078,
+      "rearReach": 0.17117214633936095,
+      "chestYaw": -0.9614564820998572
     }
   },
   {
@@ -274,7 +274,7 @@
     "key": "special",
     "moving": true,
     "maxDrift": 0,
-    "maxVisualError": 0,
+    "maxVisualError": 0.001982596837001762,
     "maxContactSpeed": 0,
     "centeredFist": null,
     "hookFist": null
@@ -297,11 +297,11 @@
     "key": "jab",
     "moving": true,
     "maxDrift": 0,
-    "maxVisualError": 0,
+    "maxVisualError": 0.003454015733152261,
     "maxContactSpeed": 0,
     "centeredFist": {
-      "lateral": 0.05175512383028935,
-      "reach": 0.6951665858398308
+      "lateral": 0.05173476494043516,
+      "reach": 0.6994130011967907
     },
     "hookFist": null
   },
@@ -313,8 +313,8 @@
     "maxVisualError": 0,
     "maxContactSpeed": 0,
     "centeredFist": {
-      "lateral": 0.015303617131043924,
-      "reach": 0.8224363212913745
+      "lateral": 0.05453648067330204,
+      "reach": 0.735912267828244
     },
     "hookFist": null
   },
@@ -323,11 +323,11 @@
     "key": "cross",
     "moving": true,
     "maxDrift": 0,
-    "maxVisualError": 0,
+    "maxVisualError": 0.003454015733152261,
     "maxContactSpeed": 0,
     "centeredFist": {
-      "lateral": 0.011807005737799026,
-      "reach": 0.8169631964395054
+      "lateral": 0.05699174362416137,
+      "reach": 0.7274363886280734
     },
     "hookFist": null
   },
@@ -353,16 +353,16 @@
     "key": "hook",
     "moving": true,
     "maxDrift": 0,
-    "maxVisualError": 0,
+    "maxVisualError": 0.003454015733152261,
     "maxContactSpeed": 0,
     "centeredFist": null,
     "hookFist": {
-      "bend": 1.6056101644077174,
-      "fistLat": 0.11998840544820188,
-      "shoulderLat": -0.19661855609843404,
-      "reach": 0.4200099009635042,
-      "rearReach": 0.13448719655737978,
-      "chestYaw": -0.8725811757356644
+      "bend": 1.6164511768675787,
+      "fistLat": 0.11998895858477254,
+      "shoulderLat": -0.20880199367065078,
+      "reach": 0.420010558688712,
+      "rearReach": 0.15982641831040756,
+      "chestYaw": -0.9389427688550138
     }
   },
   {
@@ -387,16 +387,16 @@
     "key": "heavy",
     "moving": true,
     "maxDrift": 0,
-    "maxVisualError": 0,
+    "maxVisualError": 0.003454015733152261,
     "maxContactSpeed": 0,
     "centeredFist": null,
     "hookFist": {
-      "bend": 1.6559260334161614,
-      "fistLat": 0.09176980357506505,
-      "shoulderLat": -0.1759348485555819,
-      "reach": 0.43570936598484766,
-      "rearReach": 0.15393728672460028,
-      "chestYaw": -0.8961344203078012
+      "bend": 1.6588642447309236,
+      "fistLat": 0.09329826637969015,
+      "shoulderLat": -0.1868903809451567,
+      "reach": 0.43572163370685435,
+      "rearReach": 0.16824367674058638,
+      "chestYaw": -0.9636317413783212
     }
   },
   {
@@ -414,7 +414,7 @@
     "key": "special",
     "moving": true,
     "maxDrift": 0,
-    "maxVisualError": 0,
+    "maxVisualError": 0.003454015733152261,
     "maxContactSpeed": 0,
     "centeredFist": null,
     "hookFist": null

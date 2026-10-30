@@ -540,7 +540,7 @@ body.vehicle-driving #vehicle-ui .vehicle-slots{display:none}
 body.vehicle-driving #vehicle-ui .vehicle-actions{flex-direction:row}
 body.vehicle-driving #vehicle-ui .vehicle-interact{flex-direction:row;min-height:44px}
 body.vehicle-driving #vehicle-ui .vehicle-status{position:static;width:auto;height:auto;clip:auto;margin:0;white-space:normal;max-width:330px;font-size:10px;color:#bbb5c9}
-body.vehicle-driving #ability-bar,body.vehicle-driving .touch-actions,body.vehicle-driving .touch-mode,body.vehicle-driving .touch-extra{display:none!important}
+body.vehicle-driving #ability-bar,body.vehicle-driving .touch-actions,body.vehicle-driving .touch-mode,body.vehicle-driving .touch-utilities{display:none!important}
 body.hud-covered #game-action-dock{display:none}
 @media(max-width:1100px){body:not(.touch-device) #game-action-dock{flex-direction:column-reverse;align-items:center;gap:10px}body:not(.touch-device) #vehicle-ui{border-left:0;padding-left:0}}
 @media(max-width:700px){body:not(.touch-device) #game-action-dock{bottom:max(150px,calc(env(safe-area-inset-bottom) + 142px))}#game-action-dock #ability-bar button.ability{width:44px;height:48px}#game-action-dock #ability-bar{gap:6px}body:not(.touch-device) #vehicle-ui .vehicle-slot{width:48px;height:48px}body:not(.touch-device) #vehicle-ui .vehicle-interact{min-height:48px;padding:4px 7px;gap:1px}body:not(.touch-device) #vehicle-ui .vehicle-slot-name{font-size:8px;padding-bottom:3px}}
@@ -558,3 +558,102 @@ body.vehicle-driving #game-action-dock{bottom:max(20px,env(safe-area-inset-botto
 body.touch-device.vehicle-driving #vehicle-ui{padding:8px 10px;border:1px solid #b4a1d43b}
 body.touch-device.vehicle-driving #vehicle-ui .vehicle-status{max-width:170px}
 @media(prefers-reduced-motion:reduce){#vehicle-ui .vehicle-slot,#vehicle-ui .vehicle-slot img{transition:none}#vehicle-ui .vehicle-slot:hover:not(:disabled){transform:none}#vehicle-ui .vehicle-slot.is-loading::after{animation:none}}
+
+/* Keep traversal sightlines clear while retaining the keyboard/click summon. */
+body.hud-swing:not(.vehicle-driving) #vehicle-ui .vehicle-slots { display:none; }
+body.in-game:not(.vehicle-driving) #vehicle-ui .vehicle-status { display:none; }
+body.hud-swing:not(.vehicle-driving) #vehicle-ui { opacity:.7; }
+body.hud-swing:not(.vehicle-driving) #vehicle-ui:focus-within,
+body.hud-swing:not(.vehicle-driving) #vehicle-ui:hover { opacity:1; }
+#solo-objective p { max-width:46ch; line-height:1.5; }
+@media(max-width:600px) { #solo-objective { max-width:min(340px,calc(100vw - 28px)); } }
+
+/* Narrow desktop windows still use the keyboard HUD. Reserve readable room
+   below the notice instead of subtracting a desktop sidebar from the width. */
+@media (max-width:650px) {
+  body.in-game:not(.touch-device) #solo-objective:not([hidden]) {
+    top: max(124px,calc(env(safe-area-inset-top) + 114px));
+    left: 20px;
+    width: min(340px,calc(100vw - 40px));
+    grid-template-columns: 12px minmax(0,1fr) auto;
+    column-gap: 8px;
+  }
+  body.in-game:not(.touch-device) #solo-objective strong { font-size:13px; }
+}
+
+#game-notice:empty { display:none; }
+
+/* Mobile thumb layout: movement left, contextual actions right, road controls split. */
+.touch-driving { display:none; }
+#touch-controls .touch-hint { position:absolute;top:max(64px,calc(env(safe-area-inset-top) + 56px));left:50%;transform:translateX(-50%);color:#fff;background:#10182099;border-radius:16px;padding:6px 12px;font-size:11px;white-space:nowrap; }
+#touch-controls .touch-mode {left:max(24px,calc(env(safe-area-inset-left) + 16px));bottom:calc(var(--control-lift) + var(--stick-size) + 30px);}
+#touch-controls[data-simple="true"][data-combat] .touch-actions {width:216px;height:208px;}
+#touch-controls[data-simple="true"][data-combat] .touch-actions .touch-primary {right:0;top:42px;width:78px;height:78px;}
+#touch-controls[data-simple="true"][data-combat] .touch-actions .touch-jump {right:0;bottom:0;width:66px;height:66px;}
+#touch-controls[data-simple="true"][data-combat] .touch-actions .touch-zip {left:62px;top:0;width:56px;height:56px;}
+#touch-controls[data-simple="true"][data-combat] .touch-actions .touch-dodge {left:66px;bottom:8px;width:58px;height:58px;}
+#touch-controls[data-simple="true"][data-combat] .touch-actions .touch-more {left:0;bottom:10px;top:auto;width:48px;height:48px;}
+#touch-controls[data-simple="true"][data-combat] .touch-actions .touch-guard {left:0;top:55px;width:56px;height:56px;}
+#touch-controls[data-driving="true"] .touch-move-zone,
+#touch-controls[data-driving="true"] .touch-hint {display:none;}
+#touch-controls[data-driving="true"] .touch-driving {display:block;}
+.touch-pedals,.touch-steering {position:absolute;bottom:max(54px,calc(env(safe-area-inset-bottom) + 36px));display:flex;gap:18px;}
+.touch-pedals {left:max(24px,calc(env(safe-area-inset-left) + 16px));flex-direction:column;gap:14px;}
+.touch-steering {right:max(24px,calc(env(safe-area-inset-right) + 16px));}
+#touch-controls .touch-driving [data-drive] {width:72px;height:72px;font-size:28px;background:#16232e99;border:2px solid #ecf4ff99;}
+#touch-controls .touch-driving [data-drive] span {font-size:12px;}
+#touch-controls .touch-brake {position:absolute;right:max(70px,calc(env(safe-area-inset-right) + 62px));bottom:max(146px,calc(env(safe-area-inset-bottom) + 128px));width:64px;height:64px;}
+#touch-controls .touch-exit {position:absolute;right:var(--touch-edge);top:max(74px,calc(env(safe-area-inset-top) + 66px));border-radius:12px;}
+body.touch-device.vehicle-driving #vehicle-ui {display:none;}
+#touch-controls[data-spectating="true"] .touch-driving,#touch-controls[data-spectating="true"] .touch-hint {display:none;}
+@media(max-width:450px){#touch-controls[data-simple="true"][data-combat] .touch-actions {width:190px;}#touch-controls[data-simple="true"][data-combat] .touch-actions .touch-dodge {left:48px;}#touch-controls[data-simple="true"][data-combat] .touch-actions .touch-zip {left:48px;}#touch-controls .touch-hint{font-size:10px;padding:5px 8px;}}
+#touch-controls[data-simple="true"][data-combat] .touch-actions .touch-zip {right:auto;bottom:auto;top:0;}
+#touch-controls[data-simple="true"][data-combat] .touch-actions .touch-dodge {right:auto;top:auto;}
+
+/* Every gameplay action stays directly available; no expanding action menu. */
+#touch-controls .touch-utilities {position:absolute;top:max(66px,calc(env(safe-area-inset-top) + 58px));right:var(--touch-edge);display:flex;gap:8px;pointer-events:none;}
+#touch-controls .touch-utilities button {width:48px;height:48px;border-radius:12px;font-size:10px;}
+#touch-controls[data-simple="true"][data-combat] .touch-actions {width:222px;height:208px;}
+#touch-controls[data-simple="true"][data-combat] .touch-actions .touch-offhand {left:0;right:auto;top:0;bottom:auto;width:56px;height:56px;}
+#touch-controls[data-simple="true"][data-combat] .touch-actions .touch-zip {left:74px;}
+#touch-controls[data-simple="true"][data-combat] .touch-actions .touch-wall,
+#touch-controls[data-simple="true"][data-combat] .touch-actions .touch-guard {left:0;right:auto;top:76px;bottom:auto;width:56px;height:56px;}
+#touch-controls[data-simple="true"][data-combat] .touch-actions .touch-dodge {left:74px;}
+#touch-controls[data-spectating="true"] .touch-utilities {display:none;}
+@media(max-width:450px){#touch-controls[data-simple="true"][data-combat] .touch-actions{width:204px;}#touch-controls[data-simple="true"][data-combat] .touch-actions .touch-zip,#touch-controls[data-simple="true"][data-combat] .touch-actions .touch-dodge{left:66px;}#touch-controls .touch-hint{top:124px;}}
+@media(max-height:500px) and (orientation:landscape){#touch-controls .touch-hint{display:none;}}
+
+/* Image-led mobile abilities, spaced in a thumb arc rather than filling the view. */
+#touch-controls {--stick-size:112px;--control-lift:max(24px,calc(env(safe-area-inset-bottom) + 16px));--action-bottom:var(--control-lift);}
+#touch-controls .touch-hint {display:none;}
+#touch-controls .touch-skill-art {position:absolute;inset:0;background-image:url('/images/mobile-skills-v1.png');background-size:300% 300%;background-position:0 0;border-radius:inherit;pointer-events:none;opacity:.93;}
+#touch-controls .touch-actions button,#touch-controls .touch-mode {overflow:hidden;background:#111b25c9;border:1px solid #d4e4ee70;box-shadow:0 2px 6px #0005;}
+#touch-controls .touch-actions button svg,#touch-controls .touch-mode svg {visibility:hidden;}
+#touch-controls .touch-actions button span,#touch-controls .touch-mode span {position:absolute;bottom:3px;left:0;right:0;z-index:1;font-size:9px!important;line-height:1.1!important;max-width:none!important;text-align:center;white-space:nowrap;background:#09121ccc;padding:3px 0;}
+#touch-controls .touch-jump .touch-skill-art {background-position:0 50%;}
+#touch-controls .touch-dodge .touch-skill-art {background-position:50% 50%;}
+#touch-controls .touch-guard .touch-skill-art {background-position:100% 50%;}
+#touch-controls .touch-wall .touch-skill-art {background-position:100% 0;}
+#touch-controls .touch-zip .touch-skill-art {background-position:50% 0;}
+#touch-controls .touch-offhand .touch-skill-art {background-position:100% 100%;}
+#touch-controls .touch-mode .touch-skill-art {background-position:0 100%;}
+#touch-controls .touch-special .touch-skill-art {background-position:50% 100%;}
+#touch-controls[data-combat="true"] .touch-primary .touch-skill-art,#touch-controls[data-combat="true"] .touch-offhand .touch-skill-art {background-position:0 100%;}
+#touch-controls[data-combat="true"] .touch-zip .touch-skill-art {background-position:50% 100%;}
+#touch-controls[data-simple="true"][data-combat] .touch-actions {width:202px;height:176px;}
+#touch-controls[data-simple="true"][data-combat] .touch-actions .touch-offhand {left:0;top:0;width:48px;height:48px;}
+#touch-controls[data-simple="true"][data-combat] .touch-actions .touch-zip {left:66px;top:0;width:48px;height:48px;}
+#touch-controls[data-simple="true"][data-combat] .touch-actions .touch-wall,#touch-controls[data-simple="true"][data-combat] .touch-actions .touch-guard {left:0;top:64px;width:48px;height:48px;}
+#touch-controls[data-simple="true"][data-combat] .touch-actions .touch-special {left:66px;top:64px;width:48px;height:48px;}
+#touch-controls[data-simple="true"][data-combat] .touch-actions .touch-primary {right:0;top:48px;width:64px;height:64px;}
+#touch-controls[data-simple="true"][data-combat] .touch-actions .touch-dodge {left:66px;bottom:0;width:48px;height:48px;}
+#touch-controls[data-simple="true"][data-combat] .touch-actions .touch-jump {right:0;bottom:0;width:52px;height:52px;}
+#touch-controls .touch-mode {width:48px;height:48px;bottom:calc(var(--control-lift) + 134px);}
+#touch-controls .touch-toolbar button,#touch-controls .touch-utilities button {width:44px;min-width:44px;height:44px;min-height:44px!important;font-size:9px;gap:0;background:#14212ab0;}
+#touch-controls .touch-toolbar {gap:6px;right:max(106px,calc(env(safe-area-inset-right) + 98px));}
+#touch-controls .touch-utilities {gap:6px;right:max(106px,calc(env(safe-area-inset-right) + 98px));top:max(62px,calc(env(safe-area-inset-top) + 54px));}
+body.touch-device.in-game #minimap-panel {top:max(12px,env(safe-area-inset-top));width:80px;}
+body.touch-device.in-game #minimap-panel canvas {max-width:100%;}
+@media(max-width:450px){#touch-controls .touch-toolbar{right:12px;}#touch-controls .touch-utilities{right:12px;top:62px;}body.touch-device.in-game #minimap-panel{top:116px;width:76px;}#touch-controls .touch-mode{bottom:calc(var(--control-lift) + 134px);}#touch-controls{--touch-edge:12px;}}
+#touch-controls .touch-toolbar button {white-space:nowrap;}
+@media(max-width:450px){body.touch-device #game-action-dock{left:24px;right:auto;transform:none;bottom:calc(var(--unused, 0px) + 258px + env(safe-area-inset-bottom));}body.touch-device.in-game #solo-objective:not([hidden]){top:12px;left:12px;bottom:auto;width:132px;max-width:132px;padding:8px;font-size:10px;}body.touch-device.in-game #solo-objective strong{font-size:11px;}body.touch-device.in-game #combat-hud{top:110px;left:12px;bottom:auto;max-width:174px;}body.touch-device.vehicle-driving #game-action-dock{display:none;}}

@@ -1,0 +1,112 @@
+[
+  {
+    "element": "시작·렌더러·노출·그림자",
+    "files": "src/main.js",
+    "role": "카메라/광원/톤매핑/픽셀비율/품질 옵션. 지도 구성요소들을 연결."
+  },
+  {
+    "element": "외부 원본과 로컬 좌표",
+    "files": "src/UrbanGroundCity.js",
+    "role": "F2 사진 측량 계층 1개. 원점 22.2799955, 114.165495. 전체 플레이 경계 ±2400m."
+  },
+  {
+    "element": "LOD·텍스처·안개·그림자 정책",
+    "files": "src/HongKongRendering.js",
+    "role": "세밀도 3단계, 동적 오류 기준과 타일 재질 처리."
+  },
+  {
+    "element": "캐시 예산",
+    "files": "src/StreamingBudget.js",
+    "role": "장치/품질별 메모리 및 타일 수 제한."
+  },
+  {
+    "element": "KTX2/RGB 텍스처 디코드",
+    "files": "src/TileTextures.js",
+    "role": "임베디드 텍스처, 밉맵, 샘플러, 색공간 경로."
+  },
+  {
+    "element": "중복/불량 삼각형 검사",
+    "files": "src/TileGeometryIntegrity.js",
+    "role": "동일 면/면적 0/인덱스·좌표 검사. 소실된 형태 복원 기능은 아님."
+  },
+  {
+    "element": "셰이더 준비·타일 재시도",
+    "files": "src/TileRenderPreparation.js; src/TileRecovery.js",
+    "role": "비동기 컴파일, 취소, 실패 복구. 준비 완료와 시각 품질은 다름."
+  },
+  {
+    "element": "추가 외벽·창·수목",
+    "files": "src/HongKongDistrict.js",
+    "role": "외벽 6면, 창 1967개, 창틀 부품 7868개, 나무 7곳, 잎 군집 140개."
+  },
+  {
+    "element": "보강 외벽 형태와 좌표",
+    "files": "src/HongKongDistrictGeometry.js; src/data/HongKongFacades.js",
+    "role": "원본 평면 추출, 폴리곤과 보강 위치 데이터."
+  },
+  {
+    "element": "보강 수목 원본 에셋",
+    "files": "public/models/environment/hong-kong-pine.glb",
+    "role": "별도 수목 모델을 군집/인스턴스로 배치."
+  },
+  {
+    "element": "시작 바닥 보강",
+    "files": "src/HongKongStartDistrict.js",
+    "role": "제한된 시작 테라스의 무늬 교체. 주변 전체 지형 재모델링 아님."
+  },
+  {
+    "element": "일반 외벽 셰이더",
+    "files": "src/CityFacades.js",
+    "role": "구조 계층의 회색 대체 건물에 적용. 현재 사진 계층 전체를 고품질 건물로 바꾸지 않음."
+  },
+  {
+    "element": "물리 지형과 보존된 충돌",
+    "files": "src/StreamedCollision.js",
+    "role": "스트리밍 메시에서 Rapier 충돌 구성. 시각 마스킹과 별도로 유지."
+  },
+  {
+    "element": "카메라 충돌·가림",
+    "files": "src/Camera.js",
+    "role": "플레이 중 벽 내부 진입/근접 가림 관련 별도 검사 대상."
+  },
+  {
+    "element": "날씨·낮밤·비·젖은 표면",
+    "files": "src/WorldWeather.js",
+    "role": "시간·태양·달·구름·안개·비 및 재질 반응."
+  },
+  {
+    "element": "미니맵",
+    "files": "src/Minimap.js",
+    "role": "별도 3D 윤곽, 카메라와 삼각형 예산. 메인 렌더와 동일하지 않음."
+  },
+  {
+    "element": "전체 지도",
+    "files": "src/WorldMap.js",
+    "role": "별도 2D 지도·목표·위치. 3D 지형 로딩 카메라를 추가하지 않음."
+  },
+  {
+    "element": "시민",
+    "files": "src/AmbientCitizens.js; src/CitizenActor.js; src/CitizenNavigation.js",
+    "role": "동적 모델·이동·지면 정합. 원본 배경 메시와 구분."
+  },
+  {
+    "element": "차량",
+    "files": "src/VehicleSystem.js; src/VehicleAsset.js; src/VehicleRender.js",
+    "role": "차량 에셋·차체/바퀴 표현. 원본 도로 표면과 구분."
+  },
+  {
+    "element": "다운로드/호스팅",
+    "files": "src/AssetLoader.js; vite.config.js; scripts/serve.mjs",
+    "role": "로컬 에셋 요청과 홍콩 타일 프록시·캐시 정책."
+  },
+  {
+    "element": "자동 해상도 조정",
+    "files": "src/PerformanceBudget.js; src/PlayerExperience.js",
+    "role": "픽셀비율 저하로 화면이 흐려지는 경로. 원본 모델 결함과 구분."
+  },
+  {
+    "element": "개발용 조사 도구",
+    "files": "src/HongKongRenderAudit.js; src/QualityDirector.js",
+    "role": "이번에 추가한 읽기 전용 목록/분리 카메라. 일반 플레이를 고치는 기능은 아님."
+  }
+]

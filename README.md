@@ -165,3 +165,14 @@ Escape 메뉴에서 카메라 감도·세로 반전·시야각·자동 추적·�
 진단 다운로드에 세션 전체 P95, 자원 추세, 중단·복귀, 익명 안내·임무·경기 관찰 기록을 추가했습니다. `npm run verify:device -- DIAGNOSTICS.json`은 빌드·활성 시간·프레임 기준을 검사하고, `npm run analyze:playtests -- A.json B.json`은 중복 세션을 제거해 집계합니다. 실제 기기·사용자·출처 확인은 자동 통과로 대체하지 않습니다.
 
 [실행 절차](docs/RELEASE_VALIDATION.md) · [구현·검증 보고서](docs/qa/release-readiness-2026-10-25/REPORT.md) · [에셋 출처 목록](docs/ASSET_REGISTER.md)
+
+
+## 전체 품질 검토와 사용성 개선 — 2026-10-30
+
+[분야별 분석·적용 내용·검증 범위](docs/qa/expert-game-audit-2026-10-30/REPORT.md). 입력 중단 상태와 패드 시점 급변, 설정에 맞지 않던 훈련·스윙 안내, 착지 확인과 임무 진행 표시, 좁은 창의 목표 안내 겹침, 효과 감소 설정의 번개 섬광을 개선했습니다.
+
+검사: `npm run test:expert-usability`, `node scripts/check-mission-expansion.mjs`. 개발 서버의 브라우저 검증: `QUALITY_URL=http://127.0.0.1:5194 npm run qa:expert-usability`.
+
+### 추가 자율 재검수 — 2026-10-30
+
+컨텍스트 손실·백그라운드에서 클릭이 공격·와이어 입력으로 처리되는 문제를 수정하고, 온라인 도움말·열린 대화상자를 포함해 시점·줌의 입력 차단 기준을 통일했습니다. 키보드·패드·터치의 차단과 복귀, 실제 Chrome 플레이와 배포 파일 검증은 [자율 재검수 기록](docs/qa/self-audit-2026-10-30/REPORT.md)에 있습니다. 재현: `node scripts/check-input-lifecycle.mjs`, 개발 서버 실행 후 `QUALITY_URL=http://127.0.0.1:5195 node scripts/play-self-audit.mjs`.

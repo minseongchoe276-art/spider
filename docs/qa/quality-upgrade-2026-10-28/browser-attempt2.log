@@ -1,0 +1,11 @@
+PASS Solo boot and first view
+PASS Real keyboard walk, sprint and jump
+PASS Grounded forward dodge
+PASS X restores horizon
+PASS Mouse wire attachment, swing and release
+PASS Three supported arrivals award and save a medal
+page.waitForFunction: Timeout 120000ms exceeded.
+    at /Users/choeminseong/Desktop/게임/scripts/play-quality-upgrade.mjs:30:63 {
+  log: [],
+  name: 'TimeoutError'
+}

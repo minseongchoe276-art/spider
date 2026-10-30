@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import {challengePar,assessChallenge,cleanChallenge} from './MissionChallenge.js';
 import {GROUNDED} from './MotionCatalog.js';
 import {language} from './I18n.js';
 import {keyLabel} from './PlayerSettings.js';
@@ -14,11 +15,12 @@ export const LESSONS=Object.freeze(['walk','jump','swing','land','wall','hit']);
 // the sample baseline; existing exploration records and wire colors stay intact.
 export class JourneyProgress {
   constructor(storage=null){
-    this.storage=storage;this.data={lesson:0,dismissed:false,completed:0,last:null};this.previous=null;
+    this.storage=storage;this.data={lesson:0,dismissed:false,completed:0,last:null,records:{}};this.previous=null;
     this.walk=0;this.swing=0;this.wall=0;this.airborne=false;this.lastHits=null;
     try{const d=JSON.parse(storage?.getItem(KEY)||'null');
       if(d&&typeof d==='object'){
         this.data.last=validCompletion(d.last);
+        for(const [key,value]of Object.entries(d.records||{}).slice(0,30))if(/^(procedural|hong-kong|harbor|gardens|old-town|skyline):(rooftops|discover|travel|delivery|technique)$/.test(key)){const clean=cleanChallenge(value);if(clean)this.data.records[key]=clean;}
         if(Number.isInteger(d.lesson))this.data.lesson=Math.max(0,Math.min(LESSONS.length,d.lesson));
         this.data.dismissed=d.dismissed===true;
         if(Number.isSafeInteger(d.completed)&&d.completed>=0)this.data.completed=Math.min(d.completed,1000000);
@@ -57,7 +59,7 @@ export class SoloJourney {
     this.mark=document.createElement('i');this.mark.className='objective-mark';this.mark.setAttribute('aria-hidden','true');
     this.title=document.createElement('strong');this.title.setAttribute('role','status');
     this.range=document.createElement('b');this.range.className='objective-range';
-    this.detail=document.createElement('p');this.meter=document.createElement('progress');this.meter.max=1;
+    this.detail=document.createElement('p');this.meter=document.createElement('progress');this.meter.max=1;this.meter.setAttribute('aria-label',copy('현재 목표 진행도','Current objective progress'));
     this.panel.append(this.mark,this.title,this.range,this.detail,this.meter);document.getElementById('game-container')?.append(this.panel);
     document.getElementById('btn-tutorial')?.addEventListener('click',()=>{if(this.solo()){this.cancel('restart');game.experience?.study?.endLesson('dismissed');this.progress.restart();this.resume();}});
     document.getElementById('btn-tutorial-skip')?.addEventListener('click',()=>{game.experience?.study?.endLesson('dismissed');this.progress.dismiss();this.render();});
@@ -77,12 +79,21 @@ export class SoloJourney {
     delivery:copy('물품 회수 · 배달','Collect and deliver'),technique:copy('이동 기술 훈련','Traversal training'),
   }[type];}
   resultText(record){return copy(`${this.missionName(record.type)} · ${record.distance}m 이동 · ${record.seconds}초`,`${this.missionName(record.type)} · ${record.distance}m traveled · ${record.seconds}s`);}
+  assessmentText(){
+    const a=this.lastAssessment;if(!a)return '';
+    const medal=a.medal==='gold'?copy('금메달','gold'):a.medal==='silver'?copy('은메달','silver'):copy('동메달','bronze');
+    return copy(` · ${a.score}점 ${medal}`,` · ${a.score} points · ${medal}`);
+  }
+  challengeText(type){
+    const best=this.progress.data.records[`${this.game.experience?.city}:${type}`];
+    return best?copy(` · 최고 ${best.score}점 · ${best.medal==='gold'?'금':best.medal==='silver'?'은':'동'}메달`,` · Best ${best.score} · ${best.medal}`):'';
+  }
   summary(){
     const el=document.getElementById('journey-summary');if(el)write(el,copy(
       `기초 안내 ${this.progress.data.lesson}/${LESSONS.length} · 탐험 임무 ${this.progress.data.completed}회 완료`,
       `Lessons ${this.progress.data.lesson}/${LESSONS.length} · ${this.progress.data.completed} exploration missions completed`));
     const last=this.progress.data.last,result=document.getElementById('journey-result');
-    if(result)write(result,last?copy('최근 완료: ','Last completed: ')+this.resultText(last):'');
+    if(result)write(result,last?copy('최근 완료: ','Last completed: ')+this.resultText(last)+this.challengeText(last.type):'');
     const repeat=document.getElementById('btn-mission-repeat');if(repeat)repeat.disabled=!last;
     const retry=document.getElementById('btn-mission-retry');if(retry)retry.hidden=!this.pendingType&&!targetedMission(this.mission?.type);
   }
@@ -107,6 +118,7 @@ export class SoloJourney {
     }
     this.cancel('replaced');g.practice?.stop();g.experience?.study?.endLesson('dismissed');this.progress.dismiss();
     this.mission=createMission(type,g.experience.city,g.physics.position,points);
+    this.mission.par=challengePar(this.mission,g.physics.position);this.mission.skills=new Set();this.lastAssessment=null;
     g.experience?.study?.startMission(type);
     this.resetSample();this.resume();this.render();
   }
@@ -118,6 +130,7 @@ export class SoloJourney {
     const validDt=Number.isFinite(dt)&&dt>0&&dt<=.25;
     if(!validDt)this.resetSample();
     if(validDt&&this.resultTime>0)this.resultTime=Math.max(0,this.resultTime-dt);
+    if(g.vehicle?.driving && !this.mission && !(this.resultTime>0)){this.panel.hidden=true;if(this.marker)this.marker.visible=false;this.resetSample();return;}
     if(!this.progress.data.dismissed)g.experience?.study?.lesson(LESSONS[this.progress.data.lesson]);
     const p=g.physics,result=this.progress.observe({position:p.position,state:p.state,webs:p.webs?.length,hits:g.combat.hits},dt),m=this.mission;
     if(result.advanced){if(this.progress.data.lesson===LESSONS.length)g.experience?.study?.endLesson('completed');else g.experience?.study?.lesson(LESSONS[this.progress.data.lesson]);}
@@ -126,15 +139,21 @@ export class SoloJourney {
       if(m.city!==g.experience.city){this.cancel();return;}
       if(!g.practice?.active&&validDt){
         const before=m.index;
+        const skill={SWINGING:'swing',WALL_RUNNING:'wall',MANTLING:'wall',WEB_ZIP:'zip',ROLLING:'roll'}[p.state];
+        if(skill && (skill!=='swing'||p.webs?.length))m.skills?.add(skill);
         const needsSupport=(targetedMission(m.type)||m.type==='technique')&&GROUNDED.includes(p.state);
         const done=advanceMission(m,{position:p.position,state:p.state,webs:p.webs?.length,distance:result.distance,safe:needsSupport&&g.experience.safe(p.position)},dt);
         if(m.index!==before&&!done){g.audio?.tone?.(440,.1,.04);g.showNotice(m.type==='delivery'?copy('물품 회수 완료. 다음 표식으로 배달하세요.','Package collected. Deliver it to the next marker.'):copy('단계 완료! 다음 목표로 이동하세요.','Stage complete! Continue to the next objective.'));}
         if(done){
-          const record=completionRecord(m);
+          const record=completionRecord(m),assessment=assessChallenge(m),key=`${m.city}:${m.type}`;
+          const previous=this.progress.data.records[key];
+          this.newBest=!previous||assessment.score>previous.score||(assessment.score===previous.score&&assessment.seconds<previous.seconds);
+          if(this.newBest)this.progress.data.records[key]=assessment;
+          this.lastAssessment=assessment;
           this.progress.data.completed=Math.min(1000000,this.progress.data.completed+1);this.progress.data.last=record;
           const saved=this.progress.save();g.experience?.study?.endMission('completed');this.cancel();this.resultTime=10;this.summary();
           g.audio?.tone?.(660,.22,.05);
-          g.showNotice(copy('탐험 임무 완료! ','Mission complete! ')+this.resultText(record)+(saved?'':copy(' · 기록을 저장하지 못했습니다.',' · Could not save this result.')));
+          g.showNotice(saved?'':copy('기록을 저장하지 못했습니다. 이번 실행에서만 유지됩니다.','Could not save the result. It remains available for this session.'));
           this.render();
         }
       }else if(g.practice?.active)this.resetSample();
@@ -149,20 +168,24 @@ export class SoloJourney {
     this.marker.position.set(target.x,target.y+2.4,target.z);
     const p=this.game.physics.position;
     const fade=THREE.MathUtils.smoothstep(Math.hypot(p.x-target.x,p.y-target.y,p.z-target.z),16,36);
-    this.marker.material.opacity=fade;this.marker.visible=fade>0.04;
+    this.marker.material.opacity=.35+.65*fade;this.marker.visible=true;
   }
   render(){
     this.summary();const g=this.game,m=this.mission,lesson=LESSONS[this.progress.data.lesson];
     this.panel.hidden=!this.solo()||!g.isPlaying||g.isPaused||g.gameplaySuspended||(!m&&!this.resultTime&&(!lesson||this.progress.data.dismissed));
     if(this.panel.hidden)return;
     const showRange=text=>write(this.range,text||'');
-    if(!m&&this.resultTime>0&&this.progress.data.last){write(this.title,copy('탐험 임무 완료','Mission complete'));write(this.detail,this.resultText(this.progress.data.last)+copy(' · 메뉴에서 다시 도전할 수 있습니다.',' · Play again from the menu.'));this.meter.value=1;showRange('');return;}
+    if(!m&&this.resultTime>0&&this.progress.data.last){write(this.title,copy(this.newBest?'개인 최고 기록!':'탐험 임무 완료',this.newBest?'Personal best!':'Mission complete')+this.assessmentText());write(this.detail,this.resultText(this.progress.data.last)+copy(' · 메뉴에서 다시 도전할 수 있습니다.',' · Play again from the menu.'));this.meter.value=1;showRange('');return;}
     if(m){
       if(g.practice?.active){write(this.title,copy('임무 일시정지','Mission paused'));write(this.detail,copy('전투 연습을 종료하면 임무를 이어갑니다.','Finish combat practice to continue the mission.'));showRange('');return;}
       write(this.title,this.missionName(m.type));let value=missionFraction(m);showRange('');
-      if(targetedMission(m.type)){const p=m.points[m.index],distance=p?Math.round(g.physics.position.distanceTo(new THREE.Vector3(p.x,p.y,p.z))):0;showRange(`${distance} m`);
+      if(targetedMission(m.type)){const p=m.points[m.index],distance=p?Math.round(g.physics.position.distanceTo(new THREE.Vector3(p.x,p.y,p.z))):0;showRange(`${distance} m · ${Math.floor(m.elapsed)}s`);
         const bearing=p?copy(['북','북동','동','남동','남','남서','서','북서'][(Math.round(Math.atan2(g.physics.position.x-p.x,p.z-g.physics.position.z)/(Math.PI/4))+8)%8],['N','NE','E','SE','S','SW','W','NW'][(Math.round(Math.atan2(g.physics.position.x-p.x,p.z-g.physics.position.z)/(Math.PI/4))+8)%8]):'';
-        write(this.detail,copy(`${m.index}/${m.points.length} · ${m.type==='delivery'?copy(m.index?'배달':'회수',m.index?'Deliver':'Collect'):''} ${bearing} ${distance}m · 고도 ${Math.round(p?.y||0)}m · 표식 곁에 착지하세요`,`${m.index}/${m.points.length} · ${m.type==='delivery'?copy(m.index?'배달':'회수',m.index?'Deliver':'Collect'):''} ${bearing} ${distance}m · Altitude ${Math.round(p?.y||0)}m · Land beside the marker`));}
+        write(this.detail,copy(`${m.index+1}/${m.points.length} · ${m.type==='delivery'?copy(m.index?'배달':'회수',m.index?'Deliver':'Collect'):''} ${bearing} ${distance}m · 고도 ${Math.round(p?.y||0)}m · 표식 곁에 착지하세요`,`${m.index+1}/${m.points.length} · ${m.type==='delivery'?copy(m.index?'배달':'회수',m.index?'Deliver':'Collect'):''} ${bearing} ${distance}m · Altitude ${Math.round(p?.y||0)}m · Land beside the marker`));}
+      if(targetedMission(m.type)&&m.dwell>0){
+        const remaining=Math.max(0,.6-m.dwell).toFixed(1);
+        write(this.detail,copy(`착지 확인 중 · ${remaining}초 동안 표식 곁에서 대기하세요`,`Confirming landing · Stay beside the marker for ${remaining}s`));
+      }
       if(m.type==='discover'){write(this.detail,copy(`${m.found.size}/3 · 출발 구역 밖의 서로 다른 구역을 방문하세요. 이전 방문 구역도 가능합니다.`,`${m.found.size}/3 · Visit distinct districts outside your starting district. Revisits count on each outing.`));}
       if(m.type==='travel'){write(this.detail,copy(`${Math.floor(m.distance)}/500m · 원하는 방법으로 도시를 이동하세요`,`${Math.floor(m.distance)}/500m · Travel through the city your way`));value=m.distance/500;}
       if(m.type==='technique')write(this.detail,[
@@ -170,6 +193,8 @@ export class SoloJourney {
         copy(`2/3 · 벽 이동 또는 턱 오르기 1초 (${m.skillTime.toFixed(1)}/1초)`,`2/3 · Wall run or mantle for 1s (${m.skillTime.toFixed(1)}/1s)`),
         copy('3/3 · 안전한 바닥에 착지하세요','3/3 · Land on safe solid ground'),
       ][m.index]||'');
+      write(this.detail,this.detail.textContent+this.challengeText(m.type)+copy(' · 빠른 경로와 이동 기술 조합으로 메달에 도전하세요',' · Combine traversal skills and a fast route for medals'));
+      if(!targetedMission(m.type))showRange(`${Math.floor(m.elapsed)}s`);
       this.meter.value=value;return;
     }
     const b=g.preferences.values.settings.bindings,touch=g.touchControls?.enabled,pad=g.gamepad?.lastPad!=null;
@@ -177,7 +202,7 @@ export class SoloJourney {
     const hints={
       walk:copy(`${key('forward','왼쪽 스틱','왼쪽 스틱')} · 20m 이동하세요 (${Math.min(20,Math.floor(this.progress.walk))}/20m)`,`${key('forward','Left stick','Left stick')}: travel 20m (${Math.min(20,Math.floor(this.progress.walk))}/20m)`),
       jump:copy(`${key('jump','점프 버튼','A')} · 점프하세요`,`${key('jump','Jump button','A')}: jump`),
-      swing:copy(`${key('mode','더보기 → 모드','Y')}로 와이어 모드 · ${touch?'에너지 와이어를 한 번 눌러':pad?'RT를 유지해':'높은 건물에 조준하고 좌클릭을 유지해'} 2초 스윙하세요`,`${key('mode','More → Mode','Y')}: wire mode · ${touch?'Tap Energy Wire once':pad?'Hold RT':'Aim high and hold left click'} to swing for 2s`),
+      swing:copy(`${key('mode','더보기 → 모드','Y')}로 와이어 모드 · ${touch?'에너지 와이어를 한 번 눌러':pad?(g.preferences.values.settings.webToggle?'RT를 한 번 눌러':'RT를 유지해'):(g.preferences.values.settings.webToggle?'높은 건물에 조준하고 좌클릭을 한 번 눌러':'높은 건물에 조준하고 좌클릭을 유지해')} 2초 스윙하세요`,`${key('mode','More → Mode','Y')}: wire mode · ${touch?'Tap Energy Wire once':pad?(g.preferences.values.settings.webToggle?'Tap RT once':'Hold RT'):(g.preferences.values.settings.webToggle?'Aim high and click once':'Aim high and hold left click')} to swing for 2s`),
       land:copy(`${key('jump','점프 버튼','A')}로 에너지 와이어에서 뛰어내려 바닥에 착지하세요`,`${key('jump','Jump button','A')}: leap off the energy wire and land on solid ground`),
       wall:copy(`벽에 다가가 ${key('wall','더보기 → 벽 이동','방향키 위')}와 전진을 유지하세요`, `Approach a wall; hold ${key('wall','More → Wall','D-pad up')} and move forward`),
       hit:copy('메뉴 → 탐험 안내 → 훈련 표적을 시작하고 가까이서 공격을 명중시키세요','Menu → Exploration → Start training target, approach and land a hit'),

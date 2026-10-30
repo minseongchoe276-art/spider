@@ -1,0 +1,138 @@
+{
+  "animationAssetsRegenerated": false,
+  "total": 90,
+  "finished": 26,
+  "passed": 24,
+  "results": [
+    {
+      "name": "check-motions.mjs",
+      "status": "PASS",
+      "milliseconds": 2070
+    },
+    {
+      "name": "check-pose.mjs",
+      "status": "PASS",
+      "milliseconds": 81011
+    },
+    {
+      "name": "check-controller.mjs",
+      "status": "PASS",
+      "milliseconds": 252
+    },
+    {
+      "name": "check-gameplay.mjs",
+      "status": "PASS",
+      "milliseconds": 1304
+    },
+    {
+      "name": "check-air-tricks.mjs",
+      "status": "PASS",
+      "milliseconds": 89
+    },
+    {
+      "name": "check-dual-web.mjs",
+      "status": "PASS",
+      "milliseconds": 133
+    },
+    {
+      "name": "check-pendulum.mjs",
+      "status": "PASS",
+      "milliseconds": 125
+    },
+    {
+      "name": "check-mechanics-audit.mjs",
+      "status": "FAIL",
+      "milliseconds": 132
+    },
+    {
+      "name": "check-player-audit.mjs",
+      "status": "PASS",
+      "milliseconds": 166
+    },
+    {
+      "name": "check-traversal.mjs",
+      "status": "PASS",
+      "milliseconds": 1328
+    },
+    {
+      "name": "check-qa.mjs",
+      "status": "FAIL",
+      "milliseconds": 283
+    },
+    {
+      "name": "check-review-2.mjs",
+      "status": "PASS",
+      "milliseconds": 454
+    },
+    {
+      "name": "check-combat.mjs",
+      "status": "PASS",
+      "milliseconds": 68
+    },
+    {
+      "name": "check-web-vfx.mjs",
+      "status": "PASS",
+      "milliseconds": 69
+    },
+    {
+      "name": "check-superhero-landing-vfx.mjs",
+      "status": "PASS",
+      "milliseconds": 77
+    },
+    {
+      "name": "check-combat-rig.mjs",
+      "status": "PASS",
+      "milliseconds": 45001
+    },
+    {
+      "name": "check-motion-timeline.mjs",
+      "status": "PASS",
+      "milliseconds": 9728
+    },
+    {
+      "name": "check-motion-transitions.mjs",
+      "status": "PASS",
+      "milliseconds": 5894
+    },
+    {
+      "name": "check-hong-kong-streaming.mjs",
+      "status": "PASS",
+      "milliseconds": 1017
+    },
+    {
+      "name": "check-minimap.mjs",
+      "status": "PASS",
+      "milliseconds": 75
+    },
+    {
+      "name": "check-remote-motion.mjs",
+      "status": "PASS",
+      "milliseconds": 6220
+    },
+    {
+      "name": "check-tile-textures.mjs",
+      "status": "PASS",
+      "milliseconds": 55
+    },
+    {
+      "name": "check-multiplayer.mjs",
+      "status": "PASS",
+      "milliseconds": 5284
+    },
+    {
+      "name": "check-admin.mjs",
+      "status": "PASS",
+      "milliseconds": 280
+    },
+    {
+      "name": "check-upgrade.mjs",
+      "status": "PASS",
+      "milliseconds": 128
+    },
+    {
+      "name": "check-upgrade-online.mjs",
+      "status": "PASS",
+      "milliseconds": 13191
+    }
+  ]
+}

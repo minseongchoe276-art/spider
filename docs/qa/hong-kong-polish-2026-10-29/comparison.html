@@ -1,0 +1,13 @@
+<!doctype html>
+<html lang="ko"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>홍콩 맵 렌더링 전후 비교</title>
+<style>
+body{margin:0;background:#10161b;color:#e7edf2;font:16px/1.65 system-ui,sans-serif}main{max-width:1500px;margin:auto;padding:32px}h1{font-size:26px;margin:0 0 8px}p{color:#adbcc8;max-width:1000px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}figure{margin:0}figcaption{padding:8px 0;font-weight:650}img{width:100%;height:auto;display:block;border:1px solid #37434d}a{color:#8bd5ff}.note{border-left:3px solid #849fab;padding-left:16px}.gallery{margin-top:30px} @media(max-width:900px){main{padding:16px}.grid{grid-template-columns:1fr}}
+</style>
+<main><h1>홍콩 맵 · 렌더링 수정 전후</h1>
+<p>같은 1280×800 화면, 시작 위치 (0, 20.513, 0), 같은 방향의 실제 Chrome 캡처입니다. 외부 타일 로딩 상태와 애니메이션 프레임은 다릅니다. 이미지를 누르면 원본 크기로 볼 수 있습니다.</p>
+<div class="grid"><figure><figcaption>수정 전</figcaption><a href="before-start.png"><img src="before-start.png" alt="수정 전 홍콩 시작 화면"></a></figure><figure><figcaption>수정 후</figcaption><a href="final-start.png"><img src="final-start.png" alt="수정 후 홍콩 시작 화면"></a></figure></div>
+<p class="note">건물 계층 표시 누락, 텍스처 필터링, 대체 재질 외벽, 환경 반사와 그림자를 개선했습니다. 원본 사진의 뭉개짐과 거친 형상은 남아 있으며, 정밀 모델로 교체한 결과가 아닙니다. GTA급 완성도 달성을 의미하지 않습니다.</p>
+<div class="grid gallery"><figure><figcaption>실제 와이어 연결</figcaption><a href="final-swing.png"><img src="final-swing.png" alt="실제 홍콩 표면에 와이어를 연결한 화면" loading="lazy"></a></figure><figure><figcaption>실제 차량 탑승·주행 검사</figcaption><a href="final-driving.png"><img src="final-driving.png" alt="홍콩에서 차량을 운전한 화면" loading="lazy"></a></figure></div>
+<p><a href="REPORT.md">상세 분석·수정·검증 보고서</a> · <a href="final-browser.json">실제 플레이 계측</a> · <a href="../..">QA 자료</a></p>
+</main></html>

@@ -30,7 +30,7 @@ MOTIONS.push(...COMBAT_MOTIONS);
 const imported = {
  combatIdle:{file:'Boxing Stance',loop:true},
  jab:{file:'Lead Jab',impactPhase:.28},
- cross:{file:'Punching',compactBody:false,impactPhase:.54},
+ cross:{file:'Mixamo Cross Punch',trim:[.3,1.7],compactBody:false,impactPhase:.57},
  // The source has a long idle tail. Use the complete swing and recovery,
  // then play that section slower so the fist does not snap out and back.
  hook:{file:'Boxing Hook',trim:[0,1.4],impactPhase:.43},
@@ -45,7 +45,7 @@ const imported = {
  hitUppercut:{file:'Receive Uppercut To The Face'},
  special:{file:'Surprise Uppercut',trim:[.7,1.97],impactPhase:.36},
 };
-MOTIONS.push({key:'rightHook',url:'/models/Boxing Stance.fbx',loop:false});
+MOTIONS.push({key:'rightHook',url:'/models/Mixamo Rear Hook.fbx',loop:false,authoredMixamo:true,compactBody:false,impactPhase:.43});
 for(const [key,{file,...settings}] of Object.entries(imported)){
  const motion={key,url:`/models/${file}.fbx`,authoredMixamo:true,loop:false,...settings};
  const index=MOTIONS.findIndex(m=>m.key===key);

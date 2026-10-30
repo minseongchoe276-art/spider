@@ -1,0 +1,42 @@
+{
+  "total": 6,
+  "results": [
+    {
+      "name": "check-motion-cleanup.mjs",
+      "status": "PASS",
+      "milliseconds": 135961,
+      "log": "check-motion-cleanup.mjs.postfix.log"
+    },
+    {
+      "name": "check-combat-quality.mjs",
+      "status": "FAIL",
+      "milliseconds": 37989,
+      "log": "check-combat-quality.mjs.postfix.log"
+    },
+    {
+      "name": "check-combat-traversal.mjs",
+      "status": "PASS",
+      "milliseconds": 16685,
+      "log": "check-combat-traversal.mjs.postfix.log"
+    },
+    {
+      "name": "check-combat-rig.mjs",
+      "status": "PASS",
+      "milliseconds": 53406,
+      "log": "check-combat-rig.mjs.postfix.log"
+    },
+    {
+      "name": "check-motion-transitions.mjs",
+      "status": "PASS",
+      "milliseconds": 9531,
+      "log": "check-motion-transitions.mjs.postfix.log"
+    },
+    {
+      "name": "check-combat-feet.mjs",
+      "status": "PASS",
+      "milliseconds": 280648,
+      "log": "check-combat-feet.mjs.postfix.log"
+    }
+  ],
+  "scope": "Intermediate recheck before the final cross-recovery correction. Final corrected results are in final-suite.json."
+}

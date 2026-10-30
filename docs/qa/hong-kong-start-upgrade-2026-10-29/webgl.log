@@ -1,0 +1,7 @@
+PASS: actual WebGL compiles terrace material and renders varied paving {
+  colors: 90,
+  programs: 2,
+  contextLost: false,
+  outsideRepair: [ 196, 196, 196, 255 ],
+  outsideOriginal: [ 196, 196, 196, 255 ]
+}

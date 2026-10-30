@@ -1,0 +1,6 @@
+PASS Delivery requires ordered supported collection and delivery, regardless of distance
+PASS Repeated cells, stationary samples and the starting cell cannot finish a survey
+PASS Legacy saves migrate, invalid completion records are discarded, and quota failures are reported
+PASS Loading feedback distinguishes offline/streamed/local states in both languages
+PASS Slow engine import has a working retry before app initialization and releases its listeners
+Mission expansion: 5 passed, 0 failed.

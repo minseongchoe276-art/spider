@@ -1,0 +1,7041 @@
+{
+  "phase": "before",
+  "regions": [
+    {
+      "id": "region-x-2100-z-2100",
+      "x": -2100,
+      "z": -2100,
+      "height": 440.81029793107155,
+      "samples": [
+        374.7085838218445,
+        257.8104967128929,
+        176.70982888125945,
+        440.81029793107155,
+        280.2410453946395,
+        215.99046112136057,
+        404.5586337728928,
+        282.96298769376517,
+        203.3059445600702
+      ],
+      "position": [
+        -2100,
+        610.8102979310715,
+        -1970
+      ],
+      "target": [
+        -2100,
+        440.81029793107155,
+        -2200
+      ],
+      "detail": true,
+      "surfaceVerified": true,
+      "visibleMeshes": 12,
+      "geometryIssues": [],
+      "streaming": [
+        {
+          "surface": "terrain",
+          "errorTarget": 20,
+          "distantError": 0,
+          "loadAncestors": true,
+          "loadSiblings": true,
+          "stats": {
+            "inCacheSinceLoad": 71,
+            "inCache": 177,
+            "queued": 16,
+            "downloading": 14,
+            "parsing": 2,
+            "loaded": 145,
+            "failed": 0,
+            "inFrustum": 61,
+            "used": 85,
+            "active": 23,
+            "visible": 12,
+            "refused": 0,
+            "tilesProcessed": 0
+          },
+          "meshes": 12,
+          "shadowCasters": 0,
+          "materials": {
+            "MeshStandardMaterial:texture": 12
+          },
+          "samples": [
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            }
+          ]
+        }
+      ],
+      "renderer": {
+        "calls": 15,
+        "triangles": 86861,
+        "textures": 82,
+        "geometries": 81
+      },
+      "components": {
+        "other": {
+          "meshes": 25,
+          "triangles": 3724,
+          "instances": 25,
+          "visible": 1
+        },
+        "streamed-terrain": {
+          "meshes": 12,
+          "triangles": 36287,
+          "instances": 12,
+          "visible": 12
+        },
+        "central-facades-and-seven-trees": {
+          "meshes": 18,
+          "triangles": 274685,
+          "instances": 10030,
+          "visible": 18
+        },
+        "player": {
+          "meshes": 1,
+          "triangles": 49614,
+          "instances": 1,
+          "visible": 1
+        }
+      }
+    },
+    {
+      "id": "region-x-1400-z-2100",
+      "x": -1400,
+      "z": -2100,
+      "height": 382.08774020522833,
+      "samples": [
+        308.83869643428625,
+        297.6963633966552,
+        259.98900934788617,
+        233.43477217013788,
+        297.35493436264005,
+        285.39235821416696,
+        253.95596555258817,
+        278.91038154215494,
+        382.08774020522833
+      ],
+      "position": [
+        -1400,
+        552.0877402052283,
+        -1970
+      ],
+      "target": [
+        -1400,
+        382.08774020522833,
+        -2200
+      ],
+      "detail": true,
+      "surfaceVerified": true,
+      "visibleMeshes": 12,
+      "geometryIssues": [],
+      "streaming": [
+        {
+          "surface": "terrain",
+          "errorTarget": 20,
+          "distantError": 0,
+          "loadAncestors": true,
+          "loadSiblings": true,
+          "stats": {
+            "inCacheSinceLoad": 62,
+            "inCache": 212,
+            "queued": 14,
+            "downloading": 17,
+            "parsing": 0,
+            "loaded": 181,
+            "failed": 0,
+            "inFrustum": 66,
+            "used": 104,
+            "active": 29,
+            "visible": 12,
+            "refused": 0,
+            "tilesProcessed": 0
+          },
+          "meshes": 12,
+          "shadowCasters": 0,
+          "materials": {
+            "MeshStandardMaterial:texture": 12
+          },
+          "samples": [
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            }
+          ]
+        }
+      ],
+      "renderer": {
+        "calls": 15,
+        "triangles": 86409,
+        "textures": 97,
+        "geometries": 96
+      },
+      "components": {
+        "other": {
+          "meshes": 25,
+          "triangles": 3724,
+          "instances": 25,
+          "visible": 1
+        },
+        "streamed-terrain": {
+          "meshes": 12,
+          "triangles": 35835,
+          "instances": 12,
+          "visible": 12
+        },
+        "central-facades-and-seven-trees": {
+          "meshes": 18,
+          "triangles": 274685,
+          "instances": 10030,
+          "visible": 18
+        },
+        "player": {
+          "meshes": 1,
+          "triangles": 49614,
+          "instances": 1,
+          "visible": 1
+        }
+      }
+    },
+    {
+      "id": "region-x-700-z-2100",
+      "x": -700,
+      "z": -2100,
+      "height": 387.523923615041,
+      "samples": [
+        364.955486294346,
+        387.523923615041,
+        353.3988373963348,
+        329.36107644689946,
+        351.7202099486258,
+        305.0173106836337,
+        244.81969230385403,
+        280.12801329129434,
+        260.93672333647555
+      ],
+      "position": [
+        -700,
+        557.523923615041,
+        -1970
+      ],
+      "target": [
+        -700,
+        387.523923615041,
+        -2200
+      ],
+      "detail": true,
+      "surfaceVerified": true,
+      "visibleMeshes": 14,
+      "geometryIssues": [],
+      "streaming": [
+        {
+          "surface": "terrain",
+          "errorTarget": 20,
+          "distantError": 0,
+          "loadAncestors": true,
+          "loadSiblings": true,
+          "stats": {
+            "inCacheSinceLoad": 46,
+            "inCache": 222,
+            "queued": 3,
+            "downloading": 17,
+            "parsing": 0,
+            "loaded": 202,
+            "failed": 0,
+            "inFrustum": 59,
+            "used": 95,
+            "active": 29,
+            "visible": 14,
+            "refused": 0,
+            "tilesProcessed": 0
+          },
+          "meshes": 14,
+          "shadowCasters": 0,
+          "materials": {
+            "MeshStandardMaterial:texture": 14
+          },
+          "samples": [
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            }
+          ]
+        }
+      ],
+      "renderer": {
+        "calls": 17,
+        "triangles": 100976,
+        "textures": 108,
+        "geometries": 107
+      },
+      "components": {
+        "other": {
+          "meshes": 25,
+          "triangles": 3724,
+          "instances": 25,
+          "visible": 1
+        },
+        "streamed-terrain": {
+          "meshes": 14,
+          "triangles": 50402,
+          "instances": 14,
+          "visible": 14
+        },
+        "central-facades-and-seven-trees": {
+          "meshes": 18,
+          "triangles": 274685,
+          "instances": 10030,
+          "visible": 18
+        },
+        "player": {
+          "meshes": 1,
+          "triangles": 49614,
+          "instances": 1,
+          "visible": 1
+        }
+      }
+    },
+    {
+      "id": "region-x0-z-2100",
+      "x": 0,
+      "z": -2100,
+      "height": 181.3777011090715,
+      "samples": [
+        138.80455193466878,
+        181.3777011090715,
+        171.22433571302827,
+        151.9338277054976,
+        139.3391410933291,
+        139.26538122405145,
+        107.72088990231168,
+        157.48824588550997,
+        176.3385136532561
+      ],
+      "position": [
+        0,
+        351.3777011090715,
+        -1970
+      ],
+      "target": [
+        0,
+        181.3777011090715,
+        -2200
+      ],
+      "detail": true,
+      "surfaceVerified": true,
+      "visibleMeshes": 13,
+      "geometryIssues": [],
+      "streaming": [
+        {
+          "surface": "terrain",
+          "errorTarget": 20,
+          "distantError": 0,
+          "loadAncestors": true,
+          "loadSiblings": true,
+          "stats": {
+            "inCacheSinceLoad": 48,
+            "inCache": 248,
+            "queued": 8,
+            "downloading": 16,
+            "parsing": 0,
+            "loaded": 224,
+            "failed": 0,
+            "inFrustum": 67,
+            "used": 96,
+            "active": 32,
+            "visible": 13,
+            "refused": 0,
+            "tilesProcessed": 0
+          },
+          "meshes": 13,
+          "shadowCasters": 0,
+          "materials": {
+            "MeshStandardMaterial:texture": 13
+          },
+          "samples": [
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            }
+          ]
+        }
+      ],
+      "renderer": {
+        "calls": 16,
+        "triangles": 104915,
+        "textures": 118,
+        "geometries": 117
+      },
+      "components": {
+        "other": {
+          "meshes": 25,
+          "triangles": 3724,
+          "instances": 25,
+          "visible": 1
+        },
+        "streamed-terrain": {
+          "meshes": 13,
+          "triangles": 54341,
+          "instances": 13,
+          "visible": 13
+        },
+        "central-facades-and-seven-trees": {
+          "meshes": 18,
+          "triangles": 274685,
+          "instances": 10030,
+          "visible": 18
+        },
+        "player": {
+          "meshes": 1,
+          "triangles": 49614,
+          "instances": 1,
+          "visible": 1
+        }
+      }
+    },
+    {
+      "id": "region-x700-z-2100",
+      "x": 700,
+      "z": -2100,
+      "height": 282.9320504644602,
+      "samples": [
+        188.4098810379819,
+        166.88818529503806,
+        186.40028233299017,
+        225.5059333519257,
+        243.05202659057068,
+        260.8323975781659,
+        194.17281588125115,
+        235.03184362430875,
+        282.9320504644602
+      ],
+      "position": [
+        700,
+        452.9320504644602,
+        -1970
+      ],
+      "target": [
+        700,
+        282.9320504644602,
+        -2200
+      ],
+      "detail": true,
+      "surfaceVerified": true,
+      "visibleMeshes": 17,
+      "geometryIssues": [],
+      "streaming": [
+        {
+          "surface": "terrain",
+          "errorTarget": 20,
+          "distantError": 0,
+          "loadAncestors": true,
+          "loadSiblings": true,
+          "stats": {
+            "inCacheSinceLoad": 53,
+            "inCache": 279,
+            "queued": 6,
+            "downloading": 18,
+            "parsing": 0,
+            "loaded": 255,
+            "failed": 0,
+            "inFrustum": 65,
+            "used": 103,
+            "active": 36,
+            "visible": 17,
+            "refused": 0,
+            "tilesProcessed": 0
+          },
+          "meshes": 17,
+          "shadowCasters": 0,
+          "materials": {
+            "MeshStandardMaterial:texture": 17
+          },
+          "samples": [
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            }
+          ]
+        }
+      ],
+      "renderer": {
+        "calls": 20,
+        "triangles": 118267,
+        "textures": 135,
+        "geometries": 134
+      },
+      "components": {
+        "other": {
+          "meshes": 25,
+          "triangles": 3724,
+          "instances": 25,
+          "visible": 1
+        },
+        "streamed-terrain": {
+          "meshes": 17,
+          "triangles": 67693,
+          "instances": 17,
+          "visible": 17
+        },
+        "central-facades-and-seven-trees": {
+          "meshes": 18,
+          "triangles": 274685,
+          "instances": 10030,
+          "visible": 18
+        },
+        "player": {
+          "meshes": 1,
+          "triangles": 49614,
+          "instances": 1,
+          "visible": 1
+        }
+      }
+    },
+    {
+      "id": "region-x1400-z-2100",
+      "x": 1400,
+      "z": -2100,
+      "height": 394.93013485582196,
+      "samples": [
+        233.4828063555924,
+        245.0719658644848,
+        282.96381925547394,
+        305.46260463094404,
+        351.04096263244537,
+        284.327051825996,
+        375.83139745001245,
+        394.93013485582196,
+        369.83089250780176
+      ],
+      "position": [
+        1400,
+        564.930134855822,
+        -1970
+      ],
+      "target": [
+        1400,
+        394.93013485582196,
+        -2200
+      ],
+      "detail": true,
+      "surfaceVerified": true,
+      "visibleMeshes": 14,
+      "geometryIssues": [],
+      "streaming": [
+        {
+          "surface": "terrain",
+          "errorTarget": 20,
+          "distantError": 0,
+          "loadAncestors": true,
+          "loadSiblings": true,
+          "stats": {
+            "inCacheSinceLoad": 51,
+            "inCache": 299,
+            "queued": 10,
+            "downloading": 15,
+            "parsing": 1,
+            "loaded": 273,
+            "failed": 0,
+            "inFrustum": 67,
+            "used": 105,
+            "active": 33,
+            "visible": 14,
+            "refused": 0,
+            "tilesProcessed": 0
+          },
+          "meshes": 14,
+          "shadowCasters": 0,
+          "materials": {
+            "MeshStandardMaterial:texture": 14
+          },
+          "samples": [
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            }
+          ]
+        }
+      ],
+      "renderer": {
+        "calls": 17,
+        "triangles": 105313,
+        "textures": 132,
+        "geometries": 131
+      },
+      "components": {
+        "other": {
+          "meshes": 25,
+          "triangles": 3724,
+          "instances": 25,
+          "visible": 1
+        },
+        "streamed-terrain": {
+          "meshes": 14,
+          "triangles": 54739,
+          "instances": 14,
+          "visible": 14
+        },
+        "central-facades-and-seven-trees": {
+          "meshes": 18,
+          "triangles": 274685,
+          "instances": 10030,
+          "visible": 18
+        },
+        "player": {
+          "meshes": 1,
+          "triangles": 49614,
+          "instances": 1,
+          "visible": 1
+        }
+      }
+    },
+    {
+      "id": "region-x2100-z-2100",
+      "x": 2100,
+      "z": -2100,
+      "height": 425.6893310817795,
+      "samples": [
+        345.84209747723617,
+        425.6893310817795,
+        413.3409886219797,
+        283.66919804396275,
+        333.82258166108113,
+        331.53458996119116,
+        250.14529968830357,
+        280.0435567124114,
+        302.6765965253635
+      ],
+      "position": [
+        2100,
+        595.6893310817795,
+        -1970
+      ],
+      "target": [
+        2100,
+        425.6893310817795,
+        -2200
+      ],
+      "detail": true,
+      "surfaceVerified": true,
+      "visibleMeshes": 16,
+      "geometryIssues": [],
+      "streaming": [
+        {
+          "surface": "terrain",
+          "errorTarget": 20,
+          "distantError": 0,
+          "loadAncestors": true,
+          "loadSiblings": true,
+          "stats": {
+            "inCacheSinceLoad": 37,
+            "inCache": 196,
+            "queued": 0,
+            "downloading": 14,
+            "parsing": 1,
+            "loaded": 181,
+            "failed": 0,
+            "inFrustum": 58,
+            "used": 91,
+            "active": 36,
+            "visible": 16,
+            "refused": 0,
+            "tilesProcessed": 0
+          },
+          "meshes": 16,
+          "shadowCasters": 0,
+          "materials": {
+            "MeshStandardMaterial:texture": 16
+          },
+          "samples": [
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            }
+          ]
+        }
+      ],
+      "renderer": {
+        "calls": 19,
+        "triangles": 109023,
+        "textures": 98,
+        "geometries": 95
+      },
+      "components": {
+        "other": {
+          "meshes": 25,
+          "triangles": 3724,
+          "instances": 25,
+          "visible": 1
+        },
+        "streamed-terrain": {
+          "meshes": 16,
+          "triangles": 58449,
+          "instances": 16,
+          "visible": 16
+        },
+        "central-facades-and-seven-trees": {
+          "meshes": 18,
+          "triangles": 274685,
+          "instances": 10030,
+          "visible": 18
+        },
+        "player": {
+          "meshes": 1,
+          "triangles": 49614,
+          "instances": 1,
+          "visible": 1
+        }
+      }
+    },
+    {
+      "id": "region-x-2100-z-1400",
+      "x": -2100,
+      "z": -1400,
+      "height": 112.18339682227088,
+      "samples": [
+        63.763003215812205,
+        44.244061944820714,
+        68.90837300071144,
+        68.30521294759092,
+        47.80075581280107,
+        73.68099315507061,
+        112.18339682227088,
+        48.31759422742107,
+        90.79975516470222
+      ],
+      "position": [
+        -2100,
+        282.1833968222709,
+        -1270
+      ],
+      "target": [
+        -2100,
+        112.18339682227088,
+        -1500
+      ],
+      "detail": true,
+      "surfaceVerified": true,
+      "visibleMeshes": 14,
+      "geometryIssues": [],
+      "streaming": [
+        {
+          "surface": "terrain",
+          "errorTarget": 20,
+          "distantError": 0,
+          "loadAncestors": true,
+          "loadSiblings": true,
+          "stats": {
+            "inCacheSinceLoad": 70,
+            "inCache": 231,
+            "queued": 21,
+            "downloading": 15,
+            "parsing": 2,
+            "loaded": 193,
+            "failed": 0,
+            "inFrustum": 62,
+            "used": 85,
+            "active": 23,
+            "visible": 14,
+            "refused": 0,
+            "tilesProcessed": 0
+          },
+          "meshes": 14,
+          "shadowCasters": 0,
+          "materials": {
+            "MeshStandardMaterial:texture": 14
+          },
+          "samples": [
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            }
+          ]
+        }
+      ],
+      "renderer": {
+        "calls": 17,
+        "triangles": 112209,
+        "textures": 106,
+        "geometries": 103
+      },
+      "components": {
+        "other": {
+          "meshes": 25,
+          "triangles": 3724,
+          "instances": 25,
+          "visible": 1
+        },
+        "streamed-terrain": {
+          "meshes": 14,
+          "triangles": 61635,
+          "instances": 14,
+          "visible": 14
+        },
+        "central-facades-and-seven-trees": {
+          "meshes": 18,
+          "triangles": 274685,
+          "instances": 10030,
+          "visible": 18
+        },
+        "player": {
+          "meshes": 1,
+          "triangles": 49614,
+          "instances": 1,
+          "visible": 1
+        }
+      }
+    },
+    {
+      "id": "region-x-1400-z-1400",
+      "x": -1400,
+      "z": -1400,
+      "height": 244.436131252216,
+      "samples": [
+        208.69853101127228,
+        133.42694485466927,
+        108.65628288076914,
+        189.53013616982935,
+        131.74712483972326,
+        106.05794589276047,
+        244.436131252216,
+        215.72677703224326,
+        175.96380127250086
+      ],
+      "position": [
+        -1400,
+        414.436131252216,
+        -1270
+      ],
+      "target": [
+        -1400,
+        244.436131252216,
+        -1500
+      ],
+      "detail": true,
+      "surfaceVerified": true,
+      "visibleMeshes": 53,
+      "geometryIssues": [],
+      "streaming": [
+        {
+          "surface": "terrain",
+          "errorTarget": 20,
+          "distantError": 0,
+          "loadAncestors": true,
+          "loadSiblings": true,
+          "stats": {
+            "inCacheSinceLoad": 0,
+            "inCache": 192,
+            "queued": 0,
+            "downloading": 4,
+            "parsing": 0,
+            "loaded": 188,
+            "failed": 0,
+            "inFrustum": 60,
+            "used": 83,
+            "active": 41,
+            "visible": 25,
+            "refused": 0,
+            "tilesProcessed": 0
+          },
+          "meshes": 53,
+          "shadowCasters": 0,
+          "materials": {
+            "MeshStandardMaterial:texture": 25,
+            "MeshBasicMaterial:texture": 28
+          },
+          "samples": [
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            }
+          ]
+        }
+      ],
+      "renderer": {
+        "calls": 84,
+        "triangles": 169674,
+        "textures": 212,
+        "geometries": 209
+      },
+      "components": {
+        "other": {
+          "meshes": 25,
+          "triangles": 3724,
+          "instances": 25,
+          "visible": 1
+        },
+        "streamed-terrain": {
+          "meshes": 53,
+          "triangles": 113426,
+          "instances": 53,
+          "visible": 53
+        },
+        "central-facades-and-seven-trees": {
+          "meshes": 18,
+          "triangles": 274685,
+          "instances": 10030,
+          "visible": 18
+        },
+        "player": {
+          "meshes": 1,
+          "triangles": 49614,
+          "instances": 1,
+          "visible": 1
+        }
+      }
+    },
+    {
+      "id": "region-x-700-z-1400",
+      "x": -700,
+      "z": -1400,
+      "height": 384.84964053477233,
+      "samples": [
+        384.84964053477233,
+        326.0874815957068,
+        232.45311266260978,
+        350.74966655821663,
+        296.37186663357716,
+        206.705182824262,
+        289.0944841848359,
+        289.14235279345303,
+        208.41589687247142
+      ],
+      "position": [
+        -700,
+        554.8496405347723,
+        -1270
+      ],
+      "target": [
+        -700,
+        384.84964053477233,
+        -1500
+      ],
+      "detail": true,
+      "surfaceVerified": true,
+      "visibleMeshes": 29,
+      "geometryIssues": [],
+      "streaming": [
+        {
+          "surface": "terrain",
+          "errorTarget": 20,
+          "distantError": 0,
+          "loadAncestors": true,
+          "loadSiblings": true,
+          "stats": {
+            "inCacheSinceLoad": 0,
+            "inCache": 164,
+            "queued": 0,
+            "downloading": 0,
+            "parsing": 0,
+            "loaded": 164,
+            "failed": 0,
+            "inFrustum": 55,
+            "used": 75,
+            "active": 41,
+            "visible": 25,
+            "refused": 0,
+            "tilesProcessed": 0
+          },
+          "meshes": 29,
+          "shadowCasters": 0,
+          "materials": {
+            "MeshStandardMaterial:texture": 25,
+            "MeshBasicMaterial:texture": 4
+          },
+          "samples": [
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            }
+          ]
+        }
+      ],
+      "renderer": {
+        "calls": 36,
+        "triangles": 248647,
+        "textures": 249,
+        "geometries": 246
+      },
+      "components": {
+        "other": {
+          "meshes": 25,
+          "triangles": 3724,
+          "instances": 25,
+          "visible": 1
+        },
+        "streamed-terrain": {
+          "meshes": 29,
+          "triangles": 196946,
+          "instances": 29,
+          "visible": 29
+        },
+        "central-facades-and-seven-trees": {
+          "meshes": 18,
+          "triangles": 274685,
+          "instances": 10030,
+          "visible": 18
+        },
+        "player": {
+          "meshes": 1,
+          "triangles": 49614,
+          "instances": 1,
+          "visible": 1
+        }
+      }
+    },
+    {
+      "id": "region-x0-z-1400",
+      "x": 0,
+      "z": -1400,
+      "height": 305.31367194558516,
+      "samples": [
+        228.46669965720685,
+        275.34075821481747,
+        303.1373018171671,
+        200.12012290756684,
+        234.32600352974077,
+        281.57682874792044,
+        238.85304606268437,
+        260.7034232280148,
+        305.31367194558516
+      ],
+      "position": [
+        0,
+        475.31367194558516,
+        -1270
+      ],
+      "target": [
+        0,
+        305.31367194558516,
+        -1500
+      ],
+      "detail": true,
+      "surfaceVerified": true,
+      "visibleMeshes": 16,
+      "geometryIssues": [],
+      "streaming": [
+        {
+          "surface": "terrain",
+          "errorTarget": 20,
+          "distantError": 0,
+          "loadAncestors": true,
+          "loadSiblings": true,
+          "stats": {
+            "inCacheSinceLoad": 28,
+            "inCache": 180,
+            "queued": 0,
+            "downloading": 7,
+            "parsing": 1,
+            "loaded": 172,
+            "failed": 0,
+            "inFrustum": 50,
+            "used": 75,
+            "active": 32,
+            "visible": 16,
+            "refused": 0,
+            "tilesProcessed": 0
+          },
+          "meshes": 16,
+          "shadowCasters": 0,
+          "materials": {
+            "MeshStandardMaterial:texture": 16
+          },
+          "samples": [
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            }
+          ]
+        }
+      ],
+      "renderer": {
+        "calls": 19,
+        "triangles": 120252,
+        "textures": 170,
+        "geometries": 167
+      },
+      "components": {
+        "other": {
+          "meshes": 25,
+          "triangles": 3724,
+          "instances": 25,
+          "visible": 1
+        },
+        "streamed-terrain": {
+          "meshes": 16,
+          "triangles": 69678,
+          "instances": 16,
+          "visible": 16
+        },
+        "central-facades-and-seven-trees": {
+          "meshes": 18,
+          "triangles": 274685,
+          "instances": 10030,
+          "visible": 18
+        },
+        "player": {
+          "meshes": 1,
+          "triangles": 49614,
+          "instances": 1,
+          "visible": 1
+        }
+      }
+    },
+    {
+      "id": "region-x700-z-1400",
+      "x": 700,
+      "z": -1400,
+      "height": 451.0812786558199,
+      "samples": [
+        305.30923786267886,
+        366.35690289971535,
+        451.0812786558199,
+        317.19358795102744,
+        396.24934622817636,
+        446.07344809382994,
+        346.74282533118276,
+        421.21715305591533,
+        442.400980833454
+      ],
+      "position": [
+        700,
+        621.0812786558199,
+        -1270
+      ],
+      "target": [
+        700,
+        451.0812786558199,
+        -1500
+      ],
+      "detail": true,
+      "surfaceVerified": true,
+      "visibleMeshes": 17,
+      "geometryIssues": [],
+      "streaming": [
+        {
+          "surface": "terrain",
+          "errorTarget": 20,
+          "distantError": 0,
+          "loadAncestors": true,
+          "loadSiblings": true,
+          "stats": {
+            "inCacheSinceLoad": 32,
+            "inCache": 203,
+            "queued": 0,
+            "downloading": 9,
+            "parsing": 0,
+            "loaded": 194,
+            "failed": 0,
+            "inFrustum": 56,
+            "used": 79,
+            "active": 33,
+            "visible": 17,
+            "refused": 0,
+            "tilesProcessed": 0
+          },
+          "meshes": 17,
+          "shadowCasters": 0,
+          "materials": {
+            "MeshStandardMaterial:texture": 17
+          },
+          "samples": [
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            }
+          ]
+        }
+      ],
+      "renderer": {
+        "calls": 20,
+        "triangles": 120723,
+        "textures": 122,
+        "geometries": 119
+      },
+      "components": {
+        "other": {
+          "meshes": 25,
+          "triangles": 3724,
+          "instances": 25,
+          "visible": 1
+        },
+        "streamed-terrain": {
+          "meshes": 17,
+          "triangles": 70149,
+          "instances": 17,
+          "visible": 17
+        },
+        "central-facades-and-seven-trees": {
+          "meshes": 18,
+          "triangles": 274685,
+          "instances": 10030,
+          "visible": 18
+        },
+        "player": {
+          "meshes": 1,
+          "triangles": 49614,
+          "instances": 1,
+          "visible": 1
+        }
+      }
+    },
+    {
+      "id": "region-x1400-z-1400",
+      "x": 1400,
+      "z": -1400,
+      "height": 478.47225742195405,
+      "samples": [
+        419.2173621715792,
+        455.8884387026028,
+        478.47225742195405,
+        433.8496233596052,
+        456.62635142969157,
+        452.4969519850656,
+        427.17109491372685,
+        396.4285034652239,
+        385.3925509600449
+      ],
+      "position": [
+        1400,
+        648.472257421954,
+        -1270
+      ],
+      "target": [
+        1400,
+        478.47225742195405,
+        -1500
+      ],
+      "detail": true,
+      "surfaceVerified": true,
+      "visibleMeshes": 18,
+      "geometryIssues": [],
+      "streaming": [
+        {
+          "surface": "terrain",
+          "errorTarget": 20,
+          "distantError": 0,
+          "loadAncestors": true,
+          "loadSiblings": true,
+          "stats": {
+            "inCacheSinceLoad": 23,
+            "inCache": 204,
+            "queued": 0,
+            "downloading": 9,
+            "parsing": 0,
+            "loaded": 195,
+            "failed": 0,
+            "inFrustum": 57,
+            "used": 79,
+            "active": 33,
+            "visible": 18,
+            "refused": 0,
+            "tilesProcessed": 0
+          },
+          "meshes": 18,
+          "shadowCasters": 0,
+          "materials": {
+            "MeshStandardMaterial:texture": 18
+          },
+          "samples": [
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            }
+          ]
+        }
+      ],
+      "renderer": {
+        "calls": 21,
+        "triangles": 119212,
+        "textures": 124,
+        "geometries": 121
+      },
+      "components": {
+        "other": {
+          "meshes": 25,
+          "triangles": 3724,
+          "instances": 25,
+          "visible": 1
+        },
+        "streamed-terrain": {
+          "meshes": 18,
+          "triangles": 68638,
+          "instances": 18,
+          "visible": 18
+        },
+        "central-facades-and-seven-trees": {
+          "meshes": 18,
+          "triangles": 274685,
+          "instances": 10030,
+          "visible": 18
+        },
+        "player": {
+          "meshes": 1,
+          "triangles": 49614,
+          "instances": 1,
+          "visible": 1
+        }
+      }
+    },
+    {
+      "id": "region-x2100-z-1400",
+      "x": 2100,
+      "z": -1400,
+      "height": 329.7681249833586,
+      "samples": [
+        329.04571259049226,
+        329.7681249833586,
+        281.1775859276968,
+        289.72207355064893,
+        290.68806823900377,
+        252.47067509428598,
+        271.76441515183615,
+        235.03459450616356,
+        256.1842049608331
+      ],
+      "position": [
+        2100,
+        499.7681249833586,
+        -1270
+      ],
+      "target": [
+        2100,
+        329.7681249833586,
+        -1500
+      ],
+      "detail": true,
+      "surfaceVerified": true,
+      "visibleMeshes": 16,
+      "geometryIssues": [],
+      "streaming": [
+        {
+          "surface": "terrain",
+          "errorTarget": 20,
+          "distantError": 0,
+          "loadAncestors": true,
+          "loadSiblings": true,
+          "stats": {
+            "inCacheSinceLoad": 36,
+            "inCache": 214,
+            "queued": 0,
+            "downloading": 16,
+            "parsing": 0,
+            "loaded": 198,
+            "failed": 0,
+            "inFrustum": 48,
+            "used": 67,
+            "active": 30,
+            "visible": 16,
+            "refused": 0,
+            "tilesProcessed": 0
+          },
+          "meshes": 16,
+          "shadowCasters": 0,
+          "materials": {
+            "MeshStandardMaterial:texture": 16
+          },
+          "samples": [
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            }
+          ]
+        }
+      ],
+      "renderer": {
+        "calls": 19,
+        "triangles": 107827,
+        "textures": 121,
+        "geometries": 118
+      },
+      "components": {
+        "other": {
+          "meshes": 25,
+          "triangles": 3724,
+          "instances": 25,
+          "visible": 1
+        },
+        "streamed-terrain": {
+          "meshes": 16,
+          "triangles": 57253,
+          "instances": 16,
+          "visible": 16
+        },
+        "central-facades-and-seven-trees": {
+          "meshes": 18,
+          "triangles": 274685,
+          "instances": 10030,
+          "visible": 18
+        },
+        "player": {
+          "meshes": 1,
+          "triangles": 49614,
+          "instances": 1,
+          "visible": 1
+        }
+      }
+    },
+    {
+      "id": "region-x-2100-z-700",
+      "x": -2100,
+      "z": -700,
+      "height": 191.9643439690335,
+      "samples": [
+        84.73691918873374,
+        42.86504037653867,
+        48.69113141473281,
+        78.59872118430212,
+        191.9643439690335,
+        81.69246641994687,
+        33.5877730000102,
+        99.14681211760399,
+        74.49630563274695
+      ],
+      "position": [
+        -2100,
+        361.9643439690335,
+        -570
+      ],
+      "target": [
+        -2100,
+        191.9643439690335,
+        -800
+      ],
+      "detail": true,
+      "surfaceVerified": true,
+      "visibleMeshes": 20,
+      "geometryIssues": [],
+      "streaming": [
+        {
+          "surface": "terrain",
+          "errorTarget": 20,
+          "distantError": 0,
+          "loadAncestors": true,
+          "loadSiblings": true,
+          "stats": {
+            "inCacheSinceLoad": 51,
+            "inCache": 227,
+            "queued": 0,
+            "downloading": 14,
+            "parsing": 2,
+            "loaded": 211,
+            "failed": 0,
+            "inFrustum": 53,
+            "used": 90,
+            "active": 41,
+            "visible": 20,
+            "refused": 0,
+            "tilesProcessed": 0
+          },
+          "meshes": 20,
+          "shadowCasters": 0,
+          "materials": {
+            "MeshStandardMaterial:texture": 20
+          },
+          "samples": [
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            }
+          ]
+        }
+      ],
+      "renderer": {
+        "calls": 23,
+        "triangles": 134277,
+        "textures": 141,
+        "geometries": 138
+      },
+      "components": {
+        "other": {
+          "meshes": 25,
+          "triangles": 3724,
+          "instances": 25,
+          "visible": 1
+        },
+        "streamed-terrain": {
+          "meshes": 20,
+          "triangles": 83703,
+          "instances": 20,
+          "visible": 20
+        },
+        "central-facades-and-seven-trees": {
+          "meshes": 18,
+          "triangles": 274685,
+          "instances": 10030,
+          "visible": 18
+        },
+        "player": {
+          "meshes": 1,
+          "triangles": 49614,
+          "instances": 1,
+          "visible": 1
+        }
+      }
+    },
+    {
+      "id": "region-x-1400-z-700",
+      "x": -1400,
+      "z": -700,
+      "height": 70.26793422495393,
+      "samples": [
+        20.3418810306066,
+        12.993111962841795,
+        20.42007899791497,
+        39.579817363861366,
+        34.974143632800406,
+        49.40640653070295,
+        70.26793422495393,
+        55.74327672462459,
+        33.85968302014953
+      ],
+      "position": [
+        -1400,
+        240.26793422495393,
+        -570
+      ],
+      "target": [
+        -1400,
+        70.26793422495393,
+        -800
+      ],
+      "detail": true,
+      "surfaceVerified": true,
+      "visibleMeshes": 35,
+      "geometryIssues": [],
+      "streaming": [
+        {
+          "surface": "terrain",
+          "errorTarget": 20,
+          "distantError": 0,
+          "loadAncestors": true,
+          "loadSiblings": true,
+          "stats": {
+            "inCacheSinceLoad": 56,
+            "inCache": 237,
+            "queued": 9,
+            "downloading": 13,
+            "parsing": 0,
+            "loaded": 215,
+            "failed": 0,
+            "inFrustum": 73,
+            "used": 123,
+            "active": 53,
+            "visible": 22,
+            "refused": 0,
+            "tilesProcessed": 0
+          },
+          "meshes": 35,
+          "shadowCasters": 0,
+          "materials": {
+            "MeshStandardMaterial:texture": 22,
+            "MeshBasicMaterial:texture": 13
+          },
+          "samples": [
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            }
+          ]
+        }
+      ],
+      "renderer": {
+        "calls": 51,
+        "triangles": 165021,
+        "textures": 153,
+        "geometries": 150
+      },
+      "components": {
+        "other": {
+          "meshes": 25,
+          "triangles": 3724,
+          "instances": 25,
+          "visible": 1
+        },
+        "streamed-terrain": {
+          "meshes": 35,
+          "triangles": 108345,
+          "instances": 35,
+          "visible": 35
+        },
+        "central-facades-and-seven-trees": {
+          "meshes": 18,
+          "triangles": 274685,
+          "instances": 10030,
+          "visible": 18
+        },
+        "player": {
+          "meshes": 1,
+          "triangles": 49614,
+          "instances": 1,
+          "visible": 1
+        }
+      }
+    },
+    {
+      "id": "region-x-700-z-700",
+      "x": -700,
+      "z": -700,
+      "height": 182.54456514804406,
+      "samples": [
+        90.5977416310343,
+        51.75202373585489,
+        34.57785693950791,
+        84.36550362811977,
+        54.279001650480495,
+        105.68663506420489,
+        182.54456514804406,
+        100.09426728026665,
+        82.89910432930992
+      ],
+      "position": [
+        -700,
+        352.54456514804406,
+        -570
+      ],
+      "target": [
+        -700,
+        182.54456514804406,
+        -800
+      ],
+      "detail": true,
+      "surfaceVerified": true,
+      "visibleMeshes": 51,
+      "geometryIssues": [],
+      "streaming": [
+        {
+          "surface": "terrain",
+          "errorTarget": 20,
+          "distantError": 0,
+          "loadAncestors": true,
+          "loadSiblings": true,
+          "stats": {
+            "inCacheSinceLoad": 50,
+            "inCache": 223,
+            "queued": 3,
+            "downloading": 12,
+            "parsing": 2,
+            "loaded": 206,
+            "failed": 0,
+            "inFrustum": 78,
+            "used": 126,
+            "active": 50,
+            "visible": 21,
+            "refused": 0,
+            "tilesProcessed": 0
+          },
+          "meshes": 51,
+          "shadowCasters": 0,
+          "materials": {
+            "MeshStandardMaterial:texture": 21,
+            "MeshBasicMaterial:texture": 30
+          },
+          "samples": [
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            }
+          ]
+        }
+      ],
+      "renderer": {
+        "calls": 84,
+        "triangles": 160741,
+        "textures": 170,
+        "geometries": 167
+      },
+      "components": {
+        "other": {
+          "meshes": 25,
+          "triangles": 3724,
+          "instances": 25,
+          "visible": 1
+        },
+        "streamed-terrain": {
+          "meshes": 51,
+          "triangles": 103200,
+          "instances": 51,
+          "visible": 51
+        },
+        "central-facades-and-seven-trees": {
+          "meshes": 18,
+          "triangles": 274685,
+          "instances": 10030,
+          "visible": 18
+        },
+        "player": {
+          "meshes": 1,
+          "triangles": 49614,
+          "instances": 1,
+          "visible": 1
+        }
+      }
+    },
+    {
+      "id": "region-x0-z-700",
+      "x": 0,
+      "z": -700,
+      "height": 217.45046004559117,
+      "samples": [
+        217.45046004559117,
+        148.95027474504968,
+        107.52619229446645,
+        159.63421307266435,
+        113.4026242359887,
+        66.1272602649733,
+        178.36497915111977,
+        145.99862111856055,
+        106.95197539875335
+      ],
+      "position": [
+        0,
+        387.45046004559117,
+        -570
+      ],
+      "target": [
+        0,
+        217.45046004559117,
+        -800
+      ],
+      "detail": true,
+      "surfaceVerified": true,
+      "visibleMeshes": 21,
+      "geometryIssues": [],
+      "streaming": [
+        {
+          "surface": "terrain",
+          "errorTarget": 20,
+          "distantError": 0,
+          "loadAncestors": true,
+          "loadSiblings": true,
+          "stats": {
+            "inCacheSinceLoad": 44,
+            "inCache": 231,
+            "queued": 0,
+            "downloading": 11,
+            "parsing": 1,
+            "loaded": 219,
+            "failed": 0,
+            "inFrustum": 67,
+            "used": 107,
+            "active": 47,
+            "visible": 21,
+            "refused": 0,
+            "tilesProcessed": 0
+          },
+          "meshes": 21,
+          "shadowCasters": 0,
+          "materials": {
+            "MeshStandardMaterial:texture": 21
+          },
+          "samples": [
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            }
+          ]
+        }
+      ],
+      "renderer": {
+        "calls": 24,
+        "triangles": 135736,
+        "textures": 164,
+        "geometries": 161
+      },
+      "components": {
+        "other": {
+          "meshes": 25,
+          "triangles": 3724,
+          "instances": 25,
+          "visible": 1
+        },
+        "streamed-terrain": {
+          "meshes": 21,
+          "triangles": 85162,
+          "instances": 21,
+          "visible": 21
+        },
+        "central-facades-and-seven-trees": {
+          "meshes": 18,
+          "triangles": 274685,
+          "instances": 10030,
+          "visible": 18
+        },
+        "player": {
+          "meshes": 1,
+          "triangles": 49614,
+          "instances": 1,
+          "visible": 1
+        }
+      }
+    },
+    {
+      "id": "region-x700-z-700",
+      "x": 700,
+      "z": -700,
+      "height": 291.876144204487,
+      "samples": [
+        251.54538967557346,
+        180.82216970310583,
+        133.07856185996025,
+        272.3376158515184,
+        176.88737545259028,
+        115.46665554593164,
+        291.876144204487,
+        185.1108087058965,
+        191.73414052259977
+      ],
+      "position": [
+        700,
+        461.876144204487,
+        -570
+      ],
+      "target": [
+        700,
+        291.876144204487,
+        -800
+      ],
+      "detail": true,
+      "surfaceVerified": true,
+      "visibleMeshes": 19,
+      "geometryIssues": [],
+      "streaming": [
+        {
+          "surface": "terrain",
+          "errorTarget": 20,
+          "distantError": 0,
+          "loadAncestors": true,
+          "loadSiblings": true,
+          "stats": {
+            "inCacheSinceLoad": 62,
+            "inCache": 234,
+            "queued": 9,
+            "downloading": 18,
+            "parsing": 0,
+            "loaded": 207,
+            "failed": 0,
+            "inFrustum": 76,
+            "used": 123,
+            "active": 42,
+            "visible": 19,
+            "refused": 0,
+            "tilesProcessed": 0
+          },
+          "meshes": 19,
+          "shadowCasters": 0,
+          "materials": {
+            "MeshStandardMaterial:texture": 19
+          },
+          "samples": [
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            }
+          ]
+        }
+      ],
+      "renderer": {
+        "calls": 22,
+        "triangles": 141150,
+        "textures": 123,
+        "geometries": 120
+      },
+      "components": {
+        "other": {
+          "meshes": 25,
+          "triangles": 3724,
+          "instances": 25,
+          "visible": 1
+        },
+        "streamed-terrain": {
+          "meshes": 19,
+          "triangles": 90576,
+          "instances": 19,
+          "visible": 19
+        },
+        "central-facades-and-seven-trees": {
+          "meshes": 18,
+          "triangles": 274685,
+          "instances": 10030,
+          "visible": 18
+        },
+        "player": {
+          "meshes": 1,
+          "triangles": 49614,
+          "instances": 1,
+          "visible": 1
+        }
+      }
+    },
+    {
+      "id": "region-x1400-z-700",
+      "x": 1400,
+      "z": -700,
+      "height": 351.7897747569623,
+      "samples": [
+        241.16150764099802,
+        173.14431690888523,
+        181.06284897676414,
+        292.2851469339439,
+        224.5659037038149,
+        234.67703135854572,
+        351.7897747569623,
+        282.4346514871213,
+        329.772050663707
+      ],
+      "position": [
+        1400,
+        521.7897747569623,
+        -570
+      ],
+      "target": [
+        1400,
+        351.7897747569623,
+        -800
+      ],
+      "detail": true,
+      "surfaceVerified": true,
+      "visibleMeshes": 17,
+      "geometryIssues": [],
+      "streaming": [
+        {
+          "surface": "terrain",
+          "errorTarget": 20,
+          "distantError": 0,
+          "loadAncestors": true,
+          "loadSiblings": true,
+          "stats": {
+            "inCacheSinceLoad": 51,
+            "inCache": 261,
+            "queued": 3,
+            "downloading": 18,
+            "parsing": 0,
+            "loaded": 240,
+            "failed": 0,
+            "inFrustum": 73,
+            "used": 127,
+            "active": 51,
+            "visible": 17,
+            "refused": 0,
+            "tilesProcessed": 0
+          },
+          "meshes": 17,
+          "shadowCasters": 0,
+          "materials": {
+            "MeshStandardMaterial:texture": 17
+          },
+          "samples": [
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            }
+          ]
+        }
+      ],
+      "renderer": {
+        "calls": 20,
+        "triangles": 124909,
+        "textures": 136,
+        "geometries": 133
+      },
+      "components": {
+        "other": {
+          "meshes": 25,
+          "triangles": 3724,
+          "instances": 25,
+          "visible": 1
+        },
+        "streamed-terrain": {
+          "meshes": 17,
+          "triangles": 74335,
+          "instances": 17,
+          "visible": 17
+        },
+        "central-facades-and-seven-trees": {
+          "meshes": 18,
+          "triangles": 274685,
+          "instances": 10030,
+          "visible": 18
+        },
+        "player": {
+          "meshes": 1,
+          "triangles": 49614,
+          "instances": 1,
+          "visible": 1
+        }
+      }
+    },
+    {
+      "id": "region-x2100-z-700",
+      "x": 2100,
+      "z": -700,
+      "height": 530.8240033739003,
+      "samples": [
+        445.60048473402276,
+        474.5920265199529,
+        492.2413080956594,
+        435.6987766672828,
+        512.2754379886574,
+        525.2623366635871,
+        430.7762639708617,
+        507.55914090814076,
+        530.8240033739003
+      ],
+      "position": [
+        2100,
+        700.8240033739003,
+        -570
+      ],
+      "target": [
+        2100,
+        530.8240033739003,
+        -800
+      ],
+      "detail": true,
+      "surfaceVerified": true,
+      "visibleMeshes": 21,
+      "geometryIssues": [],
+      "streaming": [
+        {
+          "surface": "terrain",
+          "errorTarget": 20,
+          "distantError": 0,
+          "loadAncestors": true,
+          "loadSiblings": true,
+          "stats": {
+            "inCacheSinceLoad": 48,
+            "inCache": 276,
+            "queued": 4,
+            "downloading": 17,
+            "parsing": 0,
+            "loaded": 255,
+            "failed": 0,
+            "inFrustum": 72,
+            "used": 126,
+            "active": 51,
+            "visible": 21,
+            "refused": 0,
+            "tilesProcessed": 0
+          },
+          "meshes": 21,
+          "shadowCasters": 0,
+          "materials": {
+            "MeshStandardMaterial:texture": 21
+          },
+          "samples": [
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            }
+          ]
+        }
+      ],
+      "renderer": {
+        "calls": 24,
+        "triangles": 121307,
+        "textures": 158,
+        "geometries": 155
+      },
+      "components": {
+        "other": {
+          "meshes": 25,
+          "triangles": 3724,
+          "instances": 25,
+          "visible": 1
+        },
+        "streamed-terrain": {
+          "meshes": 21,
+          "triangles": 70733,
+          "instances": 21,
+          "visible": 21
+        },
+        "central-facades-and-seven-trees": {
+          "meshes": 18,
+          "triangles": 274685,
+          "instances": 10030,
+          "visible": 18
+        },
+        "player": {
+          "meshes": 1,
+          "triangles": 49614,
+          "instances": 1,
+          "visible": 1
+        }
+      }
+    },
+    {
+      "id": "region-x-2100-z0",
+      "x": -2100,
+      "z": 0,
+      "height": 218.9390415460657,
+      "samples": [
+        33.520683654071036,
+        18.580511901953287,
+        25.49823552181624,
+        136.22476520242344,
+        80.33498502779548,
+        78.727569961673,
+        218.9390415460657,
+        80.11554260905177,
+        43.358458273112774
+      ],
+      "position": [
+        -2100,
+        388.9390415460657,
+        130
+      ],
+      "target": [
+        -2100,
+        218.9390415460657,
+        -100
+      ],
+      "detail": true,
+      "surfaceVerified": true,
+      "visibleMeshes": 14,
+      "geometryIssues": [],
+      "streaming": [
+        {
+          "surface": "terrain",
+          "errorTarget": 20,
+          "distantError": 0,
+          "loadAncestors": true,
+          "loadSiblings": true,
+          "stats": {
+            "inCacheSinceLoad": 50,
+            "inCache": 218,
+            "queued": 2,
+            "downloading": 14,
+            "parsing": 0,
+            "loaded": 202,
+            "failed": 0,
+            "inFrustum": 51,
+            "used": 85,
+            "active": 35,
+            "visible": 14,
+            "refused": 0,
+            "tilesProcessed": 0
+          },
+          "meshes": 14,
+          "shadowCasters": 0,
+          "materials": {
+            "MeshStandardMaterial:texture": 14
+          },
+          "samples": [
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            }
+          ]
+        }
+      ],
+      "renderer": {
+        "calls": 17,
+        "triangles": 136124,
+        "textures": 124,
+        "geometries": 121
+      },
+      "components": {
+        "other": {
+          "meshes": 25,
+          "triangles": 3724,
+          "instances": 25,
+          "visible": 1
+        },
+        "streamed-terrain": {
+          "meshes": 14,
+          "triangles": 85550,
+          "instances": 14,
+          "visible": 14
+        },
+        "central-facades-and-seven-trees": {
+          "meshes": 18,
+          "triangles": 274685,
+          "instances": 10030,
+          "visible": 18
+        },
+        "player": {
+          "meshes": 1,
+          "triangles": 49614,
+          "instances": 1,
+          "visible": 1
+        }
+      }
+    },
+    {
+      "id": "region-x-1400-z0",
+      "x": -1400,
+      "z": 0,
+      "height": 120.80733089385467,
+      "samples": [
+        67.65596980215923,
+        87.26228084650211,
+        12.00342617158094,
+        77.99791341071614,
+        120.80733089385467,
+        45.33032239909517,
+        88.39086722885986,
+        21.157279404123983,
+        9.012472622558562
+      ],
+      "position": [
+        -1400,
+        290.80733089385467,
+        130
+      ],
+      "target": [
+        -1400,
+        120.80733089385467,
+        -100
+      ],
+      "detail": true,
+      "surfaceVerified": true,
+      "visibleMeshes": 21,
+      "geometryIssues": [],
+      "streaming": [
+        {
+          "surface": "terrain",
+          "errorTarget": 20,
+          "distantError": 0,
+          "loadAncestors": true,
+          "loadSiblings": true,
+          "stats": {
+            "inCacheSinceLoad": 51,
+            "inCache": 260,
+            "queued": 3,
+            "downloading": 16,
+            "parsing": 3,
+            "loaded": 238,
+            "failed": 0,
+            "inFrustum": 75,
+            "used": 118,
+            "active": 47,
+            "visible": 21,
+            "refused": 0,
+            "tilesProcessed": 0
+          },
+          "meshes": 21,
+          "shadowCasters": 0,
+          "materials": {
+            "MeshStandardMaterial:texture": 21
+          },
+          "samples": [
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            }
+          ]
+        }
+      ],
+      "renderer": {
+        "calls": 24,
+        "triangles": 161665,
+        "textures": 143,
+        "geometries": 140
+      },
+      "components": {
+        "other": {
+          "meshes": 25,
+          "triangles": 3724,
+          "instances": 25,
+          "visible": 1
+        },
+        "streamed-terrain": {
+          "meshes": 21,
+          "triangles": 111091,
+          "instances": 21,
+          "visible": 21
+        },
+        "central-facades-and-seven-trees": {
+          "meshes": 18,
+          "triangles": 274685,
+          "instances": 10030,
+          "visible": 18
+        },
+        "player": {
+          "meshes": 1,
+          "triangles": 49614,
+          "instances": 1,
+          "visible": 1
+        }
+      }
+    },
+    {
+      "id": "region-x-700-z0",
+      "x": -700,
+      "z": 0,
+      "height": 303.0008788197483,
+      "samples": [
+        70.90237823475036,
+        303.0008788197483,
+        154.97983629183727,
+        20.314763977112307,
+        14.339230246521765,
+        122.66550140529216,
+        19.419277840992436,
+        107.57707935245708,
+        4.347901751414611
+      ],
+      "position": [
+        -700,
+        473.0008788197483,
+        130
+      ],
+      "target": [
+        -700,
+        303.0008788197483,
+        -100
+      ],
+      "detail": true,
+      "surfaceVerified": true,
+      "visibleMeshes": 42,
+      "geometryIssues": [],
+      "streaming": [
+        {
+          "surface": "terrain",
+          "errorTarget": 20,
+          "distantError": 0,
+          "loadAncestors": true,
+          "loadSiblings": true,
+          "stats": {
+            "inCacheSinceLoad": 0,
+            "inCache": 186,
+            "queued": 0,
+            "downloading": 0,
+            "parsing": 0,
+            "loaded": 186,
+            "failed": 0,
+            "inFrustum": 60,
+            "used": 101,
+            "active": 63,
+            "visible": 29,
+            "refused": 0,
+            "tilesProcessed": 0
+          },
+          "meshes": 43,
+          "shadowCasters": 0,
+          "materials": {
+            "MeshStandardMaterial:texture": 29,
+            "MeshBasicMaterial:texture": 14
+          },
+          "samples": [
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            }
+          ]
+        }
+      ],
+      "renderer": {
+        "calls": 59,
+        "triangles": 151466,
+        "textures": 129,
+        "geometries": 128
+      },
+      "components": {
+        "other": {
+          "meshes": 25,
+          "triangles": 3724,
+          "instances": 25,
+          "visible": 1
+        },
+        "streamed-terrain": {
+          "meshes": 42,
+          "triangles": 145198,
+          "instances": 42,
+          "visible": 42
+        },
+        "start-terrace-material": {
+          "meshes": 1,
+          "triangles": 4,
+          "instances": 1,
+          "visible": 1
+        },
+        "central-facades-and-seven-trees": {
+          "meshes": 18,
+          "triangles": 274685,
+          "instances": 10030,
+          "visible": 18
+        },
+        "player": {
+          "meshes": 1,
+          "triangles": 49614,
+          "instances": 1,
+          "visible": 0
+        }
+      }
+    },
+    {
+      "id": "region-x0-z0",
+      "x": 0,
+      "z": 0,
+      "height": 178.2844389041711,
+      "samples": [
+        14.19260070787277,
+        22.142773190254957,
+        6.383328012259881,
+        46.1106544163049,
+        23.634455713414354,
+        17.353316459157213,
+        9.699905502155161,
+        178.2844389041711,
+        6.774993349688884
+      ],
+      "position": [
+        0,
+        348.2844389041711,
+        130
+      ],
+      "target": [
+        0,
+        178.2844389041711,
+        -100
+      ],
+      "detail": true,
+      "surfaceVerified": true,
+      "visibleMeshes": 47,
+      "geometryIssues": [],
+      "streaming": [
+        {
+          "surface": "terrain",
+          "errorTarget": 20,
+          "distantError": 0,
+          "loadAncestors": true,
+          "loadSiblings": true,
+          "stats": {
+            "inCacheSinceLoad": 58,
+            "inCache": 163,
+            "queued": 5,
+            "downloading": 17,
+            "parsing": 1,
+            "loaded": 140,
+            "failed": 0,
+            "inFrustum": 72,
+            "used": 121,
+            "active": 47,
+            "visible": 20,
+            "refused": 0,
+            "tilesProcessed": 0
+          },
+          "meshes": 49,
+          "shadowCasters": 0,
+          "materials": {
+            "MeshStandardMaterial:texture": 22,
+            "MeshBasicMaterial:texture": 27
+          },
+          "samples": [
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshBasicMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 256,
+                "height": 128,
+                "anisotropy": 8,
+                "minFilter": 1008
+              },
+              "normals": false,
+              "side": 2
+            },
+            {
+              "type": "MeshBasicMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 256,
+                "height": 128,
+                "anisotropy": 8,
+                "minFilter": 1008
+              },
+              "normals": false,
+              "side": 2
+            },
+            {
+              "type": "MeshBasicMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 512,
+                "height": 256,
+                "anisotropy": 8,
+                "minFilter": 1008
+              },
+              "normals": false,
+              "side": 2
+            }
+          ]
+        }
+      ],
+      "renderer": {
+        "calls": 94,
+        "triangles": 481116,
+        "textures": 101,
+        "geometries": 101
+      },
+      "components": {
+        "other": {
+          "meshes": 25,
+          "triangles": 3724,
+          "instances": 25,
+          "visible": 1
+        },
+        "streamed-terrain": {
+          "meshes": 47,
+          "triangles": 144636,
+          "instances": 47,
+          "visible": 47
+        },
+        "start-terrace-material": {
+          "meshes": 2,
+          "triangles": 57,
+          "instances": 2,
+          "visible": 2
+        },
+        "central-facades-and-seven-trees": {
+          "meshes": 18,
+          "triangles": 274685,
+          "instances": 10030,
+          "visible": 18
+        },
+        "player": {
+          "meshes": 1,
+          "triangles": 49614,
+          "instances": 1,
+          "visible": 1
+        }
+      }
+    },
+    {
+      "id": "region-x700-z0",
+      "x": 700,
+      "z": 0,
+      "height": 130.89002211617844,
+      "samples": [
+        21.119859707017895,
+        14.958126419824112,
+        10.414023690496833,
+        38.31703777640723,
+        29.81053878594321,
+        130.89002211617844,
+        74.884788354595,
+        121.48611447132862,
+        73.55102702743352
+      ],
+      "position": [
+        700,
+        300.89002211617844,
+        130
+      ],
+      "target": [
+        700,
+        130.89002211617844,
+        -100
+      ],
+      "detail": true,
+      "surfaceVerified": true,
+      "visibleMeshes": 40,
+      "geometryIssues": [],
+      "streaming": [
+        {
+          "surface": "terrain",
+          "errorTarget": 20,
+          "distantError": 0,
+          "loadAncestors": true,
+          "loadSiblings": true,
+          "stats": {
+            "inCacheSinceLoad": 79,
+            "inCache": 223,
+            "queued": 36,
+            "downloading": 12,
+            "parsing": 0,
+            "loaded": 175,
+            "failed": 0,
+            "inFrustum": 91,
+            "used": 132,
+            "active": 42,
+            "visible": 20,
+            "refused": 0,
+            "tilesProcessed": 0
+          },
+          "meshes": 40,
+          "shadowCasters": 0,
+          "materials": {
+            "MeshStandardMaterial:texture": 20,
+            "MeshBasicMaterial:texture": 20
+          },
+          "samples": [
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            }
+          ]
+        }
+      ],
+      "renderer": {
+        "calls": 63,
+        "triangles": 222921,
+        "textures": 137,
+        "geometries": 139
+      },
+      "components": {
+        "other": {
+          "meshes": 25,
+          "triangles": 3724,
+          "instances": 25,
+          "visible": 1
+        },
+        "streamed-terrain": {
+          "meshes": 40,
+          "triangles": 146329,
+          "instances": 40,
+          "visible": 40
+        },
+        "central-facades-and-seven-trees": {
+          "meshes": 18,
+          "triangles": 274685,
+          "instances": 10030,
+          "visible": 18
+        },
+        "player": {
+          "meshes": 1,
+          "triangles": 49614,
+          "instances": 1,
+          "visible": 1
+        }
+      }
+    },
+    {
+      "id": "region-x1400-z0",
+      "x": 1400,
+      "z": 0,
+      "height": 247.75756971843657,
+      "samples": [
+        189.90655287968366,
+        112.30490960941097,
+        126.52042280848036,
+        247.75756971843657,
+        108.09181352390442,
+        78.19847788154584,
+        227.60915258605564,
+        151.91535576024398,
+        165.04135576641784
+      ],
+      "position": [
+        1400,
+        417.75756971843657,
+        130
+      ],
+      "target": [
+        1400,
+        247.75756971843657,
+        -100
+      ],
+      "detail": true,
+      "surfaceVerified": true,
+      "visibleMeshes": 19,
+      "geometryIssues": [],
+      "streaming": [
+        {
+          "surface": "terrain",
+          "errorTarget": 20,
+          "distantError": 0,
+          "loadAncestors": true,
+          "loadSiblings": true,
+          "stats": {
+            "inCacheSinceLoad": 47,
+            "inCache": 227,
+            "queued": 0,
+            "downloading": 17,
+            "parsing": 2,
+            "loaded": 208,
+            "failed": 0,
+            "inFrustum": 72,
+            "used": 128,
+            "active": 51,
+            "visible": 19,
+            "refused": 0,
+            "tilesProcessed": 0
+          },
+          "meshes": 19,
+          "shadowCasters": 0,
+          "materials": {
+            "MeshStandardMaterial:texture": 19
+          },
+          "samples": [
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            }
+          ]
+        }
+      ],
+      "renderer": {
+        "calls": 22,
+        "triangles": 147606,
+        "textures": 120,
+        "geometries": 121
+      },
+      "components": {
+        "other": {
+          "meshes": 25,
+          "triangles": 3724,
+          "instances": 25,
+          "visible": 1
+        },
+        "streamed-terrain": {
+          "meshes": 19,
+          "triangles": 97032,
+          "instances": 19,
+          "visible": 19
+        },
+        "central-facades-and-seven-trees": {
+          "meshes": 18,
+          "triangles": 274685,
+          "instances": 10030,
+          "visible": 18
+        },
+        "player": {
+          "meshes": 1,
+          "triangles": 49614,
+          "instances": 1,
+          "visible": 1
+        }
+      }
+    },
+    {
+      "id": "region-x2100-z0",
+      "x": 2100,
+      "z": 0,
+      "height": 388.62100096791073,
+      "samples": [
+        388.62100096791073,
+        243.80494469521,
+        184.2748546292587,
+        384.3817359198747,
+        277.7682901945791,
+        195.19503964625073,
+        312.3262867687972,
+        242.89229533300204,
+        164.17902618325752
+      ],
+      "position": [
+        2100,
+        558.6210009679107,
+        130
+      ],
+      "target": [
+        2100,
+        388.62100096791073,
+        -100
+      ],
+      "detail": true,
+      "surfaceVerified": true,
+      "visibleMeshes": 20,
+      "geometryIssues": [],
+      "streaming": [
+        {
+          "surface": "terrain",
+          "errorTarget": 20,
+          "distantError": 0,
+          "loadAncestors": true,
+          "loadSiblings": true,
+          "stats": {
+            "inCacheSinceLoad": 44,
+            "inCache": 224,
+            "queued": 0,
+            "downloading": 15,
+            "parsing": 0,
+            "loaded": 209,
+            "failed": 0,
+            "inFrustum": 70,
+            "used": 118,
+            "active": 48,
+            "visible": 20,
+            "refused": 0,
+            "tilesProcessed": 0
+          },
+          "meshes": 20,
+          "shadowCasters": 0,
+          "materials": {
+            "MeshStandardMaterial:texture": 20
+          },
+          "samples": [
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            }
+          ]
+        }
+      ],
+      "renderer": {
+        "calls": 23,
+        "triangles": 131987,
+        "textures": 175,
+        "geometries": 173
+      },
+      "components": {
+        "other": {
+          "meshes": 25,
+          "triangles": 3724,
+          "instances": 25,
+          "visible": 1
+        },
+        "streamed-terrain": {
+          "meshes": 20,
+          "triangles": 81413,
+          "instances": 20,
+          "visible": 20
+        },
+        "central-facades-and-seven-trees": {
+          "meshes": 18,
+          "triangles": 274685,
+          "instances": 10030,
+          "visible": 18
+        },
+        "player": {
+          "meshes": 1,
+          "triangles": 49614,
+          "instances": 1,
+          "visible": 1
+        }
+      }
+    },
+    {
+      "id": "region-x-2100-z700",
+      "x": -2100,
+      "z": 700,
+      "height": 6.02670106995356,
+      "samples": [
+        4.201534465646546,
+        3.4246505020710174,
+        3.8932010776625248,
+        4.1212389540160075,
+        6.02670106995356,
+        3.1029997662626556,
+        3.9800187581422506,
+        4.685478453160613,
+        3.407833787980053
+      ],
+      "position": [
+        -2100,
+        176.02670106995356,
+        830
+      ],
+      "target": [
+        -2100,
+        6.02670106995356,
+        600
+      ],
+      "detail": true,
+      "surfaceVerified": true,
+      "visibleMeshes": 10,
+      "geometryIssues": [],
+      "streaming": [
+        {
+          "surface": "terrain",
+          "errorTarget": 20,
+          "distantError": 0,
+          "loadAncestors": true,
+          "loadSiblings": true,
+          "stats": {
+            "inCacheSinceLoad": 48,
+            "inCache": 243,
+            "queued": 2,
+            "downloading": 14,
+            "parsing": 0,
+            "loaded": 227,
+            "failed": 0,
+            "inFrustum": 53,
+            "used": 75,
+            "active": 25,
+            "visible": 10,
+            "refused": 0,
+            "tilesProcessed": 0
+          },
+          "meshes": 10,
+          "shadowCasters": 0,
+          "materials": {
+            "MeshStandardMaterial:texture": 10
+          },
+          "samples": [
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            }
+          ]
+        }
+      ],
+      "renderer": {
+        "calls": 13,
+        "triangles": 98657,
+        "textures": 169,
+        "geometries": 167
+      },
+      "components": {
+        "other": {
+          "meshes": 25,
+          "triangles": 3724,
+          "instances": 25,
+          "visible": 1
+        },
+        "streamed-terrain": {
+          "meshes": 10,
+          "triangles": 48083,
+          "instances": 10,
+          "visible": 10
+        },
+        "central-facades-and-seven-trees": {
+          "meshes": 18,
+          "triangles": 274685,
+          "instances": 10030,
+          "visible": 18
+        },
+        "player": {
+          "meshes": 1,
+          "triangles": 49614,
+          "instances": 1,
+          "visible": 1
+        }
+      }
+    },
+    {
+      "id": "region-x-1400-z700",
+      "x": -1400,
+      "z": 700,
+      "height": 4.17537705482755,
+      "samples": [
+        4.022478444217995,
+        3.8721101434603042,
+        3.7273525197997515,
+        4.1003501430786855,
+        3.9471370552091685,
+        3.7949736915579706,
+        4.17537705482755,
+        4.022163966950757,
+        3.8689508790812397
+      ],
+      "position": [
+        -1400,
+        174.17537705482755,
+        830
+      ],
+      "target": [
+        -1400,
+        4.17537705482755,
+        600
+      ],
+      "detail": true,
+      "surfaceVerified": true,
+      "visibleMeshes": 29,
+      "geometryIssues": [],
+      "streaming": [
+        {
+          "surface": "terrain",
+          "errorTarget": 20,
+          "distantError": 0,
+          "loadAncestors": true,
+          "loadSiblings": true,
+          "stats": {
+            "inCacheSinceLoad": 0,
+            "inCache": 235,
+            "queued": 0,
+            "downloading": 0,
+            "parsing": 0,
+            "loaded": 235,
+            "failed": 0,
+            "inFrustum": 62,
+            "used": 99,
+            "active": 58,
+            "visible": 29,
+            "refused": 0,
+            "tilesProcessed": 0
+          },
+          "meshes": 29,
+          "shadowCasters": 0,
+          "materials": {
+            "MeshStandardMaterial:texture": 29
+          },
+          "samples": [
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            }
+          ]
+        }
+      ],
+      "renderer": {
+        "calls": 32,
+        "triangles": 172269,
+        "textures": 140,
+        "geometries": 138
+      },
+      "components": {
+        "other": {
+          "meshes": 25,
+          "triangles": 3724,
+          "instances": 25,
+          "visible": 1
+        },
+        "streamed-terrain": {
+          "meshes": 29,
+          "triangles": 121695,
+          "instances": 29,
+          "visible": 29
+        },
+        "central-facades-and-seven-trees": {
+          "meshes": 18,
+          "triangles": 274685,
+          "instances": 10030,
+          "visible": 18
+        },
+        "player": {
+          "meshes": 1,
+          "triangles": 49614,
+          "instances": 1,
+          "visible": 1
+        }
+      }
+    },
+    {
+      "id": "region-x-700-z700",
+      "x": -700,
+      "z": 700,
+      "height": 4.137029852285195,
+      "samples": [
+        4.1109110421894,
+        3.839511033373128,
+        3.7283200059209776,
+        4.120636464042036,
+        4.137029852285195,
+        4.019715236943739,
+        3.8650918190505763,
+        3.841073636962392,
+        3.8170554548814835
+      ],
+      "position": [
+        -700,
+        174.1370298522852,
+        830
+      ],
+      "target": [
+        -700,
+        4.137029852285195,
+        600
+      ],
+      "detail": true,
+      "surfaceVerified": true,
+      "visibleMeshes": 28,
+      "geometryIssues": [],
+      "streaming": [
+        {
+          "surface": "terrain",
+          "errorTarget": 20,
+          "distantError": 0,
+          "loadAncestors": true,
+          "loadSiblings": true,
+          "stats": {
+            "inCacheSinceLoad": 0,
+            "inCache": 202,
+            "queued": 0,
+            "downloading": 0,
+            "parsing": 0,
+            "loaded": 202,
+            "failed": 0,
+            "inFrustum": 59,
+            "used": 91,
+            "active": 52,
+            "visible": 28,
+            "refused": 0,
+            "tilesProcessed": 0
+          },
+          "meshes": 30,
+          "shadowCasters": 0,
+          "materials": {
+            "MeshStandardMaterial:texture": 30
+          },
+          "samples": [
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            }
+          ]
+        }
+      ],
+      "renderer": {
+        "calls": 45,
+        "triangles": 383324,
+        "textures": 133,
+        "geometries": 133
+      },
+      "components": {
+        "other": {
+          "meshes": 25,
+          "triangles": 3724,
+          "instances": 25,
+          "visible": 1
+        },
+        "streamed-terrain": {
+          "meshes": 28,
+          "triangles": 107894,
+          "instances": 28,
+          "visible": 28
+        },
+        "start-terrace-material": {
+          "meshes": 2,
+          "triangles": 8,
+          "instances": 2,
+          "visible": 2
+        },
+        "central-facades-and-seven-trees": {
+          "meshes": 18,
+          "triangles": 274685,
+          "instances": 10030,
+          "visible": 18
+        },
+        "player": {
+          "meshes": 1,
+          "triangles": 49614,
+          "instances": 1,
+          "visible": 0
+        }
+      }
+    },
+    {
+      "id": "region-x0-z700",
+      "x": 0,
+      "z": 700,
+      "height": 3.600254429740744,
+      "samples": [
+        3.600254429740744,
+        3.5696175499106175,
+        3.5265432833330124,
+        3.575679480458348,
+        3.5643654431005416,
+        3.520719377869682,
+        3.5511045311832277,
+        3.558541537637211,
+        3.520009515381389
+      ],
+      "position": [
+        0,
+        173.60025442974074,
+        830
+      ],
+      "target": [
+        0,
+        3.600254429740744,
+        600
+      ],
+      "detail": true,
+      "surfaceVerified": true,
+      "visibleMeshes": 26,
+      "geometryIssues": [],
+      "streaming": [
+        {
+          "surface": "terrain",
+          "errorTarget": 20,
+          "distantError": 0,
+          "loadAncestors": true,
+          "loadSiblings": true,
+          "stats": {
+            "inCacheSinceLoad": 0,
+            "inCache": 196,
+            "queued": 0,
+            "downloading": 0,
+            "parsing": 0,
+            "loaded": 196,
+            "failed": 0,
+            "inFrustum": 56,
+            "used": 87,
+            "active": 52,
+            "visible": 26,
+            "refused": 0,
+            "tilesProcessed": 0
+          },
+          "meshes": 28,
+          "shadowCasters": 0,
+          "materials": {
+            "MeshStandardMaterial:texture": 28
+          },
+          "samples": [
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            }
+          ]
+        }
+      ],
+      "renderer": {
+        "calls": 48,
+        "triangles": 401517,
+        "textures": 130,
+        "geometries": 130
+      },
+      "components": {
+        "other": {
+          "meshes": 25,
+          "triangles": 3724,
+          "instances": 25,
+          "visible": 1
+        },
+        "streamed-terrain": {
+          "meshes": 26,
+          "triangles": 125864,
+          "instances": 26,
+          "visible": 26
+        },
+        "start-terrace-material": {
+          "meshes": 2,
+          "triangles": 8,
+          "instances": 2,
+          "visible": 2
+        },
+        "central-facades-and-seven-trees": {
+          "meshes": 18,
+          "triangles": 274685,
+          "instances": 10030,
+          "visible": 18
+        },
+        "player": {
+          "meshes": 1,
+          "triangles": 49614,
+          "instances": 1,
+          "visible": 0
+        }
+      }
+    },
+    {
+      "id": "region-x700-z700",
+      "x": 700,
+      "z": 700,
+      "height": 207.88624057858397,
+      "samples": [
+        54.25014570046551,
+        10.978108599887491,
+        6.240300297384238,
+        11.43804123693917,
+        24.316431761795684,
+        5.568586701781896,
+        39.4975327916145,
+        207.88624057858397,
+        21.69785304251127
+      ],
+      "position": [
+        700,
+        377.88624057858397,
+        830
+      ],
+      "target": [
+        700,
+        207.88624057858397,
+        600
+      ],
+      "detail": true,
+      "surfaceVerified": true,
+      "visibleMeshes": 25,
+      "geometryIssues": [],
+      "streaming": [
+        {
+          "surface": "terrain",
+          "errorTarget": 20,
+          "distantError": 0,
+          "loadAncestors": true,
+          "loadSiblings": true,
+          "stats": {
+            "inCacheSinceLoad": 40,
+            "inCache": 207,
+            "queued": 0,
+            "downloading": 6,
+            "parsing": 1,
+            "loaded": 200,
+            "failed": 0,
+            "inFrustum": 69,
+            "used": 106,
+            "active": 52,
+            "visible": 25,
+            "refused": 0,
+            "tilesProcessed": 0
+          },
+          "meshes": 27,
+          "shadowCasters": 0,
+          "materials": {
+            "MeshStandardMaterial:texture": 27
+          },
+          "samples": [
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            }
+          ]
+        }
+      ],
+      "renderer": {
+        "calls": 46,
+        "triangles": 405828,
+        "textures": 126,
+        "geometries": 126
+      },
+      "components": {
+        "other": {
+          "meshes": 25,
+          "triangles": 3724,
+          "instances": 25,
+          "visible": 1
+        },
+        "streamed-terrain": {
+          "meshes": 25,
+          "triangles": 130223,
+          "instances": 25,
+          "visible": 25
+        },
+        "start-terrace-material": {
+          "meshes": 2,
+          "triangles": 8,
+          "instances": 2,
+          "visible": 2
+        },
+        "central-facades-and-seven-trees": {
+          "meshes": 18,
+          "triangles": 274685,
+          "instances": 10030,
+          "visible": 18
+        },
+        "player": {
+          "meshes": 1,
+          "triangles": 49614,
+          "instances": 1,
+          "visible": 0
+        }
+      }
+    },
+    {
+      "id": "region-x1400-z700",
+      "x": 1400,
+      "z": 700,
+      "height": 105.9808493818291,
+      "samples": [
+        105.9808493818291,
+        22.080274403460862,
+        20.750355988937372,
+        43.11326552240098,
+        64.02179873325076,
+        25.27184936155936,
+        44.12267998637071,
+        89.37491606814365,
+        12.139785978422879
+      ],
+      "position": [
+        1400,
+        275.9808493818291,
+        830
+      ],
+      "target": [
+        1400,
+        105.9808493818291,
+        600
+      ],
+      "detail": true,
+      "surfaceVerified": true,
+      "visibleMeshes": 256,
+      "geometryIssues": [],
+      "streaming": [
+        {
+          "surface": "terrain",
+          "errorTarget": 20,
+          "distantError": 0,
+          "loadAncestors": true,
+          "loadSiblings": true,
+          "stats": {
+            "inCacheSinceLoad": 0,
+            "inCache": 187,
+            "queued": 0,
+            "downloading": 0,
+            "parsing": 0,
+            "loaded": 187,
+            "failed": 0,
+            "inFrustum": 63,
+            "used": 98,
+            "active": 55,
+            "visible": 29,
+            "refused": 0,
+            "tilesProcessed": 0
+          },
+          "meshes": 256,
+          "shadowCasters": 0,
+          "materials": {
+            "MeshStandardMaterial:texture": 29,
+            "MeshBasicMaterial:texture": 227
+          },
+          "samples": [
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            }
+          ]
+        }
+      ],
+      "renderer": {
+        "calls": 485,
+        "triangles": 285612,
+        "textures": 394,
+        "geometries": 394
+      },
+      "components": {
+        "other": {
+          "meshes": 25,
+          "triangles": 3724,
+          "instances": 25,
+          "visible": 1
+        },
+        "streamed-terrain": {
+          "meshes": 256,
+          "triangles": 242403,
+          "instances": 256,
+          "visible": 256
+        },
+        "central-facades-and-seven-trees": {
+          "meshes": 18,
+          "triangles": 274685,
+          "instances": 10030,
+          "visible": 18
+        },
+        "player": {
+          "meshes": 1,
+          "triangles": 49614,
+          "instances": 1,
+          "visible": 0
+        }
+      }
+    },
+    {
+      "id": "region-x2100-z700",
+      "x": 2100,
+      "z": 700,
+      "height": 84.40684361468448,
+      "samples": [
+        72.94976206504543,
+        84.40684361468448,
+        10.355898991314461,
+        82.8086291996824,
+        54.186224509236126,
+        35.824825326464634,
+        61.964716039910854,
+        40.203953986494525,
+        43.492260341070505
+      ],
+      "position": [
+        2100,
+        254.40684361468448,
+        830
+      ],
+      "target": [
+        2100,
+        84.40684361468448,
+        600
+      ],
+      "detail": true,
+      "surfaceVerified": true,
+      "visibleMeshes": 14,
+      "geometryIssues": [],
+      "streaming": [
+        {
+          "surface": "terrain",
+          "errorTarget": 20,
+          "distantError": 0,
+          "loadAncestors": true,
+          "loadSiblings": true,
+          "stats": {
+            "inCacheSinceLoad": 52,
+            "inCache": 200,
+            "queued": 9,
+            "downloading": 13,
+            "parsing": 1,
+            "loaded": 177,
+            "failed": 0,
+            "inFrustum": 74,
+            "used": 114,
+            "active": 43,
+            "visible": 14,
+            "refused": 0,
+            "tilesProcessed": 0
+          },
+          "meshes": 14,
+          "shadowCasters": 0,
+          "materials": {
+            "MeshStandardMaterial:texture": 14
+          },
+          "samples": [
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            }
+          ]
+        }
+      ],
+      "renderer": {
+        "calls": 16,
+        "triangles": 95022,
+        "textures": 369,
+        "geometries": 367
+      },
+      "components": {
+        "other": {
+          "meshes": 25,
+          "triangles": 3724,
+          "instances": 25,
+          "visible": 1
+        },
+        "streamed-terrain": {
+          "meshes": 14,
+          "triangles": 94062,
+          "instances": 14,
+          "visible": 14
+        },
+        "central-facades-and-seven-trees": {
+          "meshes": 18,
+          "triangles": 274685,
+          "instances": 10030,
+          "visible": 18
+        },
+        "player": {
+          "meshes": 1,
+          "triangles": 49614,
+          "instances": 1,
+          "visible": 0
+        }
+      }
+    },
+    {
+      "id": "region-x-2100-z1400",
+      "x": -2100,
+      "z": 1400,
+      "height": 7.81518088318262,
+      "samples": [
+        2.714949774170236,
+        2.7090782502054935,
+        2.703206726244389,
+        3.0272471438547655,
+        7.81518088318262,
+        7.467682344129571,
+        3.446951632729906,
+        3.2814094059795025,
+        3.001856463833974
+      ],
+      "position": [
+        -2100,
+        177.81518088318262,
+        1530
+      ],
+      "target": [
+        -2100,
+        7.81518088318262,
+        1300
+      ],
+      "detail": true,
+      "surfaceVerified": true,
+      "visibleMeshes": 14,
+      "geometryIssues": [],
+      "streaming": [
+        {
+          "surface": "terrain",
+          "errorTarget": 20,
+          "distantError": 0,
+          "loadAncestors": true,
+          "loadSiblings": true,
+          "stats": {
+            "inCacheSinceLoad": 68,
+            "inCache": 232,
+            "queued": 8,
+            "downloading": 12,
+            "parsing": 0,
+            "loaded": 212,
+            "failed": 0,
+            "inFrustum": 62,
+            "used": 95,
+            "active": 34,
+            "visible": 14,
+            "refused": 0,
+            "tilesProcessed": 0
+          },
+          "meshes": 8,
+          "shadowCasters": 0,
+          "materials": {
+            "MeshStandardMaterial:texture": 8
+          },
+          "samples": [
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 1024,
+                "height": 256,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 1024,
+                "height": 256,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            }
+          ]
+        }
+      ],
+      "renderer": {
+        "calls": 16,
+        "triangles": 38836,
+        "textures": 330,
+        "geometries": 328
+      },
+      "components": {
+        "other": {
+          "meshes": 25,
+          "triangles": 3724,
+          "instances": 25,
+          "visible": 1
+        },
+        "streamed-terrain": {
+          "meshes": 14,
+          "triangles": 37876,
+          "instances": 14,
+          "visible": 14
+        },
+        "central-facades-and-seven-trees": {
+          "meshes": 18,
+          "triangles": 274685,
+          "instances": 10030,
+          "visible": 18
+        },
+        "player": {
+          "meshes": 1,
+          "triangles": 49614,
+          "instances": 1,
+          "visible": 0
+        }
+      }
+    },
+    {
+      "id": "region-x-1400-z1400",
+      "x": -1400,
+      "z": 1400,
+      "height": 4.574618606529839,
+      "samples": [
+        4.574618606529839,
+        3.2025721493337187,
+        3.5117893659480615,
+        2.9092777103323897,
+        3.131478797629825,
+        3.302169930855598,
+        3.0139470482463366,
+        3.1964487591321813,
+        3.1609752959811885
+      ],
+      "position": [
+        -1400,
+        174.57461860652984,
+        1530
+      ],
+      "target": [
+        -1400,
+        4.574618606529839,
+        1300
+      ],
+      "detail": true,
+      "surfaceVerified": true,
+      "visibleMeshes": 29,
+      "geometryIssues": [],
+      "streaming": [
+        {
+          "surface": "terrain",
+          "errorTarget": 20,
+          "distantError": 0,
+          "loadAncestors": true,
+          "loadSiblings": true,
+          "stats": {
+            "inCacheSinceLoad": 0,
+            "inCache": 215,
+            "queued": 0,
+            "downloading": 0,
+            "parsing": 0,
+            "loaded": 215,
+            "failed": 0,
+            "inFrustum": 68,
+            "used": 107,
+            "active": 58,
+            "visible": 29,
+            "refused": 0,
+            "tilesProcessed": 0
+          },
+          "meshes": 30,
+          "shadowCasters": 0,
+          "materials": {
+            "MeshStandardMaterial:texture": 30
+          },
+          "samples": [
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": true,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            }
+          ]
+        }
+      ],
+      "renderer": {
+        "calls": 32,
+        "triangles": 28922,
+        "textures": 125,
+        "geometries": 123
+      },
+      "components": {
+        "other": {
+          "meshes": 25,
+          "triangles": 3724,
+          "instances": 25,
+          "visible": 1
+        },
+        "streamed-terrain": {
+          "meshes": 29,
+          "triangles": 27961,
+          "instances": 29,
+          "visible": 29
+        },
+        "start-terrace-material": {
+          "meshes": 1,
+          "triangles": 1,
+          "instances": 1,
+          "visible": 1
+        },
+        "central-facades-and-seven-trees": {
+          "meshes": 18,
+          "triangles": 274685,
+          "instances": 10030,
+          "visible": 18
+        },
+        "player": {
+          "meshes": 1,
+          "triangles": 49614,
+          "instances": 1,
+          "visible": 0
+        }
+      }
+    },
+    {
+      "id": "region-x-700-z1400",
+      "x": -700,
+      "z": 1400,
+      "height": 27.948777324203547,
+      "samples": [
+        3.120962788198085,
+        3.309066804449685,
+        10.457242319916986,
+        4.193077089217695,
+        4.545938877417939,
+        10.045346499937295,
+        2.827588295469468,
+        3.707727604556567,
+        27.948777324203547
+      ],
+      "position": [
+        -700,
+        197.94877732420355,
+        1530
+      ],
+      "target": [
+        -700,
+        27.948777324203547,
+        1300
+      ],
+      "detail": true,
+      "surfaceVerified": true,
+      "visibleMeshes": 22,
+      "geometryIssues": [],
+      "streaming": [
+        {
+          "surface": "terrain",
+          "errorTarget": 20,
+          "distantError": 0,
+          "loadAncestors": true,
+          "loadSiblings": true,
+          "stats": {
+            "inCacheSinceLoad": 48,
+            "inCache": 221,
+            "queued": 0,
+            "downloading": 11,
+            "parsing": 1,
+            "loaded": 209,
+            "failed": 0,
+            "inFrustum": 67,
+            "used": 111,
+            "active": 52,
+            "visible": 19,
+            "refused": 0,
+            "tilesProcessed": 0
+          },
+          "meshes": 23,
+          "shadowCasters": 0,
+          "materials": {
+            "MeshStandardMaterial:texture": 20,
+            "MeshBasicMaterial:texture": 3
+          },
+          "samples": [
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": true,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            }
+          ]
+        }
+      ],
+      "renderer": {
+        "calls": 38,
+        "triangles": 317287,
+        "textures": 118,
+        "geometries": 116
+      },
+      "components": {
+        "other": {
+          "meshes": 25,
+          "triangles": 3724,
+          "instances": 25,
+          "visible": 1
+        },
+        "streamed-terrain": {
+          "meshes": 22,
+          "triangles": 41512,
+          "instances": 22,
+          "visible": 22
+        },
+        "start-terrace-material": {
+          "meshes": 1,
+          "triangles": 1,
+          "instances": 1,
+          "visible": 1
+        },
+        "central-facades-and-seven-trees": {
+          "meshes": 18,
+          "triangles": 274685,
+          "instances": 10030,
+          "visible": 18
+        },
+        "player": {
+          "meshes": 1,
+          "triangles": 49614,
+          "instances": 1,
+          "visible": 0
+        }
+      }
+    },
+    {
+      "id": "region-x0-z1400",
+      "x": 0,
+      "z": 1400,
+      "height": 2.972224652701698,
+      "samples": [
+        2.972224652701698,
+        2.9013342478829145,
+        2.845952612689871,
+        2.3631283714130404,
+        2.6886755362938857,
+        2.6024111575534334,
+        2.361238222063548,
+        2.4556933495659905,
+        2.351379397143319
+      ],
+      "position": [
+        0,
+        172.9722246527017,
+        1530
+      ],
+      "target": [
+        0,
+        2.972224652701698,
+        1300
+      ],
+      "detail": true,
+      "surfaceVerified": true,
+      "visibleMeshes": 28,
+      "geometryIssues": [],
+      "streaming": [
+        {
+          "surface": "terrain",
+          "errorTarget": 20,
+          "distantError": 0,
+          "loadAncestors": true,
+          "loadSiblings": true,
+          "stats": {
+            "inCacheSinceLoad": 0,
+            "inCache": 221,
+            "queued": 0,
+            "downloading": 0,
+            "parsing": 1,
+            "loaded": 220,
+            "failed": 0,
+            "inFrustum": 69,
+            "used": 111,
+            "active": 61,
+            "visible": 27,
+            "refused": 0,
+            "tilesProcessed": 0
+          },
+          "meshes": 29,
+          "shadowCasters": 0,
+          "materials": {
+            "MeshStandardMaterial:texture": 28,
+            "MeshBasicMaterial:texture": 1
+          },
+          "samples": [
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": true,
+              "side": 0
+            }
+          ]
+        }
+      ],
+      "renderer": {
+        "calls": 46,
+        "triangles": 339118,
+        "textures": 128,
+        "geometries": 126
+      },
+      "components": {
+        "other": {
+          "meshes": 25,
+          "triangles": 3724,
+          "instances": 25,
+          "visible": 1
+        },
+        "streamed-terrain": {
+          "meshes": 28,
+          "triangles": 63661,
+          "instances": 28,
+          "visible": 28
+        },
+        "start-terrace-material": {
+          "meshes": 1,
+          "triangles": 1,
+          "instances": 1,
+          "visible": 1
+        },
+        "central-facades-and-seven-trees": {
+          "meshes": 18,
+          "triangles": 274685,
+          "instances": 10030,
+          "visible": 18
+        },
+        "player": {
+          "meshes": 1,
+          "triangles": 49614,
+          "instances": 1,
+          "visible": 0
+        }
+      }
+    },
+    {
+      "id": "region-x700-z1400",
+      "x": 700,
+      "z": 1400,
+      "height": 2.9434866214505746,
+      "samples": [
+        2.8867283428153314,
+        2.7588465119188186,
+        2.63096468101503,
+        2.9276185002090642,
+        2.7997366693125514,
+        2.659873549528129,
+        2.9434866214505746,
+        2.784195378964796,
+        2.6249041364717414
+      ],
+      "position": [
+        700,
+        172.94348662145057,
+        1530
+      ],
+      "target": [
+        700,
+        2.9434866214505746,
+        1300
+      ],
+      "detail": true,
+      "surfaceVerified": true,
+      "visibleMeshes": 21,
+      "geometryIssues": [],
+      "streaming": [
+        {
+          "surface": "terrain",
+          "errorTarget": 20,
+          "distantError": 0,
+          "loadAncestors": true,
+          "loadSiblings": true,
+          "stats": {
+            "inCacheSinceLoad": 56,
+            "inCache": 221,
+            "queued": 0,
+            "downloading": 11,
+            "parsing": 0,
+            "loaded": 210,
+            "failed": 0,
+            "inFrustum": 69,
+            "used": 114,
+            "active": 49,
+            "visible": 21,
+            "refused": 0,
+            "tilesProcessed": 0
+          },
+          "meshes": 22,
+          "shadowCasters": 0,
+          "materials": {
+            "MeshStandardMaterial:texture": 22
+          },
+          "samples": [
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": true,
+              "side": 0
+            }
+          ]
+        }
+      ],
+      "renderer": {
+        "calls": 38,
+        "triangles": 340058,
+        "textures": 129,
+        "geometries": 127
+      },
+      "components": {
+        "other": {
+          "meshes": 25,
+          "triangles": 3724,
+          "instances": 25,
+          "visible": 1
+        },
+        "streamed-terrain": {
+          "meshes": 21,
+          "triangles": 64604,
+          "instances": 21,
+          "visible": 21
+        },
+        "start-terrace-material": {
+          "meshes": 1,
+          "triangles": 1,
+          "instances": 1,
+          "visible": 1
+        },
+        "central-facades-and-seven-trees": {
+          "meshes": 18,
+          "triangles": 274685,
+          "instances": 10030,
+          "visible": 18
+        },
+        "player": {
+          "meshes": 1,
+          "triangles": 49614,
+          "instances": 1,
+          "visible": 0
+        }
+      }
+    },
+    {
+      "id": "region-x1400-z1400",
+      "x": 1400,
+      "z": 1400,
+      "height": 3.3048147787485505,
+      "samples": [
+        2.8263727391240536,
+        2.6669486904174846,
+        2.506330894833809,
+        2.781773332226294,
+        2.6239914742436667,
+        2.461696769718401,
+        3.3048147787485505,
+        3.0978684511392203,
+        3.031260721196304
+      ],
+      "position": [
+        1400,
+        173.30481477874855,
+        1530
+      ],
+      "target": [
+        1400,
+        3.3048147787485505,
+        1300
+      ],
+      "detail": true,
+      "surfaceVerified": true,
+      "visibleMeshes": 25,
+      "geometryIssues": [],
+      "streaming": [
+        {
+          "surface": "terrain",
+          "errorTarget": 20,
+          "distantError": 0,
+          "loadAncestors": true,
+          "loadSiblings": true,
+          "stats": {
+            "inCacheSinceLoad": 50,
+            "inCache": 192,
+            "queued": 0,
+            "downloading": 3,
+            "parsing": 1,
+            "loaded": 188,
+            "failed": 0,
+            "inFrustum": 73,
+            "used": 121,
+            "active": 60,
+            "visible": 25,
+            "refused": 0,
+            "tilesProcessed": 0
+          },
+          "meshes": 26,
+          "shadowCasters": 0,
+          "materials": {
+            "MeshStandardMaterial:texture": 26
+          },
+          "samples": [
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            }
+          ]
+        }
+      ],
+      "renderer": {
+        "calls": 28,
+        "triangles": 88312,
+        "textures": 116,
+        "geometries": 114
+      },
+      "components": {
+        "other": {
+          "meshes": 25,
+          "triangles": 3724,
+          "instances": 25,
+          "visible": 1
+        },
+        "streamed-terrain": {
+          "meshes": 25,
+          "triangles": 87351,
+          "instances": 25,
+          "visible": 25
+        },
+        "start-terrace-material": {
+          "meshes": 1,
+          "triangles": 1,
+          "instances": 1,
+          "visible": 1
+        },
+        "central-facades-and-seven-trees": {
+          "meshes": 18,
+          "triangles": 274685,
+          "instances": 10030,
+          "visible": 18
+        },
+        "player": {
+          "meshes": 1,
+          "triangles": 49614,
+          "instances": 1,
+          "visible": 0
+        }
+      }
+    },
+    {
+      "id": "region-x2100-z1400",
+      "x": 2100,
+      "z": 1400,
+      "height": 3.8086218520729744,
+      "samples": [
+        3.8086218520729744,
+        2.983225450567261,
+        2.7851781674798985,
+        3.513795860200844,
+        2.9474216578983032,
+        2.7494172168335353,
+        3.294431916836402,
+        2.9115939145212906,
+        2.7135894734565227
+      ],
+      "position": [
+        2100,
+        173.80862185207297,
+        1530
+      ],
+      "target": [
+        2100,
+        3.8086218520729744,
+        1300
+      ],
+      "detail": true,
+      "surfaceVerified": true,
+      "visibleMeshes": 29,
+      "geometryIssues": [],
+      "streaming": [
+        {
+          "surface": "terrain",
+          "errorTarget": 20,
+          "distantError": 0,
+          "loadAncestors": true,
+          "loadSiblings": true,
+          "stats": {
+            "inCacheSinceLoad": 0,
+            "inCache": 197,
+            "queued": 0,
+            "downloading": 1,
+            "parsing": 0,
+            "loaded": 196,
+            "failed": 0,
+            "inFrustum": 65,
+            "used": 105,
+            "active": 54,
+            "visible": 25,
+            "refused": 0,
+            "tilesProcessed": 0
+          },
+          "meshes": 29,
+          "shadowCasters": 0,
+          "materials": {
+            "MeshStandardMaterial:texture": 25,
+            "MeshBasicMaterial:texture": 4
+          },
+          "samples": [
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            }
+          ]
+        }
+      ],
+      "renderer": {
+        "calls": 35,
+        "triangles": 135429,
+        "textures": 135,
+        "geometries": 133
+      },
+      "components": {
+        "other": {
+          "meshes": 25,
+          "triangles": 3724,
+          "instances": 25,
+          "visible": 1
+        },
+        "streamed-terrain": {
+          "meshes": 29,
+          "triangles": 125635,
+          "instances": 29,
+          "visible": 29
+        },
+        "central-facades-and-seven-trees": {
+          "meshes": 18,
+          "triangles": 274685,
+          "instances": 10030,
+          "visible": 18
+        },
+        "player": {
+          "meshes": 1,
+          "triangles": 49614,
+          "instances": 1,
+          "visible": 0
+        }
+      }
+    },
+    {
+      "id": "region-x-2100-z2100",
+      "x": -2100,
+      "z": 2100,
+      "height": 70.76066354093564,
+      "samples": [
+        2.563303760918643,
+        2.577265630618058,
+        14.309662325424142,
+        2.7614817578760267,
+        2.7219733008641924,
+        70.76066354093564,
+        2.9658118308652774,
+        22.556846482966648,
+        25.255283065664116
+      ],
+      "position": [
+        -2100,
+        240.76066354093564,
+        2230
+      ],
+      "target": [
+        -2100,
+        70.76066354093564,
+        2000
+      ],
+      "detail": true,
+      "surfaceVerified": true,
+      "visibleMeshes": 18,
+      "geometryIssues": [],
+      "streaming": [
+        {
+          "surface": "terrain",
+          "errorTarget": 20,
+          "distantError": 0,
+          "loadAncestors": true,
+          "loadSiblings": true,
+          "stats": {
+            "inCacheSinceLoad": 0,
+            "inCache": 198,
+            "queued": 0,
+            "downloading": 1,
+            "parsing": 1,
+            "loaded": 196,
+            "failed": 0,
+            "inFrustum": 46,
+            "used": 79,
+            "active": 40,
+            "visible": 18,
+            "refused": 0,
+            "tilesProcessed": 0
+          },
+          "meshes": 14,
+          "shadowCasters": 0,
+          "materials": {
+            "MeshStandardMaterial:texture": 14
+          },
+          "samples": [
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 1024,
+                "height": 256,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            }
+          ]
+        }
+      ],
+      "renderer": {
+        "calls": 20,
+        "triangles": 38113,
+        "textures": 136,
+        "geometries": 134
+      },
+      "components": {
+        "other": {
+          "meshes": 25,
+          "triangles": 3724,
+          "instances": 25,
+          "visible": 1
+        },
+        "streamed-terrain": {
+          "meshes": 18,
+          "triangles": 37153,
+          "instances": 18,
+          "visible": 18
+        },
+        "central-facades-and-seven-trees": {
+          "meshes": 18,
+          "triangles": 274685,
+          "instances": 10030,
+          "visible": 18
+        },
+        "player": {
+          "meshes": 1,
+          "triangles": 49614,
+          "instances": 1,
+          "visible": 0
+        }
+      }
+    },
+    {
+      "id": "region-x-1400-z2100",
+      "x": -1400,
+      "z": 2100,
+      "height": 59.547418878057215,
+      "samples": [
+        4.471712147656945,
+        18.73232546860163,
+        11.949831014397205,
+        7.11666825874272,
+        52.36352927905682,
+        52.40149245075372,
+        53.29920928435604,
+        59.547418878057215,
+        51.08952491380114
+      ],
+      "position": [
+        -1400,
+        229.54741887805721,
+        2230
+      ],
+      "target": [
+        -1400,
+        59.547418878057215,
+        2000
+      ],
+      "detail": true,
+      "surfaceVerified": true,
+      "visibleMeshes": 40,
+      "geometryIssues": [],
+      "streaming": [
+        {
+          "surface": "terrain",
+          "errorTarget": 20,
+          "distantError": 0,
+          "loadAncestors": true,
+          "loadSiblings": true,
+          "stats": {
+            "inCacheSinceLoad": 52,
+            "inCache": 238,
+            "queued": 0,
+            "downloading": 13,
+            "parsing": 0,
+            "loaded": 225,
+            "failed": 0,
+            "inFrustum": 71,
+            "used": 111,
+            "active": 49,
+            "visible": 23,
+            "refused": 0,
+            "tilesProcessed": 0
+          },
+          "meshes": 40,
+          "shadowCasters": 0,
+          "materials": {
+            "MeshStandardMaterial:texture": 23,
+            "MeshBasicMaterial:texture": 17
+          },
+          "samples": [
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            }
+          ]
+        }
+      ],
+      "renderer": {
+        "calls": 59,
+        "triangles": 58077,
+        "textures": 165,
+        "geometries": 163
+      },
+      "components": {
+        "other": {
+          "meshes": 25,
+          "triangles": 3724,
+          "instances": 25,
+          "visible": 1
+        },
+        "streamed-terrain": {
+          "meshes": 40,
+          "triangles": 56719,
+          "instances": 40,
+          "visible": 40
+        },
+        "central-facades-and-seven-trees": {
+          "meshes": 18,
+          "triangles": 274685,
+          "instances": 10030,
+          "visible": 18
+        },
+        "player": {
+          "meshes": 1,
+          "triangles": 49614,
+          "instances": 1,
+          "visible": 0
+        }
+      }
+    },
+    {
+      "id": "region-x-700-z2100",
+      "x": -700,
+      "z": 2100,
+      "height": 263.2967515550263,
+      "samples": [
+        263.2967515550263,
+        18.618463715269172,
+        62.203603469806694,
+        56.96359234329793,
+        56.17421825410929,
+        64.5429017772367,
+        59.339194090371166,
+        28.931683274480747,
+        38.55778957672737
+      ],
+      "position": [
+        -700,
+        433.2967515550263,
+        2230
+      ],
+      "target": [
+        -700,
+        263.2967515550263,
+        2000
+      ],
+      "detail": true,
+      "surfaceVerified": true,
+      "visibleMeshes": 30,
+      "geometryIssues": [],
+      "streaming": [
+        {
+          "surface": "terrain",
+          "errorTarget": 20,
+          "distantError": 0,
+          "loadAncestors": true,
+          "loadSiblings": true,
+          "stats": {
+            "inCacheSinceLoad": 0,
+            "inCache": 182,
+            "queued": 0,
+            "downloading": 0,
+            "parsing": 0,
+            "loaded": 182,
+            "failed": 0,
+            "inFrustum": 56,
+            "used": 91,
+            "active": 55,
+            "visible": 25,
+            "refused": 0,
+            "tilesProcessed": 0
+          },
+          "meshes": 30,
+          "shadowCasters": 0,
+          "materials": {
+            "MeshStandardMaterial:texture": 25,
+            "MeshBasicMaterial:texture": 5
+          },
+          "samples": [
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            }
+          ]
+        }
+      ],
+      "renderer": {
+        "calls": 37,
+        "triangles": 79599,
+        "textures": 138,
+        "geometries": 136
+      },
+      "components": {
+        "other": {
+          "meshes": 25,
+          "triangles": 3724,
+          "instances": 25,
+          "visible": 1
+        },
+        "streamed-terrain": {
+          "meshes": 30,
+          "triangles": 78230,
+          "instances": 30,
+          "visible": 30
+        },
+        "central-facades-and-seven-trees": {
+          "meshes": 18,
+          "triangles": 274685,
+          "instances": 10030,
+          "visible": 18
+        },
+        "player": {
+          "meshes": 1,
+          "triangles": 49614,
+          "instances": 1,
+          "visible": 0
+        }
+      }
+    },
+    {
+      "id": "region-x0-z2100",
+      "x": 0,
+      "z": 2100,
+      "height": 24.454443421309406,
+      "samples": [
+        2.9786499488291156,
+        2.7205903711110295,
+        9.007142175854824,
+        2.1612195681227604,
+        24.454443421309406,
+        2.9519946357468143,
+        2.1979136653571913,
+        2.12451416420663,
+        2.4506488177394203
+      ],
+      "position": [
+        0,
+        194.4544434213094,
+        2230
+      ],
+      "target": [
+        0,
+        24.454443421309406,
+        2000
+      ],
+      "detail": true,
+      "surfaceVerified": true,
+      "visibleMeshes": 26,
+      "geometryIssues": [],
+      "streaming": [
+        {
+          "surface": "terrain",
+          "errorTarget": 20,
+          "distantError": 0,
+          "loadAncestors": true,
+          "loadSiblings": true,
+          "stats": {
+            "inCacheSinceLoad": 0,
+            "inCache": 202,
+            "queued": 0,
+            "downloading": 0,
+            "parsing": 0,
+            "loaded": 202,
+            "failed": 0,
+            "inFrustum": 62,
+            "used": 99,
+            "active": 55,
+            "visible": 26,
+            "refused": 0,
+            "tilesProcessed": 0
+          },
+          "meshes": 23,
+          "shadowCasters": 0,
+          "materials": {
+            "MeshStandardMaterial:texture": 23
+          },
+          "samples": [
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 1024,
+                "height": 256,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            }
+          ]
+        }
+      ],
+      "renderer": {
+        "calls": 28,
+        "triangles": 66345,
+        "textures": 139,
+        "geometries": 137
+      },
+      "components": {
+        "other": {
+          "meshes": 25,
+          "triangles": 3724,
+          "instances": 25,
+          "visible": 1
+        },
+        "streamed-terrain": {
+          "meshes": 26,
+          "triangles": 65385,
+          "instances": 26,
+          "visible": 26
+        },
+        "central-facades-and-seven-trees": {
+          "meshes": 18,
+          "triangles": 274685,
+          "instances": 10030,
+          "visible": 18
+        },
+        "player": {
+          "meshes": 1,
+          "triangles": 49614,
+          "instances": 1,
+          "visible": 0
+        }
+      }
+    },
+    {
+      "id": "region-x700-z2100",
+      "x": 700,
+      "z": 2100,
+      "height": 35.07372751503499,
+      "samples": [
+        2.6815997551893815,
+        2.5554695640057616,
+        12.132373562209978,
+        2.7425750957299897,
+        3.2201577860396355,
+        35.07372751503499,
+        2.858415912360215,
+        5.441286017714447,
+        16.85141557618408
+      ],
+      "position": [
+        700,
+        205.073727515035,
+        2230
+      ],
+      "target": [
+        700,
+        35.07372751503499,
+        2000
+      ],
+      "detail": true,
+      "surfaceVerified": true,
+      "visibleMeshes": 16,
+      "geometryIssues": [],
+      "streaming": [
+        {
+          "surface": "terrain",
+          "errorTarget": 20,
+          "distantError": 0,
+          "loadAncestors": true,
+          "loadSiblings": true,
+          "stats": {
+            "inCacheSinceLoad": 54,
+            "inCache": 235,
+            "queued": 10,
+            "downloading": 13,
+            "parsing": 0,
+            "loaded": 212,
+            "failed": 0,
+            "inFrustum": 68,
+            "used": 116,
+            "active": 42,
+            "visible": 16,
+            "refused": 0,
+            "tilesProcessed": 14
+          },
+          "meshes": 16,
+          "shadowCasters": 0,
+          "materials": {
+            "MeshStandardMaterial:texture": 16
+          },
+          "samples": [
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 1024,
+                "height": 256,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            }
+          ]
+        }
+      ],
+      "renderer": {
+        "calls": 18,
+        "triangles": 22441,
+        "textures": 128,
+        "geometries": 126
+      },
+      "components": {
+        "other": {
+          "meshes": 25,
+          "triangles": 3724,
+          "instances": 25,
+          "visible": 1
+        },
+        "streamed-terrain": {
+          "meshes": 16,
+          "triangles": 21481,
+          "instances": 16,
+          "visible": 16
+        },
+        "central-facades-and-seven-trees": {
+          "meshes": 18,
+          "triangles": 274685,
+          "instances": 10030,
+          "visible": 18
+        },
+        "player": {
+          "meshes": 1,
+          "triangles": 49614,
+          "instances": 1,
+          "visible": 0
+        }
+      }
+    },
+    {
+      "id": "region-x1400-z2100",
+      "x": 1400,
+      "z": 2100,
+      "height": 3.2212619200763584,
+      "samples": [
+        2.67015289218034,
+        2.6786193759471644,
+        2.7845938710088376,
+        2.51747659863031,
+        2.5345773054614256,
+        2.551678012292541,
+        3.2212619200763584,
+        2.9053499633519095,
+        2.7491333930120163
+      ],
+      "position": [
+        1400,
+        173.22126192007636,
+        2230
+      ],
+      "target": [
+        1400,
+        3.2212619200763584,
+        2000
+      ],
+      "detail": true,
+      "surfaceVerified": true,
+      "visibleMeshes": 23,
+      "geometryIssues": [],
+      "streaming": [
+        {
+          "surface": "terrain",
+          "errorTarget": 20,
+          "distantError": 0,
+          "loadAncestors": true,
+          "loadSiblings": true,
+          "stats": {
+            "inCacheSinceLoad": 48,
+            "inCache": 225,
+            "queued": 0,
+            "downloading": 12,
+            "parsing": 0,
+            "loaded": 213,
+            "failed": 0,
+            "inFrustum": 69,
+            "used": 117,
+            "active": 51,
+            "visible": 23,
+            "refused": 0,
+            "tilesProcessed": 0
+          },
+          "meshes": 23,
+          "shadowCasters": 0,
+          "materials": {
+            "MeshStandardMaterial:texture": 23
+          },
+          "samples": [
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 1024,
+                "height": 256,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            }
+          ]
+        }
+      ],
+      "renderer": {
+        "calls": 25,
+        "triangles": 35317,
+        "textures": 131,
+        "geometries": 129
+      },
+      "components": {
+        "other": {
+          "meshes": 25,
+          "triangles": 3724,
+          "instances": 25,
+          "visible": 1
+        },
+        "streamed-terrain": {
+          "meshes": 23,
+          "triangles": 34357,
+          "instances": 23,
+          "visible": 23
+        },
+        "central-facades-and-seven-trees": {
+          "meshes": 18,
+          "triangles": 274685,
+          "instances": 10030,
+          "visible": 18
+        },
+        "player": {
+          "meshes": 1,
+          "triangles": 49614,
+          "instances": 1,
+          "visible": 0
+        }
+      }
+    },
+    {
+      "id": "region-x2100-z2100",
+      "x": 2100,
+      "z": 2100,
+      "height": 2.5554455111923744,
+      "samples": [
+        2.480649032026122,
+        2.3285704927657207,
+        2.1764919535125955,
+        2.489381115708966,
+        2.4699292650802818,
+        2.4504774144479597,
+        2.5554455111923744,
+        2.5359936605564144,
+        2.4352512846744503
+      ],
+      "position": [
+        2100,
+        172.55544551119237,
+        2230
+      ],
+      "target": [
+        2100,
+        2.5554455111923744,
+        2000
+      ],
+      "detail": true,
+      "surfaceVerified": true,
+      "visibleMeshes": 28,
+      "geometryIssues": [],
+      "streaming": [
+        {
+          "surface": "terrain",
+          "errorTarget": 20,
+          "distantError": 0,
+          "loadAncestors": true,
+          "loadSiblings": true,
+          "stats": {
+            "inCacheSinceLoad": 0,
+            "inCache": 191,
+            "queued": 0,
+            "downloading": 0,
+            "parsing": 0,
+            "loaded": 191,
+            "failed": 0,
+            "inFrustum": 67,
+            "used": 109,
+            "active": 60,
+            "visible": 28,
+            "refused": 0,
+            "tilesProcessed": 0
+          },
+          "meshes": 28,
+          "shadowCasters": 0,
+          "materials": {
+            "MeshStandardMaterial:texture": 28
+          },
+          "samples": [
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": false,
+              "side": 0
+            }
+          ]
+        }
+      ],
+      "renderer": {
+        "calls": 30,
+        "triangles": 39967,
+        "textures": 130,
+        "geometries": 128
+      },
+      "components": {
+        "other": {
+          "meshes": 25,
+          "triangles": 3724,
+          "instances": 25,
+          "visible": 1
+        },
+        "streamed-terrain": {
+          "meshes": 28,
+          "triangles": 39007,
+          "instances": 28,
+          "visible": 28
+        },
+        "central-facades-and-seven-trees": {
+          "meshes": 18,
+          "triangles": 274685,
+          "instances": 10030,
+          "visible": 18
+        },
+        "player": {
+          "meshes": 1,
+          "triangles": 49614,
+          "instances": 1,
+          "visible": 0
+        }
+      }
+    }
+  ],
+  "errors": [],
+  "scope": "49 regional camera cells, height-adapted from loaded source ray hits. This samples each cell; it does not certify every facade inside each cell.",
+  "complete": true,
+  "unverified": [],
+  "unvisited": []
+}

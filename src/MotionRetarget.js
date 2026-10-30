@@ -116,10 +116,10 @@ export function prepareMotion(clip, key, bones, item={}) {
       inverse.clone().multiply(twist.invert().multiply(world)).normalize().toArray(track.values,i);
     }
   }
-  if (['idle','walk','jog','regularRun','run','fall','fallVariant','fallIdle','injuredIdle','swing','wall','zip','combatIdle','guard','jab','cross','hook','heavy','special'].includes(key)) {
+  if (['idle','walk','jog','regularRun','run','fall','fallVariant','fallIdle','injuredIdle','swing','wall','zip','combatIdle','guard','jab','cross','rightHook','hook','heavy','special'].includes(key)) {
     // Loops close cleanly; short authored strikes also recover to their
     // initial guard so the next action does not inherit a hanging fist.
-    const seam=['jab','cross','hook','heavy','special'].includes(key)?0.12:0.15;
+    const seam=['jab','cross','rightHook','hook','heavy','special'].includes(key)?0.12:0.15;
     for (const track of clip.tracks) {
       for (let i = 0; i < track.times.length; i++) {
         const alpha = THREE.MathUtils.clamp((track.times[i] - clip.duration + seam) / seam, 0, 1);

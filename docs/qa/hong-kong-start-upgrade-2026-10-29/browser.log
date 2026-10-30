@@ -1,0 +1,124 @@
+{
+  "status": "PASS",
+  "bootMs": 20624,
+  "start": [
+    0,
+    20.513,
+    0
+  ],
+  "terrace": {
+    "meshes": 2,
+    "triangles": 57
+  },
+  "district": {
+    "facades": 6,
+    "windows": 1967,
+    "frameParts": 7868,
+    "trees": 8,
+    "treeStatus": "ready",
+    "source": "Existing workspace tree.glb; authored facade geometry from reviewed local planes"
+  },
+  "walkJump": {
+    "frames": 240,
+    "seconds": 5.006,
+    "travel": 22.939,
+    "start": [
+      0,
+      20.513,
+      0
+    ],
+    "end": [
+      5.345,
+      16.166,
+      21.88
+    ],
+    "maxSpeed": 31.602,
+    "states": [
+      "IDLE",
+      "RUNNING",
+      "JUMPING",
+      "FALLING",
+      "ROLLING"
+    ],
+    "animations": [
+      "idle",
+      "walk",
+      "regularRun",
+      "stop",
+      "jump",
+      "drop",
+      "fall",
+      "roll"
+    ],
+    "attacks": [],
+    "swingingFrames": 0,
+    "maxWebs": 0,
+    "averageFps": 55.9,
+    "low1Fps": 11.47,
+    "maxDt": 0.1,
+    "maxDrawCalls": 125,
+    "maxTriangles": 533510,
+    "memoryStart": 612581947,
+    "memoryEnd": 685166284,
+    "pitch": [
+      0.16,
+      0.16
+    ],
+    "yaw": [
+      0,
+      0.1399
+    ]
+  },
+  "continued": {
+    "frames": 1395,
+    "seconds": 31.169,
+    "travel": 47.292,
+    "start": [
+      16.86,
+      16.57,
+      103.637
+    ],
+    "end": [
+      -29.936,
+      12.787,
+      109.326
+    ],
+    "maxSpeed": 35.861,
+    "states": [
+      "IDLE",
+      "RUNNING",
+      "JUMPING",
+      "FALLING",
+      "LANDING"
+    ],
+    "animations": [
+      "idle",
+      "walk",
+      "regularRun",
+      "stop",
+      "jump",
+      "drop",
+      "fall",
+      "land"
+    ],
+    "attacks": [],
+    "swingingFrames": 0,
+    "maxWebs": 0,
+    "averageFps": 50.37,
+    "low1Fps": 15.29,
+    "maxDt": 0.1,
+    "maxDrawCalls": 157,
+    "maxTriangles": 486400,
+    "memoryStart": 518818030,
+    "memoryEnd": 609158798,
+    "pitch": [
+      0.12,
+      0.1556
+    ],
+    "yaw": [
+      -1.5708,
+      -1.5708
+    ]
+  },
+  "errors": []
+}

@@ -4,6 +4,12 @@ import {clone} from 'three/addons/utils/SkeletonUtils.js';
 import {fetchAsset} from './AssetLoader.js';
 import {VEHICLE_IDS} from './VehicleNetwork.js';
 import {batchVehicleRendering,cloneVehicleMaterials} from './VehicleRender.js';
+// Per-vehicle physics parameters. VehicleController uses these to set correct
+// collision extents and steering geometry for each model.
+export const VEHICLE_PARAMS={
+ bmw:    {length:4.70,halfLen:2.35,halfWid:1.33,wheelbase:2.80,doorOffset:new T.Vector3(1.65,.1,.15)},
+ corvette:{length:4.46,halfLen:2.23,halfWid:1.33,wheelbase:2.69,doorOffset:new T.Vector3(1.65,.1,-.30)},
+};
 const cache=new Map(),lateralAxle=new T.Vector3(1,0,0);
 function normalize(model,length,rotation=0){
  const frame=new T.Group(),visual=new T.Group();frame.add(visual);visual.add(model);model.rotation.y=rotation;model.updateMatrixWorld(true);
@@ -171,7 +177,7 @@ function glass(model){model.traverse(n=>{if(n.isMesh){n.castShadow=false;n.recei
 export function prepareBMW(model){
  const asset=normalize(model,4.7,-Math.PI/2);asset.frame.name='BMW330i';asset.wheels=wheelPivots(asset,['Object_13_169','Object_13004_172','Object_13001_173','Object_13002_174'].map(name=>model.getObjectByName(name)).filter(Boolean));
  const door=new T.Group();door.position.set(asset.size.x*.36,.6,.85);asset.visual.add(door);const parts=[];model.traverse(n=>{if(/^SK_Door_FL_/.test(n.name))parts.push(n);});for(const p of parts)door.attach(p);glass(asset.frame);
- const ready={...asset,door,modelId:'bmw',seat:new T.Vector3(.43,.62,.02),pedals:[new T.Vector3(.58,.32,.85),new T.Vector3(.27,.32,.9)],wheel:new T.Vector3(.43,1,.54)};
+ const ready={...asset,door,modelId:'bmw',vehicleParams:VEHICLE_PARAMS.bmw,seat:new T.Vector3(.43,.62,.02),pedals:[new T.Vector3(.58,.32,.85),new T.Vector3(.27,.32,.9)],wheel:new T.Vector3(.43,1,.54)};
  seatOnTires(ready);return batchVehicleRendering(ready);
 }
 export function prepareCorvette(model){
@@ -188,7 +194,7 @@ export function prepareCorvette(model){
   const part=new T.Mesh(subset(moving),mesh.material);part.position.copy(mesh.position);part.quaternion.copy(mesh.quaternion);part.scale.copy(mesh.scale);mesh.parent.add(part);part.updateWorldMatrix(true,false);door.attach(part);mesh.geometry=subset(closed);
  }
  glass(asset.frame);
- const ready={...asset,door,modelId:'corvette',seat:new T.Vector3(.375,.35,-.46),pedals:[new T.Vector3(.52,.18,.33),new T.Vector3(.23,.18,.38)],wheel:new T.Vector3(.375,.73,-.03)};
+ const ready={...asset,door,modelId:'corvette',vehicleParams:VEHICLE_PARAMS.corvette,seat:new T.Vector3(.375,.35,-.25),pedals:[new T.Vector3(.52,.18,.15),new T.Vector3(.23,.18,.20)],wheel:new T.Vector3(.375,.73,.18)};
  seatOnTires(ready);return batchVehicleRendering(ready);
 }
 export async function loadVehicle(id='bmw'){

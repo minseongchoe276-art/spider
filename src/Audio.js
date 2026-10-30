@@ -20,11 +20,15 @@ export class SoundController {
     this.ctx = new AudioCtx();
     this.masterGain = this.ctx.createGain();
     this.masterGain.gain.value = this.isMuted ? 0 : 1;
-    this.masterGain.connect(this.ctx.destination);
+    this.limiter=this.ctx.createDynamicsCompressor();
+    this.limiter.threshold.value=-12;this.limiter.knee.value=12;this.limiter.ratio.value=4;
+    this.limiter.attack.value=.003;this.limiter.release.value=.18;
+    this.masterGain.connect(this.limiter);this.limiter.connect(this.ctx.destination);
     this.effectsGain=this.ctx.createGain();this.environmentGain=this.ctx.createGain();this.musicGain=this.ctx.createGain();
     for(const bus of [this.effectsGain,this.environmentGain,this.musicGain])bus.connect(this.masterGain);
     this.configure(this.volumes);
     this.initWind();
+    this.initSceneAudio();
     this.initialized = true;
   }
 
@@ -73,6 +77,42 @@ export class SoundController {
     whiteNoise.start(0);
     this.windNode = whiteNoise;
   }
+
+  initSceneAudio() {
+    this.engine=this.ctx.createOscillator();this.engine.type='triangle';
+    this.engineGain=this.ctx.createGain();this.engineGain.gain.value=0;
+    this.engine.connect(this.engineGain);this.engineGain.connect(this.effectsGain);this.engine.start();
+    this.cityFilter=this.ctx.createBiquadFilter();this.cityFilter.type='lowpass';this.cityFilter.frequency.value=260;
+    this.cityGain=this.ctx.createGain();this.cityGain.gain.value=0;
+    this.windNode.connect(this.cityFilter);this.cityFilter.connect(this.cityGain);this.cityGain.connect(this.environmentGain);
+  }
+  updateSceneAudio({active=false,driving=false,speed=0,height=0,braking=false}={}) {
+    if(!this.ctx || !this.engineGain)return;
+    const t=this.ctx.currentTime,v=Math.min(30,Math.abs(speed)||0);
+    this.engine.frequency.setTargetAtTime(42+v*4,t,.09);
+    this.engineGain.gain.setTargetAtTime(active&&driving?.025+v*.001:0,t,.08);
+    this.cityGain.gain.setTargetAtTime(active?.035*Math.max(.15,1-Math.max(0,height)/180):0,t,.3);
+    this.cityFilter.frequency.setTargetAtTime(driving&&braking?700:260,t,.12);
+  }
+  updateListener(camera) {
+    const listener=this.ctx?.listener,e=camera?.matrixWorld?.elements;if(!listener||!e)return;
+    if(listener.positionX){for(const [name,value]of Object.entries({positionX:e[12],positionY:e[13],positionZ:e[14],forwardX:-e[8],forwardY:-e[9],forwardZ:-e[10],upX:e[4],upY:e[5],upZ:e[6]}))listener[name].setValueAtTime(value,this.ctx.currentTime);}
+    else{listener.setPosition?.(e[12],e[13],e[14]);listener.setOrientation?.(-e[8],-e[9],-e[10],e[4],e[5],e[6]);}
+  }
+  impactNoise(duration,volume,frequency,position=null) {
+    if(!this.ctx||this.isMuted||!this.windNode?.buffer)return;
+    const node=this.ctx.createBufferSource(),filter=this.ctx.createBiquadFilter(),gain=this.ctx.createGain(),t=this.ctx.currentTime;
+    node.buffer=this.windNode.buffer;filter.type='bandpass';filter.frequency.value=frequency;filter.Q.value=.7;
+    gain.gain.setValueAtTime(volume,t);gain.gain.exponentialRampToValueAtTime(.001,t+duration);
+    node.connect(filter);filter.connect(gain);
+    let panner=null;
+    if(position && [position.x,position.y,position.z].every(Number.isFinite)){
+      panner=this.ctx.createPanner();panner.panningModel='equalpower';panner.distanceModel='inverse';panner.refDistance=3;panner.maxDistance=60;panner.rolloffFactor=.7;
+      panner.setPosition(position.x,position.y,position.z);gain.connect(panner);panner.connect(this.effectsGain);
+    }else gain.connect(this.effectsGain);
+    node.onended=()=>{node.disconnect();filter.disconnect();gain.disconnect();panner?.disconnect();};node.start(t,Math.random(),duration);
+  }
+  playCombatBlock(position=null){this.impactNoise(.16,.22,1700,position);this.tone(340,.09,.1,this.effectsGain,'triangle');}
 
   setWindSpeed(speed) {
     this.lastWindSpeed = speed;
@@ -248,7 +288,8 @@ export class SoundController {
     });
   }
 
-  playCombatHit(heavy=false) {
+  playCombatHit(heavy=false,position=null) {
+    this.impactNoise(heavy?.15:.09,heavy?.32:.2,heavy?380:800,position);
     if(!this.ctx || this.isMuted)return;
     const t=this.ctx.currentTime,osc=this.ctx.createOscillator(),gain=this.ctx.createGain();
     osc.type='triangle';osc.frequency.setValueAtTime(heavy?100:180,t);osc.frequency.exponentialRampToValueAtTime(45,t+0.1);
@@ -267,11 +308,14 @@ export class SoundController {
     osc.connect(gain);gain.connect(bus||this.masterGain);osc.onended=()=>{osc.disconnect();gain.disconnect();};osc.start(t);osc.stop(t+duration+.01);
   }
   playWebFailure(){this.tone(145,.12,.08,this.effectsGain,'triangle');}
-  playSurfaceStep(surface='roof',strength=.4){this.tone(surface==='street'?105:surface==='landing'?65:165,.07,Math.max(.01,strength*.07),this.effectsGain,'triangle');}
+  playSurfaceStep(surface='roof',strength=.4){this.impactNoise(.055,strength*.1,surface==='street'?1100:500);this.tone(surface==='street'?105:surface==='landing'?65:165,.07,Math.max(.01,strength*.07),this.effectsGain,'triangle');}
   updateMusic(delta,intense=false) {
     if(!this.ctx||this.isMuted||this.volumes.musicVolume<=0)return;
     this.musicClock+=delta;const beat=intense?.32:.65;if(this.musicClock<beat)return;this.musicClock=0;
-    const notes=[146.83,220,293.66,196,146.83,246.94,220,196];this.tone(notes[this.musicNote++%notes.length],beat*.85,.035,this.musicGain,'sine');
+    const index=this.musicNote++,root=[73.415,58.27,87.307,65.405][Math.floor(index/16)%4],notes=[2,2.4,3,2.6667,2,3.2,3,2.6667];
+    this.tone(root*notes[index%notes.length],beat*.8,.022,this.musicGain,'sine');
+    if(index%4===0){this.tone(root,beat*3,.025,this.musicGain,'sine');this.tone(root*3,beat*2.6,.009,this.musicGain,'triangle');}
+    if(intense&&index%2===0)this.tone(55,.1,.025,this.musicGain,'triangle');
   }
   toggleMute() {
     this.isMuted = !this.isMuted;

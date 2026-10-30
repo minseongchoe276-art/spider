@@ -1,0 +1,7 @@
+PASS compact city: 16 buildings, 320m play width, usable spawn/objectives within bounds
+PASS rendered city and authoritative Node server use exactly matching collision geometry
+PASS all finite participant locations stay visible outside pulse windows, including pending and downed players; invalid coordinates are excluded
+PASS on-screen, behind-camera, distant and high-altitude markers stay inside both HUD and minimap bounds
+PASS labels refresh distance/height/direction and clean up on leaving or pausing
+PASS old saved positions outside the compact map are rejected
+PASS seven overlapping head projections separate within desktop, portrait and landscape viewport bounds

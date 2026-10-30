@@ -47,12 +47,12 @@ for(let index=0;index<3;index++){
 }
 console.log('PASS: real tile renderers preserve photographic parent coverage and let independent structural overlays appear without sibling starvation');
 
-const coarse=nextHongKongError(10,10,{full:true,refused:5,utilization:1});assert.equal(coarse,12.5);
-assert.equal(nextHongKongError(coarse,10,{full:false,refused:0,utilization:.99}),coarse);
-assert(nextHongKongError(coarse,10,{full:false,refused:0,utilization:.7})<coarse);
-assert.equal(nextHongKongError(12,12,{full:true,refused:0,utilization:1}),12);
-assert.equal(nextHongKongError(28,10,{full:true,refused:1,utilization:1}),28);
-console.log('PASS: cache hysteresis prevents repeated blur/sharpen cycles and does not degrade a layer without refused requests');
+// Cache pressure now shrinks request distance, never nearby tile detail.
+for(const full of [false,true])for(const refused of [0,5])for(const utilization of [.7,.99,1]){
+ assert.equal(nextHongKongError(28,10,{full,refused,utilization}),10);
+ assert.equal(nextHongKongError(12,12,{full,refused,utilization}),12);
+}
+console.log('PASS: all cache pressure combinations retain the configured nearby detail baseline');
 
 const placeholder=new T.DataTexture(new Uint8Array([151,151,151,255]),1,1);
 const photo=new T.DataTexture(new Uint8Array(16).fill(180),2,2);
@@ -62,7 +62,7 @@ const root=new T.Group(),mesh=new T.Mesh(geo,[flat,authored]);root.add(mesh);
 const sharedGeometry=new T.BoxGeometry(5,12,5);sharedGeometry.deleteAttribute('normal');
 root.add(new T.Mesh(sharedGeometry,flat));
 prepareHongKongTile(root,'building',hongKongRenderingProfile(),16);
-assert(geo.attributes.normal&&sharedGeometry.attributes.normal);assert(flat.userData.cityFacade);assert(!authored.userData.cityFacade);
+assert(root.children.every(node=>node.geometry.attributes.normal));assert(flat.userData.cityFacade);assert(!authored.userData.cityFacade);
 assert.equal(flat.map,placeholder);assert.equal(authored.map,photo);assert(mesh.castShadow&&mesh.receiveShadow);
 assert.equal(mesh.userData.surfaceType,'building');
 const shader={vertexShader:T.ShaderLib.standard.vertexShader,fragmentShader:T.ShaderLib.standard.fragmentShader};

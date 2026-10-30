@@ -1,10 +1,20 @@
 import assert from 'node:assert/strict';
-import {createMission,advanceMission,missionTarget,completionRecord,validCompletion} from '../src/MissionRules.js';
+import {createMission,advanceMission,missionTarget,missionFraction,completionRecord,validCompletion} from '../src/MissionRules.js';
 import {JourneyProgress} from '../src/SoloJourney.js';
 import {loadingMessage,startLoadingStatus} from '../src/LoadingStatus.js';
 let count=0;
 const test=(name,run)=>{run();count++;console.log('PASS '+name);};
 const position={x:0,y:20,z:0};
+test('Landing progress grows during a safe hold and resets when support is lost',()=>{
+ const m=createMission('rooftops','procedural',position,[position,{x:40,y:20,z:0},{x:80,y:20,z:0}]);
+ const sample={position,state:'IDLE',safe:true};
+ advanceMission(m,sample,.2);advanceMission(m,sample,.1);
+ assert(Math.abs(missionFraction(m)-1/6)<1e-8);
+ advanceMission(m,{...sample,safe:false},.1);assert.equal(missionFraction(m),0);assert.equal(m.index,0);
+ const training=createMission('technique','procedural',position);
+ for(let i=0;i<5;i++)advanceMission(training,{position,state:'SWINGING',webs:1},.2);
+ assert(Math.abs(missionFraction(training)-1/9)<1e-8);assert.equal(training.index,0);
+});
 test('Delivery requires ordered supported collection and delivery, regardless of distance',()=>{
  const m=createMission('delivery','procedural',position,[{x:40,y:20,z:0},{x:80,y:20,z:0}]);
  const sample={position:{x:80,y:20,z:0},state:'IDLE',safe:true,distance:600};

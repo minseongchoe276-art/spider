@@ -1,0 +1,3 @@
+PASS: 2 tile texture routing paths, including extension-based loading and mislabeled embedded KTX2
+PASS: actual Hong Kong RGB KTX2 color preserved as RGBA; oversized and truncated payloads rejected
+PASS: actual GLTF parser decodes embedded KTX2 once without Blob URLs, preserves shared bytes, independent samplers, transforms, color space and failure diagnostics

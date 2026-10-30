@@ -208,7 +208,7 @@ results.citizens=counts;
  results.roofCitizens=manager.metrics.spawned;
 }
 
-// TEST 11. A Hong Kong walker standing in the carriageway must reach the facade without a teleport.
+// TEST 11. An offscreen legacy road spawn is recycled instead of walking through traffic.
 {
  const blocks=[new T.Mesh(new T.BoxGeometry(6,12,160)),new T.Mesh(new T.BoxGeometry(6,12,160))];
  blocks[0].position.set(11,6,0);blocks[1].position.set(-11,6,0);
@@ -221,6 +221,7 @@ results.citizens=counts;
  const manager=new AmbientCitizens({scene:new T.Scene(),city,player,assets,random:seed(),max:1});
  assert(manager.place(new T.Vector3(0,2.01,0),0));
  const person=manager.targets[0];
+ manager.spawnAt=Infinity;
  let previous=person.position.clone(),worst=0;
  for(let i=0;i<150;i++){
   manager.update(1/30);
@@ -229,7 +230,7 @@ results.citizens=counts;
   previous=person.position.clone();
  }
  assert(worst<.7,`TEST 11 teleported ${worst.toFixed(2)} m in one frame`);
- assert(Math.abs(person.position.x)>2,`TEST 11 stayed in the carriageway x=${person.position.x.toFixed(2)} state=${person.state}`);
+ assert.equal(person.active,false,'TEST 11 invalid road resident was not recycled');
  results.recovery={x:+person.position.x.toFixed(2),state:person.state,worst:+worst.toFixed(3)};
  manager.dispose();
 }

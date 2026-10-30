@@ -1,0 +1,31 @@
+[
+  {
+    "name": "Runner guard cannot be forged even with a combat stance or legacy capability",
+    "pass": true
+  },
+  {
+    "name": "Personal challenge rewards pace and variety without changing completion rules",
+    "pass": true
+  },
+  {
+    "name": "Explicit recenter restores the horizon; ordinary orbit never drifts",
+    "pass": true
+  },
+  {
+    "name": "Geometry-only building polish preserves authored textures and vertex colors",
+    "pass": true
+  },
+  {
+    "name": "Streaming cache scales to constrained devices without confusing cache and heap",
+    "pass": true
+  },
+  {
+    "rays": 5000,
+    "hits": 934,
+    "comparisonMs": 91.39741699999999
+  },
+  {
+    "name": "Optimized city raycasts retain nearest hits for 5,000 random finite segments",
+    "pass": true
+  }
+]

@@ -1,0 +1,337 @@
+[
+  {
+    "name": "check-multiplayer.mjs",
+    "code": 0,
+    "pass": true
+  },
+  {
+    "name": "check-admin.mjs",
+    "code": 0,
+    "pass": true
+  },
+  {
+    "name": "check-upgrade.mjs",
+    "code": 0,
+    "pass": true
+  },
+  {
+    "name": "check-upgrade-online.mjs",
+    "code": 0,
+    "pass": true
+  },
+  {
+    "name": "check-release-audit.mjs",
+    "code": 0,
+    "pass": true
+  },
+  {
+    "name": "check-online-edge-cases.mjs",
+    "code": 0,
+    "pass": true
+  },
+  {
+    "name": "check-room-reconnect.mjs",
+    "code": 0,
+    "pass": true
+  },
+  {
+    "name": "check-hong-kong-geometry-codec.mjs",
+    "code": 0,
+    "pass": true
+  },
+  {
+    "name": "check-swing-accessibility.mjs",
+    "code": 0,
+    "pass": true
+  },
+  {
+    "name": "check-cross-system-regressions.mjs",
+    "code": 0,
+    "pass": true
+  },
+  {
+    "name": "check-web-continuity.mjs",
+    "code": 0,
+    "pass": true
+  },
+  {
+    "name": "check-compact-map-and-locators.mjs",
+    "code": 0,
+    "pass": true
+  },
+  {
+    "name": "check-expert-audit.mjs",
+    "code": 0,
+    "pass": true
+  },
+  {
+    "name": "check-connection-lifecycle.mjs",
+    "code": 0,
+    "pass": true
+  },
+  {
+    "name": "check-camera-motion-web.mjs",
+    "code": 0,
+    "pass": true
+  },
+  {
+    "name": "check-full-game-audit.mjs",
+    "code": 0,
+    "pass": true
+  },
+  {
+    "name": "check-input-lifecycle.mjs",
+    "code": 0,
+    "pass": true
+  },
+  {
+    "name": "check-race-removal.mjs",
+    "code": 0,
+    "pass": true
+  },
+  {
+    "name": "check-session-flow.mjs",
+    "code": 0,
+    "pass": true
+  },
+  {
+    "name": "check-visibility.mjs",
+    "code": 0,
+    "pass": true
+  },
+  {
+    "name": "check-loading-performance.mjs",
+    "code": 0,
+    "pass": true
+  },
+  {
+    "name": "check-wall-ledge.mjs",
+    "code": 0,
+    "pass": true
+  },
+  {
+    "name": "check-wall-ledge-rig.mjs",
+    "code": 0,
+    "pass": true
+  },
+  {
+    "name": "check-all-motions.mjs",
+    "code": 0,
+    "pass": true
+  },
+  {
+    "name": "check-motion-sources.mjs",
+    "code": 0,
+    "pass": true
+  },
+  {
+    "name": "check-web-hand-pose.mjs",
+    "code": 0,
+    "pass": true
+  },
+  {
+    "name": "check-silk-gait.mjs",
+    "code": 0,
+    "pass": true
+  },
+  {
+    "name": "check-wall-crawl.mjs",
+    "code": 0,
+    "pass": true
+  },
+  {
+    "name": "check-natural-wall-motion.mjs",
+    "code": 0,
+    "pass": true
+  },
+  {
+    "name": "check-end-joint-stability.mjs",
+    "code": 0,
+    "pass": true
+  },
+  {
+    "name": "check-limb-continuity.mjs",
+    "code": 0,
+    "pass": true
+  },
+  {
+    "name": "check-turn-joint-stability.mjs",
+    "code": 0,
+    "pass": true
+  },
+  {
+    "name": "check-motion-cleanup.mjs",
+    "code": 1,
+    "pass": false
+  },
+  {
+    "name": "check-combat-traversal.mjs",
+    "code": 0,
+    "pass": true
+  },
+  {
+    "name": "check-combat-aim.mjs",
+    "code": 0,
+    "pass": true
+  },
+  {
+    "name": "check-combat-quality.mjs",
+    "code": 0,
+    "pass": true
+  },
+  {
+    "name": "check-combat-feet.mjs",
+    "code": 1,
+    "pass": false
+  },
+  {
+    "name": "check-custom-matches.mjs",
+    "code": 0,
+    "pass": true
+  },
+  {
+    "name": "check-human-mode.mjs",
+    "code": 0,
+    "pass": true
+  },
+  {
+    "name": "check-impact-body.mjs",
+    "code": 0,
+    "pass": true
+  },
+  {
+    "name": "check-drop-motion.mjs",
+    "code": 0,
+    "pass": true
+  },
+  {
+    "name": "check-online-guard.mjs",
+    "code": 0,
+    "pass": true
+  },
+  {
+    "name": "check-online-motion-sync.mjs",
+    "code": 0,
+    "pass": true
+  },
+  {
+    "name": "check-online-stance.mjs",
+    "code": 0,
+    "pass": true
+  },
+  {
+    "name": "check-mode-selection.mjs",
+    "code": 0,
+    "pass": true
+  },
+  {
+    "name": "check-expert-recovery.mjs",
+    "code": 0,
+    "pass": true
+  },
+  {
+    "name": "check-combat-roll-recovery.mjs",
+    "code": 1,
+    "pass": false
+  },
+  {
+    "name": "check-wall-head-clearance.mjs",
+    "code": 0,
+    "pass": true
+  },
+  {
+    "name": "check-live-movement-camera.mjs",
+    "code": 0,
+    "pass": true
+  },
+  {
+    "name": "check-motion-combinations.mjs",
+    "code": 1,
+    "pass": false
+  },
+  {
+    "name": "check-motion-reset.mjs",
+    "code": 0,
+    "pass": true
+  },
+  {
+    "name": "check-motion-interruptions.mjs",
+    "code": 0,
+    "pass": true
+  },
+  {
+    "name": "check-motion-adversarial.mjs",
+    "code": 0,
+    "pass": true
+  },
+  {
+    "name": "check-motion-packet-gaps.mjs",
+    "code": 0,
+    "pass": true
+  },
+  {
+    "name": "check-motion-selection.mjs",
+    "code": 0,
+    "pass": true
+  },
+  {
+    "name": "check-player-journey.mjs",
+    "code": 0,
+    "pass": true
+  },
+  {
+    "name": "check-network-conditions.mjs",
+    "code": 0,
+    "pass": true
+  },
+  {
+    "name": "check-asset-delivery.mjs",
+    "code": 0,
+    "pass": true
+  },
+  {
+    "name": "check-mission-expansion.mjs",
+    "code": 0,
+    "pass": true
+  },
+  {
+    "name": "check-release-readiness.mjs",
+    "code": 0,
+    "pass": true
+  },
+  {
+    "name": "check-commercial-hardening.mjs",
+    "code": 0,
+    "pass": true
+  },
+  {
+    "name": "check-admin-db.mjs",
+    "code": 0,
+    "pass": true
+  },
+  {
+    "name": "check-hong-kong-wall-fall.mjs",
+    "code": 0,
+    "pass": true
+  },
+  {
+    "name": "check-strike-steering.mjs",
+    "code": 0,
+    "pass": true
+  },
+  {
+    "name": "check-low-stance.mjs",
+    "code": 0,
+    "pass": true
+  },
+  {
+    "name": "check-stance-combat.mjs",
+    "code": 1,
+    "pass": false
+  },
+  {
+    "name": "check-low-stance-online.mjs",
+    "code": 1,
+    "pass": false
+  }
+]

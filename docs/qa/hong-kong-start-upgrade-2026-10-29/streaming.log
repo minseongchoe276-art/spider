@@ -1,0 +1,10 @@
+PASS HONG KONG: Streamed adapter gives genuine roof support and wall normals
+PASS HONG KONG: Anchors require baked physical surfaces, not only rendered tiles
+PASS HONG KONG: Attachment effects fire only after a supported web actually attaches
+PASS HONG KONG: Landing from a web pull removes its rope instead of leaving ghost webs
+PASS HONG KONG: Ground movement, sprint, jump and dodge share streamed collision
+PASS HONG KONG: A vanished LOD anchor gets a bounded grace and releases without launch energy
+PASS HONG KONG: A vanished zip target clears its persistent web and exits the pull
+PASS HONG KONG: An idle streaming gap never deletes the surface beneath the player
+PASS HONG KONG: Collision baking keeps the old support while a replacement is pending
+PASS: 9 streamed Hong Kong adapter scenarios

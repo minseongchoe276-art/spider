@@ -1,0 +1,22 @@
+
+> shadow-pulse@1.0.0 test:hong-kong:rendering
+> node scripts/check-hong-kong-rendering.mjs && node scripts/check-tile-textures.mjs && node scripts/check-hong-kong-streaming.mjs
+
+PASS: quality presets refine photographic terrain instead of using one error target for every device
+PASS: anisotropic filtering respects GPU limits and quality changes without replacing authored pixels or mip chains
+PASS: contact shadow volume follows distant players, contains their ground and snaps sub-texel movement
+PASS: real tile renderers preserve photographic parent coverage and let independent structural overlays appear without sibling starvation
+PASS: cache hysteresis prevents repeated blur/sharpen cycles and does not degrade a layer without refused requests
+PASS: constant-grey building textures gain facades and normals; photos, late replacement textures and other maps remain protected
+PASS: 2 tile texture routing paths, including extension-based loading and mislabeled embedded KTX2
+PASS: actual Hong Kong RGB KTX2 color preserved as RGBA; oversized and truncated payloads rejected
+PASS HONG KONG: Streamed adapter gives genuine roof support and wall normals
+PASS HONG KONG: Anchors require baked physical surfaces, not only rendered tiles
+PASS HONG KONG: Attachment effects fire only after a supported web actually attaches
+PASS HONG KONG: Landing from a web pull removes its rope instead of leaving ghost webs
+PASS HONG KONG: Ground movement, sprint, jump and dodge share streamed collision
+PASS HONG KONG: A vanished LOD anchor gets a bounded grace and releases without launch energy
+PASS HONG KONG: A vanished zip target clears its persistent web and exits the pull
+PASS HONG KONG: An idle streaming gap never deletes the surface beneath the player
+PASS HONG KONG: Collision baking keeps the old support while a replacement is pending
+PASS: 9 streamed Hong Kong adapter scenarios

@@ -8,7 +8,8 @@ const canStrike=p=>COMBAT_GROUND_STATES.includes(p.state);
 
 export const ATTACKS={
   jab:{duration:0.72,from:0.14,to:0.22,damage:12,reach:1.8},
-  cross:{duration:0.82,from:0.42,to:0.52,damage:17,reach:1.9},
+  cross:{duration:0.54,from:0.27,to:0.35,damage:17,reach:1.9},
+  rightHook:{duration:0.58,from:0.22,to:0.30,damage:17,reach:1.7},
   hook:{duration:0.9,from:0.342,to:0.432,damage:32,reach:2.1},
   special:UPPERCUT,
   heavy:{duration:1.05,from:0.52,to:0.7,damage:32,reach:2.1},
@@ -30,7 +31,7 @@ export class CombatSystem {
     if(this.action && ATTACKS[this.action.key]){this.pendingModeInput=this.pendingModeInput?null:input;return this.mode;}
     this.pendingModeInput=null;
     this.mode=this.mode==='combat'?'web':'combat';this.cancel();
-    this.character.combatStance=this.mode==='combat';
+    this.character.combatStance=false;
     input.webTap=input.webHold=input.webFireHeld=false;
     input.webTapRight=input.webHoldRight=input.webFireHeldRight=false;
     input.webZipHeld=false;input.wallRun=false;input.guard=false;
@@ -67,7 +68,10 @@ export class CombatSystem {
     if(this.action){this.queue('straight',camera);return false;}
     if(this.mode!=='combat' || !canStrike(this.physics) || this.blocking || this.stamina<7)return false;
     if(this.standBefore('straight',camera))return false;
-    this.stamina-=7;this.start('cross',ATTACKS.cross.duration,camera);return true;
+    const f=forward(this.physics);
+    const close=(this.getTargets?.() || this.enemies).some(e=>e.health>0 && e.position.distanceTo(this.physics.position)<1.55 && e.position.clone().sub(this.physics.position).setY(0).normalize().dot(f)>.5);
+    const key=this.character.actions?.rightHook && Math.random()<(close ? .7 : .3)?'rightHook':'cross';
+    this.stamina-=7;this.start(key,ATTACKS[key].duration,camera);return true;
   }
   heavy(camera) {
     if(this.mode!=='combat' || this.action || this.blocking || this.stamina<18 || !canStrike(this.physics))return false;
@@ -89,7 +93,7 @@ export class CombatSystem {
     this.start('slam',1,camera);return true;
   }
   dodge(input,camera) {
-    if(this.mode!=='combat' || !grounded(this.physics) || this.stamina<18 || this.action?.key.startsWith('dodge'))return false;
+    if(!canStrike(this.physics) || this.stamina<18 || this.action?.key.startsWith('dodge'))return false;
     if(this.action && this.action.time<this.action.duration*0.55)return false;
     if(this.standBefore('dodge',camera,input))return false;
     this.cancel();this.stamina-=18;this.face(camera);
@@ -97,11 +101,11 @@ export class CombatSystem {
     const direction=input.left?r.negate():input.right?r:input.forward?f:f.negate();
     const key=input.left?'dodgeLeft':input.right?'dodgeRight':input.forward?'dodgeForward':'dodgeBack';
     const duration={dodgeLeft:0.38,dodgeRight:0.38,dodgeBack:0.42,dodgeForward:0.52}[key];
-    this.start(key,duration,null);this.action.direction=direction;this.invulnerable=0.28;return true;
+    this.start(key,duration,null);this.action.direction=direction;return true;
   }
-  guard(value) {this.blocking=value && (this.mode==='combat'||this.allowGuardInWeb) && !this.action && canStrike(this.physics) && this.stamina>=12;}
+  guard(value) {this.blocking=value && this.mode==='combat' && !this.action && canStrike(this.physics) && this.stamina>=12;}
   before(delta,camera,input=null) {
-    this.character.combatStance=this.mode==='combat';
+    this.character.combatStance=this.mode==='combat' && !!input?.combatStance;
     delta=Math.max(0,Math.min(delta,0.1));this.elapsed+=delta;
     this.specialCooldown=Math.max(0,this.specialCooldown-delta);this.invulnerable=Math.max(0,this.invulnerable-delta);
     this.stamina=Math.min(100,this.stamina+delta*(this.blocking?3:this.action?0:18));
@@ -128,6 +132,7 @@ export class CombatSystem {
     if(this.pendingModeInput && !this.action){const modeInput=this.pendingModeInput;this.toggle(modeInput);}
     if(this.queued && !this.action){const next=this.queued;this.queued=null;if(next.expires>=this.elapsed)this[next.method](next.camera);}
     if(input)this.guard(!!input.guard);
+    this.character.combatStance=this.mode==='combat' && (!!input?.combatStance || this.blocking);
     const current=this.action;
     const stopping=this.character.activeAction && ['stop','runStop'].some(key=>this.character.activeAction===this.character.actions?.[key] && this.character.activeAction?.time<this.character.activeAction.getClip().duration-.05) || ['RUNNING','SPRINTING'].includes(this.character.lastState);
     // The strike keeps the aim from the button press. Mouse look after that
@@ -145,7 +150,7 @@ export class CombatSystem {
       Math.sin(Math.PI*THREE.MathUtils.clamp(current.time/current.duration,0,1)):0;
     this.physics.combatMotion=current?{key:current.key,direction:current.direction || null,speed:dodgeSpeed,plant:!!ATTACKS[current.key] && !current.travel,travel:!!current.travel}:this.blocking?{key:'guard'}:null;
     this.character.combatAction=current?{id:current.id,key:current.key,time:current.time,duration:current.duration,travel:!!current.travel}:
-      this.blocking?{key:'guard'}:!stopping && this.mode==='combat' && this.physics.state==='IDLE' && Math.hypot(this.physics.velocity.x,this.physics.velocity.z)<0.15?{key:'combatIdle'}:null;
+      this.blocking?{key:'guard'}:!stopping && this.character.combatStance && this.physics.state==='IDLE' && Math.hypot(this.physics.velocity.x,this.physics.velocity.z)<0.15?{key:'combatIdle'}:null;
     if(current || this.blocking)this.character.targetFacingAngle=this.physics.facingAngle;
   }
   after(delta) {
@@ -175,17 +180,17 @@ export class CombatSystem {
       if(e.nonCombatant){
         e.reactToAttack?.(action.key,hit.damage,origin);
         if(action.key==='special'){this.vfx?.spawnUppercutImpact?.(target.clone().setY(e.position.y+1.6),f);this.onImpact(.16);}else this.vfx?.spawnWebImpact?.(target);
-        this.audio?.playCombatHit?.(hit.damage>=24);continue;
+        this.audio?.playCombatHit?.(hit.damage>=24,target);continue;
       }
-      if(e.type==='shield' && !['hook','heavy','special','slamLand'].includes(action.key)){e.flash=.1;e.stagger=.08;this.audio?.playCombatHit?.(false);this.onNotice('방패 방어 · E 훅으로 돌파하세요.');continue;}
+      if(e.type==='shield' && !['hook','heavy','special','slamLand'].includes(action.key)){e.flash=.1;e.stagger=.08;this.audio?.playCombatBlock?.(target);this.onNotice('방패 방어 · G 어퍼컷으로 돌파하세요.');continue;}
       e.health=Math.max(0,e.health-hit.damage);e.flash=0.15;e.stagger=0.45;this.hits++;
       this.onHit(hit.damage);
       if(action.key==='special'){
         e.uppercutTime=0;e.uppercutDuration=.85;e.stagger=.85;
         this.vfx?.spawnUppercutImpact?.(target.clone().setY(e.position.y+1.6),f);this.onImpact(.22);
       }else this.vfx?.spawnWebImpact(target);
-      this.audio?.playCombatHit?.(hit.damage>=24);
-      if(e.health===0){e.mesh.visible=false;this.onNotice('대상 제압');}
+      this.audio?.playCombatHit?.(hit.damage>=24,target);
+      if(e.health===0){e.defeatTime=0;e.windup=0;e.ring&&(e.ring.visible=false);this.onNotice('대상 제압');}
     }
   }
   reactToHit(amount,{hitRegion=null,variant=null}={}) {
@@ -195,11 +200,15 @@ export class CombatSystem {
     const duration={hitHead:.65,hitBody:.85,hitHeavy:1.05,hitUppercut:.95}[key];
     this.start(key,duration,null);return true;
   }
+  isEvading() {
+    const a=this.action;
+    return !!(a && ['dodgeLeft','dodgeRight','dodgeBack','dodgeForward'].includes(a.key) && canStrike(this.physics) && a.time>=a.duration*.12 && a.time<=a.duration*.82);
+  }
   receiveDamage(amount,enemy) {
-    if(this.invulnerable>0)return 0;
+    if(this.invulnerable>0 || this.isEvading())return 0;
     const d=enemy.position.clone().sub(this.physics.position).setY(0).normalize();
     const guarded=this.blocking && canStrike(this.physics) && d.dot(forward(this.physics))>=MATCH.guard.cone && this.stamina>=12;
-    if(guarded) {this.stamina-=12;amount=Math.ceil(amount*MATCH.guard.damageMultiplier);this.audio?.playCombatHit?.(false);}
+    if(guarded) {this.stamina-=12;amount=Math.ceil(amount*MATCH.guard.damageMultiplier);this.audio?.playCombatBlock?.();}
     this.health=Math.max(0,this.health-amount);
     if(!guarded){this.invulnerable=0.65;this.cancel();
       this.reactToHit(amount,enemy);}

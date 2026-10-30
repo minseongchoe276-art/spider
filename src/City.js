@@ -32,7 +32,24 @@ export class City {
     this.generateCity();
     this.createStreetsAndGround();
     this.createDistrictDetails();
+    this.createStreetFronts();
     this.footpaths=attachFootpaths(this);
+  }
+
+  createStreetFronts() {
+    const fronts=new THREE.InstancedMesh(new THREE.BoxGeometry(1,1,1),new THREE.MeshStandardMaterial({color:0x334654,roughness:.7,metalness:.12}),this.buildings.length*4);
+    fronts.name='StreetFronts';fronts.receiveShadow=true;
+    const trim=new THREE.InstancedMesh(new THREE.BoxGeometry(1,1,1),new THREE.MeshStandardMaterial({color:this.profile.accent,roughness:.65}),this.buildings.length*4);
+    trim.name='StorefrontTrim';trim.receiveShadow=true;
+    const transform=new THREE.Object3D();let index=0;
+    for(const b of this.buildings)for(let side=0;side<4;side++){
+      const along=side%2===0,span=along?b.size:b.depth;
+      const x=b.x+(along?0:(side===1?1:-1)*(b.size/2+.012));
+      const z=b.z+(along?(side===0?1:-1)*(b.depth/2+.012):0);
+      transform.position.set(x,1.55,z);transform.rotation.set(0,along?0:Math.PI/2,0);transform.scale.set(Math.min(8,span*.5),2.8,.035);transform.updateMatrix();fronts.setMatrixAt(index,transform.matrix);
+      transform.position.y=3.08;transform.scale.set(Math.min(9,span*.55),.22,.08);transform.updateMatrix();trim.setMatrixAt(index++,transform.matrix);
+    }
+    fronts.computeBoundingSphere();trim.computeBoundingSphere();this.scene.add(fronts,trim);
   }
 
   random() {
@@ -230,7 +247,7 @@ export class City {
     const matInstance = mainMat.clone();
     if (matInstance.map) {
       matInstance.map = matInstance.map.clone();
-      matInstance.map.repeat.set(Math.round(size / 10), Math.round(height / 12));
+      matInstance.map.repeat.set(Math.max(1,Math.round(size / 16)), Math.max(1,Math.round(height / 48)));
       matInstance.map.needsUpdate = true;
     }
 
@@ -599,12 +616,15 @@ export class City {
   raycast(origin, direction, maxDistance) {
     const ray = new THREE.Ray(origin.clone(), direction.clone().normalize());
     let nearest = null;
+    const probeBox=new THREE.Box3(),probePoint=new THREE.Vector3();
+    const end=origin.clone().addScaledVector(ray.direction,maxDistance);
     for (const collider of this.colliders) {
-      const box = new THREE.Box3(
-        new THREE.Vector3(collider.minX, collider.minY, collider.minZ),
-        new THREE.Vector3(collider.maxX, collider.maxY, collider.maxZ)
+      if(Math.max(origin.x,end.x)<collider.minX || Math.min(origin.x,end.x)>collider.maxX || Math.max(origin.y,end.y)<collider.minY || Math.min(origin.y,end.y)>collider.maxY || Math.max(origin.z,end.z)<collider.minZ || Math.min(origin.z,end.z)>collider.maxZ)continue;
+      const box = probeBox.set(
+        probeBox.min.set(collider.minX, collider.minY, collider.minZ),
+        probeBox.max.set(collider.maxX, collider.maxY, collider.maxZ)
       );
-      const point = ray.intersectBox(box, new THREE.Vector3());
+      const point = ray.intersectBox(box, probePoint);
       if (!point) continue;
       const distance = origin.distanceTo(point);
       if (distance > maxDistance || (nearest && distance >= nearest.distance)) continue;
@@ -620,7 +640,7 @@ export class City {
         if (Math.abs(point[axis]-box.min[axis]) < epsilon) { normal[axis]=-1; break; }
         if (Math.abs(point[axis]-box.max[axis]) < epsilon) { normal[axis]=1; break; }
       }
-      nearest = { point, distance, normal, collider, building: collider };
+      nearest = { point:point.clone(), distance, normal, collider, building: collider };
     }
     return nearest;
   }

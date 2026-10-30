@@ -68,8 +68,9 @@ try{
  for(const p of peers)assert.equal((await event(p,e=>e.type==='hit'&&e.target===ids[1])).damage,10);
  visibility=()=>Promise.resolve({status:'CLEAR',version:'test'});results.push({name:'Async terrain check preserves attack-time guard snapshot',pass:true});
  await setup('tag');const cop=[...room.players.values()].find(p=>p.team==='police'),runner=[...room.players.values()].find(p=>p.team==='runner');const i=ids.indexOf(cop.id),j=ids.indexOf(runner.id);
- await move(i,false,{z:0,facing:0,combat:false});await move(j,true,{combat:false,facing:Math.PI});assert.equal((await hit(i,j,'punch',10)).health,90);
+ await move(i,false,{z:0,facing:0,combat:false});await move(j,true,{combat:false,facing:Math.PI});assert.equal((await hit(i,j,'punch',25)).health,75);
+ room.players.get(runner.id).health=100;await move(j,true,{combat:true,facing:Math.PI});assert.equal((await hit(i,j,'punch',25)).health,75);
  send(peers[j],{type:'attack',kind:'punch',facing:Math.PI,targetId:cop.id});await wait(60);assert.equal(cop.health,100);
- results.push({name:'Cops/runners: wire-mode runner can defend but cannot attack',pass:true,police:2,runners:6});
+ results.push({name:'Cops/runners: forged wire and combat guard cannot reduce damage or attack',pass:true,police:2,runners:6});
  const output={passed:results.length,total:results.length,clients:8,results};fs.writeFileSync(folder+'/online-guard.json',JSON.stringify(output,null,2)+'\n');console.log('PASS',results.length,'guard/rule cases; eight clients observe identical actual damage and HP');
 }finally{[MATCH.graceMs,MATCH.punch.cooldown,MATCH.web.cooldown]=old;for(const p of peers)p.terminate();await new Promise(r=>server.close(r));}

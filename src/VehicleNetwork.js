@@ -6,11 +6,13 @@ export function sanitizeVehicle(v){
  if(!v||!Number.isInteger(v.sequence)||v.sequence<0||v.sequence>2147483647||!phases.has(v.phase))return null;
  if(v.phase==='NONE')return {phase:'NONE',sequence:v.sequence};
  if(!VEHICLE_IDS.includes(v.model)||!point(v.position)||!point(v.start)||!point(v.exit))return null;
- const limits={yaw:Math.PI*2,pitch:.55,roll:.55,speed:24.1,steering:.6,spin:1000000,elapsed:1.5,startYaw:Math.PI*2};
+ // speed: forward max 24 m/s, reverse max -6 m/s — both directions validated
+ const limits={yaw:Math.PI*2,pitch:.55,roll:.55,steering:.6,spin:1000000,elapsed:1.5,startYaw:Math.PI*2};
  if(Object.entries(limits).some(([k,max])=>!Number.isFinite(v[k])||Math.abs(v[k])>max)||v.elapsed<0)return null;
+ if(!Number.isFinite(v.speed)||v.speed>24.1||v.speed<-6.1)return null;
  const drops=v.wheelDrops||[0,0,0,0];if(!Array.isArray(drops)||drops.length!==4||drops.some(n=>!Number.isFinite(n)||Math.abs(n)>.2))return null;
  if(['PARKED','EXITING'].includes(v.phase)&&Math.abs(v.speed)>1.21)return null;
- return {wheelDrops:drops.slice(),phase:v.phase,sequence:v.sequence,model:v.model,position:point(v.position),start:point(v.start),exit:point(v.exit),...Object.fromEntries(Object.keys(limits).map(k=>[k,v[k]]))};
+ return {wheelDrops:drops.slice(),phase:v.phase,sequence:v.sequence,model:v.model,position:point(v.position),start:point(v.start),exit:point(v.exit),speed:v.speed,...Object.fromEntries(Object.keys(limits).map(k=>[k,v[k]]))};
 }
 export function vehicleOverlap(a,b,margin=0){
  if(!a||!b||a.phase==='NONE'||b.phase==='NONE'||Math.abs(a.position.y-b.position.y)>1.5)return false;
@@ -33,6 +35,8 @@ export function vehicleUpdateError(next,previous,{player,previousPlayer=player,e
   if(driving&&travel>Math.min(1,Math.max(.04,elapsed))*28+.5)return 'speed';
   if(!driving&&next.phase!=='PARKED'&&travel>.15)return 'entry-moved-car';
   if(next.phase==='PARKED'&&!driving&&travel>.15&&distance(p,player)>55)return 'spawn-distance';
+  // PARKED→PARKED: car must not teleport while no one is driving it
+  if(next.phase==='PARKED'&&previous.phase==='PARKED'&&travel>1.0)return 'parked-moved';
   if(previous.phase==='PARKED'&&next.phase!=='PARKED'&&distance(previous.position,previousPlayer)>6)return 'entry-distance';
  }else if(next.phase!=='PARKED')return 'spawn-required';
  else if(distance(p,player)>55)return 'spawn-distance';

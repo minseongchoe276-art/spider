@@ -24,12 +24,13 @@ for(const fps of [24,60,144])for(const key of ['jab','cross']){
   }
   assert(activeFrames>fps*.3);assert(p.position.z>p.walkSpeed*(1.8-duration-.3),'Held movement failed to resume after the planted strike');assert(p.walkSpeed>4);
   assert(c.actions.rightHook && c.actions.rightHook!==c.actions.jab);
-  const take=c.actions.rightHook.getClip();assert.equal(take.userData.choreography,'compact right hook');
+  const take=c.actions.rightHook.getClip();assert(take.userData.authoredMixamo);assert.equal(take.userData.source,'/models/Mixamo Rear Hook.fbx');
   c.stopAnimation();c.fadeToAction('rightHook',0);c.mixer.setTime(0);const left=point(c,'lefthand'),right=point(c,'righthand');
-  c.mixer.setTime(take.duration*.58);
+  c.mixer.setTime(take.duration*(take.userData.impactPhase??.43));
   const elbow=point(c,'rightforearm'),upper=point(c,'rightarm').sub(elbow).normalize(),lower=point(c,'righthand').sub(elbow).normalize();
   const bend=upper.angleTo(lower)*180/Math.PI;assert(bend>50&&bend<140,`Right hook elbow straightened into a cross: ${bend}`);
-  assert(point(c,'righthand').distanceTo(right)>point(c,'lefthand').distanceTo(left)+.15,'Hook failed to use the right arm');
+  assert(point(c,'righthand').distanceTo(right)>.3,'Hook fist did not travel through contact');
+  assert(point(c,'lefthand').distanceTo(point(c,'head'))<.55,'Hook dropped the opposite guard');
   results.push({fps,key,travel:p.position.z,maxAnkle:ankle,rightElbow:bend,pass:true});
  }finally{disposeRig(c);}
 }

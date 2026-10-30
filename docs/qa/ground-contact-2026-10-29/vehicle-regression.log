@@ -1,0 +1,111 @@
+PASS real Rapier terrain: grades, crest, descent, reverse, cross slope, walls and missing road [
+  {
+    degrees: 2,
+    fps: 24,
+    distance: 80.34474074074048,
+    maxError: 0.02007805151045757
+  },
+  {
+    degrees: 2,
+    fps: 60,
+    distance: 80.34474074074048,
+    maxError: 0.021268300890128548
+  },
+  {
+    degrees: 2,
+    fps: 144,
+    distance: 80.07807407407381,
+    maxError: 0.021629219829120583
+  },
+  {
+    degrees: 6,
+    fps: 24,
+    distance: 80.34474074074048,
+    maxError: 0.06043099908696636
+  },
+  {
+    degrees: 6,
+    fps: 60,
+    distance: 80.34474074074048,
+    maxError: 0.06401332562141406
+  },
+  {
+    degrees: 6,
+    fps: 144,
+    distance: 80.07807407407381,
+    maxError: 0.06509917922859199
+  },
+  {
+    degrees: 12,
+    fps: 24,
+    distance: 80.34474074074048,
+    maxError: 0.12221209575521831
+  },
+  {
+    degrees: 12,
+    fps: 60,
+    distance: 80.34474074074048,
+    maxError: 0.12945690006649235
+  },
+  {
+    degrees: 12,
+    fps: 144,
+    distance: 80.07807407407381,
+    maxError: 0.13165290278828667
+  },
+  {
+    degrees: 20,
+    fps: 24,
+    distance: 80.34474074074048,
+    maxError: 0.2092693434753392
+  },
+  {
+    degrees: 20,
+    fps: 60,
+    distance: 80.34474074074048,
+    maxError: 0.22167485144878143
+  },
+  {
+    degrees: 20,
+    fps: 144,
+    distance: 80.07807407407381,
+    maxError: 0.22543514949642507
+  },
+  {
+    degrees: 26,
+    fps: 24,
+    distance: 80.34474074074048,
+    maxError: 0.2804279981600683
+  },
+  {
+    degrees: 26,
+    fps: 60,
+    distance: 80.34474074074048,
+    maxError: 0.29705196191887884
+  },
+  {
+    degrees: 26,
+    fps: 144,
+    distance: 80.07807407407381,
+    maxError: 0.30209033561783905
+  },
+  { case: 'cross slope', distance: 46.271111111110976 },
+  { case: 'reverse diagonal grade', distance: 20.86318518518513 },
+  { case: 'wall', stoppedAt: 11.63508641975309 },
+  { case: 'gap', stoppedAt: 12.449950617283951 },
+  { case: 'small curb', distance: 70.21140740740718 },
+  { case: 'high step', distance: 11.509061728395066 },
+  { case: 'excessive grade', distance: 3.2773580246913583 },
+  {
+    model: 'bmw',
+    case: 'incline summon, seat, tyres, exit and network',
+    maxSeatError: 1.7763568394002505e-15,
+    tyreError: 0.017954410327399195
+  },
+  {
+    model: 'corvette',
+    case: 'incline summon, seat, tyres, exit and network',
+    maxSeatError: 1.7763568394002505e-15,
+    tyreError: 0.00675853805670279
+  }
+]

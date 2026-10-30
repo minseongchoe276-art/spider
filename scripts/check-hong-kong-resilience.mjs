@@ -22,8 +22,8 @@ tiles.rootTileset=null;tiles.dispose();console.log('PASS: eight consecutive retr
 const city=Object.create(UrbanGroundCity.prototype);Object.assign(city,{scene:new T.Scene(),tileCache:new LRUCache(),tilesets:[]});city.scene.fog=new T.FogExp2(0xaed9eb,.00032);city.setStreamingQuality('balanced');
 const layer={tilesetIndex:0,userData:{baseErrorTarget:10},errorTarget:25};city.tilesets=[layer];const fog=city.scene.fog,budget=city.streamingBudget;
 city.setStreamingQuality('balanced');assert.equal(layer.errorTarget,25);assert.equal(city.scene.fog,fog);assert.equal(city.streamingBudget,budget);
-city.setStreamingQuality('low');assert.equal(layer.errorTarget,20);assert.equal(layer.userData.baseErrorTarget,20);assert.equal(city.renderingProfile.streamDistance,500);
-city.setStreamingQuality('high');assert.equal(layer.errorTarget,6);assert.equal(layer.userData.baseErrorTarget,6);assert.equal(city.renderingProfile.streamDistance,1200);
+city.setStreamingQuality('low');assert.equal(layer.errorTarget,14);assert.equal(layer.userData.baseErrorTarget,14);assert.equal(city.renderingProfile.streamDistance,450);
+city.setStreamingQuality('high');assert.equal(layer.errorTarget,4);assert.equal(layer.userData.baseErrorTarget,4);assert.equal(city.renderingProfile.streamDistance,1000);
 console.log('PASS: unrelated preference application preserves adaptive detail; actual quality changes update baseline, memory budget and view distance');
 for(const quality of ['low','balanced','high']){
  const scene=new T.Scene();scene.fog=new T.FogExp2(0xaed9eb,.00032);const color=scene.fog.color.clone(),profile=hongKongRenderingProfile(quality);configureHongKongFog(scene,profile);
@@ -33,7 +33,7 @@ for(const quality of ['low','balanced','high']){
 console.log('PASS: all qualities fade completely before their streaming boundary, retain fog color and reuse fog state');
 city.camera=new T.PerspectiveCamera(65,1,.2,400);city.streamCamera=city.camera.clone();city.updateStreamingCamera();
 assert.equal(city.streamCamera.far,400);assert.equal(city.scene.fog.far,340);
-city.camera.far=1200;city.updateStreamingCamera();assert.equal(city.scene.fog.far,1020);
+city.camera.far=1200;city.updateStreamingCamera();assert.equal(city.scene.fog.far,850);
 console.log('PASS: fog tracks a shortened display camera and restores the selected quality range');
 const collision=new StreamedCollision();await collision.initialized;
 const geometry=new T.PlaneGeometry(20,20,4,4);geometry.computeBoundingBox();

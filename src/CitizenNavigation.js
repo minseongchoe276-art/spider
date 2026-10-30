@@ -25,15 +25,15 @@ function nearestFacade(manager,point,max){
  const normal=best.normal.clone();normal.y=0;if(normal.lengthSq()<1e-6)return null;normal.normalize();
  const toward=origin.clone().sub(best.point);toward.y=0;if(normal.dot(toward)<0)normal.negate();
  const stand=best.point.clone().addScaledVector(normal,1.2);stand.y=point.y;
- return {stand,normal,tangent:new T.Vector3(-normal.z,0,normal.x),distance:best.distance};
+ return {stand,normal,tangent:new T.Vector3(-normal.z,0,normal.x),distance:Math.abs(toward.dot(normal))};
 }
 export function sidewalkAnchor(manager,point){
- const key=`${Math.round(point.x)}:${Math.round(point.z)}`;
+ const key=`${Math.round(point.x*10)}:${Math.round(point.y*10)}:${Math.round(point.z*10)}`;
  const cache=manager.sidewalkCache||=new Map();
  if(cache.size>900)cache.clear();
  if(cache.has(key))return cache.get(key);
  const found=nearestFacade(manager,point,16);
- const anchor=found&&found.distance>=.65&&found.distance<=5.4?found:null;
+ const anchor=found&&found.distance>=.65&&found.distance<=1.8?found:null;
  cache.set(key,anchor);return anchor;
 }
 export function projectSidewalk(manager,point){
@@ -47,8 +47,8 @@ function alignTangent(tangent,desired){
 }
 function marked(point){
  const copy=point.clone();
- if(point.cross)copy.cross=true;
- if(point.recover)copy.recover=true;
+ if(point.cross===true)copy.cross=true;
+ if(point.recover===true)copy.recover=true;
  return copy;
 }
 function acceptStep(manager,from,to){
@@ -56,23 +56,20 @@ function acceptStep(manager,from,to){
  if(distance<.05)return false;dir.multiplyScalar(1/distance);
  const height=manager.floor(to);
  if(height==null||!manager.open(from,dir,distance+.25))return false;
+ // Validate the whole segment, including corners between valid endpoints.
+ const samples=Math.max(1,Math.ceil(distance/.25));
+ for(let i=1;i<=samples;i++){
+  const point=from.clone().lerp(to,i/samples);
+  if(!sidewalkAnchor(manager,point)||manager.floor(point)==null)return false;
+ }
  to.y=height+.01;return true;
 }
-// Walk the ribbon 1.2 m off the building face. Cross only where the face ends
-// and the opposite frontage is a short, clear gap. Never wander the carriageway.
+// Stay on the frontage ribbon. Unmarked gaps never authorize road crossings.
 export function traceSidewalk(manager,n,desired){
  let anchor=sidewalkAnchor(manager,n.position),pos=n.position.clone();
- if(!anchor){
-  const stand=projectSidewalk(manager,n.position);
-  if(!stand||!acceptStep(manager,n.position,stand))return [];
-  stand.recover=true;anchor=sidewalkAnchor(manager,stand);
-  if(!anchor)return [marked(stand)];
-  pos=stand;
- }
+ if(!anchor)return [];
  let tangent=alignTangent(anchor.tangent,desired);const route=[];
- if(pos!==n.position&&pos.distanceTo(n.position)>.35)route.push(marked(pos));
- let crossed=false;
- for(let step=0;step<8&&route.length<6;step++){
+  for(let step=0;step<8&&route.length<6;step++){
   const ahead=pos.clone().addScaledVector(tangent,1.35);
   let nextAnchor=sidewalkAnchor(manager,ahead),next=ahead.clone();
   if(nextAnchor){
@@ -93,21 +90,10 @@ export function traceSidewalk(manager,n,desired){
    if(turned){
     next=turned.probe;nextAnchor=turned.found;
     tangent=alignTangent(turned.found.tangent,Math.atan2(turned.dir.x,turned.dir.z));
-   }else if(!crossed){
-    const across=anchor.normal.clone().normalize(),look=pos.clone();look.y+=1.05;
-    const far=facadeHit(manager,look,across,18);
-    if(!far||far.distance<6.5||far.distance>16)break;
-    const facing=far.normal.clone();facing.y=0;
-    if(facing.lengthSq()<1e-6||facing.normalize().dot(across)>-.35)break;
-    const mid=pos.clone().addScaledVector(across,far.distance*.5);
-    if(manager.floor(mid)==null)break;
-    next=far.point.clone().addScaledVector(across,-1.2);next.y=pos.y;next.cross=true;crossed=true;
-    const gained=sidewalkAnchor(manager,next);
-    if(gained){tangent=alignTangent(gained.tangent,Math.atan2(tangent.x,tangent.z));anchor=gained;}
    }else break;
   }
   if(!acceptStep(manager,pos,next))break;
-  if(!next.cross&&!sidewalkAnchor(manager,next))break;
+  if(!sidewalkAnchor(manager,next))break;
   route.push(marked(next));pos=next;if(nextAnchor)anchor=nextAnchor;
  }
  return route;

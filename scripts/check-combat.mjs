@@ -6,14 +6,14 @@ const scene=new THREE.Scene(),character={group:new THREE.Group(),targetFacingAng
 let releases=0;const physics={position:new THREE.Vector3(0,0.1,0),velocity:new THREE.Vector3(),state:'IDLE',facingAngle:0,city:{colliders:[],raycast:()=>null},clearWebAnchor(){releases++;},clearPendingInput(){}};
 const c=new CombatSystem(scene,physics,character),enemy=(x=0,z=1.8)=>({position:new THREE.Vector3(x,0.1,z),health:65,mesh:new THREE.Group(),body:new THREE.Mesh(new THREE.SphereGeometry(),new THREE.MeshStandardMaterial()),ring:new THREE.Group(),spawn:new THREE.Vector3(),cooldown:10,windup:0,flash:0,stagger:0});
 let checks=0;function check(label,fn){fn();checks++;console.log('PASS COMBAT: '+label);}
-check('Web is default; Q selects human combat and disables grounded web entry points',()=>{
+check('Web is default; mode selection enters human combat and disables grounded web entry points',()=>{
  assert.equal(c.mode,'web');assert.equal(physics.webEnabled,true);assert.equal(character.combatStance,false);
- c.toggle();releases=0;assert.equal(c.mode,'combat');assert.equal(character.combatStance,true);assert.equal(physics.webEnabled,false);
+ c.toggle();releases=0;assert.equal(c.mode,'combat');assert.equal(character.combatStance,false);assert.equal(physics.webEnabled,false);
  for(const name of ['startSwing','performWebPull','performAirJump'])assert.equal(SwingPhysics.prototype[name].call(physics,camera),false);
 });
 check('Toggle clears held fire and guard and releases with velocity preserved',()=>{
  const input={webTap:true,webFireHeld:true,webHold:true};physics.velocity.set(1,2,3);c.toggle(input);assert.equal(c.mode,'web');assert(physics.webEnabled);assert(!input.webTap&&!input.webHold&&!input.webFireHeld);
- assert(!c.attack(camera));assert(!c.heavy(camera));assert(!c.dodge({left:true},camera));c.guard(true);assert(!c.blocking);
+ assert(!c.attack(camera));assert(!c.heavy(camera));assert(c.dodge({left:true},camera));c.cancel();c.stamina=100;c.guard(true);assert(!c.blocking);
  c.toggle(input);assert.equal(c.mode,'combat');assert.equal(releases,1);assert.deepEqual(physics.velocity.toArray(),[1,2,3]);
 });
 check('Left jab and right straight are distinct, grounded, guarded strikes',()=>{
@@ -42,7 +42,7 @@ check('A wall, wrong height or rear position blocks an attack',()=>{
 check('Frontal guard spends stamina; rear attacks hurt; dodge grants temporary protection',()=>{
  physics.facingAngle=0;c.enemies=[];c.stamina=100;c.guard(true);const hp=c.health;assert.equal(c.receiveDamage(10,enemy()),4);assert.equal(c.health,hp-4);assert.equal(c.stamina,88);assert(c.blocking);
  assert.equal(c.receiveDamage(10,enemy(0,-2)),10);c.cancel();c.invulnerable=0;c.stamina=100;
- assert(c.dodge({left:true},camera));assert.equal(c.action.key,'dodgeLeft');assert.equal(c.receiveDamage(10,enemy()),0);c.cancel();
+ assert(c.dodge({left:true},camera));assert.equal(c.action.key,'dodgeLeft');c.before(.08,camera);assert.equal(c.receiveDamage(10,enemy()),0);c.cancel();
 });
 check('Every directional dodge uses its own take and stamina blocks spam',()=>{
  for(const [i,key] of [[{left:true},'dodgeLeft'],[{right:true},'dodgeRight'],[{forward:true},'dodgeForward'],[{},'dodgeBack']]) {
@@ -68,6 +68,6 @@ check('No training drone factory remains; reset clears transient combat state',(
 check('Combat stance waits until movement stopping animation completes',()=>{
  c.cancel();physics.state='IDLE';physics.velocity.set(0,0,0);character.lastState='RUNNING';c.before(1/60,camera);assert.equal(character.combatAction,null);
  character.lastState='IDLE';character.actions={stop:{}};character.activeAction=character.actions.stop;character.activeAction.time=.1;character.activeAction.getClip=()=>({duration:.5});c.before(1/60,camera);assert.equal(character.combatAction,null);
- character.activeAction.time=.5;c.before(1/60,camera);assert.equal(character.combatAction.key,'combatIdle');
+ character.activeAction.time=.5;c.before(1/60,camera,{combatStance:true});assert.equal(character.combatAction.key,'combatIdle');
 });
 console.log(`PASS: ${checks} combat scenarios`);

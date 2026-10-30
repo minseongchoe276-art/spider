@@ -1,0 +1,71 @@
+
+> shadow-pulse@1.0.0 prebuild
+> node scripts/build-motions.mjs
+
+PASS: compiled motions match current model and FBX sources
+
+> shadow-pulse@1.0.0 build
+> vite build
+
+vite v7.3.7 building client environment for production...
+transforming...
+✓ 181 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                               28.61 kB │ gzip:     8.77 kB
+dist/THIRD_PARTY_NOTICES.txt                  59.83 kB │ gzip:     7.86 kB
+dist/assets/index-D28XQ1-g.css               114.21 kB │ gzip:    23.57 kB
+dist/assets/EffectsReview-C-ES8Qs7.js          3.43 kB │ gzip:     1.79 kB
+dist/assets/WebHandReview-CUXXpPsZ.js          5.45 kB │ gzip:     2.52 kB
+dist/assets/CombatReview-B1xDOBCR.js          10.09 kB │ gzip:     4.40 kB
+dist/assets/MotionReview-BzWkL26p.js          14.36 kB │ gzip:     5.69 kB
+dist/assets/FBXLoader-B66qtyUn.js             48.12 kB │ gzip:    16.10 kB
+dist/assets/UrbanGroundCity-CuRhxmj9.js      204.83 kB │ gzip:    70.98 kB
+dist/assets/index-CSbVz98C.js              1,448.77 kB │ gzip:   412.70 kB
+dist/assets/StreamedCollision-BeUP3Zda.js  4,342.66 kB │ gzip: 1,647.47 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 5.05s
+
+> shadow-pulse@1.0.0 postbuild
+> node scripts/compress-assets.mjs && node scripts/build-release-manifest.mjs
+
+Precompressed static assets: {"files":103,"originalBytes":233252585,"gzipBytes":94526461,"brotliBytes":86248772}
+{
+  "releaseId": "26e194a909a358d5e8292054840af8aa4c3cddeb96700595af1e6eb78cd57cac",
+  "groups": {
+    "bootstrap": {
+      "files": 3,
+      "bytes": 1591586,
+      "encodedBytes": 421781
+    },
+    "character": {
+      "files": 41,
+      "bytes": 39435839,
+      "encodedBytes": 26254623
+    },
+    "fallback": {
+      "files": 30,
+      "bytes": 104314208,
+      "encodedBytes": 24134659
+    },
+    "on-demand": {
+      "files": 7,
+      "bytes": 4628921,
+      "encodedBytes": 1512443
+    },
+    "support": {
+      "files": 50,
+      "bytes": 87312308,
+      "encodedBytes": 37955543
+    }
+  },
+  "checks": {
+    "bootstrap": true,
+    "character": true,
+    "total": true
+  }
+}

@@ -130,6 +130,7 @@ export class SwingPhysics {
       if(this.webObstructed({anchor:hit.point,normal})){this.webFailureReason='장애물이 에너지 와이어 경로를 가립니다.';return null;}
       this.bestAnchorObject = hit.object;
       this.bestAnchorNormal = normal;
+      this.webFailureReason=null;
       this.bestAnchorCandidate = hit.point.clone();
       return this.bestAnchorCandidate;
     };
@@ -139,7 +140,7 @@ export class SwingPhysics {
     this.raycaster.far = 130;
     this.raycaster.setFromCamera(this.webAimNdc, camera);
     const direct=this.castWebSurface(this.raycaster.ray.origin,this.raycaster.ray.direction,130);
-    if(!this.mobileTraversalAssist)return accept(direct);
+    if(!this.mobileTraversalAssist||this.mobileExactAim)return accept(direct);
     let best=null,bestScore=Infinity;
     const consider=hit=>{
       if(!hit?.point)return;

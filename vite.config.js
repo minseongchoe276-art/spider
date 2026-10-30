@@ -2,7 +2,7 @@ import { defineConfig } from 'vite';
 import { attachRooms } from './scripts/rooms.mjs';
 import {releasePlugin} from './scripts/release-plugin.mjs';
 
-process.env.GAME_ADMIN_TOKEN ||= 'alalal1010';
+// Administrator access requires an explicitly configured GAME_ADMIN_TOKEN.
 
 const urbanTilesProxy = {
   '/urban-tiles': {

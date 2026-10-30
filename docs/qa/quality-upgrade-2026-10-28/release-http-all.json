@@ -1,0 +1,547 @@
+{
+  "status": "PASS",
+  "checkedAt": "2026-10-28T14:26:10.188Z",
+  "sourceId": "930d967dd77cc1d97869868770219e09368abb2835f280e4136904bb982e2dc7",
+  "releaseId": "baa52c8a478458f197fd69824af65611903629872ebceede3e1f0c5abc249ee7",
+  "byteScope": "all published uncompressed entries",
+  "databaseScope": "Expected migration source fingerprint; not proof of applied operating DB state",
+  "checks": [
+    {
+      "name": "Local source matches the built artifact",
+      "status": "PASS"
+    },
+    {
+      "name": "Build asset budgets pass",
+      "status": "PASS"
+    },
+    {
+      "name": "Published release manifest matches the expected build",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /app-icon.svg",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /assets/CombatReview-DS15V89U.js",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /assets/EffectsReview-BXSJSISD.js",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /assets/FBXLoader-n6Z8w0A9.js",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /assets/index-DfL1fyqv.css",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /assets/index-DImVUUlH.js",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /assets/MotionReview-DsAyP8rl.js",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /assets/StreamedCollision-DwUx-CT_.js",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /assets/UrbanGroundCity-C3OGb_9y.js",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /assets/WebHandReview-DOL3HVRW.js",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /basis/basis_transcoder.js",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /basis/basis_transcoder.wasm",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /citizens/louise.glb",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /citizens/manifest.json",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /citizens/megan.glb",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /citizens/remy.glb",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /images/ability-atlas-v2.jpg",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /images/vehicles/bmw-skill-v1.png",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /images/vehicles/corvette-skill-v1.png",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /images/vehicles/provenance.json",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /index.html",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /manifest.webmanifest",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /models/appearance-combat.glb",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /models/appearance-web.glb",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /models/Big Hit To Head.fbx",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /models/Boxing Hook.fbx",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /models/Boxing Idle.fbx",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /models/Boxing Lead Jab.fbx",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /models/Boxing Stance.fbx",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /models/Citizen Startle.fbx",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /models/Climbing Up Wall.fbx",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /models/Cross Punch.fbx",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /models/Falling (2).fbx",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /models/Falling Idle Neutral.fbx",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /models/Falling Idle.fbx",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /models/Falling To Landing.fbx",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /models/Falling To Roll.fbx",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /models/Falling.fbx",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /models/Fast Run.fbx",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /models/Female Stop Walking.fbx",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /models/Front Flip.fbx",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /models/Hit To Body.fbx",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /models/Idle.fbx",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /models/Injured Idle.fbx",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /models/Jab Cross.fbx",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /models/Jogging.fbx",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /models/Jumping Down (1).fbx",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /models/Jumping Down.fbx",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /models/Lead Jab (3).fbx",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /models/Lead Jab.fbx",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /models/Left Turn.fbx",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /models/Light Hit To Head.fbx",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /models/Mma Kick.fbx",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /models/Punching.fbx",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /models/Receive Uppercut To The Face.fbx",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /models/Right Turn.fbx",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /models/Rope Swinging.fbx",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /models/Run To Stop.fbx",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /models/Running.fbx",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /models/shadow-pulse-rig.glb",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /models/sources/combat-addon.glb",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /models/sources/combat-base.glb",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /models/sources/LICENSE-CC0.md",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /models/sources/mesh2motion-climb.glb",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /models/Standing Jump.fbx",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /models/Stylish Flip.fbx",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /models/Surprise Uppercut.fbx",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /models/Walking.fbx",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /motions/airTrick.json",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /motions/backTrick.json",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /motions/combatIdle.json",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /motions/cross.json",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /motions/drop.json",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /motions/fall.json",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /motions/fallIdle.json",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /motions/fallVariant.json",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /motions/guard.json",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /motions/heavy.json",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /motions/hitBody.json",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /motions/hitHead.json",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /motions/hitHeavy.json",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /motions/hitUppercut.json",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /motions/hook.json",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /motions/idle.json",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /motions/injuredIdle.json",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /motions/jab.json",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /motions/jump.json",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /motions/jumpDown.json",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /motions/jumpDownVariant.json",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /motions/land.json",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /motions/manifest.json",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /motions/regularRun.json",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /motions/rightHook.json",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /motions/roll.json",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /motions/run.json",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /motions/runStop.json",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /motions/slam.json",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /motions/slamLand.json",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /motions/special.json",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /motions/stop.json",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /motions/swing.json",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /motions/turnLeft.json",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /motions/turnRight.json",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /motions/walk.json",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /motions/wall.json",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /motions/zip.json",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /textures/vfx/circle_01_a.png",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /textures/vfx/circle_03_a.png",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /textures/vfx/circle_05_a.png",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /textures/vfx/dirt_01_a.png",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /textures/vfx/dirt_02_a.png",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /textures/vfx/dust.png",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /textures/vfx/impact_white_6x4.png",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /textures/vfx/LICENSE.txt",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /textures/vfx/scorch_01_a.png",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /textures/vfx/scorch_02_a.png",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /textures/vfx/smoke_01_a.png",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /textures/vfx/smoke_04_a.png",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /textures/vfx/smoke_07_strong_a.png",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /textures/vfx/spark_01_a.png",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /textures/vfx/web-impact.png",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /THIRD_PARTY_NOTICES.txt",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /vehicles/bmw-330i.glb",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /vehicles/corvette-c6.glb",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /vehicles/corvette-manifest.json",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /vehicles/CREDITS.txt",
+      "status": "PASS"
+    },
+    {
+      "name": "Bytes /vehicles/manifest.json",
+      "status": "PASS"
+    },
+    {
+      "name": "Room service is ready",
+      "status": "PASS"
+    },
+    {
+      "name": "Room authority matches the expected backend",
+      "status": "PASS",
+      "detail": {
+        "expected": "60f6896e8fda3ff44383c41c20257c87796310124b71395fd600d13deb8f74be",
+        "observed": "60f6896e8fda3ff44383c41c20257c87796310124b71395fd600d13deb8f74be"
+      }
+    },
+    {
+      "name": "Room service expects the same database migrations",
+      "status": "PASS"
+    }
+  ],
+  "sourceUnchangedDuringVerification": true
+}

@@ -1,4 +1,6 @@
 import * as THREE from 'three';
+import {language} from './I18n.js';
+import {keyLabel} from './PlayerSettings.js';
 import {resolveBody} from './MovementCollision.js';
 import {createTrainingOpponent,poseTrainingOpponent} from './TrainingOpponent.js';
 export class CombatPractice {
@@ -22,7 +24,8 @@ export class CombatPractice {
     this.active=true;this.origin=origin;g.combat.cancel();g.combat.health=g.combat.stamina=100;
     if(g.combat.mode!=='combat')g.combat.toggle(g.input);g.clearInput();g.setPaused(false);
     g.canvas?.focus();
-    g.showNotice('전투 연습 · 붉은 예고는 이동, 근접 공격은 F 정면 방어 · 방패에는 E 훅');
+    const bindings=g.preferences?.values.settings.bindings,guard=keyLabel(bindings?.wall||'KeyF'),heavy=keyLabel(bindings?.heavy||'KeyT');
+    g.showNotice(language()==='en'?`Combat practice · Move away from red warnings · ${guard}: frontal guard · ${heavy}: heavy attack against shields`:`전투 연습 · 붉은 예고는 이동으로 회피 · ${guard} 정면 방어 · 방패에는 ${heavy} 강공격`);
   }
   spawn(type,position){const scene=this.game.scene,{group,body,shield,pose}=createTrainingOpponent(type);
     const ring=new THREE.Mesh(new THREE.RingGeometry(.5,.62,24),new THREE.MeshBasicMaterial({color:0xff526d,side:THREE.DoubleSide,transparent:true,opacity:.8}));ring.rotation.x=-Math.PI/2;ring.position.y=.04;ring.visible=false;group.add(ring);
@@ -31,7 +34,7 @@ export class CombatPractice {
     group.position.copy(position);scene.add(group);const enemy={type,position,spawn:position.clone(),mesh:group,body,ring,bar,barTrack,shield,pose,health:type==='shield'?140:100,maxHealth:type==='shield'?140:100,cooldown:1.5,windup:0,flash:0,stagger:0,facing:0};this.game.combat.enemies.push(enemy);return enemy;}
   update(delta){const g=this.game;if(!this.active||g.multiplayer?.room)return;
     if(!g.combat.enemies.length){this.stop();return;}
-    for(const e of g.combat.enemies){if(e.health<=0)continue;
+    for(const e of g.combat.enemies){if(e.health<=0){e.defeatTime=(e.defeatTime||0)+delta;poseTrainingOpponent(e,delta,!!g.preferences?.values.reducedMotion);e.barTrack.visible=false;continue;}
       e.flash=Math.max(0,e.flash-delta);e.stagger=Math.max(0,e.stagger-delta);e.cooldown=Math.max(0,e.cooldown-delta);
       poseTrainingOpponent(e,delta,!!g.preferences?.values.reducedMotion);
       e.bar.scale.x=THREE.MathUtils.clamp(e.health/e.maxHealth,0,1);e.bar.material.color.setHex(e.health/e.maxHealth<=.25?0xffb66b:0xe6657b);e.ring.visible=e.windup>0;
@@ -77,7 +80,7 @@ export class CombatPractice {
       }
       if(blocked||hit||shot.life<=0){g.scene.remove(shot.mesh);shot.mesh.geometry.dispose();shot.mesh.material.dispose();this.projectiles.splice(i,1);}
     }
-    if(g.combat.enemies.length&&g.combat.enemies.every(e=>e.health<=0)){g.showNotice('전투 연습 완료 · 메뉴에서 다시 시작할 수 있습니다.');this.stop();}
+    if(g.combat.enemies.length&&g.combat.enemies.every(e=>e.health<=0 && e.defeatTime>=1.2)){g.showNotice('전투 연습 완료 · 메뉴에서 다시 시작할 수 있습니다.');this.stop();}
   }
   fire(enemy){const g=this.game,origin=enemy.position.clone().add(new THREE.Vector3(0,1,0));if(!enemy.aim)return;
     const mesh=new THREE.Mesh(new THREE.SphereGeometry(.12,8,6),new THREE.MeshBasicMaterial({color:0xff6475}));mesh.position.copy(origin);g.scene.add(mesh);

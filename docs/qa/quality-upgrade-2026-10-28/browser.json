@@ -1,0 +1,912 @@
+{
+  "results": [
+    {
+      "name": "Solo boot and first view",
+      "status": "PASS",
+      "detail": {
+        "t": 5187.399999991059,
+        "scenario": null,
+        "scenarioMs": 0,
+        "dt": 0,
+        "position": [
+          99.6,
+          95.474,
+          90
+        ],
+        "velocity": [
+          0,
+          0,
+          0
+        ],
+        "acceleration": null,
+        "speed": 0,
+        "facing": -2.2823,
+        "state": "IDLE",
+        "grounded": true,
+        "support": 95.374,
+        "animation": "idle",
+        "animationTime": 0.713,
+        "blends": [
+          {
+            "key": "regularRun",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "walk",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "run",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "stop",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "zip",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "idle",
+            "weight": 1,
+            "time": 0.713
+          },
+          {
+            "key": "runStop",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "jump",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "turnLeft",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "turnRight",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "jumpDown",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "drop",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "fall",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "swing",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "fallIdle",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "jumpDownVariant",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "roll",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "fallVariant",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "land",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "wall",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "combatIdle",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "injuredIdle",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "jab",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "slamLand",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "slam",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hitHead",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "guard",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "cross",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "rightHook",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hook",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "heavy",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "airTrick",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "backTrick",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hitBody",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hitUppercut",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "hitHeavy",
+            "weight": 1,
+            "time": 0
+          },
+          {
+            "key": "special",
+            "weight": 1,
+            "time": 0
+          }
+        ],
+        "combatMode": "web",
+        "attack": null,
+        "feet": {
+          "left": {
+            "x": 99.276,
+            "y": 95.495,
+            "z": 89.902,
+            "support": 95.374,
+            "gap": 0.121
+          },
+          "right": {
+            "x": 99.901,
+            "y": 95.523,
+            "z": 90.119,
+            "support": 95.374,
+            "gap": 0.149
+          }
+        },
+        "camera": {
+          "position": [
+            103.937,
+            98.098,
+            93.739
+          ],
+          "yaw": -2.2823,
+          "pitch": 0.16,
+          "fov": 64.01387869983742
+        },
+        "webs": [],
+        "swinging": false,
+        "ropeLength": 0,
+        "swingTension": null,
+        "pointerLock": false,
+        "fps": null,
+        "memory": 61290654,
+        "drawCalls": 306,
+        "triangles": 55734,
+        "geometries": 168,
+        "textures": 13,
+        "latencyMs": null,
+        "paused": false,
+        "playing": true
+      }
+    },
+    {
+      "name": "Real keyboard walk, sprint and jump",
+      "status": "PASS",
+      "detail": {
+        "frames": 193,
+        "seconds": 3.652,
+        "travel": 20.761,
+        "start": [
+          99.6,
+          95.474,
+          90
+        ],
+        "end": [
+          87.776,
+          102.604,
+          74.496
+        ],
+        "maxSpeed": 26.353,
+        "states": [
+          "IDLE",
+          "RUNNING",
+          "SPRINTING",
+          "JUMPING",
+          "FALLING"
+        ],
+        "animations": [
+          "idle",
+          "walk",
+          "regularRun",
+          "stop",
+          "run",
+          "runStop",
+          "jump",
+          "drop",
+          "fall"
+        ],
+        "attacks": [],
+        "swingingFrames": 0,
+        "maxWebs": 0,
+        "averageFps": 56.06,
+        "low1Fps": 24.1,
+        "maxDt": 0.076,
+        "maxDrawCalls": 306,
+        "maxTriangles": 110581,
+        "memoryStart": 64914662,
+        "memoryEnd": 78457065,
+        "pitch": [
+          0.16,
+          0.16
+        ],
+        "yaw": [
+          -2.2823,
+          -2.2823
+        ]
+      }
+    },
+    {
+      "name": "Grounded forward dodge",
+      "status": "PASS",
+      "detail": {
+        "started": true,
+        "key": "dodgeForward",
+        "stamina": 82,
+        "from": [
+          -90,
+          94.092,
+          -90
+        ]
+      }
+    },
+    {
+      "name": "X restores horizon",
+      "status": "PASS",
+      "detail": {
+        "position": [
+          -90,
+          96.434,
+          -94.632
+        ],
+        "yaw": 0,
+        "pitch": 0.1326,
+        "fov": 64.00000522389325
+      }
+    },
+    {
+      "name": "Mouse wire attachment, swing and release",
+      "status": "PASS",
+      "detail": {
+        "frames": 127,
+        "seconds": 2.138,
+        "travel": 26.151,
+        "start": [
+          99.6,
+          95.474,
+          90
+        ],
+        "end": [
+          81.146,
+          93.653,
+          71.561
+        ],
+        "maxSpeed": 30.097,
+        "states": [
+          "IDLE",
+          "SWINGING",
+          "FALLING"
+        ],
+        "animations": [
+          "idle",
+          "jump",
+          "swing",
+          "drop",
+          "fall"
+        ],
+        "attacks": [],
+        "swingingFrames": 75,
+        "maxWebs": 1,
+        "averageFps": 59.65,
+        "low1Fps": 43.48,
+        "maxDt": 0.0462,
+        "maxDrawCalls": 292,
+        "maxTriangles": 110823,
+        "memoryStart": 46377944,
+        "memoryEnd": 49827375,
+        "pitch": [
+          -0.55,
+          -0.55
+        ],
+        "yaw": [
+          3.927,
+          3.927
+        ]
+      }
+    },
+    {
+      "name": "Three supported arrivals award and save a medal",
+      "status": "PASS",
+      "detail": {
+        "controls": {
+          "pointers": 0,
+          "forward": false,
+          "backward": false,
+          "left": false,
+          "right": false,
+          "jump": false
+        },
+        "lesson": 0,
+        "mission": null,
+        "records": {
+          "procedural:rooftops": {
+            "score": 800,
+            "medal": "silver",
+            "seconds": 3,
+            "skills": 0
+          }
+        },
+        "audio": {
+          "state": "running",
+          "engine": 0,
+          "city": 0.011310248635709286
+        },
+        "enemies": []
+      }
+    },
+    {
+      "name": "Personal record survives reload",
+      "status": "PASS",
+      "detail": {
+        "controls": {
+          "pointers": 0,
+          "forward": false,
+          "backward": false,
+          "left": false,
+          "right": false,
+          "jump": false
+        },
+        "lesson": 0,
+        "mission": null,
+        "records": {
+          "procedural:rooftops": {
+            "score": 800,
+            "seconds": 3,
+            "skills": 0,
+            "medal": "silver"
+          }
+        },
+        "audio": {
+          "state": "running",
+          "engine": 0,
+          "city": 0.006335272919386625
+        },
+        "enemies": []
+      }
+    },
+    {
+      "name": "B entry, W driving, contextual tutorial and engine bus",
+      "status": "PASS",
+      "detail": {
+        "car": {
+          "state": "DRIVING",
+          "model": "bmw",
+          "loading": false,
+          "speed": 6.685,
+          "spin": 22.8878,
+          "steering": 0,
+          "yaw": 0,
+          "pitch": 0,
+          "roll": 0,
+          "position": [
+            0,
+            0.02,
+            14.771
+          ],
+          "wheelRadius": 0.33952357339386763,
+          "groundY": 0,
+          "door": 1.65,
+          "doorPoint": [
+            1.65,
+            0.12,
+            14.89
+          ],
+          "wheels": [
+            {
+              "front": false,
+              "radius": 0.331,
+              "hub": [
+                0.753,
+                0.331,
+                13.44
+              ],
+              "contactY": 0.016,
+              "tread": [
+                0.78,
+                0.604,
+                13.254
+              ],
+              "fixedLocal": [
+                0.153,
+                0.267,
+                0.005
+              ],
+              "steer": 0,
+              "spin": -1.7336,
+              "commandError": -0.0927,
+              "axle": [
+                1,
+                0,
+                0
+              ],
+              "drop": 0.019
+            },
+            {
+              "front": true,
+              "radius": 0.347,
+              "hub": [
+                0.759,
+                0.347,
+                16.283
+              ],
+              "contactY": 0.021,
+              "tread": [
+                0.561,
+                0.076,
+                16.358
+              ],
+              "fixedLocal": [
+                0.132,
+                0.267,
+                0.08
+              ],
+              "steer": 0,
+              "spin": -2.8409,
+              "commandError": -0.0884,
+              "axle": [
+                0.872,
+                0.007,
+                0.49
+              ],
+              "drop": 0.003
+            },
+            {
+              "front": true,
+              "radius": 0.349,
+              "hub": [
+                -0.767,
+                0.349,
+                16.312
+              ],
+              "contactY": 0.018,
+              "tread": [
+                -0.49,
+                0.231,
+                16.143
+              ],
+              "fixedLocal": [
+                -0.134,
+                0.268,
+                -0.062
+              ],
+              "steer": 0,
+              "spin": -2.9353,
+              "commandError": -0.088,
+              "axle": [
+                0.863,
+                0.012,
+                0.505
+              ],
+              "drop": 0.002
+            },
+            {
+              "front": false,
+              "radius": 0.331,
+              "hub": [
+                -0.752,
+                0.331,
+                13.44
+              ],
+              "contactY": 0.008,
+              "tread": [
+                -0.706,
+                0.304,
+                13.11
+              ],
+              "fixedLocal": [
+                -0.153,
+                0.269,
+                0.014
+              ],
+              "steer": 0,
+              "spin": -1.7745,
+              "commandError": -0.0926,
+              "axle": [
+                1,
+                0,
+                0
+              ],
+              "drop": 0.018
+            }
+          ]
+        },
+        "audio": {
+          "state": "running",
+          "engine": 0.03195011615753174,
+          "city": 0.03494984284043312
+        }
+      }
+    },
+    {
+      "name": "Pause mutes continuous vehicle audio",
+      "status": "PASS",
+      "detail": {
+        "state": "running",
+        "engine": 0,
+        "city": 0.006013357080519199
+      }
+    },
+    {
+      "name": "Normal heavy attack damages practice opponent",
+      "status": "PASS",
+      "detail": {
+        "controls": {
+          "pointers": 0,
+          "forward": false,
+          "backward": false,
+          "left": false,
+          "right": false,
+          "jump": false
+        },
+        "lesson": 0,
+        "mission": null,
+        "records": {
+          "procedural:rooftops": {
+            "score": 800,
+            "seconds": 3,
+            "skills": 0,
+            "medal": "silver"
+          }
+        },
+        "audio": {
+          "state": "running",
+          "engine": 0,
+          "city": 0.034953732043504715
+        },
+        "enemies": [
+          {
+            "type": "dummy",
+            "health": 0,
+            "position": [
+              0,
+              0.1,
+              5
+            ],
+            "defeatTime": 0.9329999999999999
+          }
+        ]
+      }
+    },
+    {
+      "name": "390px layout has no horizontal overflow",
+      "status": "PASS",
+      "detail": {}
+    },
+    {
+      "name": "500m patrol completed with real W/S and Shift input",
+      "status": "PASS",
+      "detail": {
+        "wallSeconds": 48.149,
+        "cycles": 46,
+        "patrol": [
+          {
+            "z": -99.873,
+            "distance": 9.979249580440367
+          },
+          {
+            "z": -89.011,
+            "distance": 20.80794279113111
+          },
+          {
+            "z": -77.942,
+            "distance": 31.876750407157147
+          },
+          {
+            "z": -65.928,
+            "distance": 43.831169244129825
+          },
+          {
+            "z": -55.262,
+            "distance": 54.5572533183716
+          },
+          {
+            "z": -44.193,
+            "distance": 65.62602641357998
+          },
+          {
+            "z": -33.118,
+            "distance": 76.70119770817075
+          },
+          {
+            "z": -22.044,
+            "distance": 87.95605884267582
+          },
+          {
+            "z": -11.005,
+            "distance": 98.99503497291914
+          },
+          {
+            "z": 0.231,
+            "distance": 110.2310398824434
+          },
+          {
+            "z": 11.428,
+            "distance": 121.27000467464102
+          },
+          {
+            "z": 22.415,
+            "distance": 132.25667303295154
+          },
+          {
+            "z": 33.157,
+            "distance": 143.1566583337454
+          },
+          {
+            "z": 44.377,
+            "distance": 154.3766213251242
+          },
+          {
+            "z": 55.919,
+            "distance": 165.7426513035382
+          },
+          {
+            "z": 66.555,
+            "distance": 176.3738155883316
+          },
+          {
+            "z": 77.57,
+            "distance": 187.57032746738713
+          },
+          {
+            "z": 88.591,
+            "distance": 198.59098182610055
+          },
+          {
+            "z": 99.834,
+            "distance": 209.65318891133722
+          },
+          {
+            "z": 110.692,
+            "distance": 220.69213424985966
+          },
+          {
+            "z": 102.117,
+            "distance": 230.15754740817653
+          },
+          {
+            "z": 91.018,
+            "distance": 241.43812157275192
+          },
+          {
+            "z": 78.602,
+            "distance": 253.8346724971172
+          },
+          {
+            "z": 68.124,
+            "distance": 264.18417070254657
+          },
+          {
+            "z": 57.092,
+            "distance": 275.3642890671676
+          },
+          {
+            "z": 45.886,
+            "distance": 286.4213597983045
+          },
+          {
+            "z": 35.03,
+            "distance": 297.4260754445529
+          },
+          {
+            "z": 23.633,
+            "distance": 308.6415678441334
+          },
+          {
+            "z": 12.852,
+            "distance": 319.6036658416817
+          },
+          {
+            "z": 0.575,
+            "distance": 331.6002249583713
+          },
+          {
+            "z": -10.962,
+            "distance": 343.2695662739068
+          },
+          {
+            "z": -21.824,
+            "distance": 354.2794904220652
+          },
+          {
+            "z": -32.697,
+            "distance": 365.1532901995744
+          },
+          {
+            "z": -43.736,
+            "distance": 376.19225045098966
+          },
+          {
+            "z": -54.775,
+            "distance": 387.2312437518965
+          },
+          {
+            "z": -65.995,
+            "distance": 398.27023705941656
+          },
+          {
+            "z": -77.064,
+            "distance": 409.52020505657543
+          },
+          {
+            "z": -88.203,
+            "distance": 420.4780822638676
+          },
+          {
+            "z": -99.601,
+            "distance": 431.8981289648053
+          },
+          {
+            "z": -110.589,
+            "distance": 443.04538263597954
+          },
+          {
+            "z": -101.785,
+            "distance": 452.74510238302963
+          },
+          {
+            "z": -90.923,
+            "distance": 463.65540829855973
+          },
+          {
+            "z": -80.265,
+            "distance": 474.4943048576001
+          },
+          {
+            "z": -69.245,
+            "distance": 485.51435291917096
+          },
+          {
+            "z": -58.387,
+            "distance": 496.37227796815785
+          },
+          {
+            "z": -47.186,
+            "distance": null
+          }
+        ],
+        "record": {
+          "score": 800,
+          "medal": "silver",
+          "seconds": 46,
+          "skills": 0
+        },
+        "motion": {
+          "frames": 2768,
+          "seconds": 46.882,
+          "travel": 63.432,
+          "start": [
+            60,
+            0.1,
+            -110
+          ],
+          "end": [
+            60,
+            0.1,
+            -46.568
+          ],
+          "maxSpeed": 12,
+          "states": [
+            "IDLE",
+            "SPRINTING"
+          ],
+          "animations": [
+            "idle",
+            "run",
+            "runStop"
+          ],
+          "attacks": [],
+          "swingingFrames": 0,
+          "maxWebs": 0,
+          "averageFps": 59.78,
+          "low1Fps": 31.06,
+          "maxDt": 0.0813,
+          "maxDrawCalls": 290,
+          "maxTriangles": 735017,
+          "memoryStart": 79947922,
+          "memoryEnd": 94480452,
+          "pitch": [
+            0.16,
+            0.16
+          ],
+          "yaw": [
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "name": "No uncaught browser errors",
+      "status": "PASS",
+      "detail": []
+    }
+  ],
+  "errors": []
+}

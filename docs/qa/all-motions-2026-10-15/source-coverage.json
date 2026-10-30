@@ -1,8 +1,8 @@
 {
-  "files": 45,
-  "animatedTakes": 54,
+  "files": 48,
+  "animatedTakes": 56,
   "emptyTakes": 7,
-  "frames": 7469,
+  "frames": 7651,
   "results": [
     {
       "file": "public/models/Big Hit To Head.fbx",
@@ -70,8 +70,7 @@
       "take": "mixamo.com",
       "status": "PASS",
       "usedBy": [
-        "combatIdle",
-        "rightHook"
+        "combatIdle"
       ],
       "archived": false,
       "duration": 4.400000095367432,
@@ -465,6 +464,38 @@
       ]
     },
     {
+      "file": "public/models/Mixamo Cross Punch.fbx",
+      "take": "mixamo.com",
+      "status": "PASS",
+      "usedBy": [
+        "cross"
+      ],
+      "archived": false,
+      "duration": 2,
+      "frames": 121,
+      "bones": 65,
+      "hipRange": [
+        1.0359235238285691,
+        1.165224752346174
+      ]
+    },
+    {
+      "file": "public/models/Mixamo Rear Hook.fbx",
+      "take": "mixamo.com",
+      "status": "PASS",
+      "usedBy": [
+        "rightHook"
+      ],
+      "archived": false,
+      "duration": 1,
+      "frames": 61,
+      "bones": 65,
+      "hipRange": [
+        1.1004122299589263,
+        1.1697240928553032
+      ]
+    },
+    {
       "file": "public/models/Mma Kick.fbx",
       "take": "mixamo.com",
       "status": "PASS",
@@ -482,10 +513,8 @@
       "file": "public/models/Punching.fbx",
       "take": "mixamo.com",
       "status": "PASS",
-      "usedBy": [
-        "cross"
-      ],
-      "archived": false,
+      "usedBy": [],
+      "archived": true,
       "duration": 1,
       "frames": 61,
       "bones": 65,

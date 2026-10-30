@@ -1,6 +1,6 @@
 export const BINDINGS = {
   forward:'KeyW', backward:'KeyS', left:'KeyA', right:'KeyD', sprint:'ShiftLeft',
-  jump:'Space', wall:'KeyF', zip:'KeyE', mode:'KeyQ', recenter:'KeyX', camera:'KeyV',
+  jump:'Space', wall:'KeyF', zip:'KeyE', mode:'KeyX', recenter:'KeyZ', evadeLeft:'KeyQ', stance:'ControlLeft', heavy:'KeyT', camera:'KeyV',
 };
 export const SETTING_LIMITS = {
   sensitivity:[0.3,3,1], fov:[55,95,64], shake:[0,1,0.5], speedFov:[0,1,1],
@@ -19,7 +19,8 @@ export function cleanSettings(saved={}) {
     if(typeof saved[key]==='boolean')result[key]=saved[key];
   result.aimAssist=false;
   // Retain active saved remaps; retired actions no longer reserve keys.
-  const stored=saved.bindings;
+  const stored={...saved.bindings};
+  if(stored.mode==='KeyQ' && stored.recenter==='KeyX'){stored.mode='KeyX';stored.recenter='KeyZ';}
   const map=Object.fromEntries(Object.keys(BINDINGS).map(k=>[k,stored?.[k]??BINDINGS[k]]));
   if(Object.keys(BINDINGS).every(k=>validBinding(map[k])) && new Set(Object.values(map)).size===Object.keys(BINDINGS).length)
     result.bindings=Object.fromEntries(Object.keys(BINDINGS).map(k=>[k,map[k]]));

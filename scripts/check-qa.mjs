@@ -15,7 +15,7 @@ import { GameApp } from '../src/main.js';
 import { fetchAsset } from '../src/AssetLoader.js';
 import {streamingBudget} from '../src/StreamingBudget.js';
 
-let count = 0;
+let count = 0, startupLayerCount = 0;
 async function check(name, run) { await run(); count++; console.log(`PASS QA ${count}: ${name}`); }
 const silent = new Proxy({}, { get: () => () => {} });
 const camera = new THREE.PerspectiveCamera(); camera.rotation.y = Math.PI;
@@ -24,6 +24,7 @@ await check('Hong Kong layers share a city-owned budget without overwriting the 
     getSize:target=>target.set(1280,800),getPixelRatio:()=>1};
   const first=new UrbanGroundCity(new THREE.Scene(),camera,renderer);
   const second=new UrbanGroundCity(new THREE.Scene(),camera,renderer);
+  startupLayerCount=first.tilesets.length;
   assert(first.tilesets.every(t=>t.lruCache===first.tileCache));
   assert(second.tilesets.every(t=>t.lruCache===second.tileCache));
   assert.notEqual(first.tileCache,second.tileCache);
@@ -43,7 +44,7 @@ await check('Streamed spawn is refreshed after a menu-time LOD change',()=>{
   assert.equal(city.getRooftopSpawn().y,19.65);
 });
 await check('Streamed startup waits for idle queues and a stable support surface',()=>{
-  const city=Object.create(UrbanGroundCity.prototype);city.loadedRoots=3;
+  const city=Object.create(UrbanGroundCity.prototype);city.loadedRoots=startupLayerCount;
   city.buildingMeshes=[{}];city.tilesets=[{stats:{queued:1}}];city.collisionWorld={pending:[],job:null};
   const spawn=new THREE.Vector3(0,20,0);
   assert(!city.startupSurfaceSettled(spawn,0));assert(!city.startupSurfaceSettled(spawn,1000));
@@ -296,7 +297,7 @@ await check('Combat clicks punch, human airborne input stays unarmed, and web mo
     assert.equal(app.input.webTapRight,true);assert.equal(app.input.webHoldRight,true);
     assert.deepEqual(webs,['punch','punch','web','web'],'Airborne right click did not shoot a web');
     physics.state='FALLING';key('KeyE');assert.deepEqual(airs,['FALLING']);assert.equal(punches.includes('hook'),false);
-    combat.mode='combat';physics.state='IDLE';key('KeyE');assert.deepEqual(punches,['left','right','hook']);assert.deepEqual(airs,['FALLING']);
+    combat.mode='combat';physics.state='IDLE';key('KeyT');assert.deepEqual(punches,['left','right','hook']);assert.deepEqual(airs,['FALLING']);
     assert.deepEqual(webs,['punch','punch','web','web','punch']);
     combat.mode='web';physics.state='SWINGING';physics.isSwinging=true;physics.velocity.set(16,1,0);physics.lastWebAnchor=new THREE.Vector3(0,10,0);
     app.input.webHold=true;app.input.webFireHeld=true;app.input.webTap=true;

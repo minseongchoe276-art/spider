@@ -1,3 +1,4 @@
+import {UPPERCUT} from './DashingUppercut.js';
 import {COMBAT_GROUND_STATES} from './AttackRules.js';
 
 export function stickState(dx, dy, radius = 52, wasSprinting = false) {
@@ -27,24 +28,29 @@ export class TouchControls {
     this.media=window.matchMedia('(pointer: coarse)');
     this.root=document.createElement('div');this.root.id='touch-controls';this.root.dataset.simple='true';
     this.root.setAttribute('aria-label','모바일 게임 조작');
-    this.root.innerHTML=`<nav class="touch-toolbar" aria-label="게임 메뉴"><button data-ui="fullscreen" aria-label="전체화면으로 플레이" aria-pressed="false">전체화면</button><button data-ui="map" aria-label="전체 지도 열기">지도</button><button data-ui="menu" aria-label="게임 메뉴 열기">메뉴</button></nav>
+    this.root.innerHTML=`<nav class="touch-toolbar" aria-label="게임 메뉴"><button data-ui="fullscreen" aria-label="전체화면으로 플레이" aria-pressed="false">화면</button><button data-ui="map" aria-label="전체 지도 열기">지도</button><button data-ui="menu" aria-label="게임 메뉴 열기">메뉴</button></nav>
       <div class="touch-move-zone" aria-label="왼쪽 이동 영역"><div class="touch-stick" role="group" aria-label="이동 스틱 · 끝까지 밀면 질주"><span class="touch-sprint-mark">질주 ↑</span><span class="touch-stick-knob"></span><span class="touch-stick-caption">이동</span></div></div>
       ${action('data-key="mode" class="touch-mode" aria-label="전투와 에너지 와이어 모드 전환" aria-pressed="false"','mode','전투')}
       <div class="touch-actions" role="group" aria-label="동작 버튼">
       ${action('data-mouse="0" class="touch-web touch-primary" aria-label="에너지 와이어 연결 · 한 번 누르기"','wire','에너지 와이어')}
       ${action('data-key="jump" class="touch-jump" aria-label="점프 / 에너지 와이어에서 뛰어내리기"','jump','점프')}
-      ${action('data-key="zip" class="touch-zip" aria-label="와이어 집 / 전투 훅"','zip','집')}
+      ${action('data-key="zip" class="touch-zip" aria-label="와이어 집 / 전투 강공격"','zip','집')}
       ${action('data-key="wall" class="touch-guard" aria-label="방어 · 누르고 유지" hidden','guard','방어')}
-      <button data-ui="more" class="touch-more" aria-label="보조 동작과 시점 메뉴" aria-expanded="false" aria-controls="touch-extra">···<span>더보기</span></button></div>
-      <div id="touch-extra" class="touch-extra" role="group" aria-label="보조 동작과 시점" hidden>
+      </div>
+      <div class="touch-utilities" role="group" aria-label="시점과 조작 안내">
       ${action('data-mouse="2" class="touch-web touch-offhand" aria-label="오른손 와이어 · 누른 채 드래그로 조준"','offhand','오른손')}
       ${action('data-key="wall" class="touch-wall" aria-label="벽 이동 · 이동 스틱을 앞으로 유지"','wall','벽 이동')}
-      <button data-key="camera">시점</button><button data-key="recenter">시점 정렬</button><button data-ui="help">조작 안내</button></div>`;
+      <button data-key="camera">시점</button><button data-key="recenter" aria-label="시점 정렬">정렬</button><button data-ui="help" aria-label="조작 안내">안내</button></div>`;
     document.getElementById('game-container').append(this.root);
     this.stick=this.root.querySelector('.touch-stick');this.knob=this.root.querySelector('.touch-stick-knob');
     this.moveZone=this.root.querySelector('.touch-move-zone');
-    this.extra=this.root.querySelector('#touch-extra');
-    for(const selector of ['.touch-mode','.touch-zip'])this.extra.append(this.root.querySelector(selector));
+    const utilities=this.root.querySelector('.touch-utilities');
+    for(const selector of ['.touch-offhand','.touch-wall'])this.root.querySelector('.touch-actions').append(utilities.querySelector(selector));
+    this.root.append(this.root.querySelector('.touch-mode'));
+    this.root.querySelector('.touch-actions').append(this.root.querySelector('.touch-zip'));
+    this.root.querySelector('.touch-actions').insertAdjacentHTML('beforeend',action('data-key="evadeLeft" class="touch-dodge" aria-label="회피"','dodge','회피')+action('data-key="special" class="touch-special" aria-label="돌진 어퍼컷" hidden','heavy','어퍼컷'));
+    for(const button of this.root.querySelectorAll('.touch-actions button,.touch-mode'))button.insertAdjacentHTML('afterbegin','<i class="touch-skill-art" aria-hidden="true"></i>');
+    this.root.insertAdjacentHTML('beforeend',`<div class="touch-driving" role="group" aria-label="차량 조작"><div class="touch-pedals"><button data-drive="forward">↑<span>전진</span></button><button data-drive="backward">↓<span>후진</span></button></div><div class="touch-steering"><button data-drive="left">←<span>좌회전</span></button><button data-drive="right">→<span>우회전</span></button></div><button data-key="jump" class="touch-brake">정지</button><button data-ui="exit" class="touch-exit">내리기</button></div><div class="touch-hint">건물 터치로 거미줄 연결 · 드래그로 시점</div>`);
     this.anchorMarker=document.createElement('div');this.anchorMarker.id='touch-anchor';this.anchorMarker.hidden=true;this.anchorMarker.setAttribute('aria-hidden','true');this.root.append(this.anchorMarker);
     this.root.addEventListener('contextmenu',e=>e.preventDefault());
     this.root.addEventListener('pointerdown',e=>this.down(e));
@@ -53,26 +59,21 @@ export class TouchControls {
     for(const name of ['pointerup','pointercancel','lostpointercapture'])window.addEventListener(name,e=>this.up(e));
     this.root.addEventListener('click',e=>{
       const button=e.target.closest('[data-ui]');if(!button)return;
+      if(button.dataset.ui==='exit')game.vehicle?.interact();
       if(button.dataset.ui==='fullscreen')game.toggleFullscreen();
       if(button.dataset.ui==='map')game.worldMap.toggle();
       if(button.dataset.ui==='menu')game.togglePause();
       if(button.dataset.ui==='help')game.toggleHelp();
-      if(button.dataset.ui==='more')this.setExpanded(this.extra.hidden);
     });
     this.media.addEventListener('change',()=>this.detect());
     window.addEventListener('resize',()=>this.release());
     window.addEventListener('orientationchange',()=>this.release());
     this.detect();
   }
-  setExpanded(open){
-    if(!open)for(const [id,p] of this.pointers)if(this.extra.contains(p.target))this.up({pointerId:id});
-    this.extra.hidden=!open;this.root.querySelector('[data-ui=more]').setAttribute('aria-expanded',String(open));
-    document.body.classList.toggle('touch-extra-open',open);
-  }
   detect(){const previous=this.enabled;this.enabled=isTouchDevice({coarsePointer:this.media.matches,mobileUserAgent:navigator.userAgentData?.mobile ?? /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent),review:this.review});if(previous&&!this.enabled)this.release();document.body.classList.toggle('touch-device',this.enabled);this.update();}
   active(){const g=this.game;return this.enabled&&g.isPlaying&&!g.isPaused&&!g.helpOpen&&!g.multiplayer?.spectating&&!g.contextLost;}
   key(action,down){
-    const code=this.game.preferences.values.settings.bindings[action];if(!code)return;
+    const code=action==='special'?'KeyG':this.game.preferences.values.settings.bindings[action];if(!code)return;
     const event=new KeyboardEvent(down?'keydown':'keyup',{code,bubbles:true});Object.defineProperty(event,'touchInput',{value:true});window.dispatchEvent(event);
   }
   mouse(button,down,traversal=false){
@@ -84,16 +85,18 @@ export class TouchControls {
     if((e.pointerType==='mouse'&&!this.review)||!this.active())return;
     const button=e.target.closest('button');if(button?.dataset.ui || button?.disabled)return;
     let kind,action;
-    if(e.target.closest('.touch-stick') || e.target.closest('.touch-move-zone'))kind='stick';
-    else if(button?.dataset.key){kind='key';action=button.dataset.key;}
+    if(button?.dataset.drive){kind='drive';action=button.dataset.drive;}
+    else if(e.target.closest('.touch-stick') || e.target.closest('.touch-move-zone'))kind='stick';
+    else if(button?.dataset.key){kind='key';action=button.dataset.key;if(action==='zip'&&this.game.combat?.mode==='combat')action='heavy';}
     else if(button?.dataset.mouse!==undefined){action=Number(button.dataset.mouse);kind=this.simpleTraversal&&action===0&&this.game.combat?.mode!=='combat'?'wire':'mouse';}
-    else if(e.target===this.game.canvas&&e.clientX>innerWidth*.3)kind='look';
+    else if(e.target===this.game.canvas)kind='look';
     else return;
     if([...this.pointers.values()].some(p=>p.kind===kind&&(kind==='stick'||kind==='look'||p.action===action)))return;
     e.preventDefault();e.target.setPointerCapture?.(e.pointerId);
     const pointer={kind,action,x:e.clientX,y:e.clientY,startX:e.clientX,startY:e.clientY,target:e.target};this.pointers.set(e.pointerId,pointer);
     button?.classList.add('pressed');
     this.game.audio.ensureContext();
+    if(kind==='drive')this.syncDrive();
     if(kind==='key'){this.key(action,true);if(this.simpleTraversal&&['jump','mode'].includes(action))this.releaseWire();}
     if(kind==='mouse')this.mouse(action,true);
     if(kind==='stick'){
@@ -115,7 +118,7 @@ export class TouchControls {
       // Ignore tiny thumb jitter on an action button, then keep aiming while
       // jumping, dodging or holding a strand with the same thumb.
       const started=p.looking;
-      p.looking ||= p.kind==='look'||Math.hypot(e.clientX-p.startX,e.clientY-p.startY)>=8;
+      p.looking ||= Math.hypot(e.clientX-p.startX,e.clientY-p.startY)>=8;
       if(p.looking){
       // Spend the first action drag on the deadzone, avoiding a sudden view jump.
       let dx=e.clientX-p.x,dy=e.clientY-p.y;
@@ -124,7 +127,7 @@ export class TouchControls {
         const remaining=1-8/Math.hypot(dx,dy);dx*=remaining;dy*=remaining;
       }
       this.game.tpsCamera.handleMouseMove(dx,dy,.0028);
-      this.game.physics.setWebAimPoint(0,0,null,true);
+      this.game.physics.mobileExactAim=false;this.game.physics.setWebAimPoint(0,0,null,true);
       }
     }
     p.x=e.clientX;p.y=e.clientY;
@@ -132,14 +135,30 @@ export class TouchControls {
   up(e){const p=this.pointers.get(e.pointerId);if(!p)return;this.pointers.delete(e.pointerId);
     p.target.closest('button')?.classList.remove('pressed');
     if(p.target.hasPointerCapture?.(e.pointerId))p.target.releasePointerCapture?.(e.pointerId);
+    if(p.kind==='drive')this.syncDrive();
+    if(p.kind==='look'&&!p.looking&&e.type==='pointerup'&&this.active()&&!this.game.vehicle?.driving&&this.game.combat?.mode!=='combat')this.attachAt(p.startX,p.startY);
     if(p.kind==='key')this.key(p.action,false);
     if(p.kind==='mouse')this.mouse(p.action,false);
     if(p.kind==='wire'&&!p.looking&&e.type!=='pointercancel'&&e.type!=='lostpointercapture'&&this.active())this.toggleWire();
     if(p.kind==='stick'){this.game.touchDirections={};this.resetStick();this.game.syncHeldInput();}
   }
+  syncDrive(){
+    const directions={};for(const p of this.pointers.values())if(p.kind==='drive')directions[p.action]=true;
+    this.game.touchDirections=directions;this.game.syncHeldInput();
+  }
+  attachAt(x,y){
+    const g=this.game,p=g.physics;
+    // Resolve the touched surface exactly: never redirect to a different building.
+    p.setWebAimPoint(x,y,g.canvas.getBoundingClientRect());p.mobileExactAim=true;
+    if(!p.findBestAnchor(g.camera)){g.showNotice('연결할 수 없는 곳이에요 · 가까운 건물을 터치하세요');return;}
+    this.releaseWire();this.wireLatched=true;this.mouse(0,true,true);
+    p.setWebAimPoint(x,y,g.canvas.getBoundingClientRect());p.mobileExactAim=true;
+    g.input.webFireHeld=false;
+  }
   toggleWire(){
     if(this.wireLatched){this.releaseWire();return;}
     if(!this.active()||this.game.combat?.mode==='combat')return;
+    this.game.physics.mobileExactAim=false;
     this.wireLatched=true;this.mouse(0,true,true);
     // Keep a successful rope, but do not keep firing/reconnecting after a miss.
     this.game.input.webFireHeld=false;
@@ -161,7 +180,7 @@ export class TouchControls {
     const key=`${combat}:${connected}:${this.wireLatched}:${ready}`;
     if(this.wireUiKey!==key){
       this.wireUiKey=key;button.setAttribute('aria-pressed',String(connected));
-      if(!combat){button.querySelector('span').textContent=connected?'놓기':this.wireLatched?'연결 중':'에너지 와이어';button.setAttribute('aria-label',connected?'에너지 와이어 놓기':ready?'에너지 와이어 연결 · 한 번 누르기':'에너지 와이어 · 건물을 바라보세요');button.querySelector('path').setAttribute('d',icons.wire);}
+      if(!combat){button.querySelector('span').textContent=connected?'놓기':this.wireLatched?'연결 중':'거미줄';button.setAttribute('aria-label',connected?'에너지 와이어 놓기':ready?'에너지 와이어 연결 · 한 번 누르기':'에너지 와이어 · 건물을 바라보세요');button.querySelector('path').setAttribute('d',icons.wire);}
       this.root.dataset.wireConnected=String(connected);this.root.dataset.wireReady=String(ready);
     }
     if(this.anchorMarker){
@@ -179,19 +198,23 @@ export class TouchControls {
     for(const id of [...this.pointers.keys()])this.up({pointerId:id,type:'pointercancel'});
     if(this.simpleTraversal)this.releaseWire();
     this.game.touchDirections={};this.resetStick();this.game.syncHeldInput();
-    if(this.extra)this.setExpanded(false);
   }
   update(){
     const active=this.active(),g=this.game;
+    const driving=!!g.vehicle?.driving;
+    if(this.driving!==undefined&&this.driving!==driving)this.release();
+    this.driving=driving;
+    if(this.root.dataset)this.root.dataset.driving=String(driving);
     this.root.hidden=!(this.enabled&&g.isPlaying&&!g.isPaused&&!g.helpOpen&&!g.contextLost);
     this.root.dataset.spectating=String(!!g.multiplayer?.spectating);
     document.body.classList.toggle('touch-solo',this.enabled&&!!g.multiplayer?.solo);
-    document.body.classList.toggle('touch-extra-open',!this.root.hidden&&!this.extra.hidden);
-    if(active&&!this.announced){this.announced=true;g.showNotice(this.simpleTraversal?'왼쪽 이동 · 에너지 와이어는 한 번 눌러 연결 / 다시 눌러 놓기 · 카메라 자동 추적':'왼쪽 이동 · 오른쪽 드래그로 시점 · 에너지 와이어를 누른 채 조준 · 보조 동작은 더보기');}
+    if(active&&!this.announced){this.announced=true;const lesson=g.experience?.journey?.progress?.data;if(!lesson||lesson.dismissed||lesson.lesson>=6)g.showNotice(this.simpleTraversal?'왼쪽 이동 · 건물 터치로 거미줄 연결 · 오른쪽 드래그로 시점 · 놓기 버튼으로 해제':'왼쪽 이동 · 오른쪽 드래그로 시점 · 에너지 와이어를 누른 채 조준 · 화면 버튼으로 동작');}
     if(this.enabled)this.game.pointerLockWanted=false;
     if(!active&&(this.pointers.size||this.wireLatched))this.release();
     if(this.simpleTraversal)this.syncTraversal(active);
     const combat=this.game.combat?.mode==='combat',grounded=COMBAT_GROUND_STATES.includes(this.game.physics.state),recovering=['ROLLING','TURNING'].includes(this.game.physics.state);
+    const special=this.root.querySelector('.touch-special');
+    if(special){special.hidden=!combat;special.disabled=!grounded||!!g.combat?.action||g.combat?.stamina<UPPERCUT.stamina||g.combat?.specialCooldown>0;const cooldown=g.combat?.specialCooldown||0;special.querySelector('span').textContent=cooldown>0?`${Math.ceil(cooldown)}초`:'어퍼컷';}
     const layoutKey=`${g.combat?.mode}:${grounded}:${recovering}:${!!g.combat?.allowGuardInWeb}`;
     if(this.layoutKey===layoutKey)return;
     this.layoutKey=layoutKey;
@@ -206,11 +229,11 @@ export class TouchControls {
     const modeButton=this.root.querySelector('.touch-mode');
     modeButton.setAttribute('aria-pressed',String(g.combat?.mode==='combat'));
     modeButton.querySelector('span').textContent=g.combat?.mode==='combat'?'와이어':'전투';
-    this.root.querySelector('.touch-zip span').textContent=combat?(grounded?'훅':recovering?'회복 후 훅':'착지 후 훅'):'집';
+    this.root.querySelector('.touch-zip span').textContent=combat?(grounded?'강공격':recovering?'회복 후 강공격':'착지 후 강공격'):'당기기';
     const zipButton=this.root.querySelector('.touch-zip');if(zipButton)zipButton.disabled=combat&&!grounded;
     for(const button of this.root.querySelectorAll('[data-mouse]')){
       button.disabled=combat&&!grounded;
-      const right=button.dataset.mouse==='2';if(this.simpleTraversal&&!combat&&!right)continue;const label=combat?(!grounded?(recovering?'회복 후 공격':'착지 후 공격'):right?'스트레이트':'잽'):(this.simpleTraversal?'보조 와이어':right?'오른손':'왼손 와이어');
+      const right=button.dataset.mouse==='2';if(this.simpleTraversal&&!combat&&!right)continue;const label=combat?(!grounded?(recovering?'회복 후 공격':'착지 후 공격'):right?'스트레이트':'잽'):(this.simpleTraversal?'보조줄':right?'오른손':'왼손 와이어');
       const caption=button.querySelector('span');
       button.querySelector('path').setAttribute('d',icons[combat?'heavy':right?'offhand':'wire']);
       if(caption.textContent!==label){caption.textContent=label;button.setAttribute('aria-label',`${right?'오른손':'왼손'} ${combat?'공격':'와이어'} · 누른 채 드래그로 조준`);}

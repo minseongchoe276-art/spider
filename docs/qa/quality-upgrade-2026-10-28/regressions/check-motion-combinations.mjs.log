@@ -1,0 +1,46 @@
+{"label":"sprint 6.5 60","fps":60,"names":["run"],"wrist":12,"jointOverDeg":0,"slipMm":12.6,"plantGapMm":5.5,"samples":25}
+{"label":"sprint 7.6 60","fps":60,"names":["run"],"wrist":12,"jointOverDeg":0,"slipMm":7.9,"plantGapMm":10,"samples":20}
+{"label":"sprint 6.5 30","fps":30,"names":["run"],"wrist":12,"jointOverDeg":0,"slipMm":18.7,"plantGapMm":4.4,"samples":9}
+{"label":"sprint 7.6 30","fps":30,"names":["run"],"wrist":12,"jointOverDeg":0,"slipMm":7.4,"plantGapMm":3.8,"samples":6}
+{"label":"dodgeLeft sprint 6.5 60","fps":60,"names":["run"],"wrist":11.52,"jointOverDeg":0,"slipMm":0,"plantGapMm":0,"samples":0}
+{"label":"dodgeRight sprint 6.5 60","fps":60,"names":["run"],"wrist":11.52,"jointOverDeg":0,"slipMm":0,"plantGapMm":0,"samples":0}
+{"label":"dodgeBack sprint 6.5 60","fps":60,"names":["run"],"wrist":11.52,"jointOverDeg":0,"slipMm":0,"plantGapMm":0,"samples":0}
+{"label":"dodgeForward sprint 6.5 60","fps":60,"names":["run"],"wrist":11.52,"jointOverDeg":0,"slipMm":0,"plantGapMm":0,"samples":0}
+{"label":"dodgeLeft sprint 7.6 60","fps":60,"names":["run"],"wrist":11.52,"jointOverDeg":0,"slipMm":0,"plantGapMm":0,"samples":0}
+{"label":"dodgeRight sprint 7.6 60","fps":60,"names":["run"],"wrist":11.52,"jointOverDeg":0,"slipMm":0,"plantGapMm":0,"samples":0}
+{"label":"dodgeBack sprint 7.6 60","fps":60,"names":["run"],"wrist":11.52,"jointOverDeg":0,"slipMm":0,"plantGapMm":0,"samples":0}
+{"label":"dodgeForward sprint 7.6 60","fps":60,"names":["run"],"wrist":11.52,"jointOverDeg":0,"slipMm":0,"plantGapMm":0,"samples":0}
+{"label":"dodgeLeft sprint 6.5 30","fps":30,"names":["run"],"wrist":10.11,"jointOverDeg":0,"slipMm":0,"plantGapMm":0,"samples":0}
+{"label":"dodgeRight sprint 6.5 30","fps":30,"names":["run"],"wrist":10.11,"jointOverDeg":0,"slipMm":0,"plantGapMm":0,"samples":0}
+{"label":"dodgeBack sprint 6.5 30","fps":30,"names":["run"],"wrist":10.11,"jointOverDeg":0,"slipMm":0,"plantGapMm":0,"samples":0}
+{"label":"dodgeForward sprint 6.5 30","fps":30,"names":["run"],"wrist":10.11,"jointOverDeg":0,"slipMm":0,"plantGapMm":0,"samples":0}
+{"label":"dodgeLeft sprint 7.6 30","fps":30,"names":["run"],"wrist":10.1,"jointOverDeg":0,"slipMm":0,"plantGapMm":0,"samples":0}
+{"label":"dodgeRight sprint 7.6 30","fps":30,"names":["run"],"wrist":10.1,"jointOverDeg":0,"slipMm":0,"plantGapMm":0,"samples":0}
+{"label":"dodgeBack sprint 7.6 30","fps":30,"names":["run"],"wrist":10.1,"jointOverDeg":0,"slipMm":0,"plantGapMm":0,"samples":0}
+{"label":"dodgeForward sprint 7.6 30","fps":30,"names":["run"],"wrist":10.1,"jointOverDeg":0,"slipMm":0,"plantGapMm":0,"samples":0}
+{"label":"hit sprint 60","fps":60,"names":["run"],"wrist":11.52,"jointOverDeg":0,"slipMm":12.6,"plantGapMm":5,"samples":8}
+{"label":"hit control sprint 60","fps":60,"names":["run"],"wrist":12,"jointOverDeg":0,"slipMm":12.6,"plantGapMm":5,"samples":8}
+{"label":"hit upper delta 60","deg":96.9}
+{"label":"hit sprint 30","fps":30,"names":["run"],"wrist":11.33,"jointOverDeg":0,"slipMm":18.7,"plantGapMm":2.3,"samples":3}
+{"label":"hit control sprint 30","fps":30,"names":["run"],"wrist":12,"jointOverDeg":0,"slipMm":18.7,"plantGapMm":2.3,"samples":3}
+{"label":"hit upper delta 30","deg":96.5}
+{"label":"jab sprint 60","fps":60,"names":["run"],"wrist":11.52,"jointOverDeg":0,"slipMm":12.6,"plantGapMm":5,"samples":8}
+{"label":"cross sprint 60","fps":60,"names":["run"],"wrist":11.99,"jointOverDeg":0,"slipMm":12.6,"plantGapMm":5,"samples":9}
+{"label":"hook sprint 60","fps":60,"names":["run"],"wrist":11.93,"jointOverDeg":0,"slipMm":12.5,"plantGapMm":5.3,"samples":12}
+{"label":"heavy sprint 60","fps":60,"names":["run"],"wrist":11.91,"jointOverDeg":0,"slipMm":12.2,"plantGapMm":5,"samples":12}
+{"label":"special sprint 60","fps":60,"names":["special"],"wrist":11.99,"jointOverDeg":0,"slipMm":17.7,"plantGapMm":12,"samples":15}
+node:internal/modules/run_main:123
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: special replaced the run: special
+    at file:///Users/choeminseong/Desktop/%E1%84%80%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%B7/scripts/check-motion-combinations.mjs:162:3 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
+
+Node.js v22.19.0

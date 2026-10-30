@@ -34,6 +34,7 @@ export function createTrainingOpponent(type){
 export function poseTrainingOpponent(enemy,dt,reducedMotion=false){
   if(!enemy.pose||!Number.isFinite(dt)||dt<=0)return;
   const step=Math.min(dt,.1),p=enemy.pose;
+  if(enemy.health<=0){const t=THREE.MathUtils.smoothstep(enemy.defeatTime||0,0,.8);p.rig.rotation.x=-1.35*t;p.rig.position.y=.18*t;return;}
   if(enemy.uppercutTime!=null){enemy.uppercutTime=Math.min(enemy.uppercutDuration,enemy.uppercutTime+step);const phase=enemy.uppercutTime/enemy.uppercutDuration;p.rig.position.y=.55*Math.sin(Math.PI*phase);if(phase>=1){enemy.uppercutTime=null;p.rig.position.y=0;}}
   const distance=enemy.lastPosePosition?enemy.position.distanceTo(enemy.lastPosePosition):0;
   enemy.lastPosePosition=enemy.position.clone();

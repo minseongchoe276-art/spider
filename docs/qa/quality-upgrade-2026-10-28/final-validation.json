@@ -1,0 +1,392 @@
+{
+  "status": "PASS",
+  "date": "2026-10-28",
+  "sourceId": "930d967dd77cc1d97869868770219e09368abb2835f280e4136904bb982e2dc7",
+  "releaseId": "baa52c8a478458f197fd69824af65611903629872ebceede3e1f0c5abc249ee7",
+  "standardScriptCommands": 90,
+  "initialPassedPrefix": 23,
+  "initialEvidence": "regression-tests.log",
+  "tail": [
+    {
+      "name": "check-multiplayer.mjs",
+      "code": 0,
+      "pass": true
+    },
+    {
+      "name": "check-admin.mjs",
+      "code": 0,
+      "pass": true
+    },
+    {
+      "name": "check-upgrade.mjs",
+      "code": 0,
+      "pass": true
+    },
+    {
+      "name": "check-upgrade-online.mjs",
+      "code": 0,
+      "pass": true
+    },
+    {
+      "name": "check-release-audit.mjs",
+      "code": 0,
+      "pass": true
+    },
+    {
+      "name": "check-online-edge-cases.mjs",
+      "code": 0,
+      "pass": true
+    },
+    {
+      "name": "check-room-reconnect.mjs",
+      "code": 0,
+      "pass": true
+    },
+    {
+      "name": "check-hong-kong-geometry-codec.mjs",
+      "code": 0,
+      "pass": true
+    },
+    {
+      "name": "check-swing-accessibility.mjs",
+      "code": 0,
+      "pass": true
+    },
+    {
+      "name": "check-cross-system-regressions.mjs",
+      "code": 0,
+      "pass": true
+    },
+    {
+      "name": "check-web-continuity.mjs",
+      "code": 0,
+      "pass": true
+    },
+    {
+      "name": "check-compact-map-and-locators.mjs",
+      "code": 0,
+      "pass": true
+    },
+    {
+      "name": "check-expert-audit.mjs",
+      "code": 0,
+      "pass": true
+    },
+    {
+      "name": "check-connection-lifecycle.mjs",
+      "code": 0,
+      "pass": true
+    },
+    {
+      "name": "check-camera-motion-web.mjs",
+      "code": 0,
+      "pass": true
+    },
+    {
+      "name": "check-full-game-audit.mjs",
+      "code": 0,
+      "pass": true
+    },
+    {
+      "name": "check-input-lifecycle.mjs",
+      "code": 0,
+      "pass": true
+    },
+    {
+      "name": "check-race-removal.mjs",
+      "code": 0,
+      "pass": true
+    },
+    {
+      "name": "check-session-flow.mjs",
+      "code": 0,
+      "pass": true
+    },
+    {
+      "name": "check-visibility.mjs",
+      "code": 0,
+      "pass": true
+    },
+    {
+      "name": "check-loading-performance.mjs",
+      "code": 0,
+      "pass": true
+    },
+    {
+      "name": "check-wall-ledge.mjs",
+      "code": 0,
+      "pass": true
+    },
+    {
+      "name": "check-wall-ledge-rig.mjs",
+      "code": 0,
+      "pass": true
+    },
+    {
+      "name": "check-all-motions.mjs",
+      "code": 0,
+      "pass": true
+    },
+    {
+      "name": "check-motion-sources.mjs",
+      "code": 0,
+      "pass": true
+    },
+    {
+      "name": "check-web-hand-pose.mjs",
+      "code": 0,
+      "pass": true
+    },
+    {
+      "name": "check-silk-gait.mjs",
+      "code": 0,
+      "pass": true
+    },
+    {
+      "name": "check-wall-crawl.mjs",
+      "code": 0,
+      "pass": true
+    },
+    {
+      "name": "check-natural-wall-motion.mjs",
+      "code": 0,
+      "pass": true
+    },
+    {
+      "name": "check-end-joint-stability.mjs",
+      "code": 0,
+      "pass": true
+    },
+    {
+      "name": "check-limb-continuity.mjs",
+      "code": 0,
+      "pass": true
+    },
+    {
+      "name": "check-turn-joint-stability.mjs",
+      "code": 0,
+      "pass": true
+    },
+    {
+      "name": "check-motion-cleanup.mjs",
+      "code": 0,
+      "pass": true,
+      "initialCode": 1,
+      "rerun": "motion-cleanup-final.log",
+      "resolved": true
+    },
+    {
+      "name": "check-combat-traversal.mjs",
+      "code": 0,
+      "pass": true
+    },
+    {
+      "name": "check-combat-aim.mjs",
+      "code": 0,
+      "pass": true
+    },
+    {
+      "name": "check-combat-quality.mjs",
+      "code": 0,
+      "pass": true
+    },
+    {
+      "name": "check-combat-feet.mjs",
+      "code": 0,
+      "pass": true,
+      "initialCode": 1,
+      "rerun": "combat-feet-final.log",
+      "resolved": true
+    },
+    {
+      "name": "check-custom-matches.mjs",
+      "code": 0,
+      "pass": true
+    },
+    {
+      "name": "check-human-mode.mjs",
+      "code": 0,
+      "pass": true
+    },
+    {
+      "name": "check-impact-body.mjs",
+      "code": 0,
+      "pass": true
+    },
+    {
+      "name": "check-drop-motion.mjs",
+      "code": 0,
+      "pass": true
+    },
+    {
+      "name": "check-online-guard.mjs",
+      "code": 0,
+      "pass": true
+    },
+    {
+      "name": "check-online-motion-sync.mjs",
+      "code": 0,
+      "pass": true
+    },
+    {
+      "name": "check-online-stance.mjs",
+      "code": 0,
+      "pass": true
+    },
+    {
+      "name": "check-mode-selection.mjs",
+      "code": 0,
+      "pass": true
+    },
+    {
+      "name": "check-expert-recovery.mjs",
+      "code": 0,
+      "pass": true
+    },
+    {
+      "name": "check-combat-roll-recovery.mjs",
+      "code": 0,
+      "pass": true,
+      "initialCode": 1,
+      "rerun": "roll-recovery.log",
+      "resolved": true
+    },
+    {
+      "name": "check-wall-head-clearance.mjs",
+      "code": 0,
+      "pass": true
+    },
+    {
+      "name": "check-live-movement-camera.mjs",
+      "code": 0,
+      "pass": true
+    },
+    {
+      "name": "check-motion-combinations.mjs",
+      "code": 0,
+      "pass": true,
+      "initialCode": 1,
+      "rerun": "combinations-torso.log",
+      "resolved": true
+    },
+    {
+      "name": "check-motion-reset.mjs",
+      "code": 0,
+      "pass": true
+    },
+    {
+      "name": "check-motion-interruptions.mjs",
+      "code": 0,
+      "pass": true
+    },
+    {
+      "name": "check-motion-adversarial.mjs",
+      "code": 0,
+      "pass": true
+    },
+    {
+      "name": "check-motion-packet-gaps.mjs",
+      "code": 0,
+      "pass": true
+    },
+    {
+      "name": "check-motion-selection.mjs",
+      "code": 0,
+      "pass": true
+    },
+    {
+      "name": "check-player-journey.mjs",
+      "code": 0,
+      "pass": true
+    },
+    {
+      "name": "check-network-conditions.mjs",
+      "code": 0,
+      "pass": true
+    },
+    {
+      "name": "check-asset-delivery.mjs",
+      "code": 0,
+      "pass": true
+    },
+    {
+      "name": "check-mission-expansion.mjs",
+      "code": 0,
+      "pass": true
+    },
+    {
+      "name": "check-release-readiness.mjs",
+      "code": 0,
+      "pass": true
+    },
+    {
+      "name": "check-commercial-hardening.mjs",
+      "code": 0,
+      "pass": true
+    },
+    {
+      "name": "check-admin-db.mjs",
+      "code": 0,
+      "pass": true
+    },
+    {
+      "name": "check-hong-kong-wall-fall.mjs",
+      "code": 0,
+      "pass": true
+    },
+    {
+      "name": "check-strike-steering.mjs",
+      "code": 0,
+      "pass": true
+    },
+    {
+      "name": "check-low-stance.mjs",
+      "code": 0,
+      "pass": true
+    },
+    {
+      "name": "check-stance-combat.mjs",
+      "code": 0,
+      "pass": true,
+      "initialCode": 1,
+      "rerun": "stance-combat-final.log",
+      "resolved": true
+    },
+    {
+      "name": "check-low-stance-online.mjs",
+      "code": 0,
+      "pass": true,
+      "initialCode": 1,
+      "rerun": "low-stance-online-final.log",
+      "resolved": true
+    }
+  ],
+  "executionNote": "The standard suite was run in stages. Initial failures remain in the original logs; the six failed tail commands were corrected and successfully rerun. This is not a claim that the first npm test process exited successfully.",
+  "desktopBrowserCases": 13,
+  "touchEmulationCases": 5,
+  "browserUncaughtErrors": [],
+  "releaseHttpChecks": 133,
+  "realKeyboardPatrol": {
+    "meters": 500,
+    "wallSeconds": 48.149,
+    "result": {
+      "score": 800,
+      "medal": "silver",
+      "seconds": 46,
+      "skills": 0
+    }
+  },
+  "onlineBrowserPlayers": 4,
+  "onlineHorizontalErrorsMeters": [
+    0.005,
+    0.005,
+    0.005
+  ],
+  "scopeLimits": [
+    "Chrome touch emulation does not replace physical iOS/Android qualification",
+    "The 120-second eight-socket soak is not a 30-minute GPU/mobile soak",
+    "No first-time human playtest or listening evaluation was performed",
+    "Supplied asset provenance remains unresolved where no source evidence exists",
+    "Local build and HTTP verification do not certify a deployed operating service or applied DB schema"
+  ]
+}

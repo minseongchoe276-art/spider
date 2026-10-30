@@ -102,6 +102,13 @@ try{
   game.physics.state='IDLE';game.experience.safe=()=>false;for(let i=0;i<10;i++)journey.update(.1);assert.equal(journey.mission.index,2);
   game.experience.safe=()=>true;for(let i=0;i<7;i++)journey.update(.1);assert.equal(journey.mission,null);assert.equal(journey.progress.data.last.type,'technique');game.physics.webs=[];
  });
+ test('Driving suspends walking lessons while preserving vehicle patrol missions and rewards',()=>{
+  journey.cancel();journey.progress.restart();game.vehicle={driving:true};game.physics.position.set(0,.1,0);game.physics.state='IDLE';journey.update(.1);game.physics.position.x=5;journey.update(.1);
+  assert(journey.panel.hidden);assert.equal(journey.progress.data.lesson,0);assert.equal(journey.progress.walk,0);
+  const before=journey.progress.data.completed;game.physics.position.x=0;journey.start('travel');journey.update(.1);
+  for(let i=0;i<501;i++){game.physics.position.x+=1;journey.update(.1);}
+  assert.equal(journey.mission,null);assert.equal(journey.progress.data.completed,before+1);assert.equal(journey.progress.data.last.type,'travel');assert(journey.progress.data.records['procedural:travel']);assert(!journey.panel.hidden,'The completion result remains visible while driving');delete game.vehicle;
+ });
  test('Repeated HUD refreshes do not repeat a live-region announcement',()=>{
   const controller=new SoloJourney(game,null);let writes=0,value='';Object.defineProperty(controller.title,'textContent',{get:()=>value,set:v=>{value=v;writes++;}});
   for(let i=0;i<30;i++)controller.render();assert.equal(writes,1);

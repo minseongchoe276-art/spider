@@ -1,0 +1,23 @@
+PASS Vehicle B toggles once across devices and driving owns movement without combat or jump
+PASS Keyboard and pad mode presses share one action until every source releases
+PASS Remapped left/right modifiers do not double-toggle modes
+PASS R randomly selects both flips in both modes, independent of W; devices share one press
+PASS Retired crouch remains inactive and X retains camera recenter
+PASS E and F have strict mode ownership on ground and in air
+PASS Q completes the current strike, clears held web actions and preserves momentum
+PASS Actual combat keys select distinct clips and reject attacks while guarding or airborne
+PASS Pad B / LB / D-pad share F without releasing another held source
+PASS Two devices cannot toggle off the same held web button
+PASS Toggle on then off between physics frames cancels both pending launches
+PASS Resume drops time without animation frames while active stalls still count
+PASS A pad resume within the animation callback also excludes suspended time
+PASS Closing solo help drops suspended time while online help preserves active time
+PASS Resuming cancels hidden key capture, but context-loss rejection leaves it available
+PASS Touch movement coexists with keyboard and pad, clearing only its own stick
+PASS Touch releases its web with desktop toggle enabled and preserves the opposite hand
+PASS Keyboard-held guard survives a touch release of the same action
+PASS Pause clears touch-owned keyboard, webs, and joystick
+PASS Space explicitly jumps from a grounded attached strand
+PASS Keyboard, pad, and touch jump off a hanging web once and clear both hands
+PASS Pause preserves adaptive resolution and clears stale frame samples
+Input lifecycle review: 22 passed, 0 failed.

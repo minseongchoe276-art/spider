@@ -1,3 +1,4 @@
+import {WorldWeather} from './WorldWeather.js';
 import {initLobbySelection} from './LobbySelection.js';
 import {localMap,mapName} from './MapCatalog.js';
 import {initLanguage,t,language} from './I18n.js';
@@ -179,7 +180,7 @@ export class GameApp {
     const profile=localMap(selectedCity(location.search));
     if(localCity){this.scene.background.setHex(profile.sky);this.scene.fog.color.setHex(profile.sky);this.scene.fog.density=.0013;}
     const ambientLight = new THREE.HemisphereLight(0xd8f1ff, localCity?0xb8c6d5:0x777c82, 1.55);
-    this.scene.add(ambientLight);
+    this.ambientLight=ambientLight;this.scene.add(ambientLight);
     if(localCity){
       this.scene.add(new THREE.AmbientLight(0xffffff,.22));
       const fill=new THREE.DirectionalLight(0xe4f1ff,.55);
@@ -427,10 +428,10 @@ export class GameApp {
       const gameplayKey = [
         'KeyW', 'KeyA', 'KeyS', 'KeyD', 'ArrowUp', 'ArrowDown',
         'ArrowLeft', 'ArrowRight', 'Home', 'End', 'PageUp', 'PageDown', 'ShiftLeft', 'ShiftRight', 'Space',
-        'KeyG', 'KeyE', 'KeyT', 'KeyR', 'KeyF', 'KeyC', 'KeyX', 'KeyV', 'KeyQ', 'KeyB', 'ControlLeft', 'ControlRight'
+        'KeyG', 'KeyE', 'KeyT', 'KeyR', 'KeyF', 'KeyC', 'KeyX', 'KeyV', 'KeyQ', 'KeyZ', 'KeyB', 'ControlLeft', 'ControlRight'
       ].includes(k);
       if (gameplayKey && document.getElementById?.('controls-guide') && !document.getElementById('controls-guide').classList.contains('hidden')) return;
-      if (gameplayKey && (!this.isPlaying || this.isPaused || this.multiplayer?.spectating)) return;
+      if (gameplayKey && this.gameplayInputBlocked) return;
       if (gameplayKey) e.preventDefault();
       if (gameplayKey && e.repeat && ONE_SHOT_KEYS.has(k)) return;
 
@@ -448,13 +449,14 @@ export class GameApp {
       }
       if(k==='KeyB'){this.vehicle?.interact();return;}
       if(this.vehicle?.driving && !['KeyW','KeyS','KeyA','KeyD','ArrowUp','ArrowDown','ArrowLeft','ArrowRight','ShiftLeft','ShiftRight','Space','Escape','KeyM','KeyH'].includes(k))return;
-      if(k==='KeyQ'){
+      if(k==='KeyX'){
         if(this.multiplayer?.locksCombatToggle()){this.showNotice('도망자는 에너지 와이어로만 이동합니다.');return;}
         this.combat.toggle(this.input);this.syncHeldInput();return;
       }
-      // Retired procedural Ctrl evasion: never starts a pose or consumes stamina.
+      // Ctrl is held stance; Q/E are explicit lateral slips.
       if(k==='ControlLeft'||k==='ControlRight')return;
-      if (!e.repeat && k === 'KeyX') {
+      if(k==='KeyQ'){this.combat.dodge({left:true},this.camera);return;}
+      if (!e.repeat && k === 'KeyZ') {
         this.tpsCamera.recenterBehind(this.physics.facingAngle);
       }
       if (!e.repeat && k === 'KeyV') {
@@ -491,11 +493,12 @@ export class GameApp {
         this.physics.performAirTrick(Math.random() < .5 ? 'front' : 'back');
         return;
       }
+      if(k==='KeyT' && this.combat?.mode==='combat'){if(this.combat.heavy(this.camera))this.multiplayer?.attack('punch');return;}
       if(k==='KeyG' && this.combat?.mode==='combat'){if(this.combat.special(this.camera))this.multiplayer?.attack('punch');return;}
       if (k === 'KeyF' && this.combat?.mode==='combat') this.combat.guard(true);
       if (k === 'KeyE') {
         if (this.combat?.mode==='combat') {
-          if (this.combat.heavy(this.camera)) this.multiplayer?.attack('punch');
+          this.combat.dodge({right:true},this.camera);
         } else this.physics.performAirJump(this.camera, this.physics.webAimNdc);
       }
       if (k === 'KeyM' && !e.repeat && this.isPlaying) { e.preventDefault(); this.worldMap.toggle(); return; }
@@ -518,7 +521,7 @@ export class GameApp {
     // Mouse Buttons
     window.addEventListener('mousedown', (e) => {
       if (e.sourceCapabilities?.firesTouchEvents || this.vehicle?.driving) return;
-      if (!this.isPlaying || this.isPaused || this.multiplayer?.spectating) return;
+      if (this.gameplayInputBlocked) return;
       if (document.getElementById?.('controls-guide') && !document.getElementById('controls-guide').classList.contains('hidden')) return;
       if (e.target !== this.canvas) return;
       const buttons=e.touchInput?(this.touchMouseButtons??=new Set()):e.gamepadInput?(this.gamepadMouseButtons??=new Set()):(this.mouseButtons??=new Set());
@@ -591,14 +594,14 @@ export class GameApp {
 
     // Mouse-wheel zoom, matching the on-screen controls.
     this.canvas.addEventListener('wheel', (e) => {
-      if (!this.isPlaying || this.isPaused || this.helpOpen) return;
+      if (this.gameplayInputBlocked) return;
       e.preventDefault();
       this.tpsCamera.handleWheel(e.deltaY);
     }, { passive: false });
 
     // Mouse Look (Pointer Lock)
     window.addEventListener('mousemove', (e) => {
-      if (this.multiplayer?.spectating || this.helpOpen) return;
+      if (this.gameplayInputBlocked) return;
       if (this.isPlaying && !this.isPaused && document.pointerLockElement === this.canvas) {
         this.tpsCamera.handleMouseMove(e.movementX, e.movementY);
         this.physics.setWebAimPoint(0, 0, null, true);
@@ -721,6 +724,14 @@ export class GameApp {
     }
   }
 
+  // Simulation may continue under online help; gameplay controls must not.
+  // Releases still run so another device cannot leave a held action behind.
+  get gameplayInputBlocked() {
+    return !this.isPlaying || this.isPaused || this.contextLost || this.helpOpen ||
+      this.gameplaySuspended || document.hidden || this.multiplayer?.spectating ||
+      this.worldMap?.isOpen || !!document.querySelector?.('dialog[open]');
+  }
+
   get gameplaySuspended() { return !!this.helpOpen && !this.multiplayer?.room; }
 
   togglePause() {
@@ -772,7 +783,7 @@ export class GameApp {
     if (dragButton) dragButton.textContent = resume ? '마우스 잠금 없이 계속하기' : '마우스 잠금 없이 시작 · 휠 버튼 드래그';
     document.getElementById('btn-restart')?.classList.toggle('hidden', !resume || !!this.multiplayer?.room);
     if (paused) setTimeout(() => {if(this.isPaused && this.isPlaying)document.getElementById('btn-start-game')?.focus();}, 0);
-    if (paused) this.audio.setWindSpeed(0);
+    if (paused) {this.audio.setWindSpeed(0);this.audio.updateSceneAudio?.({active:false});}
     if (this.clickToPlayOverlay) {
       if (this.isPaused) {
         this.clickToPlayOverlay.classList.remove('hidden');
@@ -805,6 +816,7 @@ export class GameApp {
     this.input.right = !!pad.right || !!touch.right || held('KeyD','ArrowRight');
     this.input.sprint = !!touch.sprint || (this.preferences?.values.settings.sprintToggle?!!this.sprintLatched:held('ShiftLeft','ShiftRight'));
     this.input.wallRun = this.combat?.mode !== 'combat' && held('KeyF');
+    this.input.combatStance = held('ControlLeft','ControlRight');
     this.input.guard = this.combat?.mode === 'combat' && held('KeyF');
     this.input.webZipHeld = held('KeyE') && this.combat?.mode !== 'combat';
     this.input.strafe = Number(this.input.right) - Number(this.input.left);
@@ -951,7 +963,7 @@ export class GameApp {
     for(const [name,flags] of Object.entries(slots.slots)){
       const slot=bar.querySelector(`[data-ability="${name}"]`);
       if(!slot)continue;
-      const labels={special:`돌진 어퍼컷 · G · 기력 35${this.combat.specialCooldown>0?' · '+this.combat.specialCooldown.toFixed(1)+'초 대기':''}`,mode:slots.mode==='web'?'전투 모드로 전환':'와이어 모드로 전환',zip:slots.mode==='web'?'공중 와이어 집':'훅 · 기력 18',wall:'벽 타기 · 누르고 이동',guard:'방어 · 누르고 유지'};
+      const labels={special:`돌진 어퍼컷 · G · 기력 35${this.combat.specialCooldown>0?' · '+this.combat.specialCooldown.toFixed(1)+'초 대기':''}`,mode:slots.mode==='web'?'전투 모드로 전환':'와이어 모드로 전환',zip:slots.mode==='web'?'공중 와이어 집':'강공격 · 기력 18',wall:'벽 타기 · 누르고 이동',guard:'방어 · 누르고 유지'};
       if(name==='special'){const remaining=slot.querySelector('.ability-cooldown');if(remaining)remaining.textContent=this.combat.specialCooldown>0?Math.ceil(this.combat.specialCooldown)+'s':'';}
       slot.title=t(labels[name]);slot.setAttribute('aria-label',t(labels[name]));
       slot.hidden=(name==='special' && slots.mode==='web') || (name==='guard' && slots.mode==='web') || (name==='wall' && slots.mode==='combat');
@@ -1062,6 +1074,7 @@ export class GameApp {
     // Keep streamed city tiles advancing while the start overlay is visible;
     // TilesRenderer performs visibility/LOD work independently of gameplay.
     this.city.update(this.clock.elapsedTime);
+    if(this.city.isStreamed && !this.weather)this.weather=new WorldWeather({scene:this.scene,camera:this.camera,renderer:this.renderer,sun:this.sunLight,ambient:this.ambientLight,sky:this.sky,city:this.city});
     if (!this.assetsReady && this.character.isLoaded &&
         (!(this.city.isStreamed) || this.city.isReady)) this.onAssetsLoaded();
 
@@ -1137,6 +1150,7 @@ export class GameApp {
       if(interactive||spectating||now-(this.lastIdleRender||0)>=100){
         this.sky?.position.copy(this.camera.position);
         if(this.city.isStreamed)updateHongKongSun(this.sunLight,this.physics.position,this.preferences.values.quality);
+        this.weather?.update(interactive?delta:0,this.physics.position,undefined,{reducedMotion:this.preferences.values.reducedMotion});
         this.renderer.render(this.scene,this.camera);this.lastIdleRender=now;
       }
     }

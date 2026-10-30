@@ -1,7 +1,7 @@
 {
   "motions": 37,
   "cases": 111,
-  "samples": 14532,
+  "samples": 14725,
   "report": [
     {
       "key": "idle",
@@ -573,128 +573,128 @@
     {
       "key": "rightHook",
       "fps": 30,
-      "frames": 22,
-      "maxFrame": 19,
-      "maxStep": 0.1202
-    },
-    {
-      "key": "rightHook",
-      "fps": 60,
-      "frames": 42,
-      "maxFrame": 36,
-      "maxStep": 0.0631
-    },
-    {
-      "key": "rightHook",
-      "fps": 144,
-      "frames": 99,
-      "maxFrame": 86,
-      "maxStep": 0.0265
-    },
-    {
-      "key": "cross",
-      "fps": 30,
       "frames": 31,
       "maxFrame": 11,
       "maxStep": 0.1961
     },
     {
-      "key": "cross",
+      "key": "rightHook",
       "fps": 60,
       "frames": 61,
       "maxFrame": 22,
       "maxStep": 0.0989
     },
     {
-      "key": "cross",
+      "key": "rightHook",
       "fps": 144,
       "frames": 145,
       "maxFrame": 52,
       "maxStep": 0.0412
     },
     {
-      "key": "hook",
+      "key": "cross",
       "fps": 30,
-      "frames": 43,
-      "maxFrame": 14,
-      "maxStep": 0.1853
-    },
-    {
-      "key": "hook",
-      "fps": 60,
-      "frames": 85,
-      "maxFrame": 28,
-      "maxStep": 0.0942
-    },
-    {
-      "key": "hook",
-      "fps": 144,
-      "frames": 203,
-      "maxFrame": 67,
-      "maxStep": 0.0394
-    },
-    {
-      "key": "heavy",
-      "fps": 30,
-      "frames": 43,
-      "maxFrame": 14,
-      "maxStep": 0.1853
-    },
-    {
-      "key": "heavy",
-      "fps": 60,
-      "frames": 85,
-      "maxFrame": 28,
-      "maxStep": 0.0942
-    },
-    {
-      "key": "heavy",
-      "fps": 144,
-      "frames": 203,
-      "maxFrame": 67,
-      "maxStep": 0.0394
-    },
-    {
-      "key": "airTrick",
-      "fps": 30,
-      "frames": 29,
+      "frames": 42,
       "maxFrame": 21,
-      "maxStep": 0.4008
+      "maxStep": 0.2257
+    },
+    {
+      "key": "cross",
+      "fps": 60,
+      "frames": 83,
+      "maxFrame": 41,
+      "maxStep": 0.117
+    },
+    {
+      "key": "cross",
+      "fps": 144,
+      "frames": 198,
+      "maxFrame": 98,
+      "maxStep": 0.0488
+    },
+    {
+      "key": "hook",
+      "fps": 30,
+      "frames": 43,
+      "maxFrame": 14,
+      "maxStep": 0.1853
+    },
+    {
+      "key": "hook",
+      "fps": 60,
+      "frames": 85,
+      "maxFrame": 28,
+      "maxStep": 0.0942
+    },
+    {
+      "key": "hook",
+      "fps": 144,
+      "frames": 203,
+      "maxFrame": 67,
+      "maxStep": 0.0394
+    },
+    {
+      "key": "heavy",
+      "fps": 30,
+      "frames": 43,
+      "maxFrame": 14,
+      "maxStep": 0.1853
+    },
+    {
+      "key": "heavy",
+      "fps": 60,
+      "frames": 85,
+      "maxFrame": 28,
+      "maxStep": 0.0942
+    },
+    {
+      "key": "heavy",
+      "fps": 144,
+      "frames": 203,
+      "maxFrame": 67,
+      "maxStep": 0.0394
+    },
+    {
+      "key": "airTrick",
+      "fps": 30,
+      "frames": 33,
+      "maxFrame": 21,
+      "maxStep": 0.3967
     },
     {
       "key": "airTrick",
       "fps": 60,
-      "frames": 57,
+      "frames": 65,
       "maxFrame": 41,
-      "maxStep": 0.2047
+      "maxStep": 0.2027
     },
     {
       "key": "airTrick",
       "fps": 144,
-      "frames": 136,
+      "frames": 155,
       "maxFrame": 98,
-      "maxStep": 0.0852
+      "maxStep": 0.0844
     },
     {
       "key": "backTrick",
       "fps": 30,
       "frames": 38,
       "maxFrame": 1,
-      "maxStep": 0.4809
+      "maxStep": 0.4744
     },
     {
       "key": "backTrick",
       "fps": 60,
       "frames": 74,
       "maxFrame": 1,
-      "maxStep": 0.2534
+      "maxStep": 0.2497
     },
     {
       "key": "backTrick",
       "fps": 144,
-      "frames": 174,
+      "frames": 176,
       "maxFrame": 1,
-      "maxStep": 0.1089
+      "maxStep": 0.106
     },
     {
       "key": "hitBody",

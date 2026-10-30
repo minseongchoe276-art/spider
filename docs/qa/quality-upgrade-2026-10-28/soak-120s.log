@@ -1,0 +1,26 @@
+{"elapsedSeconds":60.2,"rooms":1,"clients":8,"rounds":2,"reconnects":1,"steps":6309,"movesReceived":67104,"heapMB":18.21,"rssMB":64.91,"lastTickMs":353.877}
+{
+  "status": "PASS",
+  "scope": "Real-time Node physics + 8 WebSocket clients; not 8 human players or browser/GPU soak",
+  "requestedSeconds": 120,
+  "elapsedSeconds": 120.999,
+  "rounds": 2,
+  "reconnects": 1,
+  "steps": 8205,
+  "movesReceived": 89216,
+  "maxRooms": 1,
+  "samples": [
+    {
+      "elapsedSeconds": 60.2,
+      "rooms": 1,
+      "clients": 8,
+      "rounds": 2,
+      "reconnects": 1,
+      "steps": 6309,
+      "movesReceived": 67104,
+      "heapMB": 18.21,
+      "rssMB": 64.91,
+      "lastTickMs": 353.877
+    }
+  ]
+}

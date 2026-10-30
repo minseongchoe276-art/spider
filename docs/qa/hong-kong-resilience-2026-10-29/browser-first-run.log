@@ -1,0 +1,11 @@
+WebGL pixels confirm gradual fade and complete boundary coverage for all three qualities
+PASS fog-webgl
+Injected terrain root outage 1/6
+Injected terrain root outage 2/6
+Injected terrain root outage 3/6
+Injected terrain root outage 4/6
+Injected terrain root outage 5/6
+PASS play-and-settings
+Injected terrain root outage 6/6
+Recovered after six failures; testing independent later outage
+PASS six-failures-and-recovery
