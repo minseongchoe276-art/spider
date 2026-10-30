@@ -101,7 +101,8 @@ export class CombatSystem {
     const direction=input.left?r.negate():input.right?r:input.forward?f:f.negate();
     const key=input.left?'dodgeLeft':input.right?'dodgeRight':input.forward?'dodgeForward':'dodgeBack';
     const duration={dodgeLeft:0.38,dodgeRight:0.38,dodgeBack:0.42,dodgeForward:0.52}[key];
-    this.start(key,duration,null);this.action.direction=direction;return true;
+    this.start(key,duration,null);this.action.direction=direction;
+    this.action.entryVelocity=this.physics.velocity.clone().setY(0);return true;
   }
   guard(value) {this.blocking=value && this.mode==='combat' && !this.action && canStrike(this.physics) && this.stamina>=12;}
   before(delta,camera,input=null) {
@@ -148,7 +149,7 @@ export class CombatSystem {
     const dodgeSpeed=current?.key==='special'?uppercutSpeed(current.previous,current.time):current?.direction?
       ({dodgeLeft:0.8,dodgeRight:0.8,dodgeBack:1.35,dodgeForward:2.3}[current.key] || 0)*
       Math.sin(Math.PI*THREE.MathUtils.clamp(current.time/current.duration,0,1)):0;
-    this.physics.combatMotion=current?{key:current.key,direction:current.direction || null,speed:dodgeSpeed,plant:!!ATTACKS[current.key] && !current.travel,travel:!!current.travel}:this.blocking?{key:'guard'}:null;
+    this.physics.combatMotion=current?{key:current.key,direction:current.direction || null,speed:dodgeSpeed,entryVelocity:current.entryVelocity || null,time:current.time,duration:current.duration,plant:!!ATTACKS[current.key] && !current.travel,travel:!!current.travel}:this.blocking?{key:'guard'}:null;
     this.character.combatAction=current?{id:current.id,key:current.key,time:current.time,duration:current.duration,travel:!!current.travel}:
       this.blocking?{key:'guard'}:!stopping && this.character.combatStance && this.physics.state==='IDLE' && Math.hypot(this.physics.velocity.x,this.physics.velocity.z)<0.15?{key:'combatIdle'}:null;
     if(current || this.blocking)this.character.targetFacingAngle=this.physics.facingAngle;

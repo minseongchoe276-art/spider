@@ -974,6 +974,7 @@ export class SwingPhysics {
     if (input.left) moveDir.sub(camRight);
 
     const combat=this.combatMotion;
+    const requestedMove=combat?.entryVelocity?moveDir.clone().normalize():null;
     if(isGrounded && (combat?.direction || combat?.plant))moveDir.set(0,0,0);
     if (moveDir.lengthSq() > 0.001) {
       moveDir.normalize();
@@ -998,6 +999,15 @@ export class SwingPhysics {
     if (isGrounded) {
       const moveSpeed = this.groundMoveSpeed(input);
       const targetVelocity = combat?.direction?combat.direction.clone().multiplyScalar(combat.speed ?? 7):moveDir.clone().multiplyScalar(moveSpeed*(combat?.key==='guard'?0.35:1));
+      if(combat?.key?.startsWith('dodge') && combat.entryVelocity){
+        // Enter from the actual running momentum, then return to held movement.
+        // Replacing 4.4m/s with the slip's near-zero first sample stopped the
+        // capsule instantly and restarted locomotion again on release.
+        const enter=THREE.MathUtils.smoothstep(combat.time,0,.12);
+        const exit=THREE.MathUtils.smoothstep(combat.time,combat.duration-.12,combat.duration);
+        targetVelocity.lerpVectors(combat.entryVelocity,targetVelocity,enter);
+        targetVelocity.lerp(requestedMove.multiplyScalar(moveSpeed),exit);
+      }
       if(combat?.direction)moveDir.copy(combat.direction);
       if (moveDir.lengthSq() > 0.001) {
         this.velocity.x = combat?.direction?targetVelocity.x:THREE.MathUtils.damp(this.velocity.x,targetVelocity.x,9,delta);

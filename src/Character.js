@@ -734,20 +734,20 @@ export class Character {
         this.activeAction?.setEffectiveTimeScale(this.strikeStrideScale ?? forwardScale);
       }else{
         this.strikeStrideScale=null;
-        // A slow dodge or a dying hit must not play the stride in slow motion.
-        // Hold the pose. settleHeldStance then puts a raised foot down.
-        const holdStride=(movingStrike && horizontalSpeed<.12) || (heldReact && ((dodgeKey && horizontalSpeed<3.4) || (hitKey && horizontalSpeed<2.8)));
+        // Keep a moving slip's stride advancing with its carried momentum.
+        // Only a stopped slip or a dying hit holds and settles the raised foot.
+        const holdStride=(movingStrike && horizontalSpeed<.12) || (heldReact && ((dodgeKey && horizontalSpeed<.12) || (hitKey && horizontalSpeed<2.8)));
         this.activeAction?.setEffectiveTimeScale(holdStride ? 0 : forwardScale);
       }
     }
-    if(combatClip===name && combat.id && combat.id!==this.combatClipToken){
+    if(!dodgeKey && combatClip===name && combat.id && combat.id!==this.combatClipToken){
       // fadeToAction already reset a newly selected take. Resetting it again
       // cancels Three's fade-in and gives the incoming action full weight
       // beside the outgoing pose, acquiring foot plants from a half-blend.
       if(playingKey===name)this.activeAction?.reset().play();
       this.combatClipToken=combat.id;
     }
-    if(combatClip===name && combat.duration) {
+    if(!dodgeKey && combatClip===name && combat.duration) {
       // The gameplay action owns time, including a slam held until actual
       // contact. Advancing the mixer independently could land in mid-air.
       this.activeAction.enabled=true;this.activeAction.paused=false;
@@ -774,7 +774,7 @@ export class Character {
     // A neutral combat stance should not shuffle both feet on a loop while
     // contact IK tries to pin them. Use one authored guard sample; strikes,
     // locomotion and explicit blocking keep their own animation clocks.
-    if(name==='combatIdle' && combatGround && !combat?.duration && horizontalSpeed<.15){
+    if(name==='combatIdle' && combatGround && (dodgeKey || (!combat?.duration && horizontalSpeed<.15))){
       this.activeAction.time=0;this.activeAction.setEffectiveTimeScale(0);
     }
     this.mixer.update(delta);
@@ -813,7 +813,9 @@ export class Character {
           return bone && property==='quaternion' && /^(spine|neck|head|leftshoulder|rightshoulder|leftarm|rightarm|leftforearm|rightforearm|lefthand|righthand)/.test(boneId(id))
             ?[{bone,sample:track.createInterpolant()}]:[];
         }));
-        const phase=upperAction && combat.duration?(combat.key==='heavy'?heavyClipPhase(combat.time/combat.duration):THREE.MathUtils.clamp(combat.time/combat.duration,0,1)):0;
+        // Dodges lean and step procedurally over a stable guard sample.
+        // Scrubbing the 4.4s idle take through a 0.38s slip made it twitch.
+        const phase=upperAction && combat.duration && !dodgeKey?(combat.key==='heavy'?heavyClipPhase(combat.time/combat.duration):THREE.MathUtils.clamp(combat.time/combat.duration,0,1)):0;
         // Enter guard before the strike instead of snapping from a running
         // arm swing. Contact stays fully weighted; recovery returns to guard.
         const weight=this.movingGuardWeight;

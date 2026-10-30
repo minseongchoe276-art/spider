@@ -1323,7 +1323,11 @@ export function poseDodgeFeet(c, combat, delta=1/60) {
     }
     state.root.copy(root);if(gap<.015)c.dodgeFootState=null;return;
   }
-  const cache=c.dodgeFootState??={id:combat.id,root:root.clone(),time:combat.time,feet:{}};cache.root.copy(root);cache.time=combat.time;
+  // Seed a new slip from the feet rendered on the previous frame. An empty
+  // cache skipped the speed limit exactly when Q/E interrupted a running step.
+  const entryFeet=!c.dodgeFootState && c.finalFeetModel===c.model && c.finalFeet
+    ?Object.fromEntries(Object.entries(c.finalFeet).filter(([,p])=>p).map(([side,p])=>[side,p.clone().add(root)])):{};
+  const cache=c.dodgeFootState??={id:combat.id,root:root.clone(),time:combat.time,feet:entryFeet};cache.root.copy(root);cache.time=combat.time;
   const t=THREE.MathUtils.clamp(combat.time/combat.duration,0,1);
   const forward=new THREE.Vector3(Math.sin(c.visualYaw||0),0,Math.cos(c.visualYaw||0));
   const left=new THREE.Vector3(forward.z,0,-forward.x);

@@ -1,0 +1,322 @@
+[
+  {
+    "fps": 30,
+    "movement": "idle",
+    "side": "left",
+    "maxIdleClock": 0,
+    "maxFootStep": 0.06199150515419052,
+    "maxSpeedDrop": 0.30074365021620375,
+    "peakFrame": {
+      "repeat": 0,
+      "i": 19,
+      "carrier": "combatIdle",
+      "carrierTime": 0,
+      "settle": 0,
+      "speed": 0
+    }
+  },
+  {
+    "fps": 30,
+    "movement": "idle",
+    "side": "right",
+    "maxIdleClock": 0,
+    "maxFootStep": 0.06723428990414662,
+    "maxSpeedDrop": 0.30074365021620375,
+    "peakFrame": {
+      "repeat": 0,
+      "i": 3,
+      "key": "dodgeRight",
+      "time": 0.13333333333333333,
+      "carrier": "combatIdle",
+      "carrierTime": 0,
+      "settle": 0,
+      "speed": 0.713803390894715
+    }
+  },
+  {
+    "fps": 30,
+    "movement": "walk",
+    "side": "left",
+    "maxIdleClock": 0,
+    "maxFootStep": 0.22353661593422253,
+    "maxSpeedDrop": 1.7998114584775577,
+    "peakFrame": {
+      "repeat": 1,
+      "i": 0,
+      "key": "dodgeLeft",
+      "time": 0.03333333333333333,
+      "carrier": "regularRun",
+      "carrierTime": 0.22813121904545383,
+      "settle": 0,
+      "speed": 3.562106499468299
+    }
+  },
+  {
+    "fps": 30,
+    "movement": "walk",
+    "side": "right",
+    "maxIdleClock": 0,
+    "maxFootStep": 0.22219106815184403,
+    "maxSpeedDrop": 1.7998114584775577,
+    "peakFrame": {
+      "repeat": 1,
+      "i": 0,
+      "key": "dodgeRight",
+      "time": 0.03333333333333333,
+      "carrier": "regularRun",
+      "carrierTime": 0.22813121904545383,
+      "settle": 0,
+      "speed": 3.562106499468299
+    }
+  },
+  {
+    "fps": 30,
+    "movement": "sprint",
+    "side": "left",
+    "maxIdleClock": 0,
+    "maxFootStep": 0.27206462749968907,
+    "maxSpeedDrop": 2.643411612816217,
+    "peakFrame": {
+      "repeat": 1,
+      "i": 0,
+      "key": "dodgeLeft",
+      "time": 0.03333333333333333,
+      "carrier": "run",
+      "carrierTime": 0.3889561535052396,
+      "settle": 0,
+      "speed": 5.262011875446057
+    }
+  },
+  {
+    "fps": 30,
+    "movement": "sprint",
+    "side": "right",
+    "maxIdleClock": 0,
+    "maxFootStep": 0.2772789661274543,
+    "maxSpeedDrop": 2.643411612816217,
+    "peakFrame": {
+      "repeat": 1,
+      "i": 0,
+      "key": "dodgeRight",
+      "time": 0.03333333333333333,
+      "carrier": "run",
+      "carrierTime": 0.3889561535052396,
+      "settle": 0,
+      "speed": 5.262011875446057
+    }
+  },
+  {
+    "fps": 60,
+    "movement": "idle",
+    "side": "left",
+    "maxIdleClock": 0,
+    "maxFootStep": 0.05008118039382744,
+    "maxSpeedDrop": 0.15283802003049474,
+    "peakFrame": {
+      "repeat": 0,
+      "i": 2,
+      "key": "dodgeLeft",
+      "time": 0.05,
+      "carrier": "combatIdle",
+      "carrierTime": 0,
+      "settle": 0,
+      "speed": 0.12088056760390284
+    }
+  },
+  {
+    "fps": 60,
+    "movement": "idle",
+    "side": "right",
+    "maxIdleClock": 0,
+    "maxFootStep": 0.04852577605276716,
+    "maxSpeedDrop": 0.15283802003049474,
+    "peakFrame": {
+      "repeat": 0,
+      "i": 6,
+      "key": "dodgeRight",
+      "time": 0.11666666666666665,
+      "carrier": "combatIdle",
+      "carrierTime": 0,
+      "settle": 0,
+      "speed": 0.6559286230921666
+    }
+  },
+  {
+    "fps": 60,
+    "movement": "walk",
+    "side": "left",
+    "maxIdleClock": 0,
+    "maxFootStep": 0.12023226903988356,
+    "maxSpeedDrop": 0.9159660934470228,
+    "peakFrame": {
+      "repeat": 1,
+      "i": 0,
+      "key": "dodgeLeft",
+      "time": 0.016666666666666666,
+      "carrier": "regularRun",
+      "carrierTime": 0.19170679255889125,
+      "settle": 0,
+      "speed": 4.157788327257271
+    }
+  },
+  {
+    "fps": 60,
+    "movement": "walk",
+    "side": "right",
+    "maxIdleClock": 0,
+    "maxFootStep": 0.11973914040444074,
+    "maxSpeedDrop": 0.9159660934470228,
+    "peakFrame": {
+      "repeat": 1,
+      "i": 0,
+      "key": "dodgeRight",
+      "time": 0.016666666666666666,
+      "carrier": "regularRun",
+      "carrierTime": 0.19170679255889125,
+      "settle": 0,
+      "speed": 4.157788327257271
+    }
+  },
+  {
+    "fps": 60,
+    "movement": "sprint",
+    "side": "left",
+    "maxIdleClock": 0,
+    "maxFootStep": 0.15124980429649137,
+    "maxSpeedDrop": 1.3464725477036577,
+    "peakFrame": {
+      "repeat": 0,
+      "i": 0,
+      "key": "dodgeLeft",
+      "time": 0.016666666666666666,
+      "carrier": "run",
+      "carrierTime": 0.4994598629786573,
+      "settle": 0,
+      "speed": 6.130858557010584
+    }
+  },
+  {
+    "fps": 60,
+    "movement": "sprint",
+    "side": "right",
+    "maxIdleClock": 0,
+    "maxFootStep": 0.1508270362312548,
+    "maxSpeedDrop": 1.3464725477036577,
+    "peakFrame": {
+      "repeat": 0,
+      "i": 0,
+      "key": "dodgeRight",
+      "time": 0.016666666666666666,
+      "carrier": "run",
+      "carrierTime": 0.4994598629786573,
+      "settle": 0,
+      "speed": 6.130858557010584
+    }
+  },
+  {
+    "fps": 144,
+    "movement": "idle",
+    "side": "left",
+    "maxIdleClock": 0,
+    "maxFootStep": 0.02360863955498391,
+    "maxSpeedDrop": 0.1292102478748392,
+    "peakFrame": {
+      "repeat": 0,
+      "i": 30,
+      "key": "dodgeLeft",
+      "time": 0.21527777777777785,
+      "carrier": "combatIdle",
+      "carrierTime": 0,
+      "settle": 0,
+      "speed": 0.7825943926479669
+    }
+  },
+  {
+    "fps": 144,
+    "movement": "idle",
+    "side": "right",
+    "maxIdleClock": 0,
+    "maxFootStep": 0.023071446667192557,
+    "maxSpeedDrop": 0.1292102478748392,
+    "peakFrame": {
+      "repeat": 1,
+      "i": 61,
+      "carrier": "stop",
+      "carrierTime": 0.055555555555555566,
+      "settle": 0,
+      "speed": 0
+    }
+  },
+  {
+    "fps": 144,
+    "movement": "walk",
+    "side": "left",
+    "maxIdleClock": 0,
+    "maxFootStep": 0.050540991114835336,
+    "maxSpeedDrop": 0.7679139988982597,
+    "peakFrame": {
+      "repeat": 1,
+      "i": 0,
+      "key": "dodgeLeft",
+      "time": 0.006944444444444444,
+      "carrier": "regularRun",
+      "carrierTime": 0.18660745278211444,
+      "settle": 0,
+      "speed": 4.355641943603971
+    }
+  },
+  {
+    "fps": 144,
+    "movement": "walk",
+    "side": "right",
+    "maxIdleClock": 0,
+    "maxFootStep": 0.05014591930662937,
+    "maxSpeedDrop": 0.7679139988982597,
+    "peakFrame": {
+      "repeat": 1,
+      "i": 0,
+      "key": "dodgeRight",
+      "time": 0.006944444444444444,
+      "carrier": "regularRun",
+      "carrierTime": 0.18660745278211444,
+      "settle": 0,
+      "speed": 4.355641943603971
+    }
+  },
+  {
+    "fps": 144,
+    "movement": "sprint",
+    "side": "left",
+    "maxIdleClock": 0,
+    "maxFootStep": 0.06494106578715879,
+    "maxSpeedDrop": 1.1284280143349028,
+    "peakFrame": {
+      "repeat": 0,
+      "i": 0,
+      "key": "dodgeLeft",
+      "time": 0.006944444444444444,
+      "carrier": "run",
+      "carrierTime": 0.488267969887155,
+      "settle": 0,
+      "speed": 6.408140197181357
+    }
+  },
+  {
+    "fps": 144,
+    "movement": "sprint",
+    "side": "right",
+    "maxIdleClock": 0,
+    "maxFootStep": 0.06496166790645848,
+    "maxSpeedDrop": 1.1284280143349028,
+    "peakFrame": {
+      "repeat": 0,
+      "i": 0,
+      "key": "dodgeRight",
+      "time": 0.006944444444444444,
+      "carrier": "run",
+      "carrierTime": 0.488267969887155,
+      "settle": 0,
+      "speed": 6.408140197181357
+    }
+  }
+]
