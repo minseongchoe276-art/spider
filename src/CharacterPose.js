@@ -125,34 +125,155 @@ function orientGroundFoot(c,side,foot,rotation,delta) {
   fitGroundAnkle(c,side,foot,target);c.groundFootRotations[side]=target.clone();
 }
 
+function quatAngle(q){return 2*Math.acos(THREE.MathUtils.clamp(Math.abs(q.w),0,1));}
+// The ankle limit is a cone around the bind pose. Scaling the whole delta
+// spends that cone on twist and rolls the boot onto its edge. Keep the sole
+// swing, then whatever heading still fits.
+function swingTwistClamp(rest,localTarget,axis,limit){
+  const local=localTarget.clone().normalize();
+  if(rest.angleTo(local)<=limit)return local;
+  const dir=axis.clone();
+  if(dir.lengthSq()<1e-8)dir.set(0,1,0);
+  dir.normalize();
+  const delta=rest.clone().invert().multiply(local).normalize();
+  if(delta.w<0)delta.set(-delta.x,-delta.y,-delta.z,-delta.w);
+  const along=delta.x*dir.x+delta.y*dir.y+delta.z*dir.z;
+  const twist=new THREE.Quaternion(dir.x*along,dir.y*along,dir.z*along,delta.w).normalize();
+  if(twist.w<0)twist.set(-twist.x,-twist.y,-twist.z,-twist.w);
+  const swing=delta.clone().multiply(twist.clone().invert()).normalize();
+  if(swing.w<0)swing.set(-swing.x,-swing.y,-swing.z,-swing.w);
+  const swingAngle=quatAngle(swing);
+  const scaledSwing=new THREE.Quaternion();
+  if(swingAngle>limit)scaledSwing.slerpQuaternions(new THREE.Quaternion(),swing,limit/swingAngle);
+  else scaledSwing.copy(swing);
+  const base=rest.clone().multiply(scaledSwing).normalize();
+  let lo=0,hi=1,best=base.clone();
+  for(let i=0;i<10;i++){
+    const mid=(lo+hi)/2;
+    const partial=new THREE.Quaternion().slerpQuaternions(new THREE.Quaternion(),twist,mid);
+    const candidate=base.clone().multiply(partial).normalize();
+    if(rest.angleTo(candidate)<=limit+1e-4){best.copy(candidate);lo=mid;}
+    else hi=mid;
+  }
+  if(rest.dot(best)<0)best.set(-best.x,-best.y,-best.z,-best.w);
+  return best.normalize();
+}
+function kneeLead(upper,lower,end,forward){
+  const hip=worldPosition(upper),knee=worldPosition(lower),foot=worldPosition(end);
+  const span=foot.sub(hip);
+  if(span.lengthSq()<0.04)return 0;
+  const n=span.normalize();
+  const off=knee.sub(hip);
+  off.addScaledVector(n,-off.dot(n));
+  return off.dot(forward);
+}
+function modelForward(c){
+  const forward=new THREE.Vector3(0,0,1).applyQuaternion(c.model.getWorldQuaternion(new THREE.Quaternion()));
+  forward.y=0;
+  if(forward.lengthSq()<1e-8)forward.set(0,0,1);else forward.normalize();
+  return forward;
+}
+// A straight leg has no bend to copy. Keep the last forward bend, and never
+// a backward one: that is the hyperextension flip.
+function stableKneePole(c,upper,lower,end){
+  const hip=worldPosition(upper);
+  const knee=worldPosition(lower).sub(hip);
+  const span=worldPosition(end).sub(hip);
+  const off=knee.clone();
+  if(span.lengthSq()>1e-8)off.addScaledVector(span.normalize(),-knee.dot(span));
+  const forward=modelForward(c);
+  if(off.lengthSq()>0.0015 && off.dot(forward)>0)return off;
+  const previous=c.renderedLimbBends?.get(upper);
+  if(previous && previous.dot(forward)>0)return previous;
+  return forward;
+}
+function applySupportedFoot(c,upper,lower,end,rotation,explicitPole=null,absorb=true){
+  const constraint=c.jointConstraints?.find(item=>item.bone===end);
+  if(!constraint){worldRotation(end,rotation);return;}
+  const parentWorld=()=>end.parent.getWorldQuaternion(new THREE.Quaternion());
+  const localOf=world=>parentWorld().invert().multiply(world);
+  if(absorb && constraint.rest.angleTo(localOf(rotation))>constraint.limit){
+    if(globalThis.__footAbsorb){const bucket=globalThis.__footAbsorb;bucket.before=(bucket.before||0)+constraint.rest.angleTo(localOf(rotation));}
+    const anchor=worldPosition(end);
+    const beforeUpper=upper.quaternion.clone(),beforeLower=lower.quaternion.clone();
+    const forward=modelForward(c);
+    const beforeLead=kneeLead(upper,lower,end,forward);
+    const idealParent=rotation.clone().multiply(constraint.rest.clone().invert());
+    const hipYaw=c.strikeHipYaw || 0;
+    let pole=explicitPole;
+    if(!pole && Math.abs(hipYaw)>0.12){
+      const knee=worldPosition(lower).sub(worldPosition(upper));
+      const limb=anchor.clone().sub(worldPosition(upper));
+      const off=knee.clone().addScaledVector(limb,-knee.dot(limb)/Math.max(limb.lengthSq(),1e-8));
+      const yaw=(c.targetFacingAngle || 0)+hipYaw;
+      pole=off.lengthSq()>0.0015?knee:new THREE.Vector3(Math.sin(yaw),0.45,Math.cos(yaw));
+    }
+    let usedIdeal=false;
+    if(!pole){
+      // Place the knee so the shin aims at the sole's bind direction. Twist
+      // alone cannot flatten a boot when the shin is tilted past the ankle cone.
+      const shinLen=worldPosition(end).distanceTo(worldPosition(lower));
+      const desired=end.position.clone().normalize().applyQuaternion(idealParent);
+      const ideal=anchor.clone().addScaledVector(desired,-shinLen).sub(worldPosition(upper));
+      usedIdeal=ideal.lengthSq()>1e-6 && ideal.dot(forward)>0.02;
+      pole=usedIdeal?ideal:stableKneePole(c,upper,lower,end);
+    }
+    c.solveLimb(upper,lower,end,anchor,.995,pole);
+    if(globalThis.__footAbsorb){
+      const actual=worldPosition(end).sub(worldPosition(lower)).normalize();
+      const desired=end.position.clone().normalize().applyQuaternion(idealParent).normalize();
+      const bucket=globalThis.__footAbsorb;
+      bucket.preGap=(bucket.preGap||0)+actual.angleTo(desired);
+      bucket.ideal=(bucket.ideal||0)+(usedIdeal?1:0);
+      bucket.drift=(bucket.drift||0)+worldPosition(end).distanceTo(anchor);
+    }
+    const desiredAxis=end.position.clone().normalize().applyQuaternion(idealParent);
+    const actualAxis=worldPosition(end).sub(worldPosition(lower)).normalize();
+    if(desiredAxis.lengthSq()>1e-8 && actualAxis.lengthSq()>1e-8)
+      worldRotation(lower,new THREE.Quaternion().setFromUnitVectors(desiredAxis,actualAxis).multiply(idealParent));
+    // Reject an absorption that turned the knee backward. The ankle limit
+    // then keeps the sole swing instead of the reversed bend.
+    const restored=beforeLead>0.02 && kneeLead(upper,lower,end,forward)<-0.02;
+    if(restored){
+      upper.quaternion.copy(beforeUpper);lower.quaternion.copy(beforeLower);
+      upper.updateMatrixWorld(true);
+    }
+    if(globalThis.__footAbsorb){
+      const bucket=globalThis.__footAbsorb;
+      bucket.calls=(bucket.calls||0)+1;
+      bucket.restored=(bucket.restored||0)+(restored?1:0);
+      const after=constraint.rest.angleTo(localOf(rotation));
+      bucket.after=(bucket.after||0)+after;
+      bucket.afterMax=Math.max(bucket.afterMax||0,after);
+      const hip=worldPosition(upper),ankle=worldPosition(end);
+      const thigh=worldPosition(lower).distanceTo(hip),shin=ankle.distanceTo(worldPosition(lower));
+      bucket.stretch=(bucket.stretch||0)+ankle.distanceTo(hip)/Math.max(1e-6,thigh+shin);
+      const actual=ankle.clone().sub(worldPosition(lower)).normalize();
+      const desired=end.position.clone().normalize().applyQuaternion(idealParent).normalize();
+      bucket.axisGap=(bucket.axisGap||0)+actual.angleTo(desired);
+      bucket.shinUp=(bucket.shinUp||0)+actual.angleTo(new THREE.Vector3(0,1,0));
+    }
+  }
+  const limited=swingTwistClamp(constraint.rest,localOf(rotation),end.position,constraint.limit);
+  end.quaternion.copy(limited).normalize();
+  end.updateMatrixWorld(true);
+}
 export function fitGroundAnkle(c,side,foot,rotation) {
   fitEndRotation(c,find(c,side+'upleg'),find(c,side+'leg'),foot,rotation);
 }
 function fitEndRotation(c,upper,lower,end,rotation) {
   const constraint=c.jointConstraints?.find(item=>item.bone===end);
+  if(constraint?.kind==='foot'){
+    applySupportedFoot(c,upper,lower,end,rotation);
+    return;
+  }
   if(constraint){
     const local=end.parent.getWorldQuaternion(new THREE.Quaternion()).invert().multiply(rotation);
-    if(constraint.kind==='foot' || constraint.rest.angleTo(local)>constraint.limit){
+    if(constraint.rest.angleTo(local)>constraint.limit){
       const anchor=worldPosition(end);
       const idealParent=rotation.clone().multiply(constraint.rest.clone().invert());
-      // A side-step punch keeps the chest on the aim and the stride on the
-      // travel. The model forward is the aim, so using it as the knee pole
-      // folds the trailing knee out past the hip.
-      const hipYaw=c.strikeHipYaw || 0;
-      let pole;
-      if(constraint.kind==='foot' && Math.abs(hipYaw)>0.12){
-        const knee=worldPosition(lower).sub(worldPosition(upper));
-        const limb=anchor.clone().sub(worldPosition(upper));
-        const off=knee.clone().addScaledVector(limb,-knee.dot(limb)/Math.max(limb.lengthSq(),1e-8));
-        const yaw=(c.targetFacingAngle || 0)+hipYaw;
-        pole=off.lengthSq()>0.0015?knee:new THREE.Vector3(Math.sin(yaw),0.45,Math.cos(yaw));
-      }else if(constraint.kind==='foot'){
-        pole=new THREE.Vector3(0,0,1).applyQuaternion(c.model.getWorldQuaternion(new THREE.Quaternion()));
-      }else pole=anchor.clone().sub(end.position.clone().applyQuaternion(idealParent)).sub(worldPosition(upper));
+      const pole=anchor.clone().sub(end.position.clone().applyQuaternion(idealParent)).sub(worldPosition(upper));
       c.solveLimb(upper,lower,end,anchor,.995,pole);
-      // The position solve leaves the shin/forearm's axial roll arbitrary.
-      // Fit that roll to the requested end orientation without moving its
-      // endpoint. Repeatedly adding twist after IK caused held poses to drift.
       const desiredAxis=end.position.clone().normalize().applyQuaternion(idealParent);
       const actualAxis=worldPosition(end).sub(worldPosition(lower)).normalize();
       worldRotation(lower,new THREE.Quaternion().setFromUnitVectors(desiredAxis,actualAxis).multiply(idealParent));
@@ -496,16 +617,24 @@ export function plantMovingFeet(c,delta) {
         const weight=Math.exp(-release.age/0.075);
         const target=current.clone().addScaledVector(release.offset,weight);
         if(supported)target.y=Math.max(swingSurface+0.11,target.y);
-        c.solveLimb(hip,knee,foot,bounded(side,target),0.995);
+        c.solveLimb(hip,knee,foot,bounded(side,target),0.995,kneePole);
         if(weight<0.01)delete c.movingReleases[side];
       } else {
         delete c.movingReleases[side];
         const target=current.clone();if(supported)target.y=Math.max(swingSurface+0.11,target.y);
-        c.solveLimb(hip,knee,foot,bounded(side,target),0.995);
+        c.solveLimb(hip,knee,foot,bounded(side,target),0.995,kneePole);
       }
-      const neutral=supported?soleRotation(c,side,support.normal):null;
-      const rotation=neutral || (release && supported?authored.slerp(release.rotation,Math.exp(-release.age/0.075)):authored);
-      orientGroundFoot(c,side,foot,rotation,delta);
+      // A swinging foot keeps the clip ankle. Flattening it to the ground
+      // asked for 45–90° and the 18° cone then rolled the boot.
+      const swingAuthored=foot.getWorldQuaternion(new THREE.Quaternion());
+      if(release?.rotation){
+        const blend=1-Math.exp(-release.age/0.075);
+        applySupportedFoot(c,hip,knee,foot,release.rotation.clone().slerp(swingAuthored,blend),kneePole,false);
+      }
+      c.groundSoleTargets||={};c.groundFootRotations||={};c.groundSoleSettling||={};
+      const shown=foot.getWorldQuaternion(new THREE.Quaternion());
+      c.groundSoleTargets[side]=shown.clone();c.groundFootRotations[side]=shown.clone();
+      c.groundSoleSettling[side]=false;
       c.plantLastFeet[side]=worldPosition(foot);
       continue;
     }
@@ -743,9 +872,11 @@ export function poseWall(c,delta,velocity) {
       if(flat){
         // Forefoot purchase with a raised heel avoids forcing the ankle into
         // a flat 90-degree wall bend. The shin participates in this rotation.
+        // The forefoot pitch is larger than the ankle cone. Spend the cone
+        // on that pitch. Do not re-solve the crawl, or the hold slips.
         const rotation=new THREE.Quaternion().setFromAxisAngle(right,-.8-.1*Math.sin(Math.PI*contact.swing)**2)
           .multiply(flat);
-        worldRotation(end,rotation);
+        applySupportedFoot(c,upper,lower,end,rotation,pole,false);
       }
     }
     // Preserve the forward knee pole. Re-solving a leg from the desired
