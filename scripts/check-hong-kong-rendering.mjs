@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import * as T from 'three';
-import {hongKongRenderingProfile,tuneHongKongTexture,updateHongKongSun,prepareHongKongTile,configureHongKongTiles,nextHongKongError} from '../src/HongKongRendering.js';
+import {hongKongRenderingProfile,tuneHongKongTexture,updateHongKongSun,prepareHongKongTile,configureHongKongTiles,hongKongStreamingDistance} from '../src/HongKongRendering.js';
 import {prepareCityFacade} from '../src/CityFacades.js';
 import {TilesRenderer} from '3d-tiles-renderer/three';
 
@@ -10,7 +10,10 @@ for(const quality of ['low','balanced','high']){
   assert(profile.anisotropy<=8);
 }
 assert(hongKongRenderingProfile('high').errors[0]<hongKongRenderingProfile('balanced').errors[0]);
-assert(hongKongRenderingProfile('balanced').errors[0]<hongKongRenderingProfile('low').errors[0]);
+assert.deepEqual(hongKongRenderingProfile('low').errors,hongKongRenderingProfile('balanced').errors,
+  'Low-memory devices must retain the same nearby tile detail to avoid visibly broken coarse replacements');
+assert(hongKongRenderingProfile('low').streamDistance<hongKongRenderingProfile('balanced').streamDistance,
+  'Constrained devices reduce view distance instead of coarsening nearby terrain');
 assert.deepEqual(hongKongRenderingProfile('unknown'),hongKongRenderingProfile('balanced'));
 console.log('PASS: quality presets refine photographic terrain instead of using one error target for every device');
 
@@ -47,12 +50,15 @@ for(let index=0;index<3;index++){
 }
 console.log('PASS: real tile renderers preserve photographic parent coverage and let independent structural overlays appear without sibling starvation');
 
-// Cache pressure now shrinks request distance, never nearby tile detail.
-for(const full of [false,true])for(const refused of [0,5])for(const utilization of [.7,.99,1]){
- assert.equal(nextHongKongError(28,10,{full,refused,utilization}),10);
- assert.equal(nextHongKongError(12,12,{full,refused,utilization}),12);
+// Cache pressure reduces how far we request, never nearby tile detail.
+for(const profile of Object.values({low:hongKongRenderingProfile('low'),balanced:hongKongRenderingProfile('balanced'),high:hongKongRenderingProfile('high')})){
+ assert.equal(hongKongStreamingDistance(profile,{full:false,refused:5,utilization:1}),profile.streamDistance);
+ assert.equal(hongKongStreamingDistance(profile,{full:true,refused:0,utilization:1}),profile.streamDistance);
+ assert.equal(hongKongStreamingDistance(profile,{full:true,refused:5,utilization:.7}),profile.streamDistance);
+ assert(hongKongStreamingDistance(profile,{full:true,refused:5,utilization:.99})<profile.streamDistance);
+ assert(hongKongStreamingDistance(profile,{full:true,refused:5,utilization:.99})>=profile.streamDistance*.58);
 }
-console.log('PASS: all cache pressure combinations retain the configured nearby detail baseline');
+console.log('PASS: cache pressure reduces only the distant request range and preserves configured nearby detail');
 
 const placeholder=new T.DataTexture(new Uint8Array([151,151,151,255]),1,1);
 const photo=new T.DataTexture(new Uint8Array(16).fill(180),2,2);

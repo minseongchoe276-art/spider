@@ -10,4 +10,10 @@ assert.equal(collectWalkwayEdges([deck],focus).length,0,'An unloaded lower surfa
 assert(isVegetationColor([50,90,40]));assert(!isVegetationColor([50,55,90]));
 const green={width:1,height:1,data:new Uint8Array([50,90,40,255])};
 assert.equal(detectCanopyCandidates(base,green).length,0,'A green lawn is not a tree');
-const m=new T.MeshBasicMaterial();preparePhotoSurfaceFinish(m);preparePhotoSurfaceFinish(m);assert(m.customProgramCacheKey().includes('photo-surface-finish-v1'));assert(!m.transparent&&m.depthWrite);console.log('PASS: narrow supported walkway edges, no missing-LOD rails, vegetation/lawn separation, idempotent surface finish');
+const m=new T.MeshBasicMaterial();preparePhotoSurfaceFinish(m);preparePhotoSurfaceFinish(m);assert(m.customProgramCacheKey().includes('photo-surface-finish-v1'));assert(!m.transparent&&m.depthWrite);
+const shader={uniforms:{},vertexShader:T.ShaderLib.basic.vertexShader,fragmentShader:T.ShaderLib.basic.fragmentShader};m.onBeforeCompile(shader);
+assert(shader.fragmentShader.includes('seaMask')&&shader.fragmentShader.includes('smoothstep(.96,.995,photoN.y)'),'Only near sea-level, nearly horizontal surfaces may render as water');
+assert(!shader.fragmentShader.includes('HONG_KONG_SEA_LEVEL'),'The JavaScript sea level must be resolved before GLSL compilation');
+assert(!shader.fragmentShader.includes('photoBlue')&&!shader.fragmentShader.includes('textureSize(map'),'Water classification must not depend on unstable photo colors or unsupported textureSize calls');
+const standard=new T.MeshStandardMaterial();preparePhotoSurfaceFinish(standard);const standardShader={uniforms:{},vertexShader:T.ShaderLib.standard.vertexShader,fragmentShader:T.ShaderLib.standard.fragmentShader};standard.onBeforeCompile(standardShader);assert(standardShader.fragmentShader.includes('seaMask'));standard.dispose();
+console.log('PASS: narrow supported walkway edges, no missing-LOD rails, vegetation/lawn separation, idempotent surface finish and geometry-based sea masking');

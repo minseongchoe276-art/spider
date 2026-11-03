@@ -22,7 +22,10 @@ export function createHongKongEnvironment(renderer) {
 // detailed near the player without increasing the territory's draw distance.
 export function hongKongRenderingProfile(quality='balanced') {
   return {
-    low:{errors:[14,20,24],streamDistance:450,anisotropy:2,shadowRadius:65},
+    // Keep terrain and building photography at a stable floor on every device.
+    // The source survey contains large, visibly stretched coarse tiles; allowing
+    // low-memory devices to select those levels makes nearby geometry look torn.
+    low:{errors:[8,12,16],streamDistance:450,anisotropy:2,shadowRadius:65},
     balanced:{errors:[8,12,16],streamDistance:650,anisotropy:8,shadowRadius:85},
     high:{errors:[4,8,10],streamDistance:1000,anisotropy:8,shadowRadius:100},
   }[quality] || hongKongRenderingProfile('balanced');
@@ -36,6 +39,14 @@ export function configureHongKongTiles(tiles,index,profile) {
   tiles.loadAncestors=index===0;tiles.loadSiblings=index===0;
 }
 
+// Tile caches can hit their byte ceiling during a fast camera turn. Keep the
+// requested LOD stable in that case; the renderer may briefly retain parents,
+// but increasing screen-space error makes the visible map permanently blurrier.
+export function hongKongStreamingDistance(profile,{full=false,refused=0,utilization=0}={}) {
+  const constrained=full&&refused>0;
+  return profile.streamDistance*(constrained?Math.max(.58,1-Math.max(0,utilization-.75)*.8):1);
+}
+
 // Hide the streaming boundary before tiles enter/leave the requested frustum.
 // Linear depth fog reaches full coverage inside that boundary; exponential
 // sky haze left distant buildings almost completely visible at the cutoff.
@@ -45,12 +56,6 @@ export function configureHongKongFog(scene,profile,viewDistance=profile.streamDi
   const near=distance*.55,far=distance*.85;
   if(!scene.fog.isFog)scene.fog=new THREE.Fog(scene.fog.color,near,far);
   else {scene.fog.near=near;scene.fog.far=far;}
-}
-
-export function nextHongKongError(current,baseline,{full,refused,utilization}) {
-  // Memory pressure reduces the far request volume in UrbanGroundCity.
-  // Never coarsen the player's nearby geometry to make room for distant tiles.
-  return baseline;
 }
 
 export function tuneHongKongTexture(texture,anisotropy=8,maxAnisotropy=8) {

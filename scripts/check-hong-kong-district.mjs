@@ -27,7 +27,7 @@ console.log('PASS wall surveying uses world transforms without modifying source 
 const d=Object.create(HongKongDistrict.prototype);Object.assign(d,{facePlanes:[],faceBounds:[],atlas:new T.Texture(),treeCenters:[],treeTops:[],treeActive:{value:0}});
 const mat=new T.MeshStandardMaterial();let called=0;mat.onBeforeCompile=()=>called++;mat.customProgramCacheKey=()=> 'previous';d.applySourceMask(mat);const once=mat.onBeforeCompile;d.applySourceMask(mat);assert.equal(mat.onBeforeCompile,once);
 const shader={uniforms:{},vertexShader:T.ShaderLib.standard.vertexShader,fragmentShader:T.ShaderLib.standard.fragmentShader};mat.onBeforeCompile(shader);
-assert.equal(called,1);assert(shader.fragmentShader.includes('abs(hkN.y)<0.2'));assert(shader.fragmentShader.includes('vHkDistrictWorld.y>t.y'));assert.equal(shader.uniforms.hkTreeActive,d.treeActive);assert(mat.customProgramCacheKey().startsWith('previous|'));
+assert.equal(called,1);assert(shader.fragmentShader.includes('abs(hkN.y)<0.15'));assert(shader.fragmentShader.includes('vHkDistrictWorld.y>t.y'));assert.equal(shader.uniforms.hkTreeActive,d.treeActive);assert(mat.customProgramCacheKey().startsWith('previous|'));
 console.log('PASS source masks preserve existing shader hooks, exclude horizontal floors, and enable canopy removal only after model readiness');
 assert(CENTRAL_TREES.every(t=>t.height>10&&t.base+1.5>t.base));assert.equal(CENTRAL_TREES.length,7);
 const hash=p=>createHash('sha256').update(fs.readFileSync(p)).digest('hex');assert.equal(hash('public/models/environment/hong-kong-pine.glb'),hash('SoldierThirdPersonThreeJS/public/models/environment/tree.glb'));

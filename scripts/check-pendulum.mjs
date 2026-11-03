@@ -1,6 +1,20 @@
 import assert from 'node:assert/strict';
 import * as THREE from 'three';
 import { SwingPhysics } from '../src/SwingPhysics.js';
+import { constrainWebs } from '../src/WebConstraints.js';
+
+{
+  const anchor=new THREE.Vector3(),web={anchor,length:10};
+  const position=new THREE.Vector3(10.1,0,0),velocity=new THREE.Vector3(10,2,0);
+  const energy=velocity.lengthSq();
+  constrainWebs(position,velocity,[web],.16);
+  assert(Math.abs(position.length()-10)<1e-8,'Catch exceeded the fixed reach');
+  assert(Math.abs(velocity.x+1.6)<1e-8 && velocity.y===2,'Catch did not return a damped radial rebound');
+  assert(velocity.lengthSq()<energy && anchor.lengthSq()===0,'Catch added energy or moved the anchor');
+  const quiet=new THREE.Vector3(.5,0,0);constrainWebs(new THREE.Vector3(10,0,0),quiet,[web],.16);
+  assert(Math.abs(quiet.x)<1e-8,'A resting strand should not bounce');
+  console.log('PASS PENDULUM: damped catch rebounds without moving the anchor or adding energy');
+}
 
 const camera=new THREE.PerspectiveCamera();
 const silent=new Proxy({}, {get:()=>()=>{}});

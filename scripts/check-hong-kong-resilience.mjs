@@ -22,7 +22,7 @@ tiles.rootTileset=null;tiles.dispose();console.log('PASS: eight consecutive retr
 const city=Object.create(UrbanGroundCity.prototype);Object.assign(city,{scene:new T.Scene(),tileCache:new LRUCache(),tilesets:[]});city.scene.fog=new T.FogExp2(0xaed9eb,.00032);city.setStreamingQuality('balanced');
 const layer={tilesetIndex:0,userData:{baseErrorTarget:10},errorTarget:25};city.tilesets=[layer];const fog=city.scene.fog,budget=city.streamingBudget;
 city.setStreamingQuality('balanced');assert.equal(layer.errorTarget,25);assert.equal(city.scene.fog,fog);assert.equal(city.streamingBudget,budget);
-city.setStreamingQuality('low');assert.equal(layer.errorTarget,14);assert.equal(layer.userData.baseErrorTarget,14);assert.equal(city.renderingProfile.streamDistance,450);
+city.setStreamingQuality('low');assert.equal(layer.errorTarget,8);assert.equal(layer.userData.baseErrorTarget,8);assert.equal(city.renderingProfile.streamDistance,450);
 city.setStreamingQuality('high');assert.equal(layer.errorTarget,4);assert.equal(layer.userData.baseErrorTarget,4);assert.equal(city.renderingProfile.streamDistance,1000);
 console.log('PASS: unrelated preference application preserves adaptive detail; actual quality changes update baseline, memory budget and view distance');
 for(const quality of ['low','balanced','high']){

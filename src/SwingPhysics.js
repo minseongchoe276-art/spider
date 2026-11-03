@@ -709,7 +709,9 @@ export class SwingPhysics {
     }
     this.velocity.clampLength(0,this.maxSpeed);
     this.position.addScaledVector(this.velocity,delta);
-    constrainWebs(this.position,this.velocity,this.webs);
+    // A modest damped rebound softens a fast catch while retaining the same
+    // fixed attachment and maximum reach. Dual strands remain non-bouncing.
+    constrainWebs(this.position,this.velocity,this.webs,0.16);
     this.ropeLength=latest.length;
   }
 

@@ -37,7 +37,7 @@ function projectPairVelocity(velocity, normals) {
 // A web is a unilateral distance limit: slack strands do not push the body.
 // Alternating projections enforce both limits instead of inventing a midpoint
 // anchor (which would not keep either real attachment point fixed).
-export function constrainWebs(position, velocity, webs) {
+export function constrainWebs(position, velocity, webs, restitution=0) {
   const exact=webs.length===2&&projectPair(position,webs[0],webs[1]);
   for (let pass=0;pass<(exact?0:64);pass++) {
     let error=0;
@@ -62,7 +62,13 @@ export function constrainWebs(position, velocity, webs) {
       if(distance<web.length-1e-4 || distance<1e-8)continue;
       radial.divideScalar(distance);
       const outward=velocity.dot(radial);
-      if(outward>0){velocity.addScaledVector(radial,-outward);impulse=Math.max(impulse,outward);}
+      if(outward>0){
+        // A single taut strand returns a small part of a sharp catch as
+        // inward motion. Tiny corrections and paired constraints stay
+        // inelastic so resting webs cannot jitter or amplify one another.
+        const bounce=webs.length===1&&outward>1?Math.min(.2,Math.max(0,restitution)):0;
+        velocity.addScaledVector(radial,-outward*(1+bounce));impulse=Math.max(impulse,outward);
+      }
     }
     if(impulse<1e-6)break;
   }

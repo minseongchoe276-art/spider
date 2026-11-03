@@ -2,7 +2,7 @@ import {HongKongPresentation} from './HongKongPresentation.js';
 import {PHOTO_SURFACE_TIME} from './HongKongSurfaceFinish.js';
 import * as THREE from 'three';
 import {streamingBudget} from './StreamingBudget.js';
-import {hongKongRenderingProfile,tuneHongKongTexture,prepareHongKongTile,configureHongKongTiles,configureHongKongFog,nextHongKongError} from './HongKongRendering.js';
+import {hongKongRenderingProfile,tuneHongKongTexture,prepareHongKongTile,configureHongKongTiles,configureHongKongFog, hongKongStreamingDistance} from './HongKongRendering.js';
 import {createTileTexturePlugin} from './TileTextures.js';
 import {HongKongDistrict} from './HongKongDistrict.js';
 import {scheduleTileRetry,recoverFailedTiles} from './TileRecovery.js';
@@ -223,15 +223,11 @@ export class UrbanGroundCity {
     if (performance.now() - (this.lastBudgetCheck || 0) > 2000) {
       this.lastBudgetCheck = performance.now();
       const pressured = this.tileCache.isFull();
-      const refused=this.tilesets.some(t=>t.stats.refused>0);
-      const utilization=this.tileCache.cachedBytes/this.tileCache.maxBytesSize;
-      this.pressureDistanceFactor=pressured&&refused?Math.max(.58,(this.pressureDistanceFactor??1)*.88):utilization<.75?Math.min(1,(this.pressureDistanceFactor??1)+.04):(this.pressureDistanceFactor??1);
+      const refused=this.tilesets.reduce((sum,t)=>sum+(t.stats.refused||0),0);
+      const utilization=Math.max(this.tileCache.cachedBytes/this.tileCache.maxBytesSize,this.tileCache.itemSet.size/this.tileCache.maxSize);
+      this.pressureDistanceFactor=hongKongStreamingDistance(this.renderingProfile,{full:pressured,refused,utilization})/this.renderingProfile.streamDistance;
       for (const tiles of this.tilesets) {
-        const baseline = tiles.userData?.baseErrorTarget ?? 20;
-        // A full photographic cache must not blur unrelated structural layers
-        // which already fit. Apply pressure only to a layer refusing requests.
-        tiles.errorTarget=nextHongKongError(tiles.errorTarget,baseline,{full:pressured,refused:tiles.stats.refused,
-          utilization:Math.max(this.tileCache.cachedBytes/this.tileCache.maxBytesSize,this.tileCache.itemSet.size/this.tileCache.maxSize)});
+        tiles.errorTarget=tiles.userData?.baseErrorTarget ?? 20;
       }
     }
     this.root.updateMatrixWorld(true);

@@ -1,6 +1,7 @@
 // World-space microdetail follows the existing surface; no planes or colliders
 // are added, and vegetation / strongly colored photography remains untouched.
 export const PHOTO_SURFACE_TIME={value:0};
+export const HONG_KONG_SEA_LEVEL=0;
 export function preparePhotoSurfaceFinish(material){
   if(!material || material.userData.hkPhotoFinish || material.userData.startSurface)return;
   const previous=material.onBeforeCompile.bind(material),key=material.customProgramCacheKey.bind(material);
@@ -23,23 +24,12 @@ export function preparePhotoSurfaceFinish(material){
       float photoGrain=photoNoise(floor(vPhotoWorld.xz*24.0));
       float photoAA=1.0-smoothstep(.025,.12,length(fwidth(vPhotoWorld.xz)));
       vec3 photoAsphalt=vec3(.17,.18,.185)+(photoGrain-.5)*.025*photoAA;
-      float photoWater=0.0;
-      #ifdef USE_MAP
-        vec3 photoBlue=texture2D(map,vMapUv).rgb;
-        vec2 photoStep=vec2(3.0)/vec2(textureSize(map,0));
-        for(int photoI=0;photoI<4;photoI++){
-          vec2 offset=vec2(photoI==0?-1.0:photoI==1?1.0:0.0,photoI==2?-1.0:photoI==3?1.0:0.0)*photoStep;
-          vec3 candidate=texture2D(map,vMapUv+offset).rgb;
-          if(candidate.g/(candidate.r+.005)>photoBlue.g/(photoBlue.r+.005))photoBlue=candidate;
-        }
-        photoWater=smoothstep(1.3,1.8,photoBlue.g/(photoBlue.r+.005))*smoothstep(1.1,1.5,photoBlue.b/(photoBlue.r+.005));
-        photoWater*=smoothstep(.98,.998,photoN.y)*(1.0-smoothstep(5.0,7.0,vPhotoWorld.y));
-        float ripple=sin(vPhotoWorld.x*.7+vPhotoWorld.z*.3+photoSurfaceTime*.7)*sin(vPhotoWorld.z*.9-photoSurfaceTime*.45);
-        vec3 sea=vec3(.025,.155,.185)+vec3(.007,.012,.014)*ripple;
-        diffuseColor.rgb=mix(diffuseColor.rgb,sea*diffuse,photoWater*.96);
-      #endif
+      float seaMask=(1.0-smoothstep(-1.5,1.5,vPhotoWorld.y-${HONG_KONG_SEA_LEVEL.toFixed(1)}))*smoothstep(.96,.995,photoN.y);
+      float ripple=sin(vPhotoWorld.x*.7+vPhotoWorld.z*.3+photoSurfaceTime*.7)*sin(vPhotoWorld.z*.9-photoSurfaceTime*.45);
+      vec3 sea=vec3(.025,.155,.185)+vec3(.007,.012,.014)*ripple;
+      diffuseColor.rgb=mix(diffuseColor.rgb,sea*diffuse,seaMask*.96);
       // Material diffuse contains night tint on unlit source tiles. Preserve it.
-      diffuseColor.rgb=mix(diffuseColor.rgb,photoAsphalt*diffuse,photoTop*photoNeutral*photoNear*(1.0-photoWater)*.58);
+      diffuseColor.rgb=mix(diffuseColor.rgb,photoAsphalt*diffuse,photoTop*photoNeutral*photoNear*(1.0-seaMask)*.58);
     `);
   };
   material.customProgramCacheKey=()=>key()+'|photo-surface-finish-v1';material.needsUpdate=true;

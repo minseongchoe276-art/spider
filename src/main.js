@@ -36,7 +36,7 @@ import {abilitySlotState,updateVitalsHud} from './VitalsHud.js';
 import {updateHongKongSun,createHongKongEnvironment} from './HongKongRendering.js';
 let stopLoadingStatus=()=>{};
 
-const ONE_SHOT_KEYS = new Set(['Space','KeyG','KeyE','KeyT','KeyR','KeyC','KeyX','KeyV','KeyQ','KeyB','ControlLeft','ControlRight']);
+const ONE_SHOT_KEYS = new Set(['Space','KeyG','KeyE','KeyT','KeyR','KeyC','KeyX','KeyV','KeyQ','KeyB','Digit1','Digit2','ControlLeft','ControlRight']);
 
 export class GameApp {
   constructor() {
@@ -428,7 +428,7 @@ export class GameApp {
       const gameplayKey = [
         'KeyW', 'KeyA', 'KeyS', 'KeyD', 'ArrowUp', 'ArrowDown',
         'ArrowLeft', 'ArrowRight', 'Home', 'End', 'PageUp', 'PageDown', 'ShiftLeft', 'ShiftRight', 'Space',
-        'KeyG', 'KeyE', 'KeyT', 'KeyR', 'KeyF', 'KeyC', 'KeyX', 'KeyV', 'KeyQ', 'KeyZ', 'KeyB', 'ControlLeft', 'ControlRight'
+        'KeyG', 'KeyE', 'KeyT', 'KeyR', 'KeyF', 'KeyC', 'KeyX', 'KeyV', 'KeyQ', 'KeyZ', 'KeyB', 'Digit1', 'Digit2', 'ControlLeft', 'ControlRight'
       ].includes(k);
       if (gameplayKey && document.getElementById?.('controls-guide') && !document.getElementById('controls-guide').classList.contains('hidden')) return;
       if (gameplayKey && this.gameplayInputBlocked) return;
@@ -446,6 +446,11 @@ export class GameApp {
         // Register every source, but discrete actions belong to the first
         // press. A second device or modifier alias must not toggle it twice.
         if(wasHeld && ONE_SHOT_KEYS.has(k))return;
+      }
+      if(k==='Digit1'||k==='Digit2'){
+        if(this.vehicle?.driving)this.showNotice('차량을 바꾸려면 먼저 B로 하차하세요.');
+        else this.vehicle?.summonVehicle(k==='Digit1'?'bmw':'corvette');
+        return;
       }
       if(k==='KeyB'){this.vehicle?.interact();return;}
       if(this.vehicle?.driving && !['KeyW','KeyS','KeyA','KeyD','ArrowUp','ArrowDown','ArrowLeft','ArrowRight','ShiftLeft','ShiftRight','Space','Escape','KeyM','KeyH'].includes(k))return;

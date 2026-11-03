@@ -14,12 +14,13 @@ export class VehicleSystem{
   const root=document.createElement('aside');root.id='vehicle-ui';root.hidden=true;root.setAttribute('aria-label','차량 선택 및 탑승');
   const slots=document.createElement('div');slots.className='vehicle-slots';slots.setAttribute('role','group');slots.setAttribute('aria-label','차량 불러오기');
   const tiles=new Map();
-  for(const id of VEHICLE_IDS){
-   const tile=document.createElement('button');tile.type='button';tile.className='vehicle-slot';tile.dataset.vehicle=id;tile.title=`${VEHICLE_LABELS[id]} 불러오기`;tile.setAttribute('aria-label',tile.title);tile.setAttribute('aria-pressed',String(id===this.selected));
+  for(const [index,id] of VEHICLE_IDS.entries()){
+   const tile=document.createElement('button');tile.type='button';tile.className='vehicle-slot';tile.dataset.vehicle=id;tile.title=`${VEHICLE_LABELS[id]} 불러오기 · ${index+1}`;tile.setAttribute('aria-label',tile.title);tile.setAttribute('aria-pressed',String(id===this.selected));
    const art=document.createElement('img');art.src=`/images/vehicles/${id}-skill-v1.png`;art.alt='';art.width=art.height=96;art.draggable=false;
    const name=document.createElement('span');name.className='vehicle-slot-name';name.textContent=id==='bmw'?'330i':'C6 ZR1';
    const mark=document.createElement('span');mark.className='vehicle-slot-mark';mark.textContent='✓';mark.setAttribute('aria-hidden','true');
-   tile.append(art,name,mark);tile.addEventListener('click',()=>{if(this.selectVehicle(id)){void this.interact();this.syncUI(true);}});slots.append(tile);tiles.set(id,tile);
+   const shortcut=document.createElement('kbd');shortcut.className='vehicle-slot-key';shortcut.textContent=String(index+1);
+   tile.append(art,name,mark,shortcut);tile.addEventListener('click',()=>this.summonVehicle(id));slots.append(tile);tiles.set(id,tile);
   }
   const label=document.createElement('span');label.className='vehicle-status';label.setAttribute('role','status');label.setAttribute('aria-live','polite');
   const button=document.createElement('button'),brake=document.createElement('button');button.type=brake.type='button';button.className='vehicle-interact';brake.className='vehicle-brake';
@@ -183,6 +184,10 @@ export class VehicleSystem{
  }
 
  releaseAsset(asset){disposeVehicleAsset(asset);}
+ summonVehicle(id){
+  if(!this.allowed()||!this.selectVehicle(id))return false;
+  void this.interact();this.syncUI(true);return true;
+ }
  selectVehicle(id){
   if(!VEHICLE_IDS.includes(id)||this.driving||this.loading)return false;
   if(id===this.selected)return true;this.restoreEpoch++;if(this.asset)this.releaseAsset(this.asset);this.asset=null;this.controller=null;this.selected=id;this.state='EMPTY';this.sequence++;return true;

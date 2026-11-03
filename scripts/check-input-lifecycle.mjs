@@ -96,6 +96,15 @@ check('Vehicle B toggles once across devices and driving owns movement without c
  for(const code of ['KeyX','KeyE','KeyG','Space']){key('keydown',code);key('keyup',code);}mouse(g,'mousedown',0);assert.equal(toggles+zips+punches,0);assert(!g.input.jump);
  key('keydown','KeyW');key('keydown','KeyA');assert(g.input.forward&&g.input.left);key('keyup','KeyW');key('keyup','KeyA');g.vehicle.driving=false;key('keydown','KeyX');assert.equal(toggles,1);
 }));
+check('Number keys summon the selected vehicle once and are blocked while driving or paused',()=>dom(()=>{
+ const g=app(),selected=[];let notices=0;
+ g.vehicle={driving:false,summonVehicle:id=>selected.push(id)};g.showNotice=()=>notices++;
+ key('keydown','Digit1');key('keydown','Digit1',true);assert.deepEqual(selected,['bmw']);
+ key('keyup','Digit1');key('keyup','Digit1',true);
+ key('keydown','Digit2');key('keyup','Digit2');assert.deepEqual(selected,['bmw','corvette']);
+ g.vehicle.driving=true;key('keydown','Digit1');key('keyup','Digit1');assert.equal(notices,1);assert.equal(selected.length,2);
+ g.vehicle.driving=false;g.isPaused=true;key('keydown','Digit2');key('keyup','Digit2');assert.equal(selected.length,2);
+}));
 check('Keyboard and pad mode presses share one action until every source releases',()=>dom(()=>{
   const g=app();let calls=0;g.combat.toggle=()=>calls++;
   key('keydown','KeyX');key('keydown','KeyX',true);assert.equal(calls,1);
