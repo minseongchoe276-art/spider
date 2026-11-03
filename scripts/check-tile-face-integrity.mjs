@@ -5,6 +5,11 @@ const make=ids=>{const g=new T.BufferGeometry();g.setAttribute('position',new T.
 let g=make([0,1,2,1,2,0,2,1,0]);let r=repairTileGeometry(g);assert.equal(r.duplicates,1);assert.equal(g.index.count,6,'Reverse-facing bridge/wall face was deleted');
 g=make([0,1,2,0,1,9,0,0,1]);r=repairTileGeometry(g);assert.equal(r.invalid,1);assert.equal(r.degenerate,1);assert.equal(g.index.count,3);assert(Number.isFinite(g.boundingSphere.radius));
 g=make([0,1,2,2,1,0]);g.addGroup(0,3,0);g.addGroup(3,3,1);assert.equal(repairTileGeometry(g).duplicates,0);
+g=new T.BufferGeometry();
+g.setAttribute('position',new T.Float32BufferAttribute([0,0,0,1,0,0,0,1,0,0,0,0,1,0,0,0,1,0,0,0,0,1,0,0,0,1,0],3));
+g.setAttribute('uv',new T.Float32BufferAttribute([0,0,1,0,0,1,0,0,1,0,0,1,.5,0,1,0,0,1],2));
+g.setIndex([0,1,2,4,5,3,6,7,8]);r=repairTileGeometry(g);
+assert.equal(r.duplicates,1);assert.deepEqual([...g.index.array],[0,1,2,6,7,8],'Coincident UV seam must remain while cyclic duplicates are removed');
 console.log('PASS oriented duplicates, reverse faces, material boundaries, invalid indices, degenerate triangles and finite bounds');
 
 const {prepareHongKongTile,hongKongRenderingProfile}=await import('../src/HongKongRendering.js');
@@ -15,6 +20,7 @@ for(const sharedBasic of [true,false]){
  assert.equal(disposed,sharedBasic?0:1,'Shared tile buffers retired before final reference or leaked');
  assert(scene.children[0].geometry.attributes.normal);
  if(sharedBasic)assert.equal(scene.children[1].geometry,source);
+ else assert.equal(scene.children[0].geometry,scene.children[1].geometry,'Shared geometry must reuse the creased-normal result');
 }
 console.log('PASS mixed-material shared geometry survives; fully replaced geometry is disposed exactly once');
 

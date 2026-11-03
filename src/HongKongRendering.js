@@ -69,6 +69,7 @@ export function tuneHongKongTexture(texture,anisotropy=8,maxAnisotropy=8) {
 
 export function prepareHongKongTile(scene,surfaceType,profile,maxAnisotropy) {
   const uses=new Map();scene.traverse(mesh=>{if(mesh.isMesh)uses.set(mesh.geometry,(uses.get(mesh.geometry)||0)+1);});
+  const creased=new Map();
   scene.traverse(mesh=>{
     if(!mesh.isMesh)return;
     if(!mesh.geometry.userData.integrityChecked){
@@ -77,8 +78,14 @@ export function prepareHongKongTile(scene,surfaceType,profile,maxAnisotropy) {
     }
     const materials=Array.isArray(mesh.material)?mesh.material:[mesh.material];
     if(!mesh.geometry.attributes.normal && materials.some(m=>m?.isMeshStandardMaterial)){
-      const original=mesh.geometry;mesh.geometry=toCreasedNormals(original,Math.PI/3);
-      mesh.geometry.userData={...original.userData,creasedPhotoNormals:true};
+      const original=mesh.geometry;
+      let result=creased.get(original);
+      if(!result){
+        result=toCreasedNormals(original,Math.PI/3);
+        result.userData={...original.userData,creasedPhotoNormals:true};
+        creased.set(original,result);
+      }
+      mesh.geometry=result;
       // The source is replaced before the tile loader collects its resources.
       // Keep shared source buffers alive until their last node is replaced.
       // If a node still uses them, the tile loader collects/disposes them.
