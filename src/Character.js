@@ -125,6 +125,77 @@ export class Character {
     this.webVisualTime=0;
   }
 
+  async prepareKnife() {
+    if (this.knifeModel) return true;
+    if (!this.rightHand || !this.actions.knifeIdle || !this.actions.knifeStab) return false;
+    if (!this.knifeLoading) this.knifeLoading=(async()=>{
+      const gltf=await new GLTFLoader().parseAsync(await fetchAsset('/models/weapons/tactical-knife.glb'),'/models/weapons/');
+      const mount=new THREE.Group();
+      mount.name='TacticalKnife';
+      // The Mixamo hand is authored in centimetres (0.0254 world units per
+      // bone unit). Centre the handle in the palm and point the blade back.
+      mount.position.set(0.6,3.1,0.2);
+      // Angle the reverse grip away from the forearm instead of running the
+      // blade through the wrist and sleeve.
+      mount.rotation.z=2*Math.PI/3;
+      mount.scale.setScalar(21);
+      gltf.scene.position.x=-0.19;
+      mount.add(gltf.scene);
+      mount.visible=false;
+      gltf.scene.traverse(node=>{if(node.isMesh){node.castShadow=true;node.receiveShadow=true;}});
+      this.rightHand.add(mount);
+      this.knifeModel=mount;
+      return true;
+    })().catch(error=>{console.warn('Knife asset failed to load',error);this.knifeLoading=null;return false;});
+    return this.knifeLoading;
+  }
+
+  async prepareExtraWeapon(type) {
+    this.extraWeapons ||= {};
+    if (this.extraWeapons[type]) return true;
+    if (!this.rightHand) return false;
+    try {
+      const gltf = await new GLTFLoader().parseAsync(await fetchAsset(`/models/weapons/${type}.glb`), '/models/weapons/');
+      const model = gltf.scene;
+      model.updateMatrixWorld(true);
+      const box = new THREE.Box3().setFromObject(model), size = box.getSize(new THREE.Vector3()), center = box.getCenter(new THREE.Vector3());
+      const longest = Math.max(size.x, size.y, size.z);
+      if (!Number.isFinite(longest) || longest <= 0) throw new Error('Invalid weapon bounds');
+      model.position.sub(center);
+      // Place the narrower end of each melee weapon near the palm.
+      if (type === 'baseball-bat') model.position.x += size.x * .35;
+      if (type === 'metal-pipe') model.position.z += size.z * .3;
+      const mount = new THREE.Group();
+      mount.add(model); mount.scale.setScalar((type === 'sniper-rifle' ? 38 : 32) / longest);
+      mount.position.set(0, 3.1, 0); mount.rotation.x = Math.PI / 2;
+      model.traverse(node => { if (node.isMesh) { node.castShadow = true; node.receiveShadow = true; } });
+      mount.visible = false; this.rightHand.add(mount); this.extraWeapons[type] = mount;
+      return true;
+    } catch (error) { console.warn('Weapon asset failed to load', error); return false; }
+  }
+
+  async prepareGun() {
+    if(this.gunModel)return true;
+    if(!this.rightHand || !this.actions.cross)return false;
+    if(!this.gunLoading)this.gunLoading=(async()=>{
+      const gltf=await new GLTFLoader().parseAsync(await fetchAsset('/models/weapons/pistol-desertdev.glb'),'/models/weapons/');
+      const gun=gltf.scene;
+      gun.updateMatrixWorld(true);
+      const bounds=new THREE.Box3().setFromObject(gun),size=bounds.getSize(new THREE.Vector3()),center=bounds.getCenter(new THREE.Vector3());
+      const longest=Math.max(size.x,size.y,size.z);
+      if(!Number.isFinite(longest) || longest<=0)throw new Error('Invalid pistol bounds');
+      // Align the grip, rather than the centre of the slide, with the palm.
+      gun.position.sub(center).add(new THREE.Vector3(size.x*.24,size.y*.22,0));
+      const mount=new THREE.Group();mount.name='Pistol';
+      mount.add(gun);mount.scale.setScalar(8/longest);
+      mount.rotation.x=Math.PI/2;mount.position.set(0,3.1,0);
+      mount.visible=false;
+      gun.traverse(node=>{if(node.isMesh){node.castShadow=true;node.receiveShadow=true;}});
+      this.rightHand.add(mount);this.gunModel=mount;return true;
+    })().catch(error=>{console.warn('Pistol asset failed to load',error);this.gunLoading=null;return false;});
+    return this.gunLoading;
+  }
+
   async loadCharacter() {
     // 1. Placeholder while loading so player has instant visual feedback
     const placeholderGeom = new THREE.CapsuleGeometry(0.35, 1.1, 8, 16);
@@ -384,7 +455,8 @@ export class Character {
     // tilt and contact filters live outside the mixer. A respawn must not
     // ease out of the previous life's swing, strike or planted stance.
     this.lowStance=null;this.crouchBlend=0;this.crouchWeight=0;this.lowStancePhase=0;this.lowStanceLift=0;
-    this.strikeLegWeight=0;
+    this.strikeLegWeight=0;this.specialFootHistory=null;this.turnShinRelease=0;this.turnShinFrames=null;this.turnSoleFrames=null;
+    this.weaponAttackWasActive=false;this.weaponAirEntry=null;this.weaponAirEntryTime=0;this.pistolAimWeight=0;
     this.lastState=null;this.pendingTurn=null;this.landingAction=null;this.landingSpeed=0;
     this.bodyPitch=0;this.bodyRoll=0;this.visualYaw=this.targetFacingAngle || 0;this.idleTime=0;this.fallTime=0;
     this.locomotionGait=null;this.pendingGait=null;this.gaitChangeTime=0;
@@ -530,6 +602,9 @@ export class Character {
   }
 
   update(delta, state, velocity, anchorPos) {
+    if(this.knifeModel)this.knifeModel.visible=!!this.knifeVisible;
+    if(this.gunModel)this.gunModel.visible=!!this.gunVisible && !this.extraWeapon;
+    if(this.extraWeapons)for(const [type,model] of Object.entries(this.extraWeapons))model.visible=type===this.extraWeapon && !!this.extraWeaponVisible;
     this.rememberRestPose();
     updateAppearance(this,delta);
     this.limbPoseDelta=Math.max(0,delta);this.roofBendCapped=false;
@@ -649,13 +724,13 @@ export class Character {
       name=this.locomotionGait;
     }
     const combat=this.combatAction;
-    const combatClip= combat?.key==='hit'?'hitHead':combat?.key?.startsWith('dodge')?'combatIdle':combat?.key;
+    const combatClip= ['gunIdle','gunFire'].includes(combat?.key)?'combatIdle':combat?.key==='hit'?'hitHead':combat?.key?.startsWith('dodge')?'combatIdle':combat?.key;
     const rollRecovering=(this.rollReleaseTime || 0)>.08;
     const combatGround=['IDLE','RUNNING','SPRINTING'].includes(state) && !rollRecovering;
     const legsMoving=['RUNNING','SPRINTING'].includes(state) || horizontalSpeed>.25;
     const combatMoving=combatGround && legsMoving;
     const gait=['RUNNING','SPRINTING'].includes(state);
-    const strikeKey=!!(combat?.duration && ['jab','cross','rightHook','hook','heavy','special'].includes(combat.key));
+    const strikeKey=!!(combat?.duration && ['jab','cross','rightHook','hook','heavy','special','knifeStab','gunFire'].includes(combat.key));
     const reactKey=!!(combat && (combat.key?.startsWith('dodge') || combat.key==='hit' || combat.key==='hitHead' || combat.key==='hitBody' || combat.key==='hitHeavy' || combat.key==='hitUppercut'));
     // A traveling punch keeps a stride carrier underneath the attack legs.
     // Replacing it with the in-place boxing take nailed the flight foot down
@@ -777,6 +852,10 @@ export class Character {
     if(name==='combatIdle' && combatGround && (dodgeKey || (!combat?.duration && horizontalSpeed<.15))){
       this.activeAction.time=0;this.activeAction.setEffectiveTimeScale(0);
     }
+    if(combatClip==='combatIdle' && ['gunIdle','gunFire'].includes(combat?.key) && name==='combatIdle'){
+      this.activeAction.time=0;
+      this.activeAction.setEffectiveTimeScale(0);
+    }
     this.mixer.update(delta);
     if(!this.airTrick && this.networkAnimation && !(this.combatAction?.key==='heavy' && this.activeAction===this.actions.heavy) && this.activeAction===this.actions[this.networkAnimation.key]){
       this.activeAction.time=this.networkAnimation.time;
@@ -805,7 +884,7 @@ export class Character {
     this.movingGuardWeight=THREE.MathUtils.damp(this.movingGuardWeight || 0,
       upperAction || (!strikeKey && combatMoving && (this.combatStance || movingGuard))?1:0,upperAction?28:20,delta);
     if((combatGround || upperAction) && (upperAction || this.movingGuardWeight>.001)) {
-      const clip=this.actions[upperAction?combatClip:movingGuard?'guard':'combatIdle']?.getClip();
+      const clip=this.actions[upperAction?combatClip:movingGuard?'guard':this.gunVisible?'combatIdle':this.knifeVisible?'knifeIdle':'combatIdle']?.getClip();
       if(clip) {
         this.strikeLayers ||= new WeakMap();
         if(!this.strikeLayers.has(clip))this.strikeLayers.set(clip,clip.tracks.flatMap(track=>{
@@ -815,7 +894,7 @@ export class Character {
         }));
         // Dodges lean and step procedurally over a stable guard sample.
         // Scrubbing the 4.4s idle take through a 0.38s slip made it twitch.
-        const phase=upperAction && combat.duration && !dodgeKey?(combat.key==='heavy'?heavyClipPhase(combat.time/combat.duration):THREE.MathUtils.clamp(combat.time/combat.duration,0,1)):0;
+        const phase=this.gunVisible && !movingReact && !movingGuard ? 0 : upperAction && combat.duration && !dodgeKey?(combat.key==='heavy'?heavyClipPhase(combat.time/combat.duration):THREE.MathUtils.clamp(combat.time/combat.duration,0,1)):0;
         // Enter guard before the strike instead of snapping from a running
         // arm swing. Contact stays fully weighted; recovery returns to guard.
         const weight=this.movingGuardWeight;
@@ -825,7 +904,7 @@ export class Character {
         // Preserve the travel pelvis; transfer the authored pelvis turn
         // at the current attack phase into the spine layer only.
         const layers=this.strikeLayers.get(clip);
-        const token=upperAction?combat.id || combat.key:movingGuard?'movingGuard':'guard';
+        const token=upperAction?combat.id || combat.key:movingGuard?'movingGuard':this.knifeVisible?'movingKnife':'guard';
         if(this.movingStrikeToken!==token){
           this.movingStrikeToken=token;this.movingStrikeBlend=0;
           // A first moving strike has no prior combat layer. Enter from
@@ -856,7 +935,7 @@ export class Character {
     const releaseGuard=this.combatStance && ['IDLE','RUNNING','SPRINTING','LANDING'].includes(state) && !combat?.duration;
     this.airGuardWeight=airGuard?1:releaseGuard?THREE.MathUtils.damp(this.airGuardWeight || 0,0,18,delta):0;
     if(this.airGuardWeight>.001){
-      const clip=this.actions.combatIdle?.getClip();
+      const clip=this.actions[this.knifeVisible?'knifeIdle':'combatIdle']?.getClip();
       if(clip){
         if(this.airGuardClip!==clip || this.airGuardModel!==this.model){
           this.airGuardClip=clip;this.airGuardModel=this.model;
@@ -900,7 +979,7 @@ export class Character {
     this.model.rotation.set(this.bodyPitch + this.trickRotation, this.visualYaw, 0, 'YXZ');
     this.group.updateMatrixWorld(true);
     alignStrikeFootwork(this, delta, !!(combatGround && combatMoving && this.combatStance && (!combat?.duration || strikeKey) && horizontalSpeed>0.35), this.strikeMoveOffset || 0, combat);
-    poseCombatLife(this, combat, !!movingStrike);
+    if(!this.knifeVisible && !this.gunVisible)poseCombatLife(this, combat, !!movingStrike);
     if(combatGround && this.combatStance && !strikeKey && !reactKey){
       const left=Object.values(this.bones).find(b=>boneId(b.name)==='leftshoulder'),right=Object.values(this.bones).find(b=>boneId(b.name)==='rightshoulder');
       if(left&&right){const across=right.getWorldPosition(new THREE.Vector3()).sub(left.getWorldPosition(new THREE.Vector3())),chest=new THREE.Vector3().crossVectors(new THREE.Vector3(0,1,0),across);const yaw=Math.atan2(chest.x,chest.z)-(this.visualYaw||0);this.guardChestOffset=Math.atan2(Math.sin(yaw),Math.cos(yaw));}
@@ -1089,11 +1168,12 @@ export class Character {
     if(!combatGround)this.combatWristWeight=0;
     this.combatWristWeight=THREE.MathUtils.damp(this.combatWristWeight || 0,
       this.combatStance && combatGround?1:0,24,delta);
-    alignCombatWrists(this,this.combatWristWeight);
+    if(!this.knifeVisible && !this.gunVisible)alignCombatWrists(this,this.combatWristWeight);
     if(!heldGround && groundContacts)clearGroundSoles(this);
     // Contact clearance can solve the shin again; validate the final ankle
     // and toe output after that pass, including the roof-exit handoff.
     constrainJoints(this.jointConstraints?.filter(item=>item.kind==='foot' || item.kind==='toebase'));
+    const turnPreviousEnds=(state==='TURNING' || this.turnShinRelease>0 || combat?.key==='special') && this.endJointPose ? new Map([...this.endJointPose].map(([bone,q])=>[bone,q.clone()])) : null;
     const changedSoles=stabilizeEndJoints(this,delta);
     if(!heldGround && changedSoles && groundContacts)clearGroundSoles(this,{preserveLocal:true});
     const impactPose=state==='ROLLING' || name==='slamLand' || this.rollReleaseTime>0;
@@ -1103,7 +1183,101 @@ export class Character {
       this.model.position.y+=this.impactLift;
       this.group.updateMatrixWorld(true);
     }
+    if(combat?.key==='special' && groundContacts){
+      this.specialFootHistory ||= {};
+      for(const side of ['left','right']){
+        const find=id=>Object.values(this.bones).find(b=>boneId(b.name)===side+id);
+        const hip=find('upleg'),knee=find('leg'),foot=find('foot');
+        if(!hip || !knee || !foot)continue;
+        const current=foot.getWorldPosition(new THREE.Vector3()),last=this.specialFootHistory[side];
+        const maxStep=(horizontalSpeed+3)*Math.max(delta,0);
+        if(last && maxStep>0 && current.distanceTo(last)>maxStep){
+          const target=last.clone().add(current.clone().sub(last).setLength(maxStep));
+          const support=footSupport(this,target);if(support)target.y=Math.max(target.y,support.height+.11);
+          const rotation=foot.getWorldQuaternion(new THREE.Quaternion());
+          this.solveLimb(hip,knee,foot,target,.995);fitGroundAnkle(this,side,foot,rotation);
+        }
+      }
+      clearGroundSoles(this,{preserveLocal:true});
+      for(const side of ['left','right']){
+        const foot=Object.values(this.bones).find(b=>boneId(b.name)===side+'foot');
+        const prior=turnPreviousEnds?.get(foot);
+        if(foot && prior && delta>0){
+          foot.quaternion.copy(prior.clone().rotateTowards(foot.quaternion,THREE.MathUtils.degToRad(240)*delta)).normalize();
+          this.endJointPose?.set(foot,foot.quaternion.clone());foot.updateMatrixWorld(true);
+        }
+      }
+      clearGroundSoles(this,{preserveLocal:true});
+      for(const side of ['left','right']){
+        const foot=Object.values(this.bones).find(b=>boneId(b.name)===side+'foot');
+        if(foot)this.specialFootHistory[side]=foot.getWorldPosition(new THREE.Vector3());
+      }
+      this.group.updateMatrixWorld(true);
+    }else this.specialFootHistory=null;
+    const pistolAim=!!(this.gunVisible && combatGround && !this.lowStance && (!combat || ['gunIdle','gunFire'].includes(combat.key)));
+    this.pistolAimWeight=THREE.MathUtils.damp(this.pistolAimWeight || 0,pistolAim?1:0,18,delta);
+    // Keep applying the fading correction after leaving aim. Dropping it in
+    // one frame snaps the hand and weapon when a roll, jump or hit interrupts it.
+    if(this.pistolAimWeight>.001)this.posePistol(combat,this.pistolAimWeight);
     poseLowStance(this,delta,state);
+    // Carry the last rendered weapon arm briefly when an attack is interrupted
+    // by takeoff. The airborne guard otherwise replaces the stabbing arm in
+    // one frame, making the held weapon jump across the torso.
+    if(this.weaponAttackWasActive && ['JUMPING','FALLING'].includes(state) && GROUNDED.includes(previous) && this.webArmPrevious){
+      this.weaponAirEntry=new Map([...this.webArmPrevious].filter(([bone])=>/^(rightarm|rightforearm)$/.test(boneId(bone.name))).map(([bone,q])=>[bone,q.clone()]));
+      this.weaponAirEntryTime=0;
+    }
+    if(this.weaponAirEntry && ['JUMPING','FALLING'].includes(state)){
+      this.weaponAirEntryTime+=Math.max(0,delta);
+      const blend=THREE.MathUtils.smoothstep(this.weaponAirEntryTime,0,.3);
+      for(const [bone,from] of this.weaponAirEntry)bone.quaternion.slerpQuaternions(from,bone.quaternion.clone(),blend).normalize();
+      this.group.updateMatrixWorld(true);
+      if(blend>=1)this.weaponAirEntry=null;
+    }else if(!['JUMPING','FALLING'].includes(state))this.weaponAirEntry=null;
+    this.weaponAttackWasActive=!!((this.knifeVisible || this.gunVisible) && ['knifeStab','gunFire'].includes(combat?.key));
+    // Limit shin pronation against the previously rendered frame during a
+    // planted turn, transporting the old frame as the leg direction changes.
+    if(state==='TURNING')this.turnShinRelease=.75;
+    else this.turnShinRelease=Math.max(0,(this.turnShinRelease || 0)-delta);
+    if(this.turnShinRelease>0){
+      this.turnShinFrames ||= {};
+      for(const side of ['left','right']){
+        const lower=Object.values(this.bones).find(b=>boneId(b.name)===side+'leg');
+        const foot=Object.values(this.bones).find(b=>boneId(b.name)===side+'foot');
+        if(!lower || !foot)continue;
+        const axis=foot.getWorldPosition(new THREE.Vector3()).sub(lower.getWorldPosition(new THREE.Vector3())).normalize();
+        const current=lower.getWorldQuaternion(new THREE.Quaternion()),last=this.turnShinFrames[side];
+        if(last && delta>0){
+          const transported=new THREE.Quaternion().setFromUnitVectors(last.axis,axis).multiply(last.q);
+          const difference=current.clone().multiply(transported.invert()).normalize();
+          const twist=2*Math.atan2(new THREE.Vector3(difference.x,difference.y,difference.z).dot(axis),difference.w);
+          const angle=Math.atan2(Math.sin(twist),Math.cos(twist));
+          const correction=THREE.MathUtils.clamp(angle,-THREE.MathUtils.degToRad(530)*delta,THREE.MathUtils.degToRad(530)*delta)-angle;
+          if(Math.abs(correction)>1e-6){
+            const footWorld=foot.getWorldQuaternion(new THREE.Quaternion());
+            const desired=new THREE.Quaternion().setFromAxisAngle(axis,correction).multiply(current);
+            lower.quaternion.copy(lower.parent.getWorldQuaternion(new THREE.Quaternion()).invert().multiply(desired)).normalize();
+            lower.updateMatrixWorld(true);
+            foot.quaternion.copy(lower.getWorldQuaternion(new THREE.Quaternion()).invert().multiply(footWorld)).normalize();
+            constrainJoints(this.jointConstraints?.filter(item=>item.bone===foot));
+            const lastFoot=turnPreviousEnds?.get(foot);
+            if(lastFoot && delta>0)foot.quaternion.copy(lastFoot.clone().rotateTowards(foot.quaternion,THREE.MathUtils.degToRad(240)*delta)).normalize();
+            this.endJointPose?.set(foot,foot.quaternion.clone());foot.updateMatrixWorld(true);
+          }
+        }
+        this.turnShinFrames[side]={q:lower.getWorldQuaternion(new THREE.Quaternion()),axis};
+      }
+    }else this.turnShinFrames=null;
+    if(this.turnShinRelease>0 && groundContacts)clearGroundSoles(this,{preserveLocal:true});
+    if(this.turnShinRelease>0 && this.groundSoleTargets){
+      this.turnSoleFrames ||= {};
+      for(const side of ['left','right']){
+        const desired=this.groundSoleTargets[side],last=this.turnSoleFrames[side];
+        if(!desired)continue;
+        if(last && delta>0)desired.copy(last.clone().rotateTowards(desired,THREE.MathUtils.degToRad(239)*delta));
+        this.turnSoleFrames[side]=desired.clone();
+      }
+    }else if(!(this.turnShinRelease>0))this.turnSoleFrames=null;
     // The next contact step starts from the rendered ankle, after the
     // anatomical clamp and sole clearance have both adjusted the IK result.
     if(grounded && this.groundFootRotations){
@@ -1161,6 +1335,46 @@ export class Character {
     const visibleAnchor = attached ? anchorPos : (this.persistentWebAnchor || firingAnchor);
     this.updateWeb(!!visibleAnchor, visibleAnchor);
     this.frameEntryPose=null;
+  }
+
+  posePistol(combat,weight=1) {
+    const find=id=>Object.values(this.bones || {}).find(b=>boneId(b.name)===id);
+    const arm=find('rightarm'),forearm=find('rightforearm'),hand=find('righthand');
+    const weapon=this.extraWeapon==='sniper-rifle' ? this.extraWeapons?.['sniper-rifle'] : this.gunModel;
+    if(!arm || !forearm || !hand || !weapon)return;
+    this.group.updateMatrixWorld(true);
+    const yaw=this.visualYaw || 0,forward=new THREE.Vector3(Math.sin(yaw),0,Math.cos(yaw));
+    const shoulder=arm.getWorldPosition(new THREE.Vector3());
+    const kick=combat?.key==='gunFire' ? Math.sin(Math.PI*THREE.MathUtils.clamp(combat.time/combat.duration,0,1)) : 0;
+    const target=shoulder.clone().addScaledVector(forward,.43-.045*kick).add(new THREE.Vector3(0,-.06+.025*kick,0));
+    const pole=new THREE.Vector3(0,-1,0).addScaledVector(forward,-.15);
+    const upper=arm.quaternion.clone(),lower=forearm.quaternion.clone();
+    this.solveLimb(arm,forearm,hand,target,.94,pole);
+    arm.quaternion.slerpQuaternions(upper,arm.quaternion.clone(),weight);
+    forearm.quaternion.slerpQuaternions(lower,forearm.quaternion.clone(),weight);
+    this.group.updateMatrixWorld(true);
+    // The model's barrel points along its local X axis and its top along Y.
+    const up=new THREE.Vector3(0,1,0),side=new THREE.Vector3().crossVectors(forward,up).normalize();
+    const aim=new THREE.Quaternion().setFromRotationMatrix(new THREE.Matrix4().makeBasis(forward,up,side));
+    if(this.extraWeapon==='sniper-rifle') {
+      // The GLB root rotates the mesh: its barrel axis in scene space is -Z.
+      const rifleAim=new THREE.Quaternion().setFromRotationMatrix(new THREE.Matrix4().makeBasis(side,up,forward.clone().negate()));
+      weapon.quaternion.slerp(hand.getWorldQuaternion(new THREE.Quaternion()).invert().multiply(rifleAim),weight);
+    } else weapon.quaternion.slerp(hand.getWorldQuaternion(new THREE.Quaternion()).invert().multiply(aim),weight);
+    weapon.updateMatrixWorld(true);
+    if(this.extraWeapon==='sniper-rifle') {
+      const leftArm=find('leftarm'),leftForearm=find('leftforearm'),leftHand=find('lefthand');
+      if(leftArm && leftForearm && leftHand) {
+        // Support the fore-end with the free hand while preserving the
+        // animation blend during transitions into and out of aiming.
+        const support=hand.getWorldPosition(new THREE.Vector3()).addScaledVector(forward,.23).addScaledVector(up,-.06);
+        const upper=leftArm.quaternion.clone(),lower=leftForearm.quaternion.clone();
+        this.solveLimb(leftArm,leftForearm,leftHand,support,.9,new THREE.Vector3(0,-1,0));
+        leftArm.quaternion.slerpQuaternions(upper,leftArm.quaternion.clone(),weight);
+        leftForearm.quaternion.slerpQuaternions(lower,leftForearm.quaternion.clone(),weight);
+        this.group.updateMatrixWorld(true);
+      }
+    }
   }
 
   reachWebAnchor(anchor,weight=1,side=this.currentHand) {

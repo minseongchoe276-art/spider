@@ -346,13 +346,25 @@ export function clearGroundSoles(c,{preserveLocal=false}={}) {
           }
         }
       }
+      // Support planes are invariant within a pass. Cache their step heights
+      // and use squared distances for the many skinned sole vertices.
+      const stepAbove=probes.map(probe=>{
+        const expected=base.height-(base.normal.x*(probe.point.x-basePoint.x)+base.normal.z*(probe.point.z-basePoint.z))/base.normal.y;
+        return probe.support.height-expected>.08;
+      });
       for(const point of points){
-        const probe=probes.reduce((a,b)=>Math.hypot(point.x-a.point.x,point.z-a.point.z)<Math.hypot(point.x-b.point.x,point.z-b.point.z)?a:b);
+        let closest=0,distance=Infinity;
+        for(let i=0;i<probes.length;i++){
+          const candidate=probes[i];
+          const dx=point.x-candidate.point.x,dz=point.z-candidate.point.z,d=dx*dx+dz*dz;
+          // The old reduction selected the later probe on equal distances.
+          if(d<=distance){distance=d;closest=i;}
+        }
+        const probe=probes[closest];
         const {height,normal}=probe.support;
         const surface=height-(normal.x*(point.x-probe.point.x)+normal.z*(point.z-probe.point.z))/normal.y;
         lift=Math.max(lift,surface+.003-point.y);
-        const expected=base.height-(base.normal.x*(probe.point.x-basePoint.x)+base.normal.z*(probe.point.z-basePoint.z))/base.normal.y;
-        if(height-expected>.08)delete c.movingPlants?.[side];
+        if(stepAbove[closest])delete c.movingPlants?.[side];
       }
       if(lift<0){
         const clip=c.activeAction?.getClip(),contacts=clip?.userData?.footContacts;
@@ -363,7 +375,11 @@ export function clearGroundSoles(c,{preserveLocal=false}={}) {
         // supporting boot 2–3cm above the plane, then the held-pose cache kept
         // it there. Settle only a small existing support gap, never swing lift.
         const supported=!!c.movingPlants?.[side] || contact || still;
-        if(!supported || lift<-.06 || c.mantleFootRelease>0)break;
+        // A verified plant can be lifted above the smaller settling range by
+        // the ankle clamp. Allow it to settle from farther away, but keep the
+        // narrow range for clip contacts so a swinging boot stays airborne.
+        const planted=!!c.movingPlants?.[side];
+        if(!supported || lift<-(planted ? .12 : .06) || c.mantleFootRelease>0)break;
         c.groundClearanceSettling[side]=lift<-.003;
         const step=.2*(c.limbPoseDelta ?? 1/60)/4;
         lift=Math.max(lift,-step);
@@ -386,8 +402,11 @@ export function clearGroundSoles(c,{preserveLocal=false}={}) {
         }
         // The uppercut transfers weight onto one boot while the other lifts.
         // Retire an airborne support rather than keeping a floating IK anchor.
-        if(c.combatAction?.key==='special' && clearance>.035)delete c.movingPlants[side];
-        if(plant && clearance>=-.005 && clearance<.06){
+        const displaced=plant.age>.08 && actual.distanceTo(plant.position)>.03;
+        if(displaced || (c.combatAction?.key==='special' && clearance>.035)){
+          delete c.movingPlants[side];
+          if(c.movingReleases)delete c.movingReleases[side];
+        }else if(clearance>=-.005 && clearance<.06){
           plant.offset=actual.y-support.height+THREE.MathUtils.clamp(.003-clearance,-.012,.012);
           plant.position.y=support.height+plant.offset;
         }
@@ -654,6 +673,13 @@ export function plantMovingFeet(c,delta) {
         // an already planted foot or by relaxing the anatomical joint limit.
         const compactStraight=['jab','cross'].includes(clip.name);
         plant.position.addScaledVector(forward,clip.name==='special' ? .22 : compactStraight ? .35 : strike ? .22 : ['hook','heavy'].includes(clip.name) ? .12 : .10);
+      }
+      // Widen each new stride support before planting; this gives the shin
+      // enough room to keep the sole flat within the ankle's joint limit.
+      if(['walk','regularRun','run'].includes(clip.name)){
+        const lateral=new THREE.Vector3(1,0,0).applyQuaternion(c.model.getWorldQuaternion(new THREE.Quaternion())).projectOnPlane(support.normal).normalize();
+        const width=clip.name==='run'?.08:.05;
+        plant.position.addScaledVector(lateral,side==='left'?width:-width);
       }
       plant.position.y=surface+0.11;
     }

@@ -48,6 +48,7 @@ class QualityDirector {
       snapshot: () => this.snapshot(0),
       weather: epoch => {if(app.weather){app.weather.overrideEpoch=epoch??undefined;app.weather.update(0,app.physics.position);}return app.weather?.state;},
       stance:()=>({active:app.character.combatStance,action:app.character.combatAction,health:app.combat.health,evading:app.combat.isEvading()}),
+      knife:()=>{const c=app.character,m=c.knifeModel;if(!m)return null;m.updateWorldMatrix(true,true);const box=new THREE.Box3().setFromObject(m);return {equipped:!!app.combat.knifeEquipped,visible:m.visible,hand:c.rightHand.getWorldPosition(new THREE.Vector3()).toArray(),min:box.min.toArray(),max:box.max.toArray()};},
       errors: () => this.errors.slice(),
       audioCounts: () => ({ ...this.audioCounts }),
       vfxCounts: () => ({ ...this.vfxCounts }),

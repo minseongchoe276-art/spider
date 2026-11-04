@@ -1,0 +1,72 @@
+PASS 24fps walk: slope 0/0, ankle continuity and toe clearance
+PASS 24fps walk: slope 0/0.3, ankle continuity and toe clearance
+PASS 24fps walk: slope 0/-0.3, ankle continuity and toe clearance
+PASS 24fps walk: slope 0.3/0, ankle continuity and toe clearance
+FAIL 24fps walk: slope 0.4/0.2, ankle continuity and toe clearance Planted sole floats above support: 0.04631405782380671m
+PASS 24fps regularRun: slope 0/0, ankle continuity and toe clearance
+PASS 24fps regularRun: slope 0/0.3, ankle continuity and toe clearance
+PASS 24fps regularRun: slope 0/-0.3, ankle continuity and toe clearance
+PASS 24fps regularRun: slope 0.3/0, ankle continuity and toe clearance
+PASS 24fps regularRun: slope 0.4/0.2, ankle continuity and toe clearance
+PASS 24fps run: slope 0/0, ankle continuity and toe clearance
+PASS 24fps run: slope 0/0.3, ankle continuity and toe clearance
+PASS 24fps run: slope 0/-0.3, ankle continuity and toe clearance
+PASS 24fps run: slope 0.3/0, ankle continuity and toe clearance
+PASS 24fps run: slope 0.4/0.2, ankle continuity and toe clearance
+FAIL 30fps walk: slope 0/0, ankle continuity and toe clearance Boot mesh crossed support plane: -0.00425168487020187m
+PASS 30fps walk: slope 0/0.3, ankle continuity and toe clearance
+PASS 30fps walk: slope 0/-0.3, ankle continuity and toe clearance
+PASS 30fps walk: slope 0.3/0, ankle continuity and toe clearance
+PASS 30fps walk: slope 0.4/0.2, ankle continuity and toe clearance
+PASS 30fps regularRun: slope 0/0, ankle continuity and toe clearance
+PASS 30fps regularRun: slope 0/0.3, ankle continuity and toe clearance
+PASS 30fps regularRun: slope 0/-0.3, ankle continuity and toe clearance
+PASS 30fps regularRun: slope 0.3/0, ankle continuity and toe clearance
+PASS 30fps regularRun: slope 0.4/0.2, ankle continuity and toe clearance
+PASS 30fps run: slope 0/0, ankle continuity and toe clearance
+PASS 30fps run: slope 0/0.3, ankle continuity and toe clearance
+PASS 30fps run: slope 0/-0.3, ankle continuity and toe clearance
+PASS 30fps run: slope 0.3/0, ankle continuity and toe clearance
+PASS 30fps run: slope 0.4/0.2, ankle continuity and toe clearance
+PASS 60fps walk: slope 0/0, ankle continuity and toe clearance
+PASS 60fps walk: slope 0/0.3, ankle continuity and toe clearance
+PASS 60fps walk: slope 0/-0.3, ankle continuity and toe clearance
+PASS 60fps walk: slope 0.3/0, ankle continuity and toe clearance
+PASS 60fps walk: slope 0.4/0.2, ankle continuity and toe clearance
+PASS 60fps regularRun: slope 0/0, ankle continuity and toe clearance
+PASS 60fps regularRun: slope 0/0.3, ankle continuity and toe clearance
+PASS 60fps regularRun: slope 0/-0.3, ankle continuity and toe clearance
+PASS 60fps regularRun: slope 0.3/0, ankle continuity and toe clearance
+PASS 60fps regularRun: slope 0.4/0.2, ankle continuity and toe clearance
+PASS 60fps run: slope 0/0, ankle continuity and toe clearance
+PASS 60fps run: slope 0/0.3, ankle continuity and toe clearance
+PASS 60fps run: slope 0/-0.3, ankle continuity and toe clearance
+PASS 60fps run: slope 0.3/0, ankle continuity and toe clearance
+PASS 60fps run: slope 0.4/0.2, ankle continuity and toe clearance
+FAIL 144fps walk: slope 0/0, ankle continuity and toe clearance Boot mesh crossed support plane: -0.0017376664901761303m
+PASS 144fps walk: slope 0/0.3, ankle continuity and toe clearance
+PASS 144fps walk: slope 0/-0.3, ankle continuity and toe clearance
+PASS 144fps walk: slope 0.3/0, ankle continuity and toe clearance
+FAIL 144fps walk: slope 0.4/0.2, ankle continuity and toe clearance Planted sole floats above support: 0.03628207304684339m
+PASS 144fps regularRun: slope 0/0, ankle continuity and toe clearance
+PASS 144fps regularRun: slope 0/0.3, ankle continuity and toe clearance
+PASS 144fps regularRun: slope 0/-0.3, ankle continuity and toe clearance
+PASS 144fps regularRun: slope 0.3/0, ankle continuity and toe clearance
+PASS 144fps regularRun: slope 0.4/0.2, ankle continuity and toe clearance
+PASS 144fps run: slope 0/0, ankle continuity and toe clearance
+PASS 144fps run: slope 0/0.3, ankle continuity and toe clearance
+PASS 144fps run: slope 0/-0.3, ankle continuity and toe clearance
+PASS 144fps run: slope 0.3/0, ankle continuity and toe clearance
+PASS 144fps run: slope 0.4/0.2, ankle continuity and toe clearance
+PASS 24fps walk/jog/run/sprint, stop, turn and jump sequence
+PASS 30fps walk/jog/run/sprint, stop, turn and jump sequence
+PASS 60fps walk/jog/run/sprint, stop, turn and jump sequence
+PASS 144fps walk/jog/run/sprint, stop, turn and jump sequence
+PASS 24fps roof handoff preserves ankle orientation and final boot clearance
+PASS 30fps roof handoff preserves ankle orientation and final boot clearance
+PASS 60fps roof handoff preserves ankle orientation and final boot clearance
+PASS 144fps roof handoff preserves ankle orientation and final boot clearance
+PASS Silk geometry: tapered ends, exposed fibers, tangent normals and reusable buffers
+PASS Silk frame remains continuous when a swinging anchor crosses vertical
+PASS Slack silk sags, a taut strand settles, missed shots fade without a ghost attachment
+Silk/gait: 67 passed, 4 failed.

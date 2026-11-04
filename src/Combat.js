@@ -13,13 +13,15 @@ export const ATTACKS={
   hook:{duration:0.9,from:0.342,to:0.432,damage:32,reach:2.1},
   special:UPPERCUT,
   heavy:{duration:1.05,from:0.52,to:0.7,damage:32,reach:2.1},
+  knifeStab:{duration:1.05,from:0.35,to:0.52,damage:24,reach:1.8},
+  gunFire:{duration:0.42,from:0.07,to:0.13,damage:22,reach:24},
 };
 const grounded=p=>GROUNDED.includes(p.state);
 const forward=p=>new THREE.Vector3(Math.sin(p.facingAngle),0,Math.cos(p.facingAngle));
 export class CombatSystem {
   constructor(scene,physics,character,{vfx=null,audio=null,onNotice=()=>{},onHit=()=>{},onImpact=()=>{},getTargets=null,getBindings=()=>BINDINGS}={}) {
     Object.assign(this,{scene,physics,character,vfx,audio,onNotice,onHit,onImpact,getTargets,getBindings});
-    this.mode='web';this.action=null;
+    this.mode='web';this.action=null;this.knifeEquipped=false;this.gunEquipped=false;
     this.character.combatStance=false;
     this.blocking=false;this.health=100;this.stamina=100;this.invulnerable=0;
     this.specialCooldown=0;this.enemies=[];this.serial=0;this.hurtCount=0;this.hits=0;this.elapsed=0;this.physics.webEnabled=true;this.physics.onReset=()=>{this.cancel();this.clearEnemies();this.health=this.stamina=100;this.specialCooldown=0;};
@@ -62,9 +64,13 @@ export class CombatSystem {
     if(this.mode!=='combat' || !canStrike(this.physics) || this.blocking || this.stamina<4)return false;
     if(this.action){this.queue('attack',camera);return false;}
     if(this.standBefore('attack',camera))return false;
-    this.stamina-=4;this.start('jab',ATTACKS.jab.duration,camera);return true;
+    const key=this.gunEquipped?'gunFire':this.extraWeapon?'heavy':this.knifeEquipped?'knifeStab':'jab';
+    this.stamina-=4;this.start(key,ATTACKS[key].duration,camera);
+    if(key==='gunFire')this.audio?.playGunshot?.(this.physics.position);
+    return true;
   }
   straight(camera) {
+    if(this.knifeEquipped || this.gunEquipped || this.extraWeapon)return this.attack(camera);
     if(this.action){this.queue('straight',camera);return false;}
     if(this.mode!=='combat' || !canStrike(this.physics) || this.blocking || this.stamina<7)return false;
     if(this.standBefore('straight',camera))return false;
@@ -74,6 +80,7 @@ export class CombatSystem {
     this.stamina-=7;this.start(key,ATTACKS[key].duration,camera);return true;
   }
   heavy(camera) {
+    if(this.knifeEquipped || this.gunEquipped || this.extraWeapon)return this.attack(camera);
     if(this.mode!=='combat' || this.action || this.blocking || this.stamina<18 || !canStrike(this.physics))return false;
     if(this.standBefore('heavy',camera))return false;
     this.stamina-=18;this.blocking=false;
@@ -81,6 +88,7 @@ export class CombatSystem {
     return true;
   }
   special(camera) {
+    if(this.knifeEquipped || this.gunEquipped || this.extraWeapon)return this.attack(camera);
     if(this.mode!=='combat' || this.action || !canStrike(this.physics) || this.blocking || this.stamina<UPPERCUT.stamina || this.specialCooldown>0)return false;
     if(this.standBefore('special',camera))return false;
     this.stamina-=UPPERCUT.stamina;this.specialCooldown=UPPERCUT.cooldown;
@@ -133,7 +141,7 @@ export class CombatSystem {
     if(this.pendingModeInput && !this.action){const modeInput=this.pendingModeInput;this.toggle(modeInput);}
     if(this.queued && !this.action){const next=this.queued;this.queued=null;if(next.expires>=this.elapsed)this[next.method](next.camera);}
     if(input)this.guard(!!input.guard);
-    this.character.combatStance=this.mode==='combat' && (!!input?.combatStance || this.blocking);
+    this.character.combatStance=this.mode==='combat' && (!!input?.combatStance || this.blocking || this.knifeEquipped || this.gunEquipped || this.extraWeapon);
     const current=this.action;
     const stopping=this.character.activeAction && ['stop','runStop'].some(key=>this.character.activeAction===this.character.actions?.[key] && this.character.activeAction?.time<this.character.activeAction.getClip().duration-.05) || ['RUNNING','SPRINTING'].includes(this.character.lastState);
     // The strike keeps the aim from the button press. Mouse look after that
@@ -151,7 +159,7 @@ export class CombatSystem {
       Math.sin(Math.PI*THREE.MathUtils.clamp(current.time/current.duration,0,1)):0;
     this.physics.combatMotion=current?{key:current.key,direction:current.direction || null,speed:dodgeSpeed,entryVelocity:current.entryVelocity || null,time:current.time,duration:current.duration,plant:!!ATTACKS[current.key] && !current.travel,travel:!!current.travel}:this.blocking?{key:'guard'}:null;
     this.character.combatAction=current?{id:current.id,key:current.key,time:current.time,duration:current.duration,travel:!!current.travel}:
-      this.blocking?{key:'guard'}:!stopping && this.character.combatStance && this.physics.state==='IDLE' && Math.hypot(this.physics.velocity.x,this.physics.velocity.z)<0.15?{key:'combatIdle'}:null;
+      this.blocking?{key:'guard'}:!stopping && this.character.combatStance && this.physics.state==='IDLE' && Math.hypot(this.physics.velocity.x,this.physics.velocity.z)<0.15?{key:this.gunEquipped?'gunIdle':this.knifeEquipped?'knifeIdle':'combatIdle'}:null;
     if(current || this.blocking)this.character.targetFacingAngle=this.physics.facingAngle;
   }
   after(delta) {
@@ -173,17 +181,20 @@ export class CombatSystem {
   }
   strike(action,hit) {
     const origin=this.physics.position.clone().add(new THREE.Vector3(0,1,0)),f=forward(this.physics);
-    for(const e of this.getTargets?.() || this.enemies) {
+    const targets=this.getTargets?.() || this.enemies;
+    const ordered=action.key==='gunFire'?[...targets].sort((a,b)=>a.position.distanceToSquared(origin)-b.position.distanceToSquared(origin)):targets;
+    if(action.key==='gunFire' && action.hits.size)return;
+    for(const e of ordered) {
       if(e.health<=0 || action.hits.has(e))continue;
       const target=e.position.clone().add(new THREE.Vector3(0,1,0)),d=target.clone().sub(origin);
-      if(Math.abs(d.y)>1.5 || Math.hypot(d.x,d.z)>hit.reach || (!hit.radial && d.clone().setY(0).normalize().dot(f)<0.45) || this.obstructed(origin,target))continue;
+      if(Math.abs(d.y)>1.5 || Math.hypot(d.x,d.z)>hit.reach || (!hit.radial && d.clone().setY(0).normalize().dot(f)<(action.key==='gunFire' ? 0.995 : 0.45)) || this.obstructed(origin,target))continue;
       action.hits.add(e);
       if(e.nonCombatant){
         e.reactToAttack?.(action.key,hit.damage,origin);
         if(action.key==='special'){this.vfx?.spawnUppercutImpact?.(target.clone().setY(e.position.y+1.6),f);this.onImpact(.16);}else this.vfx?.spawnWebImpact?.(target);
-        this.audio?.playCombatHit?.(hit.damage>=24,target);continue;
+        this.audio?.playCombatHit?.(hit.damage>=24,target);if(action.key==='gunFire')break;continue;
       }
-      if(e.type==='shield' && !['hook','heavy','special','slamLand'].includes(action.key)){e.flash=.1;e.stagger=.08;this.audio?.playCombatBlock?.(target);this.onNotice('방패 방어 · G 어퍼컷으로 돌파하세요.');continue;}
+      if(e.type==='shield' && !['hook','heavy','special','slamLand'].includes(action.key)){e.flash=.1;e.stagger=.08;this.audio?.playCombatBlock?.(target);this.onNotice('방패 방어 · G 어퍼컷으로 돌파하세요.');if(action.key==='gunFire')break;continue;}
       e.health=Math.max(0,e.health-hit.damage);e.flash=0.15;e.stagger=0.45;this.hits++;
       this.onHit(hit.damage);
       if(action.key==='special'){
@@ -192,6 +203,7 @@ export class CombatSystem {
       }else this.vfx?.spawnWebImpact(target);
       this.audio?.playCombatHit?.(hit.damage>=24,target);
       if(e.health===0){e.defeatTime=0;e.windup=0;e.ring&&(e.ring.visible=false);this.onNotice('대상 제압');}
+      if(action.key==='gunFire')break;
     }
   }
   reactToHit(amount,{hitRegion=null,variant=null}={}) {

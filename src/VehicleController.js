@@ -1,8 +1,8 @@
 import * as T from 'three';
 const up=new T.Vector3(0,1,0),down=new T.Vector3(0,-1,0);
-export const VEHICLE=Object.freeze({length:4.7,halfLen:2.35,halfWid:1.33,width:2.65,wheelbase:2.8,maxSpeed:24,reverseSpeed:6,acceleration:5.8,brake:13,maxSlope:28*Math.PI/180,maxStep:.24,maxSupportWarp:.45,step:1/90});
+export const VEHICLE=Object.freeze({length:4.7,halfLen:2.35,halfWid:1.33,width:2.65,wheelbase:2.8,maxSpeed:24,boostSpeed:38,boostAcceleration:11,reverseSpeed:6,acceleration:5.8,brake:13,maxSlope:28*Math.PI/180,maxStep:.24,maxSupportWarp:.45,step:1/90});
 export class VehicleController{
- constructor(city,position=new T.Vector3(),yaw=0,vehicleParams={}){this.city=city;this.position=position.clone();this.yaw=yaw;this.speed=0;this.steering=0;this.spin=0;this.accumulator=0;this.velocity=new T.Vector3();this.occupied=()=>false;
+ constructor(city,position=new T.Vector3(),yaw=0,vehicleParams={}){this.city=city;this.position=position.clone();this.yaw=yaw;this.travelYaw=yaw;this.speed=0;this.steering=0;this.spin=0;this.accumulator=0;this.velocity=new T.Vector3();this.occupied=()=>false;
   // Merge per-vehicle dimensions with defaults so each model has correct physics
   this.p=Object.assign({},VEHICLE,vehicleParams);
   const ground=this.support(this.position,yaw);if(ground){this.position.y=ground.height+.02;this.rideY=ground.height;this.pitch=ground.pitch;this.roll=ground.roll;this.contacts=ground.contacts;this.groundPlane=ground;this.supportPosition=this.position.clone();this.supportYaw=yaw;}
@@ -66,6 +66,7 @@ export class VehicleController{
   for(let i=0;i<4;i++)if(this.contacts?.[i])Object.assign(previous.contacts[i],this.contacts[i]);
  }
  resetRenderPose(snapRide=false){
+  this.travelYaw=this.yaw;
   if(snapRide){const ground=this.support(this.position,this.yaw);this.rideY=this.position.y-.02;this.contacts=ground?.contacts;this.groundPlane=ground;this.supportPosition=null;}
   this.savePreviousPose();this.accumulator=0;
   this.renderPose??={position:new T.Vector3(),contacts:Array.from({length:4},()=>({x:0,z:0,y:0})),plane:{slopeX:0,slopeZ:0}};
@@ -86,15 +87,25 @@ export class VehicleController{
  }
  tick(dt,input){
   const steer=(input.left?1:0)-(input.right?1:0),target=steer*(.5/(1+Math.abs(this.speed)*.045));this.steering=T.MathUtils.damp(this.steering,target,7,dt);
-  const throttle=(input.forward?1:0)-(input.backward?1:0),braking=(throttle&&Math.sign(throttle)!==Math.sign(this.speed)&&Math.abs(this.speed)>.15)||input.jump;
-  if(input.jump)this.speed=T.MathUtils.damp(this.speed,0,12,dt);
+  const throttle=(input.forward?1:0)-(input.backward?1:0),drifting=!!input.jump&&!!steer&&this.speed>5,braking=(throttle&&Math.sign(throttle)!==Math.sign(this.speed)&&Math.abs(this.speed)>.15)||input.jump;
+  if(drifting)this.speed=T.MathUtils.damp(this.speed,0,.85,dt);
+  else if(input.jump)this.speed=T.MathUtils.damp(this.speed,0,12,dt);
   else if(braking){const step=this.p.brake*dt;this.speed=Math.abs(this.speed)<=step?0:this.speed-Math.sign(this.speed)*step;}
-  else if(throttle)this.speed+=throttle*this.p.acceleration*dt;
+  else if(throttle){
+   const limit=Math.min(input.sprint?this.p.boostSpeed:this.p.maxSpeed,input.speedLimit??Infinity);
+   if(throttle<0||this.speed<limit)this.speed=Math.min(limit,this.speed+throttle*(input.sprint&&throttle>0?this.p.boostAcceleration:this.p.acceleration)*dt);
+  }
   else this.speed=T.MathUtils.damp(this.speed,0,.7,dt);
-  this.speed=T.MathUtils.clamp(this.speed,-this.p.reverseSpeed,this.p.maxSpeed);
-  const yaw=this.yaw+this.speed/this.p.wheelbase*Math.tan(this.steering)*dt,targetPosition=this.position.clone().addScaledVector(new T.Vector3(Math.sin(yaw),0,Math.cos(yaw)),this.speed*dt),ground=this.support(targetPosition,yaw);
+  const speedLimit=Math.min(input.sprint?this.p.boostSpeed:this.p.maxSpeed,input.speedLimit??Infinity);
+  if(this.speed>speedLimit)this.speed=Math.max(speedLimit,this.speed-3*dt);
+  this.speed=Math.max(-this.p.reverseSpeed,this.speed);
+  const yaw=this.yaw+this.speed/this.p.wheelbase*Math.tan(this.steering)*(drifting?1.35:1)*dt;
+  const turn=Math.atan2(Math.sin(yaw-this.travelYaw),Math.cos(yaw-this.travelYaw));
+  this.travelYaw+=turn*(1-Math.exp(-(drifting?1.5:8)*dt));
+  const direction=drifting||Math.abs(turn)>.001?this.travelYaw:yaw;
+  const targetPosition=this.position.clone().addScaledVector(new T.Vector3(Math.sin(direction),0,Math.cos(direction)),this.speed*dt),ground=this.support(targetPosition,yaw);
   if(ground)targetPosition.y=ground.height+.02;
-  if(!ground||!this.clearMove(this.position,this.yaw,targetPosition,yaw,ground)){this.speed=0;this.velocity.set(0,0,0);return;}
+  if(!ground||!this.clearMove(this.position,this.yaw,targetPosition,yaw,ground)){this.speed=0;this.travelYaw=this.yaw;this.velocity.set(0,0,0);return;}
   // Physics follows the fitted road immediately. Only the rendered ride
   // height is damped, so suspension smoothing cannot block an uphill sweep.
   if(this.rideY==null)this.rideY=ground.height;
@@ -103,6 +114,6 @@ export class VehicleController{
   this.rideY=T.MathUtils.clamp(this.rideY,ground.height-.12,ground.height+.12);
   this.pitch=ground.pitch;this.roll=ground.roll;this.groundPlane=ground;
   this.contacts=ground.contacts;
-  const verticalSpeed=(targetPosition.y-this.position.y)/dt;this.position.copy(targetPosition);(this.supportPosition??=new T.Vector3()).copy(targetPosition);this.supportYaw=yaw;this.yaw=yaw;this.spin+=this.speed*dt/(this.wheelRadius||.38);this.velocity.set(Math.sin(yaw)*this.speed,verticalSpeed,Math.cos(yaw)*this.speed);
+  const verticalSpeed=(targetPosition.y-this.position.y)/dt;this.position.copy(targetPosition);(this.supportPosition??=new T.Vector3()).copy(targetPosition);this.supportYaw=yaw;this.yaw=yaw;this.spin+=this.speed*dt/(this.wheelRadius||.38);this.velocity.set(Math.sin(direction)*this.speed,verticalSpeed,Math.cos(direction)*this.speed);
  }
 }

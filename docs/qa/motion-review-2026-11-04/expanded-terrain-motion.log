@@ -1,0 +1,65 @@
+PASS flat 24 reverse-diagonal
+FAIL flat 24 sprint-attack-jump Toe penetrated the sampled support
+FAIL flat 30 reverse-diagonal Toe penetrated the sampled support
+FAIL flat 30 sprint-attack-jump Toe penetrated the sampled support
+FAIL flat 60 reverse-diagonal Toe penetrated the sampled support
+FAIL flat 60 sprint-attack-jump Toe penetrated the sampled support
+FAIL flat 144 reverse-diagonal Toe penetrated the sampled support
+FAIL flat 144 sprint-attack-jump Toe penetrated the sampled support
+PASS diagonal-ramp 24 reverse-diagonal
+PASS diagonal-ramp 24 sprint-attack-jump
+FAIL diagonal-ramp 30 reverse-diagonal Toe penetrated the sampled support
+FAIL diagonal-ramp 30 sprint-attack-jump Toe penetrated the sampled support
+FAIL diagonal-ramp 60 reverse-diagonal Toe penetrated the sampled support
+FAIL diagonal-ramp 60 sprint-attack-jump Toe penetrated the sampled support
+FAIL diagonal-ramp 144 reverse-diagonal Toe penetrated the sampled support
+FAIL diagonal-ramp 144 sprint-attack-jump Toe penetrated the sampled support
+PASS ramp-edge 24 reverse-diagonal
+FAIL ramp-edge 24 sprint-attack-jump Toe penetrated the sampled support
+FAIL ramp-edge 30 reverse-diagonal Toe penetrated the sampled support
+FAIL ramp-edge 30 sprint-attack-jump Toe penetrated the sampled support
+FAIL ramp-edge 60 reverse-diagonal Toe penetrated the sampled support
+FAIL ramp-edge 60 sprint-attack-jump Toe penetrated the sampled support
+FAIL ramp-edge 144 reverse-diagonal Toe penetrated the sampled support
+FAIL ramp-edge 144 sprint-attack-jump Toe penetrated the sampled support
+PASS stairs-up 24 reverse-diagonal
+FAIL stairs-up 24 sprint-attack-jump Toe penetrated the sampled support
+PASS stairs-up 30 reverse-diagonal
+FAIL stairs-up 30 sprint-attack-jump Toe penetrated the sampled support
+PASS stairs-up 60 reverse-diagonal
+FAIL stairs-up 60 sprint-attack-jump Toe penetrated the sampled support
+FAIL stairs-up 144 reverse-diagonal Toe penetrated the sampled support
+PASS stairs-up 144 sprint-attack-jump
+PASS stairs-down 24 reverse-diagonal
+PASS stairs-down 24 sprint-attack-jump
+PASS stairs-down 30 reverse-diagonal
+PASS stairs-down 30 sprint-attack-jump
+FAIL stairs-down 60 reverse-diagonal Toe penetrated the sampled support
+FAIL stairs-down 60 sprint-attack-jump Toe penetrated the sampled support
+PASS stairs-down 144 reverse-diagonal
+FAIL stairs-down 144 sprint-attack-jump Toe penetrated the sampled support
+PASS low-ceiling 24 reverse-diagonal
+FAIL low-ceiling 24 sprint-attack-jump Toe penetrated the sampled support
+FAIL low-ceiling 30 reverse-diagonal Toe penetrated the sampled support
+FAIL low-ceiling 30 sprint-attack-jump Toe penetrated the sampled support
+FAIL low-ceiling 60 reverse-diagonal Toe penetrated the sampled support
+FAIL low-ceiling 60 sprint-attack-jump Toe penetrated the sampled support
+FAIL low-ceiling 144 reverse-diagonal Toe penetrated the sampled support
+FAIL low-ceiling 144 sprint-attack-jump Toe penetrated the sampled support
+FAIL narrow-corner 24 reverse-diagonal Toe penetrated the sampled support
+FAIL narrow-corner 24 sprint-attack-jump Toe penetrated the sampled support
+FAIL narrow-corner 30 reverse-diagonal Toe penetrated the sampled support
+PASS narrow-corner 30 sprint-attack-jump
+FAIL narrow-corner 60 reverse-diagonal Toe penetrated the sampled support
+FAIL narrow-corner 60 sprint-attack-jump Toe penetrated the sampled support
+FAIL narrow-corner 144 reverse-diagonal Toe penetrated the sampled support
+FAIL narrow-corner 144 sprint-attack-jump Toe penetrated the sampled support
+PASS roof-edge 24 reverse-diagonal
+PASS roof-edge 24 sprint-attack-jump
+PASS roof-edge 30 reverse-diagonal
+PASS roof-edge 30 sprint-attack-jump
+PASS roof-edge 60 reverse-diagonal
+FAIL roof-edge 60 sprint-attack-jump Toe penetrated the sampled support
+PASS roof-edge 144 reverse-diagonal
+FAIL roof-edge 144 sprint-attack-jump Toe penetrated the sampled support
+Expanded terrain motion: 21/64

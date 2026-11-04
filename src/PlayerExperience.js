@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import {GROUNDED} from './MotionCatalog.js';
 import {Progression} from './Progression.js';
-import {PerformanceBudget} from './PerformanceBudget.js';
+import {PerformanceBudget,graphicsPixelCeiling} from './PerformanceBudget.js';
 import {keyLabel} from './PlayerSettings.js';
 import {SoloJourney} from './SoloJourney.js';
 import {PlayDiagnostics} from './PlayDiagnostics.js';
@@ -77,7 +77,7 @@ export class PlayerExperience {
     if(active)g.audio.updateListener?.(g.camera);
     g.audio.updateSceneAudio?.({active,driving:g.vehicle?.state==='DRIVING',speed:g.vehicle?.controller?.speed||0,height:p.position.y,braking:g.vehicle?.brakeHeld});
     this.journey?.update(delta);
-    const ceiling={low:1,balanced:1.5,high:2}[g.preferences.values.quality];
+    const ceiling=graphicsPixelCeiling(g.preferences.values.quality,s.autoQuality);
     // Menus and hidden tabs are not gameplay performance samples. Preserve
     // the applied resolution while discarding stale pressure on transitions.
     if(this.performanceActive!==active){this.performance.reset?.(this.performance.level);this.performanceActive=active;}

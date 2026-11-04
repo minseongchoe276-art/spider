@@ -26,6 +26,7 @@ import {SettingsPanel} from './SettingsPanel.js';
 import {GamepadInput} from './GamepadInput.js';
 import {TouchControls} from './TouchControls.js';
 import {PlayerExperience} from './PlayerExperience.js';
+import {graphicsPixelCeiling} from './PerformanceBudget.js';
 import {CombatPractice} from './CombatPractice.js';
 import {startLoadingStatus} from './LoadingStatus.js';
 import {HudLayout} from './HudLayout.js';
@@ -36,7 +37,7 @@ import {abilitySlotState,updateVitalsHud} from './VitalsHud.js';
 import {updateHongKongSun,createHongKongEnvironment} from './HongKongRendering.js';
 let stopLoadingStatus=()=>{};
 
-const ONE_SHOT_KEYS = new Set(['Space','KeyG','KeyE','KeyT','KeyR','KeyC','KeyX','KeyV','KeyQ','KeyB','Digit1','Digit2','ControlLeft','ControlRight']);
+const ONE_SHOT_KEYS = new Set(['Space','KeyG','KeyE','KeyT','KeyR','KeyC','KeyX','KeyV','KeyQ','KeyB','KeyN','KeyJ','Digit3','Digit4','Digit5','Digit1','Digit2','ControlLeft','ControlRight']);
 
 export class GameApp {
   constructor() {
@@ -303,7 +304,7 @@ export class GameApp {
       // Random camera offsets on every landing made ordinary movement jitter.
     };
     this.tpsCamera = new ThirdPersonCamera(this.camera, this.canvas);
-    this.vehicle=new VehicleSystem({scene:this.scene,city:this.city,physics:this.physics,character:this.character,cameraRig:this.tpsCamera,combat:this.combat,onControlReset:()=>this.clearInput(),onNotice:message=>this.showNotice(message),allowed:()=>!this.multiplayer?.spectating&&(!this.multiplayer?.room||this.multiplayer.room.phase==='playing'),getOtherVehicles:()=>this.multiplayer?.players?.filter(p=>p.id!==this.multiplayer.id&&!p.eliminated).map(p=>p.vehicle).filter(Boolean)||[],getCitizens:()=>this.citizens?.targets||[]});
+    this.vehicle=new VehicleSystem({scene:this.scene,city:this.city,physics:this.physics,character:this.character,cameraRig:this.tpsCamera,combat:this.combat,onControlReset:()=>this.clearInput(),onNotice:message=>this.showNotice(message),allowed:()=>!this.multiplayer?.spectating&&(!this.multiplayer?.room||this.multiplayer.room.phase==='playing'),speedLimit:()=>this.multiplayer?.room?24:Infinity,getOtherVehicles:()=>this.multiplayer?.players?.filter(p=>p.id!==this.multiplayer.id&&!p.eliminated).map(p=>p.vehicle).filter(Boolean)||[],getCitizens:()=>this.citizens?.targets||[]});
     if(this.citizens)this.citizens.obstacleRay=(origin,direction,distance)=>this.vehicle.blocksRay(origin,direction,distance);
     this.worldMap = new WorldMap(this);
     this.hongKongAudit=createHongKongAudit(this);
@@ -428,7 +429,7 @@ export class GameApp {
       const gameplayKey = [
         'KeyW', 'KeyA', 'KeyS', 'KeyD', 'ArrowUp', 'ArrowDown',
         'ArrowLeft', 'ArrowRight', 'Home', 'End', 'PageUp', 'PageDown', 'ShiftLeft', 'ShiftRight', 'Space',
-        'KeyG', 'KeyE', 'KeyT', 'KeyR', 'KeyF', 'KeyC', 'KeyX', 'KeyV', 'KeyQ', 'KeyZ', 'KeyB', 'Digit1', 'Digit2', 'ControlLeft', 'ControlRight'
+        'KeyG', 'KeyE', 'KeyT', 'KeyR', 'KeyF', 'KeyC', 'KeyX', 'KeyV', 'KeyQ', 'KeyZ', 'KeyB', 'KeyN', 'KeyJ', 'Digit1', 'Digit2', 'ControlLeft', 'ControlRight'
       ].includes(k);
       if (gameplayKey && document.getElementById?.('controls-guide') && !document.getElementById('controls-guide').classList.contains('hidden')) return;
       if (gameplayKey && this.gameplayInputBlocked) return;
@@ -441,7 +442,7 @@ export class GameApp {
         const wasHeld=this.heldKeys.has(k) || this.gamepadHeldKeys?.has(k) || this.touchHeldKeys?.has(k);
         sources.set(e.code,k);
         keys.add(k);
-        if(k==='ShiftLeft' && !wasHeld && !e.repeat && this.preferences?.values.settings?.sprintToggle)this.sprintLatched=!this.sprintLatched;
+        if(k==='ShiftLeft' && !this.vehicle?.driving && !wasHeld && !e.repeat && this.preferences?.values.settings?.sprintToggle)this.sprintLatched=!this.sprintLatched;
         this.syncHeldInput();
         // Register every source, but discrete actions belong to the first
         // press. A second device or modifier alias must not toggle it twice.
@@ -454,6 +455,48 @@ export class GameApp {
       }
       if(k==='KeyB'){this.vehicle?.interact();return;}
       if(this.vehicle?.driving && !['KeyW','KeyS','KeyA','KeyD','ArrowUp','ArrowDown','ArrowLeft','ArrowRight','ShiftLeft','ShiftRight','Space','Escape','KeyM','KeyH'].includes(k))return;
+      if(['Digit3','Digit4','Digit5'].includes(k)) {
+        const type = {Digit3:'baseball-bat', Digit4:'metal-pipe', Digit5:'sniper-rifle'}[k];
+        if(!this.isPlaying || this.multiplayer?.room || this.combat.mode!=='combat') { this.showNotice('혼자 플레이에서 X로 전투 모드를 켜세요.'); return; }
+        if(this.combat.action || this.knifeEquipPending) { this.showNotice('동작이 끝난 뒤 무기를 바꾸세요.'); return; }
+        if(this.combat.extraWeapon===type) { this.combat.extraWeapon=null; this.combat.gunEquipped=false; this.showNotice('무기 해제'); return; }
+        this.knifeEquipPending=true;
+        this.character.prepareExtraWeapon(type).then(ready=>{
+          this.knifeEquipPending=false;
+          if(!ready) { this.showNotice('무기 모델을 불러오지 못했습니다.'); return; }
+          if(!this.isPlaying || this.multiplayer?.room || this.vehicle?.driving || this.combat.mode!=='combat' || this.combat.action)return;
+          this.combat.knifeEquipped=false; this.combat.extraWeapon=type; this.combat.gunEquipped=type==='sniper-rifle';
+          this.showNotice(({ 'baseball-bat':'야구방망이', 'metal-pipe':'쇠파이프', 'sniper-rifle':'저격총' })[type]+' 장착 · 좌클릭 공격');
+        }); return;
+      }
+      if(k==='KeyN'){
+        if(!this.isPlaying || this.multiplayer?.room){this.showNotice('나이프는 혼자 플레이에서 사용할 수 있습니다.');return;}
+        if(this.combat.mode!=='combat'){this.showNotice('X로 전투 모드를 켠 뒤 N을 누르세요.');return;}
+        if(this.combat.action || this.knifeEquipPending){this.showNotice('동작이 끝난 뒤 무기를 바꾸세요.');return;}
+        if(this.combat.knifeEquipped){this.combat.knifeEquipped=false;this.showNotice('나이프 해제 · 주먹 공격');return;}
+        this.knifeEquipPending=true;
+        this.character.prepareKnife().then(ready=>{
+          this.knifeEquipPending=false;
+          if(!ready){this.showNotice('나이프 모델 또는 모션을 불러오지 못했습니다.');return;}
+          if(!this.isPlaying || this.multiplayer?.room || this.vehicle?.driving || this.combat.mode!=='combat' || this.combat.action)return;
+          this.combat.extraWeapon=null;this.combat.gunEquipped=false;this.combat.knifeEquipped=true;this.showNotice('나이프 장착 · 좌클릭 찌르기 · N 해제');
+        });
+        return;
+      }
+      if(k==='KeyJ'){
+        if(!this.isPlaying || this.multiplayer?.room){this.showNotice('권총은 혼자 플레이에서 사용할 수 있습니다.');return;}
+        if(this.combat.mode!=='combat'){this.showNotice('X로 전투 모드를 켠 뒤 J를 누르세요.');return;}
+        if(this.combat.action || this.knifeEquipPending){this.showNotice('동작이 끝난 뒤 무기를 바꾸세요.');return;}
+        if(this.combat.gunEquipped && !this.combat.extraWeapon){this.combat.gunEquipped=false;this.showNotice('권총 해제 · 주먹 공격');return;}
+        this.knifeEquipPending=true;
+        this.character.prepareGun().then(ready=>{
+          this.knifeEquipPending=false;
+          if(!ready){this.showNotice('권총 모델 또는 모션을 불러오지 못했습니다.');return;}
+          if(!this.isPlaying || this.multiplayer?.room || this.vehicle?.driving || this.combat.mode!=='combat' || this.combat.action)return;
+          this.combat.extraWeapon=null;this.combat.knifeEquipped=false;this.combat.gunEquipped=true;this.showNotice('권총 장착 · 좌클릭 발사 · J 해제');
+        });
+        return;
+      }
       if(k==='KeyX'){
         if(this.multiplayer?.locksCombatToggle()){this.showNotice('도망자는 에너지 와이어로만 이동합니다.');return;}
         this.combat.toggle(this.input);this.syncHeldInput();return;
@@ -819,7 +862,7 @@ export class GameApp {
     this.input.backward = !!pad.backward || !!touch.backward || held('KeyS','ArrowDown');
     this.input.left = !!pad.left || !!touch.left || held('KeyA','ArrowLeft');
     this.input.right = !!pad.right || !!touch.right || held('KeyD','ArrowRight');
-    this.input.sprint = !!touch.sprint || (this.preferences?.values.settings.sprintToggle?!!this.sprintLatched:held('ShiftLeft','ShiftRight'));
+    this.input.sprint = !!touch.sprint || (this.vehicle?.driving?held('ShiftLeft','ShiftRight'):this.preferences?.values.settings.sprintToggle?!!this.sprintLatched:held('ShiftLeft','ShiftRight'));
     this.input.wallRun = this.combat?.mode !== 'combat' && held('KeyF');
     this.input.combatStance = held('ControlLeft','ControlRight');
     this.input.guard = this.combat?.mode === 'combat' && held('KeyF');
@@ -868,7 +911,7 @@ export class GameApp {
     this.city.reducedMotion = reducedMotion;
     document.body.classList.toggle('reduced-motion', reducedMotion);
     if(this.appliedQuality!==quality || this.appliedAutoQuality!==settings.autoQuality){
-      const ceiling={ low: 1, balanced: 1.5, high: 2 }[quality] || 1.5;
+      const ceiling=graphicsPixelCeiling(quality,settings.autoQuality);
       this.renderer.setPixelRatio(Math.min(window.devicePixelRatio,ceiling));
       this.experience?.performance.reset(ceiling);
       this.appliedQuality=quality;
@@ -968,7 +1011,7 @@ export class GameApp {
     for(const [name,flags] of Object.entries(slots.slots)){
       const slot=bar.querySelector(`[data-ability="${name}"]`);
       if(!slot)continue;
-      const labels={special:`돌진 어퍼컷 · G · 기력 35${this.combat.specialCooldown>0?' · '+this.combat.specialCooldown.toFixed(1)+'초 대기':''}`,mode:slots.mode==='web'?'전투 모드로 전환':'와이어 모드로 전환',zip:slots.mode==='web'?'공중 와이어 집':'강공격 · 기력 18',wall:'벽 타기 · 누르고 이동',guard:'방어 · 누르고 유지'};
+      const labels={special:`돌진 어퍼컷 · G · 기력 35${this.combat.specialCooldown>0?' · '+this.combat.specialCooldown.toFixed(1)+'초 대기':''}`,mode:slots.mode==='web'?'전투 모드로 전환':'와이어 모드로 전환',zip:slots.mode==='web'?'공중 와이어 집':'오른쪽 회피 · 기력 18',wall:'벽 타기 · 누르고 이동',guard:'방어 · 누르고 유지'};
       if(name==='special'){const remaining=slot.querySelector('.ability-cooldown');if(remaining)remaining.textContent=this.combat.specialCooldown>0?Math.ceil(this.combat.specialCooldown)+'s':'';}
       slot.title=t(labels[name]);slot.setAttribute('aria-label',t(labels[name]));
       slot.hidden=(name==='special' && slots.mode==='web') || (name==='guard' && slots.mode==='web') || (name==='wall' && slots.mode==='combat');
@@ -1084,6 +1127,13 @@ export class GameApp {
         (!(this.city.isStreamed) || this.city.isReady)) this.onAssetsLoaded();
 
     const spectating = !!this.multiplayer?.spectating;
+    if(this.multiplayer?.room && (this.combat?.knifeEquipped || this.combat?.gunEquipped || this.combat?.extraWeapon)){this.combat.knifeEquipped=false;this.combat.gunEquipped=false;this.combat.extraWeapon=null;this.combat.cancel();}
+    if(this.character){
+      this.character.extraWeapon=this.combat?.extraWeapon || null;
+      this.character.extraWeaponVisible=!!(this.combat?.extraWeapon && this.combat.mode==='combat' && !this.vehicle?.driving && !this.multiplayer?.room);
+      this.character.knifeVisible=!!(this.combat?.knifeEquipped && this.combat.mode==='combat' && !this.vehicle?.driving && !this.multiplayer?.room);
+      this.character.gunVisible=!!(this.combat?.gunEquipped && this.combat.mode==='combat' && !this.vehicle?.driving && !this.multiplayer?.room);
+    }
     const wasSuspended=!this.isPlaying || this.isPaused || spectating || this.gameplaySuspended;
     this.touchControls?.update();
     this.gamepad?.update(delta);

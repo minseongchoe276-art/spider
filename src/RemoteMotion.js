@@ -26,7 +26,11 @@ const cleanShot=shot=>{
 
 export function sanitizePose(pose) {
   if (!pose || !STATES.has(pose.state)) return null;
-  const vehicle=sanitizeVehicle(pose.vehicle);if(pose.state==='DRIVING'&&(!vehicle||['NONE','PARKED'].includes(vehicle.phase)))return null;
+  const vehicle=sanitizeVehicle(pose.vehicle);
+  // Vehicle state is authoritative independently of the character animation
+  // state. During entry/exit the two can cross packet boundaries; rejecting a
+  // whole pose here used to discard the car snapshot with it.
+  if(pose.state==='DRIVING'&&(!vehicle||['NONE','PARKED'].includes(vehicle.phase)))return null;
   const velocity = vector(pose.velocity);
   if (!velocity || Math.hypot(velocity.x,velocity.y,velocity.z)>150) return null;
   const webs = (pose.combatStance===true?[]:Array.isArray(pose.webs)?pose.webs:[]).slice(0,2)
@@ -106,7 +110,8 @@ export class RemoteMotion {
     }
     this.player=player;
     const clean=sanitizePose(pose);
-    const vehicle=clean?.vehicle||player.vehicle;if(vehicle)this.vehicle.receive(vehicle,now);
+    const vehicle=clean?.vehicle||sanitizeVehicle(pose?.vehicle)||sanitizeVehicle(player.vehicle);
+    if(vehicle)this.vehicle.receive(vehicle,now);
     if (clean) {this.pose=clean;this.poseAt=now;this.velocity.copy(clean.velocity);}
   }
   update(delta,now=performance.now()) {

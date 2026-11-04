@@ -85,6 +85,34 @@ const buffer=player();buffer.position.y=0.2;buffer.velocity.y=-2;buffer.state='F
 const bi=input();bi.jump=true;buffer.update(1/120,bi,camera);
 for(let n=0;n<12;n++)buffer.update(1/120,bi,camera);
 assert(buffer.velocity.y>0,'Buffered jump was lost before landing');
+// A normal sprint jump returns to a compact landing, while a genuine fall
+// from a higher surface can still use the supported forward roll.
+for(const fps of [30,60,144]){
+  const p=player(),controls=input();controls.forward=true;controls.sprint=true;
+  for(let i=0;i<fps;i++)p.update(1/fps,controls,camera);
+  controls.jump=true;p.update(1/fps,controls,camera);controls.jump=false;
+  let wasAirborne=false,landing=null;
+  for(let i=0;i<fps*5;i++){
+    p.update(1/fps,controls,camera);
+    if(['JUMPING','FALLING'].includes(p.state))wasAirborne=true;
+    else if(wasAirborne){landing=p.state;break;}
+  }
+  assert(wasAirborne,`Sprint jump did not take off at ${fps}fps`);
+  assert(['LANDING','SPRINTING','RUNNING','IDLE'].includes(landing),`Normal sprint jump rolled or failed to land at ${fps}fps: ${landing}`);
+  const falling=player();falling.position.y=20;falling.velocity.set(0,-20,8);falling.state='FALLING';
+  let fallLanding=null;
+  for(let i=0;i<fps*3;i++){falling.update(1/fps,controls,camera);if(['ROLLING','LANDING'].includes(falling.state)){fallLanding=falling.state;break;}}
+  assert.equal(fallLanding,'ROLLING',`A high fall lost its supported roll at ${fps}fps`);
+}
+{
+  const land=(jumpHeight)=>{
+    const p=player();p.position.set(0,.12,0);p.velocity.set(0,-20,8);p.state='FALLING';p.groundJumpHeight=jumpHeight;
+    p.handleCollisions(1/60,input());return p.state;
+  };
+  assert.equal(land(.1),'LANDING','A same-level jump was turned into a forward roll');
+  assert.equal(land(20),'ROLLING','A lower landing must preserve the high-fall recovery');
+  assert.equal(land(null),'ROLLING','A fall without a ground jump must preserve the high-fall recovery');
+}
 const energy=player();energy.canAirJump=false;energy.isSwinging=true;energy.velocity.set(25,2,0);
 const speed=energy.velocity.length();energy.releaseSwing();
 assert.equal(energy.canAirJump,false);assert.equal(energy.velocity.length(),speed);

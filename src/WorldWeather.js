@@ -1,5 +1,6 @@
 import * as T from 'three';
 import {language} from './I18n.js';
+import {hongKongNight} from './HongKongNightLights.js';
 
 export const WEATHER_TYPES=['맑음','구름 조금','흐림','비','뇌우','안개'];
 const PRESETS=[{cloud:.08,rain:0,fog:1},{cloud:.4,rain:0,fog:.95},{cloud:.85,rain:0,fog:.75},{cloud:.95,rain:.65,fog:.58},{cloud:1,rain:1,fog:.4},{cloud:.65,rain:0,fog:.32}];
@@ -51,8 +52,10 @@ export class WorldWeather{
     const direction=new T.Vector3(Math.cos((w.hour-6)/12*Math.PI)*.7,w.elevation,Math.sin((w.hour-6)/12*Math.PI)*.4).normalize();
     this.sun.position.copy(position).addScaledVector(w.elevation>0?direction:direction.clone().negate(),300);this.sun.target.position.copy(position);this.sun.target.updateMatrixWorld();
     this.sun.intensity=mix(.16,2.6,w.day)*(1-w.cloud*.65);this.sun.color.set(w.day>.6?0xfff5df:0xa9bfff);
-    this.ambient.intensity=mix(.3,1.55,w.day)*(1-w.cloud*.28);this.ambient.color.setHex(w.day>.5?0xd8f1ff:0x7185b0);
-    this.scene.environmentIntensity=mix(.12,.7,w.day)*(1-w.rain*.35);
+    this.ambient.intensity=mix(.58,1.55,w.day)*(1-w.cloud*.22);this.ambient.color.setHex(w.day>.5?0xd8f1ff:0x91a7ce);
+    this.scene.environmentIntensity=mix(.28,.7,w.day)*(1-w.rain*.35);
+    hongKongNight.value=1-T.MathUtils.smoothstep(w.day,.12,.7);
+    this.city.presentation?.nightLights?.update(hongKongNight.value,position);
     const skyColor=new T.Color(0x121d36).lerp(new T.Color(0xaed0df),w.day).lerp(new T.Color(0x798994),w.cloud*.4);
     this.scene.background.copy(skyColor);if(this.scene.fog){this.scene.fog.color.copy(skyColor);const distance=this.city.activeStreamDistance??this.city.renderingProfile.streamDistance;this.scene.fog.near=distance*.55*w.fog;this.scene.fog.far=distance*.85*w.fog;}
     const u=this.sky.material.uniforms;u.day.value=w.day;u.cloud.value=w.cloud;u.time.value=this.elapsed;u.sunDir.value.copy(direction);
@@ -71,24 +74,24 @@ export class WorldWeather{
           const hit=this.city.raycast?.(origin,new T.Vector3(0,-1,0),70);this.shelters[i]=hit?origin.y-hit.distance:position.y-35;
         }
       }
-      const a=this.rainGeometry.attributes.position;a.count=this.drops.length*2;this.rainGeometry.setDrawRange(0,Math.floor(this.drops.length*w.rain)*2);
-      this.drops.forEach((drop,i)=>{
+      const a=this.rainGeometry.attributes.position,count=Math.floor(this.drops.length*w.rain);a.count=this.drops.length*2;this.rainGeometry.setDrawRange(0,count*2);
+      for(let i=0;i<count;i++){const drop=this.drops[i];
         drop.y=(drop.y-delta*(18+hash(i)*8)+32)%32;
         const x=position.x+drop.x,z=position.z+drop.z,y=position.y+drop.y;
         const ix=T.MathUtils.clamp(Math.round((x-cx)/10)+2,0,4),iz=T.MathUtils.clamp(Math.round((z-cz)/10)+2,0,4),floor=this.shelters[iz*5+ix]+.1;
         // Collapse streaks below roofs; preserve depth testing against walls.
         const top=Math.max(floor,y),bottom=Math.max(floor,y-.7);
         a.setXYZ(i*2,x,top,z);a.setXYZ(i*2+1,x-.16,bottom,z-.07);
-      });a.needsUpdate=true;
+      }a.needsUpdate=true;
     }
     this.flash.intensity=!reducedMotion&&w.index===4&&hash(Math.floor(epoch/4500))>.84&&epoch%4500<110?3.5:0;
     if(this.elapsed>=this.materialAt){this.materialAt=this.elapsed+1;
       this.city.root.traverse(mesh=>{if(!mesh.isMesh)return;for(const m of Array.isArray(mesh.material)?mesh.material:[mesh.material]){
-        if(m?.isMeshBasicMaterial){let base=this.wetMaterials.get(m);if(!base){base={color:m.color.clone()};this.wetMaterials.set(m,base);}m.color.copy(base.color).multiplyScalar(mix(.2,1,w.day)*(1-w.rain*.15));continue;}
+        if(m?.isMeshBasicMaterial){let base=this.wetMaterials.get(m);if(!base){base={color:m.color.clone()};this.wetMaterials.set(m,base);}m.color.copy(base.color).multiplyScalar(mix(.38,1,w.day)*(1-w.rain*.15));continue;}
         if(!m?.isMeshStandardMaterial)continue;let base=this.wetMaterials.get(m);if(!base){base={roughness:m.roughness,metalness:m.metalness};this.wetMaterials.set(m,base);}
         m.roughness=mix(base.roughness,Math.min(base.roughness,.24),w.rain);m.metalness=mix(base.metalness,Math.max(base.metalness,.08),w.rain);
       }});
     }
   }
-  dispose(){this.hud.remove();this.scene.remove(this.rainMesh,this.flash);this.rainGeometry.dispose();this.rainMaterial.dispose();this.sky.material.dispose();this.sky.material=this.skyMaterial;}
+  dispose(){hongKongNight.value=0;this.hud.remove();this.scene.remove(this.rainMesh,this.flash);this.rainGeometry.dispose();this.rainMaterial.dispose();this.sky.material.dispose();this.sky.material=this.skyMaterial;}
 }

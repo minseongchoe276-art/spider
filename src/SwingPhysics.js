@@ -37,6 +37,7 @@ export class SwingPhysics {
     this.groundDeceleration = 24.0;
     this.jumpForce = 26.0;
     this.combatJumpForce = 8.0;
+    this.groundJumpHeight = null;
     this.maxSpeed = 48.0; // ~170 km/h cap
 
     // Web Swing State
@@ -203,6 +204,7 @@ export class SwingPhysics {
       normal:this.lastWebNormal?.clone(),object:this.bestAnchorObject,
       length:Math.max(1.45,this.position.distanceTo(this.zipAnchor))}];
 
+    this.groundJumpHeight = null;
     this.isSwinging = true;
     this.state = 'SWINGING';
     this.recoveryTime = 0;
@@ -265,6 +267,7 @@ export class SwingPhysics {
     this.webs=[{hand,button,anchor:anchor.clone(),normal:this.lastWebNormal?.clone(),
       object:this.anchorObject,length:this.ropeLength,supportCollider:attachment.supportCollider}];
     this.syncWebHands();
+    this.groundJumpHeight = null;
     this.isSwinging = true;
     this.state = 'SWINGING';
     this.zipTarget = null;
@@ -393,6 +396,7 @@ export class SwingPhysics {
 
     this.zipTarget = target;
     this.zipAnchor = anchor.clone();
+    this.groundJumpHeight = null;
     this.state = 'WEB_ZIP';
     this.mantle=null;
     this.zipTime = 8;
@@ -453,6 +457,7 @@ export class SwingPhysics {
     this.onWebAttach?.(this.zipAnchor);
     this.canAirJump = true;
     this.zipCooldown = this.zipInterval;
+    this.groundJumpHeight = null;
     this.state = 'WEB_ZIP';
     this.mantle=null;
     this.zipTime = 1.05;
@@ -821,7 +826,7 @@ export class SwingPhysics {
       const plan=planMantle(this.city,this.position,this.wallNormal,roof);
       if(plan){
         this.character.cancelAirTrick?.();
-        this.mantle=plan;this.velocity.set(0,0,0);this.state='MANTLING';return;
+        this.groundJumpHeight=null;this.mantle=plan;this.velocity.set(0,0,0);this.state='MANTLING';return;
       }
       if(!this.city.collisionWorld&&wallHit&&(!chestHit||chestHit.normal.dot(this.wallNormal)<.35)){
         this.velocity.set(0,0,0);
@@ -1030,6 +1035,7 @@ export class SwingPhysics {
       // Jump
       if (input.jump) {
         this.jumpBuffer = 0; this.coyoteTime = 0;
+        this.groundJumpHeight = this.position.y;
         const isCombat = !this.webEnabled || !!this.character?.combatStance;
         this.velocity.y = isCombat ? this.combatJumpForce : this.jumpForce;
         this.state = 'JUMPING';
@@ -1037,6 +1043,7 @@ export class SwingPhysics {
       }
     } else {
       if (input.jump && this.coyoteTime > 0) {
+        this.groundJumpHeight = this.position.y;
         const isCombat = !this.webEnabled || !!this.character?.combatStance;
         this.velocity.y = isCombat ? this.combatJumpForce : this.jumpForce; this.state = 'JUMPING';
         this.jumpBuffer = 0; this.coyoteTime = 0; this.audio.playJump();
@@ -1101,6 +1108,9 @@ export class SwingPhysics {
         this.recoveryTime=0;this.state='SWINGING';return;
       }
       const airborne = !GROUNDED.includes(this.state);
+      const ordinaryJump = ['JUMPING','FALLING'].includes(this.state) &&
+        Number.isFinite(this.groundJumpHeight) && this.position.y >= this.groundJumpHeight - 2;
+      if(airborne)this.groundJumpHeight=null;
       if (this.state === 'WEB_ZIP') {
         this.zipTarget = null;
         this.zipAnchor = null;
@@ -1143,7 +1153,7 @@ export class SwingPhysics {
         const rollEnd=this.position.clone().addScaledVector(direction,rollDistance);
         // A vertical or slow descent has no forward travel to carry through
         // a roll. Use the compact landing even when the impact is strong.
-        let canRoll=horizontal>=4.5 && !sweepBody(this.position,rollEnd,this.city.colliders);
+        let canRoll=!ordinaryJump && horizontal>=4.5 && !sweepBody(this.position,rollEnd,this.city.colliders);
         let rollPrevious=this.position.clone();
         for(let distance=.4;canRoll && distance<rollDistance+.4;distance+=.4){
           const sample=this.position.clone().addScaledVector(direction,Math.min(distance,rollDistance));
@@ -1202,6 +1212,7 @@ export class SwingPhysics {
         // Wall running requires explicit F input, not ordinary forward input.
         if (input.wallRun && input.forward && this.wallAttachCooldown === 0 && this.velocity.dot(col.normal) <= 0 &&
             ['IDLE','RUNNING','SPRINTING','FALLING','JUMPING'].includes(this.state)) {
+          this.groundJumpHeight = null;
           this.state = 'WALL_RUNNING';
           this.character.cancelAirTrick?.();
           this.wallBuilding = col.building;
@@ -1222,6 +1233,7 @@ export class SwingPhysics {
   }
 
   resetPosition(reason = null) {
+    this.groundJumpHeight=null;
     this.lowStance=null;this.character.lowStance=null;
     this.character.crouchBlend=0;
     this.character.crouchWeight=0;

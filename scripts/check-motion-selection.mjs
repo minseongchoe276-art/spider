@@ -50,9 +50,10 @@ for (const fps of [24,30,60,144]) {
     const c=actor();
     try {
       const state=key==='slam'?'FALLING':key==='slamLand'?'LANDING':'IDLE';
+      if(key==='gunFire'){c.gunVisible=true;c.gunModel=new THREE.Group();c.rightHand.add(c.gunModel);}
       c.combatAction={id:1,key,time:.2,duration:ATTACKS[key]?.duration || 1};
       c.update(1/fps,state,new THREE.Vector3());
-      const selected=key.startsWith('dodge')?'combatIdle':key;
+      const selected=key.startsWith('dodge') || key==='gunFire'?'combatIdle':key;
       assert.equal(c.activeAction.getClip().name,selected,`${fps} FPS ${key}`);
       results.push({fps,state,combat:key,selected});
     } finally {disposeRig(c);}

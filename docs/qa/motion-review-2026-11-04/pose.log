@@ -1,0 +1,16 @@
+PASS walk 30fps: 63 contact samples, max step slip 14.5mm, overall foot step 438.1mm
+node:internal/modules/run_main:123
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: jog: planted foot slip 0.027593703664939854
+    at file:///private/tmp/shadow-motion-audit.my58iy/scripts/check-pose.mjs:62:53 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
+
+Node.js v22.19.0

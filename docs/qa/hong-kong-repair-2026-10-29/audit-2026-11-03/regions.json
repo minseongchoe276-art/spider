@@ -1,0 +1,725 @@
+{
+  "phase": "audit-2026-11-03",
+  "regions": [
+    {
+      "id": "region-x-2100-z-2100",
+      "x": -2100,
+      "z": -2100,
+      "height": 426.3733148632364,
+      "samples": [
+        361.1322852570811,
+        241.7220717627024,
+        147.76902815849826,
+        426.3733148632364,
+        261.9913269199096,
+        196.41624668069198,
+        397.1036448682862,
+        273.246434779212,
+        192.16194661780537
+      ],
+      "position": [
+        -2100,
+        596.3733148632364,
+        -1970
+      ],
+      "target": [
+        -2100,
+        426.3733148632364,
+        -2200
+      ],
+      "detail": true,
+      "surfaceVerified": true,
+      "visibleMeshes": 15,
+      "geometryIssues": [],
+      "streaming": [
+        {
+          "surface": "terrain",
+          "errorTarget": 20,
+          "distantError": 0,
+          "loadAncestors": true,
+          "loadSiblings": true,
+          "stats": {
+            "inCacheSinceLoad": 67,
+            "inCache": 168,
+            "queued": 9,
+            "downloading": 15,
+            "parsing": 0,
+            "loaded": 144,
+            "failed": 0,
+            "inFrustum": 65,
+            "used": 90,
+            "active": 26,
+            "visible": 15,
+            "refused": 0,
+            "tilesProcessed": 0
+          },
+          "meshes": 15,
+          "shadowCasters": 0,
+          "materials": {
+            "MeshStandardMaterial:texture": 15
+          },
+          "samples": [
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": true,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": true,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": true,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": true,
+              "side": 0
+            }
+          ]
+        }
+      ],
+      "renderer": {
+        "calls": 18,
+        "triangles": 97685,
+        "textures": 20,
+        "geometries": 73
+      },
+      "components": {
+        "other": {
+          "meshes": 25,
+          "triangles": 3724,
+          "instances": 25,
+          "visible": 1
+        },
+        "streamed-terrain": {
+          "meshes": 15,
+          "triangles": 47111,
+          "instances": 15,
+          "visible": 15
+        },
+        "central-facades-and-seven-trees": {
+          "meshes": 2,
+          "triangles": 39389,
+          "instances": 14,
+          "visible": 2
+        },
+        "player": {
+          "meshes": 1,
+          "triangles": 49614,
+          "instances": 1,
+          "visible": 1
+        }
+      }
+    },
+    {
+      "id": "region-x-1400-z-2100",
+      "x": -1400,
+      "z": -2100,
+      "height": 382.08774020522833,
+      "samples": [
+        308.83869643428625,
+        297.6963633966552,
+        259.98900934788617,
+        233.43477217013788,
+        297.35493436264005,
+        285.39235821416696,
+        253.95596555258817,
+        278.91038154215494,
+        382.08774020522833
+      ],
+      "position": [
+        -1400,
+        552.0877402052283,
+        -1970
+      ],
+      "target": [
+        -1400,
+        382.08774020522833,
+        -2200
+      ],
+      "detail": true,
+      "surfaceVerified": true,
+      "visibleMeshes": 15,
+      "geometryIssues": [],
+      "streaming": [
+        {
+          "surface": "terrain",
+          "errorTarget": 20,
+          "distantError": 0,
+          "loadAncestors": true,
+          "loadSiblings": true,
+          "stats": {
+            "inCacheSinceLoad": 61,
+            "inCache": 203,
+            "queued": 13,
+            "downloading": 17,
+            "parsing": 0,
+            "loaded": 173,
+            "failed": 0,
+            "inFrustum": 66,
+            "used": 104,
+            "active": 32,
+            "visible": 15,
+            "refused": 0,
+            "tilesProcessed": 0
+          },
+          "meshes": 15,
+          "shadowCasters": 0,
+          "materials": {
+            "MeshStandardMaterial:texture": 15
+          },
+          "samples": [
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": true,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": true,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": true,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": true,
+              "side": 0
+            }
+          ]
+        }
+      ],
+      "renderer": {
+        "calls": 18,
+        "triangles": 101370,
+        "textures": 20,
+        "geometries": 87
+      },
+      "components": {
+        "other": {
+          "meshes": 25,
+          "triangles": 3724,
+          "instances": 25,
+          "visible": 1
+        },
+        "streamed-terrain": {
+          "meshes": 15,
+          "triangles": 50796,
+          "instances": 15,
+          "visible": 15
+        },
+        "central-facades-and-seven-trees": {
+          "meshes": 2,
+          "triangles": 39389,
+          "instances": 14,
+          "visible": 2
+        },
+        "player": {
+          "meshes": 1,
+          "triangles": 49614,
+          "instances": 1,
+          "visible": 1
+        }
+      }
+    },
+    {
+      "id": "region-x-700-z-2100",
+      "x": -700,
+      "z": -2100,
+      "height": 387.523923615041,
+      "samples": [
+        364.955486294346,
+        387.523923615041,
+        353.3988373963348,
+        329.36107644689946,
+        351.7202099486258,
+        305.0173106836337,
+        244.81969230385403,
+        280.12801329129434,
+        260.93672333647555
+      ],
+      "position": [
+        -700,
+        557.523923615041,
+        -1970
+      ],
+      "target": [
+        -700,
+        387.523923615041,
+        -2200
+      ],
+      "detail": true,
+      "surfaceVerified": true,
+      "visibleMeshes": 17,
+      "geometryIssues": [],
+      "streaming": [
+        {
+          "surface": "terrain",
+          "errorTarget": 20,
+          "distantError": 0,
+          "loadAncestors": true,
+          "loadSiblings": true,
+          "stats": {
+            "inCacheSinceLoad": 45,
+            "inCache": 212,
+            "queued": 4,
+            "downloading": 15,
+            "parsing": 0,
+            "loaded": 193,
+            "failed": 0,
+            "inFrustum": 59,
+            "used": 95,
+            "active": 32,
+            "visible": 17,
+            "refused": 0,
+            "tilesProcessed": 0
+          },
+          "meshes": 17,
+          "shadowCasters": 0,
+          "materials": {
+            "MeshStandardMaterial:texture": 17
+          },
+          "samples": [
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": true,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": true,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": true,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": true,
+              "side": 0
+            }
+          ]
+        }
+      ],
+      "renderer": {
+        "calls": 20,
+        "triangles": 115937,
+        "textures": 20,
+        "geometries": 99
+      },
+      "components": {
+        "other": {
+          "meshes": 25,
+          "triangles": 3724,
+          "instances": 25,
+          "visible": 1
+        },
+        "streamed-terrain": {
+          "meshes": 17,
+          "triangles": 65363,
+          "instances": 17,
+          "visible": 17
+        },
+        "central-facades-and-seven-trees": {
+          "meshes": 2,
+          "triangles": 39389,
+          "instances": 14,
+          "visible": 2
+        },
+        "player": {
+          "meshes": 1,
+          "triangles": 49614,
+          "instances": 1,
+          "visible": 1
+        }
+      }
+    },
+    {
+      "id": "region-x0-z-2100",
+      "x": 0,
+      "z": -2100,
+      "height": 181.3777011090715,
+      "samples": [
+        138.80455193466878,
+        181.3777011090715,
+        171.22433571302827,
+        151.9338277054976,
+        139.3391410933291,
+        139.26538122405145,
+        107.72088990231168,
+        157.48824588550997,
+        176.3385136532561
+      ],
+      "position": [
+        0,
+        351.3777011090715,
+        -1970
+      ],
+      "target": [
+        0,
+        181.3777011090715,
+        -2200
+      ],
+      "detail": true,
+      "surfaceVerified": true,
+      "visibleMeshes": 13,
+      "geometryIssues": [],
+      "streaming": [
+        {
+          "surface": "terrain",
+          "errorTarget": 20,
+          "distantError": 0,
+          "loadAncestors": true,
+          "loadSiblings": true,
+          "stats": {
+            "inCacheSinceLoad": 50,
+            "inCache": 240,
+            "queued": 6,
+            "downloading": 17,
+            "parsing": 0,
+            "loaded": 217,
+            "failed": 0,
+            "inFrustum": 69,
+            "used": 98,
+            "active": 32,
+            "visible": 13,
+            "refused": 0,
+            "tilesProcessed": 0
+          },
+          "meshes": 13,
+          "shadowCasters": 0,
+          "materials": {
+            "MeshStandardMaterial:texture": 13
+          },
+          "samples": [
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": true,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": true,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": true,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": true,
+              "side": 0
+            }
+          ]
+        }
+      ],
+      "renderer": {
+        "calls": 16,
+        "triangles": 104915,
+        "textures": 20,
+        "geometries": 105
+      },
+      "components": {
+        "other": {
+          "meshes": 25,
+          "triangles": 3724,
+          "instances": 25,
+          "visible": 1
+        },
+        "streamed-terrain": {
+          "meshes": 13,
+          "triangles": 54341,
+          "instances": 13,
+          "visible": 13
+        },
+        "central-facades-and-seven-trees": {
+          "meshes": 2,
+          "triangles": 39389,
+          "instances": 14,
+          "visible": 2
+        },
+        "player": {
+          "meshes": 1,
+          "triangles": 49614,
+          "instances": 1,
+          "visible": 1
+        }
+      }
+    },
+    {
+      "id": "region-x700-z-2100",
+      "x": 700,
+      "z": -2100,
+      "height": 282.9320504644602,
+      "samples": [
+        188.4098810379819,
+        166.88818529503806,
+        186.40028233299017,
+        225.5059333519257,
+        243.05202659057068,
+        260.8323975781659,
+        194.17281588125115,
+        235.03184362430875,
+        282.9320504644602
+      ],
+      "position": [
+        700,
+        452.9320504644602,
+        -1970
+      ],
+      "target": [
+        700,
+        282.9320504644602,
+        -2200
+      ],
+      "detail": true,
+      "surfaceVerified": true,
+      "visibleMeshes": 17,
+      "geometryIssues": [],
+      "streaming": [
+        {
+          "surface": "terrain",
+          "errorTarget": 20,
+          "distantError": 0,
+          "loadAncestors": true,
+          "loadSiblings": true,
+          "stats": {
+            "inCacheSinceLoad": 53,
+            "inCache": 268,
+            "queued": 6,
+            "downloading": 16,
+            "parsing": 1,
+            "loaded": 245,
+            "failed": 0,
+            "inFrustum": 65,
+            "used": 103,
+            "active": 36,
+            "visible": 17,
+            "refused": 0,
+            "tilesProcessed": 0
+          },
+          "meshes": 17,
+          "shadowCasters": 0,
+          "materials": {
+            "MeshStandardMaterial:texture": 17
+          },
+          "samples": [
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": true,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": true,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": true,
+              "side": 0
+            },
+            {
+              "type": "MeshStandardMaterial",
+              "color": "ffffff",
+              "image": {
+                "width": 2048,
+                "height": 512,
+                "anisotropy": 8,
+                "minFilter": 1006
+              },
+              "normals": true,
+              "side": 0
+            }
+          ]
+        }
+      ],
+      "renderer": {
+        "calls": 20,
+        "triangles": 118267,
+        "textures": 18,
+        "geometries": 96
+      },
+      "components": {
+        "other": {
+          "meshes": 25,
+          "triangles": 3724,
+          "instances": 25,
+          "visible": 1
+        },
+        "streamed-terrain": {
+          "meshes": 17,
+          "triangles": 67693,
+          "instances": 17,
+          "visible": 17
+        },
+        "central-facades-and-seven-trees": {
+          "meshes": 2,
+          "triangles": 39389,
+          "instances": 14,
+          "visible": 2
+        },
+        "player": {
+          "meshes": 1,
+          "triangles": 49614,
+          "instances": 1,
+          "visible": 1
+        }
+      }
+    }
+  ],
+  "errors": [
+    "THREE.WebGLProgram: Shader Error 0 - VALIDATE_STATUS false\n\nMaterial Name: \nMaterial Type: MeshStandardMaterial\n\nProgram Info Log: Fragment shader is not compiled.\n\nFRAGMENT\n\nERROR: 0:1621: 'HONG_KONG_SEA_LEVEL' : undeclared identifier\n\n  1616:       float photoTop=smoothstep(.94,.995,photoN.y);\n  1617:       float photoNear=1.0-smoothstep(65.0,170.0,distance(cameraPosition,vPhotoWorld));\n  1618:       float photoGrain=photoNoise(floor(vPhotoWorld.xz*24.0));\n  1619:       float photoAA=1.0-smoothstep(.025,.12,length(fwidth(vPhotoWorld.xz)));\n  1620:       vec3 photoAsphalt=vec3(.17,.18,.185)+(photoGrain-.5)*.025*photoAA;\n> 1621:       float seaMask=(1.0-smoothstep(-1.5,1.5,vPhotoWorld.y-HONG_KONG_SEA_LEVEL))*smoothstep(.96,.995,photoN.y);\n  1622:       float ripple=sin(vPhotoWorld.x*.7+vPhotoWorld.z*.3+photoSurfaceTime*.7)*sin(vPhotoWorld.z*.9-photoSurfaceTime*.45);\n  1623:       vec3 sea=vec3(.025,.155,.185)+vec3(.007,.012,.014)*ripple;\n  1624:       diffuseColor.rgb=mix(diffuseColor.rgb,sea*diffuse,seaMask*.96);\n  1625:       // Material diffuse contains night tint on unlit source tiles. Preserve it.\n  1626:       diffuseColor.rgb=mix(diffuseColor.rgb,photoAsphalt*diffuse,photoTop*photoNeutral*photoNear*(1.0-seaMask)*.58);\n  1627:     ",
+    "THREE.WebGLProgram: Shader Error 1282 - VALIDATE_STATUS false\n\nMaterial Name: bde379cff322930f.ktx2\nMaterial Type: MeshBasicMaterial\n\nProgram Info Log: Fragment shader is not compiled.\n\nFRAGMENT\n\nERROR: 0:501: 'HONG_KONG_SEA_LEVEL' : undeclared identifier\n\n  496:       float photoTop=smoothstep(.94,.995,photoN.y);\n  497:       float photoNear=1.0-smoothstep(65.0,170.0,distance(cameraPosition,vPhotoWorld));\n  498:       float photoGrain=photoNoise(floor(vPhotoWorld.xz*24.0));\n  499:       float photoAA=1.0-smoothstep(.025,.12,length(fwidth(vPhotoWorld.xz)));\n  500:       vec3 photoAsphalt=vec3(.17,.18,.185)+(photoGrain-.5)*.025*photoAA;\n> 501:       float seaMask=(1.0-smoothstep(-1.5,1.5,vPhotoWorld.y-HONG_KONG_SEA_LEVEL))*smoothstep(.96,.995,photoN.y);\n  502:       float ripple=sin(vPhotoWorld.x*.7+vPhotoWorld.z*.3+photoSurfaceTime*.7)*sin(vPhotoWorld.z*.9-photoSurfaceTime*.45);\n  503:       vec3 sea=vec3(.025,.155,.185)+vec3(.007,.012,.014)*ripple;\n  504:       diffuseColor.rgb=mix(diffuseColor.rgb,sea*diffuse,seaMask*.96);\n  505:       // Material diffuse contains night tint on unlit source tiles. Preserve it.\n  506:       diffuseColor.rgb=mix(diffuseColor.rgb,photoAsphalt*diffuse,photoTop*photoNeutral*photoNear*(1.0-seaMask)*.58);\n  507:     ",
+    "THREE.WebGLProgram: Shader Error 1282 - VALIDATE_STATUS false\n\nMaterial Name: bde379cff322930f.ktx2\nMaterial Type: MeshBasicMaterial\n\nProgram Info Log: Fragment shader is not compiled.\n\nFRAGMENT\n\nERROR: 0:500: 'HONG_KONG_SEA_LEVEL' : undeclared identifier\n\n  495:       float photoTop=smoothstep(.94,.995,photoN.y);\n  496:       float photoNear=1.0-smoothstep(65.0,170.0,distance(cameraPosition,vPhotoWorld));\n  497:       float photoGrain=photoNoise(floor(vPhotoWorld.xz*24.0));\n  498:       float photoAA=1.0-smoothstep(.025,.12,length(fwidth(vPhotoWorld.xz)));\n  499:       vec3 photoAsphalt=vec3(.17,.18,.185)+(photoGrain-.5)*.025*photoAA;\n> 500:       float seaMask=(1.0-smoothstep(-1.5,1.5,vPhotoWorld.y-HONG_KONG_SEA_LEVEL))*smoothstep(.96,.995,photoN.y);\n  501:       float ripple=sin(vPhotoWorld.x*.7+vPhotoWorld.z*.3+photoSurfaceTime*.7)*sin(vPhotoWorld.z*.9-photoSurfaceTime*.45);\n  502:       vec3 sea=vec3(.025,.155,.185)+vec3(.007,.012,.014)*ripple;\n  503:       diffuseColor.rgb=mix(diffuseColor.rgb,sea*diffuse,seaMask*.96);\n  504:       // Material diffuse contains night tint on unlit source tiles. Preserve it.\n  505:       diffuseColor.rgb=mix(diffuseColor.rgb,photoAsphalt*diffuse,photoTop*photoNeutral*photoNear*(1.0-seaMask)*.58);\n  506:     ",
+    "THREE.WebGLProgram: Shader Error 1282 - VALIDATE_STATUS false\n\nMaterial Name: \nMaterial Type: MeshStandardMaterial\n\nProgram Info Log: Fragment shader is not compiled.\n\nFRAGMENT\n\nERROR: 0:1620: 'HONG_KONG_SEA_LEVEL' : undeclared identifier\n\n  1615:       float photoTop=smoothstep(.94,.995,photoN.y);\n  1616:       float photoNear=1.0-smoothstep(65.0,170.0,distance(cameraPosition,vPhotoWorld));\n  1617:       float photoGrain=photoNoise(floor(vPhotoWorld.xz*24.0));\n  1618:       float photoAA=1.0-smoothstep(.025,.12,length(fwidth(vPhotoWorld.xz)));\n  1619:       vec3 photoAsphalt=vec3(.17,.18,.185)+(photoGrain-.5)*.025*photoAA;\n> 1620:       float seaMask=(1.0-smoothstep(-1.5,1.5,vPhotoWorld.y-HONG_KONG_SEA_LEVEL))*smoothstep(.96,.995,photoN.y);\n  1621:       float ripple=sin(vPhotoWorld.x*.7+vPhotoWorld.z*.3+photoSurfaceTime*.7)*sin(vPhotoWorld.z*.9-photoSurfaceTime*.45);\n  1622:       vec3 sea=vec3(.025,.155,.185)+vec3(.007,.012,.014)*ripple;\n  1623:       diffuseColor.rgb=mix(diffuseColor.rgb,sea*diffuse,seaMask*.96);\n  1624:       // Material diffuse contains night tint on unlit source tiles. Preserve it.\n  1625:       diffuseColor.rgb=mix(diffuseColor.rgb,photoAsphalt*diffuse,photoTop*photoNeutral*photoNear*(1.0-seaMask)*.58);\n  1626:     ",
+    "THREE.WebGLProgram: Shader Error 1282 - VALIDATE_STATUS false\n\nMaterial Name: 751dbb7fbe4e18f2.ktx2\nMaterial Type: MeshBasicMaterial\n\nProgram Info Log: Fragment shader is not compiled.\n\nFRAGMENT\n\nERROR: 0:500: 'HONG_KONG_SEA_LEVEL' : undeclared identifier\n\n  495:       float photoTop=smoothstep(.94,.995,photoN.y);\n  496:       float photoNear=1.0-smoothstep(65.0,170.0,distance(cameraPosition,vPhotoWorld));\n  497:       float photoGrain=photoNoise(floor(vPhotoWorld.xz*24.0));\n  498:       float photoAA=1.0-smoothstep(.025,.12,length(fwidth(vPhotoWorld.xz)));\n  499:       vec3 photoAsphalt=vec3(.17,.18,.185)+(photoGrain-.5)*.025*photoAA;\n> 500:       float seaMask=(1.0-smoothstep(-1.5,1.5,vPhotoWorld.y-HONG_KONG_SEA_LEVEL))*smoothstep(.96,.995,photoN.y);\n  501:       float ripple=sin(vPhotoWorld.x*.7+vPhotoWorld.z*.3+photoSurfaceTime*.7)*sin(vPhotoWorld.z*.9-photoSurfaceTime*.45);\n  502:       vec3 sea=vec3(.025,.155,.185)+vec3(.007,.012,.014)*ripple;\n  503:       diffuseColor.rgb=mix(diffuseColor.rgb,sea*diffuse,seaMask*.96);\n  504:       // Material diffuse contains night tint on unlit source tiles. Preserve it.\n  505:       diffuseColor.rgb=mix(diffuseColor.rgb,photoAsphalt*diffuse,photoTop*photoNeutral*photoNear*(1.0-seaMask)*.58);\n  506:     ",
+    "THREE.WebGLProgram: Shader Error 1282 - VALIDATE_STATUS false\n\nMaterial Name: 751dbb7fbe4e18f2.ktx2\nMaterial Type: MeshBasicMaterial\n\nProgram Info Log: Fragment shader is not compiled.\n\nFRAGMENT\n\nERROR: 0:499: 'HONG_KONG_SEA_LEVEL' : undeclared identifier\n\n  494:       float photoTop=smoothstep(.94,.995,photoN.y);\n  495:       float photoNear=1.0-smoothstep(65.0,170.0,distance(cameraPosition,vPhotoWorld));\n  496:       float photoGrain=photoNoise(floor(vPhotoWorld.xz*24.0));\n  497:       float photoAA=1.0-smoothstep(.025,.12,length(fwidth(vPhotoWorld.xz)));\n  498:       vec3 photoAsphalt=vec3(.17,.18,.185)+(photoGrain-.5)*.025*photoAA;\n> 499:       float seaMask=(1.0-smoothstep(-1.5,1.5,vPhotoWorld.y-HONG_KONG_SEA_LEVEL))*smoothstep(.96,.995,photoN.y);\n  500:       float ripple=sin(vPhotoWorld.x*.7+vPhotoWorld.z*.3+photoSurfaceTime*.7)*sin(vPhotoWorld.z*.9-photoSurfaceTime*.45);\n  501:       vec3 sea=vec3(.025,.155,.185)+vec3(.007,.012,.014)*ripple;\n  502:       diffuseColor.rgb=mix(diffuseColor.rgb,sea*diffuse,seaMask*.96);\n  503:       // Material diffuse contains night tint on unlit source tiles. Preserve it.\n  504:       diffuseColor.rgb=mix(diffuseColor.rgb,photoAsphalt*diffuse,photoTop*photoNeutral*photoNear*(1.0-seaMask)*.58);\n  505:     "
+  ],
+  "scope": "49 regional camera cells, height-adapted from loaded source ray hits. This samples each cell; it does not certify every facade inside each cell.",
+  "failure": "page.evaluate: Execution context was destroyed, most likely because of a navigation\n    at qa (/Users/choeminseong/Desktop/게임/scripts/audit-hong-kong-all-regions.mjs:6:33)\n    at /Users/choeminseong/Desktop/게임/scripts/audit-hong-kong-all-regions.mjs:17:52"
+}

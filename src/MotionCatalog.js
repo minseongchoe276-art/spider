@@ -46,6 +46,10 @@ const imported = {
  special:{file:'Surprise Uppercut',trim:[.7,1.97],impactPhase:.36},
 };
 MOTIONS.push({key:'rightHook',url:'/models/Mixamo Rear Hook.fbx',loop:false,authoredMixamo:true,compactBody:false,impactPhase:.43});
+MOTIONS.push(
+ {key:'knifeIdle',url:'/models/Knife Idle.fbx',loop:true,authoredMixamo:true},
+ {key:'knifeStab',url:'/models/Knife Stabbing.fbx',loop:false,authoredMixamo:true,compactBody:false},
+);
 for(const [key,{file,...settings}] of Object.entries(imported)){
  const motion={key,url:`/models/${file}.fbx`,authoredMixamo:true,loop:false,...settings};
  const index=MOTIONS.findIndex(m=>m.key===key);

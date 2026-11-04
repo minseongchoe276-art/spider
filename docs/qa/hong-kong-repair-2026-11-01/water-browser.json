@@ -1,0 +1,7 @@
+{
+  "errors": [
+    "ReferenceError: __shadowPulseQuality is not defined"
+  ],
+  "views": [],
+  "error": "page.waitForFunction: ReferenceError: __shadowPulseQuality is not defined\n    at eval (eval at predicate (eval at evaluate (:311:30)), <anonymous>:1:34)\n    at predicate (eval at evaluate (:311:30), <anonymous>:7:27)\n    at next (eval at evaluate (:311:30), <anonymous>:29:33)\n    at eval (eval at evaluate (:311:30), <anonymous>:42:13)\n    at UtilityScript.evaluate (<anonymous>:313:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)\n    at /private/tmp/hk-water-check.mjs:4:105"
+}

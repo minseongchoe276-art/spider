@@ -4,10 +4,12 @@ import {mergeGeometries} from 'three/addons/utils/BufferGeometryUtils.js';
 import {collectWalkwayEdges} from './HongKongWalkwayEdges.js';
 import {PhotoTextureReader,detectCanopyCandidates} from './HongKongVegetation.js';
 import {CENTRAL_TREES} from './HongKongDistrict.js';
+import {HongKongNightLights} from './HongKongNightLights.js';
 
 export class HongKongPresentation{
   constructor(city){
     this.city=city;this.scene=city.scene;this.group=new T.Group();this.group.name='HongKongWalkwayRepairs';this.scene.add(this.group);
+    this.nightLights=new HongKongNightLights(this.scene);
     this.railMaterial=new T.MeshStandardMaterial({color:0x7c898e,metalness:.65,roughness:.38});this.trimMaterial=new T.MeshStandardMaterial({color:0x999e99,roughness:.85});
     this.reader=new PhotoTextureReader(city.renderer);this.scanned=new WeakSet();this.sites=[...CENTRAL_TREES];this.lastFocus=new T.Vector3(Infinity,0,Infinity);this.next=0;this.colliders=[];
     this.report={railEdges:0,automaticTrees:0,scannedMeshes:0,geometryUpdates:0};
@@ -40,7 +42,7 @@ export class HongKongPresentation{
     }
   }
   buildRails(edges){
-    this.clearRails();const rails=[],trims=[],blocks=[];
+    this.clearRails();this.nightLights.setEdges(edges);const rails=[],trims=[],blocks=[];
     const add=(array,center,size,rotation,solid=false)=>{
       const geometry=new T.BoxGeometry(...size).applyMatrix4(new T.Matrix4().compose(center,rotation,new T.Vector3(1,1,1)));array.push(geometry);if(solid)blocks.push({center,size,rotation});
     };
@@ -62,5 +64,5 @@ export class HongKongPresentation{
     const collision=this.city.collisionWorld;for(const c of this.colliders){collision.colliderToMesh.delete(c.handle);if(collision.ready&&c.isValid())collision.world.removeCollider(c,true);}this.colliders=[];
     for(const mesh of [...this.group.children]){this.group.remove(mesh);mesh.geometry.dispose();}this.city.mapSurfaceMeshes=[];
   }
-  dispose(){this.clearRails();this.scene.remove(this.group);this.railMaterial.dispose();this.trimMaterial.dispose();this.reader.dispose();}
+  dispose(){this.clearRails();this.nightLights.dispose();this.scene.remove(this.group);this.railMaterial.dispose();this.trimMaterial.dispose();this.reader.dispose();}
 }

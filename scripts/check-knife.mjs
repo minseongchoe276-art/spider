@@ -1,0 +1,23 @@
+import assert from 'node:assert/strict';
+import * as THREE from 'three';
+import {ATTACKS,CombatSystem} from '../src/Combat.js';
+import {MOTIONS} from '../src/MotionCatalog.js';
+
+const character={actions:{knifeIdle:{},knifeStab:{}}};
+const physics={state:'IDLE',position:new THREE.Vector3(),velocity:new THREE.Vector3(),facingAngle:0,city:{raycast:()=>null},clearWebAnchor(){},clearPendingInput(){}};
+const combat=new CombatSystem(new THREE.Scene(),physics,character);
+const camera={userData:{movementYaw:0}};
+const enemy=(z)=>({position:new THREE.Vector3(0,0,z),health:100});
+assert(MOTIONS.some(m=>m.key==='knifeIdle'&&m.loop));
+assert(MOTIONS.some(m=>m.key==='knifeStab'&&!m.loop));
+combat.toggle();combat.knifeEquipped=true;
+combat.before(.01,camera,{});assert.equal(character.combatAction.key,'knifeIdle');
+const target=enemy(1.5),behind=enemy(-1),far=enemy(2.5);combat.enemies=[target,behind,far];
+assert(combat.attack(camera));assert.equal(combat.action.key,'knifeStab');
+combat.action.previous=0;combat.action.time=ATTACKS.knifeStab.from-.01;combat.after(0);assert.equal(target.health,100);
+combat.action.previous=combat.action.time;combat.action.time=ATTACKS.knifeStab.from+.01;combat.after(0);combat.after(0);
+assert.equal(target.health,76);assert.equal(behind.health,100);assert.equal(far.health,100);
+combat.cancel();target.health=100;physics.city.raycast=()=>({});assert(combat.attack(camera));combat.action.time=ATTACKS.knifeStab.from+.01;combat.after(0);assert.equal(target.health,100);
+combat.cancel();physics.city.raycast=()=>null;physics.state='FALLING';assert.equal(combat.attack(camera),false);
+physics.state='IDLE';combat.knifeEquipped=false;assert(combat.attack(camera));assert.equal(combat.action.key,'jab');
+console.log('PASS knife clips, stance, active window, single hit, range, direction, obstruction, airborne restriction and unarmed fallback');

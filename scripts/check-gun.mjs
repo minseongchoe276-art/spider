@@ -1,0 +1,17 @@
+import assert from 'node:assert/strict';
+import * as THREE from 'three';
+import {ATTACKS,CombatSystem} from '../src/Combat.js';
+const character={actions:{cross:{}}};
+const physics={state:'IDLE',position:new THREE.Vector3(),velocity:new THREE.Vector3(),facingAngle:0,city:{raycast:()=>null},clearWebAnchor(){},clearPendingInput(){}};
+const combat=new CombatSystem(new THREE.Scene(),physics,character);
+const camera={userData:{movementYaw:0}};
+const enemy=(x,z)=>({position:new THREE.Vector3(x,0,z),health:100});
+combat.toggle();combat.gunEquipped=true;combat.before(.01,camera,{});
+assert.equal(character.combatAction.key,'gunIdle');
+const near=enemy(0,5),far=enemy(0,10),side=enemy(3,5);combat.enemies=[far,side,near];
+assert(combat.attack(camera));assert.equal(combat.action.key,'gunFire');
+combat.action.time=ATTACKS.gunFire.from+.01;combat.after(0);combat.after(0);
+assert.equal(near.health,78);assert.equal(far.health,100);assert.equal(side.health,100);
+combat.cancel();near.health=100;physics.city.raycast=()=>({});assert(combat.attack(camera));combat.action.time=ATTACKS.gunFire.from+.01;combat.after(0);assert.equal(near.health,100);
+combat.cancel();combat.gunEquipped=false;assert(combat.attack(camera));assert.equal(combat.action.key,'jab');
+console.log('PASS pistol stance, fire timing, nearest target, aim, obstruction and unarmed fallback');

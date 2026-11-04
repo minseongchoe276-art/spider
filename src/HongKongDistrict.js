@@ -3,6 +3,7 @@ import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
 import {fetchAsset} from './AssetLoader.js';
 import {HONG_KONG_FACADES} from './data/HongKongFacades.js';
 import {insideFacade} from './HongKongDistrictGeometry.js';
+import {hongKongNight} from './HongKongNightLights.js';
 
 const UP=new T.Vector3(0,1,0),PITCH_X=3.2,PITCH_Y=3.6,MAX_FACES=6,MAX_TREES=32;
 // Reviewed canopy footprints in the landscaped strip seen in the overhead
@@ -104,15 +105,16 @@ export class HongKongDistrict {
     const previous=material.onBeforeCompile.bind(material),key=material.customProgramCacheKey.bind(material);
     material.onBeforeCompile=shader=>{
       previous(shader);
-      Object.assign(shader.uniforms,{hkDistrictActive:this.active,hkFacePlanes:{value:this.facePlanes},hkFaceBounds:{value:this.faceBounds},hkTreeCenters:{value:this.treeCenters},hkTreeTops:{value:this.treeTops},hkTreeActive:this.treeActive});
+      Object.assign(shader.uniforms,{hkDistrictActive:this.active,hkFacePlanes:{value:this.facePlanes},hkFaceBounds:{value:this.faceBounds},hkTreeCenters:{value:this.treeCenters},hkTreeTops:{value:this.treeTops},hkTreeActive:this.treeActive,hkNight:hongKongNight});
       shader.vertexShader='varying vec3 vHkDistrictWorld;\n'+shader.vertexShader;
       shader.vertexShader=shader.vertexShader.replace('#include <worldpos_vertex>','#include <worldpos_vertex>\nvHkDistrictWorld=(modelMatrix*vec4(transformed,1.0)).xyz;');
       shader.fragmentShader=`varying vec3 vHkDistrictWorld;
         uniform vec4 hkFacePlanes[${MAX_FACES}];uniform vec4 hkFaceBounds[${MAX_FACES}];
-        uniform vec4 hkTreeCenters[${MAX_TREES}];uniform float hkTreeTops[${MAX_TREES}];uniform float hkTreeActive;uniform float hkDistrictActive;
+        uniform vec4 hkTreeCenters[${MAX_TREES}];uniform float hkTreeTops[${MAX_TREES}];uniform float hkTreeActive;uniform float hkDistrictActive;uniform float hkNight;
       `+shader.fragmentShader;
       shader.fragmentShader=shader.fragmentShader.replace('#include <color_fragment>',`#include <color_fragment>
         vec3 hkN=normalize(cross(dFdx(vHkDistrictWorld),dFdy(vHkDistrictWorld)));
+        vec3 hkWindowGlow=vec3(0.0);
         if(hkDistrictActive>0.5 && abs(hkN.y)<0.15){
           for(int i=0;i<${MAX_FACES};i++){
             vec4 p=hkFacePlanes[i],b=hkFaceBounds[i];float u=p.y*vHkDistrictWorld.x-p.x*vHkDistrictWorld.z;
@@ -122,6 +124,8 @@ export class HongKongDistrict {
             float pane=smoothstep(.12,.12+aa.x,cell.x)*(1.0-smoothstep(.88-aa.x,.88,cell.x))*smoothstep(.19,.19+aa.y,cell.y)*(1.0-smoothstep(.83-aa.y,.83,cell.y));
             vec3 facade=mix(vec3(.28,.29,.285),vec3(.07,.115,.14),pane);
             diffuseColor.rgb=mix(diffuseColor.rgb,facade*diffuse,wall*.68);
+            float occupied=step(.48,fract(sin(dot(floor(grid)+vec2(float(i)*17.0,0.0),vec2(127.1,311.7)))*43758.5453));
+            hkWindowGlow+=vec3(.60,.31,.12)*pane*wall*occupied*hkNight*.8;
           }
         }
         if(${surfaceType==='terrain'?'true':'false'} && hkDistrictActive>0.5 && hkTreeActive>0.5){
@@ -136,8 +140,9 @@ export class HongKongDistrict {
           }
         }
       `);
+      shader.fragmentShader=shader.fragmentShader.replace('#include <opaque_fragment>','outgoingLight+=hkWindowGlow;\n#include <opaque_fragment>');
     };
-    material.customProgramCacheKey=()=>key()+'|hk-source-aligned-v3-'+surfaceType;material.needsUpdate=true;
+    material.customProgramCacheKey=()=>key()+'|hk-source-aligned-night-v4-'+surfaceType;material.needsUpdate=true;
   }
 
   async loadTrees(){

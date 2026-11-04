@@ -5,8 +5,8 @@ import {VEHICLE_IDS,VEHICLE_LABELS,sanitizeVehicle,vehicleOverlap} from './Vehic
 import {VehicleController} from './VehicleController.js';
 const up=new T.Vector3(0,1,0),smooth=t=>T.MathUtils.smoothstep(t,0,1);
 export class VehicleSystem{
- constructor({scene,city,physics,character,cameraRig,combat,onNotice=()=>{},allowed=()=>true,getCitizens=()=>[],loadAsset=loadVehicle,getOtherVehicles=()=>[],onControlReset=()=>{}}){
-  Object.assign(this,{scene,city,physics,character,cameraRig,combat,onNotice,allowed,getCitizens,loadAsset,getOtherVehicles,onControlReset});this.selected='bmw';this.sequence=0;this.restoreEpoch=0;this.physics.vehicleSystem=this;this.state='EMPTY';this.time=0;this.brakeHeld=false;this.cameraTarget=new T.Vector3();this.createUI();
+ constructor({scene,city,physics,character,cameraRig,combat,onNotice=()=>{},allowed=()=>true,getCitizens=()=>[],loadAsset=loadVehicle,getOtherVehicles=()=>[],onControlReset=()=>{},speedLimit=()=>Infinity}){
+  Object.assign(this,{scene,city,physics,character,cameraRig,combat,onNotice,allowed,getCitizens,loadAsset,getOtherVehicles,onControlReset,speedLimit});this.selected='bmw';this.sequence=0;this.restoreEpoch=0;this.physics.vehicleSystem=this;this.state='EMPTY';this.time=0;this.brakeHeld=false;this.cameraTarget=new T.Vector3();this.createUI();
  }
  get driving(){return ['ENTERING','DRIVING','EXITING'].includes(this.state);}
  createUI(){
@@ -41,7 +41,7 @@ export class VehicleSystem{
   const hidden=!active||!this.allowed();if(root.hidden!==hidden)root.hidden=hidden;if(hidden){this.brakeHeld=false;return;}
   const name=VEHICLE_LABELS[this.selected];let distance=0,arrow='';
   if(!driving&&this.asset?.frame.visible){const direction=this.doorPoint().sub(this.physics.position);distance=direction.length();const angle=Math.atan2(direction.x,direction.z)-(this.cameraRig?.yaw||0);arrow=['↑','↖','←','↙','↓','↘','→','↗'][((Math.round(angle/(Math.PI/4))%8)+8)%8];}
-  const status=this.state==='DRIVING'?`${Math.round(Math.abs(this.controller.speed)*3.6)} km/h · W/S 가속·후진 · A/D 조향 · Space 브레이크`:this.state==='ENTERING'?'탑승 중…':this.state==='EXITING'?'하차 중…':loading?`${name} 준비 중…`:this.asset?.frame.visible?`${name} · 운전석 ${Math.round(distance)} m ${arrow}`:name;
+  const status=this.state==='DRIVING'?`${Math.round(Math.abs(this.controller.speed)*3.6)} km/h · W/S 가속·후진 · A/D 조향 · Shift 가속 · Space 드리프트/브레이크`:this.state==='ENTERING'?'탑승 중…':this.state==='EXITING'?'하차 중…':loading?`${name} 준비 중…`:this.asset?.frame.visible?`${name} · 운전석 ${Math.round(distance)} m ${arrow}`:name;
   // Compare source values, not translated DOM text. Rewriting an unchanged
   // label every frame also retriggered the English translation observer.
   if(shown.status!==status){label.textContent=status;shown.status=status;}
@@ -73,7 +73,7 @@ export class VehicleSystem{
   this.onControlReset();this.combat?.cancel();this.physics.clearWebAnchor?.();this.physics.clearPendingInput?.();prepareDriver(this.character);
   this.savedCamera=this.cameraRig?Object.fromEntries(['targetDistance','maxDistance','minDistance','mode','pitch','followMovement','lockBehind'].map(k=>[k,this.cameraRig[k]])):null;
   if(this.cameraRig){Object.assign(this.cameraRig,{targetDistance:8.5,maxDistance:12,minDistance:3.5,mode:'follow',pitch:.23,followMovement:true,lockBehind:true});}
-  this.entryFacing=this.physics.facingAngle;this.entryStart=this.character.group.position.clone();this.state='ENTERING';this.time=0;this.onNotice('W/S 가속·제동·후진 · A/D 조향 · Space 브레이크 · B 하차');return true;
+  this.entryFacing=this.physics.facingAngle;this.entryStart=this.character.group.position.clone();this.state='ENTERING';this.time=0;this.onNotice('W/S 가속·후진 · A/D 조향 · Shift 가속 · Space와 방향키 드리프트 · B 하차');return true;
  }
  // The surface under the player's feet. A long downward ray used to miss a
  // roof and report the street at y=0. This look is only a few metres, so a
@@ -164,7 +164,7 @@ export class VehicleSystem{
   if(!this.allowed()){if(this.driving){this.controller.speed=0;this.exitPoint=this.findExit()||this.city.getRooftopSpawn?.()||this.entryStart;this.finishExit();this.syncCar(delta);}this.asset.frame.visible=false;return;}
   if(!active)return;
   if(this.driving){
-   this.time+=Math.min(delta,.1);if(this.state==='DRIVING')this.controller.update(delta,{...input,jump:input.jump||this.brakeHeld});this.syncCar(delta);
+   this.time+=Math.min(delta,.1);if(this.state==='DRIVING')this.controller.update(delta,{...input,speedLimit:this.speedLimit(),jump:input.jump||this.brakeHeld});this.syncCar(delta);
    const p=this.physics;p.position.copy(this.controller.position).addScaledVector(up,.1);p.renderPosition.copy(this.cameraTarget).addScaledVector(up,.1);p.previousFixedPosition?.copy(p.position);p.velocity.copy(this.controller.velocity);p.accumulator=0;p.facingAngle=this.asset.frame.rotation.y;p.state='DRIVING';this.city.playerPosition?.copy(p.position);
    let blend=1,standing=null;if(this.state==='ENTERING'){blend=smooth(this.time/.9);standing=this.entryStart;if(this.time>=.9)this.state='DRIVING';}else if(this.state==='EXITING'){blend=1-smooth(this.time/.75);standing=this.exitPoint;}
    poseDriver(this.character,this.asset,this.renderMotion?.steering??this.controller.steering,blend,standing,this.state==='ENTERING'?this.entryFacing:this.controller.yaw);if(this.state==='EXITING'&&this.time>=.75)this.finishExit();

@@ -112,6 +112,7 @@ export class SoundController {
     }else gain.connect(this.effectsGain);
     node.onended=()=>{node.disconnect();filter.disconnect();gain.disconnect();panner?.disconnect();};node.start(t,Math.random(),duration);
   }
+  playGunshot(position=null){this.impactNoise(.18,.55,1150,position);this.tone(95,.11,.12,this.effectsGain,'square');}
   playCombatBlock(position=null){this.impactNoise(.16,.22,1700,position);this.tone(340,.09,.1,this.effectsGain,'triangle');}
 
   setWindSpeed(speed) {

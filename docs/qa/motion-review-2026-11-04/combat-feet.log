@@ -1,0 +1,15 @@
+node:internal/modules/run_main:123
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: hook 24FPS 0m/s: excessive heel lift/roll {"fps":24,"speed":0,"key":"hook","maxContactTilt":30.766017590605976,"maxFlatTilt":0,"maxLateralRoll":29.3574722550391,"maxHeelPitch":18.19780221836655,"forefootContacts":23,"minSkinClearance":0.0029039434342706194,"maxSupportGap":0.0038158998368484557,"maxBootDegreesPerSecond":240.0000000000066,"contacts":23,"minimumSole":0.0029039434342706194}
+    at file:///private/tmp/shadow-motion-audit.my58iy/scripts/check-combat-feet.mjs:94:2 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
+
+Node.js v22.19.0
