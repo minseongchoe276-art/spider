@@ -933,7 +933,9 @@ export class Character {
     // the traversal take's overhead arm swing. Legs and torso keep the jump.
     const airGuard=this.combatStance && ['JUMPING','FALLING'].includes(state) && !combat?.duration && !this.isTricking && !this.airTrick;
     const releaseGuard=this.combatStance && ['IDLE','RUNNING','SPRINTING','LANDING'].includes(state) && !combat?.duration;
-    this.airGuardWeight=airGuard?1:releaseGuard?THREE.MathUtils.damp(this.airGuardWeight || 0,0,18,delta):0;
+    const blendAirGuard=this.combatStance && ['JUMPING','FALLING'].includes(state) && !this.isTricking && !this.airTrick;
+    this.airGuardWeight=blendAirGuard || releaseGuard
+      ?THREE.MathUtils.damp(this.airGuardWeight || 0,airGuard?1:0,airGuard?4:18,delta):0;
     if(this.airGuardWeight>.001){
       const clip=this.actions[this.knifeVisible?'knifeIdle':'combatIdle']?.getClip();
       if(clip){
