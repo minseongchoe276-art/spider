@@ -429,7 +429,7 @@ export class GameApp {
       const gameplayKey = [
         'KeyW', 'KeyA', 'KeyS', 'KeyD', 'ArrowUp', 'ArrowDown',
         'ArrowLeft', 'ArrowRight', 'Home', 'End', 'PageUp', 'PageDown', 'ShiftLeft', 'ShiftRight', 'Space',
-        'KeyG', 'KeyE', 'KeyT', 'KeyR', 'KeyF', 'KeyC', 'KeyX', 'KeyV', 'KeyQ', 'KeyZ', 'KeyB', 'KeyN', 'KeyJ', 'Digit1', 'Digit2', 'ControlLeft', 'ControlRight'
+        'KeyG', 'KeyE', 'KeyT', 'KeyR', 'KeyF', 'KeyC', 'KeyX', 'KeyV', 'KeyQ', 'KeyZ', 'KeyB', 'KeyN', 'KeyJ', 'Digit1', 'Digit2', 'Digit3', 'Digit4', 'Digit5', 'ControlLeft', 'ControlRight'
       ].includes(k);
       if (gameplayKey && document.getElementById?.('controls-guide') && !document.getElementById('controls-guide').classList.contains('hidden')) return;
       if (gameplayKey && this.gameplayInputBlocked) return;
@@ -1219,7 +1219,9 @@ export class GameApp {
 
 // Bootstrap application on DOM ready or immediately if document is already ready
 async function bootstrap() {
-  if (import.meta.env?.DEV && new URLSearchParams(location.search).has('motionAuditReview')) {
+  if (import.meta.env?.DEV && new URLSearchParams(location.search).has('motionLab')) {
+    import('./MotionLab.js').then(m => m.startMotionLab());
+  } else if (import.meta.env?.DEV && new URLSearchParams(location.search).has('motionAuditReview')) {
     import('./MotionAuditReview.js').then(m => m.startMotionAuditReview());
   } else if (import.meta.env?.DEV && new URLSearchParams(location.search).has('traversalPlaytest')) {
     import('./TraversalPlaytest.js').then(async m => {

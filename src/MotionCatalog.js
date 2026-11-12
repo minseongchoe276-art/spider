@@ -49,6 +49,10 @@ MOTIONS.push({key:'rightHook',url:'/models/Mixamo Rear Hook.fbx',loop:false,auth
 MOTIONS.push(
  {key:'knifeIdle',url:'/models/Knife Idle.fbx',loop:true,authoredMixamo:true},
  {key:'knifeStab',url:'/models/Knife Stabbing.fbx',loop:false,authoredMixamo:true,compactBody:false},
+ {key:'gunIdle',url:'/models/Pistol Aim Idle.fbx',loop:true,authoredMixamo:true},
+ {key:'rifleIdle',url:'/models/Rifle Aim Idle.fbx',loop:true,authoredMixamo:true},
+ {key:'rifleFire',url:'/models/Rifle Firing.fbx',loop:false,authoredMixamo:true},
+ {key:'weaponSwing',url:'/models/Weapon Slash.fbx',loop:false,authoredMixamo:true},
 );
 for(const [key,{file,...settings}] of Object.entries(imported)){
  const motion={key,url:`/models/${file}.fbx`,authoredMixamo:true,loop:false,...settings};

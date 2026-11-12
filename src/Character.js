@@ -163,11 +163,14 @@ export class Character {
       if (!Number.isFinite(longest) || longest <= 0) throw new Error('Invalid weapon bounds');
       model.position.sub(center);
       // Place the narrower end of each melee weapon near the palm.
-      if (type === 'baseball-bat') model.position.x += size.x * .35;
-      if (type === 'metal-pipe') model.position.z += size.z * .3;
+      if (type === 'baseball-bat') model.position.x -= size.x * .35;
+      if (type === 'metal-pipe') model.position.y += size.y * .3;
       const mount = new THREE.Group();
       mount.add(model); mount.scale.setScalar((type === 'sniper-rifle' ? 38 : 32) / longest);
       mount.position.set(0, 3.1, 0); mount.rotation.x = Math.PI / 2;
+      // Keep the narrow grip at the palm, but point the barrel away from the
+      // hand along the swing's authored weapon direction.
+      if (type === 'baseball-bat') mount.rotation.z = Math.PI;
       model.traverse(node => { if (node.isMesh) { node.castShadow = true; node.receiveShadow = true; } });
       mount.visible = false; this.rightHand.add(mount); this.extraWeapons[type] = mount;
       return true;
@@ -724,7 +727,12 @@ export class Character {
       name=this.locomotionGait;
     }
     const combat=this.combatAction;
-    const combatClip= ['gunIdle','gunFire'].includes(combat?.key)?'combatIdle':combat?.key==='hit'?'hitHead':combat?.key?.startsWith('dodge')?'combatIdle':combat?.key;
+    const rifle=this.extraWeapon==='sniper-rifle' && this.gunVisible;
+    const meleeWeapon=this.extraWeaponVisible && ['baseball-bat','metal-pipe'].includes(this.extraWeapon);
+    const combatClip= ['gunIdle','gunFire'].includes(combat?.key)
+      ?(rifle?(combat.key==='gunFire'?'rifleFire':'rifleIdle'):'gunIdle')
+      :meleeWeapon && combat?.key==='heavy'?'weaponSwing'
+      :combat?.key==='hit'?'hitHead':combat?.key?.startsWith('dodge')?'combatIdle':combat?.key;
     const rollRecovering=(this.rollReleaseTime || 0)>.08;
     const combatGround=['IDLE','RUNNING','SPRINTING'].includes(state) && !rollRecovering;
     const legsMoving=['RUNNING','SPRINTING'].includes(state) || horizontalSpeed>.25;
@@ -815,18 +823,18 @@ export class Character {
         this.activeAction?.setEffectiveTimeScale(holdStride ? 0 : forwardScale);
       }
     }
-    if(!dodgeKey && combatClip===name && combat.id && combat.id!==this.combatClipToken){
+    if(!dodgeKey && (combat?.key!=='gunFire' || rifle) && combatClip===name && combat?.id && combat.id!==this.combatClipToken){
       // fadeToAction already reset a newly selected take. Resetting it again
       // cancels Three's fade-in and gives the incoming action full weight
       // beside the outgoing pose, acquiring foot plants from a half-blend.
       if(playingKey===name)this.activeAction?.reset().play();
       this.combatClipToken=combat.id;
     }
-    if(!dodgeKey && combatClip===name && combat.duration) {
+    if(!dodgeKey && combatClip===name && combat.duration && (combat.key!=='gunFire' || rifle)) {
       // The gameplay action owns time, including a slam held until actual
       // contact. Advancing the mixer independently could land in mid-air.
       this.activeAction.enabled=true;this.activeAction.paused=false;
-      const played=combat.key==='heavy'?heavyClipPhase(combat.time/combat.duration):THREE.MathUtils.clamp(combat.time/combat.duration,0,1);
+      const played=combat.key==='heavy' && !meleeWeapon?heavyClipPhase(combat.time/combat.duration):THREE.MathUtils.clamp(combat.time/combat.duration,0,1);
       this.activeAction.time=Math.min(this.activeAction.getClip().duration-1e-6,
         this.activeAction.getClip().duration*played);
       this.activeAction.setEffectiveTimeScale(0);
@@ -852,10 +860,6 @@ export class Character {
     if(name==='combatIdle' && combatGround && (dodgeKey || (!combat?.duration && horizontalSpeed<.15))){
       this.activeAction.time=0;this.activeAction.setEffectiveTimeScale(0);
     }
-    if(combatClip==='combatIdle' && ['gunIdle','gunFire'].includes(combat?.key) && name==='combatIdle'){
-      this.activeAction.time=0;
-      this.activeAction.setEffectiveTimeScale(0);
-    }
     this.mixer.update(delta);
     if(!this.airTrick && this.networkAnimation && !(this.combatAction?.key==='heavy' && this.activeAction===this.actions.heavy) && this.activeAction===this.actions[this.networkAnimation.key]){
       this.activeAction.time=this.networkAnimation.time;
@@ -879,12 +883,13 @@ export class Character {
     }
     // Recovery and airborne clips own the whole body. A fading guard layer
     // must not pin the chest upright while the pelvis rolls underneath it.
-    const upperAction=movingStrike || movingReact;
+    const meleeHold=meleeWeapon && combatGround && (!combat || combat.key==='combatIdle') && !strikeKey && !reactKey;
+    const upperAction=movingStrike || movingReact || meleeHold;
     if((!combatGround && !upperAction) || (strikeKey && !movingStrike))this.movingGuardWeight=0;
     this.movingGuardWeight=THREE.MathUtils.damp(this.movingGuardWeight || 0,
       upperAction || (!strikeKey && combatMoving && (this.combatStance || movingGuard))?1:0,upperAction?28:20,delta);
     if((combatGround || upperAction) && (upperAction || this.movingGuardWeight>.001)) {
-      const clip=this.actions[upperAction?combatClip:movingGuard?'guard':this.gunVisible?'combatIdle':this.knifeVisible?'knifeIdle':'combatIdle']?.getClip();
+      const clip=this.actions[meleeHold?'weaponSwing':upperAction?combatClip:movingGuard?'guard':rifle?'rifleIdle':this.gunVisible?'gunIdle':this.knifeVisible?'knifeIdle':'combatIdle']?.getClip();
       if(clip) {
         this.strikeLayers ||= new WeakMap();
         if(!this.strikeLayers.has(clip))this.strikeLayers.set(clip,clip.tracks.flatMap(track=>{
@@ -894,7 +899,7 @@ export class Character {
         }));
         // Dodges lean and step procedurally over a stable guard sample.
         // Scrubbing the 4.4s idle take through a 0.38s slip made it twitch.
-        const phase=this.gunVisible && !movingReact && !movingGuard ? 0 : upperAction && combat.duration && !dodgeKey?(combat.key==='heavy'?heavyClipPhase(combat.time/combat.duration):THREE.MathUtils.clamp(combat.time/combat.duration,0,1)):0;
+        const phase=meleeHold ? 0 : this.gunVisible && !rifle && !movingReact && !movingGuard ? 0 : upperAction && combat?.duration && !dodgeKey?(combat.key==='heavy' && !meleeWeapon?heavyClipPhase(combat.time/combat.duration):THREE.MathUtils.clamp(combat.time/combat.duration,0,1)):0;
         // Enter guard before the strike instead of snapping from a running
         // arm swing. Contact stays fully weighted; recovery returns to guard.
         const weight=this.movingGuardWeight;
@@ -904,7 +909,7 @@ export class Character {
         // Preserve the travel pelvis; transfer the authored pelvis turn
         // at the current attack phase into the spine layer only.
         const layers=this.strikeLayers.get(clip);
-        const token=upperAction?combat.id || combat.key:movingGuard?'movingGuard':this.knifeVisible?'movingKnife':'guard';
+        const token=meleeHold?'meleeHold':upperAction?combat.id || combat.key:movingGuard?'movingGuard':this.knifeVisible?'movingKnife':'guard';
         if(this.movingStrikeToken!==token){
           this.movingStrikeToken=token;this.movingStrikeBlend=0;
           // A first moving strike has no prior combat layer. Enter from
@@ -931,13 +936,13 @@ export class Character {
     }else{this.movingStrikeToken=null;this.movingStrikePose=null;this.movingStrikeFrom=null;}
     // Keep the boxing guard through a normal combat jump instead of using
     // the traversal take's overhead arm swing. Legs and torso keep the jump.
-    const airGuard=this.combatStance && ['JUMPING','FALLING'].includes(state) && !combat?.duration && !this.isTricking && !this.airTrick;
+    const airGuard=this.combatStance && !meleeWeapon && ['JUMPING','FALLING'].includes(state) && !combat?.duration && !this.isTricking && !this.airTrick;
     const releaseGuard=this.combatStance && ['IDLE','RUNNING','SPRINTING','LANDING'].includes(state) && !combat?.duration;
-    const blendAirGuard=this.combatStance && ['JUMPING','FALLING'].includes(state) && !this.isTricking && !this.airTrick;
+    const blendAirGuard=this.combatStance && !meleeWeapon && ['JUMPING','FALLING'].includes(state) && !this.isTricking && !this.airTrick;
     this.airGuardWeight=blendAirGuard || releaseGuard
       ?THREE.MathUtils.damp(this.airGuardWeight || 0,airGuard?1:0,airGuard?4:18,delta):0;
     if(this.airGuardWeight>.001){
-      const clip=this.actions[this.knifeVisible?'knifeIdle':'combatIdle']?.getClip();
+      const clip=this.actions[rifle?'rifleIdle':this.gunVisible?'gunIdle':this.knifeVisible?'knifeIdle':meleeWeapon?'weaponSwing':'combatIdle']?.getClip();
       if(clip){
         if(this.airGuardClip!==clip || this.airGuardModel!==this.model){
           this.airGuardClip=clip;this.airGuardModel=this.model;
@@ -981,7 +986,7 @@ export class Character {
     this.model.rotation.set(this.bodyPitch + this.trickRotation, this.visualYaw, 0, 'YXZ');
     this.group.updateMatrixWorld(true);
     alignStrikeFootwork(this, delta, !!(combatGround && combatMoving && this.combatStance && (!combat?.duration || strikeKey) && horizontalSpeed>0.35), this.strikeMoveOffset || 0, combat);
-    if(!this.knifeVisible && !this.gunVisible)poseCombatLife(this, combat, !!movingStrike);
+    if(!this.knifeVisible && !this.gunVisible && !meleeWeapon)poseCombatLife(this, combat, !!movingStrike);
     if(combatGround && this.combatStance && !strikeKey && !reactKey){
       const left=Object.values(this.bones).find(b=>boneId(b.name)==='leftshoulder'),right=Object.values(this.bones).find(b=>boneId(b.name)==='rightshoulder');
       if(left&&right){const across=right.getWorldPosition(new THREE.Vector3()).sub(left.getWorldPosition(new THREE.Vector3())),chest=new THREE.Vector3().crossVectors(new THREE.Vector3(0,1,0),across);const yaw=Math.atan2(chest.x,chest.z)-(this.visualYaw||0);this.guardChestOffset=Math.atan2(Math.sin(yaw),Math.cos(yaw));}
@@ -1222,11 +1227,10 @@ export class Character {
     // one frame snaps the hand and weapon when a roll, jump or hit interrupts it.
     if(this.pistolAimWeight>.001)this.posePistol(combat,this.pistolAimWeight);
     poseLowStance(this,delta,state);
-    // Carry the last rendered weapon arm briefly when an attack is interrupted
-    // by takeoff. The airborne guard otherwise replaces the stabbing arm in
-    // one frame, making the held weapon jump across the torso.
-    if(this.weaponAttackWasActive && ['JUMPING','FALLING'].includes(state) && GROUNDED.includes(previous) && this.webArmPrevious){
-      this.weaponAirEntry=new Map([...this.webArmPrevious].filter(([bone])=>/^(rightarm|rightforearm)$/.test(boneId(bone.name))).map(([bone,q])=>[bone,q.clone()]));
+    // Carry the rendered torso, shoulder and weapon arm into takeoff. Keeping
+    // only the arm's local pose lets a changing parent swing the hand abruptly.
+    if(this.weaponAttackWasActive && ['JUMPING','FALLING'].includes(state) && GROUNDED.includes(previous) && this.frameEntryPose){
+      this.weaponAirEntry=new Map([...this.frameEntryPose].filter(([bone])=>/^(spine\d*|rightshoulder|rightarm|rightforearm)$/.test(boneId(bone.name))).map(([bone,pose])=>[bone,pose.quaternion.clone()]));
       this.weaponAirEntryTime=0;
     }
     if(this.weaponAirEntry && ['JUMPING','FALLING'].includes(state)){
@@ -1237,6 +1241,15 @@ export class Character {
       if(blend>=1)this.weaponAirEntry=null;
     }else if(!['JUMPING','FALLING'].includes(state))this.weaponAirEntry=null;
     this.weaponAttackWasActive=!!((this.knifeVisible || this.gunVisible) && ['knifeStab','gunFire'].includes(combat?.key));
+    // Melee props amplify abrupt changes from an attack to a hit or dodge.
+    // Blend both rendered arms from the previous frame, including takeoff,
+    // so the hand carrying the weapon does not jump with the incoming pose.
+    if(this.extraWeaponVisible && ['baseball-bat','metal-pipe'].includes(this.extraWeapon) && this.webArmPrevious && delta>0){
+      for(const [bone,last] of this.webArmPrevious){
+        bone.quaternion.copy(last.clone().rotateTowards(bone.quaternion,12*delta)).normalize();
+        bone.updateMatrixWorld(true);
+      }
+    }
     // Limit shin pronation against the previously rendered frame during a
     // planted turn, transporting the old frame as the leg direction changes.
     if(state==='TURNING')this.turnShinRelease=.75;
@@ -1359,17 +1372,20 @@ export class Character {
     const up=new THREE.Vector3(0,1,0),side=new THREE.Vector3().crossVectors(forward,up).normalize();
     const aim=new THREE.Quaternion().setFromRotationMatrix(new THREE.Matrix4().makeBasis(forward,up,side));
     if(this.extraWeapon==='sniper-rifle') {
-      // The GLB root rotates the mesh: its barrel axis in scene space is -Z.
-      const rifleAim=new THREE.Quaternion().setFromRotationMatrix(new THREE.Matrix4().makeBasis(side,up,forward.clone().negate()));
+      // The rifle's muzzle is at +Z in the imported scene's coordinates.
+      const rifleAim=new THREE.Quaternion().setFromRotationMatrix(new THREE.Matrix4().makeBasis(side.clone().negate(),up,forward));
       weapon.quaternion.slerp(hand.getWorldQuaternion(new THREE.Quaternion()).invert().multiply(rifleAim),weight);
     } else weapon.quaternion.slerp(hand.getWorldQuaternion(new THREE.Quaternion()).invert().multiply(aim),weight);
     weapon.updateMatrixWorld(true);
-    if(this.extraWeapon==='sniper-rifle') {
+    if(this.extraWeapon==='sniper-rifle' || this.gunVisible) {
       const leftArm=find('leftarm'),leftForearm=find('leftforearm'),leftHand=find('lefthand');
       if(leftArm && leftForearm && leftHand) {
         // Support the fore-end with the free hand while preserving the
         // animation blend during transitions into and out of aiming.
-        const support=hand.getWorldPosition(new THREE.Vector3()).addScaledVector(forward,.23).addScaledVector(up,-.06);
+        const support=hand.getWorldPosition(new THREE.Vector3())
+          .addScaledVector(forward,this.extraWeapon==='sniper-rifle'?.23:.035)
+          .addScaledVector(up,this.extraWeapon==='sniper-rifle'?-.06:-.035)
+          .addScaledVector(side,this.extraWeapon==='sniper-rifle'?0:-.035);
         const upper=leftArm.quaternion.clone(),lower=leftForearm.quaternion.clone();
         this.solveLimb(leftArm,leftForearm,leftHand,support,.9,new THREE.Vector3(0,-1,0));
         leftArm.quaternion.slerpQuaternions(upper,leftArm.quaternion.clone(),weight);
