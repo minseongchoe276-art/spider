@@ -11,17 +11,24 @@ export class HongKongPresentation{
     this.city=city;this.scene=city.scene;this.group=new T.Group();this.group.name='HongKongWalkwayRepairs';this.scene.add(this.group);
     this.nightLights=new HongKongNightLights(this.scene);
     this.railMaterial=new T.MeshStandardMaterial({color:0x7c898e,metalness:.65,roughness:.38});this.trimMaterial=new T.MeshStandardMaterial({color:0x999e99,roughness:.85});
-    this.reader=new PhotoTextureReader(city.renderer);this.scanned=new WeakSet();this.sites=[...CENTRAL_TREES];this.lastFocus=new T.Vector3(Infinity,0,Infinity);this.next=0;this.colliders=[];
+    this.reader=new PhotoTextureReader(city.renderer);this.scanned=new WeakMap();this.sites=[...CENTRAL_TREES];this.lastFocus=new T.Vector3(Infinity,0,Infinity);this.next=0;this.colliders=[];this.railBlocks=[];
     this.report={railEdges:0,automaticTrees:0,scannedMeshes:0,geometryUpdates:0};
   }
   update(now,focus){
-    if(now<this.next||!this.city.district||this.city.district.report.treeStatus!=='ready')return;
+    if(now<this.next)return;
     this.next=now+3;
+    // Candidate sites are local presentation data, not a territory-wide
+    // permanent registry. Discard distant automatic sites so a long trip
+    // cannot exhaust the budget and prevent work in later districts.
+    const retained=this.sites.filter(s=>!s.automatic||Math.hypot(s.x-focus.x,s.z-focus.z)<400);
+    if(retained.length!==this.sites.length){this.sites=retained;this.scanned=new WeakMap();}
     const source=this.city.buildingMeshes.filter(m=>!m.userData.presentationRepair);
-    const candidates=source.filter(m=>!this.scanned.has(m)&&m.geometry.attributes.uv&&m.geometry.attributes.position.count<32000&&!Array.isArray(m.material)&&m.material.map).map(mesh=>({mesh,distance:(mesh.geometry.boundingBox??new T.Box3().setFromBufferAttribute(mesh.geometry.attributes.position)).clone().applyMatrix4(mesh.matrixWorld).distanceToPoint(focus)})).filter(m=>m.distance<140).sort((a,b)=>a.distance-b.distance);
+    const cell=`${Math.floor(focus.x/100)}:${Math.floor(focus.z/100)}`;
+    const treeReady=this.city.district?.report.treeStatus==='ready';
+    const candidates=treeReady?source.filter(m=>!this.scanned.get(m)?.has(cell)&&m.geometry.attributes.uv&&m.geometry.attributes.position.count<32000&&!Array.isArray(m.material)&&m.material.map).map(mesh=>({mesh,distance:(mesh.geometry.boundingBox??new T.Box3().setFromBufferAttribute(mesh.geometry.attributes.position)).clone().applyMatrix4(mesh.matrixWorld).distanceToPoint(focus)})).filter(m=>m.distance<140).sort((a,b)=>a.distance-b.distance):[];
     const mesh=candidates[0]?.mesh;
     if(mesh){
-      this.scanned.add(mesh);this.report.scannedMeshes++;
+      let cells=this.scanned.get(mesh);if(!cells){cells=new Set();this.scanned.set(mesh,cells);}cells.add(cell);this.report.scannedMeshes++;
       try{
         const image=this.reader.read(mesh.material.map);
         for(const t of detectCanopyCandidates(mesh,image)){
@@ -33,13 +40,14 @@ export class HongKongPresentation{
         }
       }catch(error){this.report.lastTextureReadError=String(error);}
     }
-    this.city.district.setTreeSites(this.sites,focus);
+    if(treeReady)this.city.district.setTreeSites(this.sites,focus);
     const token=source.map(m=>m.uuid).join('|');
     if(focus.distanceToSquared(this.lastFocus)>144||token!==this.lastToken){
       this.lastFocus.copy(focus);this.lastToken=token;
       const edges=collectWalkwayEdges(source,focus),signature=edges.map(e=>[...e.a,...e.b].map(v=>Math.round(v*4)).join(',')).join('|');
       if(signature!==this.signature){this.signature=signature;this.buildRails(edges);}
     }
+    this.syncRailColliders();
   }
   buildRails(edges){
     this.clearRails();this.nightLights.setEdges(edges);const rails=[],trims=[],blocks=[];
@@ -56,13 +64,17 @@ export class HongKongPresentation{
     for(const [parts,material,name]of [[rails,this.railMaterial,'Supported walkway handrails'],[trims,this.trimMaterial,'Supported walkway edge trim']]){
       if(!parts.length)continue;const geometry=mergeGeometries(parts,false);parts.forEach(g=>g.dispose());const mesh=new T.Mesh(geometry,material);mesh.name=name;mesh.castShadow=mesh.receiveShadow=true;mesh.userData.presentationRepair=true;mesh.userData.surfaceType='infrastructure';this.group.add(mesh);
     }
-    const collision=this.city.collisionWorld,mesh=this.group.children[0];
-    if(collision.ready&&mesh){mesh.updateMatrixWorld(true);for(const {center,size,rotation}of blocks){const desc=RAPIER.ColliderDesc.cuboid(size[0]/2,size[1]/2,size[2]/2).setTranslation(center.x,center.y,center.z).setRotation(rotation);const collider=collision.world.createCollider(desc);collision.colliderToMesh.set(collider.handle,mesh);this.colliders.push(collider);}}
+    this.railBlocks=blocks;this.syncRailColliders();
     this.city.mapSurfaceMeshes=[...this.group.children];this.report.railEdges=edges.length;this.report.geometryUpdates++;
+  }
+  syncRailColliders(){
+    const collision=this.city.collisionWorld,mesh=this.group.children[0];
+    if(!collision.ready||!mesh||this.colliders.length||!this.railBlocks.length)return;
+    mesh.updateMatrixWorld(true);for(const {center,size,rotation}of this.railBlocks){const desc=RAPIER.ColliderDesc.cuboid(size[0]/2,size[1]/2,size[2]/2).setTranslation(center.x,center.y,center.z).setRotation(rotation);const collider=collision.world.createCollider(desc);collision.colliderToMesh.set(collider.handle,mesh);this.colliders.push(collider);}
   }
   clearRails(){
     const collision=this.city.collisionWorld;for(const c of this.colliders){collision.colliderToMesh.delete(c.handle);if(collision.ready&&c.isValid())collision.world.removeCollider(c,true);}this.colliders=[];
-    for(const mesh of [...this.group.children]){this.group.remove(mesh);mesh.geometry.dispose();}this.city.mapSurfaceMeshes=[];
+    this.railBlocks=[];for(const mesh of [...this.group.children]){this.group.remove(mesh);mesh.geometry.dispose();}this.city.mapSurfaceMeshes=[];
   }
   dispose(){this.clearRails();this.nightLights.dispose();this.scene.remove(this.group);this.railMaterial.dispose();this.trimMaterial.dispose();this.reader.dispose();}
 }

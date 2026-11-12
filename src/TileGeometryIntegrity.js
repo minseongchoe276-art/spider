@@ -40,7 +40,19 @@ export function repairTileGeometry(geometry){
     }
     newGroups.push({start,count:kept.length-start,materialIndex:group.materialIndex});
   }
-  if(report.invalid+report.degenerate+report.duplicates){
+  // Dropping triangles does not remove their vertices. Three.js computes
+  // bounds over the entire position attribute, including unused vertices, so
+  // one NaN left behind can still break culling and subsequent processing.
+  // Replace only non-finite components, using a retained vertex as the
+  // fallback; every face that referenced the bad vertex was already removed.
+  const fallback=kept.length?kept[0]:null;
+  const safe=fallback===null?[0,0,0]:[p.getX(fallback),p.getY(fallback),p.getZ(fallback)];
+  let sanitizedPositions=false;
+  for(let i=0;i<p.count;i++)for(let k=0;k<3;k++){
+    if(!Number.isFinite(p.getComponent(i,k))){p.setComponent(i,k,safe[k]);sanitizedPositions=true;}
+  }
+  if(sanitizedPositions)p.needsUpdate=true;
+  if(report.invalid+report.degenerate+report.duplicates||sanitizedPositions){
     geometry.setIndex(kept);geometry.clearGroups();for(const g of newGroups)geometry.addGroup(g.start,g.count,g.materialIndex);
     const box=new Box3(),point=new Vector3(),unique=new Set(kept);
     for(const id of unique)box.expandByPoint(point.fromBufferAttribute(p,id));

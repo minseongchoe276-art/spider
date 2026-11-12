@@ -35,7 +35,7 @@ export function facadeWindows(face){
   return rows;
 }
 
-function maskAtlas(faces){
+export function maskAtlas(faces){
   const canvas=document.createElement('canvas');canvas.width=256;canvas.height=256*MAX_FACES;
   const ctx=canvas.getContext('2d');ctx.fillStyle='#000';ctx.fillRect(0,0,canvas.width,canvas.height);ctx.fillStyle='#fff';
   faces.forEach((f,index)=>{
@@ -59,6 +59,7 @@ export class HongKongDistrict {
     this.scene=scene;this.faces=HONG_KONG_FACADES.slice(0,MAX_FACES);this.group=new T.Group();this.group.name='HongKongCentralPrecision';scene.add(this.group);
     this.resources=new Set();this.facePlanes=this.faces.map(f=>new T.Vector4(f.normal[0],f.normal[2],f.distance,f.minU));
     this.faceBounds=this.faces.map(f=>new T.Vector4(f.maxU,f.minY,f.maxY,.8));
+    this.atlas=this.own(maskAtlas(this.faces));
     this.treeSources=[];this.allTreeSites=[...CENTRAL_TREES];
     this.treeCenters=CENTRAL_TREES.map(t=>new T.Vector4(t.x,t.base+1.5,t.z,t.radius));
     this.treeTops=CENTRAL_TREES.map(t=>t.base+t.height+1);
@@ -105,11 +106,12 @@ export class HongKongDistrict {
     const previous=material.onBeforeCompile.bind(material),key=material.customProgramCacheKey.bind(material);
     material.onBeforeCompile=shader=>{
       previous(shader);
-      Object.assign(shader.uniforms,{hkDistrictActive:this.active,hkFacePlanes:{value:this.facePlanes},hkFaceBounds:{value:this.faceBounds},hkTreeCenters:{value:this.treeCenters},hkTreeTops:{value:this.treeTops},hkTreeActive:this.treeActive,hkNight:hongKongNight});
+      Object.assign(shader.uniforms,{hkDistrictActive:this.active,hkFacePlanes:{value:this.facePlanes},hkFaceBounds:{value:this.faceBounds},hkFaceMask:{value:this.atlas},hkTreeCenters:{value:this.treeCenters},hkTreeTops:{value:this.treeTops},hkTreeActive:this.treeActive,hkNight:hongKongNight});
       shader.vertexShader='varying vec3 vHkDistrictWorld;\n'+shader.vertexShader;
       shader.vertexShader=shader.vertexShader.replace('#include <worldpos_vertex>','#include <worldpos_vertex>\nvHkDistrictWorld=(modelMatrix*vec4(transformed,1.0)).xyz;');
       shader.fragmentShader=`varying vec3 vHkDistrictWorld;
         uniform vec4 hkFacePlanes[${MAX_FACES}];uniform vec4 hkFaceBounds[${MAX_FACES}];
+        uniform sampler2D hkFaceMask;
         uniform vec4 hkTreeCenters[${MAX_TREES}];uniform float hkTreeTops[${MAX_TREES}];uniform float hkTreeActive;uniform float hkDistrictActive;uniform float hkNight;
       `+shader.fragmentShader;
       shader.fragmentShader=shader.fragmentShader.replace('#include <color_fragment>',`#include <color_fragment>
@@ -120,6 +122,8 @@ export class HongKongDistrict {
             vec4 p=hkFacePlanes[i],b=hkFaceBounds[i];float u=p.y*vHkDistrictWorld.x-p.x*vHkDistrictWorld.z;
             float boundary=min(min(u-p.w,b.x-u),min(vHkDistrictWorld.y-b.y,b.z-vHkDistrictWorld.y));
             float wall=(1.0-smoothstep(.18,.45,abs(dot(p.xy,vHkDistrictWorld.xz)-p.z)))*smoothstep(0.0,1.5,boundary);
+            vec2 faceUV=vec2((u-p.w)/max(b.x-p.w,.001),(float(i)+1.0-(vHkDistrictWorld.y-b.y)/max(b.z-b.y,.001))/${MAX_FACES}.0);
+            wall*=texture2D(hkFaceMask,faceUV).r;
             vec2 grid=vec2((u-p.w)/3.2,(vHkDistrictWorld.y-b.y)/3.6),cell=fract(grid),aa=max(fwidth(grid),vec2(.002));
             float pane=smoothstep(.12,.12+aa.x,cell.x)*(1.0-smoothstep(.88-aa.x,.88,cell.x))*smoothstep(.19,.19+aa.y,cell.y)*(1.0-smoothstep(.83-aa.y,.83,cell.y));
             vec3 facade=mix(vec3(.28,.29,.285),vec3(.07,.115,.14),pane);
@@ -142,7 +146,7 @@ export class HongKongDistrict {
       `);
       shader.fragmentShader=shader.fragmentShader.replace('#include <opaque_fragment>','outgoingLight+=hkWindowGlow;\n#include <opaque_fragment>');
     };
-    material.customProgramCacheKey=()=>key()+'|hk-source-aligned-night-v4-'+surfaceType;material.needsUpdate=true;
+    material.customProgramCacheKey=()=>key()+'|hk-source-aligned-night-v5-'+surfaceType;material.needsUpdate=true;
   }
 
   async loadTrees(){

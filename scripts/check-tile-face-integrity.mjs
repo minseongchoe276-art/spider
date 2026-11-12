@@ -25,3 +25,14 @@ for(const sharedBasic of [true,false]){
 console.log('PASS mixed-material shared geometry survives; fully replaced geometry is disposed exactly once');
 
 g=make([0,1,2]);g.setAttribute('uv',new T.Float32BufferAttribute([NaN,0,1,0,0,Infinity],2));g.setAttribute('normal',new T.Float32BufferAttribute([NaN,0,1,0,0,1,0,0,1],3));r=repairTileGeometry(g);assert.equal(r.repairedUVValues,2);assert(r.recomputedNormals);assert([...g.attributes.uv.array,...g.attributes.normal.array].every(Number.isFinite));console.log('PASS invalid UVs and normals cannot propagate NaNs into tile shaders');
+
+// Later tile preparation calls computeBoundingBox() on the entire attribute,
+// not just referenced indices. A removed or unused NaN must not poison it.
+for(const indices of [[0,1,2,0,1,3],[0,1,2]]){
+ g=new T.BufferGeometry();g.setAttribute('position',new T.Float32BufferAttribute([10,0,0,11,0,0,10,1,0,NaN,Infinity,0],3));g.setIndex(indices);
+ r=repairTileGeometry(g);assert.deepEqual([...g.index.array],[0,1,2]);g.computeBoundingBox();g.computeBoundingSphere();
+ assert([...g.attributes.position.array].every(Number.isFinite));assert(Number.isFinite(g.boundingSphere.radius));
+ assert.deepEqual(g.boundingBox.min.toArray(),[10,0,0]);assert.deepEqual(g.boundingBox.max.toArray(),[11,1,0]);
+ g.dispose();
+}
+console.log('PASS removed and unused invalid vertices cannot corrupt subsequent bounds');

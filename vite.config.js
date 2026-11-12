@@ -1,6 +1,9 @@
 import { defineConfig } from 'vite';
 import { attachRooms } from './scripts/rooms.mjs';
 import {releasePlugin} from './scripts/release-plugin.mjs';
+import {rmSync} from 'node:fs';
+import {resolve} from 'node:path';
+import {MOTIONS} from './src/MotionCatalog.js';
 
 // Administrator access requires an explicitly configured GAME_ADMIN_TOKEN.
 
@@ -21,6 +24,15 @@ const urbanTilesProxy = {
 
 export default defineConfig({
   plugins: [releasePlugin(),{
+    name: 'omit-unused-jogging-source',
+    writeBundle(output) {
+      // The original remains available in public/ for editing. No catalog
+      // entry or runtime path uses this legacy take; keep every active fallback.
+      const unused='/models/Jogging.fbx';
+      if(MOTIONS.some(m=>m.url===unused))throw new Error('Jogging is now a runtime fallback and must be included in the release');
+      if(output.dir)rmSync(resolve(output.dir,'.'+unused),{force:true});
+    },
+  },{
     name: 'game-rooms',
     configureServer(server) { attachRooms(server.httpServer); },
     configurePreviewServer(server) { attachRooms(server.httpServer); },

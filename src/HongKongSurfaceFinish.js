@@ -8,10 +8,9 @@ export function preparePhotoSurfaceFinish(material){
   material.userData.hkPhotoFinish=true;
   material.onBeforeCompile=shader=>{
     previous(shader);
-    shader.uniforms.photoSurfaceTime=PHOTO_SURFACE_TIME;
     shader.vertexShader='varying vec3 vPhotoWorld;\n'+shader.vertexShader;
     shader.vertexShader=shader.vertexShader.replace('#include <worldpos_vertex>','#include <worldpos_vertex>\nvPhotoWorld=(modelMatrix*vec4(transformed,1.0)).xyz;');
-    shader.fragmentShader=`varying vec3 vPhotoWorld;uniform float photoSurfaceTime;
+    shader.fragmentShader=`varying vec3 vPhotoWorld;
       float photoNoise(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
     `+shader.fragmentShader;
     shader.fragmentShader=shader.fragmentShader.replace('#include <color_fragment>',`#include <color_fragment>
@@ -24,13 +23,12 @@ export function preparePhotoSurfaceFinish(material){
       float photoGrain=photoNoise(floor(vPhotoWorld.xz*24.0));
       float photoAA=1.0-smoothstep(.025,.12,length(fwidth(vPhotoWorld.xz)));
       vec3 photoAsphalt=vec3(.17,.18,.185)+(photoGrain-.5)*.025*photoAA;
-      float seaMask=(1.0-smoothstep(-1.5,1.5,vPhotoWorld.y-${HONG_KONG_SEA_LEVEL.toFixed(1)}))*smoothstep(.96,.995,photoN.y);
-      float ripple=sin(vPhotoWorld.x*.7+vPhotoWorld.z*.3+photoSurfaceTime*.7)*sin(vPhotoWorld.z*.9-photoSurfaceTime*.45);
-      vec3 sea=vec3(.025,.155,.185)+vec3(.007,.012,.014)*ripple;
-      diffuseColor.rgb=mix(diffuseColor.rgb,sea*diffuse,seaMask*.96);
       // Material diffuse contains night tint on unlit source tiles. Preserve it.
-      diffuseColor.rgb=mix(diffuseColor.rgb,photoAsphalt*diffuse,photoTop*photoNeutral*photoNear*(1.0-seaMask)*.58);
+      // Height alone cannot distinguish harbour water from a quay or road.
+      // Preserve the survey's colours until a geographic water mask exists.
+      float aboveHarbour=smoothstep(1.5,3.0,vPhotoWorld.y);
+      diffuseColor.rgb=mix(diffuseColor.rgb,photoAsphalt*diffuse,photoTop*photoNeutral*photoNear*aboveHarbour*.58);
     `);
   };
-  material.customProgramCacheKey=()=>key()+'|photo-surface-finish-v1';material.needsUpdate=true;
+  material.customProgramCacheKey=()=>key()+'|photo-surface-finish-v2';material.needsUpdate=true;
 }

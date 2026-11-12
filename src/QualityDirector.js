@@ -118,7 +118,10 @@ class QualityDirector {
         const y=detail&&height!==null?height+170:1100;
         app.scene.fog=null;
         this.auditCamera={position:new THREE.Vector3(x,y,z+130),target:new THREE.Vector3(x,detail&&height!==null?height:0,z-100),far:detail?1300:2600};
-        for(const t of app.city.tilesets){t.errorTarget=detail?20:64;t.userData.baseErrorTarget=detail?20:64;}
+        app.city.tilesets.forEach((t,i)=>{
+          const target=detail?this.auditRegionSaved.targets[i].base:64;
+          t.errorTarget=target;t.userData.baseErrorTarget=target;
+        });
         return {x,z,height,samples,position:this.auditCamera.position.toArray(),target:this.auditCamera.target.toArray(),detail};
       },
       finishRenderAudit:()=>{
