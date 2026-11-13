@@ -1,6 +1,11 @@
 import {ATTACKS,FIREARMS} from './Combat.js';
 import {RELEASE_SOURCE} from './ReleaseIdentity.js';
 
+export function motionReviewDuration(action,weapon){
+ if(action==='gunReload')return FIREARMS[weapon]?.reload || 1.35;
+ return ATTACKS[action]?.duration || ({dodgeLeft:.38,dodgeRight:.38,dodgeBack:.42,dodgeForward:.52,hitHead:.65,hitBody:.85,hitHeavy:1.05}[action] ?? 1.05);
+}
+
 // Records final Character.update output. This is a controlled pose scenario,
 // not a recording of city physics or every possible gameplay interruption.
 export function setupMotionFrameReview({panel,character,equip,step,inspect,renderer,onReview}){
@@ -26,7 +31,7 @@ export function setupMotionFrameReview({panel,character,equip,step,inspect,rende
   if($('action').selectedOptions[0]?.disabled)throw Error('선택할 수 없는 동작입니다');
   await equip(weapon);character.stopAnimation();character.lastState=null;
   for(let i=0;i<60;i++)step('IDLE','',i/60);
-  const duration=action==='gunReload'?FIREARMS[weapon]?.reload:ATTACKS[action]?.duration || 1.05;
+  const duration=motionReviewDuration(action,weapon);
   const count=Math.ceil((duration+.3)*60);let faults=0;
   for(let i=0;i<=count;i++){const time=i/60;step(state,time<=duration?action:'',time);try{inspect();}catch{faults++;}frames.push(snapshot());}
   recordedAt=new Date().toISOString();meta={weapon,state,action:action||'none',fps:60,frames:frames.length,recordedAt,source:RELEASE_SOURCE,limitations:'고정 조건 Character.update 기록; 실제 게임 물리·충돌·와이어 고정점 및 네트워크 미재현'};

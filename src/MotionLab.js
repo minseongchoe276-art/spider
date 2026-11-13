@@ -3,7 +3,7 @@ import {Character} from './Character.js';
 import {CombatSystem,FIREARMS} from './Combat.js';
 import {SoundController} from './Audio.js';
 import {SCOPE_ZOOMS,scopedFov} from './FirearmScope.js';
-import {setupMotionFrameReview} from './MotionFrameReview.js';
+import {setupMotionFrameReview,motionReviewDuration} from './MotionFrameReview.js';
 
 // Development laboratory: deterministic samples of the live character rig.
 export function startMotionLab() {
@@ -50,7 +50,7 @@ export function startMotionLab() {
   c.knifeVisible=type==='knife';c.gunVisible=type==='pistol'||type==='sniper-rifle';c.extraWeapon=['baseball-bat','metal-pipe','sniper-rifle'].includes(type)?type:null;c.extraWeaponVisible=!!c.extraWeapon;c.combatStance=true;
  }
  function step(state,action,time,dt=1/60){
-  c.combatAction=action?{id:1,key:action,time,duration:action==='gunFire'?.42:action==='gunReload'?(FIREARMS[$('weapon').value]?.reload || 1.35):1.05}:null;
+  c.combatAction=action?{id:1,key:action,time,duration:motionReviewDuration(action,$('weapon').value)}:null;
   c.update(dt,state,velocity(state),null);c.group.updateMatrixWorld(true);
  }
  function inspect(){
