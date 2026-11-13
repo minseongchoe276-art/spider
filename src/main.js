@@ -5,6 +5,7 @@ import {initLanguage,t,language} from './I18n.js';
 import { initCitySelection, selectedCity } from './CitySelection.js';
 import { createHongKongAudit } from './HongKongAudit.js';
 import { CombatSystem, FIREARMS } from './Combat.js';
+import {SCOPE_ZOOMS} from './FirearmScope.js';
 import * as THREE from 'three';
 import { City } from './City.js';
 import { Character } from './Character.js';
@@ -466,7 +467,7 @@ export class GameApp {
           if(!ready) { this.showNotice('무기 모델을 불러오지 못했습니다.'); return; }
           if(!this.isPlaying || this.multiplayer?.room || this.vehicle?.driving || this.combat.mode!=='combat' || this.combat.action)return;
           this.combat.knifeEquipped=false; this.combat.extraWeapon=type; this.combat.gunEquipped=type==='sniper-rifle';
-          this.showNotice(({ 'baseball-bat':'야구방망이', 'metal-pipe':'쇠파이프', 'sniper-rifle':'저격총' })[type]+(type==='sniper-rifle'?' 장착 · 좌클릭 발사 · R 장전':' 장착 · 좌클릭 공격'));
+          this.showNotice(({ 'baseball-bat':'야구방망이', 'metal-pipe':'쇠파이프', 'sniper-rifle':'저격총' })[type]+(type==='sniper-rifle'?' 장착 · 좌클릭 발사 · 우클릭 조준 · 휠 배율 · R 장전':' 장착 · 좌클릭 공격'));
         }); return;
       }
       if(k==='KeyN'){
@@ -493,7 +494,7 @@ export class GameApp {
           this.knifeEquipPending=false;
           if(!ready){this.showNotice('권총 모델 또는 모션을 불러오지 못했습니다.');return;}
           if(!this.isPlaying || this.multiplayer?.room || this.vehicle?.driving || this.combat.mode!=='combat' || this.combat.action)return;
-          this.combat.extraWeapon=null;this.combat.knifeEquipped=false;this.combat.gunEquipped=true;this.showNotice('권총 장착 · 좌클릭 발사 · R 장전 · J 해제');
+          this.combat.extraWeapon=null;this.combat.knifeEquipped=false;this.combat.gunEquipped=true;this.showNotice('권총 장착 · 좌클릭 발사 · 우클릭 조준 · 휠 배율 · R 장전');
         });
         return;
       }
@@ -580,6 +581,11 @@ export class GameApp {
       this.audio.ensureContext();
       if(this.combat?.blocking && (e.button===0 || e.button===2))return;
 
+      const firearm=this.combat?.mode==='combat' && !this.multiplayer?.room && this.combat.firearm?.();
+      if(e.button===2 && firearm && COMBAT_GROUND_STATES.includes(this.physics.state)){
+        this.scopeWeapon=firearm;this.scopeIndex=0;this.tpsCamera.isAiming=true;this.tpsCamera.scopeZoom=SCOPE_ZOOMS[firearm][0];
+        this.camera.userData.firearmScoped=true;return;
+      }
       const groundedCombat = this.combat?.mode==='combat' && GROUNDED.includes(this.physics.state);
       if(groundedCombat && (e.button===0 || e.button===2)) {
         const started=e.button===0?this.combat.attack(this.camera):this.combat.straight(this.camera);
@@ -625,6 +631,7 @@ export class GameApp {
     window.addEventListener('mouseup', (e) => {
       (e.touchInput?this.touchMouseButtons:e.gamepadInput?this.gamepadMouseButtons:this.mouseButtons)?.delete(e.button);
       if(e.button===1){this.cameraDragActive = false;this.lastMousePosition = null;}
+      if(e.button===2 && !this.mouseButtons?.has(2) && !this.gamepadMouseButtons?.has(2) && !this.touchMouseButtons?.has(2))this.stopFirearmScope();
       if(this.mouseButtons?.has(e.button) || this.gamepadMouseButtons?.has(e.button) || this.touchMouseButtons?.has(e.button))return;
       if (e.button === 0 && (e.touchInput || !this.preferences?.values.settings?.webToggle)) {
         this.input.webFireHeld = false;
@@ -645,7 +652,9 @@ export class GameApp {
     this.canvas.addEventListener('wheel', (e) => {
       if (this.gameplayInputBlocked) return;
       e.preventDefault();
-      this.tpsCamera.handleWheel(e.deltaY);
+      if(this.tpsCamera.isAiming && this.scopeWeapon){
+        const zooms=SCOPE_ZOOMS[this.scopeWeapon];this.scopeIndex=THREE.MathUtils.clamp((this.scopeIndex || 0)+(e.deltaY<0?1:-1),0,zooms.length-1);this.tpsCamera.scopeZoom=zooms[this.scopeIndex];
+      }else this.tpsCamera.handleWheel(e.deltaY);
     }, { passive: false });
 
     // Mouse Look (Pointer Lock)
@@ -842,7 +851,16 @@ export class GameApp {
     }
   }
 
+  stopFirearmScope(){
+    if(this.tpsCamera)this.tpsCamera.isAiming=false;
+    if(this.camera?.userData)this.camera.userData.firearmScoped=false;
+    this.scopeWeapon=null;
+    const scope=document.getElementById?.('firearm-scope');if(scope)scope.hidden=true;
+    document.body?.classList?.remove('firearm-scoped');
+  }
+
   clearInput() {
+    this.stopFirearmScope();
     this.touchControls?.release();
     this.touchHeldKeys?.clear();this.touchKeySources?.clear();this.touchMouseButtons?.clear();this.touchDirections={};
     this.combat?.clearHeld();
@@ -1156,6 +1174,10 @@ export class GameApp {
       this.vehicle?.resolvePedestrian();
       // Mouse release owns held input; a temporarily lost anchor can reconnect.
 
+      if(this.tpsCamera.isAiming && (this.combat?.mode!=='combat' || this.combat.firearm?.()!==this.scopeWeapon || !COMBAT_GROUND_STATES.includes(this.physics.state) || this.vehicle?.driving || this.multiplayer?.room))this.stopFirearmScope();
+      const scope=document.getElementById('firearm-scope');
+      if(scope){scope.hidden=!this.tpsCamera.isAiming;scope.dataset.weapon=this.scopeWeapon || '';scope.querySelector('output').textContent=`${this.tpsCamera.scopeZoom || 1}×`;}
+      document.body.classList.toggle('firearm-scoped',!!this.tpsCamera.isAiming);
       // 2. Update 3rd Person Follow Camera
       this.tpsCamera.stanceDrop=this.vehicle?.driving?0:.44*(this.character?.crouchWeight || 0);
       const strike=this.combat?.action;
@@ -1200,7 +1222,7 @@ export class GameApp {
     this.hongKongAudit?.update(this.clock.elapsedTime);
 
     // Render 3D Scene
-    if(this.character?.model)this.character.model.visible=this.vehicle?.driving||!this.tpsCamera?.localAvatarOccluded;
+    if(this.character?.model)this.character.model.visible=this.vehicle?.driving||(!this.tpsCamera?.isAiming && !this.tpsCamera?.localAvatarOccluded);
     if (this.assetsReady && !this.contextLost && !globalThis.document?.hidden) {
       const interactive=this.isPlaying&&!this.isPaused&&!this.gameplaySuspended;
       const now=performance.now();

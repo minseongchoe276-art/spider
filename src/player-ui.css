@@ -658,3 +658,17 @@ body.touch-device.in-game #minimap-panel canvas {max-width:100%;}
 @media(max-width:450px){#touch-controls .touch-toolbar{right:12px;}#touch-controls .touch-utilities{right:12px;top:62px;}body.touch-device.in-game #minimap-panel{top:116px;width:76px;}#touch-controls .touch-mode{bottom:calc(var(--control-lift) + 134px);}#touch-controls{--touch-edge:12px;}}
 #touch-controls .touch-toolbar button {white-space:nowrap;}
 @media(max-width:450px){body.touch-device #game-action-dock{left:24px;right:auto;transform:none;bottom:calc(var(--unused, 0px) + 258px + env(safe-area-inset-bottom));}body.touch-device.in-game #solo-objective:not([hidden]){top:12px;left:12px;bottom:auto;width:132px;max-width:132px;padding:8px;font-size:10px;}body.touch-device.in-game #solo-objective strong{font-size:11px;}body.touch-device.in-game #combat-hud{top:110px;left:12px;bottom:auto;max-width:174px;}body.touch-device.vehicle-driving #game-action-dock{display:none;}}
+
+/* The optic is centered on the same ray used for scoped firearm hits. */
+#firearm-scope {position:fixed;inset:0;z-index:24;pointer-events:none;display:grid;place-items:center;background:transparent}
+#firearm-scope[hidden] {display:none}
+#firearm-scope .scope-lens {position:relative;width:min(76vh,76vw);aspect-ratio:1;border:5px solid #111;border-radius:50%;box-shadow:0 0 0 100vmax #000, inset 0 0 22px #000;background:transparent}
+#firearm-scope .scope-horizontal,#firearm-scope .scope-vertical {position:absolute;background:#101010;opacity:.9}
+#firearm-scope .scope-horizontal {left:0;right:0;top:50%;height:1px}
+#firearm-scope .scope-vertical {top:0;bottom:0;left:50%;width:1px}
+#firearm-scope .scope-center {position:absolute;left:50%;top:50%;width:3px;height:3px;transform:translate(-50%,-50%);border-radius:50%;background:#f24747}
+#firearm-scope output {position:absolute;right:17%;bottom:17%;color:white;font:600 14px system-ui}
+body.firearm-scoped #crosshair {visibility:hidden}
+#firearm-scope[data-weapon="pistol"] .scope-lens {width:min(46vh,46vw);border:3px solid #343d3d;box-shadow:0 0 10px #0009,inset 0 0 10px #0006}
+#firearm-scope[data-weapon="pistol"] .scope-horizontal,#firearm-scope[data-weapon="pistol"] .scope-vertical {display:none}
+#firearm-scope[data-weapon="pistol"] .scope-center {width:6px;height:6px;box-shadow:0 0 6px #f33}

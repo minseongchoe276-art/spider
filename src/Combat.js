@@ -3,6 +3,7 @@ import * as THREE from 'three';
 import {GROUNDED} from './MotionCatalog.js';
 import {COMBAT_GROUND_STATES} from './AttackRules.js';
 import {MATCH} from './MatchRules.js';
+import {scopedTarget} from './FirearmScope.js';
 import {BINDINGS} from './PlayerSettings.js';
 const canStrike=p=>COMBAT_GROUND_STATES.includes(p.state);
 export const FIREARMS={pistol:{capacity:12,reload:1.35},'sniper-rifle':{capacity:5,reload:1.8}};
@@ -82,7 +83,12 @@ export class CombatSystem {
       // Hitscan, ammunition and sound all represent the same trigger pull.
       // Resolving here also preserves a shot when movement interrupts its pose.
       this.audio?.playGunshot?.(this.physics.position);
-      this.strike(this.action,ATTACKS.gunFire);
+      if(camera?.userData?.firearmScoped){
+        const origin=this.physics.position.clone().add(new THREE.Vector3(0,1,0));
+        const match=scopedTarget(camera,origin,this.getTargets?.() || this.enemies,this.firearm()==='sniper-rifle'?120:ATTACKS.gunFire.reach,this.physics.city);
+        this.action.shotResolved=true;
+        if(match)this.strike(this.action,{...ATTACKS.gunFire,scopeTarget:match.target,scopePoint:match.point});
+      }else this.strike(this.action,ATTACKS.gunFire);
     }
     return true;
   }
@@ -199,14 +205,14 @@ export class CombatSystem {
   }
   strike(action,hit) {
     const origin=this.physics.position.clone().add(new THREE.Vector3(0,1,0)),f=forward(this.physics);
-    const targets=this.getTargets?.() || this.enemies;
+    const targets=hit.scopeTarget?[hit.scopeTarget]:(this.getTargets?.() || this.enemies);
     const ordered=action.key==='gunFire'?[...targets].sort((a,b)=>a.position.distanceToSquared(origin)-b.position.distanceToSquared(origin)):targets;
     // A hitscan shot is resolved once, even if it misses or is obstructed.
-    if(action.key==='gunFire'){if(action.shotResolved)return;action.shotResolved=true;}
+    if(action.key==='gunFire' && !hit.scopeTarget){if(action.shotResolved)return;action.shotResolved=true;}
     for(const e of ordered) {
       if(e.health<=0 || action.hits.has(e))continue;
       const target=e.position.clone().add(new THREE.Vector3(0,1,0)),d=target.clone().sub(origin);
-      if(Math.abs(d.y)>1.5 || Math.hypot(d.x,d.z)>hit.reach || (!hit.radial && d.clone().setY(0).normalize().dot(f)<(action.key==='gunFire' ? 0.995 : 0.45)) || this.obstructed(origin,target))continue;
+      if(!hit.scopeTarget && (Math.abs(d.y)>1.5 || Math.hypot(d.x,d.z)>hit.reach || (!hit.radial && d.clone().setY(0).normalize().dot(f)<(action.key==='gunFire' ? 0.995 : 0.45)) || this.obstructed(origin,target)))continue;
       action.hits.add(e);
       if(e.nonCombatant){
         e.reactToAttack?.(action.key,hit.damage,origin);

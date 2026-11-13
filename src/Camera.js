@@ -1,5 +1,6 @@
 import {followMobileCamera} from './MobileTraversal.js';
 import * as THREE from 'three';
+import {scopedFov} from './FirearmScope.js';
 
 // Positive pitch sits the camera above the body and looks down.
 // These stay short of ±90° so the boom keeps a heading and lookAt does not flip.
@@ -113,11 +114,12 @@ export class ThirdPersonCamera {
     // Keep the camera where the player aimed it. Auto-centering after a pause
     // makes the view drift unexpectedly; X is the deliberate recenter action.
     this.orbitReturnTime = Infinity;
-    this.yaw -= deltaX * sensitivity * this.sensitivity;
+    const aimScale=this.isAiming?1/Math.max(1,this.scopeZoom || 1):1;
+    this.yaw -= deltaX * sensitivity * this.sensitivity * aimScale;
     // Input runs before combat/physics; publish aim now, not after the
     // follow-camera render update, or a moving punch trails by one frame.
     this.camera.userData.movementYaw=this.yaw;
-    this.pitch += deltaY * sensitivity * this.sensitivity * (this.invertY?-1:1);
+    this.pitch += deltaY * sensitivity * this.sensitivity * aimScale * (this.invertY?-1:1);
     this.clampPitch();
   }
 
@@ -222,7 +224,7 @@ export class ThirdPersonCamera {
 
     // 1. Dynamic FOV based on speed
     const fovRatio = this.reducedMotion ? 0 : Math.min(Math.max((speedKmh - 20) / 70, 0), 1);
-    const targetFov = this.isAiming ? 50 : this.baseFov + fovRatio * (this.maxFov - this.baseFov) * this.speedFov;
+    const targetFov = this.isAiming ? scopedFov(this.baseFov,this.scopeZoom || 1.5) : this.baseFov + fovRatio * (this.maxFov - this.baseFov) * this.speedFov;
     this.camera.fov = THREE.MathUtils.damp(this.camera.fov, targetFov, 6, delta);
     this.camera.updateProjectionMatrix();
 
