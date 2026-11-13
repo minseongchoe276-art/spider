@@ -830,7 +830,7 @@ export class Character {
       if(playingKey===name)this.activeAction?.reset().play();
       this.combatClipToken=combat.id;
     }
-    if(!dodgeKey && combatClip===name && combat.duration && (combat.key!=='gunFire' || rifle)) {
+    if(!dodgeKey && combatClip===name && combat.duration && combat.key!=='gunReload' && (combat.key!=='gunFire' || rifle)) {
       // The gameplay action owns time, including a slam held until actual
       // contact. Advancing the mixer independently could land in mid-air.
       this.activeAction.enabled=true;this.activeAction.paused=false;

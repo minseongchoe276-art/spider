@@ -78,7 +78,12 @@ export class CombatSystem {
     if(key==='gunFire' && this.magazines[firearm]<=0){this.onNotice('탄약 없음 · R로 장전');return false;}
     if(key==='gunFire')this.magazines[firearm]--;
     this.stamina-=4;this.start(key,ATTACKS[key].duration,camera);
-    if(key==='gunFire')this.audio?.playGunshot?.(this.physics.position);
+    if(key==='gunFire'){
+      // Hitscan, ammunition and sound all represent the same trigger pull.
+      // Resolving here also preserves a shot when movement interrupts its pose.
+      this.audio?.playGunshot?.(this.physics.position);
+      this.strike(this.action,ATTACKS.gunFire);
+    }
     return true;
   }
   straight(camera) {

@@ -34,3 +34,15 @@ for(const fps of [24,60,144])for(const type of ['pistol','sniper-rifle']){
  assert.equal(target.health,100,'a missed shot must not be re-evaluated');
  console.log('PASS misses resolve once even when a target enters the cone later');
 }
+
+// Once the trigger has fired, interrupting the pose must not erase the shot.
+for(const state of ['JUMPING','FALLING','ROLLING']){
+ const physics={state:'IDLE',position:new THREE.Vector3(),velocity:new THREE.Vector3(),facingAngle:0,city:{raycast:()=>null}};
+ const target={position:new THREE.Vector3(0,0,6),health:100};let shots=0;
+ const combat=new CombatSystem(new THREE.Scene(),physics,{}, {getTargets:()=>[target],audio:{playGunshot:()=>shots++}});
+ combat.mode='combat';combat.gunEquipped=true;assert(combat.attack());
+ assert.equal(target.health,78,'hitscan must resolve with the shot sound');
+ physics.state=state;combat.before(1/60,null,{});combat.after(1/60);
+ assert.equal(shots,1);assert.equal(combat.magazines.pistol,11);assert.equal(target.health,78);
+}
+console.log('PASS fired shots survive jump, fall and roll interruptions without duplicate damage');
