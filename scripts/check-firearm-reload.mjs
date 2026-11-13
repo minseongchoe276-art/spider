@@ -22,3 +22,15 @@ for(const fps of [24,60,144])for(const type of ['pistol','sniper-rifle']){
  physics.state='IDLE';tick(.1);physics.city.raycast=()=>({});const hp=target.health;assert(combat.attack());tick(.5);assert.equal(target.health,hp,'walls block shots');
  console.log(`PASS ${type} ${fps}fps: damage, empty, reload, interruptions and obstruction`);
 }
+
+// A missed shot cannot hit a target that moves into the cone later in its active window.
+{
+ const physics={state:'IDLE',position:new THREE.Vector3(),velocity:new THREE.Vector3(),facingAngle:0,city:{raycast:()=>null}};
+ const target={position:new THREE.Vector3(3,0,6),health:100};
+ const combat=new CombatSystem(new THREE.Scene(),physics,{}, {getTargets:()=>[target]});
+ combat.mode='combat';combat.gunEquipped=true;assert(combat.attack());
+ combat.before(.08,null,{});combat.after(.08);target.position.x=0;
+ combat.before(.03,null,{});combat.after(.03);
+ assert.equal(target.health,100,'a missed shot must not be re-evaluated');
+ console.log('PASS misses resolve once even when a target enters the cone later');
+}

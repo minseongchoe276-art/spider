@@ -196,7 +196,8 @@ export class CombatSystem {
     const origin=this.physics.position.clone().add(new THREE.Vector3(0,1,0)),f=forward(this.physics);
     const targets=this.getTargets?.() || this.enemies;
     const ordered=action.key==='gunFire'?[...targets].sort((a,b)=>a.position.distanceToSquared(origin)-b.position.distanceToSquared(origin)):targets;
-    if(action.key==='gunFire' && action.hits.size)return;
+    // A hitscan shot is resolved once, even if it misses or is obstructed.
+    if(action.key==='gunFire'){if(action.shotResolved)return;action.shotResolved=true;}
     for(const e of ordered) {
       if(e.health<=0 || action.hits.has(e))continue;
       const target=e.position.clone().add(new THREE.Vector3(0,1,0)),d=target.clone().sub(origin);
