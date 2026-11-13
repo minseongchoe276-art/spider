@@ -4,7 +4,7 @@ import {localMap,mapName} from './MapCatalog.js';
 import {initLanguage,t,language} from './I18n.js';
 import { initCitySelection, selectedCity } from './CitySelection.js';
 import { createHongKongAudit } from './HongKongAudit.js';
-import { CombatSystem } from './Combat.js';
+import { CombatSystem, FIREARMS } from './Combat.js';
 import * as THREE from 'three';
 import { City } from './City.js';
 import { Character } from './Character.js';
@@ -466,7 +466,7 @@ export class GameApp {
           if(!ready) { this.showNotice('무기 모델을 불러오지 못했습니다.'); return; }
           if(!this.isPlaying || this.multiplayer?.room || this.vehicle?.driving || this.combat.mode!=='combat' || this.combat.action)return;
           this.combat.knifeEquipped=false; this.combat.extraWeapon=type; this.combat.gunEquipped=type==='sniper-rifle';
-          this.showNotice(({ 'baseball-bat':'야구방망이', 'metal-pipe':'쇠파이프', 'sniper-rifle':'저격총' })[type]+' 장착 · 좌클릭 공격');
+          this.showNotice(({ 'baseball-bat':'야구방망이', 'metal-pipe':'쇠파이프', 'sniper-rifle':'저격총' })[type]+(type==='sniper-rifle'?' 장착 · 좌클릭 발사 · R 장전':' 장착 · 좌클릭 공격'));
         }); return;
       }
       if(k==='KeyN'){
@@ -493,7 +493,7 @@ export class GameApp {
           this.knifeEquipPending=false;
           if(!ready){this.showNotice('권총 모델 또는 모션을 불러오지 못했습니다.');return;}
           if(!this.isPlaying || this.multiplayer?.room || this.vehicle?.driving || this.combat.mode!=='combat' || this.combat.action)return;
-          this.combat.extraWeapon=null;this.combat.knifeEquipped=false;this.combat.gunEquipped=true;this.showNotice('권총 장착 · 좌클릭 발사 · J 해제');
+          this.combat.extraWeapon=null;this.combat.knifeEquipped=false;this.combat.gunEquipped=true;this.showNotice('권총 장착 · 좌클릭 발사 · R 장전 · J 해제');
         });
         return;
       }
@@ -538,6 +538,7 @@ export class GameApp {
         }
       }
       if(k==='KeyR'){
+        if(this.combat?.mode==='combat' && this.combat.firearm?.()){this.combat.reload(this.camera);return;}
         this.physics.performAirTrick(Math.random() < .5 ? 'front' : 'back');
         return;
       }
@@ -974,7 +975,8 @@ export class GameApp {
       const wire=this.combat.mode==='web' && !spectating;
       const fighting=!!(this.practice?.active || this.combat.mode==='combat') && !spectating;
       const visible=playing && (wire || fighting || spectating || health<100 || (!!room && ['tag','custom'].includes(room.mode)));
-      updateVitalsHud(combatHud,{health,stamina:this.combat.stamina,mode:me?.eliminated?'spectating':this.vehicle?.driving?'driving':this.combat.mode,
+      const firearm=this.combat.mode==='combat' && !room && !this.vehicle?.driving?this.combat.firearm?.():null;
+      updateVitalsHud(combatHud,{ammo:firearm?{current:this.combat.magazines[firearm],capacity:FIREARMS[firearm].capacity,reloading:this.combat.action?.key==='gunReload'}:null,health,stamina:this.combat.stamina,mode:me?.eliminated?'spectating':this.vehicle?.driving?'driving':this.combat.mode,
         warning:!this.vehicle?.driving&&this.combat.enemies.some(e=>e.windup>0),visible,translate:t});
       document.body?.classList?.toggle('combat-hud-active',fighting && playing);
       document.body?.classList?.toggle('wire-hud',wire && playing);

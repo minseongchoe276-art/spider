@@ -1,7 +1,7 @@
 const EMBLEM='<svg viewBox="0 0 64 64" class="pulse-emblem" aria-hidden="true"><circle cx="32" cy="32" r="27" fill="none" stroke="#d9ccff" stroke-width="2.4"/><path d="M8 34h12l6-16 10 30 7-18 5 4h8" fill="none" stroke="#efe7ff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 
 // One stable DOM tree; changing resource values never rebuilds the HUD.
-export function updateVitalsHud(node,{health,stamina,mode,warning=false,visible=true,translate=s=>s}) {
+export function updateVitalsHud(node,{health,stamina,mode,ammo=null,warning=false,visible=true,translate=s=>s}) {
   if(!node)return;
   if(!node.querySelector('.vitals-emblem')){
     node.textContent='';node.removeAttribute('role');node.classList.add('vitals-hud');
@@ -15,6 +15,7 @@ export function updateVitalsHud(node,{health,stamina,mode,warning=false,visible=
       const value=document.createElement('output');value.className=`vitals-${key}-value`;
       row.append(name,meter,value);stack.append(row);
     }
+    const ammoOutput=document.createElement('output');ammoOutput.className='vitals-ammo';stack.append(ammoOutput);
     node.append(emblem,stack);
   }
   node.classList.toggle('hidden',!visible);
@@ -24,6 +25,8 @@ export function updateVitalsHud(node,{health,stamina,mode,warning=false,visible=
   node.classList.toggle('is-spectating',mode==='spectating'&&!warning);
   node.classList.toggle('is-wire',mode==='web'&&!warning);
   node.classList.toggle('is-combat',mode==='combat'&&!warning);
+  const ammoOutput=node.querySelector('.vitals-ammo');
+  if(ammoOutput){ammoOutput.hidden=!ammo;ammoOutput.textContent=ammo?`${translate('탄약')} ${ammo.current} / ${ammo.capacity}${ammo.reloading?' · '+translate('장전 중'):''}`:'';}
   const title=node.querySelector('.vitals-mode');
   const text=translate(warning?'공격 예고! · 방어 / 이동':mode==='spectating'?'관전 중':mode==='combat'?'전투 모드':mode==='driving'?'운전 중':'와이어 모드');
   if(title.textContent!==text)title.textContent=text;

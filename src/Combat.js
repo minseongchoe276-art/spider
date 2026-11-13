@@ -5,6 +5,7 @@ import {COMBAT_GROUND_STATES} from './AttackRules.js';
 import {MATCH} from './MatchRules.js';
 import {BINDINGS} from './PlayerSettings.js';
 const canStrike=p=>COMBAT_GROUND_STATES.includes(p.state);
+export const FIREARMS={pistol:{capacity:12,reload:1.35},'sniper-rifle':{capacity:5,reload:1.8}};
 
 export const ATTACKS={
   jab:{duration:0.72,from:0.14,to:0.22,damage:12,reach:1.8},
@@ -22,6 +23,7 @@ export class CombatSystem {
   constructor(scene,physics,character,{vfx=null,audio=null,onNotice=()=>{},onHit=()=>{},onImpact=()=>{},getTargets=null,getBindings=()=>BINDINGS}={}) {
     Object.assign(this,{scene,physics,character,vfx,audio,onNotice,onHit,onImpact,getTargets,getBindings});
     this.mode='web';this.action=null;this.knifeEquipped=false;this.gunEquipped=false;
+    this.magazines=Object.fromEntries(Object.entries(FIREARMS).map(([key,value])=>[key,value.capacity]));
     this.character.combatStance=false;
     this.blocking=false;this.health=100;this.stamina=100;this.invulnerable=0;
     this.specialCooldown=0;this.enemies=[];this.serial=0;this.hurtCount=0;this.hits=0;this.elapsed=0;this.physics.webEnabled=true;this.physics.onReset=()=>{this.cancel();this.clearEnemies();this.health=this.stamina=100;this.specialCooldown=0;};
@@ -60,11 +62,21 @@ export class CombatSystem {
     this.stanceQueued={method,camera,input:input?{...input}:null,expires:this.elapsed+1.2};
     return true;
   }
+  firearm(){return this.gunEquipped?(this.extraWeapon==='sniper-rifle'?'sniper-rifle':'pistol'):null;}
+  reload(camera) {
+    const type=this.firearm(),config=FIREARMS[type];
+    if(!config || this.mode!=='combat' || !canStrike(this.physics) || this.action || this.blocking || this.magazines[type]>=config.capacity)return false;
+    if(this.standBefore('reload',camera))return false;
+    this.start('gunReload',config.reload,camera);this.action.firearm=type;return true;
+  }
   attack(camera) {
     if(this.mode!=='combat' || !canStrike(this.physics) || this.blocking || this.stamina<4)return false;
     if(this.action){this.queue('attack',camera);return false;}
     if(this.standBefore('attack',camera))return false;
     const key=this.gunEquipped?'gunFire':this.extraWeapon?'heavy':this.knifeEquipped?'knifeStab':'jab';
+    const firearm=this.firearm();
+    if(key==='gunFire' && this.magazines[firearm]<=0){this.onNotice('탄약 없음 · R로 장전');return false;}
+    if(key==='gunFire')this.magazines[firearm]--;
     this.stamina-=4;this.start(key,ATTACKS[key].duration,camera);
     if(key==='gunFire')this.audio?.playGunshot?.(this.physics.position);
     return true;
@@ -120,14 +132,14 @@ export class CombatSystem {
     this.stamina=Math.min(100,this.stamina+delta*(this.blocking?3:this.action?0:18));
     if(this.blocking && (!canStrike(this.physics)||this.stamina<12))this.blocking=false;
     // Grounded strikes and evasions cannot resume halfway through on landing.
-    if(this.action && (!grounded(this.physics)||(ATTACKS[this.action.key]&&!canStrike(this.physics))) && this.action.key!=='slam')this.cancel();
+    if(this.action && (!grounded(this.physics)||((ATTACKS[this.action.key]||this.action.key==='gunReload')&&!canStrike(this.physics))) && this.action.key!=='slam')this.cancel();
     if(this.stanceQueued){
       const queued=this.stanceQueued;
       if(queued.expires<this.elapsed || !canStrike(this.physics))this.stanceQueued=null;
       else if(!this.physics.lowStance && (this.character.crouchBlend || 0)<.001){
         this.stanceQueued=null;
         const started=queued.method==='dodge'?this.dodge(queued.input,queued.camera):this[queued.method](queued.camera);
-        if(started && queued.method!=='dodge')this.onDeferredStrike?.();
+        if(started && !['dodge','reload'].includes(queued.method))this.onDeferredStrike?.();
       }
     }
     const a=this.action;
@@ -135,6 +147,7 @@ export class CombatSystem {
       a.previous=a.time;a.time+=delta;
       if(a.key==='slam' && !a.landed)a.time=Math.min(a.time,a.duration*0.62);
       if(a.time>=a.duration) {
+        if(a.key==='gunReload' && this.firearm()===a.firearm)this.magazines[a.firearm]=FIREARMS[a.firearm].capacity;
         this.action=null;
       }
     }

@@ -729,7 +729,7 @@ export class Character {
     const combat=this.combatAction;
     const rifle=this.extraWeapon==='sniper-rifle' && this.gunVisible;
     const meleeWeapon=this.extraWeaponVisible && ['baseball-bat','metal-pipe'].includes(this.extraWeapon);
-    const combatClip= ['gunIdle','gunFire'].includes(combat?.key)
+    const combatClip= ['gunIdle','gunFire','gunReload'].includes(combat?.key)
       ?(rifle?(combat.key==='gunFire'?'rifleFire':'rifleIdle'):'gunIdle')
       :meleeWeapon && combat?.key==='heavy'?'weaponSwing'
       :combat?.key==='hit'?'hitHead':combat?.key?.startsWith('dodge')?'combatIdle':combat?.key;
@@ -823,7 +823,7 @@ export class Character {
         this.activeAction?.setEffectiveTimeScale(holdStride ? 0 : forwardScale);
       }
     }
-    if(!dodgeKey && (combat?.key!=='gunFire' || rifle) && combatClip===name && combat?.id && combat.id!==this.combatClipToken){
+    if(!dodgeKey && (combat?.key!=='gunReload' && (combat?.key!=='gunFire' || rifle)) && combatClip===name && combat?.id && combat.id!==this.combatClipToken){
       // fadeToAction already reset a newly selected take. Resetting it again
       // cancels Three's fade-in and gives the incoming action full weight
       // beside the outgoing pose, acquiring foot plants from a half-blend.
@@ -1221,7 +1221,7 @@ export class Character {
       }
       this.group.updateMatrixWorld(true);
     }else this.specialFootHistory=null;
-    const pistolAim=!!(this.gunVisible && combatGround && !this.lowStance && (!combat || ['gunIdle','gunFire'].includes(combat.key)));
+    const pistolAim=!!(this.gunVisible && combatGround && !this.lowStance && (!combat || ['gunIdle','gunFire','gunReload'].includes(combat.key)));
     this.pistolAimWeight=THREE.MathUtils.damp(this.pistolAimWeight || 0,pistolAim?1:0,18,delta);
     // Keep applying the fading correction after leaving aim. Dropping it in
     // one frame snaps the hand and weapon when a roll, jump or hit interrupts it.
@@ -1386,6 +1386,9 @@ export class Character {
           .addScaledVector(forward,this.extraWeapon==='sniper-rifle'?.23:.035)
           .addScaledVector(up,this.extraWeapon==='sniper-rifle'?-.06:-.035)
           .addScaledVector(side,this.extraWeapon==='sniper-rifle'?0:-.035);
+        // The free hand moves down to the magazine well and returns to aim.
+        const reload=combat?.key==='gunReload' && combat.duration?Math.sin(Math.PI*THREE.MathUtils.clamp(combat.time/combat.duration,0,1)):0;
+        support.addScaledVector(up,-.22*reload).addScaledVector(forward,-.12*reload).addScaledVector(side,-.08*reload);
         const upper=leftArm.quaternion.clone(),lower=leftForearm.quaternion.clone();
         this.solveLimb(leftArm,leftForearm,leftHand,support,.9,new THREE.Vector3(0,-1,0));
         leftArm.quaternion.slerpQuaternions(upper,leftArm.quaternion.clone(),weight);
